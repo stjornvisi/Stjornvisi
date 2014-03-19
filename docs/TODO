@@ -1,0 +1,34 @@
+cd ~/workspace/stjornvisi.composter/vendor/
+git clone https://github.com/zendframework/ZendSearch.git ZendSearch
+
+https://blog.twitter.com/2013/twitter-typeaheadjs-you-autocomplete-me
+
+
+    ----EVENT
+    *       event
+    *       related events
+    *       participants
+            gallery
+            resources
+    *       mæti/mæti-ekki
+    *       update/delete
+
+    ----GROUP
+    *       group
+    *       skrá/afskrá
+    *           update
+                send mail:all
+                send mail:management
+                member list (csv)
+    *           delete
+    *        events for current year (edit/delete?)
+    *            create event
+            news for current year (edit/delete?)
+                create news
+    *        navigate years
+    *        Formenn
+    *            manage
+    *        Stjórnendur
+    *            manage
+    *        Meðlimir
+    *            manage

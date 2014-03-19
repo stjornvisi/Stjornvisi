@@ -1,0 +1,195 @@
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+        <h1><?=$this->event->subject?></h1>
+        <div>
+            <?php if( $this->event->event_date > new DateTime() ):?>
+                <?php if($this->event->attending === null):?>
+                    ekki skráðu/ur inn
+                <?php elseif($this->event->attending === false):?>
+                    <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="btn btn-primary">mæti</a> |
+                    <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="btn btn-primary">mæti ekki</a>
+                <?php elseif($this->event->attending == 0):?>
+                    <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="btn btn-primary">mæti</a> |
+                    <span class="btn btn-default">mæti ekki</span>
+                <?php elseif($this->event->attending == 1):?>
+                    <span class="btn btn-default">mæti</span> |
+                    <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="btn btn-primary">mæti ekki</a>
+                <?php endif;?>
+            <?php endif;?>
+        </div>
+        <time>
+            <?=$this->event->event_date->format('Y-m-d');?> |
+            <?=($this->event->event_time)?$this->event->event_time->format('H:m'):'';?> |
+            <?=($this->event->event_end)?$this->event->event_end->format('H:m'):'';?>
+        </time>
+
+        <?php if($this->access->is_admin || $this->access->type >= 1):?>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Action <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="<?=$this->url('vidburdir/update',array('id'=>$this->event->id));?>">Uppfæra</a></li>
+                    <li><a href="<?=$this->url('vidburdir/delete',array('id'=>$this->event->id));?>">Eyða</a></li>
+					<li class="divider"></li>
+					<li><a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id,'type'=>'allir'));?>">Senda póst á meðlimi hópa</a></li>
+					<li><a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id, 'type'=>'gestir'));?>">Senda póst á þátttakendur</a></li>
+					<li class="divider"></li>
+					<li><a href="<?=$this->url('vidburdir/export-attendees',array('id'=>$this->event->id));?>">Sækja þátttakendalista (csv)</a></li>
+					<li class="divider"></li>
+					<li><a href="<?=$this->url('vidburdir/gallery-list',array('id'=>$this->event->id));?>">Myndalisti</a></li>
+					<li><a href="<?=$this->url('vidburdir/resource-list',array('id'=>$this->event->id));?>">Ítarefni</a></li>
+                </ul>
+            </div>
+        <?php endif;?>
+        <ul>
+			<?php if( count($this->event->groups)==0 ):?>
+				<li>Stjórvísisviðburður</li>
+			<?php else:?>
+            <?php foreach( $this->event->groups as $group ):?>
+                <li>
+                    <?php if($group->id == null):?>
+                        <span>Almennur viðburður</span>
+                    <?php else:?>
+                        <a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a>
+                    <?php endif;?>
+                </li>
+            <?php endforeach;?>
+			<?php endif;?>
+        </ul>
+
+        <h3><?=$this->event->location?></h3>
+        <h3><?=$this->event->address?></h3>
+        <?php if( $this->event->avatar):?>
+			<img src="<?=$this->basePath("/images/100/{$this->event->avatar}")?>" />
+        <?php endif;?>
+        <?=$this->paragrapher($this->event->body);?>
+        <div id="map_canvas" style="width:670px; height:300px"></div>
+        <style type="text/css">
+            #map_canvas { height: 100% }
+        </style>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
+        </script>
+        <script type="text/javascript">
+            function initialize() {
+                var latlng = new google.maps.LatLng(<?=$this->event->lat?>, <?=$this->event->lng?>);
+                var myOptions = {
+                    zoom: 15,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"),
+                    myOptions);
+                var marker = new google.maps.Marker({
+                    position: latlng
+                });
+
+                // To add the marker to the map, call setMap();
+                marker.setMap(map);
+            }
+            initialize();
+        </script>
+
+        <?php if( !$this->logged_in && $this->event->event_date > new DateTime() ):?>
+            <div class="well well-lg">
+                <form method="post" action="/vidburdir/<?=$this->event->id?>" class="form-inline">
+                    <?php if($this->register_message):?>
+                        <p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
+                    <?php else:?>
+                        <p>Þú virðist ekki vera skráð/ur inn</p>
+                        <p>Þú getur samt skráð þig á viðburðinn sem gestur með því að fylla út netfang hér fyrir neðan.</p>
+                    <?php endif;?>
+					<div class="form-group">
+						<input type="text" placeholder="Nafn" name="name" class="form-control" />
+					</div>
+					<div class="form-group">
+                        <input type="email" placeholder="Netfang" name="email" class="form-control" />
+                    </div>
+                    <input type="submit" class="btn btn-default" value="Skrá" />
+
+                </form>
+            </div>
+        <?php endif;?>
+
+		<h2>Gallery (<?=count($this->event->gallery)?>)</h2>
+        <ul class="gallery">
+            <?php foreach($this->event->gallery as $img):?>
+                <li>
+					<a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-lightbox="gallery">
+						<img src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
+					</a>
+				</li>
+            <?php endforeach;?>
+        </ul>
+
+		<h2>Ítarefni (<?=count($this->event->reference)?>)</h2>
+        <ul>
+            <?php foreach($this->event->reference as $ref):?>
+            <li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
+            <?php endforeach;?>
+        </ul>
+
+        <?php if($this->access->is_admin || $this->access->type >= 1):?>
+            <h2>Þátttakendur (<?=count($this->attendees)?>)</h2>
+            <table>
+                <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Nafn</td>
+                    <td>Titill</td>
+                    <td>Skráning</td>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="4">&nbsp;</td>
+                </tr>
+                </tfoot>
+                <tbody>
+                <?php foreach($this->attendees as $attendee):?>
+                    <tr>
+                        <td><?=@++$i?></td>
+                        <td>
+                            <?php if($attendee->id):?>
+                                <a href="/notandi/<?=$attendee->id?>"><?=$attendee->name?></a>
+                            <?php else:?>
+                                <?=($attendee->name)?$attendee->name:$attendee->email;?>
+                            <?php endif;?>
+                        </td>
+                        <td>
+                            <?php if($attendee->title):?>
+                                <?=$attendee->title?>
+                            <?php else:?>
+                                &nbsp;
+                            <?php endif;?>
+                        </td>
+                        <td>
+                            <?=$attendee->register_time->format('Y-m-d H:i')?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+                </tbody>
+
+            </table>
+        <?php endif;?>
+
+    </div>
+    <div class="col-xs-6 col-md-4">
+        <h1>Tengdir viðburdir</h1>
+        <ul>
+            <?php foreach($this->related as $event):?>
+            <li>
+                <h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
+                <time><?=$event->event_date->format('Y-m-d');?></time>
+                <ul>
+                    <?php foreach($event->groups as $group):?>
+                    <li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a></li>
+                    <?php endforeach;?>
+                </ul>
+            </li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+</div>
+

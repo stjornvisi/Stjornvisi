@@ -1,4 +1,4 @@
-Stjornvisi
-==========
+stjornvisi-module
+=================
 
-Stjornvisi web module
+Stjónvísi as module

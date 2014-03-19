@@ -1,0 +1,47 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einarvalur
+ * Date: 3/4/14
+ * Time: 12:09 PM
+ */
+?>
+<h1>Greinar (<?=count($this->articles)?>)</h1>
+<?php if( $this->access->is_admin ):?>
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			Action <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="<?=$this->url('greinar/create');?>">Stofna</a></li>
+			<li><a href="<?=$this->url('greinar/author-list');?>">Höfundalisti</a></li>
+			<li><a href="<?=$this->url('greinar/author-create');?>">Stofna höfund</a></li>
+		</ul>
+	</div>
+<?php endif; ?>
+<ul>
+    <?php foreach($this->articles as $article):?>
+    <li>
+        <a href="<?=$this->url('greinar/index',array('id'=>$article->id))?>"><?=$article->title?></a>
+        <time><?=$article->published->format('Y-m-d')?></time>
+        <?=$this->paragrapher($article->summary);?>
+        <ul>
+            <?php foreach($article->authors as $author):?>
+            <li><?=$author->name?></li>
+            <?php endforeach;?>
+        </ul>
+		<?php if( $this->access->is_admin ):?>
+		<div class="btn-group">
+			<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+				Action <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="<?=$this->url('greinar/update',array('id'=>$article->id))?>">Uppfæra</a></li>
+				<li><a href="<?=$this->url('greinar/delete',array('id'=>$article->id))?>">Eyða</a></li>
+			</ul>
+		</div>
+		<?php endif;?>
+        <hr />
+    </li>
+    <?php endforeach;?>
+</ul>

@@ -1,0 +1,26 @@
+<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h1>
+<div class="btn-group">
+	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+		Action <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+		<li><a href="<?=$this->url('vidburdir/resource-create',array('id'=>$this->event->id));?>">Bæta við ítarefni</a></li>
+	</ul>
+</div>
+<ul>
+	<?php foreach($this->resources as $resource):?>
+	<li>
+		<a href="<?=$this->basePath("/images/original/{$resource->name}")?>" ><?=$resource->name?></a>
+
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
+				Action <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="<?=$this->url('vidburdir/resource-update',array('id'=>$resource->id))?>">uppfæra</a></li>
+				<li><a href="<?=$this->url('vidburdir/resource-delete',array('id'=>$resource->id))?>">eyða</a></li>
+			</ul>
+		</div>
+	</li>
+	<?php endforeach;?>
+</ul>

@@ -1,0 +1,38 @@
+
+<?php if($this->form):?>
+
+<div class="well">
+    <h1>Innskráning</h1>
+    <?php $this->form->setAttributes(array('class'=>'form-horizontal','role'=>'form')); ?>
+    <?=$this->form()->openTag($this->form);?>
+
+    <div class="form-group">
+        <?=$this->formLabel($form->get('email'));?>
+        <?=$this->formElement($form->get('email')->setAttribute('class','form-control'));?>
+        <?=$this->formElementErrors($form->get('email'));?>
+    </div>
+
+    <div class="form-group">
+        <?=$this->formLabel($form->get('passwd'));?>
+        <?=$this->formElement($form->get('passwd')->setAttribute('class','form-control'));?>
+        <?=$this->formElementErrors($form->get('passwd'));?>
+    </div>
+
+    <div class="checkbox">
+        <?=$this->formLabel($form->get('rememberme'));?>
+        <?=$this->formElement($form->get('rememberme')->setAttribute('class','checkbox'));?>
+        <?=$this->formElementErrors($form->get('rememberme'));?>
+    </div>
+    <div class="form-group">
+        <?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+        <a href="">Gleymt lykilorð</a>
+    </div>
+    <?=$this->form()->closeTag();?>
+</div>
+<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://127.0.0.1:8080/callback">facebook</a>
+<?php else:?>
+<div class="well">
+    <h1>Þú ert innskráð/ur</h1>
+    <a href="<?=$this->url('auth-out')?>">útskrá</a>
+</div>
+<?php endif;?>

@@ -1,0 +1,17 @@
+nbproject
+._*
+.~lock.*
+*.buildpath
+*.project
+*.settings
+*.DS_Store
+*.idea
+composer.lock
+vendor/
+*.sublime-project
+*.sublime-workspace
+
+public/vendor/*
+public/images/*
+.sass-cache
+.sass-cache/*

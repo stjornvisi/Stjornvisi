@@ -1,0 +1,14 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einarvalur
+ * Date: 2/18/14
+ * Time: 2:52 PM
+ */
+?>
+<h1>Hópar (<?=count($this->groups_all);?>)</h1>
+<ul>
+    <?php foreach( $this->groups_all as $group ):?>
+    <li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
+    <?php endforeach;?>
+</ul>

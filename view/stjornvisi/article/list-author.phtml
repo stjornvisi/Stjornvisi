@@ -1,0 +1,25 @@
+<h1>Greinahöfundalisti</h1>
+<div class="btn-group">
+	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+		Action <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+		<li><a href="<?=$this->url('greinar/author-create');?>">Stofna höfund</a></li>
+	</ul>
+</div>
+<ul>
+	<?php foreach($this->authors as $author):?>
+	<li>
+		<a href="<?=$this->url('greinar/author-update',array('id'=>$author->id))?>"><?=$author->name?></a>
+		<div class="btn-group">
+			<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+				Action <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="<?=$this->url('greinar/author-update',array('id'=>$author->id))?>">Uppfæra notanda</a></li>
+				<li><a href="<?=$this->url('greinar/author-delete',array('id'=>$author->id))?>">Eyða notanda</a></li>
+			</ul>
+		</div>
+	</li>
+	<?php endforeach;?>
+</ul>

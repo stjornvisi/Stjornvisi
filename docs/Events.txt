@@ -1,0 +1,9 @@
+
+    create
+    read
+    update
+    delete
+
+    index
+
+    error

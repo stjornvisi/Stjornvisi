@@ -1,0 +1,46 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einarvalur
+ * Date: 2/2/14
+ * Time: 1:18 PM
+ */
+?>
+
+<?php if( $this->msg ):?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Skilaboð</h3>
+        </div>
+        <div class="panel-body">
+            <?=$this->msg;?>
+        </div>
+    </div>
+<?php endif;?>
+
+
+<?php if( $this->form ):?>
+<?php $this->form->setAttribute('class','form-horizontal'); ?>
+<?=$this->form()->openTag($this->form);?>
+
+    <div class="form-group">
+        <?=$this->formLabel($this->form->get('subject'));?>
+        <?=$this->formElement($this->form->get('subject')->setAttribute('class','form-control'));?>
+        <?=$this->formElementErrors($this->form->get('subject'));?>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($this->form->get('body'));?>
+        <?=$this->formElement($this->form->get('body')->setAttribute('class','form-control'));?>
+        <?=$this->formElementErrors($this->form->get('body'));?>
+    </div>
+
+    <div class="form-group">
+        <?=$this->formElement($this->form->get('send')->setAttribute('class','btn btn-default'));?>
+        <?=$this->formElementErrors($this->form->get('send'));?>
+
+        <?=$this->formElement($this->form->get('test')->setAttribute('class','btn btn-primary'));?>
+        <?=$this->formElementErrors($this->form->get('test'));?>
+    </div>
+
+<?= $this->form()->closeTag() ?>
+<?php endif;?>

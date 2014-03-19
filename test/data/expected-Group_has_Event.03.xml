@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<dataset>
+    <Group_has_Event event_id="2" group_id="1" primary="0" />
+    <Group_has_Event event_id="2" group_id="3" primary="0" />
+</dataset>

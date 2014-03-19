@@ -1,0 +1,35 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einarvalur
+ * Date: 3/4/14
+ * Time: 12:18 PM
+ */
+?>
+<h1><?=$this->article->title?></h1>
+<time><?=$this->article->published->format('Y-m-d')?></time>
+<h2>Birtist fyrst <?=$this->article->venue;?></h2>
+<?php if( $this->access->is_admin ):?>
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			Action <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="<?=$this->url('greinar/update',array('id'=>$this->article->id));?>">uppfæra</a></li>
+			<li><a href="<?=$this->url('greinar/delete',array('id'=>$this->article->id));?>">eyða</a></li>
+		</ul>
+	</div>
+<?php endif; ?>
+<?=$this->paragrapher($this->article->summary);?>
+<?=$this->paragrapher($this->article->body);?>
+<ul>
+    <?php foreach($this->article->authors as $author):?>
+    <li>
+        <h2><?=$author->name?></h2>
+        <?php if($author->avatar):?>
+        <img src="<?=$this->basePath("/images/60/{$author->avatar}")?>" />
+        <?php endif;?>
+        <?=$this->paragrapher($author->info);?>
+    </li>
+    <?php endforeach;?>
+</ul>

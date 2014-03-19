@@ -1,0 +1,31 @@
+{
+  "name": "stjornvisi",
+  "version": "0.0.1",
+  "homepage": "http://stjornvisi.is",
+  "description": "resources for Stjónvísi",
+  "keywords": [
+    "stjornvisi"
+  ],
+  "authors": [
+    "einarvalur"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "handlebars": "~1.3.0",
+    "html5shiv-dist": "~3.6.2",
+    "typeahead.js": "~0.10.2",
+    "respond": "~1.4.2",
+    "lightbox2": "*",
+    "jquery": "~2.1.0"
+  }
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<dataset>
+    <Event_has_Guest event_id="1" email="abc@mail.com" />
+</dataset>

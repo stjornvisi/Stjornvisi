@@ -1,0 +1,25 @@
+<h1>Setja inn mynd fyrir : <?=$this->event->subject;?></h1>
+<?php
+$this->form->setAttribute('class','form-horizontal');
+?>
+<?=$this->form()->openTag($this->form);?>
+
+<div class="form-group">
+	<?=$this->formLabel($form->get('name'));?>
+	<?=$this->formElement($form->get('name')->setAttribute('class','form-control avatar'));?>
+	<?=$this->formElementErrors($form->get('name'));?>
+</div>
+
+
+<div class="form-group">
+	<?=$this->formLabel($form->get('description'));?>
+	<?=$this->formElement($form->get('description')->setAttribute('class','form-control'));?>
+	<?=$this->formElementErrors($form->get('description'));?>
+</div>
+
+<div class="form-group">
+	<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+</div>
+
+<?= $this->form()->closeTag() ?>
+

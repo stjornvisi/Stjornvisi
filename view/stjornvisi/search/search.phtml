@@ -1,0 +1,11 @@
+<ul>
+<?php foreach($this->result as $item):?>
+	<li>
+		<?=$item->score?>
+		<dl>
+			<dt><a href="<?=$item->identifier?>"><?=$item->title?></a></dt>
+			<dd><?=$item->body?></dd>
+		</dl>
+	</li>
+<?php endforeach;?>
+</ul>

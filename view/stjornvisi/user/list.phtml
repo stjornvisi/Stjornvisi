@@ -1,0 +1,42 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einarvalur
+ * Date: 2/18/14
+ * Time: 5:47 PM
+ */
+?>
+<h1>Notendur (<?=count($this->users)?>)</h1>
+<table>
+    <thead>
+        <tr>
+            <td>Nafn</td>
+            <td>Titill</td>
+            <td>Síðan</td>
+            <td>Innskráningar</td>
+            <td>Admin</td>
+            <td>Fyrirtæki</td>
+            <td>Stjórnandi</td>
+        </tr>
+    </thead>
+    <tfoot></tfoot>
+    <tbody>
+    <?php foreach( $this->users as $user ):?>
+        <tr>
+            <td><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name?></a></td>
+            <td><?=$user->title?></td>
+            <td><?=$user->created_date->format('Y-m-d')?></td>
+            <td><?=$user->frequency?></td>
+            <td><?=$user->is_admin?></td>
+			<?php if($user->company_id):?>
+            <td><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$user->company_id))?>"><?=$user->company_name?></a></td>
+            <?php else:?>
+				&nbsp;
+			<?php endif;?>
+			<td><?=$user->key_user?></td>
+        </tr>
+    <?php endforeach;?>
+
+    </tbody>
+
+</table>

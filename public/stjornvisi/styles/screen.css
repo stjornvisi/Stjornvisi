@@ -1,0 +1,136 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* line 9, ../sass/screen.scss */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+/* line 14, ../sass/screen.scss */
+.zf-green {
+  color: #68b604;
+}
+
+/* line 18, ../sass/screen.scss */
+.btn-success {
+  background-color: #57a900;
+  background-image: -moz-linear-gradient(top, #70d900, #57a900);
+  background-image: -ms-linear-gradient(top, #70d900, #57a900);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
+  background-image: -webkit-linear-gradient(top, #70d900, #57a900);
+  background-image: -o-linear-gradient(top, #70d900, #57a900);
+  background-image: linear-gradient(top, #70d900, #57a900);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
+}
+
+/* line 33, ../sass/screen.scss */
+.btn-success:hover,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+  background-color: #57a900;
+}
+
+/* line 37, ../sass/screen.scss */
+.btn-success:active, .btn-success.active {
+  background-color: #57a900;
+}
+
+/* line 41, ../sass/screen.scss */
+div.container a.brand {
+  background: url("img/head-logo.png") no-repeat scroll 0 10px transparent;
+  margin-left: 0;
+  padding: 8px 20px 12px 40px;
+}
+
+/* line 47, ../sass/screen.scss */
+ul.gallery li {
+  display: inline-block;
+}
+
+/* line 50, ../sass/screen.scss */
+input.avatar, input.media {
+  height: 60px;
+  background-repeat: no-repeat;
+  padding-left: 80px;
+  background-color: rgba(240, 240, 240, 0);
+  -webkit-transform: background-color 1s;
+}
+
+/* line 57, ../sass/screen.scss */
+input.avatar.progress, input.media {
+  background-color: #f0f0f0;
+}
+
+/* line 61, ../sass/screen.scss */
+#editable-static-page-container {
+  border: 1px solid rgba(200, 200, 200, 0);
+}
+
+/* line 64, ../sass/screen.scss */
+#editable-static-page-container[contenteditable] {
+  border: 1px solid #c8c8c8;
+}
+
+/* */
+/* line 70, ../sass/screen.scss */
+.frontpage-group-list {
+  -webkit-column-count: 3;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: 3;
+  /* Firefox */
+  column-count: 3;
+}
+
+/* line 76, ../sass/screen.scss */
+.frontpage-gallery-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 81, ../sass/screen.scss */
+.frontpage-gallery-list:after {
+  content: '.';
+  display: block;
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  clear: both;
+}
+
+/* line 82, ../sass/screen.scss */
+.frontpage-gallery-list li {
+  float: left;
+  width: 20%;
+}
+
+/* line 86, ../sass/screen.scss */
+.frontpage-gallery-list li img {
+  width: 100%;
+}
+
+/* line 92, ../sass/screen.scss */
+#custom-templates .empty-message {
+  padding: 5px 10px;
+  text-align: center;
+}
+
+/* line 97, ../sass/screen.scss */
+.tt-dropdown-menu {
+  width: 422px;
+  margin-top: 12px;
+  padding: 8px 0;
+  background-color: #FFF;
+  border: 1px solid #CCC;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}

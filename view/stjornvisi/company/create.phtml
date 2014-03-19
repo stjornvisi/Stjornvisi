@@ -1,0 +1,51 @@
+<?php
+$this->form->setAttribute('class','form-horizontal');
+?>
+
+<?=$this->form()->openTag($this->form);?>
+
+<div class="form-group">
+<?=$this->formLabel($form->get('name'));?>
+<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
+<?=$this->formElementErrors($form->get('name'));?>
+</div>
+
+    <div class="form-group">
+<?=$this->formLabel($form->get('ssn'));?>
+<?=$this->formElement($form->get('ssn')->setAttribute('class','form-control'));?>
+<?=$this->formElementErrors($form->get('ssn'));?>
+    </div>
+    <div class="form-group">
+<?=$this->formLabel($form->get('address'));?>
+<?=$this->formElement($form->get('address')->setAttribute('class','form-control'));?>
+<?=$this->formElementErrors($form->get('address'));?>
+    </div>
+
+    <div class="form-group">
+<?=$this->formLabel($form->get('zip'));?>
+<?=$this->formElement($form->get('zip')->setAttribute('class','form-control'));?>
+<?=$this->formElementErrors($form->get('zip'));?>
+    </div>
+
+    <div class="form-group">
+<?=$this->formLabel($form->get('business_type'));?>
+<?=$this->formElement($form->get('business_type')->setAttribute('class','form-control'));?>
+<?=$this->formElementErrors($form->get('business_type'));?>
+    </div>
+
+    <div class="form-group">
+<?=$this->formLabel($form->get('number_of_employees'));?>
+<?=$this->formElement($form->get('number_of_employees')->setAttribute('class','form-control'));?>
+<?=$this->formElementErrors($form->get('number_of_employees'));?>
+    </div>
+
+    <div class="form-group">
+<?=$this->formLabel($form->get('website'));?>
+<?=$this->formElement($form->get('website')->setAttribute('class','form-control'));?>
+<?=$this->formElementErrors($form->get('website'));?>
+    </div>
+
+    <div class="form-group">
+        <?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default')->setAttribute('value','Stofna'));?>
+    </div>
+<?= $this->form()->closeTag() ?>

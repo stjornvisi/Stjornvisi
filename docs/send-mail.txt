@@ -1,0 +1,15 @@
+
+
+    GroupController
+        registerAction
+            - user.register-group
+        sendMailAction
+            - group.message
+
+    EventController
+        sendMailAction
+            - event.message
+
+    AuthController
+        lostPasswordAction
+            - auth.lost-password

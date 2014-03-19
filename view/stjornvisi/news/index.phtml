@@ -1,0 +1,51 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einarvalur
+ * Date: 2/11/14
+ * Time: 8:45 PM
+ */
+?>
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-8">
+        <h1><?=$this->news->title?></h1>
+        <time><?=$this->news->created_date->format('Y-m-d H:i')?></time>
+        <?php if($this->news->group):?>
+            <a href="<?=$this->url('hopur/index',array('id'=>$this->news->group->url)) ?>"><?=$this->news->group->name_short;?></a>
+        <?php else:?>
+            <span>Stjórnvísisfrétt</span>
+        <?php endif;?>
+        <?php if($this->access->is_admin || $this->access->type >= 1):?>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Action <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="<?=$this->url('frettir/update',array('id'=>$this->news->id));?>">Uppfæra</a></li>
+                    <li><a href="<?=$this->url('frettir/delete',array('id'=>$this->news->id));?>">Eyða</a></li>
+                </ul>
+            </div>
+        <?php endif;?>
+
+        <div>
+			<img src="<?=$this->basePath("/images/60/{$this->news->avatar}")?>" />
+        </div>
+        <?=$this->paragrapher($this->news->body);?>
+    </div>
+    <div class="col-xs-6 col-md-4">
+        <h1>Tengdar fréttir</h1>
+        <ul>
+            <?php foreach($this->related as $news):?>
+            <li>
+                <?php if($news->group):?>
+                    <strong><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></strong>
+                <?php else:?>
+                    <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a>
+                <?php endif;?>
+
+                <time><?=$news->created_date->format('Y-m-d H:i')?></time>
+            </li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+</div>
