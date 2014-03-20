@@ -190,7 +190,7 @@ class UserController extends AbstractActionController{
             //
             if( $access->is_admin || $access->type == 1 ){
                 $form = new UserForm($companyService->fetchAll(),$valuesService->getTitles());
-                $form->setAttribute('action',"/notandi/{$user->id}/uppfaera");
+                $form->setAttribute('action',$this->url()->fromRoute('notandi/update',array('id'=>$user->id)));
 
                 //POST
                 //  post request
@@ -340,6 +340,7 @@ class UserController extends AbstractActionController{
 	 * Change user's password.
 	 *
 	 * @return \Zend\Http\Response|ViewModel
+	 * @todo url for form
 	 */
 	public function changePasswordAction(){
 

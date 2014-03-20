@@ -152,7 +152,7 @@
                         <td><?=@++$i?></td>
                         <td>
                             <?php if($attendee->id):?>
-                                <a href="/notandi/<?=$attendee->id?>"><?=$attendee->name?></a>
+                                <a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>
                             <?php else:?>
                                 <?=($attendee->name)?$attendee->name:$attendee->email;?>
                             <?php endif;?>

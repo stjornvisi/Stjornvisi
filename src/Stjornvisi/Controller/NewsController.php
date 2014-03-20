@@ -78,7 +78,7 @@ class NewsController extends AbstractActionController{
             if($access->is_admin || $access->type >= 1){
 
                 $form = new NewsForm();
-                $form->setAttribute('action',"/frettir/stofna/{$group->id}");
+                $form->setAttribute('action',$this->url('frettir/create',array('id'=>$group->id)));
 
                 //POST
                 //  http post request
@@ -146,7 +146,7 @@ class NewsController extends AbstractActionController{
             //  access in granted
             if( $access->is_admin || $access->type >= 1 ){
                 $form = new NewsForm();
-                $form->setAttribute('action',"/frettir/{$news->id}/uppfaera");
+                $form->setAttribute('action',$this->url()->fromRoute('frettir/update',array('id'=>$news->id)));
 
                 //POST
                 //  post request

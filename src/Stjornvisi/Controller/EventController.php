@@ -150,7 +150,7 @@ class EventController extends AbstractActionController{
             //ACCESS GRANTED
             //
             }else{
-                $form->setAttribute('action',"/vidburdir/stofna");
+                $form->setAttribute('action',$this->url()->fromRoute('vidburdir/create'));
             }
         //GROUPS EVENT
         //  this is a group event accessible to admin and group
@@ -159,7 +159,7 @@ class EventController extends AbstractActionController{
             //ACCESS GRANTED
             //  user is admin or manager
             if($access->is_admin || $access->type >= 1){
-                $form->setAttribute('action',"/vidburdir/stofna/{$group_id}");
+                $form->setAttribute('action', $this->url()->fromRoute('vidburdir/create',array('id'=>$group_id)) );
                 $form->bind( new \ArrayObject( array('groups'=>array($group_id) )));
             //ACCESS DENIED
             //  user is not a manager or admin
@@ -339,7 +339,7 @@ class EventController extends AbstractActionController{
             if( $access->is_admin || $access->type >= 1 ){
 
                 $form = new EventForm( $groupService->fetchAll() );
-                $form->setAttribute('action',"/vidburdir/{$event->id}/uppfaera");
+                $form->setAttribute('action', $this->url()->fromRoute('vidburdir/update',array('id'=>$event->id)) );
 
                 //POST
                 //  http post request

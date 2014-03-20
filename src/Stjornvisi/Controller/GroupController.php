@@ -249,7 +249,7 @@ class GroupController extends AbstractActionController{
                 }else{
                     $form = new GroupForm();
                     $form->bind( new \ArrayObject((array)$group) );
-                    $form->setAttribute('action',"/hopur/{$group->url}/uppfaera");
+                    $form->setAttribute('action', $this->url()->fromRoute('hopur/index',array('id'=>$group->url)) );
                     return new ViewModel(array(
                         'form' => $form
                     ));
@@ -663,7 +663,12 @@ class GroupController extends AbstractActionController{
                     $form->setData($this->request->getPost() );
                     $form->setAttribute(
                         'action',
-                        "/hopur/{$group->url}/senda-post/{$this->params()->fromRoute('type', 'allir')}");
+						$this->url()->fromRoute('hopur/send-mail',array(
+							'id'=>$group->url,
+							'type'=> $this->params()->fromRoute('type', 'allir')
+							)
+						)
+                    );
 
 					//NOTIFY
 					//	notify user
@@ -698,7 +703,11 @@ class GroupController extends AbstractActionController{
                 //  get request
                 }else{
                     $from = new GroupEmail();
-                    $from->setAttribute('action',"/hopur/{$group->url}/senda-post");
+                    $from->setAttribute('action',$this->url()->fromRoute('hopur/send-mail',array(
+							'id'=>$group->url,
+							'type'=> $this->params()->fromRoute('type', 'allir')
+						)
+					));
                     return new ViewModel(array(
                         'form' => new GroupEmail()
                     ));

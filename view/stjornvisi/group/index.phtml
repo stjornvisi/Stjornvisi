@@ -49,9 +49,9 @@
         <?php foreach($this->events as $event):?>
             <li>
             <?php if( $event->event_date < new DateTime() ):?>
-                <del><?=$event->event_date->format('Y-m-d');?> | <a href="/vidburdir/<?=$event->id?>"><?=$event->subject?></a></del>
+                <del><?=$event->event_date->format('Y-m-d');?> | <a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></del>
             <?php else:?>
-                <?=$event->event_date->format('Y-m-d');?> | <a href="/vidburdir/<?=$event->id?>"><?=$event->subject?></a>
+                <?=$event->event_date->format('Y-m-d');?> | <a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a>
             <?php endif;?>
             </li>
         <?php endforeach;?>
@@ -59,13 +59,13 @@
         <dl>
             <?php foreach($this->events as $event):?>
             <dt>
-                <h3><a href="/vidburdir/<?=$event->id?>"><?=$event->subject?></a></h3>
+                <h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
                 <time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:i');?> - <?=$event->event_end->format('H:i');?></time>
             </dt>
             <dd>
                 <ul>
                 <?php foreach($event->groups as $group):?>
-                    <li><a class="label label-default" href="/hopur/<?=$group->url?>"><?=$group->name_short?></a></li>
+                    <li><a class="label label-default" href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
                 <?php endforeach;?>
                 </ul>
                 <?php if($event->avatar):?>
@@ -120,7 +120,7 @@
         <ul>
             <?php foreach($this->chairmen as $user):?>
                 <li>
-                    <a href="/notandi/<?=$user->id;?>"><?=$user->name;?></a> |
+                    <a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
                     <span><?=$user->title;?></span>
                     <?php if($this->access->is_admin || $this->access->type >= 1):?>
                     <div class="btn-group">
@@ -140,7 +140,7 @@
         <ul>
             <?php foreach($this->managers as $user):?>
                 <li>
-                    <a href="/notandi/<?=$user->id;?>"><?=$user->name;?></a> |
+                    <a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
                     <span><?=$user->title;?></span>
                     <?php if($this->access->is_admin || $this->access->type >= 1):?>
                     <div class="btn-group">
@@ -162,7 +162,7 @@
         <ul>
             <?php foreach($this->users as $user):?>
             <li>
-                <a href="/notandi/<?=$user->id;?>"><?=$user->name;?></a> |
+                <a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
                 <span><?=$user->title;?></span>
                 <?php if($this->access->is_admin || $this->access->type >= 1):?>
                 <div class="btn-group">

@@ -142,7 +142,7 @@ class CompanyController extends AbstractActionController{
                 $valueService->getPostalCode(),
                 $valueService->getCompanySizes()
             );
-            $form->setAttribute('action',"/fyrirtaeki/stofna");
+            $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/create'));
             //POST
             //  http post request
             if( $this->request->isPost() ){
@@ -298,7 +298,7 @@ class CompanyController extends AbstractActionController{
                     $valueService->getPostalCode(),
                     $valueService->getCompanySizes()
                 );
-                $form->setAttribute('action',"/fyrirtaeki/{$company->id}/uppfaera");
+                $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/update',array('id'=>$company->id)));
                 //POST
                 //  http post request
                 if( $this->request->isPost() ){
