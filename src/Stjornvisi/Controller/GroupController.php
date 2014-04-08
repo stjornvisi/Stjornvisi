@@ -3,6 +3,7 @@
 namespace Stjornvisi\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Zend\View\Model\FeedModel;
@@ -144,21 +145,12 @@ class GroupController extends AbstractActionController{
                     //  small alterations on it. (add one field 'url'
                     //  and remove one 'submit')
                     $data = $form->getData();
-                    unset($data['submit']);
-
-                    //TODO refactor to a function
-                    setlocale(LC_ALL, 'is_IS.UTF8');
-                    $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $data['name_short']);
-                    $clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
-                    $clean = strtolower(trim($clean, '-'));
-                    $clean = preg_replace("/[\/_| -]+/", '-', $clean);
-                    $data['url'] = $clean;
 
                     //CREATE
                     //  create record and get ID back
                     $id = $groupService->create( $data );
-
-                    return $this->redirect()->toRoute('hopur/index',array('id'=>$data['url']));
+					$group = $groupService->get($id);
+                    return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
                 //INVALID
                 //  invalid form
                 }else{
@@ -212,7 +204,7 @@ class GroupController extends AbstractActionController{
                 //POST
                 //  http post query
                 if($this->request->isPost()){
-                    $form = new GroupForm();
+					$form = new GroupForm();
                     $form->setData($this->request->getPost() );
 
 
@@ -222,21 +214,13 @@ class GroupController extends AbstractActionController{
                         //  small alterations on it. (add one field 'url'
                         //  and remove one 'submit')
                         $data = $form->getData();
-                        unset($data['submit']);
-
-                        //TODO refactor to a function
-                        setlocale(LC_ALL, 'is_IS.UTF8');
-                        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $data['name_short']);
-                        $clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
-                        $clean = strtolower(trim($clean, '-'));
-                        $clean = preg_replace("/[\/_| -]+/", '-', $clean);
-                        $data['url'] = $clean;
 
                         //CREATE
                         //  create record and get ID back
-                        $count = $groupService->update( (int)$group->id, $data );
+                        $groupService->update( (int)$group->id, $data );
+						$group = $groupService->get($group->id);
 
-                        return $this->redirect()->toRoute('hopur/index',array('id'=>$data['url']));
+                        return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
 
                     }else{
                         return new ViewModel(array(
@@ -249,7 +233,7 @@ class GroupController extends AbstractActionController{
                 }else{
                     $form = new GroupForm();
                     $form->bind( new \ArrayObject((array)$group) );
-                    $form->setAttribute('action', $this->url()->fromRoute('hopur/index',array('id'=>$group->url)) );
+                    $form->setAttribute('action', $this->url()->fromRoute('hopur/update',array('id'=>$group->url)) );
                     return new ViewModel(array(
                         'form' => $form
                     ));
@@ -724,4 +708,31 @@ class GroupController extends AbstractActionController{
         }
 
     }
+
+	/**
+	 * Get statistics for al groups.
+	 *
+	 * @return JsonModel
+	 */
+	public function eventStatisticsAction(){
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group');
+
+		return new JsonModel(
+			$groupService->fetchEventStatistics()
+		);
+	}
+
+	public function memberStatisticsAction(){
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group');
+
+		return new JsonModel(
+			$groupService->fetchMemberStatistics()
+		);
+	}
+
+	public function statisticsAction(){
+
+	}
 }

@@ -152,7 +152,8 @@ class AuthController extends AbstractActionController{
                 //  invalid login form
                 }else{
                     return new ViewModel(array(
-                        'form' => $form
+                        'form' => $form,
+						'facebook' => $this->getServiceLocator()->get('Facebook')
                     ));
                 }
 
@@ -160,7 +161,8 @@ class AuthController extends AbstractActionController{
             //  http get request, user gets login form
             }else{
                 return new ViewModel(array(
-                    'form' => new Login()
+                    'form' => new Login(),
+					'facebook' => $this->getServiceLocator()->get('Facebook')
                 ));
             }
         }

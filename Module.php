@@ -12,6 +12,10 @@ namespace Stjornvisi;
 use Imagine;
 use \PDO;
 
+use Stjornvisi\Event\SearchListenerAggregate;
+use \Zend_Queue;
+use \Zend_Db_Select;
+
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\Group;
@@ -20,15 +24,22 @@ use Stjornvisi\Service\Board;
 use Stjornvisi\Service\Article;
 use Stjornvisi\Service\Page;
 use Stjornvisi\Auth\Adapter;
-use Stjornvisi\Auth\Facebook;
+use Stjornvisi\Auth\Facebook as AuthFacebook;
 use Stjornvisi\Service\JaMap;
 use Stjornvisi\Service\Values;
 use Stjornvisi\Mail\Service\File;
+use Stjornvisi\View\Helper\SubMenu;
+use Stjornvisi\Event\ServiceIndexListener;
+use Stjornvisi\Event\ServiceEventListener;
+
+use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\EventManager;
+use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Log\Logger;
 use Zend\Http\Client;
+use Stjornvisi\Lib\Facebook;
 
 use Stjornvisi\Service\User;
 
@@ -49,8 +60,7 @@ class Module{
 
     }
 
-    public function getConfig()
-    {
+    public function getConfig(){
         return include __DIR__ . '/config/module.config.php';
     }
 
@@ -74,28 +84,10 @@ class Module{
                 },
                 'ServiceEventManager' => function($sm){
                     $logger = $sm->get('Logger');
+					$index = $sm->get('Search\Index\Search');
                     $manager = new EventManager();
-                    $manager->attach(array('create','read','update','delete'),function($event) use($logger){
-						$eventType = '';
-						switch( $event->getName() ){
-							case 'create':
-								$eventType = "\033[0m\033[0;30\033[42m create \033[0m";
-								break;
-							case 'read':
-								$eventType = "\033[0m\033[0;30\033[43m read \033[0m";
-								break;
-							case 'update':
-								$eventType = "\033[0m\033[1;37\033[44m update \033[0m";
-								break;
-							case 'delete':
-								$eventType = "\033[0m\033[1;37\033[46m delete \033[0m";
-								break;
-						}
-                        $logger->info(
-                            "\033[1;36m".get_class($event->getTarget())."::{$event->getParams()[0]} - {$eventType}"
-                        );
-                    });
-
+					$manager->attach( new ServiceEventListener($logger) );
+					$manager->attach( new ServiceIndexListener($index) );
                     return $manager;
                 },
 				'Search\Index\Search' => function(){
@@ -123,13 +115,14 @@ class Module{
                     return new Adapter($sm->get('PDO'));
                  },
                 'Stjornvisi\Auth\Facebook' => function($sm){
-                        return new Facebook($sm->get('PDO'));
+                        return new AuthFacebook($sm->get('PDO'));
                     },
-                'PDO' => function(){
+                'PDO' => function($sm){
+					$config = $sm->get('config');
                     return new PDO(
-                        'mysql:dbname=stjornvisi_production;host=127.0.0.1',
-                        'root',
-                        '',
+                        $config['db']['dns'],
+						$config['db']['user'],
+						$config['db']['password'],
                         array(
                             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
                             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -137,6 +130,10 @@ class Module{
 							//PDO::ATTR_EMULATE_PREPARES => false,
                         ));
                  },
+				'Facebook' => function($sm){
+					$config = $sm->get('config');
+					return new Facebook($config['facebook']);
+				},
 				'Imagine\Image\Imagine' => function(){
 						return new Imagine\Gd\Imagine();
 				},
@@ -180,7 +177,66 @@ class Module{
 						$obj->setEventManager( $sm->get('ServiceEventManager') );
 						return $obj;
 				},
+				'Stjornvisi\Queue\Mail' => function(){
+					return new Zend_Queue('Db', array(
+						'name' => 'mail-queue',
+						'driverOptions' => array(
+							'host'      => '127.0.0.1',
+							'username'  => 'root',
+							'password'  => '',
+							'dbname'    => 'stjornvisi_production',
+							'type'      => 'pdo_mysql',
+							'port'      => 3306, // optional parameter.
+						),
+						'options' => array(
+							// use Zend_Db_Select for update, not all databases can support this
+							// feature.
+							Zend_Db_Select::FOR_UPDATE => true
+						)
+					));
+				},
+				'Stjornvisi\Queue\Facebook\Album' => function(){
+						return new Zend_Queue('Db', array(
+							'name' => 'facebook-album-queue',
+							'driverOptions' => array(
+								'host'      => '127.0.0.1',
+								'username'  => 'root',
+								'password'  => '',
+								'dbname'    => 'stjornvisi_production',
+								'type'      => 'pdo_mysql',
+								'port'      => 3306, // optional parameter.
+							),
+							'options' => array(
+								// use Zend_Db_Select for update, not all databases can support this
+								// feature.
+								Zend_Db_Select::FOR_UPDATE => true
+							)
+						));
+					},
             )
         );
     }
+
+	public function getViewHelperConfig(){
+		return array(
+			'factories' => array(
+				'subMenu' => function($sm){
+					return new SubMenu(
+						$sm->getServiceLocator()->get('Stjornvisi\Service\Group'),
+						$sm->getServiceLocator()->get('Stjornvisi\Service\User'),
+						new AuthenticationService()
+					);
+				},
+			),
+		);
+	}
+
+	public function init(ModuleManager $mm){
+		$auth = new AuthenticationService();
+		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'dispatch', function($e) use ($auth) {
+			if( !$auth->hasIdentity() ){
+				$e->getTarget()->layout('layout/anonymous');
+			}
+		});
+	}
 }

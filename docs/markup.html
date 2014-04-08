@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta charset="utf-8" />
+        <style>
+            body{
+                max-width: 960px;
+                margin: auto;
+                font-family: Georgia, serif;
+            }
+            pre{
+                font-size: 12px;
+
+                padding: 20px;;
+                background-color: rgb(240,240,240);
+                border-radius: 5px;
+            }
+            pre span.keyword{ color: blue; }
+            pre span.number{ color: red; }
+            pre span.string{ color: green; }
+        </style>
+    </head>
+    <body>
+
+        <h2>Edit Widget</h2>
+        <p>Hugmyndin hér er að vera með einhverskonar entry í container, þegar beðið er um edit form
+            fyrir þetta entry, er formið sótt með AJAX, því stungið í container við hliðina,
+            entry'inu er ýtt út af skánum til vinstri og formið slide'ar inn.</p>
+        <p>Til að þetta sé hægt, þarf að nota ákveðið markup</p>
+        <h3>markup</h3>
+        <pre>
+           &lt;div <strong>id="parent"</strong>&gt;
+                &lt;div <strong>role="tabpanel"</strong>&gt;
+                    &lt;div <strong>role="tablist"</strong>&gt;
+                        &lt;div <strong>role="tab"</strong>&gt;Entry container&lt;/div&gt;
+                        &lt;div <strong>role="tab"</strong>&gt;Form container&lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        </pre>
+        <p>
+            <img src="figures/edit-widget-01.svg" width="200" />
+            <img src="figures/edit-widget-02.svg" width="200" />
+        </p>
+        <h3>JavaScript API</h3>
+        <p>
+            Allur galdurinn á sér svo stað í JavaScript flækju. Það þarf að breyta markup'inu í
+            JavaScript Widget sem hefur svo API sem hægt er að nota til að stjórna hegðunni.
+        </p>
+        <p>
+        </p>
+        <pre>
+            <span class="keyword">var</span> widget = <span class="keyword">new</span> EditWidget( document.getElementById(<span class="string">'parent'</span>) );
+
+            //set to edit mode, will slide to left
+                widget.editMode();
+
+            //set back to display mode, slide to right
+                widget.displayMode();
+
+            //set content in entry panel
+                widget.entryPanel().innerHTML = '&lt;div&gt;&lt;/div&gt;';
+
+            //set content in form panel
+                widget.formPanel().innerHTML = '&lt;div&gt;&lt;/div&gt;';
+
+            //set in preload mode
+                widget.preloadMode(<span class="keyword">true</span>);
+
+            //disable preload mode
+                widget.preloadMode(<span class="keyword">false</span>);
+        </pre>
+        <p>
+            Hér kemur svo einfalt dæmi (sauðarkóði). AJAX kall er gert á server, þegar svarið kemur
+            er forminu, stungið inn í viðeigandi panel og Widget API'inn er notaður til að uppfæra
+            display'ið. Þegar forminu er submit'að er display'ið lagað aftur.
+        </p>
+        <pre>
+            <span class="keyword">var</span> widget = <span class="keyword">new</span> EditWidget( document.getElementById(<span class="string">'parent'</span>) );
+            <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();
+                xml.onload = <span class="keyword">function</span>(form-data){
+                    <strong>widget.formPanel().innerHTML = form-data;</strong>
+                    <strong>widget.editMode();</strong>
+
+                    form-data.submit = <span class="keyword">function</span>(entry-data){
+                        <strong>widget.entryPanel().innerHTML = entry-data;</strong>
+                        <strong>widget.displayMode();</strong>
+                    }
+                }
+        </pre>
+
+    </body>
+</html>

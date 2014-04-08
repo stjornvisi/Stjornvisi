@@ -11,11 +11,16 @@
         ?>
 
         <!-- Le styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-			->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap.min.css' )
-			->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap-theme.min.css' )
+        <?php echo $this->headLink(array(
+			'rel' => 'icon',
+			'type' => 'image/png',
+			'href' => $this->basePath() . '/styles/img/favicon.png')
+		)
+			//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap.min.css' )
+			//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap-theme.min.css' )
 			->appendStylesheet( $this->basePath() . '/styles/screen.css' )
 			->appendStylesheet( $this->basePath() . '/vendor/lightbox2/css/lightbox.css')
+			->appendStylesheet( $this->basePath() . '/vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css')
 		; ?>
 
         <!-- Scripts -->
@@ -27,49 +32,46 @@
 			->appendFile( $this->basePath() . '/vendor/handlebars/handlebars.min.js' )
 			->appendFile( $this->basePath() . '/vendor/typeahead.js/dist/typeahead.bundle.min.js' )
 			->appendFile( $this->basePath() . '/vendor/lightbox2/js/lightbox.js' )
+			->appendFile( $this->basePath() . '/vendor/jasny-bootstrap/dist/js/jasny-bootstrap.min.js' )
 
 			->appendFile($this->basePath() . '/scripts/common.js')
         ; ?>
 
     </head>
-    <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('styles/img/head-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;Stjórnvísi</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
-						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-                        <li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki</a></li>
-                        <li><a href="<?php echo $this->url('notandi') ?>">Notendur</a></li>
-                        <li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
-						<li><a href="<?php echo $this->url('stjornin') ?>">Stjórn</a></li>
-						<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
-						<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-						<li>
-							<div id="custom-templates">
-							<form method="get" action="<?=$this->url('leita')?>">
-								<input name="q" class="typeahead" type="search" placeholder="Leit..." />
-								<input type="submit" value="leita">
-							</form>
-							</div>
-						</li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
-        <div class="container">
-            <?php echo $this->content; ?>
-            <hr>
-            <footer>
-                <p>&copy; 2005 - <?php echo date('Y') ?> by Stjórnvísi Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>
+	<body class="logged-in">
+
+
+		<nav class="layout-nav">
+			<?=$this->subMenu()?>
+		</nav>
+
+		<main class="layout-main">
+			<header class="page-header">
+				<h1 class="page-brand"><a href="<?php echo $this->url('home') ?>">Stjórnvísi</a></h1>
+				<ul class="page-main-menu">
+					<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+					<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
+					<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
+				</ul>
+				<form class="page-search-form" method="get" action="<?=$this->url('leita')?>">
+					<input name="q" class="typeahead" type="search" placeholder="Leit..." />
+					<input type="submit" value="leita">
+				</form>
+			</header>
+			<aside class="layout-aside">
+				<ul>
+					<li><a class="home" href="">heim</a></li>
+					<li><a class="groups" href="">groups</a></li>
+					<li><a class="news" href="">news</a></li>
+					<li><a class="events" href="">events</a></li>
+					<li><a class="user" href="">user</a></li>
+					<li><a class="config" href="">config</a></li>
+				</ul>
+			</aside>
+
+				<?php echo $this->content; ?>
+
+			<footer class="layout-footer">
 				<ul>
 					<li><a href="/um">Um Stjórnvísi</a></li>
 					<li><a href="/stjornin">Stjórnin</a></li>
@@ -78,8 +80,14 @@
 					<li><a href="/kennsla">Handbók vefsins og kennslumyndbönd</a></li>
 					<li><a href="/fyrirtaeki">Fyrirtæki innan Stjórnvísi</a></li>
 				</ul>
-            </footer>
-        </div> <!-- /container -->
-        <?php echo $this->inlineScript() ?>
-    </body>
+				<ul>
+					<li><a href="<?php echo $this->url('notandi') ?>">Notendur</a></li>
+					<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
+					<li><a href="<?php echo $this->url('stjornin') ?>">Stjórn</a></li>
+				</ul>
+				</footer>
+		</main>
+
+		<?php echo $this->inlineScript() ?>
+	</body>
 </html>

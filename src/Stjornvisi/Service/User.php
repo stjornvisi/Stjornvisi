@@ -134,7 +134,7 @@ class User extends AbstractService{
 					));
 					$result = $statement->fetchObject();
 					return (object)array(
-						'is_admin' => $result->is_admin,
+						'is_admin' => isset($result->is_admin)?$result->is_admin:0,
 						'type' => null
 					);
 
@@ -300,8 +300,8 @@ class User extends AbstractService{
 	 *      type:bool //    true for same person
 	 * )
 	 * <pre>
-	 * @param int $user_id
-	 * @param int $requester_id
+	 * @param int $user_id User that is checking for
+	 * @param int $requester_id User how is making the request
 	 * @return \stdClass
 	 * @throws Exception
 	 */
@@ -452,6 +452,32 @@ class User extends AbstractService{
 				"Can't get users and guest to message by event. event[{$event_id}]",0,$e);
 		}
 	}
+
+	/**
+	 * Get all users in all groups that want
+	 * a message
+	 */
+	public function getUserMessage(){
+		try{
+			$statement = $this->pdo->prepare("
+				SELECT U.id, U.name, U.email FROM `User` U
+				WHERE U.get_message = 1
+				AND U.email IS NOT NULL;
+			");
+			$statement->execute();
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return $statement->fetchAll();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+				)
+			));
+			throw new Exception("Can't get all users that want messages",0,$e);
+		}
+	}
+
 	/**
 	 * Get members that have registered to an event.
 	 *

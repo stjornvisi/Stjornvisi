@@ -282,7 +282,31 @@ return array(
 							),
 						)
 					),
-
+					'registry-distribution' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/dreifing/:type[/:from/:to]',
+							'constraints' => array(
+								'type' => 'klukka|dagur|manudur',
+								'from' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+								'to' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Event',
+								'action' => 'registry-distribution'
+							),
+						)
+					),
+					'statistics' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/tolfraedi',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Event',
+								'action' => 'statistics'
+							),
+						)
+					),
 
 
                 ),
@@ -394,6 +418,44 @@ return array(
                             ),
                         )
                     ),
+					'event-statistics' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/vidburdir/tolfraedi[/:from/:to]',
+							'constraints' => array(
+								'from' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+								'to' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'event-statistics'
+							),
+						)
+					),
+					'member-statistics' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/medlimir/tolfraedi[/:from/:to]',
+							'constraints' => array(
+								'from' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+								'to' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'member-statistics'
+							),
+						)
+					),
+					'statistics' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/tolfraedi',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'statistics'
+							),
+						)
+					),
                 ),
             ),
             'hopur-create' => array(
@@ -409,10 +471,10 @@ return array(
             'frettir' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route' => '/frettir/',
+                    'route' => '/frettir',
                     'defaults' => array(
                         'controller' => 'Stjornvisi\Controller\News',
-                        'action' => 'index'
+                        'action' => 'list'
                     ),
                 ),
                 'may_terminate' => true,
@@ -420,7 +482,7 @@ return array(
                     'index' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => ':id',
+                            'route' => '/:id',
                             'constraints' => array(
                                 'id' => '[0-9]*',
                             ),
@@ -430,10 +492,23 @@ return array(
                             ),
                         )
                     ),
+					'list' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/sida/:no',
+							'constraints' => array(
+								'no' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\News',
+								'action' => 'list'
+							),
+						)
+					),
                     'create' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => 'stofna[/:id]',
+                            'route' => '/stofna[/:id]',
                             'constraints' => array(
                                 'id' => '[0-9]*',
                             ),
@@ -446,7 +521,7 @@ return array(
                     'update' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => ':id/uppfaera',
+                            'route' => '/:id/uppfaera',
                             'constraints' => array(
                                 'id' => '[0-9]*',
                             ),
@@ -459,7 +534,7 @@ return array(
                     'delete' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => ':id/eyda',
+                            'route' => '/:id/eyda',
                             'constraints' => array(
                                 'id' => '[0-9]*',
                             ),
@@ -1038,6 +1113,7 @@ return array(
 			'Stjornvisi\Controller\Media' => 'Stjornvisi\Controller\MediaController',
 			'Stjornvisi\Controller\Page' => 'Stjornvisi\Controller\PageController',
 			'Stjornvisi\Controller\Search' => 'Stjornvisi\Controller\SearchController',
+			'Stjornvisi\Controller\Console' => 'Stjornvisi\Controller\ConsoleController',
         ),
     ),
     'view_helpers' => array(
@@ -1058,6 +1134,7 @@ return array(
         ),
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+			'layout/anonymous'           => __DIR__ . '/../view/layout/anonymous.phtml',
 			'layout/csv'           	  => __DIR__ . '/../view/layout/csv.phtml',
             'stjornvisi/index/index' => __DIR__ . '/../view/stjornvisi/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
@@ -1071,6 +1148,33 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+				'search-index' => array(
+					'options' => array(
+						'route'    => 'search index',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'search-index'
+						)
+					)
+				),
+				'queue-events' => array(
+					'options' => array(
+						'route'    => 'queue events',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'queue-up-coming-events'
+						)
+					)
+				),
+				'facebook-upload-album' => array(
+					'options' => array(
+						'route'    => 'facebook album',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'facebook-album-upload'
+						)
+					)
+				),
             ),
         ),
     ),

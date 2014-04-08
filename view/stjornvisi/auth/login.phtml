@@ -29,10 +29,11 @@
     </div>
     <?=$this->form()->closeTag();?>
 </div>
-<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://127.0.0.1:8080/callback">facebook</a>
+<a href="<?=$this->facebook->getLoginUrl()?>">facebook</a>
 <?php else:?>
 <div class="well">
     <h1>Þú ert innskráð/ur</h1>
     <a href="<?=$this->url('auth-out')?>">útskrá</a>
 </div>
 <?php endif;?>
+

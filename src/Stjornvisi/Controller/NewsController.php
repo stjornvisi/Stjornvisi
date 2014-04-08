@@ -29,14 +29,30 @@ class NewsController extends AbstractActionController{
         $authService = new AuthenticationService();
 
         if( ( $news = $newsService->get($this->params()->fromRoute('id')) ) != false ){
-            return new ViewModel(array(
-                'news' => $news,
-                'related' => $newsService->getRelated($news->group_id,$news->id),
-                'access' => $userService->getTypeByGroup(
-                        ($authService->hasIdentity())?$authService->getIdentity()->id:null,
-                        $news->group_id
-                    )
-            ));
+			$access = $userService->getTypeByGroup(
+				($authService->hasIdentity())?$authService->getIdentity()->id:null,
+				$news->group_id
+			);
+			$mainView = new ViewModel();
+			$entryView = new ViewModel(array(
+				'news' => $news,
+				'access' => $access,
+			));
+			$entryView->setTemplate('stjornvisi/news/partials/index-news');
+			$asideView = new ViewModel(array(
+				'news' => $news,
+				'related' => $newsService->getRelated($news->group_id,$news->id),
+				'access' => $access,
+			));
+			$asideView->setTemplate('stjornvisi/news/partials/index-aside');
+
+			$mainView->addChild($entryView,'news')
+				->addChild($asideView,'aside');
+
+			return ($this->request->isXmlHttpRequest())
+				?  $entryView->setTerminal(true)
+				: $mainView ;
+
         }else{
             return $this->notFoundAction();
         }
@@ -47,10 +63,20 @@ class NewsController extends AbstractActionController{
 	 * Display a list of news entries
 	 */
 	public function listAction(){
-		$newsDAO = new Application_Model_NewsEntry();
-		$this->view->news = Zend_Paginator::factory($newsDAO->select()->order('created_date DESC'));
-		$this->view->news->setItemCountPerPage(30);
-		$this->view->news->setCurrentPageNumber($this->_getParam('page'));
+		$perPage = 30;
+		$sm = $this->getServiceLocator();
+		$newsService = $sm->get('Stjornvisi\Service\News');
+		$news = $newsService->fetchAll(
+			$this->params()->fromRoute('no',0)*$perPage,
+			$perPage
+		);
+		$count = $newsService->count();
+		return new ViewModel(array(
+			'news' => $news,
+			'count' => $newsService->count(),
+			'pages' => (int)$count/30,
+			'no' => $this->params()->fromRoute('no',0)
+		));
 	}
 
 	/**
@@ -69,9 +95,9 @@ class NewsController extends AbstractActionController{
         if( ( $group = $groupService->get($this->params()->fromRoute('id')) ) != false ){
 
             $access = $userService->getTypeByGroup(
-                ($authService->hasIdentity())?$authService->getIdentity()->id:null,
-                $group->id
-            );
+			    ($authService->hasIdentity())?$authService->getIdentity()->id:null,
+			    $group->id
+			);
 
             //ACCESS GRANTED
             //  access granted
@@ -104,9 +130,11 @@ class NewsController extends AbstractActionController{
                 //QUERY
                 //  http get request
                 }else{
-                    return new ViewModel(array(
-                        'form' => $form
-                    ));
+					$view = new ViewModel(array(
+						'form' => $form
+					));
+
+					return $view;
                 }
 
 
@@ -172,10 +200,13 @@ class NewsController extends AbstractActionController{
                 //  get request
                 }else{
                     $form->bind( new ArrayObject((array)$news));
-                    return new ViewModel(array(
-                        'news' => $news,
-                        'form' => $form ,
-                    ));
+					$view = new ViewModel(array(
+						'news' => $news,
+						'form' => $form ,
+					));
+
+					$view->setTerminal( $this->request->isXmlHttpRequest() );
+                    return $view;
                 }
             //ACCESS DENIED
             //  no access

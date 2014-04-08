@@ -7,6 +7,8 @@ use PDOException;
 
 class Company extends AbstractService {
 
+	const NAME = 'company';
+
     /**
      * Get one company.
      *
@@ -184,14 +186,18 @@ class Company extends AbstractService {
      */
     public function update( $id, array $data ){
         try{
+			unset($data['submit']);
             $updateString = $this->updateString('Company',$data, "id={$id}");
             $statement = $this->pdo->prepare($updateString);
             $statement->execute($data);
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-                'data' => $data,
+				0 => __FUNCTION__,
+                'data' => (object)$data,
                 'id' => $id,
-                'type' => 'update'
+                'type' => 'update',
+				'name' => Company::NAME,
             ));
             return $statement->rowCount();
         }catch (PDOException $e){
@@ -201,7 +207,7 @@ class Company extends AbstractService {
                     isset($statement)?$statement->queryString:null,
                 )
             ));
-            throw new Exception("Can't update user. user:[{$id}]",0,$e);
+            throw new Exception("Can't update company. company:[{$id}]",0,$e);
         }
     }
 
@@ -222,10 +228,13 @@ class Company extends AbstractService {
             $id = (int)$this->pdo->lastInsertId();
 
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
+			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-                'data' => $data,
+				0 => __FUNCTION__,
+                'data' => (object)$data,
                 'id' => $id,
-                'type' => 'create'
+                'type' => 'create',
+				'name' => Company::NAME,
             ));
             return $id;
         }catch (PDOException $e){
@@ -289,9 +298,11 @@ class Company extends AbstractService {
             ));
             $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
             $this->getEventManager()->trigger('index', $this, array(
+				0 => __FUNCTION__,
                 'date' => null,
                 'id' => $id,
-                'type' => 'delete'
+                'type' => 'delete',
+				'name' => Company::NAME,
             ));
             return $statement->rowCount();
         }catch (PDOException $e){

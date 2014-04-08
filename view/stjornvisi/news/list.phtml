@@ -1,0 +1,46 @@
+<div class="layout-content">
+	<h1>Fréttalisti</h1>
+	<ul class="news-list item-list theme-white">
+		<?php foreach($this->news as $news):?>
+		<li>
+			<article class="news news-columns">
+				<header>
+					<time><?=$news->created_date->format('Y-m-d')?></time>
+					<h1>
+						<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a>
+					</h1>
+
+				</header>
+				<section>
+					<?php if($news->avatar):?>
+						<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
+							<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" />
+						</a>
+					<?php endif;?>
+					<?=$this->paragrapher( $news->body );?>
+				</section>
+				<aside>
+					<ul class="news-groups-list">
+						<li>
+							<?php if($news->group):?>
+								<a href="<?=$this->url('hopur/index',array('id'=>$news->group->url)) ?>"><?=$news->group->name_short;?></a>
+							<?php else:?>
+								<span>Stjórnvísisfrétt</span>
+							<?php endif;?>
+						</li>
+					</ul>
+				</aside>
+			</article>
+
+		</li>
+		<?php endforeach;?>
+	</ul>
+
+	<ul class="pagination">
+		<?php foreach(range(0,$this->pages) as $item):?>
+		<li class="<?=($item == $this->no)?'active':''?>">
+			<a href="<?=$this->url('frettir/list',array('no'=>$item))?>"><?=$item+1?></a>
+		</li>
+		<?php endforeach;?>
+	</ul>
+</div>

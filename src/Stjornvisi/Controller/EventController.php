@@ -12,6 +12,7 @@ namespace Stjornvisi\Controller;
 
 use \DateTime;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Stjornvisi\Form\Email;
@@ -65,6 +66,7 @@ class EventController extends AbstractActionController{
 							'event' => $event,
 						),
 				));
+
                 return new ViewModel(array(
                     'logged_in' => $authService->hasIdentity(),
                     'register_message' => true,
@@ -77,17 +79,33 @@ class EventController extends AbstractActionController{
                         ),
                 ));
             }else{
-                return new ViewModel(array(
-                    'logged_in' => $authService->hasIdentity(),
-                    'register_message' => false,
-                    'event' => $event,
-                    'related' => $eventService->getRelated($groupIds,$event->id),
-                    'attendees' => $userService->getByEvent($event->id),
-                    'access' => $userService->getTypeByGroup(
-                            ($authService->hasIdentity())?$authService->getIdentity()->id:null,
-                            $groupIds
-                        ),
-                ));
+
+				$eventView = new ViewModel(array(
+					'event' => $event,
+					'register_message' => false,
+					'logged_in' => $authService->hasIdentity(),
+					'access' => $userService->getTypeByGroup(
+							($authService->hasIdentity())?$authService->getIdentity()->id:null,
+							$groupIds
+						),
+					'attendees' => $userService->getByEvent($event->id),
+				));
+				$eventView->setTemplate('stjornvisi/event/partials/index-event');
+				$asideView = new ViewModel(array(
+					'access' => $userService->getTypeByGroup(
+							($authService->hasIdentity())?$authService->getIdentity()->id:null,
+							$groupIds
+						),
+					'event' => $event,
+					'related' => $eventService->getRelated($groupIds,$event->id),
+				));
+				$asideView->setTemplate('stjornvisi/event/partials/index-aside');
+
+				$mainView = new ViewModel();
+				$mainView
+					->addChild($eventView,'event')
+					->addChild($asideView,'aside');
+				return $mainView;
             }
 
 
@@ -113,11 +131,33 @@ class EventController extends AbstractActionController{
 		$next = new DateTime( $date.'-01' );
 		$next->add( new \DateInterval('P1M'));
 
+		$events = $eventService->getRange($current,$next);
+
+		$firstDay = (int)date('N', strtotime("{$current->format('Y-m')}-01") );
+		$offset = ($firstDay-1)*-1;
+		$empty = true;
+		$array = array();
+		for($i=0;$i<42;$i++){
+			$from = strtotime("{$current->format('Y-m')}-01 00:00:00") +(60*60*24*$offset);
+			$to = strtotime("{$current->format('Y-m')}-01 23:59:59") +(60*60*24*$offset);
+			$date = date('Y-m-d',$from);
+			$array[$date] = array_filter($events,function($i) use ($date ){
+				if( $i->event_date->format('Y-m-d') == $date ){
+					return true;
+				}else{
+					return false;
+				}
+			});
+			//$array[$date] = array();
+			$offset++;
+		}
+
 		return new ViewModel(array(
-			'events' => $eventService->getRange($current,$next),
+			'events' => $events,
 			'prev' => $prev,
 			'current' => $current,
-			'next' => $next
+			'next' => $next,
+			'calendar' => $array
 		));
 
 	}
@@ -356,22 +396,43 @@ class EventController extends AbstractActionController{
                         $data['lat'] = $map->lat;
                         $data['lng'] = $map->lng;
                         $eventService->update($event->id, $data);
-                        return $this->redirect()->toRoute('vidburdir/index',array('id'=>$event->id));
+						if( $this->request->isXmlHttpRequest() ){
+							$view = new ViewModel(array(
+								'event' => $eventService->get($event->id),
+								'register_message' => false,
+								'logged_in' => $authService->hasIdentity(),
+								'access' => $userService->getTypeByGroup(
+										($authService->hasIdentity())?$authService->getIdentity()->id:null,
+										$groupIds
+									),
+								'attendees' => $userService->getByEvent($event->id),
+							));
+							$view->setTemplate('stjornvisi/event/partials/index-event');
+							$view->setTerminal(true);
+							return $view;
+						}else{
+							return $this->redirect()->toRoute('vidburdir/index',array('id'=>$event->id));
+						}
 
                     //INVALID
                     //  form data is invalid
                     }else{
-                        return new ViewModel(array(
+                        $view = new ViewModel(array(
                             'form' => $form,
                         ));
+						$view->setTerminal( $this->request->isXmlHttpRequest() );
+						return $view;
                     }
                 //QUERY
                 //  http get request
                 }else{
+					//sleep(200);
                     $form->bind( new \ArrayObject((array)$event) );
-                    return new ViewModel(array(
-                        'form' => $form,
-                    ));
+					$view = new ViewModel(array(
+						'form' => $form
+					));
+					$view->setTerminal( $this->request->isXmlHttpRequest() );
+					return $view;
                 }
 
             //ACCESS DENIED
@@ -1170,4 +1231,40 @@ class EventController extends AbstractActionController{
 
 	}
 
+	public function registryDistributionAction(){
+
+		$sm = $this->getServiceLocator();
+		$eventService = $sm->get('Stjornvisi\Service\Event');
+
+		$type = $this->params()->fromRoute('type');
+		$from = ($this->params()->fromRoute('from'))
+			? new DateTime($this->params()->fromRoute('from'))
+			: null ;
+		$to = ($this->params()->fromRoute('to'))
+			? new DateTime($this->params()->fromRoute('to'))
+			: null ;
+		$result = array();
+		switch( $type ){
+			case 'klukka':
+				$result = $eventService->getRegistrationByHour($from,$to);
+				break;
+			case 'dagur':
+				$result = $eventService->getRegistrationByDayOfWeek($from,$to);
+				break;
+			case 'manudur':
+				$result = $eventService->getRegistrationByDayOfMonth($from,$to);
+				break;
+			default:
+				$result = array();
+				break;
+		}
+		return new JsonModel($result);
+	}
+
+	/**
+	 * @todo accss controll
+	 */
+	public function statisticsAction(){
+
+	}
 }

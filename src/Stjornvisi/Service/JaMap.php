@@ -22,8 +22,7 @@ class JaMap implements  MapInterface{
             return (isset($json->map->items[0]->coordinates) )
                 ?(object)array(
                     'lat' => (float)$json->map->items[0]->coordinates->lat,
-                    'lng' => (float)$json->map->items[0]->coordinates->lon,
-                )
+                    'lng' => (float)$json->map->items[0]->coordinates->lon,)
                 :(object)array(
                     'lat' => null,
                     'lng' => null,

@@ -7,6 +7,7 @@ use \PDOException;
 
 class News extends AbstractService {
 
+	const NAME = 'news';
     /**
      * Get one news entry.
      *
@@ -90,17 +91,48 @@ class News extends AbstractService {
 		}
 	}
 
-	public function fetchAll(){
+	public function fetchAll($page=null, $count=10){
 		try{
-			$statement = $this->pdo->prepare("
-				SELECT * FROM `News` N
-				ORDER BY N.created_date DESC
-			");
-			$statement->execute();
+			if($page !== null){
+				$statement = $this->pdo->prepare("
+					SELECT * FROM `News` N
+					ORDER BY N.created_date DESC
+					LIMIT {$page},{$count}
+				");
+				$statement->execute();
+			}else{
+				$statement = $this->pdo->prepare("
+					SELECT * FROM `News` N
+					ORDER BY N.created_date DESC
+				");
+				$statement->execute();
+			}
+
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-			return array_map(function($i){
+			/*
+			 *             $groupStatement = $this->pdo->prepare("
+                SELECT G.id, G.name, G.name_short, G.url
+                FROM `Group` G WHERE id = :id
+            ");
+            $groupStatement->execute(array(
+                'id' => $news->group_id
+            ));
+            $news->group = $groupStatement->fetchObject();
+			 */
+			$groupStatement = $this->pdo->prepare("
+                SELECT G.id, G.name, G.name_short, G.url
+                FROM `Group` G WHERE id = :id
+            ");
+
+			return array_map(function($i) use ($groupStatement){
 				$i->created_date = new DateTime($i->created_date);
 				$i->modified_date = new DateTime($i->modified_date);
+
+				$groupStatement->execute(array(
+					'id' => $i->group_id
+				));
+				$i->group = $groupStatement->fetchObject();
+
 				return $i;
 			},$statement->fetchAll());
 		}catch (PDOException $e){
@@ -111,6 +143,16 @@ class News extends AbstractService {
 				)
 			));
 			throw new Exception("Can't get next news item.",0,$e);
+		}
+	}
+
+	public function count(){
+		try{
+			$statement = $this->pdo->prepare("SELECT count(*) as total FROM `News` N");
+			$statement->execute();
+			return (int)$statement->fetchColumn(0);
+		}catch (PDOException $e){
+
 		}
 	}
 
@@ -325,10 +367,13 @@ class News extends AbstractService {
             $statement->execute($data);
             $id = (int)$this->pdo->lastInsertId();
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
+			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-                'data' => $data,
+				0 => __FUNCTION__,
+                'data' => (object)$data,
                 'id' => $id,
-                'type' => 'create'
+                'type' => 'create',
+				'name' => News::NAME,
             ));
             return $id;
         }catch (PDOException $e){
@@ -348,18 +393,25 @@ class News extends AbstractService {
      * @param array $data
      * @return int row count
      * @throws Exception
+	 * @todo created_date
      */
     public function update( $id, array $data ){
         try{
             $data['modified_date'] = date('Y-m-d H:i:s');
+			$data['created_date'] = date('Y-m-d H:i:s');
             $updateString = $this->updateString('News',$data, "id={$id}");
             $statement = $this->pdo->prepare($updateString);
             $statement->execute($data);
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			$data['id'] = $id;
+			$data['created_date'] = new DateTime($data['created_date']);
+			$data['modified_date'] = new DateTime($data['modified_date']);
             $this->getEventManager()->trigger('index', $this, array(
-                'data' => $data,
+				0 => __FUNCTION__,
+                'data' => (object)$data,
                 'id' => $id,
-                'type' => 'update'
+                'type' => 'update',
+				'name' => News::NAME,
             ));
             return $statement->rowCount();
         }catch (PDOException $e){
@@ -391,9 +443,11 @@ class News extends AbstractService {
             ));
             $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
             $this->getEventManager()->trigger('index', $this, array(
+				0 => __FUNCTION__,
                 'data' => null,
                 'id' => $id,
-                'type' => 'delete'
+                'type' => 'delete',
+				'name' => News::NAME,
             ));
             return $statement->rowCount();
         }catch (PDOException $e){

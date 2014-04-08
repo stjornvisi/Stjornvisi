@@ -1,0 +1,29 @@
+@import "compass/css3/columns";
+
+  article.news{
+    @extend %entry; // @see sass/components/_widget.scss
+    ul.news-groups-list{
+      @extend %dot-split-list;
+    }
+  }
+  article.news.news-columns{
+    section{
+      @include columns($padding 3);
+    }
+  }
+
+  aside.event-news-aside{
+    h1{
+      color: $color-sea;
+      text-transform: uppercase;
+      font-weight: bold;
+      @include adjust-font-size-to($font-middle-size,1,$font-base-size);
+    }
+  }
+
+  li.news{
+    @extend %list-entry;
+    ul.event-groups-list{
+      @extend %dot-split-list;
+    }
+  }

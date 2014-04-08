@@ -14,6 +14,8 @@ class GoogleMap implements MapInterface {
      * Convert an address to a LAT / LNG numbers
      * @param string $address
      * @return object
+	 * @see https://developers.google.com/maps/documentation/geocoding/#GeocodingResponses
+	 *
      */
     public function request( $address ){
 
@@ -26,8 +28,8 @@ class GoogleMap implements MapInterface {
 
         $response = $this->client->send();
         if( $response->getStatusCode() == 200 ){
-            $json = json_decode($response->getBody());
-            return ( $json->status === 'OK' )
+            $json = @json_decode($response->getBody());
+            return ( isset($json->status) && $json->status === 'OK' )
                 ?(object)array(
                     'lat' => (float)$json->results[0]->geometry->viewport->northeast->lat,
                     'lng' => (float)$json->results[0]->geometry->viewport->northeast->lng

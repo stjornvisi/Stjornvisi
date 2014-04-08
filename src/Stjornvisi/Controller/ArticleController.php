@@ -3,7 +3,6 @@ namespace Stjornvisi\Controller;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Stdlib\ArrayObject;
 use Zend\View\Model\ViewModel;
 use Zend\Http\Response as HttpResponse;
 use Stjornvisi\Form\Article as ArticleForm;
@@ -17,6 +16,7 @@ class ArticleController extends AbstractActionController{
      * @return array|ViewModel
      */
     public function indexAction(){
+
         $sm = $this->getServiceLocator();
         $articleService = $sm->get('Stjornvisi\Service\Article');
 		$userService = $sm->get('Stjornvisi\Service\User');

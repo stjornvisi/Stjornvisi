@@ -1,0 +1,127 @@
+HTTP/1.1 200 OK
+Content-type: text/xml
+
+{
+  "map": {
+    "items": [
+      {
+        "url_pretty": "",
+        "postal_code": 101,
+        "occupation": "nemi",
+        "title": "Einar Valur Aðalsteinsson",
+        "coordinates": {
+          "y": 408507,
+          "x": 356024,
+          "has_360": true,
+          "lat": 64.149061,
+          "lon": -21.959162
+        },
+        "banned": true,
+        "is_person": true,
+        "email": null,
+        "postal_station": "101 Reykjavík",
+        "address": "Hringbraut 107",
+        "is_branch": false,
+        "common_id": "522808",
+        "type": "white",
+        "phone": {
+          "pretty": "692 1637",
+          "banned": true,
+          "number": "6921637",
+          "country_code": "",
+          "operator": "02",
+          "type": "gsm"
+        },
+        "inaccurate_coordinates": false,
+        "cluster_key": "522808",
+        "logo_url": null,
+        "url": "",
+        "is_primary": false
+      },
+      {
+        "url_pretty": "",
+        "postal_code": 101,
+        "occupation": "",
+        "title": "Einar Örn Benjaminsson",
+        "coordinates": {
+          "y": 408507,
+          "x": 356024,
+          "has_360": true,
+          "lat": 64.149061,
+          "lon": -21.959162
+        },
+        "banned": true,
+        "is_person": true,
+        "email": null,
+        "postal_station": "101 Reykjavík",
+        "address": "Hringbraut 107",
+        "is_branch": false,
+        "common_id": "1529602",
+        "type": "white",
+        "phone": {
+          "pretty": "551 0658",
+          "banned": true,
+          "number": "5510658",
+          "country_code": "",
+          "operator": "01",
+          "type": "almenn"
+        },
+        "inaccurate_coordinates": false,
+        "cluster_key": "1529602",
+        "logo_url": null,
+        "url": "",
+        "is_primary": false
+      },
+      {
+        "url_pretty": "",
+        "postal_code": 101,
+        "occupation": "",
+        "title": "Helga Þórey Jónsdóttir",
+        "coordinates": {
+          "y": 408507,
+          "x": 356024,
+          "has_360": true,
+          "lat": 64.149061,
+          "lon": -21.959162
+        },
+        "banned": true,
+        "is_person": true,
+        "email": null,
+        "postal_station": "101 Reykjavík",
+        "address": "Hringbraut 107",
+        "is_branch": false,
+        "common_id": "1166903",
+        "type": "white",
+        "phone": {
+          "pretty": "690 5859",
+          "banned": true,
+          "number": "6905859",
+          "country_code": "",
+          "operator": "02",
+          "type": "gsm"
+        },
+        "inaccurate_coordinates": false,
+        "cluster_key": "1166903",
+        "logo_url": null,
+        "url": "",
+        "is_primary": false
+      },
+      {
+        "cluster_key": "h17152675",
+        "title": "hringbraut 107",
+        "coordinates": {
+          "y": 408507,
+          "x": 356024,
+          "has_360": false,
+          "lat": 64.149061,
+          "lon": -21.959162
+        },
+        "postal_station": "101 Reykjavík",
+        "postal_code": 101,
+        "type": "place",
+        "common_id": 1017152675
+      },
+      {
+        "url_pretty": "",
+        "postal_code": 101,
+        "occupation": "skrifstofum",

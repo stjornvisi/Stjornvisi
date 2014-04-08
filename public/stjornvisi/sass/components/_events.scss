@@ -1,0 +1,51 @@
+@import "compass/typography/lists/horizontal-list";
+
+
+// - - - [EVENT ENTRY]- - - - - - - - - - - - - - - - - - - - - - - -
+  article.event{
+    @extend %entry;
+    ul.event-groups-list{
+      @extend %dot-split-list;
+    }
+  }
+
+// - - - [EVENT ENTRY IN LIST]- - - - - - - - - - - - - - - - - - - - - - - -
+  li.event{
+    @extend %list-entry;
+    ul.event-groups-list{
+      @extend %dot-split-list;
+    }
+  }
+
+  ul.event-gallery-list{
+    @extend %gallery-list;
+  }
+
+// - - - [SINGLE EVENT PAGE]- - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  aside.event-event-aside{
+    //padding-right: $padding;
+    h1{
+      @include adjust-font-size-to($font-middle-size,1,$font-base-size);
+      margin: 0 0 rhythm(1,$font-middle-size) 0;
+      color: $color-sea;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+  div.event-event-main{
+    padding-right: $padding/2;
+  }
+  div.event-event-meta{
+    padding-left: $padding/2;
+    h1{
+      @include adjust-font-size-to($font-middle-size,1,$font-base-size);
+      margin: 0 0 rhythm(1,$font-middle-size) 0;
+      color: $color-sea;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+
+

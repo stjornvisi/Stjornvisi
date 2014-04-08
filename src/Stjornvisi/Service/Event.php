@@ -9,6 +9,9 @@ use Stjornvisi\Lib\Time;
 
 class Event extends AbstractService {
 
+	const NAME = "event";
+	const GALLERY_NAME = "gallery";
+
     /**
      * Get on event.
      *
@@ -50,6 +53,26 @@ class Event extends AbstractService {
                 ));
                 $event->groups = $groupStatement->fetchAll();
 
+				//ATTENDERS
+				//	get all user/guests that are
+				//	attending this event.
+				if( $event->event_date > new DateTime() ){
+					$attendStatement = $this->pdo->prepare("
+						SELECT * FROM Event_has_User EhU
+							WHERE Ehu.event_id = :event_user_id AND Ehu.attending = 1
+						UNION
+							SELECT * FROM Event_has_Guest EhG
+							WHERE EhG.event_id = :event_guest_id
+					");
+					$attendStatement->execute(array(
+						'event_user_id' => $event->id,
+						'event_guest_id' => $event->id,
+					));
+					$event->attenders = $attendStatement->fetchAll();
+				}else{
+					$event->attenders = array();
+				}
+
                 //USER
                 //  we have user ID and therefor we are going check his/her
                 //  attendance
@@ -87,6 +110,8 @@ class Event extends AbstractService {
                     'id' => $event->id
                 ));
                 $event->reference = $referenceStatement->fetchAll();
+
+
             }
             $this->getEventManager()->trigger('read', $this, array(
                 __FUNCTION__
@@ -101,6 +126,7 @@ class Event extends AbstractService {
                     isset($attendingStatement)?$attendingStatement->queryString:null,
                     isset($galleryStatement)?$galleryStatement->queryString:null,
                     isset($referenceStatement)?$referenceStatement->queryString:null,
+					isset($attendStatement)?$attendStatement->queryString:null,
                 )
             ));
             throw new Exception("Can't query for event. event:[{$id}]",0,$e);
@@ -215,13 +241,6 @@ class Event extends AbstractService {
 			));
 			throw new Exception("Can't query for event. event:[{$id}]",0,$e);
 		}
-
-
-
-
-
-
-
 	}
 
     /**
@@ -274,10 +293,13 @@ class Event extends AbstractService {
                 ));
             }
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-                'data' => $data,
+				0 => __FUNCTION__,
+                'data' => (object)$data,
                 'id' => $id,
-                'type' => 'update'
+                'type' => 'update',
+				'name' => Event::NAME,
             ));
             return $count;
         }catch (PDOException $e){
@@ -312,9 +334,11 @@ class Event extends AbstractService {
                 __FUNCTION__
             ));
             $this->getEventManager()->trigger('index', $this, array(
+				0 => __FUNCTION__,
                 'data' => null,
                 'id' => $id,
-                'type' => 'delete'
+                'type' => 'delete',
+				'name' => Event::NAME,
             ));
             return (int)$statement->rowCount();
         }catch (PDOException $e){
@@ -364,10 +388,13 @@ class Event extends AbstractService {
             }
 
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
+			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
+				0 => __FUNCTION__,
                 'id' => $id,
-                'data' => $data,
-                'type' => 'create'
+                'data' => (object)$data,
+                'type' => 'create',
+				'name' => Event::NAME,
             ));
             return $id;
         }catch (PDOException $e){
@@ -867,6 +894,13 @@ class Event extends AbstractService {
 
 			$id = (int)$this->pdo->lastInsertId();
 			$this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
+			$this->getEventManager()->trigger('index', $this, array(
+				0 => __FUNCTION__,
+				'data' => (object)$data,
+				'id' => $id,
+				'type' => 'create',
+				'name' => Event::GALLERY_NAME,
+			));
 			return $id;
 		}catch (PDOException $e){
 			$this->getEventManager()->trigger('error', $this, array(
@@ -1082,4 +1116,142 @@ class Event extends AbstractService {
 		}
 	}
 
+	/**
+	 * Get event registration distribution by hour.
+	 *
+	 * @param DateTime $from
+	 * @param DateTime $to
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getRegistrationByHour( DateTime $from = null, DateTime $to = null ){
+		try{
+			if( $from && $to ){
+				$statement = $this->pdo->prepare("
+					SELECT count(*) as value, HOUR( E.register_time) as label
+						FROM Event_has_User E
+						WHERE E.register_time BETWEEN :from AND :to
+					GROUP BY label
+					ORDER BY label;
+				");
+				$statement->execute(array(
+					'from' => $from->format('Y-m-d'),
+					'to' => $to->format('Y-m-d')
+				));
+			}else{
+				$statement = $this->pdo->prepare("
+					SELECT count(*) as value, HOUR( E.register_time) as label
+						FROM Event_has_User E
+					GROUP BY label
+					ORDER BY label;
+				");
+				$statement->execute();
+			}
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			$result = $statement->fetchAll();
+
+			return $result;
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			throw new Exception("Can't read registration by hour",0,$e);
+		}
+	}
+
+	/**
+	 * Get event registration distribution by day of month.
+	 *
+	 * @param DateTime $from
+	 * @param DateTime $to
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getRegistrationByDayOfMonth(DateTime $from = null, DateTime $to = null){
+		try{
+			if( $from && $to ){
+				$statement = $this->pdo->prepare("
+				SELECT count(*) as value, DAYOFMONTH( E.register_time) as label
+					FROM Event_has_User E
+					WHERE E.register_time BETWEEN :from AND :to
+				GROUP BY label
+				ORDER BY label;
+			");
+				$statement->execute(array(
+					'from' => $from->format('Y-m-d'),
+					'to' => $to->format('Y-m-d')
+				));
+			}else{
+				$statement = $this->pdo->prepare("
+				SELECT count(*) as value, DAYOFMONTH( E.register_time) as label
+					FROM Event_has_User E
+				GROUP BY label
+				ORDER BY label;
+			");
+				$statement->execute();
+			}
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return $statement->fetchAll();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			throw new Exception("Can't read registration by day of month",0,$e);
+		}
+	}
+
+	/**
+	 * Get event registration distribution by day of week.
+	 *
+	 * (1 = Sunday, 2 = Monday, …, 7 = Saturday)
+	 *
+	 * @param DateTime $from
+	 * @param DateTime $to
+	 *
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getRegistrationByDayOfWeek(DateTime $from = null, DateTime $to = null){
+		try{
+			if( $from && $to ){
+				$statement = $this->pdo->prepare("
+				SELECT count(*) as value, DAYOFWEEK( E.register_time) as label
+					FROM Event_has_User E
+					WHERE E.register_time BETWEEN :from AND :to
+				GROUP BY label
+				ORDER BY label;
+			");
+				$statement->execute(array(
+					'from' => $from->format('Y-m-d'),
+					'to' => $to->format('Y-m-d')
+				));
+			}else{
+				$statement = $this->pdo->prepare("
+				SELECT count(*) as value, DAYOFWEEK( E.register_time) as label
+					FROM Event_has_User E
+				GROUP BY label
+				ORDER BY label;
+			");
+				$statement->execute();
+			}
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return $statement->fetchAll();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			throw new Exception("Can't read registration by day of month",0,$e);
+		}
+	}
 }

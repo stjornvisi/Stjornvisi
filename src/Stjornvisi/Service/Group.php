@@ -3,9 +3,11 @@
 namespace Stjornvisi\Service;
 
 use \PDOException;
+use \DateTime;
 
 class Group extends AbstractService {
 
+	const NAME = 'group';
     /**
      * Get one group by ID.
      *
@@ -225,14 +227,26 @@ class Group extends AbstractService {
      */
     public function create( $data ){
         try{
+			unset($data['submit']);
+
+			setlocale(LC_ALL, 'is_IS.UTF8');
+			$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $data['name_short']);
+			$clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
+			$clean = strtolower(trim($clean, '-'));
+			$clean = preg_replace("/[\/_| -]+/", '-', $clean);
+			$data['url'] = $clean;
+
             $statement = $this->pdo->prepare( $this->insertString('Group',$data) );
             $statement->execute( $data );
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
             $id = (int)$this->pdo->lastInsertId();
+			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-                'data' => $data,
+				0 => __FUNCTION__,
+                'data' => (object)$data,
                 'id' => $id,
-                'type' => 'create'
+                'type' => 'create',
+				'name' => Group::NAME,
             ));
             return $id;
         }catch (PDOException $e){
@@ -255,15 +269,26 @@ class Group extends AbstractService {
      */
     public function update( $id, $data ){
         try{
+			unset($data['submit']);
+			setlocale(LC_ALL, 'is_IS.UTF8');
+			$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $data['name_short']);
+			$clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
+			$clean = strtolower(trim($clean, '-'));
+			$clean = preg_replace("/[\/_| -]+/", '-', $clean);
+			$data['url'] = $clean;
+
             $statement = $this->pdo->prepare(
                 $this->updateString('Group',$data,"id = {$id}")
             );
             $statement->execute($data);
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-                'data' => $data,
+				0 => __FUNCTION__,
+                'data' => (object)$data,
                 'id' => $id,
-                'type' => 'update'
+                'type' => 'update',
+				'name' => Group::NAME,
             ));
             return (int)$statement->rowCount();
         }catch (PDOException $e){
@@ -291,9 +316,11 @@ class Group extends AbstractService {
             $statement->execute( array('id' => $id) );
             $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
             $this->getEventManager()->trigger('index', $this, array(
+				0 => __FUNCTION__,
                 'data' => null,
                 'id' => $id,
-                'type' => 'delete'
+                'type' => 'delete',
+				'name' => Group::NAME,
             ));
             return (int)$statement->rowCount();
         }catch (PDOException $e){
@@ -307,4 +334,64 @@ class Group extends AbstractService {
         }
 
     }
-} 
+
+	public function fetchEventStatistics(DateTime $from = null, DateTime $to = null){
+		try{
+			if( $from && $to ){
+				$statement = $this->pdo->prepare("
+					SELECT
+						G.name_short as label, G.id, G.url,
+						(
+							SELECT count(*) FROM Group_has_Event GhE
+							JOIN Event E ON (E.id = GhE.event_id)
+							WHERE (G.id = GhE.group_id) AND (E.event_date BETWEEN :from AND :to)
+
+						) as value
+					FROM `Group` G
+					ORDER BY G.name_short;
+				");
+				$statement->execute(array(
+					'from' => $from->format('Y-m-d'),
+					'to' => $to->format('Y-m-d')
+				));
+			}else{
+				$statement = $this->pdo->prepare("
+					SELECT
+						G.name_short as label, G.id, G.url,
+						(
+							SELECT count(*) FROM Group_has_Event GhE
+							JOIN Event E ON (E.id = GhE.event_id)
+							WHERE (G.id = GhE.group_id)
+
+						) as value
+					FROM `Group` G
+					ORDER BY G.name_short;
+				");
+				$statement->execute();
+			}
+
+			return $statement->fetchAll();
+
+		}catch (PDOException $e){
+
+		}
+	}
+
+	public function fetchMemberStatistics(){
+		try{
+			$statement = $this->pdo->prepare("
+				SELECT
+					G.name_short as label, G.id, G.url,
+					(
+						SELECT count(*) FROM Group_has_User GhU
+						WHERE GhU.group_id = G.id
+					) as value
+				FROM `Group` G;
+			");
+			$statement->execute();
+			return $statement->fetchAll();
+		}catch (PDOException $e){
+
+		}
+	}
+}

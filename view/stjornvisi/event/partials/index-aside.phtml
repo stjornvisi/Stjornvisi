@@ -1,0 +1,35 @@
+<?php if($this->access->is_admin || $this->access->type >= 1):?>
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			Action <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a class="control-update" href="<?=$this->url('vidburdir/update',array('id'=>$this->event->id));?>">Uppfæra</a></li>
+			<li><a href="<?=$this->url('vidburdir/delete',array('id'=>$this->event->id));?>">Eyða</a></li>
+			<li class="divider"></li>
+			<li><a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id,'type'=>'allir'));?>">Senda póst á meðlimi hópa</a></li>
+			<li><a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id, 'type'=>'gestir'));?>">Senda póst á þátttakendur</a></li>
+			<li class="divider"></li>
+			<li><a href="<?=$this->url('vidburdir/export-attendees',array('id'=>$this->event->id));?>">Sækja þátttakendalista (csv)</a></li>
+			<li class="divider"></li>
+			<li><a href="<?=$this->url('vidburdir/gallery-list',array('id'=>$this->event->id));?>">Myndalisti</a></li>
+			<li><a href="<?=$this->url('vidburdir/resource-list',array('id'=>$this->event->id));?>">Ítarefni</a></li>
+		</ul>
+	</div>
+<?php endif;?>
+<h1>Tengdir viðburdir</h1>
+<ul>
+	<?php foreach($this->related as $event):?>
+		<li class="event">
+			<time><?=$event->event_date->format('Y-m-d');?></time>
+			<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h2>
+			<ul class="event-groups-list">
+				<?php foreach($event->groups as $group):?>
+					<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a></li>
+				<?php endforeach;?>
+			</ul>
+		</li>
+	<?php endforeach;?>
+</ul>
+
+

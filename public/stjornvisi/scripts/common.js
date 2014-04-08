@@ -6,6 +6,73 @@
     "use strict";
 
     /**
+     * Create EditWidget Object.
+     *
+     * @param {HTMLElement} context
+     * @this {EditWidget}
+     * @constructor
+     */
+    var EditWidget = function( context ){
+        this.context = context;
+        this.tabpanel = context.querySelector('[role=tabpanel]');
+        this.tablist = this.tabpanel.querySelector('[role=tablist]');
+        this.tabs = this.tablist.querySelectorAll('[role=tab]');
+        this.tabs[1].classList.add('off-canvas');
+    };
+    /**
+     * Display widget in edit mode.
+     * @returns {EditWidget}
+     */
+    EditWidget.prototype.editMode = function(){
+        this.tablist.classList.add('edit-mode');
+        this.entryPanel().classList.add('off-canvas');
+        this.formPanel().classList.remove('off-canvas');
+        return this;
+    };
+    /**
+     * Display widget in display mode
+     * @returns {EditWidget}
+     */
+    EditWidget.prototype.displayMode = function(){
+        this.tablist.classList.remove('edit-mode');
+        this.entryPanel().classList.remove('off-canvas');
+        this.formPanel().classList.add('off-canvas');
+        return this;
+    };
+    /**
+     * Return the 'entry' panel
+     * @returns {HTMLElement}
+     */
+    EditWidget.prototype.entryPanel = function(){
+        return this.tabs[0];
+    };
+    /**
+     * Return the 'form' panel
+     * @returns {HTMLElement}
+     */
+    EditWidget.prototype.formPanel = function(){
+        return this.tabs[1];
+    };
+    /**
+     * Toggle pre-load mode.
+     *
+     * @param {boolean} on
+     * @returns {EditWidget}
+     */
+    EditWidget.prototype.preloadMode = function(on){
+        if( on ){
+            this.tabpanel.classList.add('preload');
+        }else{
+            this.tabpanel.classList.remove('preload');
+        }
+        return this;
+    };
+
+
+
+
+
+    /**
      * Upload media file
      * @param HTMLInputElement
      */
@@ -178,6 +245,138 @@
 
 
     });
+
+
+    /**
+     * Slide in aside-navigation
+     */
+    document.addEventListener('DOMContentLoaded',function(){
+
+        var selected = undefined;
+        Array.prototype.forEach.call(document.body.querySelectorAll('.layout-aside a'),function(item){
+            item.addEventListener('click',function(event){
+                event.preventDefault();
+                var nav = document.body.querySelector('.navigation');
+                if(item.classList.contains('groups')){
+                    nav.style.marginLeft = '0%';
+                }else if(item.classList.contains('news')){
+                    nav.style.marginLeft = '-100%';
+                }else if( item.classList.contains('events') ){
+                    nav.style.marginLeft = '-200%';
+                }else if( item.classList.contains('user') ){
+                    nav.style.marginLeft = '-300%';
+                }else if( item.classList.contains('config') ){
+                    nav.style.marginLeft = '-400%';
+                }
+
+                if( item.classList.contains('active') ){
+                    document.body.classList.remove('nav-open');
+                    selected.classList.remove('active');
+                    selected = undefined;
+                }else{
+                    if( selected ){ selected.classList.remove('active') }
+
+                        selected = item;
+                        selected.classList.add('active');
+                        document.body.classList.add('nav-open');
+
+                }
+
+
+
+
+            },false);
+        });
+
+
+    },false)
+
+
+    /**
+     *
+     */
+    document.addEventListener('DOMContentLoaded',function(){
+        var controls =  document.body.querySelector('.control-update') || document.createElement('a');
+            controls.addEventListener('click',function(event){
+            event.preventDefault();
+            var widget = new EditWidget( document.body.querySelector('.section-aside-grid') );
+                widget.preloadMode(true);
+
+            var xhr = new XMLHttpRequest();
+                xhr.open('get',this.href);
+                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                xhr.addEventListener('load',function(event){
+                    widget.formPanel().innerHTML = event.target.responseText;
+                    widget.editMode();
+                    widget.preloadMode(false);
+                    var cancel = widget.formPanel().querySelector('.cancel');
+                        cancel.addEventListener('click',function(event){
+                            event.preventDefault();
+                            widget.displayMode();
+                        },false);
+                    var form = widget.formPanel().querySelector('form')
+                        form.addEventListener('submit',function(event){
+                            widget.preloadMode(true);
+                            event.preventDefault();
+                            var xhr = new XMLHttpRequest();
+                                xhr.open('post',form.action);
+                                xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                                xhr.addEventListener('load',function(event){
+                                    widget.entryPanel().innerHTML = event.target.responseText;
+                                    widget.displayMode().preloadMode(false);
+                                },false);
+                                xhr.addEventListener('error',function(event){
+                                    alert(event.type); //TODO
+                                    widget.displayMode().preloadMode(false);
+                                },false);
+                                xhr.send( new FormData(form) );
+
+                        },false);
+                },false);
+                xhr.addEventListener('error',function(event){
+                    alert(event.type); //TODO
+                    widget.displayMode().preloadMode(false);
+                },false);
+                xhr.send();
+
+        },false);
+    },false);
+
+
+    /**
+     * Hint that there is a menu under the content
+     */
+    window.addEventListener('load',function(event){
+        if( this.screen.width <= 480 ){
+            //document.body.classList.add('nav-open');
+            setTimeout(function(){
+                //document.body.classList.remove('nav-open');
+            },80);
+        }
+    },false);
+
+    document.addEventListener('DOMContentLoaded',function(event){
+        var x, y;
+        var main = document.body.querySelector('main');
+            main.addEventListener('touchstart',function(event){
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+                console.log(event);
+            },false);
+            main.addEventListener('touchmove',function(event){
+                var moveX = event.touches[0].clientX;
+                if((moveX - x)>100 ){
+                    document.body.classList.add('nav-open');
+                }
+                if( (moveX - x)<-100 ){
+                    document.body.classList.remove('nav-open');
+                }
+            },false);
+            main.addEventListener('touchend',function(event){
+                console.log(event);
+            },false);
+    },false);
+
 
 })();
 

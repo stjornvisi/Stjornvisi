@@ -21,12 +21,54 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase {
     private $conn = null;
 
     /**
+	 * Try to get user when there is
+	 * no connection to storage.
      * @expectedException Exception
      */
     public function testGetException(){
         $service = new User( new PDOMock() );
         $service->get(1);
     }
+
+	/**
+	 * Get user by ID and email,
+	 * both valid IDs and emails as well
+	 * as invalid values (which should return FALSE)
+	 */
+	public function testGet(){
+		$service = new User( self::$pdo );
+
+		$result = $service->get(1);
+		$this->assertEquals('one@mail.com',$result->email);
+
+		$result = $service->get('one@mail.com');
+		$this->assertEquals('one@mail.com',$result->email);
+
+		$result = $service->get(100);
+		$this->assertFalse($result);
+
+		$result = $service->get('one@mail123.com');
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * Get all users
+	 */
+	public function testFetchAll(){
+		$service = new User( self::$pdo );
+		$result = $service->fetchAll();
+		$this->assertCount(8,$result);
+	}
+
+	/**
+	 * Get all users when there is no
+	 * storage connection
+	 * @expectedException Exception
+	 */
+	public function testFetchAllException(){
+		$service = new User( new PDOMock() );
+		$service->fetchAll();
+	}
 
     public function testGetByGroup(){
         $userService = new User( self::$pdo );
@@ -35,6 +77,14 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase {
         $this->assertEquals(3, count($userService->getByGroup(5,1)));
         $this->assertEquals(2, count($userService->getByGroup(5,0)));
     }
+
+	/**
+	 * @expectedException Exception
+	 */
+	public function testGetByGroupException(){
+		$userService = new User( new PDOMock() );
+		$this->assertEquals(7, count($userService->getByGroup(5,null)));
+	}
 
     public function testGetTypeByGroupArray(){
         $userService = new User( self::$pdo );
@@ -141,6 +191,31 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase {
 		$this->assertFalse($user2->is_admin,'Exists, is not admin');
 		$this->assertFalse($user3->is_admin,'Does not exists');
 		$this->assertFalse($user4->is_admin,'ID is null');
+	}
+
+
+	/**
+	 * Set password for found user as well
+	 * as for one that does not exists.
+	 */
+	public function testSetPassword(){
+		$service = new User( self::$pdo );
+
+		$result = $service->setPassword(1,'hundur');
+		$this->assertEquals(1,$result);
+
+		$result = $service->setPassword(100,'hundur');
+		$this->assertEquals(0,$result);
+	}
+
+	/**
+	 * Set password for user then there is no
+	 * connection to storage.
+	 * @expectedException Exception
+	 */
+	public function testSetPasswordException(){
+		$service = new User( new PDOMock() );
+		$service->setPassword(1,'hundur');
 	}
 
     /**

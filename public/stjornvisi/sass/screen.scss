@@ -3,9 +3,26 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
-//@import "compass/reset";
+@import "compass/reset";
+@import "compass/typography/vertical_rhythm";
+
+@import "helpers/mixin";
+@import "helpers/variables";
+@import "helpers/typography";
+@import "helpers/base";
+
+@import "layout/layout";
+
+@import "helpers/form";
+@import "components/widgets";
+@import "components/events";
+@import "components/news";
+@import "components/index";
 
 
+
+
+/*
 body {
   padding-top: 60px;
   padding-bottom: 40px;
@@ -66,10 +83,10 @@ input.avatar.progress, input.media{
 }
 
 
-/* */
+
 .frontpage-group-list{
-  -webkit-column-count:3; /* Chrome, Safari, Opera */
-  -moz-column-count:3; /* Firefox */
+  -webkit-column-count:3;
+  -moz-column-count:3;
   column-count:3;
 }
 
@@ -109,3 +126,53 @@ input.avatar.progress, input.media{
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
+html, body {
+  height: 100%;
+}
+
+body {
+  padding: 50px 0 0 0;
+}
+
+.navbar-toggle {
+  float: left;
+  margin-left: 15px;
+}
+
+@media (min-width: 0) {
+  .navbar-toggle {
+    display: block;
+  }
+}
+
+@media (min-width: 992px) {
+  body {
+    padding: 0;
+  }
+  .navbar {
+    right: auto;
+    //background: none;
+    border: none;
+    width: 100%;
+  }
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom{
+  position: static;
+}
+
+
+
+
+.news-list{
+  -webkit-column-count: 3;
+  li{
+    article{
+      section{
+        img{ float: left; margin: 0 10px 10px 0; }
+      }
+      section:after{ content: '';display: block;width: 0;height: 0;visibility: hidden;clear: both; }
+    }
+  }
+}
+*/

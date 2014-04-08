@@ -7,6 +7,10 @@ use Zend\File\Transfer\Adapter\Http;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
 
+use Imagine\Filter\Transformation;
+use Imagine\Filter\Basic\Resize;
+use Stjornvisi\Lib\Imagine\Square;
+
 class MediaController extends AbstractActionController{
 
 	public function imageAction(){
@@ -40,25 +44,30 @@ class MediaController extends AbstractActionController{
 					);
 
 					$imagine = $sm->get('Imagine\Image\Imagine');
+
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
-					$image->crop(
-							new Point(0, 0),
-							new Box(
-								min($image->getSize()->getWidth(),$image->getSize()->getHeight()),
-								min($image->getSize()->getWidth(),$image->getSize()->getHeight())
-							)
-						)->resize(new Box(60,60))
-						->save($folder . '60/' . $newFileName. '.'.$nameArray[3]);
+					$transform = new Transformation();
+					$transform->add( new Square() );
+					$transform->add( new Resize( new Box(60,60) ) );
+					$transform->apply( $image )->save($folder . '60/' . $newFileName. '.'.$nameArray[3]);
 
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$size = $image->getSize()->widen(300);
 					$image->resize($size)
 						->save($folder . '300/' . $newFileName. '.'.$nameArray[3]);
 
+					/*
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$size = $image->getSize()->widen(100);
 					$image->resize($size)
 						->save($folder . '100/' . $newFileName. '.'.$nameArray[3]);
+					*/
+
+					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
+					$transform = new Transformation();
+					$transform->add( new Square() );
+					$transform->add( new Resize( new Box(100,100) ) );
+					$transform->apply( $image )->save($folder . '100/' . $newFileName. '.'.$nameArray[3]);
 
 					$result->media[] = (object)array(
 						'code' => 200,

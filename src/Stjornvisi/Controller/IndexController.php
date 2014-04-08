@@ -42,6 +42,8 @@ class IndexController extends AbstractActionController{
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $companyService = $sm->get('Stjornvisi\Service\Company');
 
+		$facebook = $sm->get('Facebook');
+
 
         $auth = new AuthenticationService();
 
@@ -61,7 +63,7 @@ class IndexController extends AbstractActionController{
 				'groups' => $groupService->fetchAll(),
 				'event' => $eventService->getNext(),
 				'news' => $newsService->getNext(),
-                'gallery' => $eventService->fetchGallery(10)
+                'gallery' => $eventService->fetchGallery(10),
             ));
         }
 

@@ -1,0 +1,36 @@
+
+	<article class="news">
+		<header>
+			<time><?=$this->news->created_date->format('Y-m-d H:i')?></time>
+			<h1><?=$this->news->title?></h1>
+			<ul class="news-groups-list">
+				<li>
+				<?php if($this->news->group):?>
+					<a href="<?=$this->url('hopur/index',array('id'=>$this->news->group->url)) ?>"><?=$this->news->group->name_short;?></a>
+				<?php else:?>
+					<span>Stjórnvísisfrétt</span>
+				<?php endif;?>
+				</li>
+			</ul>
+		</header>
+		<section>
+			<?php if($this->news->avatar):?>
+				<img src="<?=$this->basePath("/images/300/{$this->news->avatar}")?>" />
+			<?php endif;?>
+			<?=$this->paragrapher($this->news->body);?>
+		</section>
+		<aside>
+			<?php if($this->news->group):?>
+				<a href="<?=$this->url('hopur/index',array('id'=>$this->news->group->url)) ?>"><?=$this->news->group->name_short;?></a>
+			<?php else:?>
+				<span>Stjórnvísisfrétt</span>
+			<?php endif;?>
+		</aside>
+		<footer></footer>
+	</article>
+
+
+
+
+
+

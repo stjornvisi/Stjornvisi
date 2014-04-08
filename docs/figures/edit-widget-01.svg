@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 800 600" xml:space="preserve">
+<rect x="143" y="136" fill="#FFFFFF" width="505" height="296"/>
+<rect x="504" y="153" fill="#99CC99" width="216" height="261"/>
+<g>
+	<path fill="#CCCCCC" d="M647,136V84.5c0-6.627-4.873-11.5-11.5-11.5h-480c-6.627,0-12.5,4.873-12.5,11.5V136H647z"/>
+	<path fill="#FFFFFF" d="M621,117c0,4.971-4.029,9-9,9H243c-4.971,0-9-4.029-9-9l0,0c0-4.971,4.029-9,9-9h369
+		C616.971,108,621,112.029,621,117L621,117z"/>
+	<circle fill="#FF3333" cx="163" cy="90" r="9"/>
+	<circle fill="#66CC66" cx="217" cy="90" r="9"/>
+	<circle fill="#FFFF66" cx="191" cy="90" r="9"/>
+</g>
+<path fill="#CCCCCC" d="M648,431v6c0,6.627-5.373,12-12,12H156c-6.627,0-12-5.373-12-12v-6H648z"/>
+<rect x="287.5" y="152.5" fill="#9999FF" stroke="#000000" stroke-miterlimit="10" width="216" height="261"/>
+<rect x="521.5" y="152.5" fill="none" stroke="#000000" stroke-miterlimit="10" width="108" height="261"/>
+<rect x="161.5" y="152.5" fill="none" stroke="#000000" stroke-miterlimit="10" width="108" height="261"/>
+<rect x="170" y="172" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="189" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="208" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="225" fill="#CCCCCC" width="90" height="9"/>
+<rect x="531" y="171" fill="#CCCCCC" width="90" height="9"/>
+<rect x="531" y="188" fill="#CCCCCC" width="90" height="9"/>
+<rect x="531" y="207" fill="#CCCCCC" width="90" height="9"/>
+<rect x="531" y="224" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="244" fill="#CCCCCC" width="82" height="9"/>
+<rect x="189" y="261" fill="#CCCCCC" width="71" height="9"/>
+<rect x="189" y="279" fill="#CCCCCC" width="71" height="9"/>
+<rect x="170" y="296" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="315" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="332" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="351" fill="#CCCCCC" width="90" height="9"/>
+<rect x="170" y="368" fill="#CCCCCC" width="90" height="9"/>
+</svg>

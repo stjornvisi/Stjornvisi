@@ -34,3 +34,7 @@ UPDATE `User`
 
 ALTER TABLE `Event_has_Guest`
   ADD name VARCHAR (255) AFTER event_id;
+
+
+ALTER TABLE `Event`
+  ADD capacity INT (4) AFTER address;

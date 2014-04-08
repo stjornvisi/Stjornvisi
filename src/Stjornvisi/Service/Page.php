@@ -15,17 +15,17 @@ class Page extends AbstractService {
 	/**
 	 * Get one page.
 	 *
-	 * @param string $id Label
+	 * @param string $label Label
 	 *
-	 * @return mixed
+	 * @return bool|\stdClass
 	 * @throws Exception
 	 */
-	public function get( $id ){
+	public function get( $label ){
 		try{
 			$statement = $this->pdo->prepare("
 				SELECT * FROM `Page` WHERE label = :id
 			");
-			$statement->execute(array('id'=>$id));
+			$statement->execute(array('id'=>$label));
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
 			return $statement->fetchObject();
 		}catch (PDOException $e){
@@ -35,10 +35,18 @@ class Page extends AbstractService {
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't get page item. page:[{$id}]",0,$e);
+			throw new Exception("Can't get page item. page:[{$label}]",0,$e);
 		}
 	}
 
+	/**
+	 * Get Page by ID.
+	 *
+	 * @param int $id
+	 *
+	 * @return bool|\stdClass
+	 * @throws Exception
+	 */
 	public function getObject( $id ){
 		try{
 			$statement = $this->pdo->prepare("

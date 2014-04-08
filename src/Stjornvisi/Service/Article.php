@@ -7,6 +7,8 @@ use \DateTime;
 
 class Article extends AbstractService {
 
+	const NAME = 'article';
+
     /**
      * Get one article.
      *
@@ -129,9 +131,12 @@ class Article extends AbstractService {
 				));
 			}
 			$this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
+			$data['id'] = $id;
 			$this->getEventManager()->trigger('index', $this, array(
-				'data' => $data,
-				'id' => $id
+				0 => __FUNCTION__,
+				'data' => (object)$data,
+				'id' => $id,
+				'name' => Article::NAME,
 			));
 			return $id;
 
@@ -195,9 +200,12 @@ class Article extends AbstractService {
 			$statement->execute($data);
 
 			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			$data['id'] = $id;
 			$this->getEventManager()->trigger('index', $this, array(
-				'data' => $data,
-				'id' => $id
+				0 => __FUNCTION__,
+				'data' => (object)$data,
+				'id' => $id,
+				'name' => Article::NAME
 			));
 			return (int)$statement->rowCount();
 
@@ -228,8 +236,10 @@ class Article extends AbstractService {
 			$statement->execute(array('id' => $id));
 			$this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
 			$this->getEventManager()->trigger('index', $this, array(
+				0 => __FUNCTION__,
 				'data' => null,
-				'id' => $id
+				'id' => $id,
+				'name' => Article::NAME,
 			));
 			return (int)$statement->rowCount();
 		}catch (PDOException $e){

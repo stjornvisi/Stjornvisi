@@ -1,58 +1,91 @@
 <?php if($this->identity):?>
-	<div class="panel panel-primary">
-		<div class="panel-body">
-			<a href="/notandi/<?=$this->identity->id?>"><?=$this->identity->name?></a> | <a href="<?=$this->url('auth-out')?>">útskrá</a>
-		</div>
-	</div>
 
-
-	<div class="row">
-		<div class="col-md-4">
-			<h1>Mínir hópar</h1>
-			<ul>
-				<?php foreach( $this->groups as $group ):?>
-					<li><a href="/hopur/<?=$group->url?>"><?= $group->name_short?></a></li>
-				<?php endforeach;?>
-			</ul>
-		</div>
-
-		<div class="col-md-4">
+	<div class="layout-content section-aside-grid">
+		<section class="row half">
+			<div class="column main index-event-list">
 			<h1>Viðburðir</h1>
-			<ul>
+			<ul class="item-list theme-white">
 				<?php foreach( $this->events as $event ):?>
 					<li>
-						<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></h2>
-
-						<?php if($event->attending === null):?>
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="btn btn-primary">mæti</a> |
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="btn btn-primary">mæti ekki</a>
-						<?php elseif($event->attending == 0):?>
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="btn btn-primary">mæti</a> |
-							<span class="btn btn-default">mæti ekki</span>
-						<?php elseif($event->attending == 1):?>
-							<span class="btn btn-default">mæti</span> |
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="btn btn-primary">mæti ekki</a>
-						<?php endif;?>
-
-
-						<ul>
-							<?php if( count($event->groups) == 0 ):?>
-							<li><span class="label label-default">Stjónvísisviðburður</span></li>
-							<?php else:?>
-							<?php foreach($event->groups as $group):?>
-							<li><a class="label label-default" href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
-							<?php endforeach;?>
-							<?php endif; ?>
-						</ul>
-						<time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?></time>
-						<?php if($event->avatar):?>
-							<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" />
-						<?php endif;?>
-						<?=$this->paragrapher($event->body);?>
+						<article class="event">
+							<header>
+								<time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?></time>
+								<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
+							</header>
+							<section>
+								<?php if($event->avatar):?>
+								<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+									<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" alt="mynd með viðburði" />
+								</a>
+								<?php endif;?>
+								<?=$this->paragrapher($event->body);?>
+							</section>
+							<aside>
+								<ul class="event-groups-list">
+									<?php if( count($event->groups) == 0 ):?>
+										<li><span class="label label-default">Stjónvísisviðburður</span></li>
+									<?php else:?>
+										<?php foreach($event->groups as $group):?>
+											<li><a class="label label-default" href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
+										<?php endforeach;?>
+									<?php endif; ?>
+								</ul>
+							</aside>
+							<footer>
+								<?php if($event->attending === null):?>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+								<?php elseif($event->attending == 0):?>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+									<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
+								<?php elseif($event->attending == 1):?>
+									<span class="attending yes" title="Skrá mætingu">mæti</span>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+								<?php endif;?>
+							</footer>
+						</article>
 					</li>
 				<?php endforeach;?>
 			</ul>
+		</div>
 
+			<div class="column main index-news-list">
+			<h1>Fréttir</h1>
+			<ul class="item-list theme-white">
+				<?php foreach( $this->news as $news ):?>
+					<li>
+						<article class="news">
+							<header>
+								<time><?=$news->created_date?></time>
+								<h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
+							</header>
+							<section>
+								<?php if($news->avatar):?>
+								<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
+									<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
+								</a>
+								<?php endif;?>
+								<?=$this->paragrapher($news->body);?>
+							</section>
+							<aside>
+								<ul class="news-groups-list">
+									<li>
+										<?php if( $news->group_id ):?>
+										<a href="<?=$this->url('hopur/index',array('id',$news->group->url))?>"><?=$news->group->name_short?></a>
+										<?php else:?>
+										<span>Stjórnvísi</span>
+										<?php endif;?>
+									</li>
+								</ul>
+							</aside>
+							<footer></footer>
+						</article>
+					</li>
+				<?php endforeach;?>
+			</ul>
+		</div>
+		</section>
+		<aside class="column aside index-resources-list">
 			<h1>Fylgiskrár</h1>
 			<ul>
 				<?php foreach( $this->media as $media ):?>
@@ -62,31 +95,9 @@
 					</li>
 				<?php endforeach;?>
 			</ul>
-		</div>
-
-
-
-		<div class="col-md-4">
-			<h1>Fréttir</h1>
-			<ul>
-				<?php foreach( $this->news as $news ):?>
-					<li>
-						<h2><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h2>
-						<?php if($news->avatar):?>
-						<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" />
-						<?php endif;?>
-						<?php if($news->group):?>
-						<a class="label label-default" href="/hopur/<?=$news->group->url;?>"><?=$news->group->name_short;?></a>
-						<?php else:?>
-						<span class="label label-default">Stjónvísisfrétt.</span>
-						<?php endif;?>
-						<time><?=$news->created_date?></time>
-						<?=$this->paragrapher($news->body);?>
-					</li>
-				<?php endforeach;?>
-			</ul>
-		</div>
+		</aside>
 	</div>
+
 <?php else:?>
 	<div>
 		<h1>Stjónvísi</h1>
@@ -95,8 +106,7 @@
 	</div>
 	<div class="frontpage-panel">
 		<h2><strong>Stjórnvísi</strong> er stærsta stjórnunarfélag á Íslandi
-			með 2.150 virka félagsmenn og yfir 300
-			fyrirtæki innan sinna raða.</h2>
+			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h2>
 		<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://localhost:8080/callback" class="btn btn-primary">Facebook innskráning</a> |
 		<a href="<?=$this->url('auth-in')?>" class="btn btn-default">Innskráning</a> |
 		<a href="" class="btn btn-success">Stofna aðgang</a>
