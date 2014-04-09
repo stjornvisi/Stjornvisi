@@ -67,6 +67,15 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   display: block;
 }
 
+/* line 3, ../sass/helpers/_extensions.scss */
+aside.event-event-aside h1, div.event-event-meta h1, aside.event-news-aside h1, .index-news-list h1, .index-event-list h1, .index-resources-list h1 {
+  font-size: 0.875em;
+  line-height: 1.71429em;
+  color: #4a85a1;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
 /**
  * Define some font-family rules.
  *
@@ -402,58 +411,87 @@ header.page-header form.page-search-form input[type=submit] {
   display: none;
 }
 
-/* line 188, ../sass/layout/_layout.scss */
-div.layout-content {
-  padding: 30px;
-}
-
 /* line 193, ../sass/layout/_layout.scss */
 footer.layout-footer {
   background-color: #282828;
 }
 
-/* line 201, ../sass/layout/_layout.scss */
+/* line 200, ../sass/layout/_layout.scss */
 .section-aside-grid {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
+  height: auto;
+  overflow: hidden;
+  padding: 30px;
 }
 @media only screen and (max-width: 480px) {
-  /* line 201, ../sass/layout/_layout.scss */
+  /* line 200, ../sass/layout/_layout.scss */
   .section-aside-grid {
-    display: block;
+    padding: 15px;
   }
 }
-/* line 208, ../sass/layout/_layout.scss */
+/* line 207, ../sass/layout/_layout.scss */
 .section-aside-grid > section {
-  display: table-cell;
+  float: left;
   width: 100%;
-  vertical-align: top;
-  position: relative;
+  margin-right: -300px;
+  padding-right: 330px;
 }
 @media only screen and (max-width: 480px) {
-  /* line 208, ../sass/layout/_layout.scss */
+  /* line 207, ../sass/layout/_layout.scss */
   .section-aside-grid > section {
     display: block;
+    float: none;
+    width: auto;
+    margin-right: 0px;
+    padding-right: 0px;
   }
 }
-/* line 217, ../sass/layout/_layout.scss */
+/* line 220, ../sass/layout/_layout.scss */
 .section-aside-grid > aside {
-  padding-left: 30px;
-  display: table-cell;
+  float: left;
   width: 300px;
-  vertical-align: top;
-  position: relative;
+  /* The size of the fixed block. */
 }
 @media only screen and (max-width: 480px) {
-  /* line 217, ../sass/layout/_layout.scss */
+  /* line 220, ../sass/layout/_layout.scss */
   .section-aside-grid > aside {
-    display: block;
-    width: 100%;
-    padding-left: 0;
+    width: auto;
+    float: none;
   }
 }
 
+/* OLD TABLE / TABLE-CELL implementation
+  .section-aside-grid{
+	padding: $padding;
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	@include breakpoint-to($resolution-small){
+	  display: block;
+	}
+	&>section{
+	  display: table-cell;
+		padding-right: $padding/2;
+	  width: 100%;
+	  vertical-align: top;
+	  position: relative;
+	  @include breakpoint-to($resolution-small){
+		display: block;
+	  }
+	}
+	&>aside{
+	  padding-left: $padding/2;
+	  display: table-cell;
+	  width: 300px;
+	  vertical-align: top;
+	  position: relative;
+	  @include breakpoint-to($resolution-small){
+		display: block;
+		width: 100%;
+		padding-left: 0;
+	  }
+	}
+  }
+*/
 /* line 8, ../sass/helpers/_form.scss */
 form.form-horizontal input {
   vertical-align: middle;
@@ -1121,33 +1159,14 @@ ul.pagination li a {
   color: #4a85a1;
 }
 
-/* line 29, ../sass/components/_events.scss */
-aside.event-event-aside h1 {
-  font-size: 0.875em;
-  line-height: 1.71429em;
-  margin: 0 0 1.71429em 0;
-  color: #4a85a1;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-/* line 37, ../sass/components/_events.scss */
+/* line 30, ../sass/components/_events.scss */
 div.event-event-main {
   padding-right: 15px;
 }
 
-/* line 40, ../sass/components/_events.scss */
+/* line 33, ../sass/components/_events.scss */
 div.event-event-meta {
   padding-left: 15px;
-}
-/* line 42, ../sass/components/_events.scss */
-div.event-event-meta h1 {
-  font-size: 0.875em;
-  line-height: 1.71429em;
-  margin: 0 0 1.71429em 0;
-  color: #4a85a1;
-  text-transform: uppercase;
-  font-weight: bold;
 }
 
 /* line 10, ../sass/components/_news.scss */
@@ -1157,33 +1176,6 @@ article.news.news-columns section {
   -ms-columns: 30px 3;
   -o-columns: 30px 3;
   columns: 30px 3;
-}
-
-/* line 16, ../sass/components/_news.scss */
-aside.event-news-aside h1 {
-  color: #4a85a1;
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.875em;
-  line-height: 1.71429em;
-}
-
-/* line 3, ../sass/components/_index.scss */
-.index-news-list h1, .index-event-list h1, .index-resources-list h1 {
-  font-size: 0.875em;
-  line-height: 1.71429em;
-  color: #4a85a1;
-  text-transform: uppercase;
-}
-
-/* line 10, ../sass/components/_index.scss */
-.index-news-list {
-  padding-right: 30px;
-}
-
-/* line 15, ../sass/components/_index.scss */
-.index-event-list {
-  padding-right: 30px;
 }
 
 /*

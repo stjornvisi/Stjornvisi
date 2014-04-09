@@ -13,12 +13,7 @@
   }
 
   aside.event-news-aside{
-    h1{
-      color: $color-sea;
-      text-transform: uppercase;
-      font-weight: bold;
-      @include adjust-font-size-to($font-middle-size,1,$font-base-size);
-    }
+	  @extend %category-label;
   }
 
   li.news{

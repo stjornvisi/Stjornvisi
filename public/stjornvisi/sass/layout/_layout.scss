@@ -186,7 +186,7 @@ $misk-icons: sprite-map("misk/*.png",$spacing: 40px);
   }
 
   div.layout-content{
-    padding: $padding;
+  //  padding: $padding;
   }
 
 // - - - - [ MAIN HEADER ] - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -196,34 +196,67 @@ $misk-icons: sprite-map("misk/*.png",$spacing: 40px);
 
 
 
+// - - - - - [SECTION / ASIDE grid] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	.section-aside-grid{
+		height: auto;
+		overflow: hidden;
+		padding: $padding;
+		@include breakpoint-to($resolution-small){
+			padding: $padding/2;
+		}
+		&>section{
+			float: left;
+			width: 100%;
+			margin-right: -300px;
+			padding-right: 300px + $padding;
+			@include breakpoint-to($resolution-small){
+				display: block;
+				float: none;
+				width: auto;
+				margin-right: 0px;
+				padding-right: 0px;
+			}
+		}
+		&>aside{
+			float: left;
+			width: 300px; /* The size of the fixed block. */
+			@include breakpoint-to($resolution-small){
+				width: auto;
+				float: none;
+			}
+		}
+	}
 
-
-  .section-aside-grid{
-    display: table;
-    table-layout: fixed;
-    width: 100%;
-    @include breakpoint-to($resolution-small){
-      display: block;
-    }
-    &>section{
-      display: table-cell;
-      width: 100%;
-      vertical-align: top;
-      position: relative;
-      @include breakpoint-to($resolution-small){
-        display: block;
-      }
-    }
-    &>aside{
-      padding-left: $padding;
-      display: table-cell;
-      width: 300px;
-      vertical-align: top;
-      position: relative;
-      @include breakpoint-to($resolution-small){
-        display: block;
-        width: 100%;
-        padding-left: 0;
-      }
-    }
-  }
+	/* OLD TABLE / TABLE-CELL implementation
+	  .section-aside-grid{
+		padding: $padding;
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+		@include breakpoint-to($resolution-small){
+		  display: block;
+		}
+		&>section{
+		  display: table-cell;
+			padding-right: $padding/2;
+		  width: 100%;
+		  vertical-align: top;
+		  position: relative;
+		  @include breakpoint-to($resolution-small){
+			display: block;
+		  }
+		}
+		&>aside{
+		  padding-left: $padding/2;
+		  display: table-cell;
+		  width: 300px;
+		  vertical-align: top;
+		  position: relative;
+		  @include breakpoint-to($resolution-small){
+			display: block;
+			width: 100%;
+			padding-left: 0;
+		  }
+		}
+	  }
+	*/

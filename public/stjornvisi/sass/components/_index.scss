@@ -1,22 +1,15 @@
 
-  %overview-list{
-    h1{
-      @include adjust-font-size-to($font-middle-size,1,$font-base-size);
-      color: $color-sea;
-      text-transform: uppercase;
-    }
-  }
 
   .index-news-list{
-    padding-right: $padding;
-    @extend %overview-list;
+    //padding-right: $padding;
+    @extend %category-label;
 
   }
   .index-event-list{
-    padding-right: $padding;
-    @extend %overview-list;
+    //padding-right: $padding;
+    @extend %category-label;
   }
 
   .index-resources-list{
-    @extend %overview-list;
+    @extend %category-label;
   }
