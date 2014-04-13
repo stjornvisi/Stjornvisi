@@ -19,12 +19,15 @@
 			//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap.min.css' )
 			//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap-theme.min.css' )
 			->appendStylesheet( $this->basePath() . '/styles/screen.css' )
+			->appendStylesheet( $this->basePath() . '/styles/ie.css','screen','IE 9')
 			->appendStylesheet( $this->basePath() . '/vendor/lightbox2/css/lightbox.css')
 			->appendStylesheet( $this->basePath() . '/vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css')
+
 		; ?>
 
         <!-- Scripts -->
         <?php echo $this->headScript()
+			->appendFile($this->basePath() . '/scripts/ie.js', 'text/javascript', array('conditional' => 'IE 9',))
 			->appendFile($this->basePath() . '/vendor/respond/dest/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
 			->appendFile($this->basePath() . '/vendor/html5shiv-dist/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
 			->appendFile( $this->basePath() . '/vendor/jquery/dist/jquery.min.js' )
@@ -36,7 +39,7 @@
 
 			->appendFile($this->basePath() . '/scripts/common.js')
         ; ?>
-
+		<script type="text/javascript">document.createElement('main');</script>
     </head>
 	<body class="logged-in">
 

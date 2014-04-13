@@ -129,52 +129,57 @@
 	<div class="column event-event-meta">
 
 		<?php if( count($this->event->gallery)>0 ):?>
-			<h1>Myndir</h1>
-			<ul class="event-gallery-list">
-				<?php foreach($this->event->gallery as $img):?>
-					<li>
-						<a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-lightbox="gallery">
-							<img src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
-						</a>
-					</li>
-				<?php endforeach;?>
-			</ul>
+			<div class="event-event-meta-gallery">
+				<h1>Myndir</h1>
+				<ul class="event-gallery-list">
+					<?php foreach($this->event->gallery as $img):?>
+						<li>
+							<a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-lightbox="gallery">
+								<img src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
+							</a>
+						</li>
+					<?php endforeach;?>
+				</ul>
+			</div>
 		<?php endif;?>
 
 		<?php if($this->event->lat && $this->event->lng):?>
-			<h1>Kort</h1>
-			<div id="map_canvas" style="height:300px"></div>
-			<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
-			</script>
-			<script type="text/javascript">
-				function initialize() {
-					var latlng = new google.maps.LatLng(<?=$this->event->lat?>, <?=$this->event->lng?>);
-					var myOptions = {
-						zoom: 15,
-						center: latlng,
-						mapTypeId: google.maps.MapTypeId.ROADMAP
-					};
-					var map = new google.maps.Map(document.getElementById("map_canvas"),
-						myOptions);
-					var marker = new google.maps.Marker({
-						position: latlng
-					});
+			<div class="event-event-meta-map">
+				<h1>Kort</h1>
+				<div id="map_canvas" style="height:300px"></div>
+				<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
+				</script>
+				<script type="text/javascript">
+					function initialize() {
+						var latlng = new google.maps.LatLng(<?=$this->event->lat?>, <?=$this->event->lng?>);
+						var myOptions = {
+							zoom: 15,
+							center: latlng,
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+						};
+						var map = new google.maps.Map(document.getElementById("map_canvas"),
+							myOptions);
+						var marker = new google.maps.Marker({
+							position: latlng
+						});
 
-					// To add the marker to the map, call setMap();
-					marker.setMap(map);
-				}
-				initialize();
-			</script>
+						// To add the marker to the map, call setMap();
+						marker.setMap(map);
+					}
+					initialize();
+				</script>
+			</div>
 		<?php endif;?>
 
-
 		<?php if(count($this->event->reference)>0):?>
-			<h1>Ítarefni</h1>
-			<ul>
-				<?php foreach($this->event->reference as $ref):?>
-					<li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
-				<?php endforeach;?>
-			</ul>
+			<div class="event-event-meta-resources">
+				<h1>Ítarefni</h1>
+				<ul class="event-resources-list">
+					<?php foreach($this->event->reference as $ref):?>
+						<li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
+					<?php endforeach;?>
+				</ul>
+			</div>
 		<?php endif;?>
 	</div>
 </div>

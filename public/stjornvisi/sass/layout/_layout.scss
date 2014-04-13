@@ -54,6 +54,7 @@ $misk-icons: sprite-map("misk/*.png",$spacing: 40px);
     }
   }
 
+
 // - - - - [ MAIN CONTENT ] - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   main.layout-main{
     background-color: $color-white;
@@ -219,6 +220,7 @@ $misk-icons: sprite-map("misk/*.png",$spacing: 40px);
 		}
 		&>aside{
 			float: left;
+			position: relative;
 			width: 300px; /* The size of the fixed block. */
 			@include breakpoint-to($resolution-small){
 				width: auto;

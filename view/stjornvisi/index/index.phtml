@@ -1,8 +1,8 @@
 <?php if($this->identity):?>
 
-	<div class="layout-content section-aside-grid">
+	<div class="section-aside-grid">
 		<section class="row half">
-			<div class="column main index-event-list">
+			<div class="column index-event-list">
 			<h1>Viðburðir</h1>
 			<ul class="item-list theme-white">
 				<?php foreach( $this->events as $event ):?>
@@ -49,7 +49,7 @@
 			</ul>
 		</div>
 
-			<div class="column main index-news-list">
+			<div class="column index-news-list">
 			<h1>Fréttir</h1>
 			<ul class="item-list theme-white">
 				<?php foreach( $this->news as $news ):?>
@@ -85,7 +85,7 @@
 			</ul>
 		</div>
 		</section>
-		<aside class="column aside index-resources-list">
+		<aside class="index-resources-list">
 			<h1>Fylgiskrár</h1>
 			<ul>
 				<?php foreach( $this->media as $media ):?>

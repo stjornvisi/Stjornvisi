@@ -334,11 +334,23 @@ class News extends AbstractService {
                 'id' => $id
             ));
             $news =  $statement->fetchAll();
+
+			$groupStatement = $this->pdo->prepare("SELECT G.name, G.name_short, G.url FROM `Group` G WHERE id = :id");
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return array_map(function($item) use ($groupStatement){
+				$item->created_date = new DateTime($item->created_date);
+				$item->modified_date = new DateTime($item->modified_date);
+				if($item->group_id){
+					$groupStatement->execute(array('id'=> $item->group_id));
+					$item->group = $groupStatement->fetchObject();
+				}
+				return $item;
+			},$news);
             foreach($news as $item){
                 $item->created_date = new DateTime($item->created_date);
                 $item->modified_date = new DateTime($item->modified_date);
             }
-            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+
             return $news;
         }catch (PDOException $e){
             $this->getEventManager()->trigger('read', $this, array(

@@ -23,6 +23,33 @@
     </head>
     <body>
 
+
+        <h2>Grid</h2>
+
+        <h3>Section - Aside</h3>
+        <p>Flestar templates fyrir innskráða notendur fylgja þessu sniði. Stórt content svæði er til
+            hægri og minni hliðarsvæði er til vinstri. Hægra svæðið stækkar og minnkar, meðan
+            vinstra svæðið er í fastri stærð.</p>
+        <img src="figures/section-aside.svg" width="200">
+        <pre>
+            <span class="string">&lt;div</span> class="<strong>section-aside-grid</strong>"<span class="string">&gt;</span>
+                <span class="string">&lt;section&gt;</span> ... <span class="string">&lt;/section&gt;</span>
+                <span class="string">&lt;aside&gt;</span> ... <span class="string">&lt;/aside&gt;</span>
+            <span class="string">&lt;/div&gt;</span>
+        </pre>
+        <p>Mjög einfold leið til að búa til section/aside grid þar sem svo section partinum væri skipt
+            upp í tvo jafna dálka (eins og er á dashboard'i) væri að gera</p>
+        <pre>
+            <span class="string">&lt;div</span> class="<strong>section-aside-grid</strong>"<span class="string">&gt;</span>
+                <span class="string">&lt;section</span> class="<strong>column half</strong>" <span class="string">&gt;</span>
+                    <span class="string">&lt;div</span> class="<strong>row</strong>"<span class="string">&gt;</span> ... <span class="string">&lt;/div&gt;</span>
+                    <span class="string">&lt;div</span> class="<strong>row</strong>"<span class="string">&gt;</span> ... <span class="string">&lt;/div&gt;</span>
+                <span class="string">&lt;/section&gt;</span>
+                <span class="string">&lt;aside&gt;</span> ... <span class="string">&lt;/aside&gt;</span>
+            <span class="string">&lt;/div&gt;</span>
+        </pre>
+
+
         <h2>Edit Widget</h2>
         <p>Hugmyndin hér er að vera með einhverskonar entry í container, þegar beðið er um edit form
             fyrir þetta entry, er formið sótt með AJAX, því stungið í container við hliðina,

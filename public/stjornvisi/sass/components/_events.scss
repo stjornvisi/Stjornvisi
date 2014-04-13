@@ -2,14 +2,19 @@
 
 
 // - - - [EVENT ENTRY]- - - - - - - - - - - - - - - - - - - - - - - -
+
   article.event{
     @extend %entry;
     ul.event-groups-list{
       @extend %dot-split-list;
     }
   }
+	article.event.archived{
+		opacity: .5;
+	}
 
 // - - - [EVENT ENTRY IN LIST]- - - - - - - - - - - - - - - - - - - - - - - -
+
   li.event{
     @extend %list-entry;
     ul.event-groups-list{
@@ -19,20 +24,40 @@
 
   ul.event-gallery-list{
     @extend %gallery-list;
+	  margin: -$padding/4;
+  }
+  ul.event-resources-list{
+	  @extend %resources-list;
   }
 
 // - - - [SINGLE EVENT PAGE]- - - - - - - - - - - - - - - - - - - - - - - -
-
 
   aside.event-event-aside{
 	@extend %category-label;
   }
   div.event-event-main{
-	padding-right: $padding/2;
+
   }
   div.event-event-meta{
-	padding-left: $padding/2;
 	@extend %category-label;
   }
 
 
+	.event-event-meta-gallery{
+		@include trailer(1,$font-base-size);
+		h1{
+			@include trailer(1/2,$font-middle-size);
+		}
+	}
+	.event-event-meta-map{
+		@include trailer(1,$font-base-size);
+		h1{
+			@include trailer(1/2,$font-middle-size);
+		}
+	}
+	.event-event-meta-resources{
+		@include trailer(1,$font-base-size);
+		h1{
+			@include trailer(1/2,$font-middle-size);
+		}
+	}

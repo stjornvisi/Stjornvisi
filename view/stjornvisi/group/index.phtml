@@ -1,194 +1,212 @@
-
-<h1><?=$this->group->name;?></h1>
-<?php if($this->logged_in):?>
-	<?php if( $this->access->type === null ):?>
-		<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="label label-success">Skrá í hóp</a>
-	<?php else:?>
-		<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>0))?>" class="label label-danger">Afskrá úr hópi</a>
-	<?php endif;?>
-<?php else:?>
-	<a href="<?=$this->url('auth-in')?>" class="label label-success">Skrá í hóp</a>
-<?php endif;?>
-
-<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
-<?=$this->paragrapher($this->group->description);?>
-
-<?php if($this->access->is_admin || $this->access->type >= 1):?>
-<div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        Action <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="<?=$this->url('hopur/update',array('id'=>$this->group->url));?>">Uppfæra lýsingu</a></li>
-        <li class="divider"></li>
-        <li><a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'allir'));?>">Senda póst á alla</a></li>
-        <li><a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'formenn'));?>">Senda póst á stjórnendur</a></li>
-        <li class="divider"></li>
-        <li><a href="<?=$this->url('hopur/user-export',array('id'=>$this->group->url));?>">Meðlimalisti (csv)</a></li>
-        <?php if($this->access->is_admin):?>
-        <li class="divider"></li>
-        <li><a href="<?=$this->url('hopur/delete',array('id'=>$this->group->url));?>">Eyða faghópi</a></li>
-		<li class="divider"></li>
-		<li><a href="<?=$this->url('frettir/create',array('id'=>$this->group->id))?>">Stofna frétt</a></li>
-		<li><a href="<?=$this->url('vidburdir/create',array('id'=>$this->group->id))?>">Stofna viðburð</a></li>
-        <?php endif;?>
-    </ul>
-</div>
-<?php endif;?>
-
-<h3>Fyrri starfsár</h3>
-<ul>
-    <?php foreach($this->range->range as $group):?>
-    <li><a href="<?=$this->url('hopur/index',array('id'=>$this->group->url,'range'=>$group[0].'-'.$group[1]))?>"><?=$group[0]?> - <?=$group[1]?></a></li>
-    <?php endforeach;?>
-</ul>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Viðburðir (<?=count($this->events)?>) - <a href="<?=$this->url('rss/rss-events',array('name'=>$this->group->url))?>">rss</a></h2>
-        <ul>
-        <?php foreach($this->events as $event):?>
-            <li>
-            <?php if( $event->event_date < new DateTime() ):?>
-                <del><?=$event->event_date->format('Y-m-d');?> | <a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></del>
-            <?php else:?>
-                <?=$event->event_date->format('Y-m-d');?> | <a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a>
-            <?php endif;?>
-            </li>
-        <?php endforeach;?>
-        </ul>
-        <dl>
-            <?php foreach($this->events as $event):?>
-            <dt>
-                <h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
-                <time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:i');?> - <?=$event->event_end->format('H:i');?></time>
-            </dt>
-            <dd>
-                <ul>
-                <?php foreach($event->groups as $group):?>
-                    <li><a class="label label-default" href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
-                <?php endforeach;?>
-                </ul>
-                <?php if($event->avatar):?>
-				<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" />
-                <?php endif;?>
-                <?=$this->paragrapher($event->body);?>
-				<?php if($this->access->is_admin || $this->access->type >= 1):?>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                        Action <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="<?=$this->url('vidburdir/update',array('id'=>$event->id))?>">Uppfæra</a></li>
-                        <li><a href="<?=$this->url('vidburdir/delete',array('id'=>$event->id))?>">Eyða</a></li>
-                    </ul>
-                </div>
-				<?php endif;?>
-            </dd>
-            <?php endforeach;?>
-        </dl>
-    </div>
-    <div class="col-md-4">
-        <h2>Fréttir (<?=count($this->news)?>) - <a href="<?=$this->url('rss/rss-news',array('name'=>$this->group->url))?>">rss</a></h2>
-        <dl>
-            <?php foreach($this->news as $news):?>
-            <dt>
-                <h3><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title;?></a></h3>
-                <time><?=$news->created_date->format('Y-m-d');?></time>
-            </dt>
-            <dd>
-                <?php if($news->avatar):?>
-				<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" />
-                <?php endif;?>
-                <?=$this->paragrapher($news->body);?>
-				<?php if($this->access->is_admin || $this->access->type >= 1):?>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                        Action <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Uppfæra</a></li>
-                        <li><a href="#">Eyða</a></li>
-                    </ul>
-                </div>
-				<?php endif;?>
-            </dd>
-            <?php endforeach;?>
-        </dl>
-    </div>
-    <div class="col-md-4">
-        <h2>Formenn (<?=count($this->chairmen)?>)</h2>
-        <ul>
-            <?php foreach($this->chairmen as $user):?>
-                <li>
-                    <a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
-                    <span><?=$user->title;?></span>
-                    <?php if($this->access->is_admin || $this->access->type >= 1):?>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
-                            <li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
-                        </ul>
-                    </div>
-                    <?php endif;?>
-                </li>
-            <?php endforeach;?>
-        </ul>
-        <h2>Stjórnendur (<?=count($this->managers)?>)</h2>
-        <ul>
-            <?php foreach($this->managers as $user):?>
-                <li>
-                    <a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
-                    <span><?=$user->title;?></span>
-                    <?php if($this->access->is_admin || $this->access->type >= 1):?>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>2,'user_id'=>$user->id))?>">Gera að formanni</a></li>
-                            <li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
-                        </ul>
-                    </div>
-                    <?php endif;?>
-                </li>
-            <?php endforeach;?>
-        </ul>
-
-		<?php if($this->access->is_admin || $this->access->type != null):?>
-        <h2>Meðlimir (<?=count($this->users)?>)</h2>
-        <ul>
-            <?php foreach($this->users as $user):?>
-            <li>
-                <a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
-                <span><?=$user->title;?></span>
-                <?php if($this->access->is_admin || $this->access->type >= 1):?>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                        Action <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>2,'user_id'=>$user->id))?>">Gera að formanni</a></li>
-                        <li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
-                    </ul>
-                </div>
-                <?php endif;?>
-            </li>
-            <?php endforeach;?>
-        </ul>
+<div>
+	<h1><?=$this->group->name;?></h1>
+	<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
+	<?php if($this->logged_in):?>
+		<?php if( $this->access->type === null ):?>
+			<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="label label-success">Skrá í hóp</a>
+		<?php else:?>
+			<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>0))?>" class="label label-danger">Afskrá úr hópi</a>
 		<?php endif;?>
-    </div>
+	<?php else:?>
+		<a href="<?=$this->url('auth-in')?>" class="label label-success">Skrá í hóp</a>
+	<?php endif;?>
+
+	<div class="section-aside-grid">
+
+		<section>
+			<div class="row half">
+				<div class="column">
+					<h2>Viðburðir (<?=count($this->events)?>) - <a href="<?=$this->url('rss/rss-events',array('name'=>$this->group->url))?>">rss</a></h2>
+					<ul class="item-list theme-white">
+						<?php foreach($this->events as $event):?>
+						<li>
+							<article class="event <?=($event->event_date < new DateTime())?'archived':''?>">
+								<header>
+									<time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?></time>
+									<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
+								</header>
+								<section>
+									<?php if($event->avatar):?>
+										<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+											<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" alt="mynd með viðburði" />
+										</a>
+									<?php endif;?>
+									<?=$this->paragrapher($event->body);?>
+								</section>
+								<aside>
+									<ul class="event-groups-list">
+										<?php if( count($event->groups) == 0 ):?>
+											<li><span class="label label-default">Stjónvísisviðburður</span></li>
+										<?php else:?>
+											<?php foreach($event->groups as $group):?>
+												<li><a class="label label-default" href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
+											<?php endforeach;?>
+										<?php endif; ?>
+									</ul>
+								</aside>
+								<!--footer>
+									<?php if($event->attending === null):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+									<?php elseif($event->attending == 0):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+										<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
+									<?php elseif($event->attending == 1):?>
+										<span class="attending yes" title="Skrá mætingu">mæti</span>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+									<?php endif;?>
+								</footer-->
+							</article>
+						</li>
+						<?php endforeach;?>
+					</ul>
+				</div>
+				<div class="column">
+					<h2>Fréttir (<?=count($this->news)?>) - <a href="<?=$this->url('rss/rss-news',array('name'=>$this->group->url))?>">rss</a></h2>
+					<ul>
+						<?php foreach($this->news as $news):?>
+						<li>
+							<article class="news">
+								<header>
+									<time><?=$news->created_date->format('Y-m-d H:i')?></time>
+									<h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
+								</header>
+								<section>
+									<?php if($news->avatar):?>
+										<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
+											<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
+										</a>
+									<?php endif;?>
+									<?=$this->paragrapher($news->body);?>
+								</section>
+								<aside>
+								</aside>
+								<footer></footer>
+							</article>
+						</li>
+						<?php endforeach;?>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<aside>
+			<?php if($this->access->is_admin || $this->access->type >= 1):?>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="<?=$this->url('hopur/update',array('id'=>$this->group->url));?>">Uppfæra lýsingu</a></li>
+						<li class="divider"></li>
+						<li><a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'allir'));?>">Senda póst á alla</a></li>
+						<li><a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'formenn'));?>">Senda póst á stjórnendur</a></li>
+						<li class="divider"></li>
+						<li><a href="<?=$this->url('hopur/user-export',array('id'=>$this->group->url));?>">Meðlimalisti (csv)</a></li>
+						<?php if($this->access->is_admin):?>
+							<li class="divider"></li>
+							<li><a href="<?=$this->url('hopur/delete',array('id'=>$this->group->url));?>">Eyða faghópi</a></li>
+							<li class="divider"></li>
+							<li><a href="<?=$this->url('frettir/create',array('id'=>$this->group->id))?>">Stofna frétt</a></li>
+							<li><a href="<?=$this->url('vidburdir/create',array('id'=>$this->group->id))?>">Stofna viðburð</a></li>
+						<?php endif;?>
+					</ul>
+				</div>
+			<?php endif;?>
+			<?=$this->paragrapher($this->group->description);?>
+			<h3>Fyrri starfsár</h3>
+			<ul>
+				<?php foreach($this->range->range as $group):?>
+					<li><a href="<?=$this->url('hopur/index',array('id'=>$this->group->url,'range'=>$group[0].'-'.$group[1]))?>"><?=$group[0]?> - <?=$group[1]?></a></li>
+				<?php endforeach;?>
+			</ul>
+		</aside>
+	</div>
+<!--
+	<div>
+		<div class="row third">
+			<div class="column">
+				<h3>Markmið</h3>
+				<?=$this->paragrapher($this->group->objective); ?>
+				<h3>Hvað er <?=$this->group->name;?></h3>
+				<?=$this->paragrapher($this->group->how_operates); ?>
+				<h3>Hvernig starfar hópurinn</h3>
+				<?=$this->paragrapher($this->group->for_whom); ?>
+			</div>
+			<div class="column">
+				<h2>Formenn (<?=count($this->chairmen)?>)</h2>
+				<ul>
+					<?php foreach($this->chairmen as $user):?>
+						<li>
+							<a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
+							<span><?=$user->title;?></span>
+							<?php if($this->access->is_admin || $this->access->type >= 1):?>
+								<div class="btn-group">
+									<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+										Action <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
+									</ul>
+								</div>
+							<?php endif;?>
+						</li>
+					<?php endforeach;?>
+				</ul>
+				<h2>Stjórnendur (<?=count($this->managers)?>)</h2>
+				<ul>
+					<?php foreach($this->managers as $user):?>
+						<li>
+							<a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
+							<span><?=$user->title;?></span>
+							<?php if($this->access->is_admin || $this->access->type >= 1):?>
+								<div class="btn-group">
+									<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+										Action <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>2,'user_id'=>$user->id))?>">Gera að formanni</a></li>
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
+									</ul>
+								</div>
+							<?php endif;?>
+						</li>
+					<?php endforeach;?>
+				</ul>
+			</div>
+			<div class="column">
+				<?php if($this->access->is_admin || $this->access->type != null):?>
+					<h2>Meðlimir (<?=count($this->users)?>)</h2>
+					<ul>
+						<?php foreach($this->users as $user):?>
+							<li>
+								<a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a> |
+								<span><?=$user->title;?></span>
+								<?php if($this->access->is_admin || $this->access->type >= 1):?>
+									<div class="btn-group">
+										<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+											Action <span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>2,'user_id'=>$user->id))?>">Gera að formanni</a></li>
+											<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
+										</ul>
+									</div>
+								<?php endif;?>
+							</li>
+						<?php endforeach;?>
+					</ul>
+				<?php endif;?>
+			</div>
+		</div>
+	</div>
+-->
 </div>
-<div class="row">
-    <h3>Markmið</h3>
-    <?=$this->paragrapher($this->group->objective); ?>
-    <h3>Hvað er <?=$this->group->name;?></h3>
-    <?=$this->paragrapher($this->group->how_operates); ?>
-    <h3>Hvernig starfar hópurinn</h3>
-    <?=$this->paragrapher($this->group->for_whom); ?>
-</div>
+
+
+
+
 <!--pre><?php print_r($this->group);?></pre-->
 <!--pre><?php print_r($this->news);?></pre-->
 <!--pre><?php print_r($this->events);?></pre-->

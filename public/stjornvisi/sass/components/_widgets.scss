@@ -9,6 +9,7 @@
 @import "compass/utilities/sprites";
 
 $arrow-icons: sprite-map("arrows/*.png",$spacing: 40px);
+$mime-icons: sprite-map("mime/*.png",$spacing: 40px);
 
   //
   // everything that has this structure
@@ -138,6 +139,33 @@ $arrow-icons: sprite-map("arrows/*.png",$spacing: 40px);
         //height: 80px; //todo this should not be here
       }
     }
+  }
+
+  %resources-list{
+	  li{
+			//border-bottom: 1px solid $color-gray;
+			padding: rhythm(1/4,$font-middle-size) 0;
+		  a{
+			  font-family: open-sans;
+			  text-transform: lowercase;
+			  color: $color-sea;
+			  @include adjust-font-size-to($font-middle-size,1,$font-base-size);
+			  background-image: $mime-icons;
+			  background-position: sprite-position($mime-icons, default, 0px,2px);
+			  background-repeat: no-repeat;
+			  padding-left: rhythm(1.5);
+		  }
+		  a[href$=pdf],a[href$=PDF]{
+			  background-position: sprite-position($mime-icons, pdf, 0px,2px);
+		  }
+		  a[href$=xsl],a[href$=XSL],a[href$=xslx],a[href$=XSLX]{
+			  background-position: sprite-position($mime-icons, xsl, 0px,2px);
+		  }
+		  a[href$=jpg],a[href$=jpeg],a[href$=JPG],a[href$=JPEG],
+		  a[href$=png],a[href$=gif],a[href$=PNG],a[href$=GIF]{
+			  background-position: sprite-position($mime-icons, image, 0px,2px);
+		  }
+	  }
   }
 
 
@@ -413,3 +441,27 @@ $arrow-icons: sprite-map("arrows/*.png",$spacing: 40px);
       }
     }
   }
+
+
+
+// - - - -
+	.btn-group{
+		background-color: $color-sea;
+		padding: $padding/2;
+
+		ul.dropdown-menu{
+			li{
+				padding: rhythm(.25) 0;
+				a{
+					font-family: open-sans;
+					color: $color-white;
+				}
+			}
+			li.divider{
+				border-bottom: 1px solid tint($color-sea,10%);
+				border-top: 1px solid shade($color-sea,10%);
+				padding: 0;
+			}
+		}
+
+	}
