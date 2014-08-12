@@ -11,3 +11,265 @@
   .index-resources-list{
     @extend %category-label;
   }
+
+	/*  Below is a brute-force attempt for the index page, since we are in a time crisis */
+	.layout-footer{
+		@include clearfix;
+		padding: 40px 70px;
+		a{
+			color: $color-yellow;
+		}
+
+		a:hover{
+			color: $color-red;
+		}
+
+		.address{
+			width: 33%;
+			color: $color-white;
+			float: left;
+
+			h1{
+				font-weight: bolder;
+				text-transform: uppercase;
+			}
+		}
+
+		.links{
+			width: 33%;
+			float: left;
+			font-family: 'open-sans';
+			font-weight: normal;
+		}
+	}
+
+	.hero{
+		background: url('../frontpage/header-image.jpg') no-repeat;
+		height: 700px;
+		background-size: cover;
+		margin-bottom: 30px;
+
+		h1{
+			color: $color-white;
+			font-family: 'open-sans';
+			font-weight: bold;
+
+			text-transform: uppercase;
+			font-size: 12px;
+			text-align: center;
+			margin-top: -25px;
+			margin-bottom: 40px;
+		}
+
+		h2{
+			color: $color-white;
+			font-family: 'bitter';
+			font-weight: bold;
+			font-size: 36px;
+			text-align: center;
+			line-height: 36px;
+			border-bottom: 1px solid $color-light-gray;
+		}
+
+		.logo{
+			img{
+				display: block;
+				margin-left: auto;
+				margin-right: auto;
+				padding-top: 30px;
+			}
+		}
+
+		.text{
+			margin: 0 auto;
+			max-width: 800px;
+		}
+	}
+
+	main.frontpage{
+		padding-left: 0;
+		background-color: $color-blue-gray;
+	}
+
+	.btn{
+		border: 1px solid;
+		text-transform: none;
+		font-family: 'open-sans';
+		font-weight: bold;
+		font-size: 14px;
+		text-transform: uppercase;
+		padding: 15px 20px;
+		@include border-radius(3px);
+	}
+
+	.btn-green{
+		background-color: $color-green;
+		color: $color-white;
+		border-color: $color-green;
+		border-bottom-color: $color-dark-green;
+	}
+
+	.btn-facebook{
+		background-color: $color-fbblue;
+		color: $color-white;
+		border-color: $color-fbblue;
+	}
+
+	.btn-across{
+		display: block;
+		text-align: center;
+	}
+
+	.btn-white{
+		background-color: $color-white;
+		color: $color-black;
+		border-color: $color-gray;
+
+	}
+
+	.login-buttons{
+		margin-bottom:25px;
+		text-align: center;
+		margin: 0 auto;
+	}
+
+	.callout{
+		max-width: 980px;
+		margin: 0 auto;
+
+		h1{
+			font-family: 'bitter';
+			font-weight: bold;
+			font-size: 24px;
+			margin-bottom: 30px;
+		}
+
+		p{
+			font-family: Georgia;
+			margin-bottom: 60px;
+		}
+
+		.text{
+			padding: 110px;
+			text-align: center;
+		}
+	}
+
+	.callout-two{
+		background-color: $color-white;
+		border: 1px solid grey;
+		margin: 0 auto;
+		margin-bottom: 60px;
+
+		.img{
+			background: url('../frontpage/faghopar.jpg') no-repeat;
+			height: 700px;
+			background-size: cover;
+		}
+	}
+
+	.news-events{
+		background-color: $color-white;
+		border: 1px solid grey;
+		margin: 0 auto;
+		margin-bottom: 60px;
+		max-width: 980px;
+		@include clearfix;
+		padding: 60px;
+
+		.col-md-6{
+			width: 50%;
+			float: left;
+		}
+
+		h1{
+			font-family: 'open-sans';
+			font-size: 14px;
+			color: $color-sea;
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+
+
+	}
+
+	.single-article{
+		.img-text-wrapper{
+			@include clearfix;
+			margin-bottom: 60px;
+
+			figure{
+				width: 130px;
+				height: 130px;
+				margin-right: 20px;
+				margin-bottom: 20px;
+			}
+		}
+
+		width: 100%;
+
+		h2{
+			font-family: 'bitter';
+			font-size: 24px;
+
+			a{
+				color: $color-black;
+			}
+		}
+
+		figure{
+			float: left;
+
+		}
+
+		.text{
+			float: left;
+		}
+	}
+
+	.col-md-6.first{
+		padding-right: 30px;
+	}
+
+	.col-md-6.last7{
+		padding-left: 30px;
+	}
+
+	.image-boxes{
+		@include clearfix;
+
+		.box,
+		.box-half{
+			float: left;
+		}
+
+		.box{
+			width: 25%;
+		}
+
+		.box-half{
+			width: 12.5%;
+		}
+
+		.box-four{
+			img{
+				width: 50%;
+				height: 50%;
+				float: left;
+			}
+		}
+
+		.box-two{
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		.box-large,{
+			img{
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
