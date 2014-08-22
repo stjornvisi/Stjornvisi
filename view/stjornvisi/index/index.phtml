@@ -99,84 +99,112 @@
 	</div>
 
 <?php else:?>
-	<div>
-		<h1>Stjónvísi</h1>
-		<h2>Félag um framsækna stjónun</h2>
-		<hr />
-	</div>
-	<div class="frontpage-panel">
-		<h2><strong>Stjórnvísi</strong> er stærsta stjórnunarfélag á Íslandi
-			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h2>
-		<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://localhost:8080/callback" class="btn btn-primary">Facebook innskráning</a> |
-		<a href="<?=$this->url('auth-in')?>" class="btn btn-default">Innskráning</a> |
-		<a href="" class="btn btn-success">Stofna aðgang</a>
-		<hr />
-	</div>
-
-	<div class="frontpage-panel">
-		<h2><strong>Stjórnvísi</strong> er með kjarnastarf sitt í kraftmikl­
-		um faghópum félagsmanna en jafnframt
-		stendur félagið fyrir almennum ráðstefnum,
-		viðburðum og verðlaunaveitingum í stjórnun.</h2>
-
-		<ul class="frontpage-group-list">
-			<?php foreach($this->groups as $group): ?>
-			<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
-			<?php endforeach;?>
-		</ul>
-
-		<hr />
-	</div>
-
-	<div class="frontpage-panel row">
-		<h2><strong>Stjórnvísi</strong> er áhugamannafélag í eigu félagsmanna
-			og starfar ekki með fjárhagslegan
-			ágóða í huga. Faghópar halda viðburði og skrifa fréttir</h2>
-		<div class="col-md-6">
-			<h4><a href="<?=$this->url('frettir/index',array('id'=>$this->news->id))?>"><?=$this->news->title?></a></h4>
-			<time><?=$this->news->created_date->format('Y-m-d')?></time>
-			<div>
-				<?php if($this->news->avatar):?>
-				<img src="/images/60/<?=$this->news->avatar?>" />
-				<?php endif;?>
-				<?=$this->paragrapher(mb_strcut($this->news->body,0,600))?>
-			</div>
-			<a href="<?=$this->url('frettir')?>" class="btn btn-danger">Allar fréttir</a>
+	<div class="hero">
+		<div class="logo">
+			<a href="/">
+				<img src="<?=$this->basePath("/frontpage/logo-frontpage.png")?>"  />
+			</a>
 		</div>
-		<div class="col-md-6">
-			<h4><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h4>
-			<time>
-				<?=$this->event->event_date->format('Y-m-d')?> |
-				<?=$this->event->event_time->format('H:i')?> -
-				<?=$this->event->event_end->format('H:i')?>
-			</time>
-			<ul>
-				<?php foreach($this->event->groups as $group):?>
-					<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
-				<?php endforeach;?>
-			</ul>
-			<div>
-			<?php if($this->event->avatar):?>
-				<img src="/images/60/<?=$this->event->avatar;?>" />
-			<?php endif;?>
-			<?=$this->paragrapher(mb_strcut($this->event->body,0,600))?>
-			</div>
+		<div class="text">
+			<h1>Félag um framsækna stjórnun</h1>
+			<h2>Stjórnvísi er stærsta stjórnunarfélag á Íslandi
+				með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h2>
+		</div>
+	</div>
+	<div class="login-buttons">
+		<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://localhost:8080/callback" class="btn btn-primary btn-facebook">Facebook innskráning</a>
+		<a href="<?=$this->url('auth-in')?>" class="btn btn-default btn-green">Innskráning</a>
+		<a href="" class="btn btn-success btn-green">Stofna aðgang</a>
+	</div>
 
-			<a href="<?=$this->url('vidburdir')?>" class="btn btn-danger">Allir viðburðir</a>
+	<div class="frontpage-panel callout callout-one">
+		<div class="text">
+			<h1>Stjórnvísi er opið öllum einstaklingum, fyrirtækjum og stofnunum sem hafa áhuga á stjórnun;
+			stjórnendum, sérfræðingum, nemendum og öðrum áhugamönnum um stjórnun.</h1>
+			<p>Stjórnvísi býður hagstæðustu símenntunina um stjórnun á markaðnum.  Stjórnvísi er með kjarnastarf
+			sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið fyrir almennum ráðstefnum, viðburðum
+			og verðlaunum um stjórnun.</p>
+			<a href="" class="btn btn-success btn-green">Kynntu þér starfssemi Stjórnvísi</a>
 		</div>
 	</div>
 
-	<div>
-		<h2><strong>Stjórnvísi</strong> er opið öllum einstaklingum,
-		fyrirtækjum og stofnunum sem hafa áhuga
-		á stjórnun; stjórnendum, sérfræðingum,
-		nemendum og öðrum áhugamönnum um
-		stjórnun.</h2>
-		<ul class="frontpage-gallery-list">
-			<?php foreach($this->gallery as $img): ?>
-			<li><img src="<?=$this->basePath("/images/300/{$img->name}")?>" title="<?=$img->description?>" /></li>
-			<?php endforeach;?>
-		</ul>
+	<div class="frontpage-panel row callout callout-two">
+		<div class="img"></div>
+		<div class="text">
+			<h1>Stjórnvísi er áhugamannafélag í eigu félagsmanna og starfar ekki með fjárhagslegan ágóða í huga.</h1>
+			<p>Stjórnvísi er með kjarastarf sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið
+			fyrir almennum ráðstefnum, viðburðum og verðlaunaveitingum í stjórnun.</p>
+			<a href="" class="btn btn-success btn-green">Kynntu þér faghópa innan Stjórnvísi</a>
+		</div>
+	</div>
+
+	<div class="news-events">
+		<div class="col-md-6 first">
+			<h1>Viðburðir</h1>
+			<?php if($this->event) : ?>
+				<time>
+					<?=$this->event->event_date->format('Y-m-d')?> |
+					<?=$this->event->event_time->format('H:i')?> -
+					<?=$this->event->event_end->format('H:i')?>
+				</time>
+				<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h2>
+
+
+				<ul>
+					<?php foreach($this->event->groups as $group):?>
+						<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
+					<?php endforeach;?>
+				</ul>
+				<div>
+					<?php if($this->event->avatar):?>
+						<img src="/images/60/<?=$this->event->avatar;?>" />
+					<?php endif;?>
+					<?=$this->paragrapher(mb_strcut($this->event->body,0,600))?>
+				</div>
+			<?php else : ?>
+				<h1>Engir viðburðir skráðir</h1>
+			<?php endif; ?>
+			<a href="<?=$this->url('vidburdir')?>" class="btn btn-across btn-white">Allir viðburðir</a>
+		</div>
+		<div class="col-md-6 last">
+			<h1>Fréttir</h1>
+			<article class="single-article">
+				<time><?=$this->news->created_date->format('d. M Y')?></time>
+
+				<h2><a href="<?=$this->url('frettir/index',array('id'=>$this->news->id))?>"><?=$this->news->title?></a></h2>
+				<div class="img-text-wrapper">
+					<figure>
+						<?php if($this->news->avatar):?>
+							<img src="/images/60/<?=$this->news->avatar?>" />
+						<?php endif;?>
+					</figure>
+					<?=$this->paragrapher(mb_strcut($this->news->body,0,600))?>
+				</div>
+			</article>
+			<a href="<?=$this->url('frettir')?>" class="btn btn-across btn-white">Yfirlit frétta og greina</a>
+		</div>
+	</div>
+	<div class="image-boxes">
+		<div class="box box-four">
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[0]->name}")?>" title="<?=$this->gallery[0]->description?>" />
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[1]->name}")?>" title="<?=$this->gallery[1]->description?>" />
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[2]->name}")?>" title="<?=$this->gallery[2]->description?>" />
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[3]->name}")?>" title="<?=$this->gallery[3]->description?>" />
+		</div>
+		<div class="box box-large">
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[4]->name}")?>" title="<?=$this->gallery[4]->description?>" />
+		</div>
+		<div class="box-half box-two">
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[5]->name}")?>" title="<?=$this->gallery[5]->description?>" />
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[6]->name}")?>" title="<?=$this->gallery[6]->description?>" />
+		</div>
+		<div class="box box-large">
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[7]->name}")?>" title="<?=$this->gallery[7]->description?>" />
+		</div>
+		<div class="box-half box-two">
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[8]->name}")?>" title="<?=$this->gallery[8]->description?>" />
+			<img src="<?=$this->basePath("/images/300/{$this->gallery[9]->name}")?>" title="<?=$this->gallery[9]->description?>" />
+		</div>
 	</div>
 
 

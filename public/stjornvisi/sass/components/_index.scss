@@ -16,6 +16,7 @@
 	.layout-footer{
 		@include clearfix;
 		padding: 40px 70px;
+
 		a{
 			color: $color-yellow;
 		}
@@ -45,20 +46,19 @@
 
 	.hero{
 		background: url('../frontpage/header-image.jpg') no-repeat;
-		height: 700px;
-		background-size: cover;
-		margin-bottom: 30px;
+		height: 640px;
+		background-size: 120% auto;
 
 		h1{
 			color: $color-white;
 			font-family: 'open-sans';
 			font-weight: bold;
-
+			text-shadow:1px 1px rgba(0,0,0,0.5);
 			text-transform: uppercase;
 			font-size: 12px;
 			text-align: center;
-			margin-top: -25px;
-			margin-bottom: 40px;
+			margin-top: -20px;
+			margin-bottom: 80px;
 		}
 
 		h2{
@@ -67,8 +67,8 @@
 			font-weight: bold;
 			font-size: 36px;
 			text-align: center;
-			line-height: 36px;
-			border-bottom: 1px solid $color-light-gray;
+			line-height: 48px;
+			text-shadow:1px 1px rgba(0,0,0,0.5);
 		}
 
 		.logo{
@@ -98,7 +98,8 @@
 		font-weight: bold;
 		font-size: 14px;
 		text-transform: uppercase;
-		padding: 15px 20px;
+		padding: 11px 20px;
+		margin:0 10px;
 		@include border-radius(3px);
 	}
 
@@ -110,7 +111,8 @@
 	}
 
 	.btn-facebook{
-		background-color: $color-fbblue;
+		background: url('img/facebook-f.png') 20px bottom no-repeat $color-fbblue;
+		padding-left:60px;
 		color: $color-white;
 		border-color: $color-fbblue;
 	}
@@ -128,9 +130,13 @@
 	}
 
 	.login-buttons{
-		margin-bottom:25px;
+		margin-bottom: 25px;
 		text-align: center;
-		margin: 0 auto;
+		margin: 0px auto;
+		height: 95px;
+		padding-top: 35px;
+		box-shadow: 1px 0px 15px rgba(0,0,0,0.25);
+		background-color: white;
 	}
 
 	.callout{
@@ -142,6 +148,8 @@
 			font-weight: bold;
 			font-size: 24px;
 			margin-bottom: 30px;
+			line-height:36px;
+			color:$color-black;
 		}
 
 		p{
@@ -153,11 +161,16 @@
 			padding: 110px;
 			text-align: center;
 		}
+
+		.btn {
+			width: 360px;
+			display: inline-block;
+		}
 	}
 
 	.callout-two{
 		background-color: $color-white;
-		border: 1px solid grey;
+		border: 1px solid $color-gray;
 		margin: 0 auto;
 		margin-bottom: 60px;
 
@@ -165,12 +178,24 @@
 			background: url('../frontpage/faghopar.jpg') no-repeat;
 			height: 700px;
 			background-size: cover;
+			&:after {
+				content:"";
+				@include gradient(0deg, white);
+				height: 100%;
+				width: 100%;
+				bottom: 0;
+				display: inherit;
+			}
+		}
+		.text {
+			//box-shadow: 0px -10px 60px 60px white;
+			padding-top:25px;
 		}
 	}
 
 	.news-events{
 		background-color: $color-white;
-		border: 1px solid grey;
+		border: 1px solid $color-light-gray;
 		margin: 0 auto;
 		margin-bottom: 60px;
 		max-width: 980px;
@@ -237,39 +262,34 @@
 
 	.image-boxes{
 		@include clearfix;
+		width:100%;
 
-		.box,
-		.box-half{
-			float: left;
+		.box-large {width:25%; float:left;height:250px;}
+		.box-two {width:12.5%; float:left; height:250px;}
+		.img_big, .img_medium {
+			background-size:cover;
+			background-repeat:no-repeat;
 		}
+		.img_medium {width:100%; height:50%;}
+		.img_big {width:100%; height:100%;}
+	}
 
-		.box{
-			width: 25%;
-		}
-
-		.box-half{
-			width: 12.5%;
-		}
-
-		.box-four{
-			img{
-				width: 50%;
-				height: 50%;
-				float: left;
-			}
-		}
-
-		.box-two{
-			img{
-				width: 100%;
-				height: 100%;
-			}
-		}
-
-		.box-large,{
-			img{
-				width: 100%;
-				height: 100%;
-			}
+	.not-logged-in{
+		nav{
+			display: none;
 		}
 	}
+
+	.layout-content,
+	#editable-static-page-container{
+		max-width: 980px;
+		margin: 0 auto;
+	}
+
+	.frontpage{
+		header{
+			display: none;
+		}
+	}
+
+	/* Login section */

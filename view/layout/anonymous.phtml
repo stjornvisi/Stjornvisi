@@ -1,4 +1,5 @@
 <?php echo $this->doctype(); ?>
+<?php setlocale(LC_ALL, 'is_IS.utf8' ); ?>
 
 <html lang="en">
 <head>
@@ -48,8 +49,8 @@
 	<?=$this->subMenu()?>
 </nav>
 
-<main class="layout-main">
-	<header class="page-header">
+<main class="layout-main frontpage">
+	<!--header class="page-header">
 		<h1 class="page-brand"><a href="<?php echo $this->url('home') ?>">Stjórnvísi</a></h1>
 		<ul class="page-main-menu">
 			<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
@@ -60,12 +61,20 @@
 			<input name="q" class="typeahead" type="search" placeholder="Leit..." />
 			<input type="submit" value="leita">
 		</form>
-	</header>
+	</header-->
 
 	<?php echo $this->content; ?>
 
 	<footer class="layout-footer">
-		<ul>
+		<div class="address">
+			<h1>Stjórnvísi</h1>
+			<p>Innovation house</p>
+			<p>Eiðistorgi 13-17 170 Seltjarnarnes</p>
+			<p>Kt: 650686-1609</p>
+			<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
+			<p>Sími: 533-5666 Gsm: 840-4990</p>
+		</div>
+		<ul class="links middle">
 			<li><a href="/um">Um Stjórnvísi</a></li>
 			<li><a href="/stjornin">Stjórnin</a></li>
 			<li><a href="/log-arsskyrslur-og-arsreikningar">Lög, ársskýrslur og ársreikningar</a></li>
@@ -73,7 +82,7 @@
 			<li><a href="/kennsla">Handbók vefsins og kennslumyndbönd</a></li>
 			<li><a href="/fyrirtaeki">Fyrirtæki innan Stjórnvísi</a></li>
 		</ul>
-		<ul>
+		<ul class="links right">
 			<li><a href="<?php echo $this->url('notandi') ?>">Notendur</a></li>
 			<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
 			<li><a href="<?php echo $this->url('stjornin') ?>">Stjórn</a></li>

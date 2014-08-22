@@ -355,9 +355,9 @@ $mime-icons: sprite-map("mime/*.png",$spacing: 40px);
           font:0/0 a;
         }
         a.prev{background-position: sprite-position($arrow-icons, simple-left,10px,10px);}
-        a.prev:hover{background-position: sprite-position($arrow-icons, simple-left-hover,10px,10px);}
+        a.prev:hover{background-position: sprite-position($arrow-icons, simple-right-hover,10px,10px);}
         a.next{background-position: sprite-position($arrow-icons, simple-right,10px,10px);}
-        a.next:hover{background-position: sprite-position($arrow-icons, simple-right-hover,10px,10px);}
+        a.next:hover{background-position: sprite-position($arrow-icons, simple-left-hover,10px,10px);}
         a:hover{
           background-color: $color-gray;
         }
