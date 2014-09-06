@@ -1546,6 +1546,7 @@ main.frontpage {
 .image-boxes .img_big, .image-boxes .img_medium {
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
 }
 /* line 273, ../sass/components/_index.scss */
 .image-boxes .img_medium {
