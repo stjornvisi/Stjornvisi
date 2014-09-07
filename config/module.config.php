@@ -20,6 +20,16 @@ return array(
                     ),
                 ),
             ),
+			'group-overview' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/yfirlit-faghopa',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Index',
+						'action'     => 'group-overview',
+					),
+				),
+			),
             'rss' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
