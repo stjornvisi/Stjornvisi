@@ -71,7 +71,7 @@
 								<ul class="news-groups-list">
 									<li>
 										<?php if( $news->group_id ):?>
-										<a href="<?=$this->url('hopur/index',array('id',$news->group->url))?>"><?=$news->group->name_short?></a>
+										<a href="<?=$this->url('hopur/index',array('id' => $news->group->url))?>"><?=$news->group->name_short?></a>
 										<?php else:?>
 										<span>Stjórnvísi</span>
 										<?php endif;?>
