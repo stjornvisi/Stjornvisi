@@ -71,8 +71,8 @@ class GroupController extends AbstractActionController{
                 //  stjornvisi calendar
                 if( $monthInt >= 9 ){
                     $from = new \DateTime($yearInt.'-09-01 00:00:00');
-                    $to = new \DateTime(($yearInt+1).'-31 23:59:00');
-                //IN THE 1st HALD
+                    $to = new \DateTime(($yearInt+1).'-08-31 23:59:00');
+                //IN THE 1st HALF
                 //  user is in the first half of the
                 //  stjornvisi calendar
                 }else{
