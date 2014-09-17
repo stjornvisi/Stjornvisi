@@ -90,7 +90,7 @@ class Module{
 					$manager->attach( new ServiceIndexListener($index) );
                     return $manager;
                 },
-				'Search\Index\Search' => function(){
+				/*'Search\Index\Search' => function(){
 					$index = null;
 					try{
 						$index = \ZendSearch\Lucene\Lucene::open('./data/search/');
@@ -98,7 +98,7 @@ class Module{
 						$index = \ZendSearch\Lucene\Lucene::create('./data/search/');
 					}
 					return $index;
-				},
+				},*/
                 'CsvStrategy' => 'Stjornvisi\View\Strategy\CsvFactory',
                 'Stjornvisi\Service\Values' => function($sm){
                     return new Values();
