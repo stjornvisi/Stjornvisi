@@ -9,13 +9,23 @@
 namespace Stjornvisi\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
+use \Parsedown;
 
 class Paragrapher extends AbstractHelper{
 
+	private static $parser;
+
     public function __invoke($value){
-        if( $value=='' ){
+		if( $value=='' ){
             return '';
         }
+		//SINGLE INSTANCE
+		//	only create one instance of Parser
+		if( !self::$parser ){
+			self::$parser = new Parsedown();
+		}
+		return self::$parser->text($value);
+		/*
         $value = trim($value);
         $txt = preg_replace(
             '/(?<!S)((http(s?):\/\/)|(www.))+([\w.1-9\&=#?\-~%;\/]+)/',
@@ -28,5 +38,6 @@ class Paragrapher extends AbstractHelper{
         $html = str_replace("</p>","</p>\n\n",$html);
         $html = str_replace("<p></p>","<p>&nbsp;</p>",$html);
         return $html;
+		*/
     }
 } 

@@ -3,8 +3,8 @@
 	<div class="section-aside-grid">
 		<section class="row half">
 			<div class="column index-event-list">
-			<h1>Viðburðir</h1>
-			<ul class="item-list theme-white">
+				<h1>Viðburðir</h1>
+				<ul class="item-list theme-white">
 				<?php foreach( $this->events as $event ):?>
 					<li>
 						<article class="event">
@@ -47,11 +47,11 @@
 					</li>
 				<?php endforeach;?>
 			</ul>
-		</div>
+			</div>
 
 			<div class="column index-news-list">
-			<h1>Fréttir</h1>
-			<ul class="item-list theme-white">
+				<h1>Fréttir</h1>
+				<ul class="item-list theme-white">
 				<?php foreach( $this->news as $news ):?>
 					<li>
 						<article class="news">
@@ -65,7 +65,7 @@
 									<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
 								</a>
 								<?php endif;?>
-								<?=$this->paragrapher($news->body);?>
+								<?=$this->paragrapher( mb_substr($news->body,0,250).'&#8230;'  );?>
 							</section>
 							<aside>
 								<ul class="news-groups-list">
@@ -83,7 +83,7 @@
 					</li>
 				<?php endforeach;?>
 			</ul>
-		</div>
+			</div>
 		</section>
 		<aside class="index-resources-list">
 			<h1>Fylgiskrár</h1>
