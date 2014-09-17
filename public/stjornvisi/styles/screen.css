@@ -1576,5 +1576,6 @@ main.frontpage {
   display: none;
 }
 body{
+  background: red;
   color:yellow;
 }
