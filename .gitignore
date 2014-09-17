@@ -12,6 +12,6 @@ vendor/
 *.sublime-workspace
 
 public/stjornvisi/vendor/*
-public/stjornvisi/images/*
+public/stjornvisi/images/
 .sass-cache
 .sass-cache/*
