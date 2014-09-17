@@ -84,10 +84,10 @@ class Module{
                 },
                 'ServiceEventManager' => function($sm){
                     $logger = $sm->get('Logger');
-					$index = $sm->get('Search\Index\Search');
+					//$index = $sm->get('Search\Index\Search');
                     $manager = new EventManager();
 					$manager->attach( new ServiceEventListener($logger) );
-					$manager->attach( new ServiceIndexListener($index) );
+					//$manager->attach( new ServiceIndexListener($index) );
                     return $manager;
                 },
 				/*'Search\Index\Search' => function(){
