@@ -1,0 +1,40 @@
+
+	$base-font-size: 16px;
+	$base-line-height: 24px;
+	@include establish-baseline;
+
+	*,*:before,*:after{
+		@include box-sizing(border-box);
+	}
+	body{
+		-webkit-font-smoothing: antialiased;
+		font-family: $font-family-serif;
+		font-weight: $font-weight-normal;
+		color: $color-gray-dark;
+	}
+	a,a:hover{
+		text-decoration: none;
+		color: $color-gray-dark;
+	}
+	h1,h2,h3,h4{
+		font-family: $font-family-sans-serif;
+		color: $color-gray-black;
+		font-weight: $font-weight-bold;
+	}
+
+
+
+	//FOOTER
+	//	main footer
+	footer[role=footer]{
+		@include pie-clearfix;
+		color: $color-white;
+		font-family: $font-family-sans-serif;
+		background-color: $color-gray-black;
+		padding: $gutter;
+		> div{ width: 33.333%; float: left; }
+		> ul{ width: 33.333%; float: left; }
+		h1{
+			color: $color-white;
+		}
+	}

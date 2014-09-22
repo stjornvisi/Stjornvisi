@@ -10,6 +10,7 @@ composer.lock
 vendor/
 *.sublime-project
 *.sublime-workspace
+*.psd
 
 public/stjornvisi/vendor/*
 public/stjornvisi/images/

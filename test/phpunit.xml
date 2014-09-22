@@ -25,4 +25,11 @@
              yui="true" highlight="true" lowUpperBound="50" highLowerBound="80"/>
         <log type="testdox-html" target="../docs/tests/testdox.html" />
     </logging>
+
+
+    <listeners>
+        <!--listener class="Stjornvisi\Lib\TestListener" file="../src/Stjornvisi/Lib/TestListener.php"></listener-->
+    </listeners>
+
+
 </phpunit>

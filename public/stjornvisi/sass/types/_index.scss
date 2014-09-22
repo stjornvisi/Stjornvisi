@@ -1,0 +1,19 @@
+
+.section-aside-grid{
+	@include pie-clearfix;
+	padding: $gutter;
+	> section, > aside{
+		float: left;
+	}
+	> section{
+		width: 70%;
+		@include pie-clearfix;
+		> div{
+			float: left;
+			width: 50%;
+		}
+	}
+	> aside{
+		width: 30%;
+	}
+}

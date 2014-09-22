@@ -18,7 +18,7 @@
 									<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" alt="mynd með viðburði" />
 								</a>
 								<?php endif;?>
-								<?=$this->paragrapher($event->body);?>
+								<?=$this->paragrapher( mb_substr($event->body,0,250,'utf-8').'&#8230;'  );?>
 							</section>
 							<aside>
 								<ul class="event-groups-list">
@@ -65,7 +65,7 @@
 									<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
 								</a>
 								<?php endif;?>
-								<?=$this->paragrapher( mb_substr($news->body,0,250).'&#8230;'  );?>
+								<?=$this->paragrapher( mb_substr($news->body,0,250,'utf-8').'&#8230;'  );?>
 							</section>
 							<aside>
 								<ul class="news-groups-list">
@@ -100,21 +100,17 @@
 
 <?php else:?>
 	<div class="hero">
-		<div class="logo">
-			<a href="/">
-				<img src="<?=$this->basePath("/frontpage/logo-frontpage.png")?>"  />
-			</a>
-		</div>
-		<div class="text">
-			<h1>Félag um framsækna stjórnun</h1>
-			<h2>Stjórnvísi er stærsta stjórnunarfélag á Íslandi
-				með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h2>
-		</div>
+		<a href="/">
+			<img src="<?=$this->basePath("/frontpage/logo-frontpage.png")?>"  />
+		</a>
+		<h1>Félag um framsækna stjórnun</h1>
+		<h2>Stjórnvísi er stærsta stjórnunarfélag á Íslandi
+			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h2>
 	</div>
 	<div class="login-buttons">
-		<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://localhost:8080/callback" class="btn btn-primary btn-facebook">Facebook innskráning</a>
-		<a href="<?=$this->url('auth-in')?>" class="btn btn-default btn-green">Innskráning</a>
-		<a href="" class="btn btn-success btn-green">Stofna aðgang</a>
+		<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://localhost:8080/callback" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>Facebook innskráning</a>
+		<a href="<?=$this->url('auth-in')?>" class="btn btn-default">Innskráning</a>
+		<a href="" class="btn btn-success">Stofna aðgang</a>
 	</div>
 
 	<div class="frontpage-panel callout callout-one">

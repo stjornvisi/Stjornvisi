@@ -4,9 +4,9 @@
 // - - - [EVENT ENTRY]- - - - - - - - - - - - - - - - - - - - - - - -
 
   article.event{
-    @extend %entry;
+	  @extend %entry;
     ul.event-groups-list{
-      @extend %dot-split-list;
+		@extend %dot-split-list;
     }
   }
 	article.event.archived{
@@ -16,15 +16,15 @@
 // - - - [EVENT ENTRY IN LIST]- - - - - - - - - - - - - - - - - - - - - - - -
 
   li.event{
-    @extend %list-entry;
+	  @extend %list-entry;
     ul.event-groups-list{
-      @extend %dot-split-list;
+	@extend %dot-split-list;
     }
   }
 
   ul.event-gallery-list{
-    @extend %gallery-list;
-	  margin: -$padding/4;
+	  @extend %gallery-list;
+	  margin: - $gutter / 4;
   }
   ul.event-resources-list{
 	  @extend %resources-list;
@@ -39,25 +39,25 @@
 
   }
   div.event-event-meta{
-	@extend %category-label;
+	  @extend %category-label;
   }
 
 
 	.event-event-meta-gallery{
-		@include trailer(1,$font-base-size);
+		@include trailer(1,$font-size-base);
 		h1{
-			@include trailer(1/2,$font-middle-size);
+			@include trailer(1/2,$font-size-small);
 		}
 	}
 	.event-event-meta-map{
-		@include trailer(1,$font-base-size);
+		@include trailer(1,$font-size-base);
 		h1{
-			@include trailer(1/2,$font-middle-size);
+			@include trailer(1/2,$font-size-small);
 		}
 	}
 	.event-event-meta-resources{
-		@include trailer(1,$font-base-size);
+		@include trailer(1,$font-size-base);
 		h1{
-			@include trailer(1/2,$font-middle-size);
+			@include trailer(1/2,$font-size-small);
 		}
 	}

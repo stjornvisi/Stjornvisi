@@ -1,0 +1,236 @@
+
+
+main.frontpage{
+	background-color: $color-blue-gray;
+
+	//HERO
+	//	big image at the top of the initial landing page
+	.hero{
+		background: url('../frontpage/header-image.jpg') no-repeat;
+		height: 640px;
+		background-size: cover;
+		padding: rhythm(2,$font-size-base);
+		a{
+			display: block;
+			max-width: $container-max;
+			margin: auto;
+			text-align: center;
+		}
+		h1,h2{
+			color: $color-white;
+			font-family: $font-family-sans-serif;
+			text-shadow: 1px 3px 5px rgba(0,0,0,0.5);
+			max-width: $container-max;
+			margin: auto;
+			font-weight: $font-weight-bold;
+			text-align: center;
+		}
+
+		h1{
+			text-transform: uppercase;
+			font-size: 12px;
+		}
+
+		h2{
+			@include adjust-font-size-to($font-headline-large,2,$font-size-base);
+			@include margin-leader(1,$font-size-base);
+			@include margin-trailer(1,$font-size-base);
+		}
+
+	}
+
+	//LOGIN
+	//	strip below here that contains login
+	//	buttons and new account creation.
+	.login-buttons{
+		padding: rhythm(1,$font-size-base);
+		background-color: $color-white;
+		box-shadow: 1px 0px 15px rgba(0,0,0,0.25);
+		text-align: center;
+		a.btn-facebook i{
+			padding-right: rhythm(1,$font-size-base);
+		}
+	}
+
+
+	//BUTTONS
+	//	all of them buttons
+	.btn{
+		@include inline-block;
+		font-family: $font-family-sans-serif;
+		font-weight: $font-weight-bold;
+		padding: rhythm(1/2,$font-size-base) rhythm(1,$font-size-base);
+
+		&.btn-default{
+			color: $color-white;
+			background-color: $color-green;
+			border-bottom: 2px solid shade($color-green,20%);
+		}
+		&.btn-success{
+			color: $color-white;
+			background-color: $color-green;
+			border-bottom: 2px solid shade($color-green,20%);
+		}
+		&.btn-facebook{
+			color: $color-white;
+			background-color: $color-fbblue;
+			border-bottom: 2px solid shade($color-fbblue,20%);
+		}
+	}
+
+}
+
+.callout{
+	max-width: 980px;
+	margin: 0 auto;
+
+	h1{
+		font-family: 'bitter';
+		font-weight: bold;
+		font-size: 24px;
+		margin-bottom: 30px;
+		line-height:36px;
+		color:$color-black;
+	}
+
+	p{
+		font-family: Georgia;
+		margin-bottom: 60px;
+	}
+
+	.text{
+		padding: 110px;
+		text-align: center;
+	}
+
+	.btn {
+		width: 360px;
+		display: inline-block;
+	}
+}
+
+.callout-two{
+	background-color: $color-white;
+	border: 1px solid $color-gray;
+	margin: 0 auto;
+	margin-bottom: 60px;
+
+	.img{
+		background: url('../frontpage/faghopar.jpg') no-repeat;
+		height: 700px;
+		background-size: cover;
+		&:after {
+			content:"";
+			//@include gradient(0deg, white);
+			height: 100%;
+			width: 100%;
+			bottom: 0;
+			display: inherit;
+		}
+	}
+	.text {
+		//box-shadow: 0px -10px 60px 60px white;
+		padding-top:25px;
+	}
+}
+
+.news-events{
+	background-color: $color-white;
+	border: 1px solid $color-light-gray;
+	margin: 0 auto;
+	margin-bottom: 60px;
+	max-width: 980px;
+	@include clearfix;
+	padding: 60px;
+
+	.col-md-6{
+		width: 50%;
+		float: left;
+	}
+
+	h1{
+		font-family: 'open-sans';
+		font-size: 14px;
+		color: $color-sea;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+
+
+}
+
+.single-article{
+	.img-text-wrapper{
+		@include clearfix;
+		margin-bottom: 60px;
+
+		figure{
+			width: 130px;
+			height: 130px;
+			margin-right: 20px;
+			margin-bottom: 20px;
+		}
+	}
+
+	width: 100%;
+
+	h2{
+		font-family: 'bitter';
+		font-size: 24px;
+
+		a{
+			color: $color-black;
+		}
+	}
+
+	figure{
+		float: left;
+
+	}
+
+	.text{
+		float: left;
+	}
+}
+
+.col-md-6.first{
+	padding-right: 30px;
+}
+
+.col-md-6.last7{
+	padding-left: 30px;
+}
+
+.image-boxes{
+	@include clearfix;
+	width:100%;
+
+	.box-large {width:25%; float:left;height:250px;}
+	.box-two {width:12.5%; float:left; height:250px;}
+	.img_big, .img_medium {
+		background-size:cover;
+		background-repeat:no-repeat;
+	}
+	.img_medium {width:100%; height:50%;}
+	.img_big {width:100%; height:100%;}
+}
+
+.not-logged-in{
+	nav{
+		display: none;
+	}
+}
+
+.layout-content,
+#editable-static-page-container{
+	max-width: 980px;
+	margin: 0 auto;
+}
+
+.frontpage{
+	header{
+		display: none;
+	}
+}
+
+/* Login section */

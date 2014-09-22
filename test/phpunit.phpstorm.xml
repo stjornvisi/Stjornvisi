@@ -2,5 +2,8 @@
 
 <phpunit bootstrap="Bootstrap.php" colors="false">
 
+    <listeners>
+        <listener class="Stjornvisi\Lib\TestListener" file="../src/Stjornvisi/Lib/TestListener.php"></listener>
+    </listeners>
 
 </phpunit>

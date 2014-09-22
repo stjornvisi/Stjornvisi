@@ -1,0 +1,200 @@
+
+	body.logged-in{
+
+		//MENU OPEN
+		//	main menu is open
+		&.menu{
+			overflow: hidden;
+			nav[role=navigation]{
+				left: 0px;
+				@include box-shadow(5px 0 10px 0px rgba($color-gray-black,.5));
+			}
+			main[role=main]{
+				@include transform( translate3d((300px),0,0) );
+			}
+		}
+
+		//MAIN
+		//	main content area
+		main[role=main]{
+			margin-left: $menu-border-size;
+			@include transition( all $animation-speed $animation-function );
+		}
+
+		//MAIN MENU
+		//	this is the main menu
+		nav[role=navigation]{
+			position: fixed;
+			width: 300px + $menu-border-size;
+			background-color: $color-sea;
+			top: 0;
+			left: -300px;
+			bottom: 0;
+			overflow-x: hidden;
+			overflow-y: auto;
+			z-index: 1;
+			@include transition(
+					left $animation-speed $animation-function,
+					box-shadow $animation-speed $animation-function
+			);
+			@include box-shadow(0px 0 0px 0px rgba($color-gray-black,.5));
+
+			//The categories strip
+			//	The strip on the left-hand-side
+			ul.categories{
+				background-color: $color-gray-black;
+				width: $menu-border-size;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				a{
+					color: $color-white;
+					display: block;
+					width: $menu-border-size;
+					height: $menu-border-size;
+					font-size: 0;
+				}
+				a:before{
+					font-family: 'icomoon';
+					speak: none;
+					font-style: normal;
+					font-weight: normal;
+					font-variant: normal;
+					text-transform: none;
+					line-height: 1;
+					/* Better Font Rendering =========== */
+					-webkit-font-smoothing: antialiased;
+					-moz-osx-font-smoothing: grayscale;
+					font-size: 20px;
+					display: block;
+					width: 100%;
+					text-align: center;
+					padding: $gutter;
+				}
+				a.control{
+					background-color: transparent;
+					border-bottom: 1px solid tint($color-gray-black,10%);
+					@include transition(
+							background-color $animation-speed $animation-function,
+							border-bottom $animation-speed $animation-function
+					);
+				}
+				a.control:hover, a.control.active{
+					background-color: $color-sea;
+					border-bottom: 1px solid $color-sea;
+				}
+				a.home{
+					background-color: $color-green;
+				}
+				a.home:before{
+					content: "\e603";
+				}
+				a.groups:before{
+					content: "\e600";
+				}
+				a.news:before{
+					content: "\e604";
+				}
+				a.events:before{
+					content: "\e604";
+				}
+				a.user:before{
+					content: "\e608";
+				}
+				a.config:before{
+					content: "\e602";
+				}
+			}
+
+			//THE LINK LIST
+			//	The actual categories links
+			ul.navigation{
+				position: absolute;
+				@include pie-clearfix;
+				top: 0;
+				right: $menu-border-size;
+				bottom: 0;
+				left: 0;
+				overflow: auto;
+				width: 600%;
+				margin-left: 0;
+
+				@include transition(margin-left $animation-speed $animation-function);
+				> li{
+					padding: rhythm(1,$font-size-base);
+					float: left;
+					width: (100% / 6);
+					> a{
+						@include margin-trailer(1,$font-size-base);
+						font-weight: $font-weight-bold;
+					}
+					a{
+						display: block;
+						font-family: $font-family-sans-serif;
+						color: $color-white;
+					}
+				}
+			}
+		}
+
+		//HEADER
+		//	menu header, the blue one that is at
+		//	the top of the page
+		header.page-header{
+			background-color: $color-blue;
+			display: table;
+			table-layout: fixed;
+			width: 100%;
+			h1,ul,form{
+				display: table-cell;
+			}
+			h1{
+				font: 0/0 a;
+				width: 205px;
+				background-image: url(images/logo-header.jpg);
+				background-position: center center;
+				background-repeat: no-repeat;
+			}
+			ul{
+				width: 100%;
+			}
+			form{
+				width: 350px;
+			}
+		}
+
+		//BRAND
+		//	The brand button at the top of
+		//	the page in the upper left corner, inside the header
+		h1.page-brand{
+			width: 206px;
+		}
+
+		//HEADER MENU
+		//	the horizontal menu in the blue header
+		ul.page-main-menu{
+			@include pie-clearfix;
+			li{
+				float: left;
+				a{
+					@include adjust-font-size-to($font-size-small,1,$font-size-base);
+					font-family: $font-family-sans-serif;
+					font-weight: $font-weight-bold;
+					color: $color-white;
+					text-transform: uppercase;
+					display: block;
+					padding: rhythm(1,$font-size-small);
+					border-right: 1px solid tint($color-blue,10%);
+				}
+			}
+
+		}
+
+	}
+
+
+
+
+
+

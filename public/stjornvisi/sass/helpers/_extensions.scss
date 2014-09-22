@@ -1,9 +1,168 @@
 
-	%category-label{
-		h1{
-			@include adjust-font-size-to($font-middle-size,1,$font-base-size);
-			color: $color-sea;
+//
+// everything that has this structure
+//
+//  <...>
+//    <header>
+//      <time>
+//      <h1><a>...</a></h1>
+//    </header>
+//    <section>...</section>
+//    <footer>...</footer>
+//  <...>
+//
+%entry{
+	header{
+		time{
 			text-transform: uppercase;
+			@include adjust-font-size-to( $font-size-smaller,1,$font-size-base );
+			font-family: $font-family-sans-serif
+		}
+		h1{
+			@include adjust-font-size-to( $font-headline-base,1.2,$font-size-base  );
+			/*@include breakpoint-to($resolution-small){
+				@include adjust-font-size-to($font-headline-small,1,$font-size-base);
+			}*/
 			font-weight: bold;
+			padding: rhythm(.5,$font-headline-base) 0;
+			a{
+				color: $color-black;
+			}
 		}
 	}
+	section{
+		@include pie-clearfix;
+		word-wrap: break-word;
+		img{
+			float: left;
+			margin: 0 rhythm(1) rhythm(1) 0;
+		}
+		a{
+			color: $color-sea;
+		}
+		a:hover{
+			text-decoration: underline;
+		}
+		p{
+			margin: 0 0 rhythm(.5,$font-size-base) 0;
+		}
+		p:last-of-type{
+			margin: 0;
+		}
+	}
+	footer{}
+}
+
+%list-entry{
+	time{
+		font-family: $font-family-sans-serif;
+		@include adjust-font-size-to($font-size-small,2,$font-size-base);
+	}
+	img{
+		width: 100%;
+		max-width: 100%;
+	}
+	h2{
+		font-weight: bold;
+		font-family: 'open-sans';
+		margin: rhythm(.25,$font-size-base) 0 rhythm(.5,$font-size-base) 0;
+		a{
+			color: $color-black;
+		}
+	}
+}
+
+//
+// List of a.href or span that are listed
+// horizontally. Between them is placed a dot
+//
+//
+%dot-split-list{
+	@include horizontal-list-container;
+	margin: rhythm(.5,$font-size-base) 0;
+	li{
+		@include horizontal-list-item;
+		a, span{
+			font-family: 'open-sans';
+			@include adjust-font-size-to($font-size-smaller,1,$font-size-base);
+			color: $color-sea;
+		}
+		a:after, span:after{
+			content: ' \2022';
+		}
+	}
+	li:last-child{
+		a:after, span:after{
+			content: none;
+		}
+	}
+}
+
+//
+//
+%gallery-list{
+	@include pie-clearfix;
+	//@include horizontal-list-container;
+	margin-left: - $gutter / 4;
+	margin-right: - $gutter / 4;
+	li{
+		float: left;
+		width: 25%;
+		padding: $gutter / 4;
+		/*
+		@include breakpoint-to(1024){
+			width: 33.33%;
+		}
+		@include breakpoint-to(960){
+			width: 50%;
+		}
+		@include breakpoint-to(650){
+			width: 100%;
+		}
+		*/
+		//@include horizontal-list-item;
+		img{
+			display: block;
+			border: 1px solid $color-gray;
+			padding: $gutter /6;
+			width: 100%;
+			//height: 80px; //todo this should not be here
+		}
+	}
+}
+
+%resources-list{
+	li{
+		//border-bottom: 1px solid $color-gray;
+		padding: rhythm(1/4,$font-size-small) 0;
+		a{
+			font-family: open-sans;
+			text-transform: lowercase;
+			color: $color-sea;
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			//background-image: $mime-icons;
+			//background-position: sprite-position($mime-icons, default, 0px,2px);
+			background-repeat: no-repeat;
+			padding-left: rhythm(1.5);
+		}
+		a[href$=pdf],a[href$=PDF]{
+			//background-position: sprite-position($mime-icons, pdf, 0px,2px);
+		}
+		a[href$=xsl],a[href$=XSL],a[href$=xslx],a[href$=XSLX]{
+			//background-position: sprite-position($mime-icons, xsl, 0px,2px);
+		}
+		a[href$=jpg],a[href$=jpeg],a[href$=JPG],a[href$=JPEG],
+		a[href$=png],a[href$=gif],a[href$=PNG],a[href$=GIF]{
+			//background-position: sprite-position($mime-icons, image, 0px,2px);
+		}
+	}
+}
+
+%category-label{
+	h1{
+		@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		color: $color-sea;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+}

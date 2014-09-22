@@ -1,7 +1,5 @@
 <?php echo $this->doctype(); ?>
-<?php setlocale(LC_ALL, 'is_IS.utf8' ); ?>
-
-<html lang="en">
+<html lang="is">
 <head>
 	<meta charset="utf-8">
 	<?php echo $this->headTitle('Stjórnvísi '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -19,15 +17,15 @@
 	)
 		//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap.min.css' )
 		//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap-theme.min.css' )
-		->appendStylesheet( $this->basePath() . '/styles/screen.css' )
-		->appendStylesheet( $this->basePath() . '/styles/ie.css','screen','IE 9')
-		->appendStylesheet( $this->basePath() . '/vendor/lightbox2/css/lightbox.css')
-		->appendStylesheet( $this->basePath() . '/vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css')
+		->appendStylesheet( $this->basePath() . '/stylesheets/screen.css' )
+		->appendStylesheet( $this->basePath() . '/stylesheets/ie.css','screen','IE 9')
+		//->appendStylesheet( $this->basePath() . '/vendor/lightbox2/css/lightbox.css')
+		//->appendStylesheet( $this->basePath() . '/vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css')
 
 	; ?>
 
 	<!-- Scripts -->
-	<?php echo $this->headScript()
+	<?php /*echo $this->headScript()
 		->appendFile($this->basePath() . '/scripts/ie.js', 'text/javascript', array('conditional' => 'IE 9',))
 		->appendFile($this->basePath() . '/vendor/respond/dest/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
 		->appendFile($this->basePath() . '/vendor/html5shiv-dist/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
@@ -39,18 +37,17 @@
 		->appendFile( $this->basePath() . '/vendor/jasny-bootstrap/dist/js/jasny-bootstrap.min.js' )
 
 		->appendFile($this->basePath() . '/scripts/common.js')
-	; ?>
-	<script type="text/javascript">document.createElement('main');</script>
+	; */?>
 </head>
-<body class="logged-in">
+<body class="logged-out">
 
 
-<nav class="layout-nav">
+<!--nav class="layout-nav">
 	<?=$this->subMenu()?>
-</nav>
+</nav-->
 
-<main class="layout-main frontpage">
-	<!--header class="page-header">
+<main role="main" class="frontpage">
+	<header class="page-header">
 		<h1 class="page-brand"><a href="<?php echo $this->url('home') ?>">Stjórnvísi</a></h1>
 		<ul class="page-main-menu">
 			<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
@@ -61,11 +58,11 @@
 			<input name="q" class="typeahead" type="search" placeholder="Leit..." />
 			<input type="submit" value="leita">
 		</form>
-	</header-->
+	</header>
 
 	<?php echo $this->content; ?>
 
-	<footer class="layout-footer">
+	<footer role="footer">
 		<div class="address">
 			<h1>Stjórnvísi</h1>
 			<p>Innovation house</p>
