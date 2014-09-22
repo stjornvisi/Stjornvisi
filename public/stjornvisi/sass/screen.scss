@@ -5,6 +5,14 @@
 
 @import "helpers/variables";
 
+
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/forms";
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/buttons";
+
+
+
 @import "compass/reset";
 @import "compass/css3/transition";
 @import "compass/utilities/general/clearfix";
@@ -33,3 +41,4 @@
 @import "types/index";
 @import "types/event";
 @import "types/news";
+@import "types/group";

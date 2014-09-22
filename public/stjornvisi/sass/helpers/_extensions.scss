@@ -53,18 +53,9 @@
 	footer{}
 }
 
-//
-//	Used for things like listing out
-//		reference documents
-//
-//	<ul>
-//		<li
-//	<ul>
-%list-lister{
-
-}
 
 %list-entry{
+	@include padding-trailer(1,$font-size-base);
 	time{
 		font-family: $font-family-sans-serif;
 		@include adjust-font-size-to($font-size-small,2,$font-size-base);

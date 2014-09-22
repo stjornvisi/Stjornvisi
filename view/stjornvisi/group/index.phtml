@@ -1,92 +1,91 @@
 <div>
-	<h1><?=$this->group->name;?></h1>
-	<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
-	<?php if($this->logged_in):?>
-		<?php if( $this->access->type === null ):?>
-			<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="label label-success">Skrá í hóp</a>
+	<div class="group-header">
+		<h1><?=$this->group->name;?></h1>
+		<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
+		<?php if($this->logged_in):?>
+			<?php if( $this->access->type === null ):?>
+				<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="label label-success">Skrá í hóp</a>
+			<?php else:?>
+				<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>0))?>" class="label label-danger">Afskrá úr hópi</a>
+			<?php endif;?>
 		<?php else:?>
-			<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>0))?>" class="label label-danger">Afskrá úr hópi</a>
+			<a href="<?=$this->url('auth-in')?>" class="label label-success">Skrá í hóp</a>
 		<?php endif;?>
-	<?php else:?>
-		<a href="<?=$this->url('auth-in')?>" class="label label-success">Skrá í hóp</a>
-	<?php endif;?>
-
-	<div class="section-aside-grid">
+	</div>
+	<div class="content-wrapper group-wrapper">
 
 		<section>
-			<div class="row half">
-				<div class="column">
-					<h2>Viðburðir (<?=count($this->events)?>) - <a href="<?=$this->url('rss/rss-events',array('name'=>$this->group->url))?>">rss</a></h2>
-					<ul class="item-list theme-white">
-						<?php foreach($this->events as $event):?>
-						<li>
-							<article class="event <?=($event->event_date < new DateTime())?'archived':''?>">
-								<header>
-									<time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?></time>
-									<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
-								</header>
-								<section>
-									<?php if($event->avatar):?>
-										<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-											<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" alt="mynd með viðburði" />
-										</a>
-									<?php endif;?>
-									<?=$this->paragrapher($event->body);?>
-								</section>
-								<aside>
-									<ul class="event-groups-list">
-										<?php if( count($event->groups) == 0 ):?>
-											<li><span class="label label-default">Stjónvísisviðburður</span></li>
-										<?php else:?>
-											<?php foreach($event->groups as $group):?>
-												<li><a class="label label-default" href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
-											<?php endforeach;?>
-										<?php endif; ?>
-									</ul>
-								</aside>
-								<!--footer>
-									<?php if($event->attending === null):?>
-										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-									<?php elseif($event->attending == 0):?>
-										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-										<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
-									<?php elseif($event->attending == 1):?>
-										<span class="attending yes" title="Skrá mætingu">mæti</span>
-										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-									<?php endif;?>
-								</footer-->
-							</article>
-						</li>
-						<?php endforeach;?>
-					</ul>
-				</div>
-				<div class="column">
-					<h2>Fréttir (<?=count($this->news)?>) - <a href="<?=$this->url('rss/rss-news',array('name'=>$this->group->url))?>">rss</a></h2>
-					<ul>
-						<?php foreach($this->news as $news):?>
-						<li>
-							<article class="news">
-								<header>
-									<time><?=$news->created_date->format('Y-m-d H:i')?></time>
-									<h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
-								</header>
-								<section>
-									<?php if($news->avatar):?>
-										<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
-											<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
-										</a>
-									<?php endif;?>
-									<?=$this->paragrapher($news->body);?>
-								</section>
-								<aside>
-								</aside>
-								<footer></footer>
-							</article>
-						</li>
-						<?php endforeach;?>
-					</ul>
-				</div>
+			<div class="column">
+				<h2>Viðburðir (<?=count($this->events)?>) - <a href="<?=$this->url('rss/rss-events',array('name'=>$this->group->url))?>">rss</a></h2>
+				<ul class="item-list theme-white">
+					<?php foreach($this->events as $event):?>
+					<li>
+						<article class="event <?=($event->event_date < new DateTime())?'archived':''?>">
+							<header>
+								<time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?></time>
+								<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
+							</header>
+							<section>
+								<?php if($event->avatar):?>
+									<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+										<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" alt="mynd með viðburði" />
+									</a>
+								<?php endif;?>
+								<?=$this->paragrapher($event->body);?>
+							</section>
+							<aside>
+								<ul class="event-groups-list">
+									<?php if( count($event->groups) == 0 ):?>
+										<li><span class="label label-default">Stjónvísisviðburður</span></li>
+									<?php else:?>
+										<?php foreach($event->groups as $group):?>
+											<li><a class="label label-default" href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
+										<?php endforeach;?>
+									<?php endif; ?>
+								</ul>
+							</aside>
+							<!--footer>
+								<?php if($event->attending === null):?>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+								<?php elseif($event->attending == 0):?>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+									<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
+								<?php elseif($event->attending == 1):?>
+									<span class="attending yes" title="Skrá mætingu">mæti</span>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+								<?php endif;?>
+							</footer-->
+						</article>
+					</li>
+					<?php endforeach;?>
+				</ul>
+			</div>
+			<div class="column">
+				<h2>Fréttir (<?=count($this->news)?>) - <a href="<?=$this->url('rss/rss-news',array('name'=>$this->group->url))?>">rss</a></h2>
+				<ul>
+					<?php foreach($this->news as $news):?>
+					<li>
+						<article class="news">
+							<header>
+								<time><?=$news->created_date->format('Y-m-d H:i')?></time>
+								<h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
+							</header>
+							<section>
+								<?php if($news->avatar):?>
+									<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
+										<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
+									</a>
+								<?php endif;?>
+								<?=$this->paragrapher($news->body);?>
+							</section>
+							<aside>
+							</aside>
+							<footer></footer>
+						</article>
+					</li>
+					<?php endforeach;?>
+				</ul>
 			</div>
 		</section>
 
@@ -114,7 +113,7 @@
 				</div>
 			<?php endif;?>
 			<?=$this->paragrapher($this->group->description);?>
-			<h3>Fyrri starfsár</h3>
+			<h1>Fyrri starfsár</h1>
 			<ul>
 				<?php foreach($this->range->range as $group):?>
 					<li><a href="<?=$this->url('hopur/index',array('id'=>$this->group->url,'range'=>$group[0].'-'.$group[1]))?>"><?=$group[0]?> - <?=$group[1]?></a></li>

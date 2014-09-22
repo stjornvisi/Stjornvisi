@@ -1,0 +1,52 @@
+
+	.group-header{
+		padding: $gutter;
+		@include pie-clearfix;
+		h1{
+			float: left;
+			@include adjust-font-size-to($font-headline-large,1,$font-size-base);
+		}
+		h2{
+			float: left;
+			@include adjust-font-size-to($font-headline-base,1,$font-size-base);
+		}
+		a{
+			@include inline-block;
+			float: right;
+		}
+	}
+
+	.group-wrapper{
+
+		> section{
+			@include pie-clearfix;
+			margin-left: - $gutter/2;
+			margin-right: - $gutter/2;
+			> div{
+				float: left;
+				width: 50%;
+				padding: 0 $gutter/2;
+				> h1{
+					@extend %category-label;
+				}
+
+			}
+		}
+		> aside{
+			h1{
+				@extend %category-label;
+			}
+		}
+	}
+	.content-wrapper.group-wrapper{
+		> section{
+			float: right;
+			padding-right: 0;
+			padding-left: $gutter/2;
+		}
+		> aside{
+			float: left;
+			padding-right: $gutter/2;
+			padding-left: 0;
+		}
+	}

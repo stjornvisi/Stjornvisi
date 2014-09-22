@@ -38,3 +38,14 @@
 			color: $color-white;
 		}
 	}
+
+
+	.form-horizontal{
+		max-width: 960px;
+		margin: $gutter*2 auto $gutter*4 auto;
+
+		label{
+			font-family: $font-family-sans-serif;
+			color: $color-sea;
+		}
+	}
