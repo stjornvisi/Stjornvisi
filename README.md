@@ -13,148 +13,72 @@ Since this is a module, you need to set up the ZF2 Skeleton Application
 After that we simply install the module.
 
 ## Install  ##
-I assume that you will be working in a folder called ~/workspace
+Clone this repository to the `module` and name it *Stjornvisi*
 
-### Setup WebApplication ###
-open terminal,
-cd your self to your desktop or documents (or any folder you like),
-run this command
-
-    $ cd ~/Desktop/
-    $ curl -s https://getcomposer.org/installer | php --
-    $ php composer.phar create-project -sdev --repository-url="https://packages.zendframework.com" zendframework/skeleton-application ~/workspace/StjornvisiApplication
-
-Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]? Y
-Yes, you want to do that
-
-Now you have to navigate to ~/workspace/StjornvisiApplication and edit the composer.json file
-
-merge this into the file:
-
-    {
-        "name": "zendframework/skeleton-application",
-        "description": "Skeleton Application for ZF2",
-        "license": "BSD-3-Clause",
-        "keywords": [
-            "framework",
-            "zf2"
-        ],
-        "prefer-stable": true,
-        "minimum-stability": "dev",
-        "homepage": "http://framework.zend.com/",
-        "repositories": [
-            {
-                "type": "vcs",
-                "url": "https://github.com/zendframework/ZendSearch"
-            }
-        ],
-        "require": {
-            "php": ">=5.3.3",
-            "zendframework/zendframework": "2.3.*",
-            "imagine/imagine": "~0.5.0",
-            "zendframework/zend-queue": "dev-master",
-            "facebook/php-sdk" : "*",
-            "zendframework/zendsearch": ">=0.1"
-        }
-    }
-
-If you are deploying to production, merge this as well,
-
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/fizk/Stjornvisi"
-        }
-    ],
-    "require": {
-        "fizk/Stjornvisi":"dev-master"
-    }
-
-else if you are doing development we are going to do things differently.
-
-Once we have the composer.json file we will run it.
-
-    $ cd ~/workspace/StjornvisiApplication/
-    $ php composer.phar update
-
-
-### Setup for development ###
-
-clone this repository to where ever you want to do your development.
-
-    $ cd ~/workspace
+    $ cd path/to/install/module
     $ git clone https://github.com/fizk/Stjornvisi.git Stjornvisi
 
-now softlink this repository to you module folder in the StjornvisiApplication
-if both the module and the application are in the ~/workspace folder, this would look like this
+Copy the `composer.json` and `composer.phar` into the root of the Skeleton Application and then run composer
 
-    $ ln -s ~/workspace/Stjornvisi ~/workspace/StjornvisiApplication/module/Stjornvisi
+    $ php composer.phar install
 
-This is the softlink to install the module, next we need to install the html/css/js 
-files, that's another softlink. This has to be done for development as well as production
+Go into `config/application.config.php` and make sure it says
 
-    $ ln -s ~/workspace/Stjornvisi/public/stjornvisi/ ~/workspace/StjornvisiApplication/public/stjornvisi
+    'modules' => array(
+        'Stjornvisi',
+    ),
 
-
-Now manually remove some files.
-
-    $ rm -r ~/workspace/StjornvisiApplication/module/Application/
-
-    $ rm -r ~/workspace/StjornvisiApplication/public/css/
-    $ rm -r ~/workspace/StjornvisiApplication/public/fonts/
-    $ rm -r ~/workspace/StjornvisiApplication/public/img/
-    $ rm -r ~/workspace/StjornvisiApplication/public/js
-
-Let StjornvisiApplication know about the module by adding its name to ./StjornvisiApplication/config/application.config.php
-
-    return array(
-        // This should be an array of module namespaces used in the application.
-        'modules' => array(
-            'Stjornvisi', // Replace Application with Stjornvisi
-        ),
-
-Now to install the database.
-
-create an empty database in your local MySQL install. Let's say it's name is stjornvisi_development
-
-then from your terminal run
-
-    $ mysql -u root -p stjornvisi_development < ~/workspace/Stjornvisi/assets/stjornvisi_production.sql
-
-next go into ~/workspace/StjornvisiApplication/config/autoload. Create a file called 'stjornvisi.local.php' or 'stjornvisi.global.php'
-if you are deploying to production and add this: (and configure to your needs)
+Create this file `config/autoload/stjornvisi.local.php`, paste in this code and adjust:
 
     <?php
 
     return array(
         'db' =>array(
-            'dns' => 'mysql:dbname=stjornvisi_production;host=127.0.0.1',
-            'user' => 'USER_NAME',
-            'password' => 'PASSWORD'
+            'dns' => 'mysql:dbname=[DATABASE_NAME];host=127.0.0.1',
+            'user' => '[USER]',
+            'password' => '[PASSWORD]'
         ),
         'facebook' => array(
-            'appId' => 'APP_ID',
-            'secret' => 'SECRET',
+            'appId' => '[APP-ID]',
+            'secret' => '[SECRET]',
             'fileUpload' => false, // optional
             'allowSignedRequest' => false, // optional, but should be set to false for non-canvas apps
-            'redirect_uri' => 'http://DOMAIN/callback'
-      ),
+            'redirect_uri' => 'http://[DOMAIN]/callback'
+        ),
     );
 
-To get all css/js dependencies we need Bower http://bower.io/
+Go into `module/Stjornvisi/public` and run
 
-    $ cd ~/workspace/Stjornvisi/public/stjornvisi/
     $ bower install
 
-Now everything should be up and running
+Make a soft-link from _module public folder_ into the real one
 
-For your development to work we need to run composer one last time. This time from the module
+    $ ln -s ./module/Stjornvisi/public/stjornvisi ./public/stjornvisi
 
-    $ cd ~/workspace/Stjornvisi
-    $ php composer.phar install
+Create a database called *stjornvisi_production* and the import the database and migration script
+
+    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/stjornvisi_production.sql
+    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/migration.sql
 
 
-## Commandline ##
+
+
+
+## UnitTests ##
+Make sure you have a test database by first creating `stjornvisi_test` and then run
+
+    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/stjornvisi-empty.sql
+    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/migration.sql
+
+The `cd` into the test directory
+
+    $ cd ./module/Stjornvisi/test
+
+And the run phpunit
+
+    $ php ../../../vendor/bin/phpunit
+
+# Commandline #
 
 This module comes with some command line actions.
 
