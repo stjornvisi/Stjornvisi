@@ -1,0 +1,19 @@
+
+	.news-wrapper{
+
+		aside.event-news-aside{
+			h1{
+				@extend %category-label;
+			}
+			> ul{
+				margin-left: - $gutter;
+				margin-right: - $gutter;
+				@include pie-clearfix;
+				li{
+					padding: $gutter;
+					width: 33.333%;
+					float: left;
+				}
+			}
+		}
+	}

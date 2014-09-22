@@ -13,3 +13,18 @@
 		padding-left: $gutter/2;
 	}
 }
+
+.entity-wrapper{
+	padding: $gutter;
+	@include pie-clearfix;
+	> article{
+		float: left;
+		width: 50%;
+		padding-right: $gutter/2;
+	}
+	> aside{
+		float: right;
+		width: 50%;
+		padding-left: $gutter/2;
+	}
+}

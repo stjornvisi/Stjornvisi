@@ -244,7 +244,7 @@ ul.event-resources-list li a {
 }
 
 /* line 172, ../sass/helpers/_extensions.scss */
-aside.event-event-aside, div.event-event-meta, aside.event-news-aside, .dashboard-wrapper > section > div > h1, .dashboard-wrapper > aside > h1, .event-wrapper > section > div > h1 {
+aside.event-event-aside, div.event-event-meta, aside.event-news-aside, .dashboard-wrapper > section > div > h1, .dashboard-wrapper > aside > h1, .event-wrapper > section > div > h1, .news-wrapper aside.event-news-aside h1 {
   font-size: 0.875em;
   line-height: 1.71429em;
   color: #4a85a1;
@@ -649,6 +649,30 @@ span.attending.no, a.attending:hover.no {
 .content-wrapper > aside {
   float: right;
   width: 20%;
+  padding-left: 15px;
+}
+
+/* line 17, ../sass/components/_content.scss */
+.entity-wrapper {
+  padding: 30px;
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.entity-wrapper:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 20, ../sass/components/_content.scss */
+.entity-wrapper > article {
+  float: left;
+  width: 50%;
+  padding-right: 15px;
+}
+/* line 25, ../sass/components/_content.scss */
+.entity-wrapper > aside {
+  float: right;
+  width: 50%;
   padding-left: 15px;
 }
 
@@ -1211,4 +1235,23 @@ main.frontpage .btn.btn-facebook {
   float: left;
   width: 50%;
   padding: 0 15px;
+}
+
+/* line 8, ../sass/types/_news.scss */
+.news-wrapper aside.event-news-aside > ul {
+  margin-left: -30px;
+  margin-right: -30px;
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.news-wrapper aside.event-news-aside > ul:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 12, ../sass/types/_news.scss */
+.news-wrapper aside.event-news-aside > ul li {
+  padding: 30px;
+  width: 33.333%;
+  float: left;
 }
