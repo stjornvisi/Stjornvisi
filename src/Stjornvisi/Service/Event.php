@@ -59,7 +59,7 @@ class Event extends AbstractService {
 				if( $event->event_date > new DateTime() ){
 					$attendStatement = $this->pdo->prepare("
 						SELECT * FROM Event_has_User EhU
-							WHERE Ehu.event_id = :event_user_id AND Ehu.attending = 1
+							WHERE EhU.event_id = :event_user_id AND EhU.attending = 1
 						UNION
 							SELECT * FROM Event_has_Guest EhG
 							WHERE EhG.event_id = :event_guest_id

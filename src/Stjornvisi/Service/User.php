@@ -221,7 +221,7 @@ class User extends AbstractService{
 			}else{
 				$statement = $this->pdo->prepare("
 				  SELECT U.*, GhU.type FROM Group_has_User GhU
-				  JOIN `User` U ON (U.id = Ghu.user_id)
+				  JOIN `User` U ON (U.id = GhU.user_id)
 				  WHERE GhU.group_id = :id
 				  ORDER BY GhU.type DESC, U.name
 				");
@@ -611,7 +611,7 @@ class User extends AbstractService{
 	public function setPassword( $id, $password ){
 		try{
 			$statement = $this->pdo->prepare("
-				UPDATE `USER` SET passwd = MD5(:password)
+				UPDATE `User` SET passwd = MD5(:password)
 				WHERE id = :id");
 			$statement->execute(array(
 				'password' => $password,
