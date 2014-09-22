@@ -1,9 +1,9 @@
 @import "compass/css3/columns";
 
   article.news{
-    //@extend %entry; // @see sass/components/_widget.scss
+    @extend %entry;
     ul.news-groups-list{
-		//@extend %dot-split-list;
+		@extend %dot-split-list;
     }
   }
   article.news.news-columns{
@@ -13,12 +13,12 @@
   }
 
   aside.event-news-aside{
-	  // @extend %category-label;
+	  @extend %category-label;
   }
 
   li.news{
-	  //@extend %list-entry;
+		@extend %list-entry;
     ul.event-groups-list{
-		//@extend %dot-split-list;
+		@extend %dot-split-list;
     }
   }

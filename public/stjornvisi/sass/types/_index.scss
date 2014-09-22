@@ -1,4 +1,46 @@
 
+.dashboard-wrapper{
+	> section{
+		@include pie-clearfix;
+		margin-left: - $gutter/2;
+		margin-right: - $gutter/2;
+		> div{
+			float: left;
+			width: 50%;
+			padding: 0 $gutter/2;
+			> h1{
+				@extend %category-label;
+			}
+
+		}
+	}
+	> aside{
+		ul{
+			li{
+				border-bottom: 1px solid tint($color-sea,50%);
+				@include padding-leader(1/2,$font-size-base);
+				@include padding-trailer(1/2,$font-size-base);
+				a{
+					font-family: $font-family-sans-serif;
+					display: block;
+					color: $color-sea;
+					@include ellipsis;
+				}
+				a[href$=pptx]:before{
+					@extend %preset-icon-font;
+					vertical-align: middle;
+					padding-right: rhythm(1/2,$font-size-base);
+					content: "\e60b";
+				}
+			}
+		}
+		> h1{
+			@extend %category-label;
+		}
+	}
+}
+
+/*
 .section-aside-grid{
 	@include pie-clearfix;
 	padding: $gutter;
@@ -17,3 +59,4 @@
 		width: 30%;
 	}
 }
+*/

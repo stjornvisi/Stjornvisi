@@ -123,7 +123,7 @@
 		font-style: normal;
 	}
 
-	[class^="icon-"], [class*=" icon-"] {
+	%preset-icon-font{
 		font-family: 'icomoon';
 		speak: none;
 		font-style: normal;
@@ -137,6 +137,19 @@
 		-moz-osx-font-smoothing: grayscale;
 	}
 
+	[class^="icon-"], [class*=" icon-"] {
+		@extend %preset-icon-font;
+	}
+
+.icon-document:before {
+	content: "\e60b";
+}
+.icon-exel:before {
+	content: "\e60c";
+}
+.icon-pdf:before {
+	content: "\e60d";
+}
 .icon-facebook:before {
 	content: "\e60a";
 }

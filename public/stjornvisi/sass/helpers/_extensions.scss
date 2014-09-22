@@ -35,7 +35,7 @@
 		word-wrap: break-word;
 		img{
 			float: left;
-			margin: 0 rhythm(1) rhythm(1) 0;
+			margin: 0 rhythm(1/2) rhythm(1/2) 0;
 		}
 		a{
 			color: $color-sea;
@@ -51,6 +51,17 @@
 		}
 	}
 	footer{}
+}
+
+//
+//	Used for things like listing out
+//		reference documents
+//
+//	<ul>
+//		<li
+//	<ul>
+%list-lister{
+
 }
 
 %list-entry{
@@ -159,10 +170,9 @@
 }
 
 %category-label{
-	h1{
-		@include adjust-font-size-to($font-size-small,1,$font-size-base);
-		color: $color-sea;
-		text-transform: uppercase;
-		font-weight: bold;
-	}
+	@include adjust-font-size-to($font-size-small,1,$font-size-base);
+	color: $color-sea;
+	text-transform: uppercase;
+	font-weight: $font-weight-bold;
+	@include margin-trailer(1,$font-size-small);
 }

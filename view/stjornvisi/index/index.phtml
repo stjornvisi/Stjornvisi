@@ -1,7 +1,7 @@
 <?php if($this->identity):?>
 
-	<div class="section-aside-grid">
-		<section class="row half">
+	<div class="content-wrapper dashboard-wrapper">
+		<section class="">
 			<div class="column index-event-list">
 				<h1>Viðburðir</h1>
 				<ul class="item-list theme-white">
@@ -15,7 +15,7 @@
 							<section>
 								<?php if($event->avatar):?>
 								<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-									<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" alt="mynd með viðburði" />
+									<img src="<?=$this->basePath("/images/300/{$event->avatar}")?>" alt="mynd með viðburði" />
 								</a>
 								<?php endif;?>
 								<?=$this->paragrapher( mb_substr($event->body,0,250,'utf-8').'&#8230;'  );?>
@@ -62,7 +62,7 @@
 							<section>
 								<?php if($news->avatar):?>
 								<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
-									<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
+									<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" alt="mynd með frétt" />
 								</a>
 								<?php endif;?>
 								<?=$this->paragrapher( mb_substr($news->body,0,250,'utf-8').'&#8230;'  );?>
@@ -85,13 +85,13 @@
 			</ul>
 			</div>
 		</section>
-		<aside class="index-resources-list">
+		<aside class="">
 			<h1>Fylgiskrár</h1>
 			<ul>
 				<?php foreach( $this->media as $media ):?>
 					<li>
-						<a href="/image/original/<?=$media->name?>"><?=$media->name?></a> |
-						<a href="<?=$this->url('vidburdir/index',array('id'=>$media->event->id))?>"><?=$media->event->subject?></a>
+						<a href="/image/original/<?=$media->name?>" title="<?=$media->name?>"><?=$media->name?></a>
+						<!--a href="<?=$this->url('vidburdir/index',array('id'=>$media->event->id))?>"><?=$media->event->subject?></a-->
 					</li>
 				<?php endforeach;?>
 			</ul>

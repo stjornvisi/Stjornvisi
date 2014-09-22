@@ -68,14 +68,14 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 
 /* line 16, ../sass/helpers/_extensions.scss */
-article.event header time {
+article.event header time, article.news header time {
   text-transform: uppercase;
   font-size: 0.75em;
   line-height: 2em;
   font-family: "open-sans", sans-serif;
 }
 /* line 21, ../sass/helpers/_extensions.scss */
-article.event header h1 {
+article.event header h1, article.news header h1 {
   font-size: 1.5em;
   line-height: 1.2em;
   /*@include breakpoint-to($resolution-small){
@@ -85,66 +85,66 @@ article.event header h1 {
   padding: 0.5em 0;
 }
 /* line 28, ../sass/helpers/_extensions.scss */
-article.event header h1 a {
+article.event header h1 a, article.news header h1 a {
   color: #282828;
 }
 /* line 33, ../sass/helpers/_extensions.scss */
-article.event section {
+article.event section, article.news section {
   *zoom: 1;
   word-wrap: break-word;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-article.event section:after {
+article.event section:after, article.news section:after {
   content: "";
   display: table;
   clear: both;
 }
 /* line 36, ../sass/helpers/_extensions.scss */
-article.event section img {
+article.event section img, article.news section img {
   float: left;
-  margin: 0 1.5em 1.5em 0;
+  margin: 0 0.75em 0.75em 0;
 }
 /* line 40, ../sass/helpers/_extensions.scss */
-article.event section a {
+article.event section a, article.news section a {
   color: #4a85a1;
 }
 /* line 43, ../sass/helpers/_extensions.scss */
-article.event section a:hover {
+article.event section a:hover, article.news section a:hover {
   text-decoration: underline;
 }
 /* line 46, ../sass/helpers/_extensions.scss */
-article.event section p {
+article.event section p, article.news section p {
   margin: 0 0 0.75em 0;
 }
 /* line 49, ../sass/helpers/_extensions.scss */
-article.event section p:last-of-type {
+article.event section p:last-of-type, article.news section p:last-of-type {
   margin: 0;
 }
 
-/* line 57, ../sass/helpers/_extensions.scss */
-li.event time {
+/* line 68, ../sass/helpers/_extensions.scss */
+li.event time, li.news time {
   font-family: "open-sans", sans-serif;
   font-size: 0.875em;
   line-height: 3.42857em;
 }
-/* line 61, ../sass/helpers/_extensions.scss */
-li.event img {
+/* line 72, ../sass/helpers/_extensions.scss */
+li.event img, li.news img {
   width: 100%;
   max-width: 100%;
 }
-/* line 65, ../sass/helpers/_extensions.scss */
-li.event h2 {
+/* line 76, ../sass/helpers/_extensions.scss */
+li.event h2, li.news h2 {
   font-weight: bold;
   font-family: 'open-sans';
   margin: 0.375em 0 0.75em 0;
 }
-/* line 69, ../sass/helpers/_extensions.scss */
-li.event h2 a {
+/* line 80, ../sass/helpers/_extensions.scss */
+li.event h2 a, li.news h2 a {
   color: #282828;
 }
 
-/* line 80, ../sass/helpers/_extensions.scss */
-article.event ul.event-groups-list, li.event ul.event-groups-list {
+/* line 91, ../sass/helpers/_extensions.scss */
+article.event ul.event-groups-list, li.event ul.event-groups-list, article.news ul.news-groups-list, li.news ul.event-groups-list {
   margin: 0;
   padding: 0;
   border: 0;
@@ -152,8 +152,8 @@ article.event ul.event-groups-list, li.event ul.event-groups-list {
   *zoom: 1;
   margin: 0.75em 0;
 }
-/* line 83, ../sass/helpers/_extensions.scss */
-article.event ul.event-groups-list li, li.event ul.event-groups-list li {
+/* line 94, ../sass/helpers/_extensions.scss */
+article.event ul.event-groups-list li, li.event ul.event-groups-list li, article.news ul.news-groups-list li, li.news ul.event-groups-list li {
   list-style-image: none;
   list-style-type: none;
   margin-left: 0;
@@ -164,34 +164,34 @@ article.event ul.event-groups-list li, li.event ul.event-groups-list li {
   padding-right: 4px;
 }
 /* line 48, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
-article.event ul.event-groups-list li:first-child, li.event ul.event-groups-list li:first-child, article.event ul.event-groups-list li.first, li.event ul.event-groups-list li.first {
+article.event ul.event-groups-list li:first-child, li.event ul.event-groups-list li:first-child, article.news ul.news-groups-list li:first-child, li.news ul.event-groups-list li:first-child, article.event ul.event-groups-list li.first, li.event ul.event-groups-list li.first, article.news ul.news-groups-list li.first, li.news ul.event-groups-list li.first {
   padding-left: 0;
 }
 /* line 49, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
-article.event ul.event-groups-list li:last-child, li.event ul.event-groups-list li:last-child {
+article.event ul.event-groups-list li:last-child, li.event ul.event-groups-list li:last-child, article.news ul.news-groups-list li:last-child, li.news ul.event-groups-list li:last-child {
   padding-right: 0;
 }
 /* line 50, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/typography/lists/_horizontal-list.scss */
-article.event ul.event-groups-list li.last, li.event ul.event-groups-list li.last {
+article.event ul.event-groups-list li.last, li.event ul.event-groups-list li.last, article.news ul.news-groups-list li.last, li.news ul.event-groups-list li.last {
   padding-right: 0;
 }
-/* line 85, ../sass/helpers/_extensions.scss */
-article.event ul.event-groups-list li a, li.event ul.event-groups-list li a, article.event ul.event-groups-list li span, li.event ul.event-groups-list li span {
+/* line 96, ../sass/helpers/_extensions.scss */
+article.event ul.event-groups-list li a, li.event ul.event-groups-list li a, article.news ul.news-groups-list li a, li.news ul.event-groups-list li a, article.event ul.event-groups-list li span, li.event ul.event-groups-list li span, article.news ul.news-groups-list li span, li.news ul.event-groups-list li span {
   font-family: 'open-sans';
   font-size: 0.75em;
   line-height: 2em;
   color: #4a85a1;
 }
-/* line 90, ../sass/helpers/_extensions.scss */
-article.event ul.event-groups-list li a:after, li.event ul.event-groups-list li a:after, article.event ul.event-groups-list li span:after, li.event ul.event-groups-list li span:after {
+/* line 101, ../sass/helpers/_extensions.scss */
+article.event ul.event-groups-list li a:after, li.event ul.event-groups-list li a:after, article.news ul.news-groups-list li a:after, li.news ul.event-groups-list li a:after, article.event ul.event-groups-list li span:after, li.event ul.event-groups-list li span:after, article.news ul.news-groups-list li span:after, li.news ul.event-groups-list li span:after {
   content: ' \2022';
 }
-/* line 95, ../sass/helpers/_extensions.scss */
-article.event ul.event-groups-list li:last-child a:after, li.event ul.event-groups-list li:last-child a:after, article.event ul.event-groups-list li:last-child span:after, li.event ul.event-groups-list li:last-child span:after {
+/* line 106, ../sass/helpers/_extensions.scss */
+article.event ul.event-groups-list li:last-child a:after, li.event ul.event-groups-list li:last-child a:after, article.news ul.news-groups-list li:last-child a:after, li.news ul.event-groups-list li:last-child a:after, article.event ul.event-groups-list li:last-child span:after, li.event ul.event-groups-list li:last-child span:after, article.news ul.news-groups-list li:last-child span:after, li.news ul.event-groups-list li:last-child span:after {
   content: none;
 }
 
-/* line 103, ../sass/helpers/_extensions.scss */
+/* line 114, ../sass/helpers/_extensions.scss */
 ul.event-gallery-list {
   *zoom: 1;
   margin-left: -7.5px;
@@ -203,7 +203,7 @@ ul.event-gallery-list:after {
   display: table;
   clear: both;
 }
-/* line 108, ../sass/helpers/_extensions.scss */
+/* line 119, ../sass/helpers/_extensions.scss */
 ul.event-gallery-list li {
   float: left;
   width: 25%;
@@ -220,7 +220,7 @@ ul.event-gallery-list li {
   }
   */
 }
-/* line 124, ../sass/helpers/_extensions.scss */
+/* line 135, ../sass/helpers/_extensions.scss */
 ul.event-gallery-list li img {
   display: block;
   border: 1px solid gainsboro;
@@ -228,11 +228,11 @@ ul.event-gallery-list li img {
   width: 100%;
 }
 
-/* line 135, ../sass/helpers/_extensions.scss */
+/* line 146, ../sass/helpers/_extensions.scss */
 ul.event-resources-list li {
   padding: 0.42857em 0;
 }
-/* line 138, ../sass/helpers/_extensions.scss */
+/* line 149, ../sass/helpers/_extensions.scss */
 ul.event-resources-list li a {
   font-family: open-sans;
   text-transform: lowercase;
@@ -243,13 +243,14 @@ ul.event-resources-list li a {
   padding-left: 2.25em;
 }
 
-/* line 162, ../sass/helpers/_extensions.scss */
-aside.event-event-aside h1, div.event-event-meta h1 {
+/* line 172, ../sass/helpers/_extensions.scss */
+aside.event-event-aside, div.event-event-meta, aside.event-news-aside, .dashboard-wrapper > section > div > h1, .dashboard-wrapper > aside > h1 {
   font-size: 0.875em;
   line-height: 1.71429em;
   color: #4a85a1;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 700;
+  margin-bottom: 1.71429em;
 }
 
 @font-face {
@@ -341,7 +342,7 @@ aside.event-event-aside h1, div.event-event-meta h1 {
 }
 
 /* line 126, ../sass/helpers/_fonts.scss */
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"], [class*=" icon-"], .dashboard-wrapper > aside ul li a[href$=pptx]:before {
   font-family: 'icomoon';
   speak: none;
   font-style: normal;
@@ -354,57 +355,72 @@ aside.event-event-aside h1, div.event-event-meta h1 {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* line 140, ../sass/helpers/_fonts.scss */
+/* line 144, ../sass/helpers/_fonts.scss */
+.icon-document:before {
+  content: "\e60b";
+}
+
+/* line 147, ../sass/helpers/_fonts.scss */
+.icon-exel:before {
+  content: "\e60c";
+}
+
+/* line 150, ../sass/helpers/_fonts.scss */
+.icon-pdf:before {
+  content: "\e60d";
+}
+
+/* line 153, ../sass/helpers/_fonts.scss */
 .icon-facebook:before {
   content: "\e60a";
 }
 
-/* line 143, ../sass/helpers/_fonts.scss */
+/* line 156, ../sass/helpers/_fonts.scss */
 .icon-burger:before {
   content: "\e600";
 }
 
-/* line 146, ../sass/helpers/_fonts.scss */
+/* line 159, ../sass/helpers/_fonts.scss */
 .icon-cancel:before {
   content: "\e601";
 }
 
-/* line 149, ../sass/helpers/_fonts.scss */
+/* line 162, ../sass/helpers/_fonts.scss */
 .icon-cog:before {
   content: "\e602";
 }
 
-/* line 152, ../sass/helpers/_fonts.scss */
+/* line 165, ../sass/helpers/_fonts.scss */
 .icon-home:before {
   content: "\e603";
 }
 
-/* line 155, ../sass/helpers/_fonts.scss */
+/* line 168, ../sass/helpers/_fonts.scss */
 .icon-horn:before {
   content: "\e604";
 }
 
-/* line 158, ../sass/helpers/_fonts.scss */
+/* line 171, ../sass/helpers/_fonts.scss */
 .icon-mail:before {
   content: "\e605";
 }
 
-/* line 161, ../sass/helpers/_fonts.scss */
+/* line 174, ../sass/helpers/_fonts.scss */
 .icon-no:before {
   content: "\e606";
 }
 
-/* line 164, ../sass/helpers/_fonts.scss */
+/* line 177, ../sass/helpers/_fonts.scss */
 .icon-search:before {
   content: "\e607";
 }
 
-/* line 167, ../sass/helpers/_fonts.scss */
+/* line 180, ../sass/helpers/_fonts.scss */
 .icon-users:before {
   content: "\e608";
 }
 
-/* line 170, ../sass/helpers/_fonts.scss */
+/* line 183, ../sass/helpers/_fonts.scss */
 .icon-yes:before {
   content: "\e609";
 }
@@ -610,6 +626,30 @@ span.attending.no, a.attending:hover.no {
   color: white;
   font-size: 16px;
   padding-right: 1.5em;
+}
+
+/* line 2, ../sass/components/_content.scss */
+.content-wrapper {
+  padding: 30px;
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.content-wrapper:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 5, ../sass/components/_content.scss */
+.content-wrapper > section {
+  float: left;
+  width: 80%;
+  padding-right: 15px;
+}
+/* line 10, ../sass/components/_content.scss */
+.content-wrapper > aside {
+  float: right;
+  width: 20%;
+  padding-left: 15px;
 }
 
 /* line 6, ../sass/types/_login-in.scss */
@@ -1092,38 +1132,65 @@ main.frontpage .btn.btn-facebook {
 }
 
 /* Login section */
-/* line 2, ../sass/types/_index.scss */
-.section-aside-grid {
+/* line 3, ../sass/types/_index.scss */
+.dashboard-wrapper > section {
   *zoom: 1;
-  padding: 30px;
+  margin-left: -15px;
+  margin-right: -15px;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-.section-aside-grid:after {
+.dashboard-wrapper > section:after {
   content: "";
   display: table;
   clear: both;
 }
-/* line 5, ../sass/types/_index.scss */
-.section-aside-grid > section, .section-aside-grid > aside {
-  float: left;
-}
-/* line 8, ../sass/types/_index.scss */
-.section-aside-grid > section {
-  width: 70%;
-  *zoom: 1;
-}
-/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-.section-aside-grid > section:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-/* line 11, ../sass/types/_index.scss */
-.section-aside-grid > section > div {
+/* line 7, ../sass/types/_index.scss */
+.dashboard-wrapper > section > div {
   float: left;
   width: 50%;
+  padding: 0 15px;
 }
-/* line 16, ../sass/types/_index.scss */
-.section-aside-grid > aside {
-  width: 30%;
+/* line 19, ../sass/types/_index.scss */
+.dashboard-wrapper > aside ul li {
+  border-bottom: 1px solid #a4c2d0;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
 }
+/* line 23, ../sass/types/_index.scss */
+.dashboard-wrapper > aside ul li a {
+  font-family: "open-sans", sans-serif;
+  display: block;
+  color: #4a85a1;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+/* line 29, ../sass/types/_index.scss */
+.dashboard-wrapper > aside ul li a[href$=pptx]:before {
+  vertical-align: middle;
+  padding-right: 0.75em;
+  content: "\e60b";
+}
+
+/*
+.section-aside-grid{
+	@include pie-clearfix;
+	padding: $gutter;
+	> section, > aside{
+		float: left;
+	}
+	> section{
+		width: 70%;
+		@include pie-clearfix;
+		> div{
+			float: left;
+			width: 50%;
+		}
+	}
+	> aside{
+		width: 30%;
+	}
+}
+*/

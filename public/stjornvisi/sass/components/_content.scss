@@ -1,0 +1,15 @@
+
+.content-wrapper{
+	padding: $gutter;
+	@include pie-clearfix;
+	> section{
+		float: left;
+		width: 80%;
+		padding-right: $gutter/2;
+	}
+	> aside{
+		float: right;
+		width: 20%;
+		padding-left: $gutter/2;
+	}
+}
