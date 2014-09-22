@@ -244,7 +244,7 @@ ul.event-resources-list li a {
 }
 
 /* line 172, ../sass/helpers/_extensions.scss */
-aside.event-event-aside, div.event-event-meta, aside.event-news-aside, .dashboard-wrapper > section > div > h1, .dashboard-wrapper > aside > h1 {
+aside.event-event-aside, div.event-event-meta, aside.event-news-aside, .dashboard-wrapper > section > div > h1, .dashboard-wrapper > aside > h1, .event-wrapper > section > div > h1 {
   font-size: 0.875em;
   line-height: 1.71429em;
   color: #4a85a1;
@@ -1194,3 +1194,21 @@ main.frontpage .btn.btn-facebook {
 	}
 }
 */
+/* line 3, ../sass/types/_event.scss */
+.event-wrapper > section {
+  *zoom: 1;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.event-wrapper > section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 7, ../sass/types/_event.scss */
+.event-wrapper > section > div {
+  float: left;
+  width: 50%;
+  padding: 0 15px;
+}

@@ -18,7 +18,7 @@
 									<img src="<?=$this->basePath("/images/300/{$event->avatar}")?>" alt="mynd með viðburði" />
 								</a>
 								<?php endif;?>
-								<?=$this->paragrapher( mb_substr($event->body,0,250,'utf-8').'&#8230;'  );?>
+								<?=$this->paragrapher( mb_substr($event->body,0,350,'utf-8').'&#8230;'  );?>
 							</section>
 							<aside>
 								<ul class="event-groups-list">
@@ -65,7 +65,7 @@
 									<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" alt="mynd með frétt" />
 								</a>
 								<?php endif;?>
-								<?=$this->paragrapher( mb_substr($news->body,0,250,'utf-8').'&#8230;'  );?>
+								<?=$this->paragrapher( mb_substr($news->body,0,350,'utf-8').'&#8230;'  );?>
 							</section>
 							<aside>
 								<ul class="news-groups-list">
