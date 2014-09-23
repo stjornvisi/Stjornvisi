@@ -1860,54 +1860,192 @@ body.logged-in ul.page-main-menu li a {
 main.frontpage {
   background-color: #f6f7fb;
 }
-/* line 8, ../sass/types/_landing-page.scss */
+/* line 6, ../sass/types/_landing-page.scss */
+main.frontpage h1, main.frontpage h2, main.frontpage h3, main.frontpage h4 {
+  font-family: "open-sans", sans-serif;
+  font-weight: 700;
+  text-align: center;
+}
+/* line 11, ../sass/types/_landing-page.scss */
+main.frontpage h1 {
+  font-size: 2.25em;
+  line-height: 1.33333em;
+}
+/* line 18, ../sass/types/_landing-page.scss */
+main.frontpage h4 {
+  font-size: 0.75em;
+  line-height: 2em;
+}
+/* line 21, ../sass/types/_landing-page.scss */
+main.frontpage p {
+  font-family: Georgia, Times, "Times New Roman", serif;
+}
+/* line 27, ../sass/types/_landing-page.scss */
 main.frontpage .hero {
-  background: url("../frontpage/header-image.jpg") no-repeat;
-  height: 640px;
+  background-image: url("../frontpage/header-image.jpg");
+  background-repeat: no-repeat;
   background-size: cover;
   padding: 3em;
 }
-/* line 13, ../sass/types/_landing-page.scss */
-main.frontpage .hero a {
+/* line 32, ../sass/types/_landing-page.scss */
+main.frontpage .hero img {
   display: block;
   max-width: 960px;
   margin: auto;
   text-align: center;
 }
-/* line 19, ../sass/types/_landing-page.scss */
-main.frontpage .hero h1, main.frontpage .hero h2 {
-  color: white;
-  font-family: "open-sans", sans-serif;
+/* line 38, ../sass/types/_landing-page.scss */
+main.frontpage .hero h1, main.frontpage .hero h4 {
   text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
+  color: white;
   max-width: 960px;
   margin: auto;
-  font-weight: 700;
-  text-align: center;
 }
-/* line 29, ../sass/types/_landing-page.scss */
-main.frontpage .hero h1 {
-  text-transform: uppercase;
-  font-size: 12px;
-}
-/* line 34, ../sass/types/_landing-page.scss */
-main.frontpage .hero h2 {
-  font-size: 2.25em;
-  line-height: 1.33333em;
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-}
-/* line 45, ../sass/types/_landing-page.scss */
+/* line 49, ../sass/types/_landing-page.scss */
 main.frontpage .login-buttons {
-  padding: 1.5em;
+  padding: 3em;
   background-color: white;
   box-shadow: 1px 0px 15px rgba(0, 0, 0, 0.25);
   text-align: center;
 }
-/* line 50, ../sass/types/_landing-page.scss */
+/* line 54, ../sass/types/_landing-page.scss */
 main.frontpage .login-buttons a.btn-facebook i {
   padding-right: 1.5em;
 }
-/* line 58, ../sass/types/_landing-page.scss */
+/* line 60, ../sass/types/_landing-page.scss */
+main.frontpage .about {
+  padding: 60px 0;
+  text-align: center;
+}
+/* line 63, ../sass/types/_landing-page.scss */
+main.frontpage .about > div {
+  max-width: 960px;
+  margin: auto;
+}
+/* line 69, ../sass/types/_landing-page.scss */
+main.frontpage .about p {
+  margin-bottom: 1.5em;
+  margin-top: 1.5em;
+}
+/* line 77, ../sass/types/_landing-page.scss */
+main.frontpage .groups {
+  padding: 60px 0;
+  background-image: url("../frontpage/faghopar.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+}
+/* line 86, ../sass/types/_landing-page.scss */
+main.frontpage .groups h1 {
+  text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
+  max-width: 960px;
+  margin: auto;
+  color: white;
+}
+/* line 92, ../sass/types/_landing-page.scss */
+main.frontpage .groups p {
+  text-align: center;
+  padding: 1.5em 0;
+  margin: 1.5em 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #282828;
+}
+/* line 103, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel, main.frontpage .news-panel {
+  padding: 60px 0;
+  color: #282828;
+}
+/* line 106, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel > h1, main.frontpage .news-panel > h1 {
+  text-align: left;
+  text-shadow: 0px 1px rgba(255, 255, 255, 0.37);
+  max-width: 960px;
+  margin: auto;
+}
+/* line 112, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel > div, main.frontpage .news-panel > div {
+  padding-top: 60px;
+  text-align: center;
+}
+/* line 116, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article, main.frontpage .news-panel article {
+  *zoom: 1;
+  max-width: 960px;
+  margin: 1.5em auto 0 auto;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+main.frontpage .events-panel article:after, main.frontpage .news-panel article:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 120, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article aside, main.frontpage .news-panel article aside {
+  float: left;
+}
+/* line 123, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article header, main.frontpage .events-panel article section, main.frontpage .events-panel article footer, main.frontpage .news-panel article header, main.frontpage .news-panel article section, main.frontpage .news-panel article footer {
+  margin-left: 330px;
+}
+/* line 126, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article footer, main.frontpage .news-panel article footer {
+  padding: 0.75em 0;
+  font-size: 0.875em;
+  line-height: 1.71429em;
+  font-family: "open-sans", sans-serif;
+}
+/* line 130, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article footer a, main.frontpage .news-panel article footer a {
+  color: #282828;
+}
+/* line 134, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article h2, main.frontpage .news-panel article h2 {
+  font-size: 1.5em;
+  line-height: 1em;
+  text-align: left;
+  text-shadow: none;
+}
+/* line 138, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article h2 a, main.frontpage .news-panel article h2 a {
+  color: #282828;
+}
+/* line 143, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel article time, main.frontpage .news-panel article time {
+  font-family: "open-sans", sans-serif;
+  font-size: 0.875em;
+  line-height: 1.71429em;
+  text-align: right;
+  display: block;
+}
+/* line 151, ../sass/types/_landing-page.scss */
+main.frontpage .events-panel {
+  background-color: #a4c2d0;
+}
+/* line 155, ../sass/types/_landing-page.scss */
+main.frontpage .news-panel {
+  background-color: #fcaf17;
+}
+/* line 162, ../sass/types/_landing-page.scss */
+main.frontpage .image-boxes ul {
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+main.frontpage .image-boxes ul:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 164, ../sass/types/_landing-page.scss */
+main.frontpage .image-boxes ul li {
+  float: left;
+  width: 16.66667%;
+}
+/* line 167, ../sass/types/_landing-page.scss */
+main.frontpage .image-boxes ul li img {
+  width: 100%;
+  vertical-align: bottom;
+}
+/* line 177, ../sass/types/_landing-page.scss */
 main.frontpage .btn {
   display: -moz-inline-stack;
   display: inline-block;
@@ -1918,172 +2056,161 @@ main.frontpage .btn {
   font-family: "open-sans", sans-serif;
   font-weight: 700;
   padding: 0.75em 1.5em;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  border: none;
 }
-/* line 64, ../sass/types/_landing-page.scss */
+/* line 185, ../sass/types/_landing-page.scss */
 main.frontpage .btn.btn-default {
   color: white;
   background-color: #4ca14a;
   border-bottom: 2px solid #3c803b;
 }
-/* line 69, ../sass/types/_landing-page.scss */
+/* line 190, ../sass/types/_landing-page.scss */
 main.frontpage .btn.btn-success {
   color: white;
   background-color: #4ca14a;
   border-bottom: 2px solid #3c803b;
 }
-/* line 74, ../sass/types/_landing-page.scss */
+/* line 195, ../sass/types/_landing-page.scss */
 main.frontpage .btn.btn-facebook {
   color: white;
   background-color: #3e5a9e;
   border-bottom: 2px solid #31487e;
 }
-
-/* line 83, ../sass/types/_landing-page.scss */
-.callout {
-  max-width: 980px;
-  margin: 0 auto;
-}
-/* line 87, ../sass/types/_landing-page.scss */
-.callout h1 {
-  font-family: 'bitter';
-  font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 30px;
-  line-height: 36px;
-  color: #282828;
-}
-/* line 96, ../sass/types/_landing-page.scss */
-.callout p {
-  font-family: Georgia;
-  margin-bottom: 60px;
-}
-/* line 101, ../sass/types/_landing-page.scss */
-.callout .text {
-  padding: 110px;
-  text-align: center;
-}
-/* line 106, ../sass/types/_landing-page.scss */
-.callout .btn {
-  width: 360px;
-  display: inline-block;
+/* line 207, ../sass/types/_landing-page.scss */
+main.frontpage > header {
+  display: none;
 }
 
-/* line 112, ../sass/types/_landing-page.scss */
-.callout-two {
-  background-color: white;
-  border: 1px solid gainsboro;
-  margin: 0 auto;
-  margin-bottom: 60px;
-}
-/* line 118, ../sass/types/_landing-page.scss */
-.callout-two .img {
-  background: url("../frontpage/faghopar.jpg") no-repeat;
-  height: 700px;
-  background-size: cover;
-}
-/* line 122, ../sass/types/_landing-page.scss */
-.callout-two .img:after {
-  content: "";
-  height: 100%;
-  width: 100%;
-  bottom: 0;
-  display: inherit;
-}
-/* line 131, ../sass/types/_landing-page.scss */
-.callout-two .text {
-  padding-top: 25px;
+/*
+.callout{
+	max-width: 980px;
+	margin: 0 auto;
+
+	h1{
+		font-family: 'bitter';
+		font-weight: bold;
+		font-size: 24px;
+		margin-bottom: 30px;
+		line-height:36px;
+		color:$color-black;
+	}
+
+	p{
+		font-family: Georgia;
+		margin-bottom: 60px;
+	}
+
+	.text{
+		padding: 110px;
+		text-align: center;
+	}
+
+	.btn {
+		width: 360px;
+		display: inline-block;
+	}
 }
 
-/* line 137, ../sass/types/_landing-page.scss */
-.news-events {
-  background-color: white;
-  border: 1px solid #e7e8eb;
-  margin: 0 auto;
-  margin-bottom: 60px;
-  max-width: 980px;
-  overflow: hidden;
-  *zoom: 1;
-  padding: 60px;
-}
-/* line 146, ../sass/types/_landing-page.scss */
-.news-events .col-md-6 {
-  width: 50%;
-  float: left;
-}
-/* line 151, ../sass/types/_landing-page.scss */
-.news-events h1 {
-  font-family: 'open-sans';
-  font-size: 14px;
-  color: #4a85a1;
-  text-transform: uppercase;
-  font-weight: bold;
+.callout-two{
+	background-color: $color-white;
+	border: 1px solid $color-gray;
+	margin: 0 auto;
+	margin-bottom: 60px;
+
+	.img{
+		background: url('../frontpage/faghopar.jpg') no-repeat;
+		height: 700px;
+		background-size: cover;
+		&:after {
+			content:"";
+			//@include gradient(0deg, white);
+			height: 100%;
+			width: 100%;
+			bottom: 0;
+			display: inherit;
+		}
+	}
+	.text {
+		//box-shadow: 0px -10px 60px 60px white;
+		padding-top:25px;
+	}
 }
 
-/* line 162, ../sass/types/_landing-page.scss */
-.single-article {
-  width: 100%;
-}
-/* line 163, ../sass/types/_landing-page.scss */
-.single-article .img-text-wrapper {
-  overflow: hidden;
-  *zoom: 1;
-  margin-bottom: 60px;
-}
-/* line 167, ../sass/types/_landing-page.scss */
-.single-article .img-text-wrapper figure {
-  width: 130px;
-  height: 130px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-}
-/* line 177, ../sass/types/_landing-page.scss */
-.single-article h2 {
-  font-family: 'bitter';
-  font-size: 24px;
-}
-/* line 181, ../sass/types/_landing-page.scss */
-.single-article h2 a {
-  color: #282828;
-}
-/* line 186, ../sass/types/_landing-page.scss */
-.single-article figure {
-  float: left;
-}
-/* line 191, ../sass/types/_landing-page.scss */
-.single-article .text {
-  float: left;
+.news-events{
+	background-color: $color-white;
+	border: 1px solid $color-light-gray;
+	margin: 0 auto;
+	margin-bottom: 60px;
+	max-width: 980px;
+	@include clearfix;
+	padding: 60px;
+
+	.col-md-6{
+		width: 50%;
+		float: left;
+	}
+
+	h1{
+		font-family: 'open-sans';
+		font-size: 14px;
+		color: $color-sea;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+
+
 }
 
-/* line 196, ../sass/types/_landing-page.scss */
-.col-md-6.first {
-  padding-right: 30px;
+.single-article{
+	.img-text-wrapper{
+		@include clearfix;
+		margin-bottom: 60px;
+
+		figure{
+			width: 130px;
+			height: 130px;
+			margin-right: 20px;
+			margin-bottom: 20px;
+		}
+	}
+
+	width: 100%;
+
+	h2{
+		font-family: 'bitter';
+		font-size: 24px;
+
+		a{
+			color: $color-black;
+		}
+	}
+
+	figure{
+		float: left;
+
+	}
+
+	.text{
+		float: left;
+	}
 }
 
-/* line 200, ../sass/types/_landing-page.scss */
-.col-md-6.last7 {
-  padding-left: 30px;
+.col-md-6.first{
+	padding-right: 30px;
 }
 
-/* line 206, ../sass/types/_landing-page.scss */
-.image-boxes ul {
-  *zoom: 1;
-}
-/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-.image-boxes ul:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-/* line 208, ../sass/types/_landing-page.scss */
-.image-boxes ul li {
-  float: left;
-  width: 25%;
-}
-/* line 211, ../sass/types/_landing-page.scss */
-.image-boxes ul li img {
-  width: 100%;
+.col-md-6.last7{
+	padding-left: 30px;
 }
 
+
+
+*/
 /*
 .image-boxes{
 	@include clearfix;
@@ -2099,23 +2226,25 @@ main.frontpage .btn.btn-facebook {
 	.img_big {width:100%; height:100%;}
 }
 */
-/* line 235, ../sass/types/_landing-page.scss */
-.not-logged-in nav {
-  display: none;
+/*
+.not-logged-in{
+	nav{
+		display: none;
+	}
 }
 
-/* line 241, ../sass/types/_landing-page.scss */
 .layout-content,
-#editable-static-page-container {
-  max-width: 980px;
-  margin: 0 auto;
+#editable-static-page-container{
+	max-width: 980px;
+	margin: 0 auto;
 }
 
-/* line 247, ../sass/types/_landing-page.scss */
-.frontpage header {
-  display: none;
+.frontpage{
+	header{
+		display: none;
+	}
 }
-
+*/
 /* Login section */
 /* line 3, ../sass/types/_index.scss */
 .dashboard-wrapper > section {

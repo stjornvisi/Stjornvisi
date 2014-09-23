@@ -3,47 +3,51 @@
 main.frontpage{
 	background-color: $color-blue-gray;
 
+	h1,h2,h3,h4{
+		font-family: $font-family-sans-serif;
+		font-weight: $font-weight-bold;
+		text-align: center;
+	}
+	h1{
+		@include adjust-font-size-to($font-headline-large,2,$font-size-base);
+		//@include margin-leader(1,$font-size-base);
+		//@include margin-trailer(1,$font-size-base);
+	}
+	h2{}
+	h3{}
+	h4{
+		@include adjust-font-size-to($font-size-smaller,1,$font-size-base);
+	}
+	p{
+		font-family: $font-family-serif;
+	}
+
 	//HERO
 	//	big image at the top of the initial landing page
 	.hero{
-		background: url('../frontpage/header-image.jpg') no-repeat;
-		height: 640px;
+		background-image: url('../frontpage/header-image.jpg');
+		background-repeat: no-repeat;
 		background-size: cover;
 		padding: rhythm(2,$font-size-base);
-		a{
+		img{
 			display: block;
 			max-width: $container-max;
 			margin: auto;
 			text-align: center;
 		}
-		h1,h2{
-			color: $color-white;
-			font-family: $font-family-sans-serif;
+		h1,h4{
 			text-shadow: 1px 3px 5px rgba(0,0,0,0.5);
+			color: $color-white;
 			max-width: $container-max;
 			margin: auto;
-			font-weight: $font-weight-bold;
-			text-align: center;
 		}
-
-		h1{
-			text-transform: uppercase;
-			font-size: 12px;
-		}
-
-		h2{
-			@include adjust-font-size-to($font-headline-large,2,$font-size-base);
-			@include margin-leader(1,$font-size-base);
-			@include margin-trailer(1,$font-size-base);
-		}
-
 	}
 
 	//LOGIN
 	//	strip below here that contains login
 	//	buttons and new account creation.
 	.login-buttons{
-		padding: rhythm(1,$font-size-base);
+		padding: rhythm(2,$font-size-base);
 		background-color: $color-white;
 		box-shadow: 1px 0px 15px rgba(0,0,0,0.25);
 		text-align: center;
@@ -52,6 +56,121 @@ main.frontpage{
 		}
 	}
 
+	//
+	.about{
+		padding: $gutter*2 0;
+		text-align: center;
+		> div{
+			max-width: 960px;
+			margin: auto;
+		}
+		h1{
+		}
+		p{
+			@include margin-trailer(1,$font-size-base);
+			@include margin-leader(1,$font-size-base);
+		}
+	}
+
+	//
+	//
+	.groups{
+		padding: $gutter*2 0;
+		background-image: url('../frontpage/faghopar.jpg');
+		background-repeat: no-repeat;
+		background-size: cover;
+		text-align: center;
+		> div{
+
+		}
+		h1{
+			text-shadow: 1px 3px 5px rgba(0,0,0,0.5);
+			max-width: 960px;
+			margin: auto;
+			color: $color-white;
+		}
+		p{
+			text-align: center;
+			padding: rhythm(1,$font-size-base) 0;
+			margin: rhythm(1,$font-size-base) 0;
+			background-color: rgba($color-white,.5);
+			color: $color-gray-black;
+		}
+	}
+
+	//
+	//
+	.events-panel,.news-panel{
+		padding: $gutter*2 0;
+		color: $color-black;
+		> h1{
+			text-align: left;
+			text-shadow: 0px 1px rgba($color-white,.37);
+			max-width: 960px;
+			margin: auto;
+		}
+		> div{
+			padding-top: $gutter*2;
+			text-align: center;
+		}
+		article{
+			@include pie-clearfix;
+			max-width: 960px;
+			margin: rhythm(1,$font-size-base) auto 0 auto;
+			aside{
+				float: left;
+			}
+			header,section,footer{
+				margin-left: 300+$gutter;
+			}
+			footer{
+				padding: rhythm(1/2,$font-size-base) 0;
+				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+				font-family: $font-family-sans-serif;
+				a{
+					color: $color-black;
+				}
+			}
+			h2{
+				@include adjust-font-size-to($font-headline-base,1,$font-size-base);
+				text-align: left;
+				text-shadow: none;
+				a{
+					color: $color-black;
+				}
+
+			}
+			time{
+				font-family: $font-family-sans-serif;
+				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+				text-align: right;
+				display: block;
+			}
+		}
+	}
+	.events-panel{
+		background-color: tint($color-sea,50%);
+	}
+
+	.news-panel{
+		background-color: $color-yellow;
+	}
+
+	//IMAGE TILES
+	//
+	.image-boxes{
+		ul{
+			@include pie-clearfix;
+			li{
+				float: left;
+				width: ( 100% / 6 );
+				img{
+					width: 100%;
+					vertical-align: bottom;
+				}
+			}
+		}
+	}
 
 	//BUTTONS
 	//	all of them buttons
@@ -60,6 +179,8 @@ main.frontpage{
 		font-family: $font-family-sans-serif;
 		font-weight: $font-weight-bold;
 		padding: rhythm(1/2,$font-size-base) rhythm(1,$font-size-base);
+		@include border-radius(0);
+		border: none;
 
 		&.btn-default{
 			color: $color-white;
@@ -78,8 +199,16 @@ main.frontpage{
 		}
 	}
 
-}
 
+
+
+
+	//
+	> header{
+		display: none;
+	}
+}
+/*
 .callout{
 	max-width: 980px;
 	margin: 0 auto;
@@ -202,19 +331,8 @@ main.frontpage{
 }
 
 
-.image-boxes{
-	ul{
-		@include pie-clearfix;
-		li{
-			float: left;
-			width: 25%;
-			img{
-				width: 100%;
-			}
-		}
-	}
-}
 
+*/
 /*
 .image-boxes{
 	@include clearfix;
@@ -230,7 +348,7 @@ main.frontpage{
 	.img_big {width:100%; height:100%;}
 }
 */
-
+/*
 .not-logged-in{
 	nav{
 		display: none;
@@ -248,5 +366,5 @@ main.frontpage{
 		display: none;
 	}
 }
-
+*/
 /* Login section */
