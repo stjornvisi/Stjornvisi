@@ -1,0 +1,29 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einar
+ * Date: 23/09/14
+ * Time: 13:50
+ */
+?>
+<p>Hópar sem þú ert skráð(ur) í. Hér getur þú stillt hvort þú viljir fá senda pósta frá
+	viðkomandi hópi.</p>
+<table>
+	<thead>
+	<tr>
+		<td>Hópur</td>
+		<td>Réttindi</td>
+		<td>Póstur</td>
+	</tr>
+	</thead>
+	<tfoot></tfoot>
+	<tbody>
+		<?php foreach($this->groups as $group): ?>
+		<tr>
+			<td><?=$group->name?></td>
+			<td><?=$group->type?></td>
+			<td><input type="checkbox" <?=($group->notify)?'checked':''?> /></td>
+		</tr>
+		<?php endforeach ?>
+	</tbody>
+</table>

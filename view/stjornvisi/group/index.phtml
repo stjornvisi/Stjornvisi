@@ -1,7 +1,6 @@
 <div>
 	<div class="group-header">
 		<h1><?=$this->group->name;?></h1>
-		<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
 		<?php if($this->logged_in):?>
 			<?php if( $this->access->type === null ):?>
 				<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="label label-success">Skrá í hóp</a>
@@ -112,6 +111,7 @@
 					</ul>
 				</div>
 			<?php endif;?>
+			<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
 			<?=$this->paragrapher($this->group->description);?>
 			<h1>Fyrri starfsár</h1>
 			<ul>

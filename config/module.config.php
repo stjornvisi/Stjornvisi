@@ -705,6 +705,16 @@ return array(
 							),
 						)
 					),
+					'manage-groups' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/hopar',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\User',
+								'action' => 'groups'
+							),
+						)
+					),
                     'admin' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(

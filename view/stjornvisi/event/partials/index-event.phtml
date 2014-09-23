@@ -146,9 +146,8 @@
 		<?php if($this->event->lat && $this->event->lng):?>
 			<div class="event-event-meta-map">
 				<h1>Kort</h1>
-				<div id="map_canvas" style="height:300px"></div>
-				<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
-				</script>
+				<div id="map_canvas" data-lat="<?=$this->event->lat?>" data-lng="<?=$this->event->lng?>" style="height:300px"></div>
+
 				<script type="text/javascript">
 					function initialize() {
 						var latlng = new google.maps.LatLng(<?=$this->event->lat?>, <?=$this->event->lng?>);

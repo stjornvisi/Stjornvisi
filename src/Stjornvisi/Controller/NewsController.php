@@ -104,7 +104,7 @@ class NewsController extends AbstractActionController{
             if($access->is_admin || $access->type >= 1){
 
                 $form = new NewsForm();
-                $form->setAttribute('action',$this->url('frettir/create',array('id'=>$group->id)));
+				$form->setAttribute('action', $this->url()->fromRoute('frettir/create',array('id'=>$group->id)) );
 
                 //POST
                 //  http post request

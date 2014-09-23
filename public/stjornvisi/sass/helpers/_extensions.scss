@@ -36,6 +36,10 @@
 		img{
 			float: left;
 			margin: 0 rhythm(1/2) rhythm(1/2) 0;
+			@include breakpoint-to($screen-size-phone){
+				width: 100%;
+			}
+
 		}
 		a{
 			color: $color-sea;
@@ -111,6 +115,9 @@
 		float: left;
 		width: 25%;
 		padding: $gutter / 4;
+		@include breakpoint-to($screen-size-phone){
+			width: 50%;
+		}
 		/*
 		@include breakpoint-to(1024){
 			width: 33.33%;

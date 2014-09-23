@@ -93,6 +93,7 @@ class Event extends Form{
             'name' => 'avatar',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
+				'data-url' => '/skrar/mynd'	//TODO can I use a function to call the router?
             ),
             'options' => array(
                 'label' => 'Mynd',

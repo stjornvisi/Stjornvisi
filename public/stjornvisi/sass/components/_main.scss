@@ -37,15 +37,20 @@
 		h1{
 			color: $color-white;
 		}
+		@include breakpoint-to($screen-size-phone){
+			> ul{ width: auto; float: none; }
+			> div{ width: auto; float: none; }
+		}
 	}
 
 
 	.form-horizontal{
 		max-width: 960px;
-		margin: $gutter*2 auto $gutter*4 auto;
-
+		margin: $gutter auto;
 		label{
 			font-family: $font-family-sans-serif;
 			color: $color-sea;
 		}
+
+		.form-group .checkbox label{ display: block; }
 	}

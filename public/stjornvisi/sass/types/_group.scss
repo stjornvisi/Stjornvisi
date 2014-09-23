@@ -31,6 +31,13 @@
 				}
 
 			}
+			@include breakpoint-to($screen-size-phone){
+				> div{
+					padding: 0;
+					float: none;
+					width: auto;
+				}
+			}
 		}
 		> aside{
 			h1{
@@ -48,5 +55,9 @@
 			float: left;
 			padding-right: $gutter/2;
 			padding-left: 0;
+		}
+		@include breakpoint-to($screen-size-phone){
+			> section{ padding-left:0; margin: 0; }
+			> aside{ padding-right:0; }
 		}
 	}

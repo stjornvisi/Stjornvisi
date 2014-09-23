@@ -1,3 +1,4 @@
+
 UPDATE Company set business_type = "Einkahlutafélag (ehf)" WHERE business_type = "EinkahlutafÃ©lag (ehf)";
 UPDATE Company set business_type = "Einkahlutafélag (ehf)" WHERE business_type = "Einkahlutafélag (ehf)";
 UPDATE Company set business_type = "Hlutafélag (hf)" WHERE business_type = "HlutafÃ©lag (hf)";
@@ -38,3 +39,8 @@ ALTER TABLE `Event_has_Guest`
 
 ALTER TABLE `Event`
   ADD capacity INT (4) AFTER address;
+
+ALTER TABLE `Group_has_User`
+  ADD `notify` INT (4) AFTER `type`;
+
+UPDATE  `Group_has_User` SET `notify` = 1;

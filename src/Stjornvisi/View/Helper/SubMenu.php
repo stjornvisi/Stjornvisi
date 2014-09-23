@@ -48,6 +48,7 @@ class SubMenu extends AbstractHelper {
 						);
 					},$this->groupService->fetchAll())
 				),
+				/*
 				array(
 					'label' => 'Viðburðir',
 					'uri' => '/vidburdir'
@@ -56,6 +57,7 @@ class SubMenu extends AbstractHelper {
 					'label' => 'Fréttir',
 					'uri' => '/frettir',
 				),
+				*/
 
 			);
 
@@ -66,12 +68,21 @@ class SubMenu extends AbstractHelper {
 					'uri' => '/notandi/'.$this->authService->getIdentity()->id,
 					'pages' => array(
 						array(
-							'label' => 'Stillingar',
+							'label' => 'Notendastillingar',
 							'uri' => "/notandi/{$this->authService->getIdentity()->id}/uppfaera"
+						),
+						array(
+							'label' => 'Hópastillingar',
+							//'uri' => "/notandi/{$this->authService->getIdentity()->id}/hopar"
+							'uri' => "/notandi/hopar"
 						),
 						array(
 							'label' => 'Lykilorð',
 							'uri' => "/notandi/{$this->authService->getIdentity()->id}/lykilord"
+						),
+						array(
+							'label' => 'Útskrá',
+							'uri' => '/utskra'
 						),
 					),
 				);

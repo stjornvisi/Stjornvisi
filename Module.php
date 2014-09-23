@@ -29,6 +29,7 @@ use Stjornvisi\Service\JaMap;
 use Stjornvisi\Service\Values;
 use Stjornvisi\Mail\Service\File;
 use Stjornvisi\View\Helper\SubMenu;
+use Stjornvisi\View\Helper\User as UserMenu;
 use Stjornvisi\Event\ServiceIndexListener;
 use Stjornvisi\Event\ServiceEventListener;
 
@@ -226,7 +227,7 @@ class Module{
 						$sm->getServiceLocator()->get('Stjornvisi\Service\User'),
 						new AuthenticationService()
 					);
-				},
+				}
 			),
 		);
 	}

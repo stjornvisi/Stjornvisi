@@ -442,6 +442,20 @@ class UserController extends AbstractActionController{
         */
 	}
 
+	public function groupsAction(){
+
+		$auth = new AuthenticationService();
+
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group'); /** @var $groupService \Stjornvisi\Service\Group */
+		$groups = $groupService->userConnections( $auth->getIdentity()->id  );
+
+		return new ViewModel(array(
+			'groups' => $groups
+		));
+
+	}
+
 	/**
 	 *
 	 * @throws Zend_Controller_Action_Exception

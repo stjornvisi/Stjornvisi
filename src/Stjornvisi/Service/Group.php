@@ -195,6 +195,40 @@ class Group extends AbstractService {
 
     }
 
+	/**
+	 * This will return an array of all groups tha a user is connected to
+	 * and all the properties that are set with the connection.
+	 *
+	 * This can be the user's role with the group and if he wants to be notified
+	 * via e-mail about the group's events and news
+	 *
+	 * @param int $user_id
+	 * @return array
+	 * @throws Exception
+	 */
+	public function userConnections( $user_id ){
+
+		try{
+			$statement = $this->pdo->prepare('
+			SELECT G.name, GhU.* FROM `Group` G
+				JOIN Group_has_User GhU ON (G.id = GhU.group_id)
+			WHERE GhU.user_id = :user_id;
+			');
+			$statement->execute(array('user_id' => $user_id));
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return $statement->fetchAll();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			//$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			throw new Exception("Cant set status of user's connection to all this groups.  user:[{$user_id}]",0,$e);
+		}
+	}
+
     /**
      * Get all groups in alphabet order.
      *

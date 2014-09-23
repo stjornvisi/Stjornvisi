@@ -11,6 +11,10 @@
 			> h1{
 				@extend %category-label;
 			}
+			@include breakpoint-to($screen-size-phone){
+				float: none;
+				width: auto;
+			}
 
 		}
 	}

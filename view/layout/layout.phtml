@@ -10,6 +10,7 @@
         ?>
 		<script src="<?=$this->basePath();?>/javascripts/ie.js"></script>
 		<script src="<?=$this->basePath();?>/vendor/html5shiv-dist/html5shiv.js"></script>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
         <!-- Le styles -->
         <?php echo $this->headLink(array(
 			'rel' => 'icon',
@@ -34,8 +35,8 @@
 			<ul class="categories">
 				<li><a class="home" href="/" title="Heim">heim</a></li>
 				<li><a class="groups control" href="" title="Faghópar">groups</a></li>
-				<li><a class="news control" href="" title="Fréttir">news</a></li>
-				<li><a class="events control" href="" title="Viðburðir">events</a></li>
+				<!--li><a class="news control" href="" title="Fréttir">news</a></li-->
+				<!--li><a class="events control" href="" title="Viðburðir">events</a></li-->
 				<li><a class="user control" href="" title="Notendur">user</a></li>
 				<li><a class="config control" href="" title="Stillingar">config</a></li>
 			</ul>
@@ -46,6 +47,7 @@
 				<h1 class="page-brand">Stjórnvísi</h1>
 				<ul class="page-main-menu">
 					<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+					<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
 					<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
 					<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
 				</ul>

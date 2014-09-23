@@ -52,3 +52,15 @@
 	$gutter:			30px;
 
 	$menu-border-size:	80px;
+
+
+	// - - - - - - [ SCREENS ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	$screen-size-phone:		480px;
+	$screen-size-tablet:	768px;
+	$screen-size-desktop:	1024px;
+
+
+
+	// - - - - - - [ BOOTSTRAP OVERWRITE ] - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	$grid-gutter-width: 0;
