@@ -178,7 +178,7 @@
             xhr.addEventListener('load',function(event){
                 media.classList.add('done');
                 var object = JSON.parse( event.target.responseText );
-                media.style.backgroundImage = 'url(/images/60/'+object.info.media[0].name+')';
+                media.style.backgroundImage = 'url('+object.info.media[0].thumb+')';
                 media.style.backgroundSize = 'auto 60px';
                 media.style.backgroundRepeat = 'no-repeat';
                 media.value = object.info.media[0].name;

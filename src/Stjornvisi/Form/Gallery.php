@@ -24,6 +24,7 @@ class Gallery extends Form {
 			'attributes' => array(
 				'placeholder' => 'Nafn...',
 				'required' => 'required',
+				'data-url' => '/skrar/mynd'	//TODO can I use a function to call the router?
 			),
 			'options' => array(
 				'label' => 'Nafn',

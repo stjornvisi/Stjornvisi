@@ -15,6 +15,7 @@ class MediaController extends AbstractActionController{
 
 	public function imageAction(){
 		$sm = $this->getServiceLocator();
+		$renderer = $sm->get('Zend\View\Renderer\RendererInterface');
 		$folder = './public/stjornvisi/images/';
 		$adapter = new Http();
 		$adapter->setDestination($folder.'original');
@@ -25,6 +26,11 @@ class MediaController extends AbstractActionController{
  		);
 
 		foreach ($adapter->getFileInfo() as $info) {
+
+
+			$url123 = $renderer->basePath('/application/rent/search');
+
+
 			$originalFileName = $info['name'];
 
 			$nameArray = array();
@@ -45,12 +51,21 @@ class MediaController extends AbstractActionController{
 
 					$imagine = $sm->get('Imagine\Image\Imagine');
 
+					//60 SQUARE
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$transform = new Transformation();
 					$transform->add( new Square() );
 					$transform->add( new Resize( new Box(60,60) ) );
 					$transform->apply( $image )->save($folder . '60/' . $newFileName. '.'.$nameArray[3]);
 
+					//300 SQUARE
+					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
+					$transform = new Transformation();
+					$transform->add( new Square() );
+					$transform->add( new Resize( new Box(300,300) ) );
+					$transform->apply( $image )->save($folder . '300-square/' . $newFileName. '.'.$nameArray[3]);
+
+					//
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$size = $image->getSize()->widen(300);
 					$image->resize($size)
@@ -74,6 +89,7 @@ class MediaController extends AbstractActionController{
 						'message' => 'Success',
 						'name' => $newFileName. '.'.$nameArray[3],
 						'original' => $originalFileName,
+						'thumb' => $renderer->basePath('/images/60/'.$newFileName. '.'.$nameArray[3])
 					);
 
 				}else{
@@ -83,6 +99,7 @@ class MediaController extends AbstractActionController{
 						'message' => array_pop($errorArray),
 						'name' => $newFileName. '.'.$nameArray[3],
 						'original' => $originalFileName,
+						'thumb' => null
 					);
 				}
 			}else{
@@ -91,6 +108,7 @@ class MediaController extends AbstractActionController{
 					'message' => 'Invalid filename',
 					'name' => null,
 					'original' => $originalFileName,
+					'thumb' => null
 				);
 			}
 

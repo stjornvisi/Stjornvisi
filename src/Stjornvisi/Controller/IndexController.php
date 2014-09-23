@@ -63,7 +63,7 @@ class IndexController extends AbstractActionController{
 				'groups' => $groupService->fetchAll(),
 				'event' => $eventService->getNext(),
 				'news' => $newsService->getNext(),
-                'gallery' => $eventService->fetchGallery(10),
+                'gallery' => $eventService->fetchGallery(12),
             ));
         }
 

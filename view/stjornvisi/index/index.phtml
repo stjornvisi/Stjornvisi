@@ -181,26 +181,13 @@
 		</div>
 	</div>
 	<div class="image-boxes">
-		<div class="box box-four">
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[0]->name}")?>" title="<?=$this->gallery[0]->description?>" />
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[1]->name}")?>" title="<?=$this->gallery[1]->description?>" />
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[2]->name}")?>" title="<?=$this->gallery[2]->description?>" />
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[3]->name}")?>" title="<?=$this->gallery[3]->description?>" />
-		</div>
-		<div class="box box-large">
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[4]->name}")?>" title="<?=$this->gallery[4]->description?>" />
-		</div>
-		<div class="box-half box-two">
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[5]->name}")?>" title="<?=$this->gallery[5]->description?>" />
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[6]->name}")?>" title="<?=$this->gallery[6]->description?>" />
-		</div>
-		<div class="box box-large">
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[7]->name}")?>" title="<?=$this->gallery[7]->description?>" />
-		</div>
-		<div class="box-half box-two">
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[8]->name}")?>" title="<?=$this->gallery[8]->description?>" />
-			<img src="<?=$this->basePath("/images/300/{$this->gallery[9]->name}")?>" title="<?=$this->gallery[9]->description?>" />
-		</div>
+		<ul>
+			<?php foreach($this->gallery as $item):?>
+			<li>
+				<img src="<?=$this->basePath("/images/300-square/{$item->name}")?>" title="<?=$item->description?>" />
+			</li>
+			<?php endforeach;?>
+		</ul>
 	</div>
 
 

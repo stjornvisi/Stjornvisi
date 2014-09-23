@@ -818,7 +818,7 @@ class Event extends AbstractService {
 			if($limit){
 				$statement = $this->pdo->prepare("
 					SELECT * FROM EventGallery GE
-					ORDER BY GE.created DESC
+					ORDER BY `created` DESC
 					LIMIT 0, ".$limit."
 				");
 				$statement->execute();

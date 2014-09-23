@@ -51,6 +51,10 @@
 			font-family: $font-family-sans-serif;
 			color: $color-sea;
 		}
+		.form-control.avatar{
+			padding: rhythm(1.25,$font-size-base) 0;
+			text-indent: 80px;
+		}
 
 		.form-group .checkbox label{ display: block; }
 	}
