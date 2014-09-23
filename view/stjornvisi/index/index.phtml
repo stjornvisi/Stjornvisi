@@ -175,7 +175,7 @@
 		<article>
 			<aside>
 				<?php if($this->news->avatar):?>
-				<img src="/images/60/<?=$this->news->avatar?>" />
+				<img src="<?=$this->basePath("/images/300-square/{$this->news->avatar}")?>" />
 				<?php endif;?>
 			</aside>
 			<header>
