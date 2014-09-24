@@ -6,108 +6,129 @@
  * Time: 6:31 PM
  */
 ?>
-<?php if( $this->user->oauth_key  ):?>
-<img src="https://graph.facebook.com/<?=$this->user->oauth_key;?>/picture?type=large">
-<?php endif;?>
-<h1><?=$this->user->name;?></h1>
-<?php if( $this->access->is_admin || $this->access->type == 1 ):?>
-<div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        Action <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="<?=$this->url('notandi/update',array('id'=>$this->user->id));?>">Uppfæra</a></li>
-        <li><a href="<?=$this->url('notandi/delete',array('id'=>$this->user->id));?>">Eyða</a></li>
 
-        <?php if( $this->access->is_admin ):?>
-            <li role="presentation" class="divider"></li>
-            <?php if( $this->user->is_admin ):?>
-                <li><a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>0));?>">Taka admin réttindi af</a></li>
-            <?php else:?>
-                <li><a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>1));?>">Setja admin réttindi á</a></li>
-            <?php endif;?>
-        <?php endif;?>
-        <li role="presentation" class="divider"></li>
-        <li><a href="<?=$this->url('notandi/change-password',array('id'=>$this->user->id))?>">Breyta lykilorði</a> </li>
-    </ul>
+<div class="default-wrapper">
+	<?php if( $this->user->oauth_key  ):?>
+		<img src="https://graph.facebook.com/<?=$this->user->oauth_key;?>/picture?type=large">
+	<?php endif;?>
+	<h1><?=$this->user->name;?></h1>
+	<div class="row">
+		<div class="col-md-6">
+
+			<div class="row">
+				<div class="col-md-6">
+					<dl class="user-properties-list">
+						<dt>Titill</dt>
+						<dd><?=$this->user->title?></dd>
+						<dt>Netfang</dt>
+						<dd><?=$this->user->email?></dd>
+						<dt>Síðan</dt>
+						<dd><?=$this->user->created_date->format('Y-m-d')?></dd>
+						<dt>Innskráningar</dt>
+						<dd><?=$this->user->frequency;?></dd>
+						<dt>Kerfisstjóri</dt>
+						<dd><?=($this->user->is_admin)?'já':'nei'?></dd>
+					</dl>
+					<dl class="user-properties-list">
+						<dt>Fyrirtæki</dt>
+						<dd><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$this->user->company->id))?>"><?=$this->user->company->name?></a></dd>
+						<dt>Lykilstarfsmaður</dt>
+						<dd><?=($this->user->company->key_user)?'já':'nei';?></dd>
+					</dl>
+				</div>
+				<div class="col-md-6">
+					<h2>Hópar</h2>
+					<ul>
+						<?php foreach($this->groups as $group):?>
+							<li>
+								<a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a>
+							</li>
+						<?php endforeach;?>
+					</ul>
+				</div>
+			</div>
+
+
+			<?php if( $this->access->is_admin || $this->access->type == 1 ):?>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="<?=$this->url('notandi/update',array('id'=>$this->user->id));?>">Uppfæra</a></li>
+						<li><a href="<?=$this->url('notandi/delete',array('id'=>$this->user->id));?>">Eyða</a></li>
+
+						<?php if( $this->access->is_admin ):?>
+							<li role="presentation" class="divider"></li>
+							<?php if( $this->user->is_admin ):?>
+								<li><a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>0));?>">Taka admin réttindi af</a></li>
+							<?php else:?>
+								<li><a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>1));?>">Setja admin réttindi á</a></li>
+							<?php endif;?>
+						<?php endif;?>
+						<li role="presentation" class="divider"></li>
+						<li><a href="<?=$this->url('notandi/change-password',array('id'=>$this->user->id))?>">Breyta lykilorði</a> </li>
+					</ul>
+				</div>
+			<?php endif;?>
+
+
+
+
+
+
+		</div>
+		<div class="col-md-6">
+			<?php if( $this->access->is_admin || $this->access->type == 1 ):?>
+				<h2>Mætingar</h2>
+
+				<?php foreach($this->attendance as $row):?>
+					<table class="table table-condensed">
+						<caption><?=$row->from?> - <?=$row->to?></caption>
+						<thead>
+						<tr>
+							<td>Faghópur</td>
+							<td>Fjöldi viðburða</td>
+							<td>Mættingar á viðburði</td>
+							<td>Hlutfall mætinga</td>
+						</tr>
+						</thead>
+						<tfoot>
+						<tr>
+							<td>&nbsp;</td>
+							<td><?=$row->total?></td>
+							<td><?=$row->attendance?></td>
+							<?php if($row->attendance > 0):?>
+								<td><?=number_format($row->attendance/$row->total*100,2)?>%</td>
+							<?php else:?>
+								<td>0.00%</td>
+							<?php endif;?>
+						</tr>
+						</tfoot>
+						<tbody>
+						<?php foreach($row->groups as $group):?>
+							<tr>
+								<?php if($group->group->id == null):?>
+									<td>Almennur viðburður</td>
+								<?php else:?>
+									<td><a href="<?=$this->url('hopur/index',array('id'=>$group->group->url))?>"><?=$group->group->name_short?></a></td>
+								<?php endif;?>
+								<td><?=$group->total?></td>
+								<td><?=$group->attendance?></td>
+								<?php if($group->attendance > 0):?>
+									<td><?=number_format($group->attendance/$group->total*100,2)?>%</td>
+								<?php else:?>
+									<td>0.00%</td>
+								<?php endif;?>
+							</tr>
+						<?php endforeach;?>
+						</tbody>
+					</table>
+				<?php endforeach;?>
+			<?php endif;?>
+
+		</div>
+	</div>
+
+
 </div>
-<?php endif;?>
-
-
-<dl>
-    <dt>Titill</dt>
-    <dd><?=$this->user->title?></dd>
-    <dt>Netfang</dt>
-    <dd><?=$this->user->email?></dd>
-    <dt>Síðan</dt>
-    <dd><?=$this->user->created_date->format('Y-m-d')?></dd>
-    <dt>Innskráningar</dt>
-    <dd><?=$this->user->frequency;?></dd>
-    <dt>Admin</dt>
-    <dd><?=$this->user->is_admin?></dd>
-</dl>
-<dl>
-    <dt>Fyrirtæki</dt>
-    <dd><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$this->user->company->id))?>"><?=$this->user->company->name?></a></dd>
-    <dt>Lykilstarfsmaður</dt>
-    <dd><?=$this->user->company->key_user;?></dd>
-</dl>
-
-<h2>Hópar</h2>
-<ul>
-    <?php foreach($this->groups as $group):?>
-    <li>
-        <a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a>
-    </li>
-    <?php endforeach;?>
-</ul>
-
-<?php if( $this->access->is_admin || $this->access->type == 1 ):?>
-	<h2>Mætingar</h2>
-
-	<?php foreach($this->attendance as $row):?>
-		<table class="table table-condensed">
-			<caption><?=$row->from?> - <?=$row->to?></caption>
-			<thead>
-			<tr>
-				<td>Faghópur</td>
-				<td>Fjöldi viðburða</td>
-				<td>Mættingar á viðburði</td>
-				<td>Hlutfall mætinga</td>
-			</tr>
-			</thead>
-			<tfoot>
-			<tr>
-				<td>&nbsp;</td>
-				<td><?=$row->total?></td>
-				<td><?=$row->attendance?></td>
-				<?php if($row->attendance > 0):?>
-					<td><?=number_format($row->attendance/$row->total*100,2)?>%</td>
-				<?php else:?>
-					<td>0.00%</td>
-				<?php endif;?>
-			</tr>
-			</tfoot>
-			<tbody>
-			<?php foreach($row->groups as $group):?>
-				<tr>
-					<?php if($group->group->id == null):?>
-						<td>Almennur viðburður</td>
-					<?php else:?>
-						<td><a href="<?=$this->url('hopur/index',array('id'=>$group->group->url))?>"><?=$group->group->name_short?></a></td>
-					<?php endif;?>
-					<td><?=$group->total?></td>
-					<td><?=$group->attendance?></td>
-					<?php if($group->attendance > 0):?>
-						<td><?=number_format($group->attendance/$group->total*100,2)?>%</td>
-					<?php else:?>
-						<td>0.00%</td>
-					<?php endif;?>
-				</tr>
-			<?php endforeach;?>
-			</tbody>
-		</table>
-	<?php endforeach;?>
-<?php endif;?>
-
-

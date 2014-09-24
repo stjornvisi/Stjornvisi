@@ -3682,3 +3682,36 @@ dl.company-properties dd {
   float: left;
   width: 70%;
 }
+
+/* line 3, ../sass/types/_users.scss */
+dl.user-properties-list {
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+dl.user-properties-list:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 5, ../sass/types/_users.scss */
+dl.user-properties-list dt {
+  float: left;
+  clear: both;
+  width: 40%;
+}
+/* line 6, ../sass/types/_users.scss */
+dl.user-properties-list dd {
+  float: left;
+  width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* line 11, ../sass/types/_users.scss */
+dl.users-list dd {
+  padding-left: 30px;
+}
