@@ -7,73 +7,84 @@
  */
 ?>
 
-<h1><?=$this->company->name?></h1>
-
-<?php if($this->access->is_admin || $this->access->type != null):?>
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            Action <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            <li><a href="<?=$this->url('fyrirtaeki/update',array('id'=>$this->company->id))?>">Uppfæra</a></li>
-            <?php if($this->access->is_admin || $this->access->type == 1):?>
-            <li><a href="<?=$this->url('fyrirtaeki/delete',array('id'=>$this->company->id))?>">Eyða</a></li>
-            <?php endif;?>
-        </ul>
-    </div>
-<?php endif;?>
+<div class="default-wrapper">
+	<h1><?=$this->company->name?></h1>
+	<div class="row">
+		<div class="col-md-6">
 
 
+			<?php if($this->access->is_admin || $this->access->type != null):?>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						Action <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="<?=$this->url('fyrirtaeki/update',array('id'=>$this->company->id))?>">Uppfæra</a></li>
+						<?php if($this->access->is_admin || $this->access->type == 1):?>
+							<li><a href="<?=$this->url('fyrirtaeki/delete',array('id'=>$this->company->id))?>">Eyða</a></li>
+						<?php endif;?>
+					</ul>
+				</div>
+			<?php endif;?>
 
-<dl>
-    <dt>ssn</dt>
-    <dd><?=$this->company->ssn;?></dd>
-    <dt>address</dt>
-    <dd><?=$this->company->address;?></dd>
-    <dt>zip</dt>
-    <dd><?=$this->company->zip;?></dd>
-    <dt>website</dt>
-    <dd><?=$this->company->website;?></dd>
-    <dt>number_of_employees</dt>
-    <dd><?=$this->company->number_of_employees;?></dd>
-    <dt>business_type</dt>
-    <dd><?=$this->company->business_type;?></dd>
-    <dt>safe_name</dt>
-    <dd><?=$this->company->safe_name;?></dd>
-    <dt>created</dt>
-    <dd><?=$this->company->created->format('Y-m-d');?></dd>
-</dl>
 
-<h2>Starfsmenn</h2>
-<table>
-    <?php foreach($this->company->members as $member):?>
-        <tr>
-            <td><a href="<?=$this->url('notandi/index',array('id'=>$member->id))?>"><?=$member->name;?></a></td>
-            <td><?=$member->title;?></td>
-            <td>
-                <?php if($member->key_user):?>
-                    lykilstarfsmaður
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?=$this->url('fyrirtaeki/employee-type',array('id'=>$this->company->id,'user'=>$member->id,'type'=>0))?>">Gera að starfsmanni</a></li>
-                        </ul>
-                    </div>
-                <?php else:?>
-                    starfsmaður
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="<?=$this->url('fyrirtaeki/employee-type',array('id'=>$this->company->id,'user'=>$member->id,'type'=>1))?>">Gera að lykilstarfsmanni</a></li>
-                        </ul>
-                    </div>
-                <?php endif;?>
-            </td>
-        </tr>
-    <?php endforeach;?>
+			<dl class="company-properties">
+				<dt>ssn</dt>
+				<dd><?=$this->company->ssn;?></dd>
+				<dt>address</dt>
+				<dd><?=$this->company->address;?></dd>
+				<dt>zip</dt>
+				<dd><?=$this->company->zip;?></dd>
+				<dt>website</dt>
+				<dd><?=$this->company->website;?></dd>
+				<dt>number_of_employees</dt>
+				<dd><?=$this->company->number_of_employees;?></dd>
+				<dt>business_type</dt>
+				<dd><?=$this->company->business_type;?></dd>
+				<dt>safe_name</dt>
+				<dd><?=$this->company->safe_name;?></dd>
+				<dt>created</dt>
+				<dd><?=$this->company->created->format('Y-m-d');?></dd>
+			</dl>
 
-</table>
+
+		</div>
+		<div class="col-md-6">
+
+			<h2>Starfsmenn</h2>
+			<table>
+				<?php foreach($this->company->members as $member):?>
+					<tr>
+						<td><a href="<?=$this->url('notandi/index',array('id'=>$member->id))?>"><?=$member->name;?></a></td>
+						<td><?=$member->title;?></td>
+						<td>
+							<?php if($member->key_user):?>
+								lykilstarfsmaður
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+										Action <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="<?=$this->url('fyrirtaeki/employee-type',array('id'=>$this->company->id,'user'=>$member->id,'type'=>0))?>">Gera að starfsmanni</a></li>
+									</ul>
+								</div>
+							<?php else:?>
+								starfsmaður
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+										Action <span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="<?=$this->url('fyrirtaeki/employee-type',array('id'=>$this->company->id,'user'=>$member->id,'type'=>1))?>">Gera að lykilstarfsmanni</a></li>
+									</ul>
+								</div>
+							<?php endif;?>
+						</td>
+					</tr>
+				<?php endforeach;?>
+			</table>
+
+		</div>
+	</div>
+</div>
+

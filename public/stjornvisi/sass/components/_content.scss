@@ -1,4 +1,7 @@
 
+.default-wrapper{
+	padding: $gutter;
+}
 .content-wrapper{
 	padding: $gutter;
 	@include pie-clearfix;
