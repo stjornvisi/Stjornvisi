@@ -3,9 +3,9 @@
 		<h1><?=$this->group->name;?></h1>
 		<?php if($this->logged_in):?>
 			<?php if( $this->access->type === null ):?>
-				<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="label label-success">Skrá í hóp</a>
+				<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="btn btn-warning">Skrá í hóp</a>
 			<?php else:?>
-				<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>0))?>" class="label label-danger">Afskrá úr hópi</a>
+				<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>0))?>" class="btn btn-danger">Afskrá úr hópi</a>
 			<?php endif;?>
 		<?php else:?>
 			<a href="<?=$this->url('auth-in')?>" class="label label-success">Skrá í hóp</a>
