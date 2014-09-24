@@ -1857,78 +1857,78 @@ body.logged-in ul.page-main-menu li a {
 }
 
 /* line 3, ../sass/types/_landing-page.scss */
-main.frontpage {
+.landing-page {
   background-color: #f6f7fb;
 }
 /* line 6, ../sass/types/_landing-page.scss */
-main.frontpage h1, main.frontpage h2, main.frontpage h3, main.frontpage h4 {
+.landing-page h1, .landing-page h2, .landing-page h3, .landing-page h4 {
   font-family: "open-sans", sans-serif;
   font-weight: 700;
   text-align: center;
 }
 /* line 11, ../sass/types/_landing-page.scss */
-main.frontpage h1 {
+.landing-page h1 {
   font-size: 2.25em;
   line-height: 1.33333em;
 }
 /* line 18, ../sass/types/_landing-page.scss */
-main.frontpage h4 {
+.landing-page h4 {
   font-size: 0.75em;
   line-height: 2em;
 }
 /* line 21, ../sass/types/_landing-page.scss */
-main.frontpage p {
+.landing-page p {
   font-family: Georgia, Times, "Times New Roman", serif;
 }
 /* line 27, ../sass/types/_landing-page.scss */
-main.frontpage .hero {
+.landing-page .hero {
   background-image: url("../frontpage/header-image.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   padding: 3em;
 }
 /* line 32, ../sass/types/_landing-page.scss */
-main.frontpage .hero img {
+.landing-page .hero img {
   display: block;
   max-width: 960px;
   margin: auto;
   text-align: center;
 }
 /* line 38, ../sass/types/_landing-page.scss */
-main.frontpage .hero h1, main.frontpage .hero h4 {
+.landing-page .hero h1, .landing-page .hero h4 {
   text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
   color: white;
   max-width: 960px;
   margin: auto;
 }
 /* line 49, ../sass/types/_landing-page.scss */
-main.frontpage .login-buttons {
+.landing-page .login-buttons {
   padding: 3em;
   background-color: white;
   box-shadow: 1px 0px 15px rgba(0, 0, 0, 0.25);
   text-align: center;
 }
 /* line 54, ../sass/types/_landing-page.scss */
-main.frontpage .login-buttons a.btn-facebook i {
+.landing-page .login-buttons a.btn-facebook i {
   padding-right: 1.5em;
 }
 /* line 60, ../sass/types/_landing-page.scss */
-main.frontpage .about {
+.landing-page .about {
   padding: 60px 0;
   text-align: center;
 }
 /* line 63, ../sass/types/_landing-page.scss */
-main.frontpage .about > div {
+.landing-page .about > div {
   max-width: 960px;
   margin: auto;
 }
 /* line 69, ../sass/types/_landing-page.scss */
-main.frontpage .about p {
+.landing-page .about p {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
 }
 /* line 77, ../sass/types/_landing-page.scss */
-main.frontpage .groups {
+.landing-page .groups {
   padding: 60px 0;
   background-image: url("../frontpage/faghopar.jpg");
   background-repeat: no-repeat;
@@ -1936,14 +1936,14 @@ main.frontpage .groups {
   text-align: center;
 }
 /* line 86, ../sass/types/_landing-page.scss */
-main.frontpage .groups h1 {
+.landing-page .groups h1 {
   text-shadow: 1px 3px 5px rgba(0, 0, 0, 0.5);
   max-width: 960px;
   margin: auto;
   color: white;
 }
 /* line 92, ../sass/types/_landing-page.scss */
-main.frontpage .groups p {
+.landing-page .groups p {
   text-align: center;
   padding: 1.5em 0;
   margin: 1.5em 0;
@@ -1951,66 +1951,66 @@ main.frontpage .groups p {
   color: #282828;
 }
 /* line 103, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel, main.frontpage .news-panel {
+.landing-page .events-panel, .landing-page .news-panel {
   padding: 60px 0;
   color: #282828;
 }
 /* line 106, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel > h1, main.frontpage .news-panel > h1 {
+.landing-page .events-panel > h1, .landing-page .news-panel > h1 {
   text-align: left;
   text-shadow: 0px 1px rgba(255, 255, 255, 0.37);
   max-width: 960px;
   margin: auto;
 }
 /* line 112, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel > div, main.frontpage .news-panel > div {
+.landing-page .events-panel > div, .landing-page .news-panel > div {
   padding-top: 60px;
   text-align: center;
 }
 /* line 116, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article, main.frontpage .news-panel article {
+.landing-page .events-panel article, .landing-page .news-panel article {
   *zoom: 1;
   max-width: 960px;
   margin: 1.5em auto 0 auto;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-main.frontpage .events-panel article:after, main.frontpage .news-panel article:after {
+.landing-page .events-panel article:after, .landing-page .news-panel article:after {
   content: "";
   display: table;
   clear: both;
 }
 /* line 120, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article aside, main.frontpage .news-panel article aside {
+.landing-page .events-panel article aside, .landing-page .news-panel article aside {
   float: left;
 }
 /* line 123, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article header, main.frontpage .events-panel article section, main.frontpage .events-panel article footer, main.frontpage .news-panel article header, main.frontpage .news-panel article section, main.frontpage .news-panel article footer {
+.landing-page .events-panel article header, .landing-page .events-panel article section, .landing-page .events-panel article footer, .landing-page .news-panel article header, .landing-page .news-panel article section, .landing-page .news-panel article footer {
   margin-left: 330px;
 }
 /* line 126, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article footer, main.frontpage .news-panel article footer {
+.landing-page .events-panel article footer, .landing-page .news-panel article footer {
   padding: 0.75em 0;
   font-size: 0.875em;
   line-height: 1.71429em;
   font-family: "open-sans", sans-serif;
 }
 /* line 130, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article footer a, main.frontpage .news-panel article footer a {
+.landing-page .events-panel article footer a, .landing-page .news-panel article footer a {
   color: #282828;
 }
 /* line 134, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article h2, main.frontpage .news-panel article h2 {
+.landing-page .events-panel article h2, .landing-page .news-panel article h2 {
   font-size: 1.5em;
   line-height: 1em;
   text-align: left;
   text-shadow: none;
 }
 /* line 138, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article h2 a, main.frontpage .news-panel article h2 a {
+.landing-page .events-panel article h2 a, .landing-page .news-panel article h2 a {
   color: #282828;
 }
 /* line 143, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel article time, main.frontpage .news-panel article time {
+.landing-page .events-panel article time, .landing-page .news-panel article time {
   font-family: "open-sans", sans-serif;
   font-size: 0.875em;
   line-height: 1.71429em;
@@ -2018,35 +2018,35 @@ main.frontpage .events-panel article time, main.frontpage .news-panel article ti
   display: block;
 }
 /* line 151, ../sass/types/_landing-page.scss */
-main.frontpage .events-panel {
+.landing-page .events-panel {
   background-color: #a4c2d0;
 }
 /* line 155, ../sass/types/_landing-page.scss */
-main.frontpage .news-panel {
+.landing-page .news-panel {
   background-color: #fcaf17;
 }
 /* line 162, ../sass/types/_landing-page.scss */
-main.frontpage .image-boxes ul {
+.landing-page .image-boxes ul {
   *zoom: 1;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-main.frontpage .image-boxes ul:after {
+.landing-page .image-boxes ul:after {
   content: "";
   display: table;
   clear: both;
 }
 /* line 164, ../sass/types/_landing-page.scss */
-main.frontpage .image-boxes ul li {
+.landing-page .image-boxes ul li {
   float: left;
   width: 16.66667%;
 }
 /* line 167, ../sass/types/_landing-page.scss */
-main.frontpage .image-boxes ul li img {
+.landing-page .image-boxes ul li img {
   width: 100%;
   vertical-align: bottom;
 }
 /* line 177, ../sass/types/_landing-page.scss */
-main.frontpage .btn {
+.landing-page .btn {
   display: -moz-inline-stack;
   display: inline-block;
   vertical-align: middle;
@@ -2064,25 +2064,25 @@ main.frontpage .btn {
   border: none;
 }
 /* line 185, ../sass/types/_landing-page.scss */
-main.frontpage .btn.btn-default {
+.landing-page .btn.btn-default {
   color: white;
   background-color: #4ca14a;
   border-bottom: 2px solid #3c803b;
 }
 /* line 190, ../sass/types/_landing-page.scss */
-main.frontpage .btn.btn-success {
+.landing-page .btn.btn-success {
   color: white;
   background-color: #4ca14a;
   border-bottom: 2px solid #3c803b;
 }
 /* line 195, ../sass/types/_landing-page.scss */
-main.frontpage .btn.btn-facebook {
+.landing-page .btn.btn-facebook {
   color: white;
   background-color: #3e5a9e;
   border-bottom: 2px solid #31487e;
 }
 /* line 207, ../sass/types/_landing-page.scss */
-main.frontpage > header {
+.landing-page > header {
   display: none;
 }
 
@@ -2366,7 +2366,84 @@ main.frontpage > header {
   }
 }
 
-/* line 2, ../sass/types/_group.scss */
+/**
+ * Group's presentation.
+ * @see http://localhost:8080/hopur
+ */
+/* line 7, ../sass/types/_group.scss */
+.type-group-list {
+  max-width: 960px;
+  margin: auto;
+}
+/* line 11, ../sass/types/_group.scss */
+.type-group-list article {
+  *zoom: 1;
+  margin: 0 0 3em 0;
+  padding: 0 0 1.5em 0;
+  border-bottom: 1px solid #a4c2d0;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.type-group-list article:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 17, ../sass/types/_group.scss */
+.type-group-list article header h1 {
+  font-size: 2.25em;
+  line-height: 0.66667em;
+  margin-bottom: 0.66667em;
+}
+/* line 22, ../sass/types/_group.scss */
+.type-group-list article section {
+  padding-right: 0.75em;
+  float: left;
+  width: 50%;
+}
+/* line 27, ../sass/types/_group.scss */
+.type-group-list article aside {
+  padding-left: 0.75em;
+  float: right;
+  width: 50%;
+}
+/* line 33, ../sass/types/_group.scss */
+.type-group-list article aside ul li {
+  *zoom: 1;
+  padding-bottom: 1.5em;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-0.12.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
+.type-group-list article aside ul li:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 36, ../sass/types/_group.scss */
+.type-group-list article aside ul li img {
+  float: left;
+}
+/* line 38, ../sass/types/_group.scss */
+.type-group-list article aside ul li time {
+  font-size: 0.75em;
+  line-height: 2em;
+  font-family: "open-sans", sans-serif;
+  margin-left: 75px;
+  display: block;
+  color: #4a85a1;
+}
+/* line 45, ../sass/types/_group.scss */
+.type-group-list article aside ul li div {
+  margin-left: 75px;
+}
+/* line 50, ../sass/types/_group.scss */
+.type-group-list article footer {
+  clear: both;
+}
+/* line 53, ../sass/types/_group.scss */
+.type-group-list article:last-child {
+  border-bottom: none;
+}
+
+/* line 60, ../sass/types/_group.scss */
 .group-header {
   padding: 30px;
   *zoom: 1;
@@ -2377,19 +2454,19 @@ main.frontpage > header {
   display: table;
   clear: both;
 }
-/* line 5, ../sass/types/_group.scss */
+/* line 63, ../sass/types/_group.scss */
 .group-header h1 {
   float: left;
   font-size: 2.25em;
   line-height: 0.66667em;
 }
-/* line 9, ../sass/types/_group.scss */
+/* line 67, ../sass/types/_group.scss */
 .group-header h2 {
   float: left;
   font-size: 1.5em;
   line-height: 1em;
 }
-/* line 13, ../sass/types/_group.scss */
+/* line 71, ../sass/types/_group.scss */
 .group-header a {
   display: -moz-inline-stack;
   display: inline-block;
@@ -2400,7 +2477,7 @@ main.frontpage > header {
   float: right;
 }
 
-/* line 21, ../sass/types/_group.scss */
+/* line 79, ../sass/types/_group.scss */
 .group-wrapper > section {
   *zoom: 1;
   margin-left: -15px;
@@ -2412,14 +2489,14 @@ main.frontpage > header {
   display: table;
   clear: both;
 }
-/* line 25, ../sass/types/_group.scss */
+/* line 83, ../sass/types/_group.scss */
 .group-wrapper > section > div {
   float: left;
   width: 50%;
   padding: 0 15px;
 }
 @media only screen and (max-width: 480px) {
-  /* line 35, ../sass/types/_group.scss */
+  /* line 93, ../sass/types/_group.scss */
   .group-wrapper > section > div {
     padding: 0;
     float: none;
@@ -2427,25 +2504,25 @@ main.frontpage > header {
   }
 }
 
-/* line 49, ../sass/types/_group.scss */
+/* line 107, ../sass/types/_group.scss */
 .content-wrapper.group-wrapper > section {
   float: right;
   padding-right: 0;
   padding-left: 15px;
 }
-/* line 54, ../sass/types/_group.scss */
+/* line 112, ../sass/types/_group.scss */
 .content-wrapper.group-wrapper > aside {
   float: left;
   padding-right: 15px;
   padding-left: 0;
 }
 @media only screen and (max-width: 480px) {
-  /* line 60, ../sass/types/_group.scss */
+  /* line 118, ../sass/types/_group.scss */
   .content-wrapper.group-wrapper > section {
     padding-left: 0;
     margin: 0;
   }
-  /* line 61, ../sass/types/_group.scss */
+  /* line 119, ../sass/types/_group.scss */
   .content-wrapper.group-wrapper > aside {
     padding-right: 0;
   }

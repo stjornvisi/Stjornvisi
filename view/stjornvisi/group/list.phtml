@@ -7,8 +7,36 @@
  */
 ?>
 <h1>Hópar (<?=count($this->groups_all);?>)</h1>
-<ul>
-    <?php foreach( $this->groups_all as $group ):?>
-    <li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
-    <?php endforeach;?>
-</ul>
+
+<div class="type-group-list">
+<?php foreach( $this->groups_all as $group ):?>
+	<article>
+		<header>
+			<h1><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name?></a></h1>
+		</header>
+		<aside>
+			<ul>
+				<?php foreach($group->events as $event):?>
+					<li>
+						<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
+						<?php if($event->avatar):?>
+						<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+							<img src="<?=$this->basePath("/images/60/{$event->avatar}")?>" />
+						</a>
+						<?php endif;?>
+						<time><?=$event->event_date->format('Y-m-d');?></time>
+						<div><?=$this->paragrapher( mb_substr($event->body,0,100,'utf-8').'&hellip;' );?></div>
+					</li>
+				<?php endforeach;?>
+			</ul>
+		</aside>
+		<section>
+			<?=$this->paragrapher($group->description);?>
+		</section>
+		<footer>
+			<a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>">Meira um <?=$group->name_short?></a>
+		</footer>
+	</article>
+<?php endforeach;?>
+</div>
+

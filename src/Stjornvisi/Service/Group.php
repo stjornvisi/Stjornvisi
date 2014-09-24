@@ -4,6 +4,7 @@ namespace Stjornvisi\Service;
 
 use \PDOException;
 use \DateTime;
+use Stjornvisi\Lib\Time;
 
 class Group extends AbstractService {
 
@@ -251,6 +252,67 @@ class Group extends AbstractService {
             throw new Exception("Can't get all groups",0,$e);
         }
     }
+
+	/**
+	 * Get all Groups and add to the result, the next 5 upcoming events.
+	 *
+	 * @return array
+	 * @throws Exception
+	 * @todo what if there are no events returned
+	 */
+	public function fetchAllExtended(){
+		try{
+			$statement = $this->pdo->prepare("SELECT * FROM `Group` G ORDER BY G.name_short");
+			$statement->execute();
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			$groups = $statement->fetchAll();
+			//UPCOMING EVENTS
+			//	statement to get upcoming event
+			$eventLatestStatement = $this->pdo->prepare("
+				SELECT E.* FROM `Group_has_Event` GhE
+					JOIN `Event` E ON (E.id = GhE.event_id)
+				WHERE GhE.group_id = :group_id AND E.`event_date` >= NOW()
+				ORDER BY E.event_date ASC
+				LIMIT 0, 2");
+			//ALL EVENTS
+			//	statement to get all events.
+			$eventAllStatement = $this->pdo->prepare("
+				SELECT E.* FROM `Group_has_Event` GhE
+					JOIN `Event` E ON (E.id = GhE.event_id)
+				WHERE GhE.group_id = :group_id
+				ORDER BY E.event_date DESC
+				LIMIT 0, 2");
+			//FOR EVERY GROUP
+			//	for every group we get events
+			array_walk( $groups, function($i) use ($eventLatestStatement, $eventAllStatement){
+
+				//EVENT - PART
+				$eventLatestStatement->execute(array('group_id'=>$i->id));
+				$i->events = $eventLatestStatement->fetchAll();
+				if( count($i->events)==0 ){
+					$eventAllStatement->execute(array('group_id'=>$i->id));
+					$i->events = $eventAllStatement->fetchAll();
+				}
+				array_walk( $i->events, function($event){
+					$event->event_time = new Time($event->event_date.' '.$event->event_time);
+					$event->event_end = ( $event->event_end )
+						? new Time($event->event_date.' '.$event->event_end)
+						: null ;
+					$event->event_date = new  DateTime($event->event_date);
+				} );
+			} );//...end; for every group
+
+			return $groups;
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+				)
+			));
+			throw new Exception("Can't get all groups",0,$e);
+		}
+	}
 
     /**
      * Create a Groups.

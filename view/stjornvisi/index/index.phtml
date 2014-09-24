@@ -99,6 +99,7 @@
 	</div>
 
 <?php else:?>
+<div class="landing-page">
 	<div class="hero">
 		<img src="<?=$this->basePath("/frontpage/logo-frontpage.png")?>"  />
 		<h4>Félag um framsækna stjórnun</h4>
@@ -118,7 +119,7 @@
 			<p>Stjórnvísi býður hagstæðustu símenntunina um stjórnun á markaðnum.  Stjórnvísi er með kjarnastarf
 			sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið fyrir almennum ráðstefnum, viðburðum
 			og verðlaunum um stjórnun.</p>
-			<a href="/um" class="btn btn-success btn-green">Kynntu þér starfssemi Stjórnvísi</a>
+			<a href="<?=$this->url('um')?>" class="btn btn-success btn-green">Kynntu þér starfssemi Stjórnvísi</a>
 		</div>
 	</div>
 
@@ -127,7 +128,7 @@
 			<h1>Stjórnvísi er áhugamannafélag í eigu félagsmanna og starfar ekki með fjárhagslegan ágóða í huga.</h1>
 			<p>Stjórnvísi er með kjarastarf sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið
 			fyrir almennum ráðstefnum, viðburðum og verðlaunaveitingum í stjórnun.</p>
-			<a href="/faghopar" class="btn btn-success btn-green">Kynntu þér faghópa innan Stjórnvísi</a>
+			<a href="<?=$this->url('hopur')?>" class="btn btn-success btn-green">Kynntu þér faghópa innan Stjórnvísi</a>
 		</div>
 	</div>
 
@@ -202,7 +203,7 @@
 			<?php endforeach;?>
 		</ul>
 	</div>
-
+</div>
 
 <?php endif;?>
 
