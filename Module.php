@@ -33,6 +33,9 @@ use Stjornvisi\View\Helper\User as UserMenu;
 use Stjornvisi\Event\ServiceIndexListener;
 use Stjornvisi\Event\ServiceEventListener;
 
+use Stjornvisi\Notify\Submission as SubmissionNotify;
+use Stjornvisi\Notify\Event as EventNotify;
+
 use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\EventManager;
 use Zend\ModuleManager\ModuleManager;
@@ -40,9 +43,12 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Log\Logger;
 use Zend\Http\Client;
-use Stjornvisi\Lib\Facebook;
 
+use Stjornvisi\Lib\Facebook;
 use Stjornvisi\Service\User;
+
+use PhpAmqpLib\Connection\AMQPConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class Module{
 
@@ -53,11 +59,31 @@ class Module{
 
 		$logger = $e->getApplication()->getServiceManager()->get('Logger');
 		$sem = $eventManager->getSharedManager();
+
+		//NOTIFY
+		//	listen for the 'notify' event, usually coming from the
+		//	controllers. This indicates that the application want to
+		//	notify a user using external service like e-mail or maybe facebook.
 		$sem->attach(__NAMESPACE__,'notify',function($event) use ($logger){
-			$logger->info(
-				"\033[1;33m".get_class($event->getTarget()).":: ".print_r($event->getParams() ,true)." - {$event->getName()}"."\033[0m"
-			);
+
+			try{
+				$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+				$channel = $connection->channel();
+
+				$channel->queue_declare('notify_queue', false, true, false, false);
+				$msg = new AMQPMessage( json_encode($event->getParams()),
+					array('delivery_mode' => 2) # make message persistent
+				);
+
+				$channel->basic_publish($msg, '', 'notify_queue');
+
+				$channel->close();
+				$connection->close();
+			}catch (\Exception $e){
+				$logger->warn("Queue Service says: {$e->getMessage()}");
+			}
 		});
+
 
     }
 
@@ -85,21 +111,11 @@ class Module{
                 },
                 'ServiceEventManager' => function($sm){
                     $logger = $sm->get('Logger');
-					//$index = $sm->get('Search\Index\Search');
                     $manager = new EventManager();
 					$manager->attach( new ServiceEventListener($logger) );
-					//$manager->attach( new ServiceIndexListener($index) );
+					$manager->attach( new ServiceIndexListener($logger) );
                     return $manager;
                 },
-				/*'Search\Index\Search' => function(){
-					$index = null;
-					try{
-						$index = \ZendSearch\Lucene\Lucene::open('./data/search/');
-					}catch (\ZendSearch\Lucene\Exception\RuntimeException $e){
-						$index = \ZendSearch\Lucene\Lucene::create('./data/search/');
-					}
-					return $index;
-				},*/
                 'CsvStrategy' => 'Stjornvisi\View\Strategy\CsvFactory',
                 'Stjornvisi\Service\Values' => function($sm){
                     return new Values();
@@ -178,41 +194,21 @@ class Module{
 						$obj->setEventManager( $sm->get('ServiceEventManager') );
 						return $obj;
 				},
-				'Stjornvisi\Queue\Mail' => function(){
-					return new Zend_Queue('Db', array(
-						'name' => 'mail-queue',
-						'driverOptions' => array(
-							'host'      => '127.0.0.1',
-							'username'  => 'root',
-							'password'  => '',
-							'dbname'    => 'stjornvisi_production',
-							'type'      => 'pdo_mysql',
-							'port'      => 3306, // optional parameter.
-						),
-						'options' => array(
-							// use Zend_Db_Select for update, not all databases can support this
-							// feature.
-							Zend_Db_Select::FOR_UPDATE => true
-						)
-					));
+				'Stjornvisi\Notify\Submission' => function($sm){
+						$obj = new SubmissionNotify(
+							$sm->get('Stjornvisi\Service\User'),
+							$sm->get('Stjornvisi\Service\Group')
+						);
+						$obj->setLogger( $sm->get('Logger') );
+						return $obj;
 				},
-				'Stjornvisi\Queue\Facebook\Album' => function(){
-						return new Zend_Queue('Db', array(
-							'name' => 'facebook-album-queue',
-							'driverOptions' => array(
-								'host'      => '127.0.0.1',
-								'username'  => 'root',
-								'password'  => '',
-								'dbname'    => 'stjornvisi_production',
-								'type'      => 'pdo_mysql',
-								'port'      => 3306, // optional parameter.
-							),
-							'options' => array(
-								// use Zend_Db_Select for update, not all databases can support this
-								// feature.
-								Zend_Db_Select::FOR_UPDATE => true
-							)
-						));
+				'Stjornvisi\Notify\Event' => function($sm){
+						$obj = new EventNotify(
+							$sm->get('Stjornvisi\Service\User'),
+							$sm->get('Stjornvisi\Service\Event')
+						);
+						$obj->setLogger( $sm->get('Logger') );
+						return $obj;
 					},
             )
         );

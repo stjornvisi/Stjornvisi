@@ -1168,15 +1168,6 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
-				'search-index' => array(
-					'options' => array(
-						'route'    => 'search index',
-						'defaults' => array(
-							'controller' => 'Stjornvisi\Controller\Console',
-							'action'     => 'search-index'
-						)
-					)
-				),
 				'queue-events' => array(
 					'options' => array(
 						'route'    => 'queue events',
@@ -1186,12 +1177,30 @@ return array(
 						)
 					)
 				),
-				'facebook-upload-album' => array(
+				'image-generate' => array(
 					'options' => array(
-						'route'    => 'facebook album',
+						'route'    => 'image generate [--ignore|-i]',
 						'defaults' => array(
 							'controller' => 'Stjornvisi\Controller\Console',
-							'action'     => 'facebook-album-upload'
+							'action'     => 'image-generate'
+						)
+					)
+				),
+				'index-entry' => array(
+					'options' => array(
+						'route'    => 'process index',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'index-entry'
+						)
+					)
+				),
+				'notify' => array(
+					'options' => array(
+						'route'    => 'process notify',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'notify'
 						)
 					)
 				),

@@ -338,10 +338,8 @@ class Group extends AbstractService {
             $id = (int)$this->pdo->lastInsertId();
 			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'create',
 				'name' => Group::NAME,
             ));
             return $id;
@@ -380,10 +378,8 @@ class Group extends AbstractService {
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'update',
 				'name' => Group::NAME,
             ));
             return (int)$statement->rowCount();
@@ -412,10 +408,8 @@ class Group extends AbstractService {
             $statement->execute( array('id' => $id) );
             $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => null,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'delete',
 				'name' => Group::NAME,
             ));
             return (int)$statement->rowCount();

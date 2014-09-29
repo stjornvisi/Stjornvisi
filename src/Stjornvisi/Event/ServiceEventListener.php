@@ -16,7 +16,14 @@ use Zend\EventManager\EventInterface;
 
 class ServiceEventListener extends AbstractListenerAggregate {
 
+	/** @var \Zend\Log\LoggerInterface  */
 	private $logger;
+
+	/**
+	 * Create this Aggregate Event Listener.
+	 *
+	 * @param LoggerInterface $logger
+	 */
 	public function __construct( LoggerInterface $logger ){
 		$this->logger = $logger;
 	}
@@ -32,32 +39,23 @@ class ServiceEventListener extends AbstractListenerAggregate {
      * @return void
      */
     public function attach(EventManagerInterface $events){
-        $this->listeners[] = $events->attach(array('create','read','update','delete','index'), array($this, 'log'));
+        $this->listeners[] = $events->attach(
+			array('create','read','update','delete','index'),
+			array($this, 'log')
+		);
     }
 
+	/**
+	 * Actually do the logging.
+	 *
+	 * @param EventInterface $event
+	 */
 	public function log(EventInterface $event){
 		$params = $event->getParams();
 		$method = isset($params[0])?$params[0]:'';
-		$eventType = '';
-		switch( $event->getName() ){
-			case 'create':
-				$eventType = "\033[0m\033[0;30\033[42m create \033[0m";
-				break;
-			case 'read':
-				$eventType = "\033[0m\033[0;30\033[43m read \033[0m";
-				break;
-			case 'update':
-				$eventType = "\033[0m\033[1;37\033[44m update \033[0m";
-				break;
-			case 'delete':
-				$eventType = "\033[0m\033[1;37\033[46m delete \033[0m";
-				break;
-			case 'index':
-				$eventType = "\033[0m\033[1;31\033[40m index \033[0m";
-				break;
-		}
 		$this->logger->info(
-			"\033[1;36m".get_class($event->getTarget())."::{$method} - {$eventType}"
+			get_class($event->getTarget())."::{$method} - {$event->getName()}"
 		);
+
 	}
 }

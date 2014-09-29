@@ -145,9 +145,9 @@
 				<header>
 					<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h2>
 					<time>
-						<?=$this->event->event_date->format('Y-m-d')?> |
-						<?=$this->event->event_time->format('H:i')?> -
-						<?=$this->event->event_end->format('H:i')?>
+						<?=($this->event->event_date)?$this->event->event_date->format('Y-m-d'):''?> |
+						<?=($this->event->event_time)?$this->event->event_time->format('H:i'):''?> -
+						<?=($this->event->event_end)?$this->event->event_end->format('H:i'):''?>
 					</time>
 				</header>
 				<section>

@@ -7,6 +7,8 @@ use \PDOException;
 
 class User extends AbstractService{
 
+	const REGISTER = 'user.register';
+
 	/**
 	 * Get one user.
 	 *

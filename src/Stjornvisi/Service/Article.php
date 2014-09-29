@@ -133,8 +133,7 @@ class Article extends AbstractService {
 			$this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$data['id'] = $id;
 			$this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-				'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
 				'id' => $id,
 				'name' => Article::NAME,
 			));
@@ -202,8 +201,7 @@ class Article extends AbstractService {
 			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			$data['id'] = $id;
 			$this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-				'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
 				'id' => $id,
 				'name' => Article::NAME
 			));
@@ -236,8 +234,7 @@ class Article extends AbstractService {
 			$statement->execute(array('id' => $id));
 			$this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
 			$this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-				'data' => null,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
 				'id' => $id,
 				'name' => Article::NAME,
 			));

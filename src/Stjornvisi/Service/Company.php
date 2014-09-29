@@ -193,10 +193,8 @@ class Company extends AbstractService {
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'update',
 				'name' => Company::NAME,
             ));
             return $statement->rowCount();
@@ -230,10 +228,8 @@ class Company extends AbstractService {
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'create',
 				'name' => Company::NAME,
             ));
             return $id;
@@ -298,10 +294,8 @@ class Company extends AbstractService {
             ));
             $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'date' => null,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'delete',
 				'name' => Company::NAME,
             ));
             return $statement->rowCount();

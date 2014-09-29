@@ -6,12 +6,7 @@
 @import "helpers/variables";
 
 
-@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
-@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
-@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/forms";
-@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/buttons";
 
-@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/grid";
 
 
 
@@ -28,6 +23,14 @@
 @import "compass/css3/columns";
 @import "compass/typography/text/ellipsis";
 @import "compass/css3/border-radius";
+
+
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/variables";
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins";
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/forms";
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/buttons";
+
+@import "../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/grid";
 
 @import "helpers/mixins";
 @import "helpers/extensions";

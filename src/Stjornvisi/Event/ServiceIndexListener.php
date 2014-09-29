@@ -12,25 +12,25 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 
-use ZendSearch\Lucene\SearchIndexInterface;
+use Zend\Log\LoggerInterface;
 
-use Stjornvisi\Search\Index\Article as ArticleIndex;
-use Stjornvisi\Search\Index\Event as EventIndex;
-use Stjornvisi\Search\Index\Group as GroupIndex;
-use Stjornvisi\Search\Index\News as NewsIndex;
-use Stjornvisi\Search\Index\Null as NullIndex;
-
-use Stjornvisi\Service\Article;
-use Stjornvisi\Service\Event;
-use Stjornvisi\Service\Group;
-use Stjornvisi\Service\News;
+use PhpAmqpLib\Connection\AMQPConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class ServiceIndexListener extends AbstractListenerAggregate {
 
-	private $index;
-	public function __construct( SearchIndexInterface $index ){
-		$this->index = $index;
+	/** @var \Zend\Log\LoggerInterface  */
+	private $logger;
+
+	/**
+	 * Create this Aggregate Event Listener.
+	 *
+	 * @param LoggerInterface $logger
+	 */
+	public function __construct( LoggerInterface $logger ){
+		$this->logger = $logger;
 	}
+
 	/**
 	 * Attach one or more listeners
 	 *
@@ -45,50 +45,28 @@ class ServiceIndexListener extends AbstractListenerAggregate {
 		$this->listeners[] = $events->attach('index', array($this, 'index'));
 	}
 
+	/**
+	 * Send a message to Queue about indexing entry.
+	 *
+	 * @param EventInterface $event
+	 */
 	public function index(EventInterface $event){
-		return;
-		$params = $event->getParams();
 
-		switch($params['name']){
-			case Article::NAME:
-				$indexer = new ArticleIndex();
-				$indexer->unindex((object)array('id'=>$params['id']),$this->index);
-				if( $params['data'] ){
-					$indexer->index($params['data'],$this->index);
-				}
-				break;
-			case Event::NAME:
-				$indexer = new EventIndex();
-				$indexer->unindex((object)array('id'=>$params['id']),$this->index);
-				if( $params['data'] ){
-					$indexer->index($params['data'],$this->index);
-				}
-				break;
-			case Group::NAME:
-				$indexer = new GroupIndex();
-				$indexer->unindex((object)array('id'=>$params['id']),$this->index);
-				if( $params['data'] ){
-					$indexer->index($params['data'],$this->index);
-				}
-				break;
-			case News::NAME:
-				$indexer = new NewsIndex();
-				$indexer->unindex((object)array('id'=>$params['id']),$this->index);
-				if( $params['data'] ){
-					$indexer->index($params['data'],$this->index);
-				}
-				break;
-			/*
-			case Event::GALLERY_NAME:
-				$queue = $sm->get('Stjornvisi\Queue\Facebook\Album');
-				$queue->send(json_encode((object)array(
-					'data' => $params['data']
-				)));
-				break;
-			*/
-			default:
-				$indexer = new NullIndex();
-				break;
+		try{
+			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+			$channel = $connection->channel();
+
+			$channel->queue_declare('search-index', false, false, false, false);
+
+			$params = $event->getParams();
+
+			$msg = new AMQPMessage( json_encode($params) );
+			$channel->basic_publish($msg, '', 'search-index');
+			$channel->close();
+			$connection->close();
+
+		}catch (\Exception $e){
+			$this->logger->warn( "Queue Service when indexing entries: ".$e->getMessage() );
 		}
 	}
 } 

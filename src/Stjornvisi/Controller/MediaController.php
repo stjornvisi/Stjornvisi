@@ -27,10 +27,6 @@ class MediaController extends AbstractActionController{
 
 		foreach ($adapter->getFileInfo() as $info) {
 
-
-			$url123 = $renderer->basePath('/application/rent/search');
-
-
 			$originalFileName = $info['name'];
 
 			$nameArray = array();
@@ -49,9 +45,11 @@ class MediaController extends AbstractActionController{
 						$folder.'original/'.$newFileName . '.'.$nameArray[3]
 					);
 
+
 					$imagine = $sm->get('Imagine\Image\Imagine');
 
 					//60 SQUARE
+					//	create an cropped image with hard height/width of 60
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$transform = new Transformation();
 					$transform->add( new Square() );
@@ -59,24 +57,20 @@ class MediaController extends AbstractActionController{
 					$transform->apply( $image )->save($folder . '60/' . $newFileName. '.'.$nameArray[3]);
 
 					//300 SQUARE
+					//	create an cropped image with hard height/width of 300
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$transform = new Transformation();
 					$transform->add( new Square() );
 					$transform->add( new Resize( new Box(300,300) ) );
 					$transform->apply( $image )->save($folder . '300-square/' . $newFileName. '.'.$nameArray[3]);
 
-					//
+					//300 NORMAL
+					//	create an image that is not cropped and will
+					//	have a width of 300
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$size = $image->getSize()->widen(300);
 					$image->resize($size)
 						->save($folder . '300/' . $newFileName. '.'.$nameArray[3]);
-
-					/*
-					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
-					$size = $image->getSize()->widen(100);
-					$image->resize($size)
-						->save($folder . '100/' . $newFileName. '.'.$nameArray[3]);
-					*/
 
 					$image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
 					$transform = new Transformation();

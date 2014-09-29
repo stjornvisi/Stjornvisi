@@ -2,6 +2,7 @@
 
 namespace Stjornvisi\Controller;
 
+
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -327,11 +328,10 @@ class GroupController extends AbstractActionController{
 				//NOTIFY
 				//	notify user
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => 'user.register-group',
-					'recipients' => array($auth->getIdentity()),
-					'priority' => false,
+					'action' => \Stjornvisi\Notify\Submission::REGISTER,
 					'data' => (object)array(
-						'group' => $group,
+						'recipient' => $auth->getIdentity()->id,
+						'group_id' => $group->id,
 						'register' => (bool)$this->params()->fromRoute('type', 0)
 					),
 				));

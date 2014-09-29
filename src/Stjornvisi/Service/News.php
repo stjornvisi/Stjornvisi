@@ -381,10 +381,8 @@ class News extends AbstractService {
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'create',
 				'name' => News::NAME,
             ));
             return $id;
@@ -419,10 +417,8 @@ class News extends AbstractService {
 			$data['created_date'] = new DateTime($data['created_date']);
 			$data['modified_date'] = new DateTime($data['modified_date']);
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'update',
 				'name' => News::NAME,
             ));
             return $statement->rowCount();
@@ -455,10 +451,8 @@ class News extends AbstractService {
             ));
             $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => null,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'delete',
 				'name' => News::NAME,
             ));
             return $statement->rowCount();

@@ -295,10 +295,8 @@ class Event extends AbstractService {
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'update',
 				'name' => Event::NAME,
             ));
             return $count;
@@ -334,10 +332,8 @@ class Event extends AbstractService {
                 __FUNCTION__
             ));
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-                'data' => null,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'type' => 'delete',
 				'name' => Event::NAME,
             ));
             return (int)$statement->rowCount();
@@ -390,10 +386,8 @@ class Event extends AbstractService {
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'data' => (object)$data,
-                'type' => 'create',
 				'name' => Event::NAME,
             ));
             return $id;
@@ -895,10 +889,8 @@ class Event extends AbstractService {
 			$id = (int)$this->pdo->lastInsertId();
 			$this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$this->getEventManager()->trigger('index', $this, array(
-				0 => __FUNCTION__,
-				'data' => (object)$data,
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
 				'id' => $id,
-				'type' => 'create',
 				'name' => Event::GALLERY_NAME,
 			));
 			return $id;

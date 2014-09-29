@@ -681,8 +681,8 @@ class EventController extends AbstractActionController{
 
 						//NOTIFY
 						//	notify user
-						$users = array();
-						$priority = false;
+						//$users = array();
+						/*
 						if( $this->params()->fromPost('test',false) ){
 							$users = array($authService->getIdentity());
 							$priority = true;
@@ -692,15 +692,16 @@ class EventController extends AbstractActionController{
 								: $userService->getUserMessageByEvent($event->id) ;
 							$priority = false;
 						}
+						*/
 						$this->getEventManager()->trigger('notify',$this,array(
-							'action' => 'event.message',
-							'recipients' => $users,
-							'priority' => $priority,
+							'action' => \Stjornvisi\Notify\Event::MESSAGING,
 							'data' => (object)array(
-									'event' => $event,
-									'subject' => $form->get('subject')->getValue(),
-									'body' => $form->get('body')->getValue(),
-								),
+								'event' => $event,
+								'recipients' => ( $this->params()->fromRoute('type', 'allir') == 'allir' ),
+								'test' => (bool)$this->params()->fromPost('test',false),
+								'subject' => $form->get('subject')->getValue(),
+								'body' => $form->get('body')->getValue(),
+							),
 						));
 
 						return new ViewModel(array(

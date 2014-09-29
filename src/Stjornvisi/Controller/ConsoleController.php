@@ -18,6 +18,28 @@ use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
 use \DateTime;
 use \DateInterval;
+use \DirectoryIterator;
+
+use Imagine\Imagick\Imagine;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
+use Imagine\Filter\Transformation;
+use Imagine\Filter\Basic\Resize;
+use Stjornvisi\Lib\Imagine\Square;
+
+use PhpAmqpLib\Connection\AMQPConnection;
+
+
+use Stjornvisi\Search\Index\Article as ArticleIndex;
+use Stjornvisi\Search\Index\Event as EventIndex;
+use Stjornvisi\Search\Index\Group as GroupIndex;
+use Stjornvisi\Search\Index\News as NewsIndex;
+use Stjornvisi\Search\Index\Null as NullIndex;
+
+use Stjornvisi\Service\Article;
+use Stjornvisi\Service\Event;
+use Stjornvisi\Service\Group;
+use Stjornvisi\Service\News;
 
 class ConsoleController extends AbstractActionController {
 
@@ -29,6 +51,7 @@ class ConsoleController extends AbstractActionController {
 	 * </code>
 	 *
 	 * @throws \RuntimeException
+	 * @deprecated
 	 */
 	public function searchIndexAction(){
 		$request = $this->getRequest();
@@ -125,7 +148,6 @@ class ConsoleController extends AbstractActionController {
 
 	}
 
-	public function queueAction(){}
 
 	/**
 	 * Add to mail queue all e-mails that
@@ -179,6 +201,7 @@ class ConsoleController extends AbstractActionController {
 		$adapter = new Console();
 		$progressBar = new ProgressBar($adapter, $counter, count($users));
 
+		/*
 		$queue = $sm->get('Stjornvisi\Queue\Mail');
 		foreach ($users as $user){
 			$model->setVariable('user',$user);
@@ -191,19 +214,131 @@ class ConsoleController extends AbstractActionController {
 			)));
 			$progressBar->update(++$counter);
 		}
+		*/
 		$progressBar->finish();
 	}
 
+
 	/**
-	 * Upload images to facebook.
+	 * Will create all images.
 	 *
 	 * <code>
-	 * $ index.php facebook album
+	 * 	$ php path/to/index.php image-generate --ignore
 	 * </code>
-	 *
 	 * @throws \RuntimeException
 	 */
-	public function facebookAlbumUploadAction(){
+	public function imageGenerateAction(){
+
+		$request = $this->getRequest();
+		// Make sure that we are running in a console and the user has not tricked our
+		// application into running this action from a public web server.
+		if (!$request instanceof ConsoleRequest){
+			throw new \RuntimeException('You can only use this action from a console!');
+		}
+
+		$path = './module/Stjornvisi/public/stjornvisi/images/';
+		$ignore   = $this->getRequest()->getParam('ignore', false);
+		$counter = 0;
+		$index = 0;
+		$report = (object)array('processed'=>0, 'ignored'=>0);
+
+
+
+		//COUNT
+		//	count how many file there are.
+		foreach (new DirectoryIterator($path.'original') as $fileInfo) {
+			if( $fileInfo->isDot() || !preg_match('/\.(jpg|jpeg|png|gif)(?:[\?\#].*)?$/i', $fileInfo->getFilename()) ) {
+				continue;
+			}else{
+				$counter++;
+			}
+		}
+
+		$adapter = new Console();
+		$progressBar = new ProgressBar($adapter, $index, $counter);
+
+		//FOR EVERY
+		//	for every file in directory...
+		foreach (new DirectoryIterator($path.'original') as $fileInfo) {
+			//IF NOT IMAGE
+			//	if not image - igonre and move on
+			if( $fileInfo->isDot() || !preg_match('/\.(jpg|jpeg|png|gif)(?:[\?\#].*)?$/i', $fileInfo->getFilename()) ) {
+				continue;
+			}
+
+			//IGNORE
+			//	should the script ignore images that
+			//	have already been converted.
+			if( $ignore ){
+				if(is_file( "{$path}60/{$fileInfo->getFilename()}" )){
+					$progressBar->update($index++);
+					++$report->ignored;
+					continue;
+				}
+			}
+
+			try{
+
+				//60 SQUARE
+				//	create an cropped image with hard height/width of 60
+				$imagine = new Imagine();
+				$image = $imagine->open($fileInfo->getPathname());
+				$transform = new Transformation();
+				$transform->add( new Square() );
+				$transform->add( new Resize( new Box(60,60) ) );
+				$transform->apply( $image )->save($path .'60/'. $fileInfo->getFilename());
+				$imagine = null;
+
+				//300 SQUARE
+				//	create an cropped image with hard height/width of 300
+				$imagine = new Imagine();
+				$image = $imagine->open($fileInfo->getPathname());
+				$transform = new Transformation();
+				$transform->add( new Square() );
+				$transform->add( new Resize( new Box(300,300) ) );
+				$transform->apply( $image )->save($path .'300-square/'. $fileInfo->getFilename());
+				$imagine = null;
+
+				//300 NORMAL
+				//	create an image that is not cropped and will
+				//	have a width of 300
+				$imagine = new Imagine();
+				$image = $imagine->open($fileInfo->getPathname());
+				$size = $image->getSize()->widen(300);
+				$image->resize($size)
+					->save($path .'300/'. $fileInfo->getFilename());
+				$imagine = null;
+
+				$imagine = new Imagine();
+				$image = $imagine->open($fileInfo->getPathname());
+				$transform = new Transformation();
+				$transform->add( new Square() );
+				$transform->add( new Resize( new Box(100,100) ) );
+				$transform->apply( $image )->save($path .'100/'. $fileInfo->getFilename());
+				$imagine = null;
+			}catch (\Exception $e){
+				echo $e->getMessage().PHP_EOL;
+			}
+
+			++$report->processed;
+			$progressBar->update($index++);
+
+		}
+		$progressBar->finish();
+		var_dump($report);
+	}
+
+	/**
+	 * Will start a listeners that listens for CRUD actions
+	 * in service layer.
+	 * If something happens there, this action will send a request
+	 * to the queue server (RabbitMQ)
+	 *
+	 * @throws \RuntimeException
+	 * @todo actually index entries ;)
+	 */
+	public function indexEntryAction(){
+
 		$request = $this->getRequest();
 		// Make sure that we are running in a console and the user has not tricked our
 		// application into running this action from a public web server.
@@ -212,13 +347,143 @@ class ConsoleController extends AbstractActionController {
 		}
 
 		$sm = $this->getServiceLocator();
-		$queue = $sm->get('Stjornvisi\Queue\Facebook\Album');
-		$messages = $queue->receive(5);
-		foreach ($messages as $i => $message) {
-			echo $message->body, "\n";
+		$logger = $sm->get('Logger'); /** @var \Zend\Log\Logger */
+		try{
+			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+			$channel = $connection->channel();
 
-			// We have processed the message; now we remove it from the queue.
-			$queue->deleteMessage($message);
+			$channel->queue_declare('search-index', false, false, false, false);
+
+			$logger->info("Index Listener started, Waiting for messages. To exit press CTRL+C");
+
+			$callback = function($msg) use($logger) {
+
+				$params = json_decode($msg->body);
+
+
+				/*
+
+				switch($params['name']){
+					case Article::NAME:
+						$indexer = new ArticleIndex();
+						$indexer->unindex((object)array('id'=>$params['id']),$this->index);
+						if( $params['data'] ){
+							$indexer->index($params['data'],$this->index);
+						}
+						break;
+					case Event::NAME:
+						$indexer = new EventIndex();
+						$indexer->unindex((object)array('id'=>$params['id']),$this->index);
+						if( $params['data'] ){
+							$indexer->index($params['data'],$this->index);
+						}
+						break;
+					case Group::NAME:
+						$indexer = new GroupIndex();
+						$indexer->unindex((object)array('id'=>$params['id']),$this->index);
+						if( $params['data'] ){
+							$indexer->index($params['data'],$this->index);
+						}
+						break;
+					case News::NAME:
+						$indexer = new NewsIndex();
+						$indexer->unindex((object)array('id'=>$params['id']),$this->index);
+						if( $params['data'] ){
+							$indexer->index($params['data'],$this->index);
+						}
+						break;
+
+					//case Event::GALLERY_NAME:
+					//	$queue = $sm->get('Stjornvisi\Queue\Facebook\Album');
+					//	$queue->send(json_encode((object)array(
+					//		'data' => $params['data']
+					//	)));
+					//	break;
+					default:
+						$indexer = new NullIndex();
+						break;
+				}
+				*/
+
+
+				$logger->info("Index Listener, Received {$msg->body}".print_r($params,true));
+			};
+
+			$channel->basic_consume('search-index', '', false, true, false, false, $callback);
+
+			while(count($channel->callbacks)) {
+				$channel->wait();
+			}
+		}catch (\Exception $e){
+			$logger->warn( "Can't start IndexListener: {$e->getMessage()}" );
+			exit(1);
 		}
+
 	}
-} 
+
+	/**
+	 *
+	 */
+	public function notifyAction(){
+
+		$request = $this->getRequest();
+		// Make sure that we are running in a console and the user has not tricked our
+		// application into running this action from a public web server.
+		if (!$request instanceof ConsoleRequest){
+			throw new \RuntimeException('You can only use this action from a console!');
+		}
+
+		$sm = $this->getServiceLocator();
+		$logger = $sm->get('Logger'); /** @var \Zend\Log\Logger */
+
+		try{
+			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+			$channel = $connection->channel();
+
+			$channel->queue_declare('notify_queue', false, true, false, false);
+
+			$logger->info("Index Listener started, Waiting for messages. To exit press CTRL+C");
+
+			//THE MAGIC
+			//	here is where everything happens. the rest of the code
+			//	is just connect and deconnect to RabbitMQ
+			$callback = function($msg) use ($logger, $sm){
+				$message = json_decode( $msg->body );
+				$logger->info("Notify message [{$message->action}] obtained");
+				$handler = new \Stjornvisi\Notify\Null();
+				switch( $message->action ){
+					case \Stjornvisi\Notify\Submission::REGISTER:
+						$handler = $sm->get('Stjornvisi\Notify\Submission');
+						break;
+					case \Stjornvisi\Notify\Event::MESSAGING:
+						$handler = $sm->get('Stjornvisi\Notify\Event');
+						break;
+					default:
+						break;
+				}
+				$handler->setData( $message );
+				$handler->send();
+				//$logger->info( print_r( json_decode( $msg->body ),true ) );
+
+				$logger->info("Notify message [{$message->action}] processed");
+				$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+
+			};// end of - MAGIC
+
+			$channel->basic_qos(null, 1, null);
+			$channel->basic_consume('notify_queue', '', false, false, false, false, $callback);
+
+			while(count($channel->callbacks)) {
+				$channel->wait();
+			}
+
+			$channel->close();
+			$connection->close();
+		}catch (\Exception $e){
+			$logger->warn( "Can't start NotifyListener: {$e->getMessage()}" );
+			exit(1);
+		}
+
+
+	}
+}
