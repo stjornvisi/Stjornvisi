@@ -62,6 +62,59 @@ class Company extends AbstractService {
         }
     }
 
+	/**
+	 * Get one company by SSN.
+	 *
+	 * @param string $ssn
+	 * @return bool|\stdClass
+	 * @throws Exception
+	 */
+	public function getBySsn( $ssn ){
+		try{
+			//COMPANY
+			//  get company
+			$statement = $this->pdo->prepare("SELECT * FROM Company C WHERE C.ssn = :ssn");
+			$statement->execute(array(
+				'ssn' => $ssn
+			));
+			$company = $statement->fetchObject();
+
+			//IF FOUND
+			//  if company found
+			if( $company ){
+				$company->created = new DateTime($company->created);
+				//GET MEMBERS
+				//  get members of company
+				$membersStatement = $this->pdo->prepare("
+                  SELECT U.id, U.name, U.email, U.title, ChU.key_user FROM Company_has_User ChU
+                    JOIN User U ON (ChU.user_id = U.id)
+                    WHERE ChU.company_id = :id
+                    ORDER BY ChU.key_user DESC, U.name;
+                ");
+				$membersStatement->execute(array(
+					'id' => $company->id
+				));
+				$company->members = $membersStatement->fetchAll();
+				$company->members = ($company->members)
+					? $company->members
+					: array() ;
+			}
+			$this->getEventManager()->trigger('read', $this, array(
+				get_class($this).'::'.__FUNCTION__
+			));
+			return $company;
+		}catch (PDOException $e ){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+					isset($membersStatement)?$membersStatement->queryString:null,
+				)
+			));
+			throw new Exception("Can't get company by ssn [{$ssn}]",0,$e);
+		}
+	}
+
     /**
      * Get list of all companies.
      * An optional parameter can be given, an array of
@@ -102,6 +155,45 @@ class Company extends AbstractService {
         }
 
     }
+
+	/**
+	 * Get all companies by type.
+	 *
+	 * @param array $include
+	 * @return array
+	 * @throws Exception
+	 */
+	public function fetchType( array $include = array() ){
+		try{
+			if( empty($include) ){
+				$statement = $this->pdo->prepare("SELECT * FROM Company C ORDER BY C.name");
+			}else{
+				$statement = $this->pdo->prepare("
+                SELECT * FROM Company C
+                WHERE C.business_type IN (".
+					implode(',',array_map(function($i){ return "'{$i}'"; },$include) ).
+					")
+					ORDER BY C.name
+				");
+			}
+			$statement->execute();
+			$companies =  $statement->fetchAll();
+			foreach( $companies as $company ){
+				$company->created = new DateTime($company->created);
+			}
+			$this->getEventManager()->trigger('read', $this, array( __FUNCTION__));
+			return $companies;
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception'=>$e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+				)
+			));
+			throw new Exception("Can't fetch all companies",0, $e);
+		}
+
+	}
 
     /**
      * Change the role of employee at a company.
@@ -183,6 +275,7 @@ class Company extends AbstractService {
      * @param array $data
      * @return int affected rows
      * @throws Exception
+	 * @fixme missing safe_name convertions
      */
     public function update( $id, array $data ){
         try{
@@ -213,6 +306,7 @@ class Company extends AbstractService {
      * @param array $data
      * @return int last ID
      * @throws Exception
+	 * @fixme missing safe_name convertions
      */
     public function create( array $data ){
         try{

@@ -2,6 +2,7 @@
 namespace Stjornvisi\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 /**
  * Form for <Group>
  * 
@@ -10,14 +11,13 @@ use Zend\Form\Form;
  * @author einarvalur
  *
  */
-class Group extends Form{
+class Group extends Form implements InputFilterProviderInterface{
 
 	public function __construct($action='create', $values=null, $options=array()){
 
 		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
 
-        $this->setAttribute('method', 'post')
-            ->setAttribute('action','/hopur/stofna');
+        $this->setAttribute('method', 'post');
 
         $this->add(array(
             'name' => 'name',
@@ -109,81 +109,90 @@ class Group extends Form{
             ),
         ));
 
-        /*
-		parent::__construct($options);
-		
-		//METHOD
-		//	set method to form
-		$this->setMethod('post');
-		
-		//ACTION
-		//	set action form form
-		if( $action=='update' ){
-			$this->setAction('/group/update-description/id/'.$values->id);
-		}else{
-			$this->setAction('/group/create');
-		}
-		
-		//NAME
-		//	name of the group
-		$nameElement = new Zend_Form_Element_Text('name');
-		$nameElement->setRequired(true)
-			->setValue( ($values)?$values->name:'' )
-			->setLabel('Nafn faghóps');
-		
-		//SHORT NAME
-		//	short name of the group
-		$nameShortElement = new Zend_Form_Element_Text('name_short');
-		$nameShortElement->setRequired(true)
-			->setValue( ($values)?$values->name_short:'' )
-			->setLabel('Stutt nafn');
-		
-		$descriptionElement = new Zend_Form_Element_Textarea("description");
-		$descriptionElement
-			->setLabel("Lýsing")
-			->setValue( ($values)?$values->description:'' );
-		
-		$objectiveElement = new Zend_Form_Element_Textarea("objective");
-		$objectiveElement
-			->setLabel("Markmið")
-			->setValue( ($values)?$values->objective:'' );
-		
-		$whatElement = new Zend_Form_Element_Textarea("what_is");
-		$whatElement
-			->setLabel("Hvað er")
-			->setValue( ($values)?$values->what_is:'' );
-		
-		$howElement = new Zend_Form_Element_Textarea("how_operates");
-		$howElement
-			->setLabel("Hvernig starfar")
-			->setValue( ($values)?$values->how_operates:'' );
-		
-		$forElement = new Zend_Form_Element_Textarea("for_whom");
-		$forElement
-			->setLabel("Fyrir hvern")
-			->setValue( ($values)?$values->for_whom:'' );
-		
-		//SUBMIT
-		//	submit create/update button
-		$submitElement = new Zend_Form_Element_Submit('submit');
-		$submitElement
-			->setLabel( ($action=='create')?'Stofna':'Uppfæra' );
-		
-		//ADD
-		//	add all elements to form
-		$this->addElements(array(
-			$nameElement,
-			$nameShortElement,
-			$descriptionElement,
-			$objectiveElement,
-			$whatElement,
-			$howElement,
-			$forElement,
-			$submitElement
-		));
-        */
 	}
 
+	/**
+	 * Should return an array specification compatible with
+	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
+	 *
+	 * @return array
+	 */
+	public function getInputFilterSpecification(){
+		return array(
+			'name' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 45,
+						),
+					),
+				),
+			),
+			'name_short' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 45,
+						),
+					),
+				),
+			),
+			'description' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'objective' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'what_is' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'how_operates' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'for_whom' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+		);
+	}
 
 }
 

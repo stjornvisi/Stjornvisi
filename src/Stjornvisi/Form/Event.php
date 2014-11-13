@@ -4,9 +4,9 @@ namespace Stjornvisi\Form;
 
 use Zend\Form\Element;
 use Zend\Form\Form;
-use Stjornvisi\Form\Hydrator;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class Event extends Form{
+class Event extends Form implements InputFilterProviderInterface{
 
     public function __construct($groups = null){
 
@@ -31,7 +31,7 @@ class Event extends Form{
             'name' => 'body',
             'type' => 'Zend\Form\Element\Textarea',
             'attributes' => array(
-                'required' => 'required',
+
             ),
             'options' => array(
                 'label' => 'Meginmál',
@@ -42,13 +42,34 @@ class Event extends Form{
             'name' => 'location',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Type something...',
-                'required' => 'required',
+                'placeholder' => 'Landspítalinn, Hringsalur 1.hæð við Barnaspítal',
             ),
             'options' => array(
-                'label' => 'Staðsetning: (Götuheiti og húsnúmer, Póstnúmer Bæjarfélag, t.d. Ofanleiti 2, 105 Reykjavík)',
+                'label' => 'Staðsetning',
             ),
         ));
+
+		$this->add(array(
+			'name' => 'address',
+			'type' => 'Zend\Form\Element\Text',
+			'attributes' => array(
+				'placeholder' => 'Ofanleiti 2, 105 Reykjavík',
+			),
+			'options' => array(
+				'label' => 'Heimilisfang: (Götuheiti og húsnúmer, Póstnúmer Bæjarfélag)',
+			),
+		));
+
+		$this->add(array(
+			'name' => 'capacity',
+			'type' => 'Zend\Form\Element\Text',
+			'attributes' => array(
+				'placeholder' => '0',
+			),
+			'options' => array(
+				'label' => 'Fjöldatakmörkun, 0 er ótakmarkað',
+			),
+		));
 
         $this->add(array(
             'name' => 'event_date',
@@ -100,7 +121,6 @@ class Event extends Form{
             ),
         ));
 
-
         $this->add(array(
             'name' => 'groups',
             'type' => 'Stjornvisi\Form\Element\MultiCheckbox',
@@ -113,9 +133,6 @@ class Event extends Form{
                 }):array(0),
             ),
         ));
-
-
-
 
         $this->add(array(
             'name' => 'submit',
@@ -141,4 +158,159 @@ class Event extends Form{
 
         parent::populateValues($data);
     }
+
+	/**
+	 * Should return an array specification compatible with
+	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
+	 *
+	 * @return array
+	 */
+	public function getInputFilterSpecification(){
+		return array(
+			'subject' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'body' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'location' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 45,
+						),
+					),
+				),
+			),
+			'address' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 255,
+						),
+					),
+				),
+			),
+			'capacity' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'Int',
+						/*
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 255,
+						),
+						*/
+					),
+				),
+			),
+			'event_date' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'Date',
+					),
+				),
+			),
+			'event_time' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'Date',
+						'options' => array(
+							'format' => 'H:i',
+						),
+					),
+				),
+			),
+			'event_end' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'Date',
+						'options' => array(
+							'format' => 'H:i',
+						),
+					),
+					array(
+						'name' => 'Callback',
+						'options' => array(
+							'messages' => array(
+								\Zend\Validator\Callback::INVALID_VALUE => 'Viðburður getur ekki endað áður en hann byrjar',
+							),
+							'callback' => function( $value, $context=array() ){
+								$from = new \DateTime( $context['event_time'] );
+								$to = new \DateTime( $context['event_end'] );
+								return $to > $from;
+							},
+						)
+					)
+				),
+			),
+			'avatar' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'groups' => array(
+				'required' => false,
+				'allow_empty' => true,
+			),
+		);
+	}
 }

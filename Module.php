@@ -12,10 +12,8 @@ namespace Stjornvisi;
 use Imagine;
 use \PDO;
 
-use Stjornvisi\Event\SearchListenerAggregate;
-use \Zend_Queue;
-use \Zend_Db_Select;
-
+//use Stjornvisi\Event\SearchListenerAggregate;
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\Group;
@@ -33,8 +31,17 @@ use Stjornvisi\View\Helper\User as UserMenu;
 use Stjornvisi\Event\ServiceIndexListener;
 use Stjornvisi\Event\ServiceEventListener;
 
+use Stjornvisi\Form\NewUserCompanySelect;
+use Stjornvisi\Form\NewUserCompany;
+use Stjornvisi\Form\NewUserUniversitySelect;
+use Stjornvisi\Form\NewUserIndividual;
+use Stjornvisi\Form\NewUserCredentials;
+
 use Stjornvisi\Notify\Submission as SubmissionNotify;
 use Stjornvisi\Notify\Event as EventNotify;
+use Stjornvisi\Notify\Password as PasswordNotify;
+use Stjornvisi\Notify\Group as GroupNotify;
+use Stjornvisi\Notify\Attend as AttendNotify;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\EventManager;
@@ -44,30 +51,54 @@ use Zend\Mvc\MvcEvent;
 use Zend\Log\Logger;
 use Zend\Http\Client;
 
+use Zend\Session\Config\SessionConfig;
+use Zend\Session\SessionManager;
+use Zend\Session\Container;
+use Zend\EventManager\EventInterface;
+
 use Stjornvisi\Lib\Facebook;
 use Stjornvisi\Service\User;
 
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
+use Zend\Mail\Transport\Smtp as SmtpTransport;
+use Zend\Mail\Transport\SmtpOptions;
+
+use Zend\Mail\Transport\File as FileTransport;
+use Zend\Mail\Transport\FileOptions;
+
 class Module{
 
     public function onBootstrap(MvcEvent $e){
+
+
+		$config = $e->getApplication()
+			->getServiceManager()
+			->get('Configuration');
+
+		$sessionConfig = new SessionConfig();
+		$sessionConfig->setOptions($config['session']);
+		$sessionManager = new SessionManager($sessionConfig);
+		$sessionManager->start();
+
+
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
 		$logger = $e->getApplication()->getServiceManager()->get('Logger');
+		$connectionFactory = $e->getApplication()->getServiceManager()->get('Stjornvisi\Lib\QueueConnectionFactory');
 		$sem = $eventManager->getSharedManager();
 
 		//NOTIFY
 		//	listen for the 'notify' event, usually coming from the
 		//	controllers. This indicates that the application want to
 		//	notify a user using external service like e-mail or maybe facebook.
-		$sem->attach(__NAMESPACE__,'notify',function($event) use ($logger){
+		$sem->attach(__NAMESPACE__,'notify',function($event) use ($logger,$connectionFactory){
 
 			try{
-				$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+				$connection = $connectionFactory->createConnection();
 				$channel = $connection->channel();
 
 				$channel->queue_declare('notify_queue', false, true, false, false);
@@ -147,10 +178,11 @@ class Module{
 							//PDO::ATTR_EMULATE_PREPARES => false,
                         ));
                  },
+				/*
 				'Facebook' => function($sm){
 					$config = $sm->get('config');
 					return new Facebook($config['facebook']);
-				},
+				},*/
 				'Imagine\Image\Imagine' => function(){
 						return new Imagine\Gd\Imagine();
 				},
@@ -210,6 +242,82 @@ class Module{
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
 					},
+				'Stjornvisi\Notify\Password' => function($sm){
+						$obj = new PasswordNotify();
+						$obj->setLogger( $sm->get('Logger') );
+						return $obj;
+					},
+				'Stjornvisi\Notify\Group' => function($sm){
+						$obj = new GroupNotify();
+						$obj->setLogger( $sm->get('Logger') );
+						return $obj;
+					},
+				'Stjornvisi\Notify\Attend' => function($sm){
+						$obj = new AttendNotify(
+							$sm->get('Stjornvisi\Service\User'),
+							$sm->get('Stjornvisi\Service\Event')
+						);
+						$obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
+						$obj->setLogger( $sm->get('Logger') );
+						return $obj;
+					},
+				'MailOptions' => function($sm){
+					/*
+					return  new SmtpOptions(array(
+						'name'              => 'localhost.localdomain',
+						'host'              => '127.0.0.1',
+						'connection_class'  => 'login',
+						'connection_config' => array(
+							'username' => 'user',
+							'password' => 'pass',
+						))
+					);
+					*/
+					return new FileOptions(array(
+							'path'              => './data/mail/',
+							'callback'  => function (FileTransport $transport) {
+									return 'Message_' . microtime(true) . '_' . mt_rand() . '.txt';
+								},
+						));
+				},
+				'MailTransport' => function($sm){
+					//$transport = new SmtpTransport();
+					//$transport->setOptions($sm->get('MailOptions'));
+					//return $transport;
+					$transport = new FileTransport();
+					$transport->setOptions($sm->get('MailOptions'));
+					return $transport;
+				},
+				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
+					$config = $sm->get('config');
+					$queue = new QueueConnectionFactory();
+					$queue->setConfig($config['queue']);
+					return $queue;
+				},
+
+
+
+				'Stjornvisi\Form\NewUserCompanySelect' => function($sm){
+					return new NewUserCompanySelect( $sm->get('Stjornvisi\Service\Company') );
+				},
+				'Stjornvisi\Form\NewUserCompany' => function($sm){
+					return new NewUserCompany( $sm->get('Stjornvisi\Service\Values') );
+				},
+				'Stjornvisi\Form\NewUserUniversitySelect' => function($sm){
+					return new NewUserUniversitySelect( $sm->get('Stjornvisi\Service\Company') );
+				},
+				'Stjornvisi\Form\NewUserIndividual' => function($sm){
+					return new NewUserIndividual( $sm->get('Stjornvisi\Service\Values') );
+				},
+				'Stjornvisi\Form\NewUserCredentials' => function($sm){
+					return new NewUserCredentials(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\User')
+					);
+				},
+
             )
         );
     }

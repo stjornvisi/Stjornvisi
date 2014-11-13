@@ -107,8 +107,8 @@
 			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h1>
 	</div>
 	<div class="login-buttons">
-		<a href="https://www.facebook.com/dialog/oauth?client_id=293461407395158&redirect_uri=http://localhost:8080/callback" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>Facebook innskráning</a>
-		<a href="<?=$this->url('auth-in')?>" class="btn btn-default">Innskráning</a>
+		<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>Facebook innskráning</a>
+		<!--a href="<?=$this->url('auth',['type'=>'facebook'])?>" class="btn btn-default">Innskráning</a-->
 		<a href="" class="btn btn-success">Stofna aðgang</a>
 	</div>
 

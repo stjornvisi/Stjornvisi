@@ -263,6 +263,15 @@ class Event extends AbstractService {
             }
 			unset($data['groups']);
 
+			//SANITIZE CAPACITY
+			//	capacity has to be integer and bigger that zero
+			$data['capacity'] = is_numeric($data['capacity'])
+				? (int)$data['capacity']
+				: null ;
+			$data['capacity'] = ($data['capacity'] <= 0)
+				? null
+				: $data['capacity'] ;
+
             //UPDATE
             //  update event entry
             $statement = $this->pdo->prepare(
@@ -366,6 +375,15 @@ class Event extends AbstractService {
                 : array() ;
             unset($data['groups']);
 
+			//SANITIZE CAPACITY
+			//	capacity has to be integer and bigger that zero
+			$data['capacity'] = is_numeric($data['capacity'])
+				? (int)$data['capacity']
+				: null ;
+			$data['capacity'] = ($data['capacity'] <= 0)
+				? null
+				: $data['capacity'] ;
+
             $createString = $this->insertString('Event',$data);
             $createStatement = $this->pdo->prepare($createString);
             $createStatement->execute($data);
@@ -399,7 +417,7 @@ class Event extends AbstractService {
                     isset($connectStatement)?$connectStatement->queryString:null,
                 )
             ));
-            throw new Exception("Can't create event.",0,$e);
+            throw new Exception("Can't create event. " . $e->getMessage() ,0,$e);
         }
 
     }
@@ -868,6 +886,7 @@ class Event extends AbstractService {
 			throw new Exception("Can't get gallery item for event. event:[{$id}]",0,$e);
 		}
 	}
+
 	/**
 	 * Add gallery image to event.
 	 *
@@ -1020,6 +1039,7 @@ class Event extends AbstractService {
 			throw new Exception("Can't get gallery item for event. event:[{$id}]",0,$e);
 		}
 	}
+
 	/**
 	 * Add gallery image to event.
 	 *

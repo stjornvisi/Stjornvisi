@@ -46,7 +46,7 @@ class JaMapTest extends PHPUnit_Framework_TestCase{
 	 * Data is OK, but the response header
 	 * is HTTP/1.1 404 Not Found
 	 */
-	public function testNot200ResponseCodet(){
+	public function testNot200ResponseCode(){
 		$client = new Client();
 		$adapter = new Test();
 		$adapter->setResponse( file_get_contents(__DIR__.'/../data/ja-response/03.txt') );
@@ -56,4 +56,13 @@ class JaMapTest extends PHPUnit_Framework_TestCase{
 		$this->assertNull( $result1->lat );
 		$this->assertNull( $result1->lng );
 	}
+
+	/*
+	public function testForReal(){
+		$client = new Client();
+		$map = new JaMap( $client );
+		$result1 = $map->request("Hringbraut 107");
+		print_r( $result1 );
+	}
+	*/
 } 

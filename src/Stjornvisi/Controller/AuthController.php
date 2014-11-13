@@ -4,106 +4,197 @@ namespace Stjornvisi\Controller;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
-use \Zend\Session\SessionManager;
+use Zend\Session\SessionManager;
 use Zend\View\Model\ViewModel;
-use Stjornvisi\Form\Login;
-use Stjornvisi\Form\LostPassword as LostPasswordForm;
 
+use Zend\Session\Container;
+
+use Stjornvisi\Form\LostPassword as LostPasswordForm;
+use Stjornvisi\Notify\Password as PasswordNotify;
+
+use Facebook\FacebookSession;
+use Facebook\FacebookRedirectLoginHelper;
+use Facebook\FacebookRequestException;
+use Facebook\FacebookRequest;
+use Facebook\GraphUser;
+
+
+use OAuth\OAuth2\Service\Linkedin;
+use OAuth\Common\Storage\Session;
+use OAuth\Common\Consumer\Credentials;
 
 class AuthController extends AbstractActionController{
 
+	const LOGIN_CALLBACK_FACEBOOK = '/innskra/callback-login-facebook';
+
 	/**
-	 * Create user
+	 * Create user.
+	 *
 	 * @todo send email
-	 * @todo there must be a better way for the
-	 * 	comapny dropdown that to go to the DB
-	 * 	every time.
 	 *
 	 */
-	public function createUserAction(){ 
+	public function createUserAction(){
+
+		$session = new Container('create_user');
+		$sm = $this->getServiceLocator();
+		$form = $sm->get('Stjornvisi\Form\NewUserCredentials');
+		$form->setAttribute('action',$this->url()->fromRoute('notandi/create'));
 
 		//POST
-		//	post request, try to create user
-		if( $this->_request->isPost() ){
-				
-			$form = new Application_Form_CreateUser();
-				
-			//VALID FORM
-			//	form is valid... or is it...?
-			if( $form->isValid($this->_request->getPost()) ){
+		if($this->request->isPost() ){
+			$form->setData($this->request->getPost());
+			if( $form->isValid() ){
+				//$data = (array)$form->getData();
+				$session->name = $form->get('name')->getValue();
+				$session->email = $form->get('email')->getValue();
+				$session->title = $form->get('title')->getValue();
 
-				$userDAO = new Application_Model_User();
+				return $this->redirect()->toRoute('notandi/company');
 
-				//EMAIL IN USE
-				//	check if the e-mail is in use
-				if( $userDAO->fetchAll("email='{$form->getValue("email")}'")->count() > 0 ){
-					$form->markAsError()
-						->getElement("email")
-						->addErrorMessage("Netfang upptekið")
-						->markAsError();
-					$this->view->form = $form;
-					return ;
-				}
-
-				//PASSWORDS
-				//	check if pass1 == pass2
-				if ($form->getValue("pass1") != $form->getValue("pass2")){
-					$form->markAsError()
-						->getElement("pass2")
-						->addErrorMessage("Lykilorðin stemma ekki")
-						->markAsError();
-					$this->view->form = $form;
-					return ;
-				}
-
-				//INSERT
-				//	create user in DB
-				$userDAO->insert(array(
-					'name' => $form->getValue("name"),
-					'passwd' => new Zend_Db_Expr("MD5('{$form->getValue("pass1")}')"),
-					'email' =>  $form->getValue("email"),
-					'created_date' => new Zend_Db_Expr("NOW()"),
-					'modified_date' => new Zend_Db_Expr("NOW()"),
-					'title' => $form->getValue("title")
-				));
-
-				//LOGIN
-				//	try to login user
-				//	and report to view
-				$this->view->success = $this->_login(
-					$form->getValue("email"),
-					$form->getValue("pass1")
-				);
-
-				if($this->view->success){
-					$view = clone $this->view;
-					$view->name = $form->getValue("name");
-					$view->email = $form->getValue("email");
-					$view->passwd = $form->getValue("pass1");
-					$mail = new Ext_Mail("utf-8");
-					$mail->setSubject("[Stjornvisi] Notendaaðgangur");
-					$mail->addTo($form->getValue("email"));
-					$mail->addBcc("stjornvisi@stjornvisi.is","Stjórnvísi");
-					$mail->setBodyText(strip_tags($view->render("auth/_mail-newuser.phtml")));
-					$mail->setBodyHtml($view->render("auth/_mail-newuser.phtml"));
-					$mail->send();
-				}
-				//INVALID FROM
-				//	form is invalid
 			}else{
-				$this->view->form = $form;
+				return new ViewModel(array(
+					'form' => $form
+				));
 			}
-			//GET
-			//	get request, return create-form
+			//QUERY
 		}else{
-			$companyDAO = new Application_Model_Company();
-			$this->view->form = new Application_Form_CreateUser(
-				$companyDAO->fetchAll(null,'name')
-			);
+			return new ViewModel(array(
+				'form' => $form
+			));
+		}
+	}
+
+	public function createUserCompanyAction(){
+
+		$sm = $this->getServiceLocator();
+
+		$companyService = $sm->get('Stjornvisi\Service\Company');
+		/** @var  $companyService \Stjornvisi\Service\Company */
+
+		$companyForm = $sm->get('Stjornvisi\Form\NewUserCompany');
+		$companySelectForm =  $sm->get('Stjornvisi\Form\NewUserCompanySelect');
+		$individualForm = $sm->get('Stjornvisi\Form\NewUserIndividual');
+		$universitySelectForm =  $sm->get('Stjornvisi\Form\NewUserUniversitySelect');
+
+		//POST
+		//	post request
+
+		if($this->request->isPost() ){
+			$post = $this->request->getPost();
+
+			//CREATE NEW COMPANY
+			//	create a new company.
+			if( isset($post['submit-company-create']) ){
+				$companyForm->setData($this->request->getPost());
+				if( $companyForm->isValid() ){
+
+					$data = (array)$companyForm->getData();
+					$id = $companyService->create(array(
+						'name' => $data['company-name'],
+						'ssn' => $data['company-ssn'],
+						'address' => $data['company-address'],
+						'zip' => $data['company-zip'],
+						'website' => $data['company-web'],
+						'number_of_employees' => $data['company-size'],
+						'business_type' => $data['company-type']
+					));
+
+					$session = new Container('create_user');
+					$session->company = $id;
+
+					return $this->redirect()->toRoute('notandi/login');
+				}else{
+					return new ViewModel(array(
+						'companyForm' => $companyForm,
+						'companySelectForm' => $companySelectForm,
+						'individualForm' => $individualForm,
+						'universitySelectForm' => $universitySelectForm,
+					));
+				}
+			//SELECT COMPANY
+			//	company exists, user selects
+			}elseif( isset($post['submit-company-select']) ){
+				$companySelectForm->setData($this->request->getPost());
+				if( $companySelectForm->isValid() ){
+					$data = (array)$companySelectForm->getData();
+					$session = new Container('create_user');
+					$session->company = $data['company-select'];
+					return $this->redirect()->toRoute('notandi/login');
+				}else{
+					return new ViewModel(array(
+						'companyForm' => $companyForm,
+						'companySelectForm' => $companySelectForm,
+						'individualForm' => $individualForm,
+						'universitySelectForm' => $universitySelectForm,
+					));
+				}
+			//CREATE INDIVIDUAL
+			//	create a company that is only for this user.
+			}elseif( isset($post['submit-individual']) ){
+				$session = new Container('create_user');
+				$individualForm->setData($this->request->getPost());
+				if( $individualForm->isValid() ){
+					$data = (array)$individualForm->getData();
+					$id = $companyService->create(array(
+						'name' => $session->name,
+						'ssn' => $data['person-ssn'],
+						'address' => $data['person-address'],
+						'zip' => $data['person-zip'],
+						'website' => null,
+						'number_of_employees' => 'Einstaklingur',
+						'business_type' => 'Einstaklingur'
+					));
+
+					$session->company = $id;
+
+					return $this->redirect()->toRoute('notandi/login');
+				}else{
+					return new ViewModel(array(
+						'companyForm' => $companyForm,
+						'companySelectForm' => $companySelectForm,
+						'individualForm' => $individualForm,
+						'universitySelectForm' => $universitySelectForm,
+					));
+				}
+			//SELECT UNIVERSITY
+			//	user is selecting university
+			}elseif( isset($post['submit-university-select']) ){
+				if( $universitySelectForm->isValid() ){
+
+				}else{
+					return new ViewModel(array(
+						'companyForm' => $companyForm,
+						'companySelectForm' => $companySelectForm,
+						'individualForm' => $individualForm,
+						'universitySelectForm' => $universitySelectForm,
+					));
+				}
+			}else{
+				//error
+			}
+
+		//QUERY
+		//	get request
+		}else{
+			return new ViewModel(array(
+				'companyForm' => $companyForm,
+				'companySelectForm' => $companySelectForm,
+				'individualForm' => $individualForm,
+				'universitySelectForm' => $universitySelectForm,
+			));
 		}
 
 	}
 
+	public function createUserLoginAction(){
+		$session = new Container('create_user');
+
+		//TODO create user;
+
+		return new ViewModel(array(
+			'data' => $session
+		));
+	}
 	/**
 	 * Login user
 	 * @todo count frequency
@@ -111,6 +202,7 @@ class AuthController extends AbstractActionController{
 	 */
 	public function loginAction(){
 
+		/*
         $auth = new AuthenticationService();
 
         //IS LOGGED IN
@@ -166,6 +258,7 @@ class AuthController extends AbstractActionController{
                 ));
             }
         }
+		*/
 	}
 
 	/**
@@ -178,37 +271,238 @@ class AuthController extends AbstractActionController{
         return $this->redirect()->toRoute('home');
 	}
 
+	public function callbackLoginLinkedinAction(){
+		$uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
+		$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
+		$currentUri->setQuery('');
+
+		$config = $this->getServiceLocator()->get('Config');
+		// Session storage
+		$storage = new Session();
+
+		// Setup the credentials for the requests
+		$credentials = new Credentials(
+			$config['linkedin']['appId'],
+			$config['linkedin']['secret'],
+			$currentUri->getAbsoluteUri()
+		);
+
+		$serviceFactory = new \OAuth\ServiceFactory();
+
+		// Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
+		/** @var $linkedinService Linkedin */
+		$linkedinService = $serviceFactory->createService('linkedin', $credentials, $storage, array('r_basicprofile'));
+		if (!empty($_GET['code'])) {
+			// retrieve the CSRF state parameter
+			$state = isset($_GET['state']) ? $_GET['state'] : null;
+			// This was a callback request from linkedin, get the token
+			$token = $linkedinService->requestAccessToken($_GET['code'], $state);
+			// Send a request with it. Please note that XML is the default format.
+			$result = json_decode($linkedinService->request('/people/~?format=json'), true);
+			// Show some of the resultant data
+			echo 'Your linkedin first name is ' . $result['firstName'] . ' and your last name is ' . $result['lastName'];
+		} elseif (!empty($_GET['go']) && $_GET['go'] === 'go') {
+			$url = $linkedinService->getAuthorizationUri();
+			header('Location: ' . $url);
+			exit();
+		} else {
+			$url = $currentUri->getRelativeUri() . '?go=go';
+			echo "<a href='$url'>Login with Linkedin!</a>";
+		}
+
+	}
+
 	/**
 	 * Callback from Facebook.
+	 *
+	 * When user goes through the Facebook oAuth 2.0 process
+	 * of login in, after he has logged into Facebook, he/she is redirected to this
+	 * this action. Here he/she is authenticated to the system and if that works the user
+	 * is logged in. If this does not work, the user is asked it this is his first time logging
+	 * in via Facebook and if he/she is sure that he/she has an account.
 	 *
 	 * @return \Zend\Http\Response
 	 * @todo count frequency
 	 */
-	public function callbackAction(){
+	public function callbackLoginFacebookAction(){
 
-        $auth = new AuthenticationService();
+		//GET SERVER
+		//	 this check has to be done for instances where this
+		//	is not run as an web-application
+		$server = isset( $_SERVER['HTTP_HOST'] )
+			? "http://".$_SERVER['HTTP_HOST']
+			: 'http://0.0.0.0' ;
+
+		//FACEBOOK CONFIG
+		//	get config and use it to cnfigure facebook session
+		//	and login functionality
+		$config = $this->getServiceLocator()->get('Config');
+		FacebookSession::setDefaultApplication(
+			$config['facebook']['appId'],
+			$config['facebook']['secret']
+		);//TODO should this be in a global space
 
 
-        if( isset($_GET['code']) ){
-            $token =  file_get_contents("https://graph.facebook.com/oauth/access_token?client_id=293461407395158&redirect_uri=http://localhost:8080/callback&client_secret=ba09275f17ecac9608045c249aa9b609&code={$_GET['code']}");
-            $arr = array();
-            preg_match("/access_token=([^&]+)(?:&expires=(.*))?/", $token,$arr);
-            $access_token = $arr[1];
+		//ERROR
+		$error = $this->params()->fromQuery('error');
+		if( $error == 'access_denied' ){
+			return new ViewModel(array(
+				'error' => 'access_denied'
+			));
+		}
 
-            $result = file_get_contents("https://graph.facebook.com/me?access_token={$access_token}");
-            $resultObject = json_decode($result);
 
-            $sm = $this->getServiceLocator();
-            $authAdapter =  $sm->get('Stjornvisi\Auth\Facebook');
-            $authAdapter->setKey( $resultObject->id );
-            $result = $auth->authenticate($authAdapter);
-            if( $result->isValid() ){
-                $sessionManager = new SessionManager();
-                $sessionManager->rememberMe(21600000); //250 days
-            }
-            return $this->redirect()->toRoute('home');
-        }
+		//KEY
+		//	check if there is a query parameter called $key along
+		//	for the ride. If so; then the user is trying to connect old account
+		//	to Facebook.
+		$key = $this->params()->fromQuery('key'); //TODO validate this key
+
+		//CONNECTING OLD ACCOUNT
+		//	if $key is present, then the callback from Facebook will contain it and
+		//	we have to reflect it in the callback validation
+		$helper = new FacebookRedirectLoginHelper(
+			($key)
+				? $server.AuthController::LOGIN_CALLBACK_FACEBOOK.'?key='.$key
+				: $server.AuthController::LOGIN_CALLBACK_FACEBOOK
+		);
+
+		//LOGIN
+		//	try to log in user
+		try {
+			//FACEBOOK OBJECT
+			//	get user object/properties from facebook graph
+			$session = $helper->getSessionFromRedirect();
+
+			$me = (new FacebookRequest(
+				$session, 'GET', '/me'
+			))->execute()->getGraphObject(GraphUser::className())->asArray();
+
+
+			//CONNECT OLD ACCOUNT CUT-IN
+			//	if $key is set, then the user is trying to connect old account to his
+			//	Facebook. What we do here is to find the user based on the hash that we got
+			//	back from facebook, then we inject the Facebook Auth-ID into his table just
+			//	in time so that '$auth = new AuthenticationService();' line of code will pick
+			//	it up and authenticate the user. This is just a little detour to quickly connect
+			//	the user to a facebook account just before we authenticate him.
+			if($key){
+				$sm = $this->getServiceLocator();
+				$userService = $sm->get('Stjornvisi\Service\User');
+				/** @var $userService \Stjornvisi\Service\User */
+				if( ($user = $userService->getByHash( $key )) != null ){
+					$userService->setOauth( $user->id, $me['id'], 'facebook' );
+				//USER NOT FOUND
+				//	can't find the user based on hash
+				}else{
+					return new ViewModel(array(
+						'error' => 'user_undefined'
+					));
+				}
+			}
+
+			//AUTHENTICATE
+			//	try to authenticate user against user database
+			$auth = new AuthenticationService();
+			$sm = $this->getServiceLocator();
+			$authAdapter =  $sm->get('Stjornvisi\Auth\Facebook');
+			$authAdapter->setKey( $me['id'] );
+			$result = $auth->authenticate($authAdapter);
+
+			//VALID
+			//	user has logged in before via Facebook
+			if( $result->isValid() ){
+				$sessionManager = new SessionManager();
+				$sessionManager->rememberMe(21600000); //250 days
+				return $this->redirect()->toRoute('home');
+			//INVALID
+			//	user hasn't logged in with facebook before. We have
+			//	to initialize the connection process.
+			}else{
+				return new ViewModel(array(
+					'error' => 'user_disconnected'
+				));
+			}
+
+		//CAN'T LOGIN USER
+		//	Facebook login library issues exception.
+		//	Facebook returns an error
+		} catch(FacebookRequestException $ex) {
+			// When Facebook returns an error
+			return new ViewModel(array(
+				'error' => $ex->getMessage()
+			));
+		//ERROR
+		//	There was a more generic error
+		//	When validation fails or other local issues
+		} catch(\Exception $ex) {
+			return new ViewModel(array(
+				'error' => $ex->getMessage()
+			));
+		}
+
     }
+
+	/**
+	 * Connect old account to Facebook.
+	 *
+	 * User has an old Stjornvisi account and wants to connect his/her
+	 * Facebook account to it.
+	 *
+	 * There can only be POST request to this actions, since the user is always
+	 * providing an old e-mail address via HTMLForm.
+	 *
+	 * @return ViewModel
+	 */
+	public function requestConnectionFacebookAction(){
+
+		//GET SERVER
+		//	 this check has to be done for instances where this
+		//	is not run as an web-application
+		$server = isset( $_SERVER['HTTP_HOST'] )
+			? "http://".$_SERVER['HTTP_HOST']
+			: 'http://0.0.0.0' ;
+
+		if( $this->request->isPost() ){
+
+			$post = $this->request->getPost()->getArrayCopy();
+			$sm = $this->getServiceLocator();
+			$userService = $sm->get('Stjornvisi\Service\User'); /** @var  $userService \Stjornvisi\Service\User */
+
+			$user = $userService->get( $post['email'] );
+			if( $user ){
+
+				//FACEBOOK CONFIG
+				//	get config and use it to configure facebook session
+				//	and login functionality
+				$config = $this->getServiceLocator()->get('Config');
+				FacebookSession::setDefaultApplication(
+					$config['facebook']['appId'],
+					$config['facebook']['secret']
+				);//TODO should this be in a global space
+				$helper = new FacebookRedirectLoginHelper(
+					$server. AuthController::LOGIN_CALLBACK_FACEBOOK . '?key='.$user->hash
+				);
+
+				return new ViewModel(array(
+					'user' => $user,
+					'url' => $server,
+					'facebook' => $helper->getLoginUrl()
+				));
+
+
+			//USER NOT FOUND
+			}else{
+				return new ViewModel(array(
+					'user' => null
+				));
+			}
+
+
+		}else{
+
+		}
+	}
 
 	/**
 	 * Request new password.
@@ -229,11 +523,9 @@ class AuthController extends AbstractActionController{
 					$password = $this->_createPassword(20);
 					$userService->setPassword( $user->id, $password );
 					$this->getEventManager()->trigger('notify',$this,array(
-						'action' => 'auth.lost-password',
-						'recipients' => array($user),
-						'priority' => true,
+						'action' => PasswordNotify::REGENERATE,
 						'data' => (object)array(
-								'user' => $user,
+								'user_id' => $user->id,
 								'password' => $password,
 							),
 					));

@@ -2,6 +2,15 @@
 
 <phpunit bootstrap="Bootstrap.php" colors="false">
 
+
+
+    <php>
+        <var name="DB_DSN" value="mysql:dbname=stjornvisi_test;host=127.0.0.1" />
+        <var name="DB_USER" value="root" />
+        <var name="DB_PASSWD" value="" />
+        <var name="DB_DBNAME" value="stjornvisi_test" />
+    </php>
+
     <listeners>
         <!--listener class="Stjornvisi\Lib\TestListener" file="../src/Stjornvisi/Lib/TestListener.php"></listener-->
     </listeners>

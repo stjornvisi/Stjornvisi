@@ -1,0 +1,46 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einar
+ * Date: 07/11/14
+ * Time: 08:45
+ */
+?>
+
+
+<ul>
+	<li>1# Notendaupplýsingar</li>
+	<li><strong>2# Fyrirtækjaupplýsingar</strong></li>
+	<li>3# Innskráning</li>
+</ul>
+
+<?php
+$this->form->setAttribute('class','form-horizontal');
+?>
+<?=$this->form()->openTag($this->form);?>
+
+<div class="form-group">
+	<?=$this->formLabel($form->get('name'));?>
+	<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
+	<?=$this->formElementErrors($form->get('name'));?>
+</div>
+
+
+<div class="form-group">
+	<?=$this->formLabel($form->get('email'));?>
+	<?=$this->formElement($form->get('email')->setAttribute('class','form-control'));?>
+	<?=$this->formElementErrors($form->get('email'));?>
+</div>
+
+
+<div class="form-group">
+	<?=$this->formLabel($form->get('title'));?>
+	<?=$this->formElement($form->get('title')->setAttribute('class','form-control'));?>
+	<?=$this->formElementErrors($form->get('title'));?>
+</div>
+
+<div class="form-group">
+	<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+</div>
+
+<?= $this->form()->closeTag() ?>

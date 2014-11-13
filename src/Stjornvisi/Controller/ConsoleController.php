@@ -28,6 +28,7 @@ use Imagine\Filter\Basic\Resize;
 use Stjornvisi\Lib\Imagine\Square;
 
 use PhpAmqpLib\Connection\AMQPConnection;
+use PhpAmqpLib\Exception\AMQPRuntimeException;
 
 
 use Stjornvisi\Search\Index\Article as ArticleIndex;
@@ -40,6 +41,8 @@ use Stjornvisi\Service\Article;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\Group;
 use Stjornvisi\Service\News;
+
+use Zend\Mail\Message;
 
 class ConsoleController extends AbstractActionController {
 
@@ -217,7 +220,6 @@ class ConsoleController extends AbstractActionController {
 		*/
 		$progressBar->finish();
 	}
-
 
 	/**
 	 * Will create all images.
@@ -422,7 +424,14 @@ class ConsoleController extends AbstractActionController {
 	}
 
 	/**
+	 * This guy is listening for notifications from the application layer.
 	 *
+	 * The system (mostly the Controllers) will issue a notify event that
+	 * this process will listen for. Every notice is special and here they are
+	 * decrypted and a special handler is selected for ech one. Most of these
+	 * handlers will do some sort of data manipulation/aggregation and then send them
+	 * on to the mail-queue where they are sent via SMTP, but anything can happen
+	 * and they could relay the message to Facebook for all we care.
 	 */
 	public function notifyAction(){
 
@@ -442,7 +451,7 @@ class ConsoleController extends AbstractActionController {
 
 			$channel->queue_declare('notify_queue', false, true, false, false);
 
-			$logger->info("Index Listener started, Waiting for messages. To exit press CTRL+C");
+			$logger->info("Notice Listener started, Waiting for messages. To exit press CTRL+C");
 
 			//THE MAGIC
 			//	here is where everything happens. the rest of the code
@@ -458,12 +467,20 @@ class ConsoleController extends AbstractActionController {
 					case \Stjornvisi\Notify\Event::MESSAGING:
 						$handler = $sm->get('Stjornvisi\Notify\Event');
 						break;
+					case \Stjornvisi\Notify\Password::REGENERATE:
+						$handler = $sm->get('Stjornvisi\Notify\Password');
+						break;
+					case \Stjornvisi\Notify\Group::NOTIFICATION:
+						$handler = $sm->get('Stjornvisi\Notify\Group');
+						break;
+					case \Stjornvisi\Notify\Attend::ATTENDING:
+						$handler = $sm->get('Stjornvisi\Notify\Attend');
+						break;
 					default:
 						break;
 				}
 				$handler->setData( $message );
 				$handler->send();
-				//$logger->info( print_r( json_decode( $msg->body ),true ) );
 
 				$logger->info("Notify message [{$message->action}] processed");
 				$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
@@ -481,9 +498,99 @@ class ConsoleController extends AbstractActionController {
 			$connection->close();
 		}catch (\Exception $e){
 			$logger->warn( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->warn( print_r($e->getTraceAsString(),true) );
 			exit(1);
 		}
 
+
+	}
+
+	/**
+	 * This is the actual Mail Queue.
+	 *
+	 * This is the guy who sends out e-mail. He is listening
+	 * for messages sent to the RabbitMQ:mail_queue and he will
+	 * relay them to the SMTP protocol.
+	 *
+	 * @throws \RuntimeException
+	 */
+	public function mailAction(){
+
+		$request = $this->getRequest();
+		// Make sure that we are running in a console and the user has not tricked our
+		// application into running this action from a public web server.
+		if (!$request instanceof ConsoleRequest){
+			throw new \RuntimeException('You can only use this action from a console!');
+		}
+
+		$sm = $this->getServiceLocator();
+		$logger = $sm->get('Logger'); /** @var $logger \Zend\Log\Logger */
+
+		try{
+			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+			$channel = $connection->channel();
+			$channel->queue_declare('mail_queue', false, true, false, false);
+
+			$logger->info("Mail Queue started, Waiting for messages. To exit press CTRL+C");
+
+			//THE MAGIC
+			//	here is where everything happens. the rest of the code
+			//	is just connect and deconnect to RabbitMQ
+			$callback = function($msg) use ($logger, $sm){
+
+				//JSON VALID
+				//	fist make sure that the JSON is valid
+				if( ($messageObject = json_decode( $msg->body )) !== null ){
+
+					//VALIDATE OBJECT
+					//	make sure that the basic objects are there
+					//TODO there has to be a better way of doing this
+					if( isset($messageObject->recipient) &&
+						isset($messageObject->recipient->address) &&
+						isset($messageObject->recipient->name) &&
+						isset($messageObject->subject) &&
+						isset($messageObject->body)){
+						$logger->info( "Send e-mail to [{$messageObject->recipient->address}, {$messageObject->recipient->name}]" );
+
+						//CREATE / SEND
+						//	create a mail message and actually send it
+						$message = new Message();
+						$message->addTo($messageObject->recipient->address,$messageObject->recipient->name)
+							->addFrom('stjornvisi@stjornvisi.is')
+							->setSubject($messageObject->subject)
+							->setBody($messageObject->body);
+						$transport = $sm->get('MailTransport');
+						$transport->send($message);
+					}else{
+						$logger->warn( "Mail Message object is missing values ". print_r($messageObject,true) );
+					}
+
+				//JSON INVALID
+				//	the message could not ne decoded
+				}else{
+					$logger->warn("Could not decode mail-message");
+				}
+
+				$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+
+			};// end of - MAGIC
+
+			$channel->basic_qos(null, 1, null);
+			$channel->basic_consume('mail_queue', '', false, false, false, false, $callback);
+
+			while(count($channel->callbacks)) {
+				$channel->wait();
+			}
+
+			$channel->close();
+			$connection->close();
+
+		}catch (AMQPRuntimeException $e){
+			$logger->warn( "Can't start Mail Queue: {$e->getMessage()}" );
+			exit(1);
+		}catch (\Exception $e){
+			$logger->warn( print_r($e->getTraceAsString(),true) );
+		}
 
 	}
 }

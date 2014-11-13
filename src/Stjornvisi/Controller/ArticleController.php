@@ -1,4 +1,12 @@
 <?php
+/**
+ * Stjornvisi (http://stjornvisi.is)
+ *
+ * @link      https://github.com/fizk/Stjornvisi for the canonical source repository
+ * @copyright Copyright (c) 2010-2014 IsProject. (http://isproject.is)
+ * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
+ */
+
 namespace Stjornvisi\Controller;
 
 use Zend\Authentication\AuthenticationService;
@@ -8,6 +16,10 @@ use Zend\Http\Response as HttpResponse;
 use Stjornvisi\Form\Article as ArticleForm;
 use Stjornvisi\Form\Author as AuthorForm;
 
+/**
+ * Class ArticleController
+ * @package Stjornvisi\Controller
+ */
 class ArticleController extends AbstractActionController{
 
     /**
@@ -23,15 +35,16 @@ class ArticleController extends AbstractActionController{
 
 		$auth = new AuthenticationService();
 
-        if( ( $article = $articleService->get($this->params()->fromRoute('id',0)) ) != false ){
+        if ( ( $article = $articleService->get($this->params()->fromRoute('id',0)) ) != false ) {
             return new ViewModel(array(
                 'article' => $article,
 				'access' => $userService->getType(( $auth->hasIdentity() )
 						? $auth->getIdentity()->id
 						: null)
             ));
-        }else{
-            var_dump('404');
+        } else {
+			$this->getResponse()->setStatusCode(404);
+			return;
         }
 	}
 
@@ -40,7 +53,9 @@ class ArticleController extends AbstractActionController{
      *
      * @return ViewModel
      */
-    public function listAction(){
+    public function listAction()
+	{
+
         $sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -60,7 +75,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function createAction(){
+	public function createAction()
+	{
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -88,6 +104,7 @@ class ArticleController extends AbstractActionController{
 				//INVALID
 				//	form is invalid
 				}else{
+					$this->getResponse()->setStatusCode(400);
 					return new ViewModel(array(
 						'form' => $form
 					));
@@ -103,69 +120,11 @@ class ArticleController extends AbstractActionController{
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
-        /*
-		//ACCESS GRANTED
-		//	user is an admin
-		//	so that he can create author entries.
-		$auth = Zend_Auth::getInstance()->getIdentity();
-		if( $auth )
-		{
-			$authorDAO = new Application_Model_Author();
-			$authors = $authorDAO->fetchAll( null, "name ASC" );
-			$form = new Application_Form_Article( "create", $authors );
-			//POST
-			//	post request
-			if( $this->_request->isPost() )
-			{
-				if($form->isValid($this->_request->getPost() ) )
-				{
-					//INSERT
-					//	create entry in database
-					$articleDAO = new Application_Model_Article();
-					$articleHasAuthorDAO = new Application_Model_AuthorHasArticle();
-					
-					$id = $articleDAO->insert( array(
-						"title"		=> $form->getValue('title'),
-						"summary"	=> $form->getValue('summary'),
-						"body"		=> $form->getValue('body'),
-						"published" => $form->getValue('published'),
-						"venue"		=> $form->getValue('venue'),
-						"created"	=> new Zend_Db_Expr("NOW()")
-					) );
-					
-					$articleHasAuthorDAO->insert( array(
-						"article_id"	=> $id,
-						"author_id"		=> $form->getValue('author')
-					) );
-					
-					//SEARCH
-					//	create search index for this entry.
-					$articleEntryDAO = new Application_Model_ArticleEntry();
-					Ext_Search_Lucene::getInstance()->index( $articleEntryDAO->find($id)->current() );
-		
-					$this->_redirect("/article/list/");
-		
-						
-				}
-				//INVALID
-				//	form is invalid
-				else
-				{
-					$this->view->form = $form;
-				}
-			}
-			else
-			{
-				$this->view->form = $form;
-			}
-		}
-		else
-		{
-			throw new Zend_Controller_Action_Exception("Access Denied",401);
-		}
-        */
 	}
 
 	/**
@@ -173,7 +132,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse
 	 */
-	public function deleteAction(){
+	public function deleteAction()
+	{
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -203,12 +163,14 @@ class ArticleController extends AbstractActionController{
 			var_dump('403');
 		}
 	}
+
 	/**
 	 * Update article.
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function updateAction(){
+	public function updateAction()
+	{
 
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
@@ -275,7 +237,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return ViewModel
 	 */
-	public function listAuthorAction(){
+	public function listAuthorAction()
+	{
 		$sm = $this->getServiceLocator();
 		$articleService = $sm->get('Stjornvisi\Service\Article');
 		return new ViewModel(array(
@@ -288,7 +251,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function createAuthorAction(){
+	public function createAuthorAction()
+	{
 
 		$sm = $this->getServiceLocator();
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -336,7 +300,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function updateAuthorAction(){
+	public function updateAuthorAction()
+	{
 
 		$sm = $this->getServiceLocator();
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -387,7 +352,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse
 	 */
-	public function deleteAuthorAction(){
+	public function deleteAuthorAction()
+	{
 		$sm = $this->getServiceLocator();
 		$articleService = $sm->get('Stjornvisi\Service\Article');
 		$author = new AuthenticationService();

@@ -23,6 +23,17 @@ $this->form->setAttribute('class','form-horizontal');
         <?=$this->formElementErrors($form->get('location'));?>
     </div>
 
+	<div class="form-group">
+		<?=$this->formLabel($form->get('address'));?>
+		<?=$this->formElement($form->get('address')->setAttribute('class','form-control'));?>
+		<?=$this->formElementErrors($form->get('address'));?>
+	</div>
+
+	<div class="form-group">
+		<?=$this->formLabel($form->get('capacity'));?>
+		<?=$this->formElement($form->get('capacity')->setAttribute('class','form-control'));?>
+		<?=$this->formElementErrors($form->get('capacity'));?>
+	</div>
 
     <div class="form-group">
         <?=$this->formLabel($form->get('event_date'));?>

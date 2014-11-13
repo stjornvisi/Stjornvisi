@@ -1,0 +1,23 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einar
+ * Date: 31/10/14
+ * Time: 15:44
+ */
+
+?>
+
+	<?php if( $this->user ):?>
+		<p>Póstur hefur verið sendur. Lestu hann vandlega.</p>
+		<p>OK, það var ekki sendur neinn póstur, ég útfæri það seinna, það sem þú þarft að gera er að
+			copy/paste'a þessa slóð í brower'inn þinn.</p>
+		<pre><?= $this->facebook;?></pre>
+	<?php else:?>
+		<p>Netfang er ekki á skrá. Viltu reyna aftur</p>
+		<form action="<?=$this->url('auth/facebook-connect')?>" method="post">
+			<input type="email" name="email" />
+			<input type="submit" value="submit" />
+		</form>
+	<?php endif;?>
+

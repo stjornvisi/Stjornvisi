@@ -1,0 +1,22 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einar
+ * Date: 01/10/14
+ * Time: 00:12
+ */
+?>
+
+<h3><?=$this->event->event_date->format('d. m Y');?> | <?=$this->event->event_time->format('h:i');?></h3>
+<h1><?=$this->event->subject;?></h1>
+<ul>
+<?php foreach($this->event->groups as $groups):?>
+	<li><?=$groups->name?></li>
+<?php endforeach;?>
+</ul>
+
+<?=$this->body;?>
+
+<p><?=$this->event->location;?></p>
+<p><?=$this->event->address;?></p>
+

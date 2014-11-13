@@ -55,17 +55,18 @@ class EventController extends AbstractActionController{
 					$this->params()->fromPost('name','')
 				);
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => 'event.attend',
-					'recipients' => (object)array(
-							'id' => null,
-							'name' => $this->params()->fromPost('name',''),
-							'email' => $this->params()->fromPost('email','')
-						),
-					'priority' => true,
+					'action' => \Stjornvisi\Notify\Attend::ATTENDING,
 					'data' => (object)array(
-							'event' => $event,
+							'event_id' => $event->id,
+							'type' => 1,
+							'recipients' => (object)array(
+								'id' => null,
+								'name' => $this->params()->fromPost('name',''),
+								'email' => $this->params()->fromPost('email','')
+							),
 						),
-				));
+					)
+				);
 
                 return new ViewModel(array(
                     'logged_in' => $authService->hasIdentity(),
@@ -186,7 +187,10 @@ class EventController extends AbstractActionController{
         if( $group_id === false ){
             //ACCESS DENIED
             if(!$access->is_admin){
-                return '403';
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             //ACCESS GRANTED
             //
             }else{
@@ -204,7 +208,10 @@ class EventController extends AbstractActionController{
             //ACCESS DENIED
             //  user is not a manager or admin
             }else{
-                return '403';
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
         }
 
@@ -215,9 +222,18 @@ class EventController extends AbstractActionController{
             if( $form->isValid() ){
                 $data = (array)$form->getData();
                 unset($data['submit']);
+
+
+				$mapService = $sm->get('Stjornvisi\Service\Map');
+				/** @var  $maService \Stjornvisi\Service\JaMap */
+				$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
+				$data['lat'] = $mapResult->lat;
+				$data['lng'] = $mapResult->lng;
+
                 $id = $eventService->create( $data );
                 return $this->redirect()->toRoute('vidburdir/index',array('id'=>$id));
             }else{
+				$this->getResponse()->setStatusCode(400);
                 return new ViewModel(array(
                     'form' => $form
                 ));
@@ -228,123 +244,6 @@ class EventController extends AbstractActionController{
                 'form' => $form
             ));
         }
-
-
-	/*
-		//POST
-		//	post request
-		if( $this->_request->isPost() ){
-			
-			//ACCESS
-			//	access granted
-			if( $this->_helper->acl->validate( new Ext_Acl_Group($this->_getParam('groups')), Ext_Acl_Group::RULE_RESOURCE_CREATE ) ){
-				$form = new Application_Form_Event();
-				//VALID
-				//	form is valid
-				if($form->isValid($this->_request->getPost())){
-					
-					
-						$_lat = null;
-						$_lng = null;
-						$_formatted_address = null;
-						
-						
-						if( $form->getValue('location') ){
-							try{
-								$client = new Ext_Service_MapClient();
-								$result = $client->request($form->getValue('location'));
-								$_lat = $result->geometry->location->lat;
-								$_lng = $result->geometry->location->lng;
-								$_formatted_address = $result->formatted_address;
-							}catch (Exception $e){
-								if ($log = $this->_getLog()){
-										$log->log($form->getValue('location').' '.$e->getMessage(), Zend_Log::ERR);
-								}
-							}
-						}				
-						//CREATE
-						//	actually create the event and
-						$eventDAO = new Application_Model_Event();
-						$id = $eventDAO->insert(array(
-							'subject' => $form->getValue("subject"),
-							'body' => $form->getValue("body"),
-							'location' => $form->getValue("location"),
-							'address' => $_formatted_address,
-							'event_date' => $form->getValue("date"),
-							'event_time' => $form->getValue("time"),
-							'event_end' => $form->getValue("time_end"),
-							'avatar' => $form->getValue("avatar"),
-							'lat' => $_lat,
-							'lng' => $_lng
-						));
-							
-						//EVENT TO GROUPS
-						//	connect event to groups
-						$groupEventDAO = new Application_Model_GroupHasEvent();
-						foreach ($form->getValue('groups') as $group_id){
-							$groupEventDAO->insert(array(
-								'event_id'=>$id,
-								'group_id'=>$group_id
-							));
-						}
-						
-							
-						//SEARCH
-						//	create search index for this entry.
-						$eventEntryDAO = new Application_Model_Event();
-						Ext_Search_Lucene::getInstance()->index( $eventEntryDAO->find($id)->current() );
-	
-						//REDIRECT / RESPOND
-						//	redirect to the even't entry page
-						//	or send some data if request is xhr
-						if( $this->_request->isXmlHttpRequest() ){
-							$this->getHelper('layout')->disableLayout();
-							$this->getHelper('viewRenderer')->setNoRender();
-							$this->view->event = $eventDAO->find($id)->current();
-							$this->_response->setBody($this->view->render("group/partial-event.phtml"));
-						}else{
-							$this->_redirect("/vidburdir/{$id}");
-						}
-				//INVALID
-				//	the form is invalid
-				}else{
-					if($this->_request->isXmlHttpRequest()){
-						$this->getHelper('layout')->disableLayout();
-						$this->getHelper('viewRenderer')->setNoRender();
-						$this->_response->setBody($form);
-					}else{
-						$this->view->form = $form;
-					}
-				}
-			//ACCESS DENIED
-			//	user doesn't have access
-			}else{
-				throw new Zend_Controller_Action_Exception("Access Denide",401);
-			}
-		//GET
-		//	query request
-		}else{
-			if( $this->_helper->acl->validate( new Ext_Acl_Group($this->_getParam('group_id')), Ext_Acl_Group::RULE_RESOURCE_CREATE ) ){
-				if( $this->_request->isXmlHttpRequest() ){
-					$this->getHelper('layout')->disableLayout();
-					$this->getHelper('viewRenderer')->setNoRender();
-					$this->_response->setBody(
-						new Application_Form_Event('create',null, ($this->_getParam('group_id'))
-							? array( (object)array('group_id'=>$this->_getParam('group_id')) )
-							: null 
-						)
-					);
-				}else{
-					$this->view->form = new Application_Form_Event('create',null, ($this->_getParam('group_id'))
-						? array( (object)array('group_id'=>$this->_getParam('group_id')) )
-						: null 
-					);
-				}
-			}else{
-				throw new Zend_Controller_Action_Exception("Access Denide",401);
-			}
-		}
-	    */
 		
 	}
 
@@ -390,11 +289,15 @@ class EventController extends AbstractActionController{
                     //VALID
                     //  form data is valid
                     if( $form->isValid() ){
-                        $map = $mapService->request( $form->get('location')->getValue() );
+
                         $data = $form->getData();
                         unset($data['submit']);
-                        $data['lat'] = $map->lat;
-                        $data['lng'] = $map->lng;
+						$mapService = $sm->get('Stjornvisi\Service\Map');
+						/** @var  $maService \Stjornvisi\Service\JaMap */
+						$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
+						$data['lat'] = $mapResult->lat;
+						$data['lng'] = $mapResult->lng;
+
                         $eventService->update($event->id, $data);
 						if( $this->request->isXmlHttpRequest() ){
 							$view = new ViewModel(array(
@@ -417,6 +320,7 @@ class EventController extends AbstractActionController{
                     //INVALID
                     //  form data is invalid
                     }else{
+						$this->getResponse()->setStatusCode(400);
                         $view = new ViewModel(array(
                             'form' => $form,
                         ));
@@ -426,7 +330,6 @@ class EventController extends AbstractActionController{
                 //QUERY
                 //  http get request
                 }else{
-					//sleep(200);
                     $form->bind( new \ArrayObject((array)$event) );
 					$view = new ViewModel(array(
 						'form' => $form
@@ -437,14 +340,17 @@ class EventController extends AbstractActionController{
 
             //ACCESS DENIED
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
 
         //NOT FOUND
-        //  todo 404
+		//	entry not found
         }else{
-            var_dump('404');
+			$this->getResponse()->setStatusCode(404);
         }
 
 	}
@@ -619,11 +525,11 @@ class EventController extends AbstractActionController{
                     $this->params()->fromRoute('type',0)
                 );
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => 'event.attend',
-					'recipients' => $authService->getIdentity(),
-					'priority' => true,
+					'action' => \Stjornvisi\Notify\Attend::ATTENDING,
 					'data' => (object)array(
-							'event' => $event,
+							'recipients' => (int)$authService->getIdentity()->id,
+							'event_id' => $event->id,
+							'type' => $this->params()->fromRoute('type',0)
 						),
 				));
 
@@ -696,11 +602,12 @@ class EventController extends AbstractActionController{
 						$this->getEventManager()->trigger('notify',$this,array(
 							'action' => \Stjornvisi\Notify\Event::MESSAGING,
 							'data' => (object)array(
-								'event' => $event,
-								'recipients' => ( $this->params()->fromRoute('type', 'allir') == 'allir' ),
+								'event_id' => $event->id,
+								'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
 								'test' => (bool)$this->params()->fromPost('test',false),
 								'subject' => $form->get('subject')->getValue(),
 								'body' => $form->get('body')->getValue(),
+								'user_id' => $authService->getIdentity()->id
 							),
 						));
 

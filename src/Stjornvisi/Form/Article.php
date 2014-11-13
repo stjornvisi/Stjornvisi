@@ -4,9 +4,22 @@ namespace Stjornvisi\Form;
 
 use Zend\Form\Element;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class Article extends Form{
+/**
+ * Class Article
+ *
+ * Form to create articles.
+ *
+ * @package Stjornvisi\Form
+ */
+class Article extends Form implements InputFilterProviderInterface{
 
+	/**
+	 *
+	 * @param array $authors
+	 * @throws \Zend\Form\Exception\InvalidArgumentException
+	 */
 	public function __construct(array $authors = array()){
 
 		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
@@ -54,7 +67,6 @@ class Article extends Form{
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
 				'placeholder' => 'Birtist fyrst...',
-				'required' => 'required',
 			),
 			'options' => array(
 				'label' => 'Birtist fyrst',
@@ -91,15 +103,80 @@ class Article extends Form{
 
 	}
 
+	/**
+	 * Recursively populate value attributes of elements
+	 *
+	 * @param  array|\Traversable $data
+	 * @return void
+	 */
 	public function populateValues($data){
 		foreach($data as $key=>$row){
-			if( $key=='authors' ){
+			if( $key == 'authors' && is_array($row) ){
 				$data[$key] = array_map(function($i){
-					return (is_numeric($i))?$i:$i->id;
+					return (is_numeric($i)) ? $i : $i->id;
 				},$row);
 			}
 		}
 
 		parent::populateValues($data);
+	}
+
+
+	/**
+	 * Should return an array specification compatible with
+	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
+	 *
+	 * @return array
+	 */
+	public function getInputFilterSpecification(){
+		return array(
+			'title' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'summary' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'body' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'venue' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'authors' => array(),
+		);
 	}
 }

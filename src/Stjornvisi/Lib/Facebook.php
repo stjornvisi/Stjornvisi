@@ -5,7 +5,7 @@
  * Date: 25/03/14
  * Time: 10:15
  */
-
+/*
 namespace Stjornvisi\Lib;
 
 use \Facebok;
@@ -29,3 +29,4 @@ class Facebook extends \Facebook{
 		$this->redirect_uri = $uri;
 	}
 } 
+*/

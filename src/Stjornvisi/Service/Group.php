@@ -323,7 +323,7 @@ class Group extends AbstractService {
      */
     public function create( $data ){
         try{
-			unset($data['submit']);
+			unset($data['submit']); //FIXME move this ito the controller
 
 			setlocale(LC_ALL, 'is_IS.UTF8');
 			$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $data['name_short']);
@@ -350,7 +350,7 @@ class Group extends AbstractService {
                     isset($statement)?$statement->queryString:null
                 )
             ));
-            throw new Exception("Create group",0,$e);
+            throw new Exception("Create group ". $e->getMessage(),0,$e);
         }
     }
 

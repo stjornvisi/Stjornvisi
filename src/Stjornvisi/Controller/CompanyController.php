@@ -137,11 +137,8 @@ class CompanyController extends AbstractActionController{
         //
         if( $authService->hasIdentity() ){
 
-            $form = new CompanyForm(
-                $valueService->getBusinessTypes(),
-                $valueService->getPostalCode(),
-                $valueService->getCompanySizes()
-            );
+            $form = new CompanyForm( $valueService );
+
             $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/create'));
             //POST
             //  http post request

@@ -3105,4 +3105,10 @@ dl.users-list dd {
   padding-left: 30px;
 }
 
+input[required=required] {
+  content: '*';
+  color: red;
+  background-color: pink;
+}
+
 /*# sourceMappingURL=screen.css.map */

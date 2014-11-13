@@ -20,11 +20,11 @@ class User extends AbstractService{
 		try{
 			if( filter_var($id, FILTER_VALIDATE_EMAIL) ){
 				$statement = $this->pdo->prepare("
-					SELECT * FROM `User` WHERE email = :id
+					SELECT U.*, MD5( CONCAT(U.id,U.email) ) AS hash FROM `User` U WHERE email = :id
 				");
 			}else{
 				$statement = $this->pdo->prepare("
-					SELECT * FROM `User` WHERE id = :id
+					SELECT U.*, MD5( CONCAT(U.id,U.email) ) AS hash FROM `User` U WHERE id = :id
 				");
 			}
 
@@ -56,6 +56,42 @@ class User extends AbstractService{
 		}
 
 
+	}
+
+	public function getByHash( $hash ){
+		try{
+
+			$statement = $this->pdo->prepare("
+				SELECT * FROM `User` U WHERE MD5( CONCAT(U.id,U.email) ) = :hash;
+			");
+
+
+			$statement->execute(array(
+				'hash' => $hash
+			));
+			$user = $statement->fetchObject();
+			if( $user ){
+				$companyStatement = $this->pdo->prepare("
+					SELECT C.*, ChU.key_user FROM `Company` C
+					LEFT JOIN Company_has_User ChU ON (C.id = ChU.company_id)
+					WHERE ChU.user_id = :user_id;");
+				$companyStatement->execute(array('user_id'=>$user->id));
+				$user->created_date = new DateTime($user->created_date);
+				$user->modified_date = new DateTime($user->modified_date);
+				$user->company = $companyStatement->fetchObject();
+			}
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return $user;
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('read', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+					isset($companyStatement)?$companyStatement->queryString:null
+				)
+			));
+			throw new Exception("Can't get user. user:[{$id}]",0,$e);
+		}
 	}
 
 	/**
@@ -390,10 +426,20 @@ class User extends AbstractService{
 	 */
 	public function getUserMessageByGroup(array $group_id, array $exclude = array(-1)){
 		try{
+			//Make sure that empty arrays have the value NULL in them
+			//	else the SQL statement will not run.
+			$group_id = count($group_id)==0 ? array(null) : $group_id;
+
+			//Make sure that the values in the array are correct. Only INTs
+			//	and the String 'NULL' is allowed.
+			$group_id = array_map( function($i){
+				return is_numeric($i) ? (int)$i : 'NULL';
+			},$group_id );
 			$statement = $this->pdo->prepare("
 				SELECT U.id, U.name, U.email FROM `User` U
 				JOIN Group_has_User GhU ON (U.id = GhU.user_id)
 				WHERE GhU.group_id IN (".implode(',',$group_id).") AND U.get_message = 1
+					AND GhU.notify = 1
 				AND GhU.type NOT IN ( ".implode(',',$exclude)." )
 				GROUP BY U.name;
 			");
@@ -629,6 +675,41 @@ class User extends AbstractService{
 				)
 			));
 			throw new Exception("Can't set user's password. user:[{$id}]",0,$e);
+		}
+	}
+
+	/**
+	 * Set user's oAuth properties.
+	 *
+	 * This is the Auth ID from the service and a service name
+	 * like 'facebbok' or 'likedin' etc..
+	 *
+	 * @param int $id
+	 * @param string $key
+	 * @param string $service
+	 * @return int affected rows
+	 * @throws Exception
+	 */
+	public function setOauth( $id, $key, $service ){
+		try{
+			$statement = $this->pdo->prepare("
+				UPDATE `User` SET oauth_key = :key, oauth_type = :type, modified_date = NOW()
+				WHERE id = :id");
+			$statement->execute(array(
+				'key' => $key,
+				'type' => $service,
+				'id' => $id
+			));
+			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			return $statement->rowCount();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+				)
+			));
+			throw new Exception("Can't set user's oAuth. user:[{$id}]",0,$e);
 		}
 	}
 

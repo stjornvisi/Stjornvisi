@@ -50,9 +50,10 @@ class Facebook implements AdapterInterface {
      */
     public function authenticate(){
         $statement = $this->pdo
-            ->prepare("SELECT * FROM `User` WHERE oauth_key = :oauth_key");
+            ->prepare("SELECT * FROM `User` WHERE oauth_key = :oauth_key AND oauth_type = :type");
         $statement->execute(array(
             'oauth_key' => $this->id,
+			'type' => 'facebook'
         ));
         $result = $statement->fetchAll();
         if( count($result) == 0 ){

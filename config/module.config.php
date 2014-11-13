@@ -8,6 +8,11 @@
  */
 
 return array(
+	'session' => array(
+		'remember_me_seconds' => 2419200,
+		'use_cookies' => true,
+		'cookie_httponly' => true,
+	),
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -346,6 +351,16 @@ return array(
                             ),
                         )
                     ),
+					'create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Literal',
+						'options' => array(
+							'route' => '/stofna',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'create'
+							),
+						),
+					),
                     'update' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -468,16 +483,7 @@ return array(
 					),
                 ),
             ),
-            'hopur-create' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/hopur/stofna',
-                    'defaults' => array(
-                        'controller' => 'Stjornvisi\Controller\Group',
-                        'action' => 'create'
-                    ),
-                ),
-            ),
+
             'frettir' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -669,6 +675,48 @@ return array(
                             ),
                         )
                     ),
+					'create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/stofna',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'create-user'
+							),
+						)
+					),
+
+					'company' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/stofna/fyrirtaeki',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'create-user-company'
+							),
+						)
+					),
+					'login' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/stofna/innskra',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'create-user-login'
+							),
+						)
+					),
+
+
                     'delete' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -1068,6 +1116,69 @@ return array(
 					),
 				),
 			),
+
+
+
+			'auth-out' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/utskra',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Auth',
+						'action' => 'logout'
+					),
+				),
+			),
+			'auth' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/innskra',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Auth',
+						'action' => 'login'
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'facebook-login-callback' => array(
+						'type' => 'Zend\Mvc\Router\Http\Literal',
+						'options' => array(
+							'route' => '/callback-login-facebook',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'callback-login-facebook'
+							),
+						),
+					),
+					'facebook-connect' => array(
+						'type' => 'Zend\Mvc\Router\Http\Literal',
+						'options' => array(
+							'route' => '/facebook-connect',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'request-connection-facebook'
+							),
+						),
+					),
+
+
+					'linkedin-login-callback' => array(
+						'type' => 'Zend\Mvc\Router\Http\Literal',
+						'options' => array(
+							'route' => '/callback-login-linkedin',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'callback-login-linkedin'
+							),
+						),
+					),
+
+				)
+			),
+
+
+
+			/*
             'auth-in' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -1098,6 +1209,17 @@ return array(
                     ),
                 ),
             ),
+			'auth-connect' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/facebook-connect',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Auth',
+						'action' => 'request-connection'
+					),
+				),
+			),
+			*/
         ),
     ),
     'service_manager' => array(
@@ -1139,6 +1261,7 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'paragrapher' => 'Stjornvisi\View\Helper\Paragrapher',
+			'facebook' => 'Stjornvisi\View\Helper\Facebook',
         ),
     ),
     'view_manager' => array(
@@ -1158,6 +1281,7 @@ return array(
 			'layout/csv'           	  => __DIR__ . '/../view/layout/csv.phtml',
             'stjornvisi/index/index' => __DIR__ . '/../view/stjornvisi/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
+			'error/401'               => __DIR__ . '/../view/error/401.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
@@ -1201,6 +1325,15 @@ return array(
 						'defaults' => array(
 							'controller' => 'Stjornvisi\Controller\Console',
 							'action'     => 'notify'
+						)
+					)
+				),
+				'mail' => array(
+					'options' => array(
+						'route'    => 'process mail',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'mail'
 						)
 					)
 				),

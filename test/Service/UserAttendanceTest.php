@@ -13,11 +13,13 @@ require_once __DIR__.'/../ArrayDataSet.php';
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
+use Stjornvisi\Bootstrap;
 
 
 class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase {
     static private $pdo = null;
     private $conn = null;
+	private $config;
 
     public function testTrue(){
         $service = new User( self::$pdo );
@@ -28,6 +30,8 @@ class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase {
      *
      */
     protected function setUp() {
+		$serviceManager = Bootstrap::getServiceManager();
+		$this->config = $serviceManager->get('Config');
         $conn=$this->getConnection();
         $conn->getConnection()->query("set foreign_key_checks=0");
         parent::setUp();
@@ -42,9 +46,9 @@ class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase {
         if( $this->conn === null ){
             if (self::$pdo == null){
                 self::$pdo = new PDO(
-                    'mysql:dbname=stjornvisi_test;host=127.0.0.1',
-                    'root',
-                    '',
+					$this->config['db']['dns'],
+					$this->config['db']['user'],
+					$this->config['db']['password'],
                     array(
                         PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

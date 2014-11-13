@@ -42,12 +42,9 @@ class IndexController extends AbstractActionController{
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $companyService = $sm->get('Stjornvisi\Service\Company');
 
-		$facebook = $sm->get('Facebook');
-
-
+		//AUTH
+		//	authenticate user
         $auth = new AuthenticationService();
-
-
         if( $auth->hasIdentity() ){
             return new ViewModel(array(
                 'groups' => $groupService->getByUser( $auth->getIdentity()->id ),

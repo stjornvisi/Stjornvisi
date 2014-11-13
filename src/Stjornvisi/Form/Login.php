@@ -8,6 +8,7 @@ use Zend\Form\Form;
  * @category Stjornvisi
  * @package Form
  * @author einar
+ * @deprecated
  */
 class Login extends Form{
 

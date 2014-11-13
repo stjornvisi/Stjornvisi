@@ -1,0 +1,58 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einarvalur
+ * Date: 1/30/14
+ * Time: 9:11 PM
+ */
+?>
+
+
+	<?php if( $this->error == 'access_denied' ):?>
+		<p>Þú hefur valið að hafna Facebook tengingu við stjornvísi.is. Þú getur ekki haldið áfram.</p>
+		<p>Má ég ekki reyna að fá þig til að endurskoða afstöðuna þína. Stjónvísi hefur aðeins aðgang að
+			nafninu þínu, slóð á facebook síðuna þína, kyn, staðsetningu og aldur. Stjónvísi um ekki
+			láta öðrum í té þessar upplýsingar, stjónvísi um ekki senda þér einka eða opinver skilaboð.</p>
+		<p>Stjónvísi notar facebook aðganginn þinn einungis til að staðfesta að þú sert raunverulega
+			sú manneskja sem þú segist vera.</p>
+		<a href="<?=$this->facebook(\Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK)?>" class="btn btn-facebook">f|Innskrá</a>
+		<a href="https://developers.facebook.com/docs/facebook-login/permissions/v2.2#reference-public_profile">
+			https://developers.facebook.com/docs/facebook-login/permissions/v2.2#reference-public_profile
+		</a>
+	<?php elseif( $this->error == 'user_undefined' ):?>
+		<p>Hér hefur orðið einhver villa.</p>
+		<p>Facebook er að senda fá sér óvirkann notendalykil. Vinsamlegast farðu á
+			<a href="/"> upphafssíðu</a> og reyndu aftur
+		</p>
+	<?php elseif( $this->error == 'user_disconnected' ):?>
+		<p>Svo virðist sem þú hafir reynt að skrá þig inn í Stjónvísi með Facebook aðgangnum þínum.</p>
+		<p>Facebook aðgangurinn þinn virðist ekki vera tengdur notanda í Stjónvísiskefinu. Engar áhyggur,
+			þú eftirfarandi möguleika.</p>
+		<dl>
+			<dt>Ég á gamlann aðgang.</dt>
+			<dd>
+				<div>Ég hef verið notandi í nokkurn tíma Stjónvísi og á því gamlann aðgang.</div>
+				<form action="<?=$this->url('auth/facebook-connect')?>" method="post">
+					<p>Flott. Sláði inn netfangið sem þú notaðir til að skrá þig inn og þú færð sendar leiðbeiningar um hæl.</p>
+					<input type="email" name="email" />
+					<input type="submit" value="submit" />
+				</form>
+			</dd>
+			<dt>Ég ruglaðist aðeins.</dt>
+			<dd>
+				Það er <a href="#" class="btn btn-primary">LinkedIn</a> aðgangur eða
+				<a href="#" class="btn btn-danger">g+</a> aðgangur sem ég nota.
+			</dd>
+			<dt>Ég hef aldrei skráð mig inn áður</dt>
+			<dd>
+				<p>Ef þú átt ekki aðgang, endilega <a href="#" class="btn btn-warning">Nýskráðu</a> þig.</p>
+			</dd>
+		</dl>
+	<?php elseif( isset($this->error) ):?>
+		<p>Upp kom villa</p>
+		<pre><?=$this->error;?></pre>
+	<?php else:?>
+		!
+	<?php endif;?>
+
+

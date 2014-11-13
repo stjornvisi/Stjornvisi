@@ -10,8 +10,9 @@ namespace Stjornvisi\Form;
 
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class Author extends Form {
+class Author extends Form implements InputFilterProviderInterface{
 
 	public function __construct(){
 
@@ -36,26 +37,22 @@ class Author extends Form {
 			'type' => 'Zend\Form\Element\Textarea',
 			'attributes' => array(
 				'placeholder' => 'Texti...',
-				'required' => 'required',
 			),
 			'options' => array(
 				'label' => 'Texti',
 			),
 		));
 
-
 		$this->add(array(
 			'name' => 'avatar',
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
 				'placeholder' => 'Mynd...',
-				'required' => 'required',
 			),
 			'options' => array(
 				'label' => 'Mynd',
 			),
 		));
-
 
 		$this->add(array(
 			'name' => 'submit',
@@ -67,5 +64,50 @@ class Author extends Form {
 				'label' => 'Submit',
 			),
 		));
+	}
+
+
+	/**
+	 * Should return an array specification compatible with
+	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
+	 *
+	 * @return array
+	 */
+	public function getInputFilterSpecification(){
+		return array(
+			'name' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'info' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+			'avatar' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+
+		);
 	}
 }

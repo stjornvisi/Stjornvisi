@@ -1,0 +1,135 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einar
+ * Date: 07/11/14
+ * Time: 08:45
+ */
+?>
+
+
+<ul>
+	<li>1# Notendaupplýsingar</li>
+	<li><strong>2# Fyrirtækjaupplýsingar</strong></li>
+	<li>3# Innskráning</li>
+</ul>
+
+
+
+
+
+	<ul>
+		<li><a href="#">Ég er starfsmaður fyrirtækis</a></li>
+		<li><a href="#">Ég er háskólanemi</a></li>
+		<li><a href="#">Ég er einstaklingur</a></li>
+	</ul>
+
+	<div>
+		<div>
+			<?php $this->companySelectForm->setAttribute('class','form-horizontal');?>
+			<?=$this->form()->openTag($this->companySelectForm);?>
+			<h1>Ég er starfsmaður fyrirtækis</h1>
+			<p>Vinsamlegast veldu fyrirtæki</p>
+			<div class="form-group">
+				<?=$this->formLabel($this->companySelectForm->get('company-select'));?>
+				<?=$this->formElement($this->companySelectForm->get('company-select')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($this->companySelectForm->get('company-select'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formElement($this->companySelectForm->get('submit-company-select')->setAttribute('class','btn btn-default'));?>
+			</div>
+			<?= $this->form()->closeTag() ?>
+		</div>
+
+		<div>
+			<?php $this->companyForm->setAttribute('class','form-horizontal');?>
+			<?=$this->form()->openTag($this->companyForm);?>
+				<h1>Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h1>
+				<div class="form-group">
+					<?=$this->formLabel($this->companyForm->get('company-name'));?>
+					<?=$this->formElement($this->companyForm->get('company-name')->setAttribute('class','form-control'));?>
+					<?=$this->formElementErrors($this->companyForm->get('company-name'));?>
+				</div>
+				<div class="form-group">
+					<?=$this->formLabel($this->companyForm->get('company-ssn'));?>
+					<?=$this->formElement($this->companyForm->get('company-ssn')->setAttribute('class','form-control'));?>
+					<?=$this->formElementErrors($this->companyForm->get('company-ssn'));?>
+				</div>
+				<div class="form-group">
+					<?=$this->formLabel($this->companyForm->get('company-address'));?>
+					<?=$this->formElement($this->companyForm->get('company-address')->setAttribute('class','form-control'));?>
+					<?=$this->formElementErrors($this->companyForm->get('company-address'));?>
+				</div>
+				<div class="form-group">
+					<?=$this->formLabel($this->companyForm->get('company-zip'));?>
+					<?=$this->formElement($this->companyForm->get('company-zip')->setAttribute('class','form-control'));?>
+					<?=$this->formElementErrors($this->companyForm->get('company-zip'));?>
+				</div>
+				<div class="form-group">
+					<?=$this->formLabel($this->companyForm->get('company-web'));?>
+					<?=$this->formElement($this->companyForm->get('company-web')->setAttribute('class','form-control'));?>
+					<?=$this->formElementErrors($this->companyForm->get('company-web'));?>
+				</div>
+				<div class="form-group">
+					<?=$this->formLabel($this->companyForm->get('company-size'));?>
+					<?=$this->formElement($this->companyForm->get('company-size')->setAttribute('class','form-control'));?>
+					<?=$this->formElementErrors($this->companyForm->get('company-size'));?>
+				</div>
+				<div class="form-group">
+					<?=$this->formLabel($this->companyForm->get('company-type'));?>
+					<?=$this->formElement($this->companyForm->get('company-type')->setAttribute('class','form-control'));?>
+					<?=$this->formElementErrors($this->companyForm->get('company-type'));?>
+				</div>
+			<div class="form-group">
+				<?=$this->formElement($this->companyForm->get('submit-company-create')->setAttribute('class','btn btn-default'));?>
+			</div>
+			<?= $this->form()->closeTag() ?>
+		</div>
+
+	</div>
+
+	<div>
+		<?php $this->universitySelectForm->setAttribute('class','form-horizontal');?>
+		<?=$this->form()->openTag($this->universitySelectForm);?>
+		<h1>Ég er háskólanemi</h1>
+		<p>Vinsamlegast veldu skóla hér</p>
+		<div class="form-group">
+			<?=$this->formLabel($this->universitySelectForm->get('university-select'));?>
+			<?=$this->formElement($this->universitySelectForm->get('university-select')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($this->universitySelectForm->get('university-select'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formElement($this->universitySelectForm->get('submit-university-select')->setAttribute('class','btn btn-default'));?>
+		</div>
+		<?= $this->form()->closeTag() ?>
+
+	</div>
+
+	<div>
+		<?php $this->individualForm->setAttribute('class','form-horizontal');?>
+		<?=$this->form()->openTag($this->individualForm);?>
+		<h1>Ég er einstaklingur</h1>
+		<p>Þá þarf ég að fá hjá þér kennitölu og heimilsfang</p>
+		<div class="form-group">
+			<?=$this->formLabel($this->individualForm->get('person-ssn'));?>
+			<?=$this->formElement($this->individualForm->get('person-ssn')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($this->individualForm->get('person-ssn'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($this->individualForm->get('person-address'));?>
+			<?=$this->formElement($this->individualForm->get('person-address')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($this->individualForm->get('person-address'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($this->individualForm->get('person-zip'));?>
+			<?=$this->formElement($this->individualForm->get('person-zip')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($this->individualForm->get('person-zip'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formElement($this->individualForm->get('submit-individual')->setAttribute('class','btn btn-default'));?>
+		</div>
+		<?= $this->form()->closeTag() ?>
+	</div>
+
+
+<?= $this->form()->closeTag() ?>

@@ -11,11 +11,20 @@ namespace Stjornvisi\Form;
 
 use Zend\Form\Element;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class  Company extends Form{
+use Stjornvisi\Filter\Ssn as SsnFilter;
+use Stjornvisi\Validator\Kennitala as SsnValidator;
+use Stjornvisi\Service\Values;
 
-    public function __construct($type, $code, $size){
+class Company extends Form implements InputFilterProviderInterface{
 
+	private $company;
+	private $values;
+
+    public function __construct(Values $values, Company $company = null){
+		$this->company = $company;
+		$this->values = $values;
 		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
 
         $this->setAttribute('method', 'post');
@@ -64,7 +73,7 @@ class  Company extends Form{
             ),
             'options' => array(
                 'label' => 'Póstfang',
-                'value_options' => $code,
+                'value_options' => $values->getPostalCode(),
             ),
         ));
 
@@ -76,7 +85,7 @@ class  Company extends Form{
             ),
             'options' => array(
                 'label' => 'Rekstrarform',
-                'value_options' => $type,
+                'value_options' => $values->getBusinessTypes(),
             ),
         ));
 
@@ -88,7 +97,7 @@ class  Company extends Form{
             ),
             'options' => array(
                 'label' => 'Starfsmannafjöldi',
-                'value_options' => $size,
+                'value_options' => $values->getCompanySizes(),
             ),
         ));
 
@@ -114,6 +123,69 @@ class  Company extends Form{
             ),
         ));
 
-
     }
+
+
+	/**
+	 * Should return an array specification compatible with
+	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
+	 *
+	 * @return array
+	 */
+	public function getInputFilterSpecification(){
+		return array(
+			'name' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 60,
+						),
+					),
+				),
+			),
+			'ssn' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+					array( new SsnFilter() ),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'address' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 50,
+						),
+					),
+				),
+			),
+
+		);
+	}
 } 

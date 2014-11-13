@@ -53,3 +53,12 @@
 @import "types/group";
 @import "types/company";
 @import "types/users";
+
+
+
+
+input[required=required]{
+	content: '*';
+	color: red;
+	background-color: pink;
+}

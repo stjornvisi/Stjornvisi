@@ -129,32 +129,29 @@ class GroupController extends AbstractActionController{
         if( $access->is_admin ){
 
             $form = new GroupForm();
+			$form->setAttribute('action', $this->url()->fromRoute('hopur/create'));
 
             //POST
             //  http post request
             if( $this->request->isPost() ){
-                $form->setData($this->request->getPost() );
+                $form->setData( $this->request->getPost() );
 
                 //VALID
                 //  valid form
                 if( $form->isValid() ){
                     $sm = $this->getServiceLocator();
                     $groupService = $sm->get('Stjornvisi\Service\Group');
-
-                    //DATA
-                    //  extract data from form and do some
-                    //  small alterations on it. (add one field 'url'
-                    //  and remove one 'submit')
-                    $data = $form->getData();
+					/** @var  $groupService \Stjornvisi\Service\Group */
 
                     //CREATE
                     //  create record and get ID back
-                    $id = $groupService->create( $data );
+                    $id = $groupService->create( $form->getData() );
 					$group = $groupService->get($id);
                     return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
                 //INVALID
                 //  invalid form
                 }else{
+					$this->getResponse()->setStatusCode(400);
                     return new ViewModel(array(
                         'form' => $form
                     ));
@@ -169,9 +166,11 @@ class GroupController extends AbstractActionController{
             }
         //ACCESS DENIED
         //  user not admin
-        //TODO 403
         }else{
-            var_dump('access denied');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
         }
 	}
 
@@ -206,6 +205,7 @@ class GroupController extends AbstractActionController{
                 //  http post query
                 if($this->request->isPost()){
 					$form = new GroupForm();
+					$form->setAttribute('action',$this->url()->fromRoute('hopur/update',array('id'=>$group->url)) );
                     $form->setData($this->request->getPost() );
 
 
@@ -224,6 +224,7 @@ class GroupController extends AbstractActionController{
                         return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
 
                     }else{
+						$this->getResponse()->setStatusCode(400);
                         return new ViewModel(array(
                             'form' => $form
                         ));
@@ -241,16 +242,16 @@ class GroupController extends AbstractActionController{
                 }
             //ACCESS DENIED
             //  user is not admin or manager
-            //TODO 403
             }else{
-                var_dump('access denied');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
             }
 
         //ITEM NOT FOUND
         //  404
-        //TODO 404
         }else{
-            var_dump('item not found');
+            return $this->getResponse()->setStatusCode(404);
         }
     }
 
@@ -654,6 +655,7 @@ class GroupController extends AbstractActionController{
 						)
                     );
 
+					/*
 					//NOTIFY
 					//	notify user
 					$users = array();
@@ -667,12 +669,13 @@ class GroupController extends AbstractActionController{
 							: $userService->getUserMessageByGroup( array($group->id) );
 						$priority = false;
 					}
+					*/
 					$this->getEventManager()->trigger('notify',$this,array(
-						'action' => 'group.message',
-						'recipients' => $users,
-						'priority' => $priority,
+						'action' => \Stjornvisi\Notify\Group::NOTIFICATION,
 						'data' => (object)array(
-							'group' => $group,
+							'group_id' => $group->id,
+							'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+							'test' => (bool)$this->params()->fromPost('test',false),
 							'subject' => $form->get('subject')->getValue(),
 							'body' => $form->get('body')->getValue(),
 						),

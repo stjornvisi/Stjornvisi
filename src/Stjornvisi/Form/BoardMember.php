@@ -5,8 +5,9 @@ namespace Stjornvisi\Form;
 use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class BoardMember extends Form{
+class BoardMember extends Form implements InputFilterProviderInterface{
 
 	public function __construct($name = null){
 
@@ -43,7 +44,6 @@ class BoardMember extends Form{
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
 				'placeholder' => 'Fyrirtæki...',
-				'required' => 'required',
 			),
 			'options' => array(
 				'label' => 'Fyrirtæki',
@@ -55,7 +55,6 @@ class BoardMember extends Form{
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
 				'placeholder' => 'Mynd...',
-				'required' => 'required',
 			),
 			'options' => array(
 				'label' => 'Mynd',
@@ -67,12 +66,12 @@ class BoardMember extends Form{
 			'type' => 'Zend\Form\Element\Textarea',
 			'attributes' => array(
 				'placeholder' => 'Upplýsingar...',
-				'required' => 'required',
 			),
 			'options' => array(
 				'label' => 'Upplýsingar',
 			),
 		));
+
 		$this->add(array(
 			'name' => 'submit',
 			'type' => 'Zend\Form\Element\Submit',
@@ -83,5 +82,95 @@ class BoardMember extends Form{
 				'label' => 'Submit',
 			),
 		));
+	}
+
+
+	/**
+	 * Should return an array specification compatible with
+	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
+	 *
+	 * @return array
+	 */
+	public function getInputFilterSpecification(){
+		return array(
+			'name' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'email' => array(
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array('name' => 'EmailAddress'),
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'company' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 100,
+						),
+					),
+				),
+			),
+			'avatar' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+				'validators' => array(
+					array(
+						'name'    => 'StringLength',
+						'options' => array(
+							'encoding' => 'UTF-8',
+							'min'      => 1,
+							'max'      => 255,
+						),
+					),
+				),
+			),
+			'info' => array(
+				'required' => false,
+				'allow_empty' => true,
+				'filters'  => array(
+					array('name' => 'StripTags'),
+					array('name' => 'StringTrim'),
+				),
+			),
+
+		);
 	}
 }
