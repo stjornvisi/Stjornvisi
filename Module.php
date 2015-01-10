@@ -263,6 +263,14 @@ class Module{
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
 					},
+				'Stjornvisi\Notify\UserValidate' => function($sm){
+						$obj = new \Stjornvisi\Notify\UserValidate();
+						$obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
+						$obj->setLogger( $sm->get('Logger') );
+						return $obj;
+					},
 				'MailOptions' => function($sm){
 					/*
 					return  new SmtpOptions(array(

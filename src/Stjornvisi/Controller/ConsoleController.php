@@ -476,6 +476,9 @@ class ConsoleController extends AbstractActionController {
 					case \Stjornvisi\Notify\Attend::ATTENDING:
 						$handler = $sm->get('Stjornvisi\Notify\Attend');
 						break;
+					case \Stjornvisi\Notify\UserValidate::VALIDATE:
+						$handler = $sm->get('Stjornvisi\Notify\UserValidate');
+						break;
 					default:
 						break;
 				}
