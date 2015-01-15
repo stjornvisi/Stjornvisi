@@ -1330,7 +1330,7 @@ return array(
 				),
 				'mail' => array(
 					'options' => array(
-						'route'    => 'process mail',
+						'route'    => 'process mail [--debug|-d] [--trace|-t]',
 						'defaults' => array(
 							'controller' => 'Stjornvisi\Controller\Console',
 							'action'     => 'mail'

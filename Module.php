@@ -272,31 +272,37 @@ class Module{
 						return $obj;
 					},
 				'MailOptions' => function($sm){
-					/*
+
 					return  new SmtpOptions(array(
-						'name'              => 'localhost.localdomain',
+						'name'              => 'localhost',
 						'host'              => '127.0.0.1',
-						'connection_class'  => 'login',
-						'connection_config' => array(
-							'username' => 'user',
-							'password' => 'pass',
-						))
+						//'connection_class'  => 'login',
+						//'connection_config' => array(
+						//	'username' => 'user',
+						//	'password' => 'pass',
+						//)
+						)
 					);
-					*/
+
+						/*
 					return new FileOptions(array(
 							'path'              => './data/mail/',
 							'callback'  => function (FileTransport $transport) {
 									return 'Message_' . microtime(true) . '_' . mt_rand() . '.txt';
 								},
 						));
+					*/
 				},
 				'MailTransport' => function($sm){
-					//$transport = new SmtpTransport();
-					//$transport->setOptions($sm->get('MailOptions'));
-					//return $transport;
+					$transport = new SmtpTransport();
+					$transport->setOptions($sm->get('MailOptions'));
+					return $transport;
+
+					/*
 					$transport = new FileTransport();
 					$transport->setOptions($sm->get('MailOptions'));
 					return $transport;
+					*/
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
 					$config = $sm->get('config');
@@ -304,8 +310,6 @@ class Module{
 					$queue->setConfig($config['queue']);
 					return $queue;
 				},
-
-
 
 				'Stjornvisi\Form\NewUserCompanySelect' => function($sm){
 					return new NewUserCompanySelect( $sm->get('Stjornvisi\Service\Company') );

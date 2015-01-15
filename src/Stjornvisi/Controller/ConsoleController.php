@@ -27,20 +27,11 @@ use Imagine\Filter\Transformation;
 use Imagine\Filter\Basic\Resize;
 use Stjornvisi\Lib\Imagine\Square;
 
+use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Exception\AMQPRuntimeException;
 
 
-use Stjornvisi\Search\Index\Article as ArticleIndex;
-use Stjornvisi\Search\Index\Event as EventIndex;
-use Stjornvisi\Search\Index\Group as GroupIndex;
-use Stjornvisi\Search\Index\News as NewsIndex;
-use Stjornvisi\Search\Index\Null as NullIndex;
-
-use Stjornvisi\Service\Article;
-use Stjornvisi\Service\Event;
-use Stjornvisi\Service\Group;
-use Stjornvisi\Service\News;
 
 use Zend\Mail\Message;
 
@@ -169,19 +160,47 @@ class ConsoleController extends AbstractActionController {
 			throw new \RuntimeException('You can only use this action from a console!');
 		}
 
+		$sm = $this->getServiceLocator();
+		$logger = $sm->get('Logger'); /** @var $logger \Zend\Log\Logger */
+
+		$logger->info("Queue Service says: Fetching upcoming events");
+
+		//TIME RANGE
+		//	calculate time range and create from and
+		//	to date objects for the range.
 		$from = new DateTime();
 		$from->add(new DateInterval('P1D'));
 		$to = new DateTime();
 		$to->add(new DateInterval('P8D'));
 
-		$sm = $this->getServiceLocator();
+
+		//GET EVENTS
+		//	get services needed and fetch events that are
+		//	in time range
 		$eventService = $sm->get('Stjornvisi\Service\Event');
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$events = $eventService->getRange($from, $to);
 
+		//NO EVENTS
+		//	if there are no events to publish, then it's no need
+		//	to keep on processing this script
+		if( count($events) == 0 ){
+			$logger->info("Queue Service says: Fetching upcoming events, no events registered, stop");
+			exit(0);
+		}else{
+			$logger->info("Queue Service says: Fetching upcoming events, ".count($events)." events registered.");
+		}
 
+
+		//USERS
+		//	get all users who want to know
+		//	about the upcoming events.
+		$logger->info("Queue Service says: Fetching users who want upcoming events");
 		$users = $userService->getUserMessage();
+		$logger->info("Queue Service says: Fetching users who want upcoming events, ".count($users)." user will get email ");
 
+		//VIEW
+		//	prep the view and the template engine.
 		$renderer = new PhpRenderer();
 		$resolver = new Resolver\AggregateResolver();
 		$renderer->setResolver($resolver);
@@ -199,26 +218,50 @@ class ConsoleController extends AbstractActionController {
 
 		$model->setTemplate('news-digest');
 
+		//QUEUE
+		//	try to connect to Queue and send messages to it.
+		//	this will try to send messages to mail_queue, that will
+		//	send them on it's way via a MailTransport
+		try{
+			$connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
+			$connection = $connectionFactory->createConnection();
+			$channel = $connection->channel();
 
-		$counter = 0;
-		$adapter = new Console();
-		$progressBar = new ProgressBar($adapter, $counter, count($users));
+			$channel->queue_declare('mail_queue', false, true, false, false);
 
-		/*
-		$queue = $sm->get('Stjornvisi\Queue\Mail');
-		foreach ($users as $user){
-			$model->setVariable('user',$user);
-			$queue->send(json_encode( (object)array(
-				'subject' => "Vikan framundan | {$from->format('j. n.')} - {$to->format('j. n. Y')}",
-				'body' => $renderer->render($model),
-				'recipient' => $user->email,
-				'user' => $user->name,
-				'key' => md5(time())
-			)));
-			$progressBar->update(++$counter);
+			foreach ($users as $user){
+				$model->setVariable('user',$user);
+				$msg = new AMQPMessage(
+					json_encode( (object)array(
+						'subject' => "Vikan framundan | {$from->format('j. n.')} - {$to->format('j. n. Y')}",
+						'body' => $renderer->render($model),
+						'recipient' => (object)array(
+							'name' => $user->name,
+							'address' => $user->email,
+						),
+						'key' => md5(time())
+					)),
+					array('delivery_mode' => 2) # make message persistent
+				);
+
+				$channel->basic_publish($msg, '', 'mail_queue');
+				$logger->info("Queue Service says: Fetching users who want upcoming events, {$user->email} in queue ");
+			}
+			$channel->close();
+			$connection->close();
+		//QUEUE RUNTIME EXCEPTION
+		//
+		}catch (AMQPRuntimeException $e){
+			$logger->warn( "Can't start Mail Queue: {$e->getMessage()}" );
+			exit(1);
+		//EXCEPTION
+		//
+		}catch (\Exception $e){
+			$logger->warn( print_r($e->getTraceAsString(),true) );
+			exit(1);
 		}
-		*/
-		$progressBar->finish();
+
+		$logger->info("Queue Service says: Fetching upcoming events done, users are in queue");
 	}
 
 	/**
@@ -562,8 +605,17 @@ class ConsoleController extends AbstractActionController {
 							->addFrom('stjornvisi@stjornvisi.is')
 							->setSubject($messageObject->subject)
 							->setBody($messageObject->body);
-						$transport = $sm->get('MailTransport');
-						$transport->send($message);
+
+
+						if($this->getRequest()->getParam('debug', false)){
+							$logger->debug( print_r($messageObject,true) );
+						}else if($this->getRequest()->getParam('trace', false)){
+							$logger->debug( $message->toString() );
+						}else{
+							$transport = $sm->get('MailTransport');
+							$transport->send($message);
+						}
+
 					}else{
 						$logger->warn( "Mail Message object is missing values ". print_r($messageObject,true) );
 					}
