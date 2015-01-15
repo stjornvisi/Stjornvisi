@@ -122,7 +122,7 @@ Create a new directory in the root of your _workspace_ directory. you can call i
 
 Make sure that it's read and writable
 
-	$ chmod -R  <workspace>/images
+	$ chmod -R a+x  <workspace>/images
 
 and connect that to the resources folder
 
@@ -157,7 +157,22 @@ Now go back to the root _public_ folder and run the builtin-server
     $ cd <full/path/to/workspace>/Stjornvisi/public
     $ php -S 0.0.0.0:8080
 
+##RabbitMQ
 
+###Install the Server
+Before installing make sure you have the latest brews:
+
+    $ brew update
+
+Then, install RabbitMQ server with:
+
+    $ brew install rabbitmq
+
+####Run RabbitMQ Server
+The RabbitMQ server scripts are installed into /usr/local/sbin. This is not automatically added to your path, so you may wish to add
+PATH=$PATH:/usr/local/sbin to your .bash_profile or .profile. The server can then be started with rabbitmq-server.
+
+All scripts run under your own user account. Sudo is not required.
 
 
 
@@ -179,6 +194,9 @@ Now go back to the root _public_ folder and run the builtin-server
 
 
 ## UnitTests ##
+
+![screen shot 2015-01-15 at 15 33 39](https://cloud.githubusercontent.com/assets/386336/5752537/ceb28f64-9ccb-11e4-810f-17bcc6957f10.png)
+
 Make sure you have a test database by first creating `stjornvisi_test` and then run
 
     $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/stjornvisi-empty.sql
