@@ -1,7 +1,8 @@
 
 ##Get Composer
 
-open a Terminal
+First of all we need [Composer](https://getcomposer.org/), it will handle all our dependencies.
+The best thing is to install it globally, that way it's easier to run it from the command-line.
 
 	$ curl -sS https://getcomposer.org/installer | php
 	$ sudo mv composer.phar /usr/local/bin/composer
@@ -10,13 +11,15 @@ open a Terminal
 
 ##Get ZF2
 
-navigate to your _workspace_ directory
+Navigate to your _workspace_ directory. Then run the following command. It will use _composer_ to fetch
+the latest version of the _ZF2 Skeleton App_ which is just a simple git repository holding the correct
+folder structure for a _MVC ZF2 Application_.
 
 	$ composer create-project --stability="dev" zendframework/skeleton-application Stjornvisi
 
 	(Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]? Y)
 
-This will fetch a skeleton application and store it under _Stjornvisi_ directory. Now remove all rubbish
+This will fetch the skeleton application and store it under _Stjornvisi_ directory. Now remove all rubbish
 
 	$ cd Stjornvisi
 	$ rm .gitignore
@@ -30,33 +33,19 @@ This will fetch a skeleton application and store it under _Stjornvisi_ directory
 
 ##Get Stjornvisi
 
+Now we are ready to get the actual Stjornvisi module code.
+
 	$ cd module
 	$ git clone https://github.com/fizk/Stjornvisi.git Stjornvisi
 
+This will clone our Stjornvisi module into the `module` directory. When we start to develop, this is what we
+will change and commit back to GitHub.
 
-Open `<root>/config/application.config.php` and change accordingly.
+Now we need to config out system so that it can connect to Database, Facebook, RabbitMQ and other services.
+_ZF2 MVC_ applications looks for files that follow this naming pattern `<workspace>/Stjornvisi/config/autoload/*.local.php`
+and load them in as config files. We want to make our own.
 
-
-```php
-return array(
-    // This should be an array of module namespaces used in the application.
-    'modules' => array(
-        'Stjornvisi',
-    ),
-
-    // These are various options for the listeners attached to the ModuleManager
-    'module_listener_options' => array(
-        // This should be an array of paths in which modules reside.
-        // If a string key is provided, the listener will consider that a module
-        // namespace, the value of that key the specific path to that module's
-        // Module class.
-        'module_paths' => array(
-            './module',
-            './module/Stjornvisi/vendor',
-        ),
-```
-
-Create a new file `<root>/config/autoload` and call it `stjornvisi.local.php`, add this to it:
+Create a new file `<workspace>/Stjornvisi/config/autoload` and call it `stjornvisi.local.php`, add this to it:
 
 ```php
 <?php
@@ -86,27 +75,58 @@ return array(
 );
 ```
 
-Change this file as well : init_autoloader.php, so it says:
+Now we want to to tell our system about our module and that we want our 3rd party libraries to be
+loaded from its `vendor` directory, not in the root.
+
+Open `</workspace>/Stjornvisi/config/application.config.php` and change accordingly.
+
+```php
+return array(
+    // This should be an array of module namespaces used in the application.
+    'modules' => array(
+        'Stjornvisi',
+    ),
+
+    // These are various options for the listeners attached to the ModuleManager
+    'module_listener_options' => array(
+        // This should be an array of paths in which modules reside.
+        // If a string key is provided, the listener will consider that a module
+        // namespace, the value of that key the specific path to that module's
+        // Module class.
+        'module_paths' => array(
+            './module',
+            './module/Stjornvisi/vendor',
+        ),
+```
+
+Change this file as well `init_autoloader.php`, so it says:
+
 ```php
 if (file_exists('module/Stjornvisi/vendor/autoload.php')) {
     $loader = include 'module/Stjornvisi/vendor/autoload.php';
 }
 ```
 
+We have to create a config directory for our testing environment.
 
-Copy/paste the whole `<root>/config/autoload` directory and name it `test`, change `stjornvisi.local.php` in that directory  to reflect testing enviroment.
+Copy/paste the whole `<workspace>/Stjornvisi/config/autoload` directory and name it `test`, change `stjornvisi.local.php`
+in that directory to reflect testing environment.
 
 Now go into the module and get all dependencies
 
 	$ cd module/Stjornvisi
 	$ composer install
 
-
-Connect the resources folder
+Since (Apache's) httpd folder is `<workspace>/Stjornvisi/public` but all our js/css code
+is located in `<workspace>/Stjornvisi/module/Stjonvisi/public`, we have to connect the resources folder to the
+httpd folder.
 
 	$ ln -s <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/public/stjornvisi <full/path/to/workspace>/Stjornvisi/public/stjornvisi
 
-Create a new directory in the root of your _workspace_ directory. you can call it `images`, have the structure like this
+Create a new directory in the root of your _workspace_ directory. you can call it `images`,
+have the structure like this. The idea here is to keep images in a neutral place. That way we can have many
+instances of Stjonvisi running on our computer that all reference the same image folder (since the image folder
+can get huge).
 
 	images
 		|
@@ -131,33 +151,31 @@ and connect that to the resources folder
 
 ##Get resources
 
-Make sure you have bower set up, and the go to
+Make sure you have [Bower](http://bower.io/) set up, and the go to
 
-    $ <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/public/stjornvisi/
+    $ cd <workspace>/Stjornvisi/module/Stjornvisi/public/stjornvisi/
     $ bower install
     $ bower install bootstrap-sass-official
 
 ##Get database
-Go to the running production server and do `mysqldump` on the old database. Copy it to your local machine and install it. (make sure that there exists a database called `stjornvisi_production`)
+Go to the running production server and do `mysqldump` on the old database. Copy it to your local
+machine and install it. (make sure that there exists a database called `stjornvisi_production`)
 
     $ mysql -u root stjornvisi_production < /<path/to/dump.sql>
 
 Then run the migration script on top of it
 
-    $ mysql -u root stjornvisi_production < <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/assets/db/migrate.sql
+    $ mysql -u root stjornvisi_production < <workspace>/Stjornvisi/module/Stjornvisi/assets/db/migrate.sql
 
-Then you need to run the testing database (make sure that there exists a database called `stjornvisi_test`)
+Now you need the testing database (make sure that there exists a database called `stjornvisi_test`)
 
-    $ mysql -u root stjornvisi_test < <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/assets/db/stjornvisi-empty.sql
+    $ mysql -u root stjornvisi_test < <workspace>/Stjornvisi/module/Stjornvisi/assets/db/stjornvisi-empty.sql
 
-##Run
 
-Now go back to the root _public_ folder and run the builtin-server
-
-    $ cd <full/path/to/workspace>/Stjornvisi/public
-    $ php -S 0.0.0.0:8080
 
 ##RabbitMQ
+The Stjornvisi module is dependent on RabbitMQ to do it's long running tasks. Installing RabbitMQ is
+easily done with brew.
 
 ###Install the Server
 Before installing make sure you have the latest brews:
@@ -177,49 +195,78 @@ PATH=$PATH:/usr/local/sbin to your .bash_profile or .profile. The server can the
 
 All scripts run under your own user account. Sudo is not required.
 
+##Run
+
+Now go back to the root _public_ folder and run the builtin-server
+
+    $ cd <workspace>/Stjornvisi/public
+    $ php -S 0.0.0.0:8080
 
 
+###PHPStorm
+I find it better to run the builtin-server from PHPStorm. This is how my config looks like
+![alt](https://cloud.githubusercontent.com/assets/386336/5754975/5ef64ad0-9cf3-11e4-8045-e3a81ecde12a.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+###Other services
+But Stjonvisi is a complicated application and it need more processes that just the WebService one. Every time
+a `notify` event is fired from a controller, a message is sent to a queue (RabbitMQ). A php process needs to
+be started that pulls messages out of this queue. To start that process, create a _Run Configuration_ for
+PHPStorm that looks like this
+![alt](https://cloud.githubusercontent.com/assets/386336/5755091/99aa1872-9cf4-11e4-97f3-e23eff51ad29.png)
+and the actually start it.
 
 ## UnitTests ##
+It is really important to be able to unit-test this code. Do the following:
 
-![screen shot 2015-01-15 at 15 33 39](https://cloud.githubusercontent.com/assets/386336/5752537/ceb28f64-9ccb-11e4-810f-17bcc6957f10.png)
+###Database
+Make sure you have database called `stjornvisi_test` and that it's exactly the same as the production
+database except that's empty.
 
-Make sure you have a test database by first creating `stjornvisi_test` and then run
+One way of doing this is to import the `stjornvisi-empty.sql` located in `assets`
 
-    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/stjornvisi-empty.sql
-    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/migration.sql
+    $ mysql -u root stjornvisi_tests < <workspace>/Stjornvisi/module/Stjornvisi/assets/stjornvisi-empty.sql
 
-The `cd` into the test directory
+This may, or may not be the most up to date version of the schema. To make sure that the schemas are up to
+date you have to import the migration script. This can be done my running the migration script.
 
-    $ cd ./module/Stjornvisi/test
+    $ mysql -u root stjornvisi_tests < <workspace>/Stjornvisi/module/Stjornvisi/assets/migrate.sql
 
-And the run phpunit
+This can on the other hand produce errors. The only way to make sure that all migration commands have run is to
+open `migrate.sql` in *MySQL Workbench* and run each statement one by one, just to make sure that all of them get
+executed.
 
-    $ php ../../../vendor/bin/phpunit
+###Config
+Next we have to make sure that the system is set up for unit-test environment. Under the skeleton root
+there should be a folder called `<workspace>/Stjornvisi/config/test`, it should mimic the `autoload` folder.
+
+Make sure that `stjornvisi.local.php` file is pointing to the test database
+
+```php
+<?php
+
+return array(
+	'db' => array(
+		'dns' => 'mysql:dbname=stjornvisi_test;host=127.0.0.1',
+		'user' => 'root',
+		'password' => ''
+	),
+```
+
+###PHPStorm
+Now it's time to config PHPStorm to run PHPUnit tests. Go to *Preferences* and point to _autoloader_ and
+_phpunit config_ file
+
+![alt](https://cloud.githubusercontent.com/assets/386336/5752537/ceb28f64-9ccb-11e4-810f-17bcc6957f10.png)
+Now you can right-click on any test file and run it as a PHPUnit
+
+![alt](https://cloud.githubusercontent.com/assets/386336/5754360/e4c2d474-9ceb-11e4-8ddb-108e64508086.png)
 
 # Commandline #
-
 This module comes with some command line actions.
 
 To run command-line actions you only have to point your PHP runtime to the index file.
 
-    $ php /path/to/public/index.php [arguments]
+    $ php <workspace>/Stjornvisi/public/index.php [arguments]
 
 and then you can pass in some arguments
 
@@ -229,7 +276,3 @@ and then you can pass in some arguments
 * **image generate [--ignore]** Will resample all images from the `original` folder and overwrite the old ones, no questions asked
 
 
-
-rabbitmq-server
-
-# https://zf2.readthedocs.org/en/latest/modules/zendqueue.custom.html
