@@ -213,7 +213,8 @@ a `notify` event is fired from a controller, a message is sent to a queue (Rabbi
 be started that pulls messages out of this queue. To start that process, create a _Run Configuration_ for
 PHPStorm that looks like this
 ![alt](https://cloud.githubusercontent.com/assets/386336/5755091/99aa1872-9cf4-11e4-97f3-e23eff51ad29.png)
-and the actually start it.
+and then actually start it. You can and
+should [read more about all the processes](https://github.com/fizk/Stjornvisi/wiki/Processes)
 
 ## UnitTests ##
 It is really important to be able to unit-test this code. Do the following:
