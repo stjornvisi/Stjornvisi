@@ -27,7 +27,6 @@
     "lightbox2": "*",
     "jquery": "~2.1.0",
     "d3": "~3.4.3",
-    "jasny-bootstrap": "~3.1.0",
-    "bootstrap-sass-official": "~3.2.0+2"
+    "jasny-bootstrap": "~3.1.0"
   }
 }

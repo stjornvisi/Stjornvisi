@@ -1,64 +1,178 @@
-# Stjórnvísi #
-This is a module for Stjónvísi. This is a group manager, event manager and news manager among other
-things written as ZF2 Module.
 
-1. http://framework.zend.com/manual/2.0/en/user-guide/modules.html
-2. http://evan.pro/zf2-modules-talk.html\#slide1
+##Get Composer
 
-Since this is a module, you need to set up the ZF2 Skeleton Application
+open a Terminal
 
-1. http://framework.zend.com/manual/2.0/en/user-guide/skeleton-application.html
-2. https://github.com/zendframework/ZendSkeletonApplication
+	$ curl -sS https://getcomposer.org/installer | php
+	$ sudo mv composer.phar /usr/local/bin/composer
 
-After that we simply install the module.
+(if you can't run `composer` from the terminal you may need to do `sudo chmod a+x /usr/local/bin/composer` )
 
-## Install  ##
-Clone this repository to the `module` and name it *Stjornvisi*
+##Get ZF2
 
-    $ cd path/to/install/module
-    $ git clone https://github.com/fizk/Stjornvisi.git Stjornvisi
+navigate to your _workspace_ directory
 
-Copy the `composer.json` and `composer.phar` into the root of the Skeleton Application and then run composer
+	$ composer create-project --stability="dev" zendframework/skeleton-application Stjornvisi
 
-    $ php composer.phar install
+	(Do you want to remove the existing VCS (.git, .svn..) history? [Y,n]? Y)
 
-Go into `config/application.config.php` and make sure it says
+This will fetch a skeleton application and store it under _Stjornvisi_ directory. Now remove all rubbish
 
+	$ cd Stjornvisi
+	$ rm .gitignore
+	$ rm -Rf .gitmodules
+    $ rm -Rf public/css
+    $ rm -Rf public/fonts
+    $ rm -Rf public/img
+    $ rm -Rf public/js
+	$ rm -Rf module/Application
+
+
+##Get Stjornvisi
+
+	$ cd module
+	$ git clone https://github.com/fizk/Stjornvisi.git Stjornvisi
+
+
+Open `<root>/config/application.config.php` and change accordingly.
+
+
+```php
+return array(
+    // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Stjornvisi',
     ),
 
-Create this file `config/autoload/stjornvisi.local.php`, paste in this code and adjust:
-
-    <?php
-
-    return array(
-        'db' =>array(
-            'dns' => 'mysql:dbname=[DATABASE_NAME];host=127.0.0.1',
-            'user' => '[USER]',
-            'password' => '[PASSWORD]'
+    // These are various options for the listeners attached to the ModuleManager
+    'module_listener_options' => array(
+        // This should be an array of paths in which modules reside.
+        // If a string key is provided, the listener will consider that a module
+        // namespace, the value of that key the specific path to that module's
+        // Module class.
+        'module_paths' => array(
+            './module',
+            './module/Stjornvisi/vendor',
         ),
-        'facebook' => array(
-            'appId' => '[APP-ID]',
-            'secret' => '[SECRET]',
-            'fileUpload' => false, // optional
-            'allowSignedRequest' => false, // optional, but should be set to false for non-canvas apps
-            'redirect_uri' => 'http://[DOMAIN]/callback'
-        ),
-    );
+```
 
-Go into `module/Stjornvisi/public` and run
+Create a new file `<root>/config/autoload` and call it `stjornvisi.local.php`, add this to it:
 
+```php
+<?php
+
+return array(
+	'db' => array(
+		'dns' => 'mysql:dbname=stjornvisi_production;host=127.0.0.1',
+		'user' => 'root',
+		'password' => ''
+	),
+	'queue' => array(
+		'host' => 'localhost',
+		'port' => 5672,
+		'user' => 'guest',
+		'password' => 'guest',
+	),
+	'facebook' => array(
+		'appId' => '1429359840619871',
+		'secret' => '40bd72b736684cf4bc1ee786d1786da0',
+		'fileUpload' => false, // optional
+		'allowSignedRequest' => false, // optional, but should be set to false for non-canvas apps
+	),
+	'linkedin' => array(
+		'appId' => '7710a9lfze4o6b',
+		'secret' => '7RMpNiWE6Y4V1X7J',
+	),
+);
+```
+
+Change this file as well : init_autoloader.php, so it says:
+```php
+if (file_exists('module/Stjornvisi/vendor/autoload.php')) {
+    $loader = include 'module/Stjornvisi/vendor/autoload.php';
+}
+```
+
+
+Copy/paste the whole `<root>/config/autoload` directory and name it `test`, change `stjornvisi.local.php` in that directory  to reflect testing enviroment.
+
+Now go into the module and get all dependencies
+
+	$ cd module/Stjornvisi
+	$ composer install
+
+
+Connect the resources folder
+
+	$ ln -s <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/public/stjornvisi <full/path/to/workspace>/Stjornvisi/public/stjornvisi
+
+Create a new directory in the root of your _workspace_ directory. you can call it `images`, have the structure like this
+
+	images
+		|
+		+ --- 60
+		|
+		+ --- 100
+		|
+		+ --- 300
+		|
+		+ --- 300-square
+		|
+		+ --- original
+
+Make sure that it's read and writable
+
+	$ chmod -R  <workspace>/images
+
+and connect that to the resources folder
+
+	$ ln -s <full/path/to/workspace>/images <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/public/stjornvisi/images
+
+
+##Get resources
+
+Make sure you have bower set up, and the go to
+
+    $ <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/public/stjornvisi/
     $ bower install
+    $ bower install bootstrap-sass-official
 
-Make a soft-link from _module public folder_ into the real one
+##Get database
+Go to the running production server and do `mysqldump` on the old database. Copy it to your local machine and install it. (make sure that there exists a database called `stjornvisi_production`)
 
-    $ ln -s ./module/Stjornvisi/public/stjornvisi ./public/stjornvisi
+    $ mysql -u root stjornvisi_production < /<path/to/dump.sql>
 
-Create a database called *stjornvisi_production* and the import the database and migration script
+Then run the migration script on top of it
 
-    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/stjornvisi_production.sql
-    $ mysql -u [] -p [] stjornvisi_production < ./module/Stjornvisi/assets/db/migration.sql
+    $ mysql -u root stjornvisi_production < <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/assets/db/migrate.sql
+
+Then you need to run the testing database (make sure that there exists a database called `stjornvisi_test`)
+
+    $ mysql -u root stjornvisi_test < <full/path/to/workspace>/Stjornvisi/module/Stjornvisi/assets/db/stjornvisi-empty.sql
+
+##Run
+
+Now go back to the root _public_ folder and run the builtin-server
+
+    $ cd <full/path/to/workspace>/Stjornvisi/public
+    $ php -S 0.0.0.0:8080
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
