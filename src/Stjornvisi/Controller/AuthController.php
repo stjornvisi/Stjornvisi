@@ -10,7 +10,7 @@ use Zend\View\Model\ViewModel;
 use Zend\Session\Container;
 
 use Stjornvisi\Form\LostPassword as LostPasswordForm;
-use Stjornvisi\Notify\Password as PasswordNotify;
+
 
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
@@ -487,7 +487,7 @@ class AuthController extends AbstractActionController{
 				//NOTIFY
 				//	notify user
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => \Stjornvisi\Notify\UserValidate::VALIDATE,
+					'action' => 'Stjornvisi\Notify\UserValidate',
 					'data' => (object)array(
 							'user' => $user,
 							'url' => $server,
@@ -534,7 +534,7 @@ class AuthController extends AbstractActionController{
 					$password = $this->_createPassword(20);
 					$userService->setPassword( $user->id, $password );
 					$this->getEventManager()->trigger('notify',$this,array(
-						'action' => PasswordNotify::REGENERATE,
+						'action' => 'Stjornvisi\Notify\Password',
 						'data' => (object)array(
 								'user_id' => $user->id,
 								'password' => $password,

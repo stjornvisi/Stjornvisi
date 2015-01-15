@@ -17,8 +17,6 @@ use Zend\Log\LoggerInterface;
  */
 class Password implements NotifyInterface {
 
-	const REGENERATE = 'auth.lost-password';
-
 	/** @var \stdClass */
 	private $params;
 

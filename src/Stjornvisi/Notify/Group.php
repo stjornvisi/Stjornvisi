@@ -17,8 +17,6 @@ use Zend\Log\LoggerInterface;
  */
 class Group implements NotifyInterface {
 
-	const NOTIFICATION = 'group.notify.members';
-
 	/** @var \stdClass */
 	private $params;
 

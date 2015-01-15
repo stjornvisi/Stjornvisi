@@ -329,7 +329,7 @@ class GroupController extends AbstractActionController{
 				//NOTIFY
 				//	notify user
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => \Stjornvisi\Notify\Submission::REGISTER,
+					'action' => 'Stjornvisi\Notify\Submission',
 					'data' => (object)array(
 						'recipient' => $auth->getIdentity()->id,
 						'group_id' => $group->id,
@@ -671,7 +671,7 @@ class GroupController extends AbstractActionController{
 					}
 					*/
 					$this->getEventManager()->trigger('notify',$this,array(
-						'action' => \Stjornvisi\Notify\Group::NOTIFICATION,
+						'action' => 'Stjornvisi\Notify\Group',
 						'data' => (object)array(
 							'group_id' => $group->id,
 							'recipients' => ( $this->params()->fromRoute('type', 'allir') ),

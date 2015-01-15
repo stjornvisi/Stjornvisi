@@ -231,6 +231,9 @@ class Module{
 							$sm->get('Stjornvisi\Service\User'),
 							$sm->get('Stjornvisi\Service\Group')
 						);
+						$obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
 				},
@@ -238,6 +241,9 @@ class Module{
 						$obj = new EventNotify(
 							$sm->get('Stjornvisi\Service\User'),
 							$sm->get('Stjornvisi\Service\Event')
+						);
+						$obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
 						);
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
@@ -272,17 +278,15 @@ class Module{
 						return $obj;
 					},
 				'MailOptions' => function($sm){
-
-					return  new SmtpOptions(array(
-						'name'              => 'localhost',
-						'host'              => '127.0.0.1',
-						//'connection_class'  => 'login',
-						//'connection_config' => array(
-						//	'username' => 'user',
-						//	'password' => 'pass',
-						//)
-						)
-					);
+					return new SmtpOptions(array(
+							'name'              => 'localhost.localdomain',
+							'host'              => 'mail.optusnet.com.au',
+							'connection_class'  => 'login',
+							'connection_config' => array(
+								'username' => 'user',
+								'password' => 'pass',
+							),
+						));
 
 						/*
 					return new FileOptions(array(

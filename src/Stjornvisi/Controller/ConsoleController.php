@@ -13,6 +13,7 @@ use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Progressbar\Adapter\Console;
 use Zend\ProgressBar\ProgressBar;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
@@ -30,8 +31,6 @@ use Stjornvisi\Lib\Imagine\Square;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Exception\AMQPRuntimeException;
-
-
 
 use Zend\Mail\Message;
 
@@ -489,7 +488,8 @@ class ConsoleController extends AbstractActionController {
 		$logger = $sm->get('Logger'); /** @var \Zend\Log\Logger */
 
 		try{
-			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+			$connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
+			$connection = $connectionFactory->createConnection();
 			$channel = $connection->channel();
 
 			$channel->queue_declare('notify_queue', false, true, false, false);
@@ -501,30 +501,14 @@ class ConsoleController extends AbstractActionController {
 			//	is just connect and deconnect to RabbitMQ
 			$callback = function($msg) use ($logger, $sm){
 				$message = json_decode( $msg->body );
-				$logger->info("Notify message [{$message->action}] obtained");
 				$handler = new \Stjornvisi\Notify\Null();
-				switch( $message->action ){
-					case \Stjornvisi\Notify\Submission::REGISTER:
-						$handler = $sm->get('Stjornvisi\Notify\Submission');
-						break;
-					case \Stjornvisi\Notify\Event::MESSAGING:
-						$handler = $sm->get('Stjornvisi\Notify\Event');
-						break;
-					case \Stjornvisi\Notify\Password::REGENERATE:
-						$handler = $sm->get('Stjornvisi\Notify\Password');
-						break;
-					case \Stjornvisi\Notify\Group::NOTIFICATION:
-						$handler = $sm->get('Stjornvisi\Notify\Group');
-						break;
-					case \Stjornvisi\Notify\Attend::ATTENDING:
-						$handler = $sm->get('Stjornvisi\Notify\Attend');
-						break;
-					case \Stjornvisi\Notify\UserValidate::VALIDATE:
-						$handler = $sm->get('Stjornvisi\Notify\UserValidate');
-						break;
-					default:
-						break;
+				try{
+					$handler = $sm->get($message->action);
+					$logger->info("Notify message [{$message->action}] obtained");
+				}catch (ServiceNotFoundException $e){
+					$logger->error("Notify message [{$message->action}] not found");
 				}
+
 				$handler->setData( $message );
 				$handler->send();
 
@@ -573,16 +557,19 @@ class ConsoleController extends AbstractActionController {
 		$logger = $sm->get('Logger'); /** @var $logger \Zend\Log\Logger */
 
 		try{
-			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+			$connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
+			$connection = $connectionFactory->createConnection();
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
 
 			$logger->info("Mail Queue started, Waiting for messages. To exit press CTRL+C");
 
+			$classname = get_class($this);
+
 			//THE MAGIC
 			//	here is where everything happens. the rest of the code
 			//	is just connect and deconnect to RabbitMQ
-			$callback = function($msg) use ($logger, $sm){
+			$callback = function($msg) use ($logger, $sm, $classname){
 
 				//JSON VALID
 				//	fist make sure that the JSON is valid
@@ -606,11 +593,10 @@ class ConsoleController extends AbstractActionController {
 							->setSubject($messageObject->subject)
 							->setBody($messageObject->body);
 
-
 						if($this->getRequest()->getParam('debug', false)){
-							$logger->debug( print_r($messageObject,true) );
+							$logger->debug( "{$classname}:mailAction ". print_r($messageObject,true) );
 						}else if($this->getRequest()->getParam('trace', false)){
-							$logger->debug( $message->toString() );
+							$logger->debug( "{$classname}:mailAction ". $message->toString() );
 						}else{
 							$transport = $sm->get('MailTransport');
 							$transport->send($message);
@@ -644,7 +630,8 @@ class ConsoleController extends AbstractActionController {
 			$logger->warn( "Can't start Mail Queue: {$e->getMessage()}" );
 			exit(1);
 		}catch (\Exception $e){
-			$logger->warn( print_r($e->getTraceAsString(),true) );
+			$logger->warn( "{$e->getMessage() }\n".print_r($e->getTraceAsString(),true) );
+			exit(1);
 		}
 
 	}

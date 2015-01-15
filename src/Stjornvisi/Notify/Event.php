@@ -13,6 +13,9 @@ use Stjornvisi\Service\Event as EventService;
 
 use Zend\Log\LoggerInterface;
 
+use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Lib\QueueConnectionFactoryInterface;
+
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
@@ -24,9 +27,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  * Class Event
  * @package Stjornvisi\Notify
  */
-class Event implements NotifyInterface {
-
-	const MESSAGING = 'messaging all in event';
+class Event implements NotifyInterface, QueueConnectionAwareInterface {
 
 	/** @var \stdClass */
 	private $params;
@@ -40,7 +41,13 @@ class Event implements NotifyInterface {
 	/** @var  \Zend\Log\LoggerInterface */
 	private $logger;
 
+	/** @var \Stjornvisi\Lib\QueueConnectionFactoryInterface  */
+	private $queueFactory;
+
 	/**
+	 * Create an instance of this handler. It requires
+	 * two services.
+	 *
 	 * @param UserService $userService
 	 * @param EventService $eventService
 	 */
@@ -49,13 +56,33 @@ class Event implements NotifyInterface {
 		$this->event = $eventService;
 	}
 
+	/**
+	 * Set the data that is coming from the
+	 * producer.
+	 *
+	 * @param $data
+	 * @return mixed
+	 */
 	public function setData( $data ){
 		$this->params = $data;
 	}
+
+	/**
+	 * Set logger instance
+	 *
+	 * @param LoggerInterface $logger
+	 * @return void
+	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
 	}
 
+	/**
+	 * Send notification to what ever media or outlet
+	 * required by the implementer.
+	 *
+	 * @return mixed
+	 */
 	public function send(){
 
 		//EVENT
@@ -64,7 +91,7 @@ class Event implements NotifyInterface {
 
 		//GROUPS
 		//	next we need to extract all groups associated with the event
-		//	and then I meed th IDs
+		//	and then I need their IDs
 		$groupIds = array_map(function($i){
 			return $i->id;
 		}, $event->groups );
@@ -80,6 +107,9 @@ class Event implements NotifyInterface {
 				? $this->user->getUserMessageByGroup( $groupIds )
 				: $this->user->getUserMessageByEvent($event->id) ;
 		}
+
+		$this->logger->info( get_class($this) . " " . (count($users)) . " user will get an email" .
+			"in connection with event {$event->subject}:{$event->id}");
 
 		//VIEW
 		//	create everything that is needed to render the
@@ -103,7 +133,7 @@ class Event implements NotifyInterface {
 		//CONNECT TO QUEUE
 		//	try to connect to RabbitMQ
 		try{
-			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
+			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
 
@@ -127,28 +157,31 @@ class Event implements NotifyInterface {
 					array('delivery_mode' => 2) # make message persistent
 				);
 
+				$this->logger->info( get_class($this) . " user {$user->email} will get an email" .
+					"in connection with event {$event->subject}:{$event->id}");
+
 				$channel->basic_publish($msg, '', 'mail_queue');
 			}
 
-
-
-
-			$channel->close();
-			$connection->close();
 		}catch (\Exception $e){
 			$this->logger->warn("Mail Queue Service says: {$e->getMessage()}");
+		}finally{
+			if($channel){
+				$channel->close();
+			}
+			if($connection){
+				$connection->close();
+			}
 		}
+	}
 
-
-
-
-
-
-
-		$this->logger->info("---Now I need to aggregate who will get the message");
-		$this->logger->info(__NAMESPACE__ . get_class($this).__FUNCTION__);
-		$this->logger->info(print_r($this->params,true));
-		$this->logger->info("--Aggregate done");
+	/**
+	 * Set Queue factory
+	 * @param QueueConnectionFactoryInterface $factory
+	 * @return mixed
+	 */
+	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
+		$this->queueFactory = $factory;
 	}
 
 } 

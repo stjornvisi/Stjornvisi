@@ -55,7 +55,7 @@ class EventController extends AbstractActionController{
 					$this->params()->fromPost('name','')
 				);
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => \Stjornvisi\Notify\Attend::ATTENDING,
+					'action' => 'Stjornvisi\Notify\Attend',
 					'data' => (object)array(
 							'event_id' => $event->id,
 							'type' => 1,
@@ -525,7 +525,7 @@ class EventController extends AbstractActionController{
                     $this->params()->fromRoute('type',0)
                 );
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => \Stjornvisi\Notify\Attend::ATTENDING,
+					'action' => 'Stjornvisi\Notify\Attend',
 					'data' => (object)array(
 							'recipients' => (int)$authService->getIdentity()->id,
 							'event_id' => $event->id,
@@ -600,7 +600,7 @@ class EventController extends AbstractActionController{
 						}
 						*/
 						$this->getEventManager()->trigger('notify',$this,array(
-							'action' => \Stjornvisi\Notify\Event::MESSAGING,
+							'action' => 'Stjornvisi\Notify\Event',
 							'data' => (object)array(
 								'event_id' => $event->id,
 								'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
