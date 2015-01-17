@@ -349,7 +349,11 @@ class Module{
 				'Stjornvisi\Service\Skeleton' => function($sm){
 					return new Skeleton();
 				},
-
+				'Stjornvisi\Service\Conference' => function($sm){
+					$obj = new Conference( $sm->get('PDO') );
+					$obj->setEventManager( $sm->get('ServiceEventManager') );
+					return $obj;
+				},
             )
         );
     }

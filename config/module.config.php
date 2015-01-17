@@ -962,6 +962,32 @@ return array(
 					),
 				),
 			),
+			'radstefna' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/radstefna',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Conference',
+						'action' => 'list'
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'index' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'index'
+							),
+						)
+					),
+				),
+			),
 			'skeletonlist' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -1268,6 +1294,7 @@ return array(
 			'Stjornvisi\Controller\Search' => 'Stjornvisi\Controller\SearchController',
 			'Stjornvisi\Controller\Console' => 'Stjornvisi\Controller\ConsoleController',
 			'Stjornvisi\Controller\Skeleton' => 'Stjornvisi\Controller\SkeletonController',
+			'Stjornvisi\Controller\Conference' => 'Stjornvisi\Controller\ConferenceController',
         ),
     ),
     'view_helpers' => array(
