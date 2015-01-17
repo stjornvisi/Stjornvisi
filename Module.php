@@ -24,6 +24,7 @@ use Stjornvisi\Service\Page;
 use Stjornvisi\Auth\Adapter;
 use Stjornvisi\Auth\Facebook as AuthFacebook;
 use Stjornvisi\Service\JaMap;
+use Stjornvisi\Service\Skeleton;
 use Stjornvisi\Service\Values;
 use Stjornvisi\Mail\Service\File;
 use Stjornvisi\View\Helper\SubMenu;
@@ -344,6 +345,9 @@ class Module{
 						$sm->get('Stjornvisi\Service\Values'),
 						$sm->get('Stjornvisi\Service\User')
 					);
+				},
+				'Stjornvisi\Service\Skeleton' => function($sm){
+					return new Skeleton();
 				},
 
             )
