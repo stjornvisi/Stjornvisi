@@ -44,3 +44,19 @@ ALTER TABLE `Group_has_User`
   ADD `notify` INT (4) AFTER `type`;
 
 UPDATE  `Group_has_User` SET `notify` = 1;
+
+CREATE TABLE `Conference` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `subject` varchar(100) NOT NULL,
+  `body` text,
+  `location` varchar(45) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `capacity` int(4) DEFAULT NULL,
+  `event_date` date DEFAULT NULL,
+  `event_time` time DEFAULT NULL,
+  `event_end` time DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `lat` double(11,8) DEFAULT NULL,
+  `lng` double(11,8) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
