@@ -12,7 +12,6 @@ use Zend\Session\Container;
 use Stjornvisi\Form\LostPassword as LostPasswordForm;
 use Stjornvisi\Form\Login;
 
-
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
 use Facebook\FacebookRequestException;
