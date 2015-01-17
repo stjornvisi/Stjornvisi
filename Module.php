@@ -25,6 +25,7 @@ use Stjornvisi\Auth\Adapter;
 use Stjornvisi\Auth\Facebook as AuthFacebook;
 use Stjornvisi\Service\JaMap;
 use Stjornvisi\Service\Skeleton;
+use Stjornvisi\Service\Conference;
 use Stjornvisi\Service\Values;
 use Stjornvisi\Mail\Service\File;
 use Stjornvisi\View\Helper\SubMenu;

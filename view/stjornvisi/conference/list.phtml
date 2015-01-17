@@ -1,0 +1,14 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hilmar
+ * Date: 17/01/15
+ * Time: 20:37
+ */
+?>
+<h1>Ráðstefnur</h1>
+<ul>
+	<?php foreach( $this->conferences as $item ) : ?>
+		<li><?=$item->subject; ?></li>
+	<?php endforeach; ?>
+</ul>
