@@ -277,7 +277,9 @@ class Module{
 						return $obj;
 					},
 				'Stjornvisi\Notify\UserValidate' => function($sm){
-						$obj = new \Stjornvisi\Notify\UserValidate();
+						$obj = new \Stjornvisi\Notify\UserValidate(
+							$sm->get('Stjornvisi\Service\User')
+						);
 						$obj->setQueueConnectionFactory(
 							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
 						);
@@ -285,6 +287,19 @@ class Module{
 						return $obj;
 					},
 				'MailOptions' => function($sm){
+
+					return new SmtpOptions(array(
+						'name' => 'yourdomain.com',
+						'host' => 'smtp.gmail.com',
+						'connection_class' => 'login',
+						'port' => '465',
+						'connection_config' => array(
+							'ssl' => 'ssl', /* Page would hang without this line being added */
+							'username' => 'fizk78@gmail.com',
+							'password' => 'undurundur',
+						),
+					));
+
 					return new SmtpOptions(array(
 							'name'              => 'localhost.localdomain',
 							'host'              => 'mail.optusnet.com.au',

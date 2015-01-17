@@ -71,6 +71,10 @@ class Group implements NotifyInterface {
 	public function setData( $data ){
 		$this->params = $data->data;
 	}
+
+	/**
+	 * @param LoggerInterface $logger
+	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
 	}

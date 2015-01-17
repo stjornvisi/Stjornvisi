@@ -483,21 +483,23 @@ class AuthController extends AbstractActionController{
 					$server. AuthController::LOGIN_CALLBACK_FACEBOOK . '?key='.$user->hash
 				);
 
+				$facebooklogin = $helper->getLoginUrl();
+
 				//NOTIFY
 				//	notify user
 				$this->getEventManager()->trigger('notify',$this,array(
 					'action' => 'Stjornvisi\Notify\UserValidate',
 					'data' => (object)array(
-							'user' => $user,
+							'user_id' => $user->id,
 							'url' => $server,
-							'facebook' => $helper->getLoginUrl()
+							'facebook' => $facebooklogin
 						),
 				));
 
 				return new ViewModel(array(
 					'user' => $user,
 					'url' => $server,
-					'facebook' => $helper->getLoginUrl()
+					'facebook' => $facebooklogin
 				));
 
 

@@ -598,8 +598,12 @@ class ConsoleController extends AbstractActionController {
 						}else if($this->getRequest()->getParam('trace', false)){
 							$logger->debug( "{$classname}:mailAction ". $message->toString() );
 						}else{
-							$transport = $sm->get('MailTransport');
-							$transport->send($message);
+							try{
+								$transport = $sm->get('MailTransport');
+								$transport->send($message);
+							}catch (\Exception $e){
+								$logger->err( $e->getMessage() . "\n" .$e->getTraceAsString() );
+							}
 						}
 
 					}else{
