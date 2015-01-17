@@ -269,11 +269,7 @@ To run command-line actions you only have to point your PHP runtime to the index
 
     $ php <workspace>/Stjornvisi/public/index.php [arguments]
 
-and then you can pass in some arguments
+and then you can pass in some arguments.
 
-### arguments ###
-* **process index** Will start a listener that listens for entry CRUD and sends entries to be indexed.
-* **process notify** Will start a listener for notifications.
-* **image generate [--ignore]** Will resample all images from the `original` folder and overwrite the old ones, no questions asked
-
-
+You can read the [Process documentation](https://github.com/fizk/Stjornvisi/wiki/Processes) for
+detailed examples.

@@ -19,7 +19,6 @@ use Zend\View\Resolver;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
-use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
@@ -29,8 +28,6 @@ use PhpAmqpLib\Message\AMQPMessage;
  * @package Stjornvisi\Notify
  */
 class Attend implements NotifyInterface, QueueConnectionAwareInterface {
-
-	const ATTENDING = 'attending.event';
 
 	/** @var \stdClass */
 	private $params;
@@ -48,20 +45,50 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 	private $queueFactory;
 
 
+	/**
+	 * Create an instance to this handler.
+	 * It requires two services.
+	 *
+	 * @param UserDAO $user
+	 * @param EventDAO $event
+	 */
 	public function __construct( UserDAO $user, EventDAO $event ){
 		$this->user = $user;
 		$this->event = $event;
 	}
 
+	/**
+	 * Set the data that is coming from the
+	 * producer.
+	 *
+	 * @param $data
+	 * @return mixed
+	 */
 	public function setData( $data ){
 		$this->params = $data;
 	}
+
+	/**
+	 * Set logger instance
+	 *
+	 * @param LoggerInterface $logger
+	 * @return void
+	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
 	}
 
+	/**
+	 * Send notification to what ever media or outlet
+	 * required by the implementer.
+	 *
+	 * @return mixed
+	 */
 	public function send(){
 
+		//USER
+		//	user can be in the system or he can be
+		//	a guest, we have to prepare for both.
 		if( is_numeric($this->params->data->recipients) ){
 			$userObject = $this->user->get($this->params->data->recipients);
 		}else{
@@ -71,8 +98,14 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 			);
 		}
 
+		//EVENT
+		//	now we need the event that the user/guest
+		//	is registering to.
 		$eventObject = $this->event->get( $this->params->data->event_id );
 
+		//VIEW
+		//	create and config template/rendering engine
+		// 	and model and mash it together.
 		$renderer = new PhpRenderer();
 		$resolver = new Resolver\AggregateResolver();
 		$renderer->setResolver($resolver);
@@ -92,6 +125,10 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 		$resolver->attach($map)->attach($stack);
 
 
+		//ATTEND / UN-ATTEND
+		//	check if the user is registering
+		//	or un-registering and render template to
+		//	accommodate.
 		if($this->params->data->type){
 			$model->setTemplate('attending');
 			$result = array(
@@ -108,30 +145,40 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 			);
 		}
 
-
+		//MAIL
+		//	now we want to send this to the user/quest via e-mail
+		//	so we try to connect to Queue and send a message
+		//	to mail_queue
 		try{
 			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();
-
 			$channel->queue_declare('mail_queue', false, true, false, false);
 			$msg = new AMQPMessage( json_encode($result),
 				array('delivery_mode' => 2) # make message persistent
 			);
-
+			$this->logger->info( get_class($this) .":send".
+				" {$result['recipient']['address']} is " . ( ($this->params->data->type)?'':'not ' ) .
+				"attending {$eventObject->subject}");
 			$channel->basic_publish($msg, '', 'mail_queue');
 
 
 		}catch (\Exception $e){
-			$this->logger->warn("Mail Queue Service says: {$e->getMessage()}");
+			$this->logger->warn(get_class($this) . ":send says: {$e->getMessage()}");
 		}finally{
-			$channel->close();
-			$connection->close();
+			if( $channel ){
+				$channel->close();
+			}
+			if( $connection ){
+				$connection->close();
+			}
 		}
-
-		$this->logger->info(print_r($result,true));
-		$this->logger->info(print_r($this->params->data,true));
 	}
 
+	/**
+	 * Set Queue factory
+	 * @param QueueConnectionFactoryInterface $factory
+	 * @return mixed
+	 */
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
 	}

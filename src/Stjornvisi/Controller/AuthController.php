@@ -10,7 +10,8 @@ use Zend\View\Model\ViewModel;
 use Zend\Session\Container;
 
 use Stjornvisi\Form\LostPassword as LostPasswordForm;
-use Stjornvisi\Notify\Password as PasswordNotify;
+use Stjornvisi\Form\Login;
+
 
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
@@ -202,7 +203,6 @@ class AuthController extends AbstractActionController{
 	 */
 	public function loginAction(){
 
-		/*
         $auth = new AuthenticationService();
 
         //IS LOGGED IN
@@ -218,7 +218,7 @@ class AuthController extends AbstractActionController{
             if( $this->request->isPost() ){
 
                 $form = new Login();
-                $form->setData($this->request->getPost() );
+                $form->setData($this->getRequest()->getPost() );
                 //VALID
                 //  valid login form
                 if( $form->isValid() ){
@@ -245,7 +245,7 @@ class AuthController extends AbstractActionController{
                 }else{
                     return new ViewModel(array(
                         'form' => $form,
-						'facebook' => $this->getServiceLocator()->get('Facebook')
+						//'facebook' => $this->getServiceLocator()->get('Facebook')
                     ));
                 }
 
@@ -254,11 +254,11 @@ class AuthController extends AbstractActionController{
             }else{
                 return new ViewModel(array(
                     'form' => new Login(),
-					'facebook' => $this->getServiceLocator()->get('Facebook')
+					//'facebook' => $this->getServiceLocator()->get('Facebook')
                 ));
             }
         }
-		*/
+
 	}
 
 	/**
@@ -487,7 +487,7 @@ class AuthController extends AbstractActionController{
 				//NOTIFY
 				//	notify user
 				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => \Stjornvisi\Notify\UserValidate::VALIDATE,
+					'action' => 'Stjornvisi\Notify\UserValidate',
 					'data' => (object)array(
 							'user' => $user,
 							'url' => $server,
@@ -534,7 +534,7 @@ class AuthController extends AbstractActionController{
 					$password = $this->_createPassword(20);
 					$userService->setPassword( $user->id, $password );
 					$this->getEventManager()->trigger('notify',$this,array(
-						'action' => PasswordNotify::REGENERATE,
+						'action' => 'Stjornvisi\Notify\Password',
 						'data' => (object)array(
 								'user_id' => $user->id,
 								'password' => $password,

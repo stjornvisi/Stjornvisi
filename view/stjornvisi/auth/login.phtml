@@ -1,4 +1,28 @@
 
-<a href="#" class="btn brn-default">facebbok</a>
+<?php
+$this->form->setAttribute('class','form-horizontal');
+?>
+<?=$this->form()->openTag($this->form);?>
+
+<div class="form-group">
+	<?=$this->formLabel($this->form->get('email'));?>
+	<?=$this->formElement($this->form->get('email')->setAttribute('class','form-control'));?>
+	<?=$this->formElementErrors($this->form->get('email'));?>
+</div>
+<div class="form-group">
+	<?=$this->formLabel($this->form->get('passwd'));?>
+	<?=$this->formElement($this->form->get('passwd')->setAttribute('class','form-control'));?>
+	<?=$this->formElementErrors($this->form->get('passwd'));?>
+</div>
+
+<div class="form-group">
+	<?=$this->formElement($this->form->get('submit')->setAttribute('class','btn btn-default'));?>
+</div>
+
+<?= $this->form()->closeTag() ?>
+
+<?php print_r($this->form->getMessages(),true)?>
+
+<!--a href="#" class="btn brn-default">facebbok</a>
 <a href="#" class="btn brn-default">linkedIn</a>
-<a href="#" class="btn brn-default">g+</a>
+<a href="#" class="btn brn-default">g+</a-->

@@ -15,8 +15,6 @@ use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
 class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 
-	const VALIDATE = 'send.mail.to.email.to.validate.event';
-
 	/** @var  \Zend\Log\LoggerInterface */
 	private $logger;
 

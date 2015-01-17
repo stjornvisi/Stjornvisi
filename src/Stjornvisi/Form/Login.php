@@ -36,6 +36,7 @@ class Login extends Form{
                 'label' => 'Password',
             ),
         ));
+		/*
         $this->add(array(
             'name' => 'rememberme',
             'type' => 'checkbox', // 'Zend\Form\Element\Checkbox',
@@ -48,6 +49,7 @@ class Login extends Form{
 //                                'unchecked_value' => 'false', // witll be 1
             ),
         ));
+		*/
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
