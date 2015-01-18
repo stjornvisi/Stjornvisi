@@ -1,9 +1,0 @@
-
-	%category-label{
-		h1{
-			@include adjust-font-size-to($font-middle-size,1,$font-base-size);
-			color: $color-sea;
-			text-transform: uppercase;
-			font-weight: bold;
-		}
-	}
