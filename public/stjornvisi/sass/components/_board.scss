@@ -1,0 +1,42 @@
+
+
+
+	.boardmember{
+		.boardmember__item{
+			border-bottom: 1px solid $color-gray-light;
+		}
+		.boardmember__item:last-child{
+			border-bottom: none;
+		}
+		.boardmember__period{
+			text-align: center;
+			@include margin-trailer(1,$font-size-header);
+			@include adjust-font-size-to($font-size-header,2,$font-size-base);
+		}
+	}
+
+	.boardmember-list{
+		@include pie-clearfix;
+		> li{
+			position: relative;
+			width: 33.33%;
+			float: left;
+			text-align: center;
+			padding: $gutter/2;
+		}
+		.borardmember-list__name{
+			font-family: open-sans;
+		}
+		.borardmember-list__company{
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		}
+		.borardmember-list__type{
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		}
+
+		.borardmember-list__avatar{
+			width: 100%;
+			max-width: 100%;
+			border-radius: 50%;
+		}
+	}

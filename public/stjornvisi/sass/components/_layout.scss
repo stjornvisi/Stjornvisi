@@ -1,0 +1,37 @@
+
+
+	nav[role=navigation]{
+		display: none;
+	}
+
+	main[role=main]{
+		> header {
+			@include pie-clearfix;
+			background-color: $color-blue;
+			h1{
+				float: left;
+				width: 20%;
+				background-color: $color-white;
+			}
+			ul{
+				float: left;
+				width: 50%;
+				@include pie-clearfix;
+				li{
+					float: left;
+					padding: rhythm(1/2,$font-size-base);
+					a{
+						color: $color-white;
+					}
+				}
+			}
+			form{
+				width: 20%;
+				float: left;
+			}
+		}
+	}
+
+	footer[role=footer]{
+		background-color: $color-black;
+	}

@@ -1,44 +1,50 @@
-<?php
-    $this->form->setAttribute('class','form-horizontal');
-?>
-<?=$this->form()->openTag($this->form);?>
+<?php $this->form->setAttribute('class','form-horizontal'); ?>
+<div class="layout layout--three-columns-reverse">
+	<section class="layout__section">
+		<?=$this->form()->openTag($this->form);?>
 
-<div class="form-group">
-    <?=$this->formLabel($form->get('name'));?>
-    <?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
-    <?=$this->formElementErrors($form->get('name'));?>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('name'));?>
+			<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('name'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('name_short'));?>
+			<?=$this->formElement($form->get('name_short')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('name_short'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('description'));?>
+			<?=$this->formElement($form->get('description')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('description'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('objective'));?>
+			<?=$this->formElement($form->get('objective')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('objective'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('what_is'));?>
+			<?=$this->formElement($form->get('what_is')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('what_is'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('how_operates'));?>
+			<?=$this->formElement($form->get('how_operates')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('how_operates'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('for_whom'));?>
+			<?=$this->formElement($form->get('for_whom')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('for_whom'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+		</div>
+		<?= $this->form()->closeTag() ?>
+	</section>
+	<aside class="layout__aside">
+
+	</aside>
 </div>
-<div class="form-group">
-    <?=$this->formLabel($form->get('name_short'));?>
-    <?=$this->formElement($form->get('name_short')->setAttribute('class','form-control'));?>
-    <?=$this->formElementErrors($form->get('name_short'));?>
-</div>
-<div class="form-group">
-    <?=$this->formLabel($form->get('description'));?>
-    <?=$this->formElement($form->get('description')->setAttribute('class','form-control'));?>
-    <?=$this->formElementErrors($form->get('description'));?>
-</div>
-<div class="form-group">
-    <?=$this->formLabel($form->get('objective'));?>
-    <?=$this->formElement($form->get('objective')->setAttribute('class','form-control'));?>
-    <?=$this->formElementErrors($form->get('objective'));?>
-</div>
-<div class="form-group">
-    <?=$this->formLabel($form->get('what_is'));?>
-    <?=$this->formElement($form->get('what_is')->setAttribute('class','form-control'));?>
-    <?=$this->formElementErrors($form->get('what_is'));?>
-</div>
-<div class="form-group">
-    <?=$this->formLabel($form->get('how_operates'));?>
-    <?=$this->formElement($form->get('how_operates')->setAttribute('class','form-control'));?>
-    <?=$this->formElementErrors($form->get('how_operates'));?>
-</div>
-<div class="form-group">
-    <?=$this->formLabel($form->get('for_whom'));?>
-    <?=$this->formElement($form->get('for_whom')->setAttribute('class','form-control'));?>
-    <?=$this->formElementErrors($form->get('for_whom'));?>
-</div>
-<div class="form-group">
-    <?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
-</div>
-<?= $this->form()->closeTag() ?>
+

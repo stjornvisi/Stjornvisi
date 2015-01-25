@@ -290,11 +290,7 @@ class CompanyController extends AbstractActionController{
             //
             if( $access->is_admin || $access->type != null ){
 
-                $form = new CompanyForm(
-                    $valueService->getBusinessTypes(),
-                    $valueService->getPostalCode(),
-                    $valueService->getCompanySizes()
-                );
+				$form = $sm->get('Stjornvisi\Form\Company');
                 $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/update',array('id'=>$company->id)));
                 //POST
                 //  http post request

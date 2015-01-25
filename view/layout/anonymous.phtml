@@ -1,92 +1,74 @@
 <?php echo $this->doctype(); ?>
 <html lang="is">
-<head>
-	<meta charset="utf-8">
-	<?php echo $this->headTitle('Stjórnvísi '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+	<head>
+		<meta charset="utf-8">
+		<?php echo $this->headTitle('Stjórnvísi '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
 
-	<?php echo $this->headMeta()
-		->appendName('viewport', 'width=device-width, initial-scale=1.0')
-		->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-	?>
+		<?php echo $this->headMeta()
+			->appendName('viewport', 'width=device-width, initial-scale=1.0')
+			->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+		?>
 
-	<!-- Le styles -->
-	<?php echo $this->headLink(array(
-			'rel' => 'icon',
-			'type' => 'image/png',
-			'href' => $this->basePath() . '/styles/img/favicon.png')
-	)
-		//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap.min.css' )
-		//->appendStylesheet( $this->basePath() . '/vendor/bootstrap/dist/css/bootstrap-theme.min.css' )
-		->appendStylesheet( $this->basePath() . '/stylesheets/screen.css' )
-		->appendStylesheet( $this->basePath() . '/stylesheets/ie.css','screen','IE 9')
-		//->appendStylesheet( $this->basePath() . '/vendor/lightbox2/css/lightbox.css')
-		//->appendStylesheet( $this->basePath() . '/vendor/jasny-bootstrap/dist/css/jasny-bootstrap.min.css')
-
-	; ?>
-
-	<!-- Scripts -->
-	<?php /*echo $this->headScript()
-		->appendFile($this->basePath() . '/scripts/ie.js', 'text/javascript', array('conditional' => 'IE 9',))
-		->appendFile($this->basePath() . '/vendor/respond/dest/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-		->appendFile($this->basePath() . '/vendor/html5shiv-dist/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
-		->appendFile( $this->basePath() . '/vendor/jquery/dist/jquery.min.js' )
-		->appendFile( $this->basePath() . '/vendor/bootstrap/dist/js/bootstrap.min.js' )
-		->appendFile( $this->basePath() . '/vendor/handlebars/handlebars.min.js' )
-		->appendFile( $this->basePath() . '/vendor/typeahead.js/dist/typeahead.bundle.min.js' )
-		->appendFile( $this->basePath() . '/vendor/lightbox2/js/lightbox.js' )
-		->appendFile( $this->basePath() . '/vendor/jasny-bootstrap/dist/js/jasny-bootstrap.min.js' )
-
-		->appendFile($this->basePath() . '/scripts/common.js')
-	; */?>
-</head>
-<body class="logged-out">
+		<script src="<?=$this->basePath();?>/vendor/html5shiv/dist/html5shiv.js"></script>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<!-- Le styles -->
+		<?php echo $this->headLink(array(
+				'rel' => 'icon',
+				'type' => 'image/png',
+				'href' => $this->basePath() . '/styles/img/favicon.png')
+		)
+			->appendStylesheet( $this->basePath() . '/stylesheets//screen.css' )
+			->appendStylesheet( $this->basePath() . '/stylesheets//ie.css','screen','IE 9')
+		; ?>
+	</head>
+	<body class="logged-out">
 
 
-<!--nav class="layout-nav">
-	<?=$this->subMenu()?>
-</nav-->
+	<!--nav class="layout-nav">
+		<?=$this->subMenu()?>
+	</nav-->
 
-<main role="main" class="frontpage">
-	<header class="page-header">
-		<h1 class="page-brand"><a href="<?php echo $this->url('home') ?>">Stjórnvísi</a></h1>
-		<ul class="page-main-menu">
-			<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-			<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
-			<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-		</ul>
-		<form class="page-search-form" method="get" action="<?=$this->url('leita')?>">
-			<input name="q" class="typeahead" type="search" placeholder="Leit..." />
-			<input type="submit" value="leita">
-		</form>
-	</header>
+	<main role="main">
+		<header class="page-header">
+			<h1 class="page-brand"><a href="<?php echo $this->url('home') ?>">Stjórnvísi</a></h1>
+			<ul class="page-main-menu">
+				<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+				<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
+				<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
+			</ul>
+			<form class="page-search-form" method="get" action="<?=$this->url('leita')?>">
+				<input name="q" class="typeahead" type="search" placeholder="Leit..." />
+				<input type="submit" value="leita">
+			</form>
+		</header>
 
-	<?php echo $this->content; ?>
+		<?php echo $this->content; ?>
 
-	<footer role="footer">
-		<div class="address">
-			<h1>Stjórnvísi</h1>
-			<p>Innovation house</p>
-			<p>Eiðistorgi 13-17 170 Seltjarnarnes</p>
-			<p>Kt: 650686-1609</p>
-			<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
-			<p>Sími: 533-5666 Gsm: 840-4990</p>
-		</div>
-		<ul class="links middle">
-			<li><a href="/um">Um Stjórnvísi</a></li>
-			<li><a href="/stjornin">Stjórnin</a></li>
-			<li><a href="/log-arsskyrslur-og-arsreikningar">Lög, ársskýrslur og ársreikningar</a></li>
-			<li><a href="/fundagerdir">Fundagerðir</a></li>
-			<li><a href="/kennsla">Handbók vefsins og kennslumyndbönd</a></li>
-			<li><a href="/fyrirtaeki">Fyrirtæki innan Stjórnvísi</a></li>
-		</ul>
-		<ul class="links right">
-			<li><a href="<?php echo $this->url('notandi') ?>">Notendur</a></li>
-			<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
-			<li><a href="<?php echo $this->url('stjornin') ?>">Stjórn</a></li>
-		</ul>
-	</footer>
-</main>
+		<footer role="footer">
+			<div class="address">
+				<h1>Stjórnvísi</h1>
+				<p>Innovation house</p>
+				<p>Eiðistorgi 13-17 170 Seltjarnarnes</p>
+				<p>Kt: 650686-1609</p>
+				<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
+				<p>Sími: 533-5666 Gsm: 840-4990</p>
+			</div>
+			<ul class="links middle">
+				<li><a href="/um">Um Stjórnvísi</a></li>
+				<li><a href="/stjornin">Stjórnin</a></li>
+				<li><a href="/log-arsskyrslur-og-arsreikningar">Lög, ársskýrslur og ársreikningar</a></li>
+				<li><a href="/fundagerdir">Fundagerðir</a></li>
+				<li><a href="/kennsla">Handbók vefsins og kennslumyndbönd</a></li>
+				<li><a href="/fyrirtaeki">Fyrirtæki innan Stjórnvísi</a></li>
+			</ul>
+			<ul class="links right">
+				<li><a href="<?php echo $this->url('notandi') ?>">Notendur</a></li>
+				<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
+				<li><a href="<?php echo $this->url('stjornin') ?>">Stjórn</a></li>
+			</ul>
+		</footer>
+	</main>
 
-<?php echo $this->inlineScript() ?>
-</body>
+	<?php echo $this->inlineScript() ?>
+	</body>
 </html>

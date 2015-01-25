@@ -1,24 +1,29 @@
-<?php
-$this->form->setAttribute('class','form-horizontal');
-?>
-<?=$this->form()->openTag($this->form);?>
+<?php $this->form->setAttribute('class','form-horizontal'); ?>
+<div class="layout layout--three-columns">
+	<section class="layout__section">
+		<?=$this->form()->openTag($this->form);?>
 
-<div class="form-group">
-	<?=$this->formLabel($form->get('name'));?>
-	<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
-	<?=$this->formElementErrors($form->get('name'));?>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('name'));?>
+			<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('name'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('info'));?>
+			<?=$this->formElement($form->get('info')->setAttribute('class','form-control'));?>
+			<?=$this->formElementErrors($form->get('info'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formLabel($form->get('avatar'));?>
+			<?=$this->formElement($form->get('avatar')->setAttribute('class','form-control avatar'));?>
+			<?=$this->formElementErrors($form->get('avatar'));?>
+		</div>
+		<div class="form-group">
+			<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+		</div>
+		<?= $this->form()->closeTag() ?>
+	</section>
+	<aside class="layout__aside"></aside>
 </div>
-<div class="form-group">
-	<?=$this->formLabel($form->get('info'));?>
-	<?=$this->formElement($form->get('info')->setAttribute('class','form-control'));?>
-	<?=$this->formElementErrors($form->get('info'));?>
-</div>
-<div class="form-group">
-	<?=$this->formLabel($form->get('avatar'));?>
-	<?=$this->formElement($form->get('avatar')->setAttribute('class','form-control avatar'));?>
-	<?=$this->formElementErrors($form->get('avatar'));?>
-</div>
-<div class="form-group">
-	<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
-</div>
-<?= $this->form()->closeTag() ?>
+
+

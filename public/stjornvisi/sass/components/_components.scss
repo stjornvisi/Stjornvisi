@@ -1,0 +1,369 @@
+
+/**
+ * BLOCK-ELEMENT
+ *
+ * Mostly used to style lists of events and news,
+ * this is a BEM that has a header,section, footer and
+ * aside. Header usually has a h1 and a time element.
+ * The body contains some paragraphs and an image
+ * and the footer has some tabs which are in a smaller font.
+ *
+ * This is used both for the list og event/news as well as
+ * full news/event entry
+ */
+.block-element{
+	position: relative;
+	.block-element__header{
+		h1{
+			@include adjust-font-size-to($font-size-header,1.2,$font-size-base);
+			font-family: open-sans;
+			font-weight: $font-weight-bold;
+		}
+		h2{
+			font-family: open-sans;
+			font-weight: $font-weight-bold;
+		}
+		padding: rhythm(1/2,$font-size-base) 0;
+	}
+
+	.block-element__time{
+		@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		font-family: open-sans;
+		font-weight: $font-weight-thin;
+	}
+
+	.block-element__body {
+		@include pie-clearfix;
+		@extend %rich-text;
+		padding: rhythm(1/2,$font-size-base) 0;
+		.block-element__poster{
+			float: left;
+			img {
+				margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
+			}
+		}
+		.block-element__image{
+			float: left;
+			margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
+		}
+
+		//MODIFIER three column layout
+		&.block-element--three-columns{
+			-webkit-column-width: rhythm(1,$font-size-base);
+			-webkit-column-count: 3;
+			-moz-column-width: rhythm(1,$font-size-base);
+			-moz-column-count: 3;
+			-ms-column-width: rhythm(1,$font-size-base);
+			-ms-column-count: 3;
+			column-width: rhythm(1,$font-size-base);
+			column-count: 3;
+		}
+
+	}
+	.block-element__aside{
+		padding: rhythm(1/2,$font-size-base) 0;
+	}
+	.block-element__footer{
+		padding: rhythm(1/2,$font-size-base) 0;
+	}
+
+	ul.block-element__tags{
+		@include pie-clearfix;
+		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+		font-family: open-sans;
+		font-weight: $font-weight-thin;
+		li{
+			float: left;
+		}
+		li:after{
+			font-weight: $font-weight-bold;
+			content: "\00B7";
+			padding: 0 rhythm(1/4,$font-size-sub);
+		}
+		li:last-child:after{
+			content: "";
+		}
+		a{
+			color: $color-green-sea;
+		}
+	}
+
+	.block-element__more{
+		text-align: right;
+	}
+
+	/*ul*/.block-element__author-list{
+		@include pie-clearfix;
+		/*li*/.block-element__author-item{
+			float: left;
+			h2{
+				@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+				font-family: open-sans;
+			}
+			img{
+				border-radius: 50%;
+			}
+		}
+	}
+}
+
+
+/**
+ * BLOCK-ITEM
+ *
+ * Usually a simple item in a list. This is usually a h2
+ * header and a time element. Often there are tags associated
+ * with the entry which is a list og Groups that are connected
+ * to the block.
+ *
+ */
+.block-item{
+	position: relative;
+	h2{
+		font-weight: $font-weight-bold;
+		font-family: open-sans;
+	}
+	h3{
+		font-weight: $font-weight-bold;
+		font-family: open-sans;
+	}
+	.block-item__time{
+		@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		font-family: open-sans;
+		font-weight: $font-weight-thin;
+	}
+	.block-item__tags{
+		@include pie-clearfix;
+		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+		font-family: open-sans;
+		font-weight: $font-weight-thin;
+		li{
+			float: left;
+		}
+		li:after{
+			font-weight: $font-weight-bold;
+			content: "\00B7";
+			padding: 0 rhythm(1/4,$font-size-sub);
+		}
+		li:last-child:after{
+			content: "";
+		}
+		a{
+			color: $color-green-sea;
+		}
+	}
+	.block-item__image{
+		img{
+			width: 100%;
+		}
+	}
+	h2{
+		font-weight: $font-weight-bold;
+	}
+}
+
+
+/**
+ * BLOCK-LIST
+ *
+ * Usually items contained in block-list are block-item
+ * This is is therefor just a thin margin/padding layer on top
+ * of the .block-item element
+ *
+ */
+/*ul*/.block-list{
+	& > li{
+		position: relative;
+		padding: rhythm(1,$font-size-base) 0;
+	}
+}
+
+
+/**
+ * BLOCK-GALLERY
+ *
+ * List of images displayed in a horizontal
+ * order. Used for event page...
+ */
+.block-gallery{
+	@include pie-clearfix;
+	margin-left: - rhythm(1/8,$font-size-base);
+	margin-right: - rhythm(1/8,$font-size-base);
+
+	.block-gallery__item{
+		float: left;
+		width: 25%;
+		padding: rhythm(1/8,$font-size-base);
+	}
+	.block-gallery__image{
+		border:1px solid $color-gray-light;
+		padding: rhythm(1/8,$font-size-base);
+		width: 100%;
+	}
+}
+
+
+/**
+ * BLOCK-SUPPLEMENT
+ *
+ * List of supplements for an event
+ *
+ */
+/*ul*/.block-supplement{
+	& > li{
+		padding: rhythm(1/4,$font-size-base) 0;
+	}
+}
+
+
+
+/*dl*/.block-property-value{
+	@include pie-clearfix;
+	dt{
+		width: 50%;
+		float: left;
+		clear: left;
+	}
+	dd{
+		width: 50%;
+		float: left;
+	}
+}
+
+/**
+ * LAYOUT
+ *
+ * This is the main grid system of the side.
+ * Is has the structure of:
+ * <div>
+ *		<section>
+ *			<div></div>
+ *			<div></div>
+ *		</section>
+ *		<aside></aside>
+ * </div>
+ */
+.layout{
+	@include pie-clearfix;
+	padding: $gutter;
+
+	&.layout--two-columns {
+		.layout__section{
+			@include pie-clearfix;
+			float: left;
+			width: 80%;
+			.layout__data{
+				float: left;
+				width: 60%;
+			}
+			.layout__meta{
+				float: left;
+				width: 40%;
+			}
+		}
+		.layout__aside{
+			float: left;
+			width: 20%;
+		}
+	}
+	/**
+	 *
+	 */
+	&.layout--three-columns{
+		.layout__section{
+			@include pie-clearfix;
+			float: left;
+			width: 80%;
+
+			.layout__data{
+				float: left;
+				width: 50%;
+				padding-right: rhythm(1/2,$font-size-base);
+			}
+			.layout__meta{
+				float: left;
+				width: 50%;
+				padding-right: rhythm(1/2,$font-size-base);
+				padding-left: rhythm(1/2,$font-size-base);
+			}
+			.layout_article{
+				padding-right: rhythm(1/2,$font-size-base);
+			}
+
+			@include breakpoint($tablet){
+				.layout__data, .layout__meta{
+					float: none;
+					width: auto;
+
+				}
+			}
+		}
+		.layout__aside{
+			float: left;
+			width: 20%;
+			padding-left: rhythm(1/2,$font-size-base);
+		}
+
+		@include breakpoint($tablet){
+			.layout__section{
+				width: 70%;
+			}
+			.layout__aside{
+				width: 30%;
+			}
+		}
+	}
+
+	&.layout--three-columns-reverse{
+		.layout__section{
+			float: right;
+			width: 80%;
+		}
+		.layout__aside{
+			float: left;
+			width: 20%;
+		}
+	}
+}
+
+
+/**
+ * BLOCK-TABLE
+ * This is just a simple table layout.
+ *
+ * It's uses in rich-text and where a simple table data
+ * needs to be displayed.
+ */
+/*table*/.block-table{
+
+}
+
+
+/**
+ * BLOCK-CALENDAR
+ * Full-blown gregorian calendar displaying events in a
+ * calendar month.
+ *
+ */
+.block-calendar{
+	td{
+		width: (100% / 7);
+		vertical-align: top;
+	}
+	.block-calendar__header{
+
+
+	}
+	.block-calendar__body{
+		tr{
+			border-bottom: 1px solid $color-gray-light;
+			td{
+				a{
+					font-family: open-sans;
+					@include adjust-font-size-to($font-size-small,1/8,$font-size-base);
+				}
+			}
+		}
+	}
+	.block-calendar__footer{}
+}

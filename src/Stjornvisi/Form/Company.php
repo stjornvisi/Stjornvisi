@@ -16,13 +16,14 @@ use Zend\InputFilter\InputFilterProviderInterface;
 use Stjornvisi\Filter\Ssn as SsnFilter;
 use Stjornvisi\Validator\Kennitala as SsnValidator;
 use Stjornvisi\Service\Values;
+use Stjornvisi\Service\Company as CompanyService;
 
 class Company extends Form implements InputFilterProviderInterface{
 
 	private $company;
 	private $values;
 
-    public function __construct(Values $values, Company $company = null){
+    public function __construct(Values $values, CompanyService $company = null){
 		$this->company = $company;
 		$this->values = $values;
 		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));

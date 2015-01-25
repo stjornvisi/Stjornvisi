@@ -1,0 +1,32 @@
+
+
+//- - - - - - [ SIZES ] - - - - - - - - - - - - - - - - - - -
+	$gutter:		30px;
+
+	$desktop:		1024px;
+	$tablet:		max-width 768px;
+	$phone:			max-width 480px;
+
+//- - - - - - [ FONT ] - - - - - - - - - - - - - - - - - - -
+
+	$font-size-header:	24px;
+	$font-size-base:	16px;
+	$font-size-sub:		14px;
+	$font-size-small:	12px;
+
+	$font-weight-normal:	300;
+	$font-weight-bold:		500;
+	$font-weight-thin:		100;
+
+	//vertical thythm
+	$base-font-size: $font-size-base;
+	$base-line-height: 24px;
+
+
+//- - - - - - [ COLOR ] - - - - - - - - - - - - - - - - - - -
+	$color-black:	rgb(40,40,40);
+	$color-gray-dark:	rgb(85,85,85);
+	$color-gray-light:	rgb(211,211,211);
+	$color-green-sea:	rgb(74,133,161);
+	$color-blue:		rgb(41, 36, 104);
+	$color-white:		rgb(255,255,255);

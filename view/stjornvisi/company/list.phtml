@@ -6,32 +6,32 @@
  * Time: 10:05 PM
  */
 
-	$stack = array_chunk( $this->companies, ceil(count($this->companies)/2) );
+	$stack = array_chunk( $this->companies, ceil(count($this->companies)/3) );
 
 ?>
 
-<div class="default-wrapper">
-	<h1>Fyrirtæki (<?=count($this->companies);?>)</h1>
-
-<div class="row">
-
-	<?php foreach($stack as $chunk):?>
-	<div class="col-md-6">
-		<dl class="company-list">
+<div class="layout">
+	<section class="layout__section company-list">
+		<h1>Fyrirtæki (<?=count($this->companies);?>)</h1>
+		<?php foreach($stack as $chunk):?>
+		<ul class="block-list">
 			<?php foreach($chunk as $company):?>
-				<dt>
-				<?php if($access->is_admin):?>
-					<a href="<?=$this->url('fyrirtaeki/index',array('id'=>$company->id))?>"><?=$company->name?></a>
-				<?php else:?>
-					<?=$company->name?>
-				<?php endif;?>
-				</dt>
-				<dd><?=$company->business_type?></dd>
-				<dd>Meðlimur síðan <?=$company->created->format('Y')?></dd>
-			<?php endforeach;?>
-		</dl>
-	</div>
-	<?php endforeach;?>
+				<li class="company-block">
+					<?php if($access->is_admin):?>
+						<h1 class="company-block__header"><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$company->id))?>"><?=$company->name?></a></h1>
+					<?php else:?>
+						<h1 class="company-block__header"><?=$company->name?></h1>
+					<?php endif;?>
+					<p class="company-block__type"><?=$company->business_type?></p>
+					<p class="company-block__since">Meðlimur síðan <?=$company->created->format('Y')?></p>
+				</li>
 
-</div>
+			<?php endforeach;?>
+		</ul>
+		<?php endforeach;?>
+
+	</section>
+	<aside class="layout__aside">
+
+	</aside>
 </div>

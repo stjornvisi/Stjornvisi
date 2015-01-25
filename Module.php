@@ -36,6 +36,7 @@ use Stjornvisi\Form\NewUserCompany;
 use Stjornvisi\Form\NewUserUniversitySelect;
 use Stjornvisi\Form\NewUserIndividual;
 use Stjornvisi\Form\NewUserCredentials;
+use Stjornvisi\Form\Company as CompanyForm;
 
 use Stjornvisi\Notify\Submission as SubmissionNotify;
 use Stjornvisi\Notify\Event as EventNotify;
@@ -71,6 +72,7 @@ use Zend\Mail\Transport\FileOptions;
 class Module{
 
     public function onBootstrap(MvcEvent $e){
+
 
 
 		$config = $e->getApplication()
@@ -345,6 +347,12 @@ class Module{
 						$sm->get('Stjornvisi\Service\User')
 					);
 				},
+				'Stjornvisi\Form\Company' => function($sm){
+						return new CompanyForm(
+							$sm->get('Stjornvisi\Service\Values'),
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
 
             )
         );

@@ -6,57 +6,58 @@
  * Time: 11:20 AM
  */
 ?>
-<h1>Stjórnvísi eru grasrótarsamtök</h1>
-<h2>Stjórn Stjórnvísi</h2>
-<p>Stjórn félagsins er kosin á aðalfundi og skal skipuð formanni og sex virkum félagsmönnum úr faghópastarfinu.
-	Stjórnin tekur ákvarðanir varðandi stjórnun félagsins og daglegan rekstur, þ.m.t. nýjungar í starfseminni og
-	eftirfylgni, í samstarfi við framkvæmdastjóra.</p>
-<?php if( $this->access->is_admin ):?>
-	<div class="btn-group">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			Action <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="<?=$this->url('stjornin/create-member');?>">Stofna stjórnarmann</a></li>
-			<li><a href="<?=$this->url('stjornin/connect-member');?>">Tengja stórnarmann</a></li>
-		</ul>
-	</div>
-<?php endif; ?>
+<div class="layout layout--two-columns">
+	<section class="layout__section">
+		<div class="layout__data">
+			<ul class="block-list boardmember">
+				<?php foreach($this->boards as $period => $board):?>
+					<li class="boardmember__item">
+						<h1 class="boardmember__period"><?=$period?></h1>
+						<ul class="boardmember-list">
+							<?php foreach($board as $item):?>
+								<li>
+									<?php if($item->avatar):?>
+										<img src="<?=$this->basePath("/images/300-square/{$item->avatar}")?>" class="borardmember-list__avatar" />
+									<?php endif;?>
+									<h1 class="borardmember-list__name"><?=$item->name?></h1>
+									<h2 class="borardmember-list__company"><?=$item->company?></h2>
+									<?php if($item->is_chairman):?>
+										<h3 class="borardmember-list__type">Stjórnarformaður</h3>
+									<?php elseif($item->is_manager):?>
+										<h3 class="borardmember-list__type">Framkvæmdarstjóri</h3>
+									<?php else:?>
+										<h3 class="borardmember-list__type">&nbsp;</h3>
+									<?php endif;?>
+									<?php if($this->access->is_admin):?>
+										<stjonvisi-control class="inline">
+											<a href="<?=$this->url('stjornin/update-member',array('id'=>$item->id))?>">Uppfæra einstakling</a>
+											<a href="<?=$this->url('stjornin/update-connect-member',array('id'=>$item->connection_id))?>">Uppfæra skráningu</a>
+											<a href="<?=$this->url('stjornin/delete-connect-member',array('id'=>$item->connection_id))?>">Fjarlægja skráningu</a>
+										</stjonvisi-control>
+									<?php endif;?>
+								</li>
 
-<dl>
-	<?php foreach($this->boards as $period => $board):?>
-	<dt><?=$period?></dt>
-	<dd>
-		<ul>
-			<?php foreach($board as $item):?>
-			<li>
-				<?php if($item->avatar):?>
-				<img src="<?=$this->basePath("/images/60/{$item->avatar}")?>" />
-				<?php endif;?>
-				<?=$item->name?> - <?=$item->company?>
-				<?php if($item->is_chairman):?>
-					- Stjórnarformaður
-				<?php elseif($item->is_manager):?>
-					- Framkvæmdarstjóri
-				<?php else:?>
-					&nbsp;
-				<?php endif;?>
-			</li>
-			<?php if($this->access->is_admin):?>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-							Action <span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="<?=$this->url('stjornin/update-member',array('id'=>$item->id))?>">Uppfæra einstakling</a></li>
-							<li><a href="<?=$this->url('stjornin/update-connect-member',array('id'=>$item->connection_id))?>">Uppfæra skráningu</a></li>
-							<li><a href="<?=$this->url('stjornin/delete-connect-member',array('id'=>$item->connection_id))?>">Fjarlægja skráningu</a></li>
+							<?php endforeach;?>
 						</ul>
-					</div>
-			<?php endif;?>
-			<?php endforeach;?>
-		</ul>
-	</dd>
-	<?php endforeach;?>
+					</li>
+				<?php endforeach;?>
+			</ul>
+		</div>
+		<div class="layout__meta">
+			<h1>Stjórnvísi eru grasrótarsamtök</h1>
+			<h2>Stjórn Stjórnvísi</h2>
+			<p>Stjórn félagsins er kosin á aðalfundi og skal skipuð formanni og sex virkum félagsmönnum úr faghópastarfinu.
+				Stjórnin tekur ákvarðanir varðandi stjórnun félagsins og daglegan rekstur, þ.m.t. nýjungar í starfseminni og
+				eftirfylgni, í samstarfi við framkvæmdastjóra.</p>
+		</div>
 
-</dl>
+	</section>
+	<aside class="layout__aside">
+		<?php if( $this->access->is_admin ):?>
+			<stjonvisi-control>
+				<a href="<?=$this->url('stjornin/create-member');?>">Stofna stjórnarmann</a>
+				<a href="<?=$this->url('stjornin/connect-member');?>">Tengja stórnarmann</a>
+			</stjonvisi-control>
+		<?php endif; ?>
+	</aside>
+</div>
