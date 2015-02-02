@@ -237,12 +237,19 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return ViewModel
 	 */
-	public function listAuthorAction()
-	{
+	public function listAuthorAction(){
+		$sm = $this->getServiceLocator();
+		$userService = $sm->get('Stjornvisi\Service\User');
+		$auth = new AuthenticationService();
+		$access = $userService->getType(( $auth->hasIdentity() )
+			? $auth->getIdentity()->id
+			: null);
+
 		$sm = $this->getServiceLocator();
 		$articleService = $sm->get('Stjornvisi\Service\Article');
 		return new ViewModel(array(
-			'authors' => $articleService->fetchAllAuthors()
+			'authors' => $articleService->fetchAllAuthors(),
+			'access' => $access
 		));
 	}
 

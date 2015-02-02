@@ -1,0 +1,14 @@
+
+@include establish-baseline;
+*, *:before, *:after{
+	@include box-sizing(border-box);
+}
+body{
+	font-family: Georgia, Times, 'Times New Roman', serif;
+	color: $color-gray-dark;
+	-webkit-font-smoothing: antialiased;
+}
+a{
+	color: $color-gray-dark;
+	text-decoration: none;
+}

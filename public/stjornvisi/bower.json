@@ -1,0 +1,23 @@
+{
+  "name": "stjornvisi",
+  "version": "2.0.0",
+  "homepage": "https://github.com/fizk/Stjornvisi",
+  "authors": [
+    "einarvalur <fizk78@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "html5shiv": "~3.7.2",
+    "breakpoint-sass": "~2.5.0",
+    "webcomponentsjs": "~0.5.3",
+    "bootstrap-sass-official": "~3.3.3"
+  }
+}

@@ -1,14 +1,14 @@
 
-	<div class="column event-event-main">
-		<article class="event">
-			<header>
-				<time>
+	<div class="layout__data">
+		<article class="block-element">
+			<header class="block-element__header">
+				<time class="block-element__time">
 					<?=$this->event->event_date->format('Y-m-d');?> |
 					<?=($this->event->event_time)?$this->event->event_time->format('H:m'):'';?> |
 					<?=($this->event->event_end)?$this->event->event_end->format('H:m'):'';?>
 				</time>
 				<h1><?=$this->event->subject?></h1>
-				<ul class="event-groups-list">
+				<ul class="block-element__tags">
 					<?php if( count($this->event->groups)==0 ):?>
 						<li>Stjórvísisviðburður</li>
 					<?php else:?>
@@ -24,16 +24,16 @@
 					<?php endif;?>
 				</ul>
 			</header>
-			<section>
+			<section class="block-element__body">
 				<?php if( $this->event->avatar):?>
-					<img src="<?=$this->basePath("/images/100/{$this->event->avatar}")?>" />
+					<img src="<?=$this->basePath("/images/300/{$this->event->avatar}")?>" class="block-element__image" />
 				<?php endif;?>
 				<?=$this->paragrapher($this->event->body);?>
 				<h3><?=$this->event->location?></h3>
 				<h3><?=$this->event->address?></h3>
 			</section>
-			<aside></aside>
-			<footer>
+			<aside class="block-element__aside"></aside>
+			<footer class="block-element__footer">
 				<?php if( ($this->event->event_date > new DateTime()) && $this->logged_in ):?>
 
 					<?php if( $this->event->capacity == null || $this->event->capacity < count($this->event->attenders) ):?>
@@ -82,7 +82,7 @@
 		<?php endif;?>
 		<?php if($this->access->is_admin || $this->access->type >= 1):?>
 			<h2>Þátttakendur (<?=count($this->attendees)?>)</h2>
-			<table>
+			<table class="block-table">
 				<thead>
 				<tr>
 					<td>#</td>
@@ -126,16 +126,15 @@
 
 	</div>
 
-	<div class="column event-event-meta">
-
+	<div class="layout__meta">
 		<?php if( count($this->event->gallery)>0 ):?>
-			<div class="event-event-meta-gallery">
+			<div>
 				<h1>Myndir</h1>
-				<ul class="event-gallery-list">
+				<ul class="block-gallery">
 					<?php foreach($this->event->gallery as $img):?>
-						<li>
+						<li class="block-gallery__item">
 							<a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-lightbox="gallery">
-								<img src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
+								<img  class="block-gallery__image" src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
 							</a>
 						</li>
 					<?php endforeach;?>
@@ -144,7 +143,7 @@
 		<?php endif;?>
 
 		<?php if($this->event->lat && $this->event->lng):?>
-			<div class="event-event-meta-map">
+			<div>
 				<h1>Kort</h1>
 				<div id="map_canvas" data-lat="<?=$this->event->lat?>" data-lng="<?=$this->event->lng?>" style="height:300px"></div>
 
@@ -171,9 +170,9 @@
 		<?php endif;?>
 
 		<?php if(count($this->event->reference)>0):?>
-			<div class="event-event-meta-resources">
+			<div>
 				<h1>Ítarefni</h1>
-				<ul class="event-resources-list">
+				<ul class="block-supplement">
 					<?php foreach($this->event->reference as $ref):?>
 						<li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
 					<?php endforeach;?>
