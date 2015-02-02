@@ -29,7 +29,8 @@ class Event extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'body',
-            'type' => 'Zend\Form\Element\Textarea',
+            'type' => 'Stjornvisi\Form\Element\Rich',
+			//'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
 
             ),
@@ -112,12 +113,14 @@ class Event extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'avatar',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Stjornvisi\Form\Element\Img',
             'attributes' => array(
 				'data-url' => '/skrar/mynd'	//TODO can I use a function to call the router?
             ),
             'options' => array(
                 'label' => 'Mynd',
+				//'url' => '/skrar/mynd',
+				//'max' => '2000'
             ),
         ));
 
@@ -187,7 +190,7 @@ class Event extends Form implements InputFilterProviderInterface{
 				'required' => false,
 				'allow_empty' => true,
 				'filters'  => array(
-					array('name' => 'StripTags'),
+					//array('name' => 'StripTags'),
 					array('name' => 'StringTrim'),
 				),
 			),

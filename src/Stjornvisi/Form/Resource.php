@@ -20,10 +20,11 @@ class Resource extends Form {
 
 		$this->add(array(
 			'name' => 'name',
-			'type' => 'Zend\Form\Element\Text',
+			'type' => 'Stjornvisi\Form\Element\Img',
 			'attributes' => array(
 				'placeholder' => 'Nafn...',
 				'required' => 'required',
+				'data-url' => '/skrar/mynd'	//TODO can I use a function to call the router?
 			),
 			'options' => array(
 				'label' => 'Nafn',

@@ -9,11 +9,13 @@
 		<a href="<?=$this->url('vidburdir/resource-list',array('id'=>$this->event->id));?>">Ítarefni</a>
 	</stjonvisi-control>
 <?php endif;?>
-<h1>Tengdir viðburdir</h1>
+<h2 class="layout__headline">Tengdir viðburdir</h2>
 <ul class="block-list">
 	<?php foreach($this->related as $event):?>
 		<li class="block-item">
-			<time class="block-item__time"><?=$event->event_date->format('Y-m-d');?></time>
+			<time class="block-item__time" datetime="<?=$event->event_date->format('c')?>">
+				<?=$this->date($event->event_date)?>
+			</time>
 			<h2>
 				<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a>
 			</h2>

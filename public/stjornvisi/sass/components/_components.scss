@@ -16,11 +16,13 @@
 	.block-element__header{
 		h1{
 			@include adjust-font-size-to($font-size-header,1.2,$font-size-base);
-			font-family: open-sans;
+			font-family: Bitter;
 			font-weight: $font-weight-bold;
+			@include margin-leader(1/4,$font-size-header);
+			@include margin-trailer(1/4,$font-size-header);
 		}
 		h2{
-			font-family: open-sans;
+			font-family: Bitter;
 			font-weight: $font-weight-bold;
 		}
 		padding: rhythm(1/2,$font-size-base) 0;
@@ -28,7 +30,7 @@
 
 	.block-element__time{
 		@include adjust-font-size-to($font-size-small,1,$font-size-base);
-		font-family: open-sans;
+		font-family: $font-family-open;
 		font-weight: $font-weight-thin;
 	}
 
@@ -43,6 +45,7 @@
 			}
 		}
 		.block-element__image{
+			max-width: 50%;
 			float: left;
 			margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
 		}
@@ -58,6 +61,18 @@
 			column-width: rhythm(1,$font-size-base);
 			column-count: 3;
 		}
+		@include breakpoint($phone){
+			&.block-element--three-columns{
+				-webkit-column-width: auto;
+				-webkit-column-count: auto;
+				-moz-column-width: auto;
+				-moz-column-count: auto;
+				-ms-column-width: auto;
+				-ms-column-count: auto;
+				column-width: auto;
+				column-count: auto;
+			}
+		}
 
 	}
 	.block-element__aside{
@@ -67,10 +82,13 @@
 		padding: rhythm(1/2,$font-size-base) 0;
 	}
 
-	ul.block-element__tags{
+	/*ul*/.block-element__tags{
 		@include pie-clearfix;
 		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
-		font-family: open-sans;
+		@include margin-leader(1/2,$font-size-sub);
+		@include margin-trailer(1/2,$font-size-sub);
+
+		font-family: $font-family-open;
 		font-weight: $font-weight-thin;
 		li{
 			float: left;
@@ -82,10 +100,17 @@
 		}
 		li:last-child:after{
 			content: "";
+			padding: 0;
 		}
 		a{
 			color: $color-green-sea;
 		}
+	}
+
+	.block-element__location{
+		font-weight: $font-weight-thin;
+		font-family: $font-family-open;
+		color: $color-green-sea;
 	}
 
 	.block-element__more{
@@ -120,22 +145,24 @@
 .block-item{
 	position: relative;
 	h2{
+		@include adjust-font-size-to($font-size-base,1,$font-size-base);
 		font-weight: $font-weight-bold;
-		font-family: open-sans;
+		font-family: $font-family-bitter;
 	}
 	h3{
+		@include adjust-font-size-to($font-size-base,1,$font-size-base);
 		font-weight: $font-weight-bold;
-		font-family: open-sans;
+		font-family: $font-family-bitter;
 	}
 	.block-item__time{
 		@include adjust-font-size-to($font-size-small,1,$font-size-base);
-		font-family: open-sans;
+		font-family: $font-family-open;
 		font-weight: $font-weight-thin;
 	}
 	.block-item__tags{
 		@include pie-clearfix;
 		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
-		font-family: open-sans;
+		font-family: $font-family-open;
 		font-weight: $font-weight-thin;
 		li{
 			float: left;
@@ -147,6 +174,7 @@
 		}
 		li:last-child:after{
 			content: "";
+			padding: 0;
 		}
 		a{
 			color: $color-green-sea;
@@ -172,10 +200,31 @@
  *
  */
 /*ul*/.block-list{
+	&.block-list--separator{
+		> li{
+			border-bottom: 1px solid $color-gray-light;
+		}
+	}
+	& > li:first-child {
+		padding-top: 0;
+	}
 	& > li{
 		position: relative;
 		padding: rhythm(1,$font-size-base) 0;
 	}
+}
+
+/**
+ * HEADLINE + BLOCK-LIST
+ *
+ * If there is a headline on top of the block list
+ * that means that the headline is a label for the list,
+ * we need to add space below (actually on top) to
+ * make some air between the label and list.
+ *
+ */
+.layout__headline + /*ul*/.block-list {
+	margin-top: rhythm(1,$font-size-base);
 }
 
 
@@ -213,10 +262,34 @@
 	& > li{
 		padding: rhythm(1/4,$font-size-base) 0;
 	}
+	a{
+		@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		font-family: $font-family-open;
+		color: $color-green-sea;
+	}
+	a:before{
+		padding-right: rhythm(1/2,$font-size-small);
+		font-family: 'icomoon';
+		content: "\e60b";
+	}
+	a[href$=xls]:before,
+	a[href$=xlsx]:before{
+		content: "\e60c";
+	}
+	a[href$=pdf]:before{
+		content: "\e60d";
+	}
 }
 
 
-
+/**
+ * BLOCK-PROPERTY-VALUE
+ *
+ * The classic definition list that has the label on the
+ * left and the value on the right.
+ *
+ * ...implemented with a <dl> item
+ */
 /*dl*/.block-property-value{
 	@include pie-clearfix;
 	dt{
@@ -245,8 +318,30 @@
  */
 .layout{
 	@include pie-clearfix;
-	padding: $gutter;
+	padding: 0 $gutter*2 $gutter*2 $gutter*2;
+	@include breakpoint( $phone ){
+		padding: 0 $gutter/2;
+	}
 
+	.layout__headline {
+		font-family: $font-family-open;
+		color: $color-green-sea;
+		text-transform: uppercase;
+
+	}
+	h1.layout__headline{
+		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+	}
+	h2.layout__headline{
+		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+		font-weight: $font-weight-bold;
+	}
+	h3.layout__headline{}
+	h4.layout__headline{}
+
+	/**
+	 *
+	 */
 	&.layout--two-columns {
 		.layout__section{
 			@include pie-clearfix;
@@ -266,6 +361,7 @@
 			width: 20%;
 		}
 	}
+
 	/**
 	 *
 	 */
@@ -285,6 +381,14 @@
 				width: 50%;
 				padding-right: rhythm(1/2,$font-size-base);
 				padding-left: rhythm(1/2,$font-size-base);
+
+				> div:first-child{
+					margin-top: 0;
+				}
+				> div{
+					margin-top: $gutter;
+				}
+
 			}
 			.layout_article{
 				padding-right: rhythm(1/2,$font-size-base);
@@ -294,7 +398,8 @@
 				.layout__data, .layout__meta{
 					float: none;
 					width: auto;
-
+					padding-left: 0;
+					padding-right: 0;
 				}
 			}
 		}
@@ -312,8 +417,22 @@
 				width: 30%;
 			}
 		}
+		@include breakpoint($phone){
+			.layout__section{
+				width: auto;
+				float: none;
+			}
+			.layout__aside{
+				width: auto;
+				float: none;
+				padding-left: 0;
+			}
+		}
 	}
 
+	/**
+	 *
+	 */
 	&.layout--three-columns-reverse{
 		.layout__section{
 			float: right;
@@ -322,6 +441,16 @@
 		.layout__aside{
 			float: left;
 			width: 20%;
+		}
+		@include breakpoint($phone){
+			.layout__section{
+				float: none;
+				width: auto;
+			}
+			.layout__aside{
+				float: none;
+				width: auto;
+			}
 		}
 	}
 }
@@ -334,10 +463,31 @@
  * It's uses in rich-text and where a simple table data
  * needs to be displayed.
  */
-/*table*/.block-table{
-
+/*table*/.block-table {
+	 td, td{
+		 vertical-align: top;
+	 }
+	thead{
+		td{
+			font-family: $font-family-open;
+			font-weight: $font-weight-bold;
+		}
+	}
+	tfoot{}
+	tbody{}
 }
 
+/**
+ * HEADLINE + TABLE
+ *
+ * If there is a headline on top of the table
+ * that means that the headline is a label for the table,
+ * we need to add space below (actually on top) to
+ * make some air between the label and table.
+ */
+.layout__headline + /*table*/.block-table{
+	margin-top: rhythm(1,$font-size-base);
+}
 
 /**
  * BLOCK-CALENDAR
@@ -367,3 +517,5 @@
 	}
 	.block-calendar__footer{}
 }
+
+

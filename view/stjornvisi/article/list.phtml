@@ -13,7 +13,7 @@
 			<?php foreach($this->articles as $article):?>
 				<li class="block-element">
 					<h2><a href="<?=$this->url('greinar/index',array('id'=>$article->id))?>"><?=$article->title?></a></h2>
-					<time class="block-element__time"><?=$article->published->format('d. M Y')?></time>
+					<time class="block-element__time" datetime="<?=$article->published->format('c');?>"><?=$this->date($article->published)?></time>
 					<?=$this->paragrapher($article->summary);?>
 					<ul class="block-element__tags">
 						<?php foreach($article->authors as $author):?>

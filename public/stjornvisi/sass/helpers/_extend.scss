@@ -1,6 +1,12 @@
 
 	%rich-text{
-		p{
+		h1 + p,
+		h2 + p,
+		h3 + p,
+		h4 + p{
+			@include margin-leader(1/2,$font-size-base);
+		}
+		p, blockquote{
 			@include margin-trailer(1,$font-size-base);
 			@include margin-leader(1,$font-size-base);
 		}
@@ -9,6 +15,38 @@
 		}
 		p:last-of-type{
 			margin-bottom: 0;
+		}
+
+		blockquote {
+			font-style: italic;
+			border-left: 4px solid $color-green-sea;
+			padding-left: rhythm(1,$font-size-base);
+		}
+
+		ul{
+			list-style: disc;
+			list-style-position: inside;
+		}
+		ol{
+			list-style: decimal;
+			list-style-position: inside;
+		}
+
+		a{
+			color: $color-green-sea;
+		}
+		h1{
+			@include adjust-font-size-to($font-size-big,1,$font-size-base);
+		}
+		h2{
+			@include adjust-font-size-to($font-size-base,1,$font-size-base);
+		}
+		h3, h4 {
+			@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+		}
+		h1, h2, h3, h4{
+			font-family: $font-family-bitter;
+			font-weight: $font-weight-bold;
 		}
 
 	}

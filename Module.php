@@ -76,6 +76,7 @@ class Module{
     public function onBootstrap(MvcEvent $e){
 
 
+		$auth = new AuthenticationService();
 
 		$config = $e->getApplication()
 			->getServiceManager()
@@ -88,6 +89,17 @@ class Module{
 
 
         $eventManager        = $e->getApplication()->getEventManager();
+		$eventManager->attach('render',function($e) use ($auth){
+			/** @var $e \Zend\Mvc\MvcEvent  */
+			if( !$auth->hasIdentity() ){
+				if( $e->getRouteMatch()->getMatchedRouteName() == 'home' ){
+					$e->getViewModel()->setTemplate('layout/landing');
+				}else{
+					$e->getViewModel()->setTemplate('layout/anonymous');
+				}
+			}
+
+		});
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
@@ -371,6 +383,11 @@ class Module{
 
 	public function getViewHelperConfig(){
 		return array(
+			'invokables' => array(
+				'formelement' => 'Stjornvisi\Form\View\Helper\FormElement',
+				'richelement'     => 'Stjornvisi\Form\View\Helper\RichElement',
+				'imgelement'     => 'Stjornvisi\Form\View\Helper\ImgElement',
+			),
 			'factories' => array(
 				'subMenu' => function($sm){
 					return new SubMenu(
@@ -383,12 +400,29 @@ class Module{
 		);
 	}
 
+	/*
 	public function init(ModuleManager $mm){
+
+
 		$auth = new AuthenticationService();
-		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'dispatch', function($e) use ($auth) {
+		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'render', function($e) use ($auth) {
+
+			$controller = $e->getController();
+			$controllerClass = $e->getControllerClass();
+			$meta = $e->getRequest()->getMetadata();
 			if( !$auth->hasIdentity() ){
-				$e->getTarget()->layout('layout/anonymous');
+//				$e->getTarget()->layout('layout/anonymous');
+			}
+		});
+		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'dispatch', function($e) use ($auth) {
+
+			$controller = $e->getController();
+			$controllerClass = $e->getControllerClass();
+			$meta = $e->getRequest()->getMetadata();
+			if( !$auth->hasIdentity() ){
+//				$e->getTarget()->layout('layout/anonymous');
 			}
 		});
 	}
+	*/
 }

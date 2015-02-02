@@ -2,9 +2,9 @@
 	<div class="layout__data">
 		<article class="block-element">
 			<header class="block-element__header">
-				<time class="block-element__time">
-					<?=$this->event->event_date->format('Y-m-d');?> |
-					<?=($this->event->event_time)?$this->event->event_time->format('H:m'):'';?> |
+				<time class="block-element__time" datetime="<?=$this->event->event_date->format('c')?>">
+					<?=$this->date($this->event->event_date);?> &middot;
+					<?=($this->event->event_time)? $this->event->event_time->format('H:m'):'';?> -
 					<?=($this->event->event_end)?$this->event->event_end->format('H:m'):'';?>
 				</time>
 				<h1><?=$this->event->subject?></h1>
@@ -29,107 +29,65 @@
 					<img src="<?=$this->basePath("/images/300/{$this->event->avatar}")?>" class="block-element__image" />
 				<?php endif;?>
 				<?=$this->paragrapher($this->event->body);?>
-				<h3><?=$this->event->location?></h3>
-				<h3><?=$this->event->address?></h3>
 			</section>
-			<aside class="block-element__aside"></aside>
+			<aside class="block-element__aside">
+				<h3 class="block-element__location"><?=$this->event->location?></h3>
+				<h3 class="block-element__location"><?=$this->event->address?></h3>
+			</aside>
 			<footer class="block-element__footer">
-				<?php if( ($this->event->event_date > new DateTime()) && $this->logged_in ):?>
 
-					<?php if( $this->event->capacity == null || $this->event->capacity < count($this->event->attenders) ):?>
-
-						<?php if($this->event->attending === null):?>
-							ekki skráðu/ur inn
-						<?php elseif($this->event->attending === false):?>
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>"  class="attending no" title="Afskrá mætingu">mæti ekki</a>
-						<?php elseif($this->event->attending == 0):?>
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-							<span  class="attending no" title="Afskrá mætingu">mæti ekki</span>
-						<?php elseif($this->event->attending == 1):?>
-							<span class="attending yes" title="Skrá mætingu">mæti</span>
-							<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-						<?php endif;?>
-
-					<?php else:?>
-						<p class="bg-danger">Fullt á viðburðinn</p>
-					<?php endif;?>
-
-				<?php endif;?>
 			</footer>
 		</article>
-		<?php if( (!$this->logged_in && $this->event->event_date > new DateTime()) && ($this->event->capacity == null || $this->event->capacity < count($this->event->attenders)) ):?>
-			<div class="well well-lg">
-				<form method="post" action="/vidburdir/<?=$this->event->id?>" class="form-inline">
-					<?php if($this->register_message):?>
-						<p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
-					<?php else:?>
-						<p>Þú virðist ekki vera skráð/ur inn</p>
-						<p>Þú getur samt skráð þig á viðburðinn sem gestur með því að fylla út netfang hér fyrir neðan.</p>
-					<?php endif;?>
-					<div class="form-group">
-						<input type="text" placeholder="Nafn" name="name" class="form-control" />
-					</div>
-					<div class="form-group">
-						<input type="email" placeholder="Netfang" name="email" class="form-control" />
-					</div>
-					<input type="submit" class="btn btn-default" value="Skrá" />
 
-				</form>
+
+		<?php if( $this->event->event_date < new DateTime()) : ?> <!-- ended -->
+			<div class="block-element__attenders">
+				viðburður liðinn
+			</div>
+		<?php elseif( $this->event->capacity !== null && $this->event->capacity < count($this->event->attenders) ):?>
+			<div class="block-element__attenders">
+				Viðburður er fullur
 			</div>
 		<?php else:?>
-			<p class="bg-danger">Viðburður fullur</p>
+			<div class="block-element__attenders">
+				<?php if($this->logged_in): ?>
+					<?php if($this->event->attending === false):?>
+						<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+						<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>"  class="attending no" title="Afskrá mætingu">mæti ekki</a>
+					<?php elseif($this->event->attending == 0):?>
+						<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+						<span  class="attending no" title="Afskrá mætingu">mæti ekki</span>
+					<?php elseif($this->event->attending == 1):?>
+						<span class="attending yes" title="Skrá mætingu">mæti</span>
+						<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+					<?php endif;?>
+				<?php else:?>
+					<form method="post" action="/vidburdir/<?=$this->event->id?>" class="form-inline">
+						<?php if($this->register_message):?>
+							<p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
+						<?php else:?>
+							<p>Þú virðist ekki vera skráð/ur inn</p>
+							<p>Þú getur samt skráð þig á viðburðinn sem gestur með því að
+								fylla út netfang hér fyrir neðan.</p>
+						<?php endif;?>
+						<div class="form-group">
+							<input type="text" placeholder="Nafn" name="name" class="form-control" />
+						</div>
+						<div class="form-group">
+							<input type="email" placeholder="Netfang" name="email" class="form-control" />
+						</div>
+						<input type="submit" class="btn btn-default" value="Skrá" />
+					</form>
+				<?php endif;?>
+			</div>
 		<?php endif;?>
-		<?php if($this->access->is_admin || $this->access->type >= 1):?>
-			<h2>Þátttakendur (<?=count($this->attendees)?>)</h2>
-			<table class="block-table">
-				<thead>
-				<tr>
-					<td>#</td>
-					<td>Nafn</td>
-					<td>Titill</td>
-					<td>Skráning</td>
-				</tr>
-				</thead>
-				<tfoot>
-				<tr>
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				</tfoot>
-				<tbody>
-				<?php foreach($this->attendees as $attendee):?>
-					<tr>
-						<td><?=@++$i?></td>
-						<td>
-							<?php if($attendee->id):?>
-								<a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>
-							<?php else:?>
-								<?=($attendee->name)?$attendee->name:$attendee->email;?>
-							<?php endif;?>
-						</td>
-						<td>
-							<?php if($attendee->title):?>
-								<?=$attendee->title?>
-							<?php else:?>
-								&nbsp;
-							<?php endif;?>
-						</td>
-						<td>
-							<?=$attendee->register_time->format('Y-m-d H:i')?>
-						</td>
-					</tr>
-				<?php endforeach;?>
-				</tbody>
 
-			</table>
-		<?php endif;?>
 
 	</div>
 
 	<div class="layout__meta">
 		<?php if( count($this->event->gallery)>0 ):?>
 			<div>
-				<h1>Myndir</h1>
 				<ul class="block-gallery">
 					<?php foreach($this->event->gallery as $img):?>
 						<li class="block-gallery__item">
@@ -144,9 +102,7 @@
 
 		<?php if($this->event->lat && $this->event->lng):?>
 			<div>
-				<h1>Kort</h1>
 				<div id="map_canvas" data-lat="<?=$this->event->lat?>" data-lng="<?=$this->event->lng?>" style="height:300px"></div>
-
 				<script type="text/javascript">
 					function initialize() {
 						var latlng = new google.maps.LatLng(<?=$this->event->lat?>, <?=$this->event->lng?>);
@@ -171,12 +127,59 @@
 
 		<?php if(count($this->event->reference)>0):?>
 			<div>
-				<h1>Ítarefni</h1>
+				<h2 class="layout__headline">Ítarefni</h2>
 				<ul class="block-supplement">
 					<?php foreach($this->event->reference as $ref):?>
 						<li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
 					<?php endforeach;?>
 				</ul>
+			</div>
+		<?php endif;?>
+
+		<?php if($this->access->is_admin || $this->access->type >= 1):?>
+			<div>
+				<h2 class="layout__headline">Þátttakendur (<?=count($this->attendees)?>)</h2>
+				<table class="block-table">
+					<thead>
+					<tr>
+						<td>#</td>
+						<td>Nafn</td>
+						<!--td>Titill</td-->
+						<td>Skráning</td>
+					</tr>
+					</thead>
+					<tfoot>
+					<tr>
+						<td colspan="4">&nbsp;</td>
+					</tr>
+					</tfoot>
+					<tbody>
+					<?php foreach($this->attendees as $attendee):?>
+						<tr>
+							<td><?=@++$i?></td>
+							<td>
+								<?php if($attendee->id):?>
+									<a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>
+								<?php else:?>
+									<?=($attendee->name)?$attendee->name:$attendee->email;?>
+								<?php endif;?>
+							</td>
+							<!--td>
+								<?php if($attendee->title):?>
+									<?=$attendee->title?>
+								<?php else:?>
+									&nbsp;
+								<?php endif;?>
+							</td-->
+							<td>
+								<time datetime="<?=$attendee->register_time->format('c')?>">
+									<?=$this->date($attendee->register_time,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+								</time>
+							</td>
+						</tr>
+					<?php endforeach;?>
+					</tbody>
+				</table>
 			</div>
 		<?php endif;?>
 	</div>

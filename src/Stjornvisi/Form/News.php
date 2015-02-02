@@ -38,8 +38,9 @@ class News extends Form{
 
         $this->add(array(
             'name' => 'avatar',
-            'type' => 'Zend\Form\Element\Text',
+			'type' => 'Stjornvisi\Form\Element\Img',
             'attributes' => array(
+				'data-url' => '/skrar/mynd'	//TODO can I use a function to call the router?
             ),
             'options' => array(
                 'label' => 'Mynd',

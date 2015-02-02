@@ -1,7 +1,9 @@
 <div class="layout_article">
 	<article class="block-element">
 		<header class="block-element__header">
-			<time class="block-element__time"><?=$this->news->created_date->format('Y-m-d H:i')?></time>
+			<time class="block-element__time" datetime="<?=$this->news->created_date->format('c')?>">
+				<?=$this->date($this->news->created_date,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+			</time>
 			<h1><?=$this->news->title?></h1>
 			<ul class="block-element__tags">
 				<li>
