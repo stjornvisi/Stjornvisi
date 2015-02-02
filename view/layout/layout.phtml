@@ -23,7 +23,6 @@
 		; ?>
     </head>
 	<body>
-
 		<nav role="navigation">
 			<?=$this->subMenu()?>
 			<ul class="categories">
@@ -37,40 +36,53 @@
 		</nav>
 
 		<main role="main">
-			<header>
-				<h1>Stjórnvísi</h1>
-				<ul>
-					<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-					<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
-					<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
-					<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-				</ul>
-				<form method="get" action="<?=$this->url('leita')?>">
-					<input name="q" type="search" placeholder="Leit..." />
-					<input type="submit" value="leita">
-				</form>
+			<header class="main__header">
+				<h1 class="main__brand">Stjórnvísi</h1>
+				<nav class="main__menu">
+					<ul class="main__menu-items">
+						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
+						<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
+						<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
+					</ul>
+					<form method="get" action="<?=$this->url('leita')?>" class="main__search">
+						<input name="q" type="search" placeholder="Leit..." />
+						<input type="submit" value="leita">
+					</form>
+				</nav>
+
 			</header>
-			<aside ></aside>
-
 			<?php echo $this->content; ?>
-
-			<footer role="footer">
-				<ul>
-					<li><a href="/um">Um Stjórnvísi</a></li>
-					<li><a href="/stjornin">Stjórnin</a></li>
-					<li><a href="/log-arsskyrslur-og-arsreikningar">Lög, ársskýrslur og ársreikningar</a></li>
-					<li><a href="/fundagerdir">Fundagerðir</a></li>
-					<li><a href="/kennsla">Handbók vefsins og kennslumyndbönd</a></li>
-					<li><a href="/fyrirtaeki">Fyrirtæki innan Stjórnvísi</a></li>
-				</ul>
-				<ul>
-					<li><a href="<?php echo $this->url('notandi') ?>">Notendur</a></li>
-					<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
-					<li><a href="<?php echo $this->url('stjornin') ?>">Stjórn</a></li>
-				</ul>
-				</footer>
 		</main>
 
+		<footer role="footer">
+			<div class="footer-wrapper">
+				<div class="footer-wrapper__inner">
+					<div class="footer-wrapper__item">
+						<h1>Stjórnvísi</h1>
+						<p>Innovation house</p>
+						<p>Eiðistorgi 13-17 170 Seltjarnarnes</p>
+						<p>Kt: 650686-1609</p>
+						<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
+						<p>Sími: 533-5666 Gsm: 840-4990</p>
+					</div>
+					<ul class="footer-wrapper__item">
+						<li><a href="<?php echo $this->url('um') ?>">Um Stjórnvísi</a></li>
+						<li><a href="<?php echo $this->url('stjornin') ?>">Stjórnin</a></li>
+						<li><a href="<?php echo $this->url('log-arsskyrslur-og-arsreikningar') ?>">Lög, ársskýrslur og ársreikningar</a></li>
+						<li><a href="/">Fundagerðir</a></li>
+						<li><a href="<?php echo $this->url('kennsla') ?>">Handbók vefsins og kennslumyndbönd</a></li>
+						<li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki innan Stjórnvísi</a></li>
+					</ul>
+					<ul class="footer-wrapper__item">
+						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
+						<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
+						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
+					</ul>
+				</div>
+			</div>
+		</footer>
 		<?php echo $this->inlineScript() ?>
 		<!-- Scripts -->
 		<?php echo $this->headScript()

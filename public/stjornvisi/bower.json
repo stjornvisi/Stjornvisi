@@ -18,6 +18,8 @@
     "html5shiv": "~3.7.2",
     "breakpoint-sass": "~2.5.0",
     "webcomponentsjs": "~0.5.3",
-    "bootstrap-sass-official": "~3.3.3"
+    "bootstrap-sass-official": "~3.3.3",
+    "Stickyfill": "~1.1.1",
+    "photoswipe": "~4.0.5"
   }
 }

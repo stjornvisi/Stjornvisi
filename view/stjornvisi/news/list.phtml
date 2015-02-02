@@ -1,12 +1,12 @@
 <div class="layout layout--three-columns">
 	<section class="layout__section">
-		<h1>Fréttalisti</h1>
-		<ul class="block-list">
+
+		<ul class="block-list block-list--separator">
 			<?php foreach($this->news as $news):?>
 			<li>
 				<article class="block-element">
 					<header class="block-element__header">
-						<time class="block-element__time"><?=$news->created_date->format('Y-m-d')?></time>
+						<time class="block-element__time"><?= $this->date($news->created_date)?></time>
 						<h1>
 							<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a>
 						</h1>

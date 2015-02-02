@@ -1,0 +1,63 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: einar
+ * Date: 25/01/15
+ * Time: 15:22
+ */
+?>
+<?php echo $this->doctype(); ?>
+<html lang="is">
+	<head>
+		<meta charset="utf-8">
+		<?php echo $this->headTitle('Stjórnvísi '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+		<?php echo $this->headMeta()
+			->appendName('viewport', 'width=device-width, initial-scale=1.0')
+			->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+		?>
+
+		<!-- Le styles -->
+		<?php echo $this->headLink(array(
+				'rel' => 'icon',
+				'type' => 'image/png',
+				'href' => $this->basePath() . '/styles/img/favicon.png')
+		)
+			->appendStylesheet( $this->basePath() . '/stylesheets//screen.css' )
+			->appendStylesheet( $this->basePath() . '/stylesheets//ie.css','screen','IE 9')
+		; ?>
+	</head>
+	<body>
+
+		<main role="main">
+			<?php echo $this->content; ?>
+		</main>
+		<footer role="footer">
+			<div class="footer-wrapper">
+				<div class="footer-wrapper__inner">
+					<div class="footer-wrapper__item">
+						<h1>Stjórnvísi</h1>
+						<p>Innovation house</p>
+						<p>Eiðistorgi 13-17 170 Seltjarnarnes</p>
+						<p>Kt: 650686-1609</p>
+						<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
+						<p>Sími: 533-5666 Gsm: 840-4990</p>
+					</div>
+					<ul class="footer-wrapper__item">
+						<li><a href="<?php echo $this->url('um') ?>">Um Stjórnvísi</a></li>
+						<li><a href="<?php echo $this->url('stjornin') ?>">Stjórnin</a></li>
+						<li><a href="<?php echo $this->url('log-arsskyrslur-og-arsreikningar') ?>">Lög, ársskýrslur og ársreikningar</a></li>
+						<li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki innan Stjórnvísi</a></li>
+					</ul>
+					<ul class="footer-wrapper__item">
+						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
+						<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
+						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
+					</ul>
+				</div>
+			</div>
+		</footer>
+		<?php echo $this->inlineScript() ?>
+	</body>
+</html>

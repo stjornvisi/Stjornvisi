@@ -4,11 +4,13 @@
 		<a href="<?=$this->url('frettir/delete',array('id'=>$this->news->id));?>">Eyða</a>
 	</stjonvisi-control>
 <?php endif;?>
-<h1>Tengdar fréttir</h1>
+<h2 class="layout__headline">Tengdar fréttir</h2>
 <ul class="block-list">
 	<?php foreach($this->related as $news):?>
 		<li class="block-item">
-			<time class="block-item__time"><?=$news->created_date->format('Y-m-d H:i')?></time>
+			<time class="block-item__time" datetime="<?=$news->created_date->format('c')?>">
+				<?=$this->date($news->created_date, \Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+			</time>
 			<?php if( $news->avatar ): ?>
 			<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-item__image">
 				<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" />

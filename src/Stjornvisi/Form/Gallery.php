@@ -20,7 +20,7 @@ class Gallery extends Form {
 
 		$this->add(array(
 			'name' => 'name',
-			'type' => 'Zend\Form\Element\Text',
+			'type' => 'Stjornvisi\Form\Element\Img',
 			'attributes' => array(
 				'placeholder' => 'Nafn...',
 				'required' => 'required',

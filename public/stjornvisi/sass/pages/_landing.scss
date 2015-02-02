@@ -1,0 +1,159 @@
+
+
+	.loaded .landing-page .landing-page__hero{
+		img, h1, h2, h3, h4{
+			transform: translate3d(0, 0%, 0);
+		}
+	}
+
+	.landing-page{
+
+		.landing-page__hero{
+			background-image: url("images/header-image.jpg");
+			background-size: cover;
+			text-align: center;
+			color: $color-white;
+			padding: $gutter 0 $gutter*4 0;
+			box-shadow: 0 2px 5px rgba(0,0,0,.37);
+
+			h1{
+				@include adjust-font-size-to($font-size-huge,2,$font-size-base);
+				font-family: open-sans;
+				font-weight: bold;
+				text-shadow: 0 2px 3px rgba(0,0,0,.37);
+				margin: auto;
+				max-width: 960px;
+				@include margin-leader(4,$font-size-huge);
+				@include margin-trailer(2,$font-size-huge);
+
+			}
+			h4{
+				font-family: open-sans;
+				font-weight: bold;
+				text-shadow: 0 2px 3px rgba(0,0,0,.37);
+				margin: auto;
+				max-width: 960px;
+
+			}
+			img, h1, h2, h3, h4{
+				font-family: $font-family-bitter;
+				transform: translate3d(0, 20px, 0);
+				transition: all 1s cubic-bezier(.39,1,.91,1);
+			}
+		}
+
+
+		.landing-page__gallery{
+			ul{
+				@include pie-clearfix;
+			}
+			.landing-page__gallery-item{
+				float: left;
+				width: (100% / 6);
+				img{
+					width: 100%;
+					vertical-align: bottom;
+				}
+			}
+		}
+
+		/**
+		 * LANDING-PAGE-PANEL
+		 *
+		 * A simple panel that contains headline, paragraphs and maybe
+		 * some cta buttons
+		 */
+		.landing-page__panel{
+			background-color: $color-blue-light;
+			.landing-page__headline {
+				font-family: $font-family-bitter;
+				font-weight: $font-weight-bold;
+				text-align: center;
+
+			}
+			h1.landing-page__headline {
+				@include adjust-font-size-to($font-size-huge,1,$font-size-base);
+				@include margin-trailer(2,$font-size-huge);
+			}
+			h2.landing-page__headline {
+				i{
+					vertical-align: text-bottom;
+				}
+			}
+			h3.landing-page__headline {}
+
+			> div{
+				max-width: 960px;
+				margin: auto;
+				padding: $gutter*2 $gutter;
+			}
+		}
+
+
+		.landing-page__carousel {
+			background-image: url(images/faghopar.jpg);
+			background-size: cover;
+			background-position: center;
+			color: $color-white;
+		}
+
+		.landing-page__element{
+			@include pie-clearfix;
+			aside{
+				float: left;
+				width: 40%;
+			}
+			header, section, footer{
+				float: left;
+				width: 60%;
+			}
+			img{
+				width: 100%;
+				border-radius: 50%;
+			}
+		}
+
+		.landing-page__cta{
+			@include pie-clearfix;
+			margin-left: - $gutter;
+			margin-right: - $gutter;
+			.landing-page__cta-item{
+				padding: $gutter;
+				float: left;
+				width: 33.33%;
+				text-align: center;
+				img {
+					width: 100%;
+				}
+			}
+		}
+		@include breakpoint($phone){
+			.landing-page__cta{
+				margin-left: 0;
+				margin-right: 0;
+				.landing-page__cta-item{
+					float: none;
+					width: auto;
+					padding: $gutter/2 0;
+					text-align: left;
+					@include pie-clearfix;
+					img{
+						width: 30%;
+						float: left;
+					}
+					p{
+						padding-left: $gutter;
+						width: 70%;
+						float: right;
+
+					}
+					h2{
+						@include margin-leader(1/2,$font-size-base);
+						width: 70%;
+						float: right;
+						padding-left: $gutter;
+					}
+				}
+			}
+		}
+	}

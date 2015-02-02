@@ -9,14 +9,19 @@
 
 //- - - - - - [ FONT ] - - - - - - - - - - - - - - - - - - -
 
+	$font-size-huge:	36px;
 	$font-size-header:	24px;
+	$font-size-big:		18px;
 	$font-size-base:	16px;
 	$font-size-sub:		14px;
 	$font-size-small:	12px;
 
 	$font-weight-normal:	300;
-	$font-weight-bold:		500;
+	$font-weight-bold:		700;
 	$font-weight-thin:		100;
+
+	$font-family-bitter: 	'Bitter', serif;
+	$font-family-open: 		'Open Sans', sans-serif;
 
 	//vertical thythm
 	$base-font-size: $font-size-base;
@@ -29,4 +34,5 @@
 	$color-gray-light:	rgb(211,211,211);
 	$color-green-sea:	rgb(74,133,161);
 	$color-blue:		rgb(41, 36, 104);
+	$color-blue-light:	rgb(246,247,251);
 	$color-white:		rgb(255,255,255);
