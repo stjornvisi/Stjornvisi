@@ -986,6 +986,19 @@ return array(
 							),
 						)
 					),
+					'create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/stofna[/:id]',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'create'
+							),
+						)
+					),
 				),
 			),
 			'skeletonlist' => array(
