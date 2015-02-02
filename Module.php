@@ -377,12 +377,6 @@ class Module{
 					return $obj;
 				},
 
-				'Stjornvisi\Form\Company' => function($sm){
-						return new CompanyForm(
-							$sm->get('Stjornvisi\Service\Values'),
-							$sm->get('Stjornvisi\Service\Company')
-						);
-					},
             )
         );
     }
