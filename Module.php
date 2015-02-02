@@ -361,6 +361,12 @@ class Module{
 						$sm->get('Stjornvisi\Service\User')
 					);
 				},
+				'Stjornvisi\Form\Company' => function($sm){
+						return new CompanyForm(
+							$sm->get('Stjornvisi\Service\Values'),
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
 
 				'Stjornvisi\Service\Skeleton' => function($sm){
 					return new Skeleton();
