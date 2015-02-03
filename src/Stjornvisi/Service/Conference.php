@@ -91,4 +91,69 @@ class Conference extends AbstractService {
 			throw new Exception("Can't fetch all conferences.",0,$e);
 		}
 	}
+
+    /**
+     * Create event.
+     *
+     * The $data array can contain the key 'groups'
+     * which should be an array of group IDs that this
+     * event is connected to.
+     *
+     * @param array $data event data
+     * @return int ID of event
+     * @throws Exception
+     */
+    public function create( $data ){
+        try{
+            $groups = isset($data['groups'])
+                ? $data['groups']
+                : array() ;
+            unset($data['groups']);
+
+            //SANITIZE CAPACITY
+            //	capacity has to be integer and bigger that zero
+            $data['capacity'] = is_numeric($data['capacity'])
+                ? (int)$data['capacity']
+                : null ;
+            $data['capacity'] = ($data['capacity'] <= 0)
+                ? null
+                : $data['capacity'] ;
+
+            $createString = $this->insertString('Conference',$data);
+            $createStatement = $this->pdo->prepare($createString);
+            $createStatement->execute($data);
+
+            $id = (int)$this->pdo->lastInsertId();
+
+            /**
+            $connectStatement = $this->pdo->prepare("
+                INSERT INTO `Group_has_Event` (`event_id`, `group_id`, `primary`)
+                VALUES(:event_id, :group_id, 0)
+            ");
+            foreach($groups as $group){
+                $connectStatement->execute(array(
+                    'event_id' => $id,
+                    'group_id' => $group
+                ));
+            }
+            */
+            $this->getConferenceManager()->trigger('create', $this, array(__FUNCTION__));
+            $data['id'] = $id;
+            $this->getConferenceManager()->trigger('index', $this, array(
+                0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                'id' => $id,
+                'name' => Event::NAME,
+            ));
+            return $id;
+        }catch (PDOException $e){
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($createStatement)?$createStatement->queryString:null,
+                    isset($connectStatement)?$connectStatement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't create conference. " . $e->getMessage() ,0,$e);
+        }
+    }
 } 

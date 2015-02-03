@@ -106,7 +106,7 @@ class ConferenceController extends AbstractActionController {
 
 
 				$mapService = $sm->get('Stjornvisi\Service\Map');
-				/** @var  $maService \Stjornvisi\Service\JaMap */
+				/** @var  $mapService \Stjornvisi\Service\JaMap */
 				$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
 				$data['lat'] = $mapResult->lat;
 				$data['lng'] = $mapResult->lng;
