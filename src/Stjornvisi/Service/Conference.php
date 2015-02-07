@@ -137,9 +137,9 @@ class Conference extends AbstractService {
                 ));
             }
             */
-            $this->getConferenceManager()->trigger('create', $this, array(__FUNCTION__));
+            $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
             $data['id'] = $id;
-            $this->getConferenceManager()->trigger('index', $this, array(
+            $this->getEventManager()->trigger('index', $this, array(
                 0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
                 'name' => Event::NAME,
