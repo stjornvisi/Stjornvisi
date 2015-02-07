@@ -62,3 +62,13 @@ CREATE TABLE `Conference` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `stjornvisi_production`.`Conference` (`subject`, `body`, `location`, `address`, `capacity`, `event_date`, `event_time`, `event_end`) VALUES ('Vorráðstefna Stjórvísi', '<p>Nú er komið að vorráðstefnu Stjórnvísi, en hún er jafnan haldin á vorin.  Stundum er hún þó haldin á haustin, en kallast þá haustráðtefna.  Stundum eru tvær ráðstefnur, bæði á vorin og haustin, en það er önnur saga.</p><p>Nú á s.s. að blása til sóknar og halda flotta ráðstefnu.  Endilega skoðaðu dagskrána hérna fyrir neðan.</p>', 'Harpa, Ráðstefnuhús', 'Austurbakka 2', '2000', '2015-03-10', '09:00', '17:00');
+
+CREATE TABLE `Group_has_Conference` (
+  `conference_id` int(10) unsigned NOT NULL,
+  `group_id` int(10) unsigned DEFAULT NULL,
+  `primary` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  KEY `fk_Conference_has_Group_Group1` (`group_id`),
+  KEY `fk_Conference_has_Group_Conference1` (`conference_id`),
+  CONSTRAINT `fk_Conference_has_Group_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_Conference_has_Group_Group1` FOREIGN KEY (`group_id`) REFERENCES `Group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

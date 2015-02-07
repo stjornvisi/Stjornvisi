@@ -125,18 +125,17 @@ class Conference extends AbstractService {
 
             $id = (int)$this->pdo->lastInsertId();
 
-            /**
             $connectStatement = $this->pdo->prepare("
-                INSERT INTO `Group_has_Event` (`event_id`, `group_id`, `primary`)
-                VALUES(:event_id, :group_id, 0)
+                INSERT INTO `Group_has_Conference` (`conference_id`, `group_id`, `primary`)
+                VALUES(:conference_id, :group_id, 0)
             ");
             foreach($groups as $group){
                 $connectStatement->execute(array(
-                    'event_id' => $id,
+                    'conference_id' => $id,
                     'group_id' => $group
                 ));
             }
-            */
+
             $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
             $data['id'] = $id;
             $this->getEventManager()->trigger('index', $this, array(
