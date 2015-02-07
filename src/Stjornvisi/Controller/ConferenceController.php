@@ -25,8 +25,93 @@ class ConferenceController extends AbstractActionController {
 	}
 
 	public function indexAction(){
-		$sm = $this->getServiceLocator();
-		$conferenceService = $sm->get('Stjornvisi\Service\Conference'); /** @var $conferenceService \Stjornvisi\Service\Conference */
+        $sm = $this->getServiceLocator();
+        $userService = $sm->get('Stjornvisi\Service\User');
+        $conferenceService = $sm->get('Stjornvisi\Service\Conference'); /** @var $conferenceService \Stjornvisi\Service\Conference */
+
+        $authService = new AuthenticationService();
+
+        //CONFERENCE FOUND
+        //  an conference with this ID was found
+        if( ($conference = $conferenceService->get( $this->params()->fromRoute('id', 0), ($authService->hasIdentity())?$authService->getIdentity()->id:null )) != false ){
+
+            $groupIds = array_map(function($i){
+                return $i->id;
+            },$conference->groups);
+
+            //TODO don't use $_POST
+            //TODO send registration mail
+            if( $this->request->isPost() ){
+                $conferenceService->registerUser(
+                    $conference->id,
+                    $this->params()->fromPost('email',''),
+                    1,
+                    $this->params()->fromPost('name','')
+                );
+                $this->getEventManager()->trigger('notify',$this,array(
+                        'action' => 'Stjornvisi\Notify\Attend',
+                        'data' => (object)array(
+                                'event_id' => $conference->id,
+                                'type' => 1,
+                                'recipients' => (object)array(
+                                        'id' => null,
+                                        'name' => $this->params()->fromPost('name',''),
+                                        'email' => $this->params()->fromPost('email','')
+                                    ),
+                            ),
+                    )
+                );
+
+                return new ViewModel(array(
+                    'logged_in' => $authService->hasIdentity(),
+                    'register_message' => true,
+                    'conference' => $conference,
+                    'related' => $conferenceService->getRelated($groupIds),
+                    'attendees' => $userService->getByEvent($conference->id),
+                    'access' => $userService->getTypeByGroup(
+                            ($authService->hasIdentity())?$authService->getIdentity()->id:null,
+                            $groupIds
+                        ),
+                ));
+            }else{
+
+                $eventView = new ViewModel(array(
+                    'event' => $conference,
+                    'register_message' => false,
+                    'logged_in' => $authService->hasIdentity(),
+                    'access' => $userService->getTypeByGroup(
+                            ($authService->hasIdentity())?$authService->getIdentity()->id:null,
+                            $groupIds
+                        ),
+                    'attendees' => $userService->getByEvent($conference->id),
+                ));
+                $eventView->setTemplate('stjornvisi/conference/partials/index-conference');
+                $asideView = new ViewModel(array(
+                    'access' => $userService->getTypeByGroup(
+                            ($authService->hasIdentity())?$authService->getIdentity()->id:null,
+                            $groupIds
+                        ),
+                    'event' => $conference,
+                    'related' => $conferenceService->getRelated($groupIds,$conference->id),
+                ));
+                $asideView->setTemplate('stjornvisi/conference/partials/index-aside');
+
+                $mainView = new ViewModel();
+                $mainView
+                    ->addChild($eventView,'event')
+                    ->addChild($asideView,'aside');
+                return $mainView;
+            }
+
+
+            //NOT FOUND
+            //  todo 404
+        }else{
+            var_dump('404');
+        }
+		/**
+         $sm = $this->getServiceLocator();
+		$conferenceService = $sm->get('Stjornvisi\Service\Conference'); /** @var $conferenceService \Stjornvisi\Service\Conference
 		$userService = $sm->get('Stjornvisi\Service\User');
 
 		$auth = new AuthenticationService();
@@ -41,7 +126,7 @@ class ConferenceController extends AbstractActionController {
 		} else {
 			$this->getResponse()->setStatusCode(404);
 			return;
-		}
+		}*/
 	}
 
 	/**
