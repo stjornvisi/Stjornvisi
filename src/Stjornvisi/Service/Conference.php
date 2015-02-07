@@ -10,6 +10,7 @@ namespace Stjornvisi\Service;
 
 use \PDOException;
 use \DateTime;
+use Stjornvisi\Lib\Time;
 
 class Conference extends AbstractService {
 	const NAME = 'conference';
@@ -26,6 +27,25 @@ class Conference extends AbstractService {
 			$statement = $this->pdo->prepare("SELECT * FROM `Conference` WHERE id = :id");
 			$statement->execute(array( 'id' => $id ));
 			$conference = $statement->fetchObject();
+
+            if( $conference ){
+                $conference->conference_time = new Time($conference->conference_date.' '.$conference->conference_time);
+                $conference->conference_end = ( $conference->conference_end )
+                    ? new Time($conference->conference_date.' '.$conference->conference_end)
+                    : null ;
+                $conference->conference_date = new  DateTime($conference->conference_date);
+
+                //GROUPS
+                //  groups that are hosting the event
+                $groupStatement = $this->pdo->prepare("
+                  SELECT G.id, G.name, G.name_short, G.url FROM `Group_has_Conference` GhC
+                  LEFT JOIN `Group` G ON (GhC.group_id = G.id)
+                  WHERE GhC.conference_id = :id");
+                $groupStatement->execute(array(
+                    'id' => $conference->id
+                ));
+                $conference->groups = $groupStatement->fetchAll();
+            }
 
 			//When I finish, this code will be used as well
 			//to fetch the events, per conference

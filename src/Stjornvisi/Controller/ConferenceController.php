@@ -75,8 +75,8 @@ class ConferenceController extends AbstractActionController {
                 ));
             }else{
 
-                $eventView = new ViewModel(array(
-                    'event' => $conference,
+                $conferenceView = new ViewModel(array(
+                    'conference' => $conference,
                     'register_message' => false,
                     'logged_in' => $authService->hasIdentity(),
                     'access' => $userService->getTypeByGroup(
@@ -85,20 +85,20 @@ class ConferenceController extends AbstractActionController {
                         ),
                     'attendees' => $userService->getByEvent($conference->id),
                 ));
-                $eventView->setTemplate('stjornvisi/conference/partials/index-conference');
+                $conferenceView->setTemplate('stjornvisi/conference/partials/index-conference');
                 $asideView = new ViewModel(array(
                     'access' => $userService->getTypeByGroup(
                             ($authService->hasIdentity())?$authService->getIdentity()->id:null,
                             $groupIds
                         ),
-                    'event' => $conference,
-                    'related' => $conferenceService->getRelated($groupIds,$conference->id),
+                    'conference' => $conference,
+                    'related' => null//$conferenceService->getRelated($groupIds,$conference->id),
                 ));
                 $asideView->setTemplate('stjornvisi/conference/partials/index-aside');
 
                 $mainView = new ViewModel();
                 $mainView
-                    ->addChild($eventView,'event')
+                    ->addChild($conferenceView,'conference')
                     ->addChild($asideView,'aside');
                 return $mainView;
             }
