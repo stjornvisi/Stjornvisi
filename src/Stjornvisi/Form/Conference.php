@@ -247,7 +247,7 @@ class Conference extends Form implements InputFilterProviderInterface{
 					),
 				),
 			),
-			'event_date' => array(
+			'conference_date' => array(
 				'filters'  => array(
 					array('name' => 'StripTags'),
 					array('name' => 'StringTrim'),
@@ -258,7 +258,7 @@ class Conference extends Form implements InputFilterProviderInterface{
 					),
 				),
 			),
-			'event_time' => array(
+			'conference_time' => array(
 				'filters'  => array(
 					array('name' => 'StripTags'),
 					array('name' => 'StringTrim'),
@@ -272,7 +272,7 @@ class Conference extends Form implements InputFilterProviderInterface{
 					),
 				),
 			),
-			'event_end' => array(
+			'conference_end' => array(
 				'filters'  => array(
 					array('name' => 'StripTags'),
 					array('name' => 'StringTrim'),
@@ -291,8 +291,8 @@ class Conference extends Form implements InputFilterProviderInterface{
 								\Zend\Validator\Callback::INVALID_VALUE => 'Viðburður getur ekki endað áður en hann byrjar',
 							),
 							'callback' => function( $value, $context=array() ){
-									$from = new \DateTime( $context['event_time'] );
-									$to = new \DateTime( $context['event_end'] );
+									$from = new \DateTime( $context['conference_time'] );
+									$to = new \DateTime( $context['conference_end'] );
 									return $to > $from;
 								},
 						)
