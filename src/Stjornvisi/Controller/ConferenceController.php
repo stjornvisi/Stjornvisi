@@ -51,7 +51,7 @@ class ConferenceController extends AbstractActionController {
                 $this->getEventManager()->trigger('notify',$this,array(
                         'action' => 'Stjornvisi\Notify\Attend',
                         'data' => (object)array(
-                                'event_id' => $conference->id,
+                                'conference_id' => $conference->id,
                                 'type' => 1,
                                 'recipients' => (object)array(
                                         'id' => null,
@@ -67,7 +67,7 @@ class ConferenceController extends AbstractActionController {
                     'register_message' => true,
                     'conference' => $conference,
                     'related' => $conferenceService->getRelated($groupIds),
-                    'attendees' => $userService->getByEvent($conference->id),
+                    'attendees' => $userService->getByConference($conference->id),
                     'access' => $userService->getTypeByGroup(
                             ($authService->hasIdentity())?$authService->getIdentity()->id:null,
                             $groupIds
@@ -83,7 +83,7 @@ class ConferenceController extends AbstractActionController {
                             ($authService->hasIdentity())?$authService->getIdentity()->id:null,
                             $groupIds
                         ),
-                    'attendees' => $userService->getByEvent($conference->id),
+                    'attendees' => $userService->getByConference($conference->id),
                 ));
                 $conferenceView->setTemplate('stjornvisi/conference/partials/index-conference');
                 $asideView = new ViewModel(array(
@@ -353,6 +353,55 @@ class ConferenceController extends AbstractActionController {
             }
             //EVENT NOT FOUND
             //
+        }else{
+            var_dump('404');
+        }
+    }
+
+    /**
+     * Set if user is going to attend a conference or not
+     * This action is listening for the parameter <em>type</em>
+     * that maps 1 to yes and 0 to no.
+     *
+     * @return \Zend\Http\Response
+     */
+    public function attendAction(){
+        $sm = $this->getServiceLocator();
+        $conferenceService = $sm->get('Stjornvisi\Service\Conference');
+
+        $authService = new AuthenticationService();
+
+        //EVENT FOUND
+        //  event found in storage
+        if( ($conference = $conferenceService->get( $this->params()->fromRoute('id',0) )) ){
+
+            //ACCESS
+            //
+            if($authService->hasIdentity()){
+                $conferenceService->registerUser(
+                    $conference->id,
+                    $authService->getIdentity()->id,
+                    $this->params()->fromRoute('type',0)
+                );
+                $this->getEventManager()->trigger('notify',$this,array(
+                    'action' => 'Stjornvisi\Notify\Attend',
+                    'data' => (object)array(
+                            'recipients' => (int)$authService->getIdentity()->id,
+                            'conference_id' => $conference->id,
+                            'type' => $this->params()->fromRoute('type',0)
+                        ),
+                ));
+
+                $url = $this->getRequest()->getHeader('Referer')->getUri();
+                return $this->redirect()->toUrl($url);
+                //ACCESS DENIED
+                //
+            }else{
+                var_dump('403');
+            }
+
+            //EVENT NOT FOUND
+            //  todo 404
         }else{
             var_dump('404');
         }

@@ -584,6 +584,64 @@ class User extends AbstractService{
 		}
 	}
 
+    /**
+     * Get members that have registered to an conference.
+     *
+     * @param (int)$id
+     * @return array
+     * @throws Exception
+     */
+    public function getByConference($id){
+        try{
+            //MEMBERS
+            //  get all members
+            $statement = $this->pdo->prepare("
+				SELECT U.id,U.name,U.title,U.email, ChU.register_time
+				FROM Conference_has_User  ChU
+				JOIN `User` U ON (U.id = ChU.user_id)
+				WHERE conference_id = :id AND ChU.attending = 1
+				ORDER BY ChU.register_time
+			");
+            $statement->execute(array(
+                'id' => $id
+            ));
+            $users = $statement->fetchAll();
+
+            $statement = $this->pdo->prepare("
+				SELECT ChG.email,ChG.name, ChG.register_time
+				FROM Conference_has_Guest ChG
+				WHERE ChG.conference_id = :id;
+			");
+            $statement->execute(array(
+                'id' => $id
+            ));
+            $guests = $statement->fetchAll();
+            foreach($guests as $guest){
+                $users[] = (object)array(
+                    'id' => null,
+                    'name' => $guest->name,
+                    'email' => $guest->email,
+                    'title' => null,
+                    'register_time' => $guest->register_time
+                );
+            }
+
+            foreach($users as $user){
+                $user->register_time = new \DateTime($user->register_time);
+            }
+            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+            return $users;
+        }catch (PDOException $e){
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't get registered user to conference. conference:[{$id}]",0,$e);
+        }
+    }
+
 	/**
 	 * Promote user to admin or demote to normal user.
 	 *

@@ -15,13 +15,14 @@ use Stjornvisi\Lib\Time;
 class Conference extends AbstractService {
 	const NAME = 'conference';
 
-	/**
-	 * Get one conference.
-	 *
-	 * @param (int)$id
-	 * @return \stdClass|bool
-	 * @throws Exception
-	 */
+    /**
+     * Get one conference.
+     *
+     * @param $id
+     * @param (int)$id
+     * @throws Exception
+     * @return \stdClass|bool
+     */
 	public function get( $id, $user_id = null ){
 		try{
 			$statement = $this->pdo->prepare("SELECT * FROM `Conference` WHERE id = :id");
@@ -326,6 +327,100 @@ class Conference extends AbstractService {
                 )
             ));
             throw new Exception("Cant delete conference. conference:[{$id}]",0,$e);
+        }
+    }
+
+    /**
+     * Register user to conference.
+     *
+     * If $user_id is an number, the user will be connected, no problem.
+     * If $user_id, is an email, first the User table is checked to see
+     * if we have an ID to go with this email and if so use that ID to
+     * connect user. Else the user is not a member and will be placed in
+     * the Guest table.
+     *
+     * @param $conference_id
+     * @param int|string $user_id can be user ID or email
+     * @param int $type 0|1
+     * @param string $name
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function registerUser( $conference_id, $user_id, $type = 1, $name = '' ){
+        if( !in_array((int)$type,array(0,1)) ){
+            throw new InvalidArgumentException("Type can be 0|1, {$type} given");
+        }
+        try{
+            //USER ID AS INT
+            //  ID of user given
+            if( is_numeric($user_id) ){
+                try{
+                    $insertStatement = $this->pdo->prepare("
+                        INSERT INTO `Conference_has_User`
+                        (`conference_id`,`user_id`,`attending`,`register_time`)
+                        VALUES
+                        (:conference_id,:user_id,:attending, NOW() )
+                    ");
+                    $insertStatement->execute(array(
+                        'conference_id' => (int)$conference_id,
+                        'user_id' => (int)$user_id,
+                        'attending' => (int)$type
+                    ));
+
+                }catch (PDOException $e){
+                    $updateStatement = $this->pdo->prepare("
+                        UPDATE `Conference_has_User` SET
+                        `attending` = :attending, `register_time` = NOW()
+                        WHERE conference_id = :conference_id AND user_id = :user_id
+                    ");
+                    $updateStatement->execute(array(
+                        'conference_id' => $conference_id,
+                        'user_id' => $user_id,
+                        'attending' => $type
+                    ));
+                }
+                //USER EMAIL
+                //  user ID given as email
+            }else if( preg_match("/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/",trim($user_id)) ){
+                $statement = $this->pdo->prepare("
+                    SELECT * FROM `User` WHERE email = :email
+                ");
+                $statement->execute(array(
+                    'email' => trim($user_id)
+                ));
+                $registeredUser = $statement->fetchObject();
+                if($registeredUser){
+                    $this->pdo->query("
+                        DELETE FROM Conference_has_User
+                        WHERE conference_id = {$conference_id} AND user_id = {$registeredUser->id}
+                    ");
+                    $this->pdo->query("
+                        INSERT INTO Conference_has_User (conference_id,user_id,attending,register_time)
+                        VALUES ({$conference_id},{$registeredUser->id},1,NOW())
+                    ");
+                }else{
+                    $this->pdo->query("
+                        DELETE FROM Conference_has_Guest
+                        WHERE event_id = {$conference_id} AND email = '{$user_id}'
+                    ");
+                    $this->pdo->query("
+                        INSERT INTO Event_has_Guest (event_id,email,register_time,name)
+                        VALUES ({$conference_id},'{$user_id}',NOW(),'{$name}')
+                    ");
+                }
+            }else{
+
+            }
+            $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+        }catch (PDOException $e){
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+
+                )
+            ));
+            throw new Exception("Can't register user to event. ".
+                "conference:[{$conference_id}], user:[{$user_id}], type:[{$type}]",0,$e);
         }
     }
 } 

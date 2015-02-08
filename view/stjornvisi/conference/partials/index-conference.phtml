@@ -36,7 +36,7 @@
         <footer>
             <?php if( ($this->conference->conference_date > new DateTime()) && $this->logged_in ):?>
 
-                <?php if( $this->conference->capacity == null || $this->conference->capacity < count($this->conference->attenders) ):?>
+                <?php if( $this->conference->capacity == null || $this->conference->capacity > count($this->conference->attenders) ):?>
 
                     <?php if($this->conference->attending === null):?>
                         ekki skráðu/ur inn
@@ -58,6 +58,7 @@
             <?php endif;?>
         </footer>
     </article>
+    <!-- This logic is strange, it falls into else when logged in, even if the conference is not full! -->
     <?php if( (!$this->logged_in && $this->conference->conference_date > new DateTime()) && ($this->conference->capacity == null || $this->conference->capacity < count($this->conference->attenders)) ):?>
         <div class="well well-lg">
             <form method="post" action="/radstefna/<?=$this->conference->id?>" class="form-inline">
