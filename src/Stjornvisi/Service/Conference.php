@@ -200,7 +200,7 @@ class Conference extends AbstractService {
             $this->getEventManager()->trigger('index', $this, array(
                 0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
-                'name' => Event::NAME,
+                'name' => Conference::NAME,
             ));
             return $id;
         }catch (PDOException $e){
@@ -212,6 +212,120 @@ class Conference extends AbstractService {
                 )
             ));
             throw new Exception("Can't create conference. " . $e->getMessage() ,0,$e);
+        }
+    }
+
+    /**
+     * Update Conference.
+     *
+     * The $data array can contain the key 'groups'
+     * which should be an array of group IDs that this
+     * conference is connected to.
+     *
+     * @param $id conference ID
+     * @param $data
+     * @return int affected rows count
+     * @throws Exception
+     */
+    public function update( $id, $data ){
+        try{
+            $groups = array();
+            if( $data['groups'] != null ){
+                $groups = $data['groups'];
+            }
+            unset($data['groups']);
+
+            //SANITIZE CAPACITY
+            //	capacity has to be integer and bigger that zero
+            $data['capacity'] = is_numeric($data['capacity'])
+                ? (int)$data['capacity']
+                : null ;
+            $data['capacity'] = ($data['capacity'] <= 0)
+                ? null
+                : $data['capacity'] ;
+
+            //UPDATE
+            //  update conference entry
+            $statement = $this->pdo->prepare(
+                $this->updateString('Conference',$data,"id = {$id}")
+            );
+            $statement->execute($data);
+            $count = (int)$statement->rowCount();
+
+            //DELETE
+            //  delete all connections to groups
+            $deleteStatement = $this->pdo->prepare("
+                DELETE FROM `Group_has_Conference` WHERE conference_id = :id
+            ");
+            $deleteStatement->execute(array(
+                'id' => $id
+            ));
+
+            //INSERT
+            //  insert new connections to groups
+            $insertStatement = $this->pdo->prepare("
+                INSERT INTO `Group_has_Conference` (conference_id,group_id)
+                VALUES (:conference_id,:group_id)
+            ");
+            foreach($groups as $group){
+                $insertStatement->execute(array(
+                    'conference_id' => $id,
+                    'group_id' => $group
+                ));
+            }
+            $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+            $data['id'] = $id;
+            $this->getEventManager()->trigger('index', $this, array(
+                0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                'id' => $id,
+                'name' => Conference::NAME,
+            ));
+            return $count;
+        }catch (PDOException $e){
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                    isset($deleteStatement)?$deleteStatement->queryString:null,
+                    isset($insertStatement)?$insertStatement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't update confernece. conference:[{$id}]",0,$e);
+        }
+    }
+
+    /**
+     * Delete conference.
+     *
+     * @param int $id conference ID
+     * @return int row count
+     * @throws Exception
+     */
+    public function delete( $id ){
+        try{
+            $statement = $this->pdo->prepare("
+                DELETE FROM `Conference` WHERE id = :id
+            ");
+            $statement->execute(array(
+                'id' => $id
+            ));
+            $this->getEventManager()->trigger('delete', $this, array(
+                __FUNCTION__
+            ));
+            $this->getEventManager()->trigger('index', $this, array(
+                0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                'id' => $id,
+                'name' => Event::NAME,
+            ));
+            return (int)$statement->rowCount();
+        }catch (PDOException $e){
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                array(
+                    isset($statement)?$statement->queryString:null,
+                )
+            ));
+            throw new Exception("Cant delete conference. conference:[{$id}]",0,$e);
         }
     }
 } 

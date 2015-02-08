@@ -72,7 +72,7 @@ class Conference extends Form implements InputFilterProviderInterface{
 		));
 
 		$this->add(array(
-			'name' => 'event_date',
+			'name' => 'conference_date',
 			'type' => 'Zend\Form\Element\Date',
 			'attributes' => array(
 				'placeholder' => 'Type something...',
@@ -85,7 +85,7 @@ class Conference extends Form implements InputFilterProviderInterface{
 		));
 
 		$this->add(array(
-			'name' => 'event_time',
+			'name' => 'conference_time',
 			//'type' => 'Zend\Form\Element\Time',
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
@@ -98,7 +98,7 @@ class Conference extends Form implements InputFilterProviderInterface{
 		));
 
 		$this->add(array(
-			'name' => 'event_end',
+			'name' => 'conference_end',
 			//'type' => 'Zend\Form\Element\Time',
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
