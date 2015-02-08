@@ -106,3 +106,13 @@ CREATE TABLE `ConferenceGallery` (
   CONSTRAINT `fk_ConferenceGallery_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `ConferenceMedia` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `conference_id` int(10) unsigned DEFAULT NULL,
+  `description` text,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_ConferenceMedia_Conference1` (`conference_id`),
+  CONSTRAINT `fk_ConferenceMedia_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

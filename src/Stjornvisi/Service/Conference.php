@@ -22,7 +22,7 @@ class Conference extends AbstractService {
 	 * @return \stdClass|bool
 	 * @throws Exception
 	 */
-	public function get( $id ){
+	public function get( $id, $user_id = null ){
 		try{
 			$statement = $this->pdo->prepare("SELECT * FROM `Conference` WHERE id = :id");
 			$statement->execute(array( 'id' => $id ));
@@ -47,19 +47,65 @@ class Conference extends AbstractService {
                 $conference->groups = $groupStatement->fetchAll();
             }
 
-			//When I finish, this code will be used as well
-			//to fetch the events, per conference
-			/*if( $article ){
-				$article->created = new DateTime($article->created);
-				$article->published = new DateTime($article->published);
-				$authorStatement = $this->pdo->prepare("
-                    SELECT A.* FROM Author A
-                    LEFT JOIN Author_has_Article AhA ON (A.id = AhA.author_id)
-                    WHERE AhA.article_id = :article_id;
+            //ATTENDERS
+            //	get all user/guests that are
+            //	attending this conference.
+            if( $conference->conference_date > new DateTime() ){
+                $attendStatement = $this->pdo->prepare("
+						SELECT * FROM Conference_has_User ChU
+							WHERE ChU.conference_id = :conference_user_id AND ChU.attending = 1
+						UNION
+							SELECT * FROM Conference_has_Guest ChG
+							WHERE ChG.conference_id = :conference_guest_id
+					");
+                $attendStatement->execute(array(
+                    'conference_user_id' => $conference->id,
+                    'conference_guest_id' => $conference->id,
+                ));
+                $conference->attenders = $attendStatement->fetchAll();
+            }else{
+                $conference->attenders = array();
+            }
+
+            //USER
+            //  we have user ID and therefor we are going check his/her
+            //  attendance
+            if( $user_id ){
+                $attendingStatement = $this->pdo->prepare("
+                      SELECT ChU.attending FROM Conference_has_User ChU
+                      WHERE user_id = :user_id AND conference_id = :conference_id;");
+                $attendingStatement->execute(array(
+                    'user_id' => $user_id,
+                    'conference_id' => $id
+                ));
+                $conference->attending = $attendingStatement->fetchColumn();
+            }else{
+                $conference->attending = null;
+            }
+
+            //GALLERY
+            //  get images connected to conference
+            $galleryStatement = $this->pdo->prepare("
+                  SELECT * FROM ConferenceGallery
+                  WHERE conference_id = :id
                 ");
-				$authorStatement->execute(array('article_id' => $article->id));
-				$article->authors = $authorStatement->fetchAll();
-			}*/
+            $galleryStatement->execute(array(
+                'id' => $conference->id
+            ));
+            $conference->gallery = $galleryStatement->fetchAll();
+
+            //REFERENCE
+            //
+            $referenceStatement = $this->pdo->prepare("
+                  SELECT * FROM ConferenceMedia
+                  WHERE conference_id = :id;
+                ");
+            $referenceStatement->execute(array(
+                'id' => $conference->id
+            ));
+            $conference->reference = $referenceStatement->fetchAll();
+
+
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
 			return $conference;
 		}catch (PDOException $e){
