@@ -210,6 +210,151 @@ class ConferenceController extends AbstractActionController {
 				'form' => $form
 			));
 		}
-
 	}
+
+    /**
+     * Update one event.
+     *
+     * @return \Zend\Http\Response|ViewModel
+     */
+    public function updateAction(){
+
+        $sm = $this->getServiceLocator();
+        $userService = $sm->get('Stjornvisi\Service\User');
+        $conferenceService = $sm->get('Stjornvisi\Service\Conference');
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+        $mapService = $sm->get('Stjornvisi\Service\Map');
+
+
+
+        $authService = new AuthenticationService();
+
+        //EVENT FOUND
+        //  an event with this ID was found
+        if( ($conference = $conferenceService->get( $this->params()->fromRoute('id', 0) )) != false ){
+
+            $groupIds = array_map(function($i){ return $i->id; }, $conference->groups );
+            $access = $userService->getTypeByGroup(
+                ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
+                $groupIds
+            );
+            //ACCESS GRANTED
+            //  user has accss
+            if( $access->is_admin || $access->type >= 1 ){
+
+                $form = new ConferenceForm( $groupService->fetchAll() );
+                $form->setAttribute('action', $this->url()->fromRoute('radstefna/update',array('id'=>$conference->id)) );
+
+                //POST
+                //  http post request
+                if( $this->request->isPost() ){
+                    $form->setData($this->request->getPost() );
+
+
+                    //VALID
+                    //  form data is valid
+                    if( $form->isValid() ){
+
+                        $data = $form->getData();
+                        unset($data['submit']);
+                        $mapService = $sm->get('Stjornvisi\Service\Map');
+                        /** @var  $maService \Stjornvisi\Service\JaMap */
+                        $mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
+                        $data['lat'] = $mapResult->lat;
+                        $data['lng'] = $mapResult->lng;
+
+                        $conferenceService->update($conference->id, $data);
+                        if( $this->request->isXmlHttpRequest() ){
+                            $view = new ViewModel(array(
+                                'conference' => $conferenceService->get($conference->id),
+                                'register_message' => false,
+                                'logged_in' => $authService->hasIdentity(),
+                                'access' => $userService->getTypeByGroup(
+                                        ($authService->hasIdentity())?$authService->getIdentity()->id:null,
+                                        $groupIds
+                                    ),
+                                'attendees' => $userService->getByEvent($conference->id),
+                            ));
+                            $view->setTemplate('stjornvisi/conference/partials/index-event');
+                            $view->setTerminal(true);
+                            return $view;
+                        }else{
+                            return $this->redirect()->toRoute('radstefna/index',array('id'=>$conference->id));
+                        }
+
+                        //INVALID
+                        //  form data is invalid
+                    }else{
+                        $this->getResponse()->setStatusCode(400);
+                        $view = new ViewModel(array(
+                            'form' => $form,
+                        ));
+                        $view->setTerminal( $this->request->isXmlHttpRequest() );
+                        return $view;
+                    }
+                    //QUERY
+                    //  http get request
+                }else{
+                    $form->bind( new \ArrayObject((array)$conference) );
+                    $view = new ViewModel(array(
+                        'form' => $form
+                    ));
+                    $view->setTerminal( $this->request->isXmlHttpRequest() );
+                    return $view;
+                }
+
+                //ACCESS DENIED
+            }else{
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
+            }
+
+
+            //NOT FOUND
+            //	entry not found
+        }else{
+            $this->getResponse()->setStatusCode(404);
+        }
+
+    }
+
+    /**
+     * Delete one event.
+     *
+     * @return \Zend\Http\Response
+     */
+    public function deleteAction(){
+        $sm = $this->getServiceLocator();
+        $userService = $sm->get('Stjornvisi\Service\User');
+        $conferenceService = $sm->get('Stjornvisi\Service\Conference');
+
+        $authService = new AuthenticationService();
+
+        //EVENT FOUND
+        //  an event with this ID was found
+        if( ($conference = $conferenceService->get( $this->params()->fromRoute('id', 0) )) != false ){
+            $groupIds = array_map(function($i){ return $i->id; }, $conference->groups );
+            $access = $userService->getTypeByGroup(
+                ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
+                $groupIds
+            );
+
+            //ACCESS GRANTED
+            //  user can delete
+            if($access->is_admin || $access->type >= 1){
+                $conferenceService->delete( $conference->id );
+                return $this->redirect()->toRoute('radstefna');
+                //ACCESS DENIED
+                //  user can't delete
+            }else{
+                var_dump('403');
+            }
+            //EVENT NOT FOUND
+            //
+        }else{
+            var_dump('404');
+        }
+    }
 } 

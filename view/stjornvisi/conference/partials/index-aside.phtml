@@ -1,5 +1,4 @@
 <?php if($this->access->is_admin || $this->access->type >= 1):?>
-    <?php /**
     <div class="btn-group">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
             Action <span class="caret"></span>
@@ -17,7 +16,6 @@
             <li><a href="<?=$this->url('radstefna/resource-list',array('id'=>$this->conference->id));?>">Ítarefni</a></li>
         </ul>
     </div>
-     */?>
 <?php endif;?>
 <h1>Tengdir viðburdir</h1>
 <ul>
