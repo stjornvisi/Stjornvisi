@@ -111,62 +111,55 @@ class Conference extends AbstractService {
 		}catch (PDOException $e){
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
-				'sql' => array(
-					isset($statement)?$statement->queryString:null,
-					isset($authorStatement)?$authorStatement->queryString:null,
-				)
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                    isset($groupStatement)?$groupStatement->queryString:null,
+                    isset($attendingStatement)?$attendingStatement->queryString:null,
+                    isset($galleryStatement)?$galleryStatement->queryString:null,
+                    isset($referenceStatement)?$referenceStatement->queryString:null,
+                    isset($attendStatement)?$attendStatement->queryString:null,
+                )
 			));
 			throw new Exception("Can't fetch conference. conference:[{$id}]",0,$e);
 		}
 	}
 
 	public function fetchAll(){
-		try{
-			$statement = $this->pdo->prepare("
-                SELECT * FROM `Conference` C
-                ORDER BY C.event_date DESC;
-            ");
-			$statement->execute();
-			$conferences = $statement->fetchAll();
-
-			/*$authorStatement = $this->pdo->prepare("
-                SELECT A.* FROM Author A
-                LEFT JOIN Author_has_Article AhA ON (A.id = AhA.author_id)
-                WHERE AhA.article_id = :article_id;
-            ");*/
-
-			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-
-			return $conferences;
-
-			/*return array_map(function($i) use ($authorStatement){
-				$authorStatement->execute(array('article_id'=>$i->id));
-				$i->created = new DateTime($i->created);
-				$i->published = new DateTime($i->published);
-				$i->authors = $authorStatement->fetchAll();
-				return $i;
-			},$articles);*/
-		}catch (PDOException $e){
-			$this->getEventManager()->trigger('error', $this, array(
-				'exception' => $e->getTraceAsString(),
-				'sql' => array(
-					isset($statement)?$statement->queryString:null,
-					isset($authorStatement)?$authorStatement->queryString:null,
-				)
-			));
-			throw new Exception("Can't fetch all conferences.",0,$e);
-		}
+        try{
+            $statement = $this->pdo->prepare("
+				SELECT * FROM Conference C
+				ORDER BY C.conference_date DESC;
+			");
+            $statement->execute();
+            $this->getEventManager()->trigger('read', $this, array(
+                __FUNCTION__
+            ));
+            return array_map(function($i){
+                $i->conference_time = new Time( ($i->conference_time)?"{$i->conference_date} {$i->conference_time}":"{$i->conference_date} 00:00" );
+                $i->conference_end = new Time( ($i->conference_time)?"{$i->conference_date} {$i->conference_end}":"{$i->conference_date} 00:00" );
+                $i->conference_date = new DateTime($i->conference_date);
+                return $i;
+            },$statement->fetchAll());
+        }catch (PDOException $e){
+            $this->getEventManager()->trigger("error", $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't get all conference entries",0,$e);
+        }
 	}
 
     /**
-     * Create event.
+     * Create conference.
      *
      * The $data array can contain the key 'groups'
      * which should be an array of group IDs that this
-     * event is connected to.
+     * conference is connected to.
      *
-     * @param array $data event data
-     * @return int ID of event
+     * @param array $data confernece data
+     * @return int ID of conference
      * @throws Exception
      */
     public function create( $data ){
