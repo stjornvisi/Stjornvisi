@@ -23,14 +23,25 @@
 			padding-left: rhythm(1,$font-size-base);
 		}
 
-		ul{
-			list-style: disc;
-			list-style-position: inside;
-		}
 		ol{
-			list-style: decimal;
-			list-style-position: inside;
+			counter-reset: section;
+			li:before{
+				counter-increment: section;
+				content: counters(section,".") ".";
+				color: $color-green-sea;
+				padding-right: rhythm(1/2,$font-size-base);
+			}
 		}
+
+
+		ul{
+			li:before{
+				content: "\2022";
+				color: $color-green-sea;
+				padding-right: rhythm(1/2,$font-size-base);
+			}
+		}
+
 
 		a{
 			color: $color-green-sea;

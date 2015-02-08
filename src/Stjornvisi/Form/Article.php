@@ -40,7 +40,7 @@ class Article extends Form implements InputFilterProviderInterface{
 
 		$this->add(array(
 			'name' => 'summary',
-			'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
 			'attributes' => array(
 				'placeholder' => 'Útdráttur...',
 				'required' => 'required',
@@ -52,7 +52,7 @@ class Article extends Form implements InputFilterProviderInterface{
 
 		$this->add(array(
 			'name' => 'body',
-			'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
 			'attributes' => array(
 				'placeholder' => 'Texti...',
 				'required' => 'required',

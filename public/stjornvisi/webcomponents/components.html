@@ -5,9 +5,15 @@
 <template id="tpl-stjornvisi-controls">
 	<style>
 		:host-context(.inline){
+			position: absolute;
 			top: 0;
 			right: 0;
 		}
+		:host-context(.inline) a{
+			width: 25px;
+			height: 25px;
+		}
+
 		:host{
 
 		}
@@ -18,8 +24,12 @@
 		:host-context(stjonvisi-control.active) ::content a:nth-child(5),
 		:host-context(stjonvisi-control.active) ::content a:nth-child(6),
 		:host-context(stjonvisi-control.active) ::content a:nth-child(7){
+			opacity: 1;
 			transform: translate3d(0, 0%, 0);
-			-webkit-transition:-webkit-transform 0.6s cubic-bezier(0.4, 1, 0.3, 1);
+			-webkit-transition:
+				-webkit-transform 0.6s cubic-bezier(0.4, 1, 0.3, 1),
+				opacity 0.6s linear
+			;
 		}
 
 		:host-context(stjonvisi-control) ::content a:nth-child(1){
@@ -50,10 +60,13 @@
 			height: 50px;
 			background-color: red;
 			border-radius: 50%;
+			color:white;
+			text-decoration: none;
 		}
 
 		::content a {
 			display: block;
+			opacity: 0;
 		}
 
 	</style>
@@ -62,7 +75,7 @@
 </template>
 
 <script>
-	;(function() {
+
 		var importDoc = document.currentScript.ownerDocument; // importee
 
 
@@ -84,6 +97,7 @@
 			// get template in import
 			var template = importDoc.querySelector('#tpl-stjornvisi-controls');
 
+			var t = document.querySelector('#tpl-stjornvisi-controls');
 
 			//BUILD MARKUP
 			//	import template, create shadowDOM and
@@ -131,7 +145,7 @@
 
 
 		document.registerElement('stjonvisi-control', {prototype: stjornvisiControlPrototype});
-	})();
+
 </script>
 
 
@@ -1916,22 +1930,42 @@
 		 */
 		stjornvisiRichPrototype.upload = function(file, progress, error, done){
 
+
+
+
+
 			//DATA OBJECT
 			//	create file data object to carry
 			//	the image to the server
 			var formData = new FormData();
 			formData.append('file',file);
 
-			//TRANSMISION OBJECT
+			//VALIDATE
+			//	check if the file is to big, or that it's the
+			//	right type
+			var maxSize = parseInt(this.getAttribute('max')) || 0;
+			if( file.size > maxSize ){
+				alert('The image is to big');
+				return false;
+			}
+			if( !file.type.match(/image\/jpg|jpeg|png|gif/) ){
+				alert("This is not a valid image");
+				return false;
+
+			}
+
+			//TRANSMISSION OBJECT
 			//	create xhr object to send data object
-			//	to the server.
+			//	to the server. The host element should contain a 'url'
+			//	attribute to use as a service end-point, if not then
+			//	root is used.
 			var xhr = new XMLHttpRequest();
-			xhr.open('post','/skrar/mynd');
+			xhr.open('post',this.getAttribute('url') || '/');
 
 			//PROGRESS
 			//	on file upload progress
 			xhr.upload.addEventListener('progress',function(event){
-				progress.call(this,(event.loaded / event.total * 100 ));
+				progress.call(this,event.loaded / event.total * 100 );
 			}.bind(this),false);
 			//ERROR
 			//	on file upload error
@@ -1943,7 +1977,7 @@
 			//	on file upload abort
 			//@todo
 			xhr.addEventListener('abort',function(event){
-
+				error.call(this);
 			},false);
 			//LOAD
 			//	once the upload is over
@@ -1951,20 +1985,15 @@
 				var object = JSON.parse( event.target.responseText );
 				var media = object.info.media[0];
 				if( parseInt( media.code/100 ) == 2 ){
-					this.input.style.backgroundImage = ('url('+media.thumb+')');
-					this.input.style.backgroundSize = 'auto 60px';
-					this.input.value = media.name;
+					done.call( this, object )
 				}else{
-					alert(media.message);
-					this.input.value = '';
+					error.call(this, object );
 				}
 			}.bind(this),false);
 
 			//SEND
 			//	send the image
 			xhr.send(formData);
-
-
 		};
 
 		/**
@@ -2004,7 +2033,6 @@
 			}.bind(this),false);
 
 
-
 			//DRAG ENTER
 			//
 			this.textarea.addEventListener("dragenter", function(event){
@@ -2012,16 +2040,22 @@
 				event.preventDefault();
 				this.textarea.style.backgroundColor = 'pink';
 			}.bind(this), false);
+			//DRAG OVER
+			//
 			this.textarea.addEventListener("dragover", function(event){
 				event.stopPropagation();
 				event.preventDefault();
 				this.textarea.style.backgroundColor = 'red';
 			}.bind(this), false);
+			//DRAG LEAVE
+			//
 			this.textarea.addEventListener("dragleave", function(event){
 				event.stopPropagation();
 				event.preventDefault();
 				this.textarea.style.backgroundColor = 'white';
 			}.bind(this), false);
+			//DROP
+			//
 			this.textarea.addEventListener("drop", function(event){
 				event.stopPropagation();
 				event.preventDefault();
@@ -2030,14 +2064,18 @@
 				var middle = this.textarea.value.substr(this.textarea.selectionStart, (this.textarea.selectionEnd-this.textarea.selectionStart) );
 				var end = this.textarea.value.substr(this.textarea.selectionEnd);
 
-				var xhr = new XMLHttpRequest();
-				xhr.open('post','/');
-				xhr.send();
 
-				this.textarea.value = (begin) + ('!['+middle+']()') + (end);
-
-				var dt = event.dataTransfer;
-				var files = dt.files;
+				this.upload( event.dataTransfer.files[0],
+					function(status){
+						this.textarea.value = (begin) + ('![Alt text]('+status+'%)') + (end);
+					}.bind(this),
+					function(object){
+						alert(JSON.stringify(object))
+					}.bind(this),
+					function(object){
+						this.textarea.value = (begin) + ('!['+middle+']('+object.info.media[0].thumb+')') + (end);
+					}.bind(this)
+				);
 
 
 			}.bind(this), false);

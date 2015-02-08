@@ -45,7 +45,7 @@ class Group extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'description',
-            'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Lýsing...',
             ),
@@ -56,7 +56,7 @@ class Group extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'objective',
-            'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Markmið...',
             ),
@@ -67,7 +67,7 @@ class Group extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'what_is',
-            'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Hvað er...',
             ),
@@ -78,7 +78,7 @@ class Group extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'how_operates',
-            'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Hvernig starfar...',
             ),
@@ -89,7 +89,7 @@ class Group extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'for_whom',
-            'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Fyrir hvern...',
             ),

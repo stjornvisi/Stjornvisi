@@ -155,12 +155,15 @@ class ArticleController extends AbstractActionController{
 			//NOT FOUND
 			//	404
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 	}
 
@@ -221,13 +224,13 @@ class ArticleController extends AbstractActionController{
 			//NOT FOUND
 			//	404
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}
@@ -298,7 +301,10 @@ class ArticleController extends AbstractActionController{
 		//ACCESS DENIED
 		//	no access
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 	}
 
@@ -350,7 +356,7 @@ class ArticleController extends AbstractActionController{
 		//AUTHOR NOT FOUND
 		//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 	}
 
@@ -377,12 +383,15 @@ class ArticleController extends AbstractActionController{
 				//AUTHOR NOT FOUND
 				//	404
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
 	}

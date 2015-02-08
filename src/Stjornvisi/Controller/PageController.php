@@ -26,7 +26,7 @@ class PageController extends AbstractActionController {
 		//NOT FOUND
 		//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}

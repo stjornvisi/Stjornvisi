@@ -114,7 +114,11 @@
 	}
 
 	.block-element__more{
+		display: block;
 		text-align: right;
+		&:after{
+			content: "\02026";
+		}
 	}
 
 	/*ul*/.block-element__author-list{
@@ -204,6 +208,9 @@
 		> li{
 			border-bottom: 1px solid $color-gray-light;
 		}
+		> li:last-child{
+			border-bottom: none;
+		}
 	}
 	& > li:first-child {
 		padding-top: 0;
@@ -211,6 +218,22 @@
 	& > li{
 		position: relative;
 		padding: rhythm(1,$font-size-base) 0;
+	}
+	&.block-list--less{
+		> li {
+			padding: rhythm(1/4,$font-size-base) 0;
+		}
+		> li:first-child{
+			padding-top: 0;
+		}
+	}
+	&.block-list--small{
+		> li {
+			padding: rhythm(1/8,$font-size-base) 0;
+		}
+		> li:first-child{
+			padding-top: 0;
+		}
 	}
 }
 
@@ -260,9 +283,11 @@
  */
 /*ul*/.block-supplement{
 	& > li{
+		@include ellipsis;
 		padding: rhythm(1/4,$font-size-base) 0;
 	}
 	a{
+
 		@include adjust-font-size-to($font-size-small,1,$font-size-base);
 		font-family: $font-family-open;
 		color: $color-green-sea;
@@ -366,6 +391,7 @@
 	 *
 	 */
 	&.layout--three-columns{
+
 		.layout__section{
 			@include pie-clearfix;
 			float: left;
@@ -435,13 +461,26 @@
 	 */
 	&.layout--three-columns-reverse{
 		.layout__section{
+			@include pie-clearfix;
 			float: right;
-			width: 80%;
+			width: 75%;
 		}
 		.layout__aside{
 			float: left;
-			width: 20%;
+			width: 25%;
+			padding-right: $gutter*2;
 		}
+		.layout__data{
+			float: left;
+			width: 50%;
+			padding-right: $gutter;
+		}
+		.layout__meta{
+			float: left;
+			width: 50%;
+			padding-left: $gutter;
+		}
+
 		@include breakpoint($phone){
 			.layout__section{
 				float: none;
@@ -467,6 +506,10 @@
 	 td, td{
 		 vertical-align: top;
 	 }
+	td.block-table__numeric{
+		text-align: right;
+		padding-left: rhythm(1,$font-size-base);
+	}
 	thead{
 		td{
 			font-family: $font-family-open;
@@ -475,6 +518,22 @@
 	}
 	tfoot{}
 	tbody{}
+
+	&.block-table--data {
+		//@include ellipsis;
+		caption{
+			padding: rhythm(1,$font-size-base) 0;
+			text-align: center;
+		}
+		thead{
+			border-bottom: 2px solid $color-gray-light;
+		}
+		tbody{
+			tr{
+				border-bottom: 1px solid $color-gray-light;
+			}
+		}
+	}
 }
 
 /**
@@ -496,14 +555,24 @@
  *
  */
 .block-calendar{
+	position: relative;
 	td{
+		position: relative;
 		width: (100% / 7);
 		vertical-align: top;
+		padding: rhythm(1/4,$font-size-base);
+		overflow: hidden;
 	}
 	.block-calendar__header{
-
+		//@include adjust-font-size-to($font-size-small,1/8,$font-size-base);
+		font-family: $font-family-open;
+		color: $color-green-sea;
+		tr{
+			border-bottom: 2px solid $color-gray-light;
+		}
 
 	}
+
 	.block-calendar__body{
 		tr{
 			border-bottom: 1px solid $color-gray-light;
@@ -516,6 +585,32 @@
 		}
 	}
 	.block-calendar__footer{}
+
+	.block-calendar__caption{
+		position: relative;
+	}
+
+	.block-calendar__pagination{
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	.block-calendar__headline{
+		@include adjust-font-size-to($font-size-header,1,$font-size-base);
+		font-family: open-sans;
+		color: $color-green-sea;
+		text-align: center;
+	}
+
+	.block-calendar__date-label{
+		position: absolute;
+		top: 0;
+		right: 0;
+		@include adjust-font-size-to($font-size-huge*2,1,$font-size-base);
+		color: tint($color-green-sea,80%);
+		z-index: -1;
+	}
 }
 
 

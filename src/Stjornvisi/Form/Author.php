@@ -34,7 +34,7 @@ class Author extends Form implements InputFilterProviderInterface{
 
 		$this->add(array(
 			'name' => 'info',
-			'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
 			'attributes' => array(
 				'placeholder' => 'Texti...',
 			),

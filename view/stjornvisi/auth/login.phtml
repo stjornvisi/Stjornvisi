@@ -1,25 +1,39 @@
 
-<?php
-$this->form->setAttribute('class','form-horizontal');
-?>
-<?=$this->form()->openTag($this->form);?>
+<div class="layout layout--three-columns">
+	<section class="layout__section">
+		<div class="layout__data">
+			<?php
+			$this->form->setAttribute('class','form-horizontal');
+			?>
+			<?=$this->form()->openTag($this->form);?>
 
-<div class="form-group">
-	<?=$this->formLabel($this->form->get('email'));?>
-	<?=$this->formElement($this->form->get('email')->setAttribute('class','form-control'));?>
-	<?=$this->formElementErrors($this->form->get('email'));?>
-</div>
-<div class="form-group">
-	<?=$this->formLabel($this->form->get('passwd'));?>
-	<?=$this->formElement($this->form->get('passwd')->setAttribute('class','form-control'));?>
-	<?=$this->formElementErrors($this->form->get('passwd'));?>
+			<div class="form-group">
+				<?=$this->formLabel($this->form->get('email'));?>
+				<?=$this->formElement($this->form->get('email')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($this->form->get('email'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formLabel($this->form->get('passwd'));?>
+				<?=$this->formElement($this->form->get('passwd')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($this->form->get('passwd'));?>
+			</div>
+
+			<div class="form-group">
+				<?=$this->formElement($this->form->get('submit')->setAttribute('class','btn btn-default'));?>
+			</div>
+
+			<?= $this->form()->closeTag() ?>
+		</div>
+		<div class="layout__meta">
+			<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>Facebook innskráning</a>
+			<a href="" class="btn btn-success">Stofna aðgang</a>
+		</div>
+
+	</section>
+	<aside class="layout__aside"></aside>
 </div>
 
-<div class="form-group">
-	<?=$this->formElement($this->form->get('submit')->setAttribute('class','btn btn-default'));?>
-</div>
 
-<?= $this->form()->closeTag() ?>
 
 <?php print_r($this->form->getMessages(),true)?>
 

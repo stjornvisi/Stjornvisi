@@ -2,10 +2,10 @@
 <div class="layout layout--three-columns">
 	<section class="layout__section">
 		<table class="block-calendar">
-			<caption>
-				<h1>Viðburðadagatal</h1>
-				<h2><?=$this->current->format('F Y')?></h2>
-				<nav>
+			<caption class="block-calendar__caption">
+
+				<h2 class="block-calendar__headline"><?=$this->current->format('F Y')?></h2>
+				<nav class="block-calendar__pagination">
 					<a href="<?=$this->url('vidburdir/list',array('date'=>$this->prev->format('Y-m')))?>" class="prev">prev</a>
 					<a href="<?=$this->url('vidburdir/list',array('date'=>$this->next->format('Y-m')))?>" class="next">next</a>
 				</nav>
@@ -28,7 +28,7 @@
 			<tr>
 			<?php endif;?>
 				<td>
-					<span><?=substr($key,8,2)?></span>
+					<span class="block-calendar__date-label"><?=substr($key,8,2)?></span>
 					<ul>
 						<?php if( !empty($column)):?>
 						<?php foreach($column as $event):?>
@@ -62,8 +62,27 @@
 			</tfoot>
 		</table>
 	</section>
-	<aside class="layout_article">
+	<aside class="layout__aside">
+		<ul class="block-list">
+		<?php foreach ($this->calendar as $key => $column): ?>
+			<?php if( !empty($column) ):?>
 
+				<?php foreach( $column as $event ): ?>
+					<li class="block-item">
+						<time class="block-item__time" datetime="<?=$event->event_date->format('c')?>" ><?=$this->date($event->event_date)?></time>
+						<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h2>
+						<ul class="block-item__tags">
+							<?php foreach($event->groups as $group):?>
+								<li><?=$group->name_short?></li>
+							<?php endforeach;?>
+						</ul>
+					</li>
+				<?php endforeach;?>
+
+
+			<?php endif;?>
+		<?php endforeach;?>
+		</ul>
 	</aside>
 
 </div>

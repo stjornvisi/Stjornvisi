@@ -11,5 +11,7 @@ namespace Stjornvisi\Form\Element;
 use Zend\Form\Element;
 
 class Rich extends Element{
-
+	protected $attributes = array(
+		'rows' => 25
+	);
 } 

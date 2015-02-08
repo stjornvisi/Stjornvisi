@@ -6,24 +6,27 @@
  * Time: 2:52 PM
  */
 ?>
-<div class="layout layout--three-columns">
+<div class="layout layout--three-columns page-group-list">
 	<section class="layout__section">
-		<h1>Hópar (<?=count($this->groups_all);?>)</h1>
-		<ul class="block-list">
+		<!--h1>Hópar (<?=count($this->groups_all);?>)</h1-->
+		<ul class="block-list block-list--separator">
 		<?php foreach( $this->groups_all as $group ):?>
-			<li>
-			<article class="block-element group-block-list">
-				<header class="block-element__header group-block-list__header">
+			<li id="<?=$group->url?>">
+			<article class="block-element page-group-list__item">
+				<header class="block-element__header page-group-list__header">
 					<h1><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name?></a></h1>
 				</header>
-				<aside class="block-element__aside header group-block-list__aside">
+				<aside class="block-element__aside header page-group-list__aside">
+					<h2 class="layout__headline">Næstu viðburðir</h2>
 					<ul>
 						<?php foreach($group->events as $event):?>
 							<li>
 								<article class="block-element">
 									<header class="block-element__header">
+										<time class="block-element__time" datetime="<?=$event->event_date->format('c');?>">
+											<?=$this->date($event->event_date);?>
+										</time>
 										<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h2>
-										<time class="block-element__time"><?=$event->event_date->format('Y-m-d');?></time>
 									</header>
 									<section class="block-element__body">
 									<?php if($event->avatar):?>
@@ -39,16 +42,23 @@
 						<?php endforeach;?>
 					</ul>
 				</aside>
-				<section class="block-element__body header group-block-list__body">
+				<section class="block-element__body header page-group-list__body">
 					<?=$this->paragrapher($group->description);?>
 				</section>
 			</article>
-		<?php endforeach;?>
 			</li>
+		<?php endforeach;?>
 		</ul>
 	</section>
 	<aside class="layout__aside">
-
+		<h2 class="layout__headline">Hópalisti</h2>
+		<ul class="block-list block-list--less">
+		<?php foreach( $this->groups_all as $group ):?>
+			<li class="block-item page-group-list__list-item">
+				<a href="#<?=$group->url?>" data-scroll><?=$group->name_short?></a>
+			</li>
+		<?php endforeach;?>
+		</ul>
 	</aside>
 </div>
 

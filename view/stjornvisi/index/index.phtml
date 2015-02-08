@@ -1,21 +1,23 @@
 <?php if($this->identity):?>
 
-	<div class="layout layout--three-columns">
+	<div class="layout layout--three-columns page-dashboard">
 		<section class="layout__section">
 			<div class="layout__data">
-				<h1>Viðburðir</h1>
-				<ul>
+				<h1 class="layout__headline">Viðburðir</h1>
+				<ul class="block-list block-list--separator">
 					<?php foreach( $this->events as $event ):?>
 						<li>
 							<article class="block-element">
 								<header class="block-element__header">
-									<time class="block-element__time"><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?></time>
+									<time class="block-element__time" datetime="<?=$event->event_date->format('c');?>">
+										<?=$this->date($event->event_date)?> &middot; <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?>
+									</time>
 									<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
 								</header>
 								<section class="block-element__body">
 									<?php if($event->avatar):?>
 										<a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-											<img src="<?=$this->basePath("/images/300/{$event->avatar}")?>" alt="mynd með viðburði" />
+											<img src="<?=$this->basePath("/images/300-square/{$event->avatar}")?>" alt="mynd með viðburði" />
 										</a>
 									<?php endif;?>
 									<?=$this->paragrapher( mb_substr($event->body,0,350,'utf-8').'&#8230;'  );?>
@@ -49,19 +51,21 @@
 				</ul>
 			</div>
 			<div class="layout__meta">
-				<h1>Fréttir</h1>
-				<ul>
+				<h1 class="layout__headline">Fréttir</h1>
+				<ul class="block-list block-list--separator">
 					<?php foreach( $this->news as $news ):?>
 						<li>
 							<article class="block-element">
 								<header class="block-element__header">
-									<time class="block-element__time"><?=$news->created_date?></time>
+									<time class="block-element__time" datetime="<?=$news->created_date->format('c')?>">
+										<?=$this->date($news->created_date,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+									</time>
 									<h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
 								</header>
 								<section class="block-element__body">
 									<?php if($news->avatar):?>
 										<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
-											<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" alt="mynd með frétt" />
+											<img src="<?=$this->basePath("/images/300-square/{$news->avatar}")?>" alt="mynd með frétt" />
 										</a>
 									<?php endif;?>
 									<?=$this->paragrapher( mb_substr($news->body,0,350,'utf-8').'&#8230;'  );?>
@@ -85,14 +89,23 @@
 			</div>
 		</section>
 		<aside class="layout__aside">
-			<h1>Fylgiskrár</h1>
-			<ul>
-				<?php foreach( $this->media as $media ):?>
-					<li>
-						<a href="/image/original/<?=$media->name?>" title="<?=$media->name?>"><?=$media->name?></a>
-						<!--a href="<?=$this->url('vidburdir/index',array('id'=>$media->event->id))?>"><?=$media->event->subject?></a-->
-					</li>
-				<?php endforeach;?>
+			<h1 class="layout__headline">Fylgiskrár</h1>
+			<ul class="block-list">
+			<?php foreach( $this->media as $item ):?>
+				<li class="block-item">
+					<time class="block-item__time" datetime="<?=$item->event->event_date->format('c')?>">
+						<?=$this->date($item->event->event_date);?>
+					</time>
+					<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$item->event->id))?>"><?=$item->event->subject?></a></h2>
+					<ul class="block-supplement">
+						<?php foreach($item->media as $media):?>
+							<li>
+								<a href="/images/original/<?=$media->name?>" title="<?=$media->name?>" target="_blank"><?=$media->name?></a>
+							</li>
+						<?php endforeach;?>
+					</ul>
+				</li>
+			<?php endforeach;?>
 			</ul>
 		</aside>
 	</div>

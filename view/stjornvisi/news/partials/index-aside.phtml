@@ -13,7 +13,7 @@
 			</time>
 			<?php if( $news->avatar ): ?>
 			<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-item__image">
-				<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" />
+				<img src="<?=$this->basePath("/images/300-square/{$news->avatar}")?>" />
 			</a>
 			<?php endif;?>
 			<h2><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h2>

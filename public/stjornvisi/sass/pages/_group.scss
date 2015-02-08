@@ -1,0 +1,170 @@
+
+	/**
+	 * /hopur/:name[/:date]
+	 */
+	.page-group{
+
+		//HEADER
+		//	this is where the name, year and register button live
+		.page-group__header{
+			position: relative;
+			margin-bottom: $gutter;
+		}
+
+
+		.page-group__separator{
+			padding-top: $gutter;
+			border-top: 1px solid $color-gray-light;
+		}
+
+		//DESCRIPTION
+		//	the description og the group
+		.page-group__description{
+			@extend %rich-text;
+			clear: both;
+			margin-bottom: $gutter;
+		}
+
+		//MEMBERS
+		//	container for all members
+		.page-group__members{
+			clear: both;
+			@include pie-clearfix;
+			.layout__headline {
+				@include margin-trailer(1,$font-size-base);
+			}
+		}
+
+		.page-group__members-head{
+			float: left;
+			width: 33.33%;
+		}
+		.page-group__members-member{
+			float: left;
+			width: 66.66%;
+			@include pie-clearfix;
+			> ul {
+				float: left;
+				width: 50%;
+			}
+
+		}
+
+		//NAME
+		//	just the name of the group in
+		//	big letters
+		.page-group__headline{
+			font-family: $font-family-bitter;
+			font-weight: $font-weight-bold;
+			@include adjust-font-size-to($font-size-huge,2,$font-size-base);
+		}
+
+		//SUBLINE
+		//	2nd level headline
+		.page-group__subline.page-group__subline {
+			//yes this selector is supose to be this double select
+			//it is to make it higher priority
+			font-family: $font-family-bitter;
+			font-weight: $font-weight-bold;
+			@include adjust-font-size-to($font-size-header,1,$font-size-base);
+			@include margin-trailer(2,$font-size-header);
+		}
+
+		//REGISTER
+		//	the registration button
+		.page-group__register{
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+
+		//YEARS
+		//	left-side list of active years
+		.page-group__years{
+			@include margin-leader(1/2,$font-size-base);
+			@include margin-trailer(1/2,$font-size-base);
+			font-family: $font-family-open;
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			li:before{
+				content: "\2022";
+				padding-right: rhythm(1/2,$font-size-small);
+				color: $color-green-sea;
+			}
+			a{
+				color: $color-green-sea;
+			}
+		}
+
+		//SUMMARY
+		//	left side small summary text
+		.page-group__summary {
+			@include margin-trailer(1,$font-size-base);
+
+		}
+
+
+		.page-group__members-item {
+			position: relative;
+			padding-bottom: rhythm(1,$font-size-base);
+			h3{
+				font-family: $font-family-open;
+			}
+			span {
+				display: block;
+				color: $color-green-sea;
+				font-family: $font-family-open;
+				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			}
+
+		}
+
+		.page-group__calendar{
+			@include margin-leader(1/2,$font-size-base);
+			@include margin-trailer(1/2,$font-size-base);
+			a{
+				display: block;
+				font-family: $font-family-bitter;
+				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			}
+		}
+
+
+
+
+		.layout__aside {
+			.layout__headline {
+				@include margin-leader(2,$font-size-base);
+			}
+		}
+
+
+	}
+
+
+	.page-group-list{
+
+		.page-group-list__item{
+			@include pie-clearfix;
+			.page-group-list__header{
+				float: left;
+				width: 60%;
+				padding-right: $gutter;
+			}
+			.page-group-list__aside{
+				float: right;
+				width: 40%;
+			}
+			.page-group-list__body{
+				float: left;
+				width: 60%;
+				padding-right: $gutter;
+			}
+		}
+
+		.page-group-list__list-item{
+			font-family: $font-family-bitter;
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		}
+	}
+
+

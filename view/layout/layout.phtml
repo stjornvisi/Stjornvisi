@@ -22,16 +22,19 @@
 			->appendStylesheet( $this->basePath() . '/stylesheets//ie.css','screen','IE 9')
 		; ?>
     </head>
-	<body>
+	<body class="state-login">
 		<nav role="navigation">
-			<?=$this->subMenu()?>
+			<div class="navigation__wrapper">
+				<?=$this->subMenu()?>
+			</div>
+
 			<ul class="categories">
-				<li><a href="/" title="Heim">heim</a></li>
-				<li><a href="" title="Faghópar">groups</a></li>
+				<li><a href="/" class="categories__home" title="Heim">heim</a></li>
+				<li><a href="#" class="categories__groups" title="Faghópar">groups</a></li>
 				<!--li><a class="news control" href="" title="Fréttir">news</a></li-->
 				<!--li><a class="events control" href="" title="Viðburðir">events</a></li-->
-				<li><a href="" title="Notendur">user</a></li>
-				<li><a href="" title="Stillingar">config</a></li>
+				<li><a href="#" class="categories__users" title="Notendur">user</a></li>
+				<li><a href="#" class="categories__config" title="Stillingar">config</a></li>
 			</ul>
 		</nav>
 
@@ -42,15 +45,15 @@
 					<ul class="main__menu-items">
 						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
 						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
+						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
 						<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
 						<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
 					</ul>
-					<form method="get" action="<?=$this->url('leita')?>" class="main__search">
-						<input name="q" type="search" placeholder="Leit..." />
-						<input type="submit" value="leita">
-					</form>
 				</nav>
-
+				<form method="get" action="<?=$this->url('leita')?>" class="main__search">
+					<input name="q" type="search" placeholder="Leit..." />
+					<input type="submit" value="leita">
+				</form>
 			</header>
 			<?php echo $this->content; ?>
 		</main>
@@ -89,6 +92,65 @@
 			//->appendFile($this->basePath() . '/vendor/html5shiv-dist/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
 			->appendFile($this->basePath() . '/javascripts/common.js')
 		; ?>
+	<script>
+		var active = undefined;
+		document.querySelector('.categories__groups').addEventListener('click',function(event){
+			event.preventDefault();
+			document.querySelector('ul.navigation').style.marginLeft = 0;
+			if(active == undefined){
+				event.target.classList.add('active');
+				document.body.classList.add('state-open');
+				active = event.target;
+			}
+			else if( active == event.target ){
+				event.target.classList.remove('active');
+				document.body.classList.remove('state-open');
+				active = undefined;
+			}else{
+				active.classList.remove('active');
+				active = event.target;
+				active.classList.add('active');
+			}
 
+
+		},false);
+		document.querySelector('.categories__users').addEventListener('click',function(event){
+			event.preventDefault();
+			document.querySelector('ul.navigation').style.marginLeft = '-100%';
+			if(active == undefined){
+				event.target.classList.add('active');
+				document.body.classList.add('state-open');
+				active = event.target;
+			}
+			else if( active == event.target ){
+				event.target.classList.remove('active');
+				document.body.classList.remove('state-open');
+				active = undefined;
+			}else{
+				active.classList.remove('active');
+				active = event.target;
+				active.classList.add('active');
+			}
+		},false);
+		document.querySelector('.categories__config').addEventListener('click',function(event){
+			event.preventDefault();
+			document.querySelector('ul.navigation').style.marginLeft = '-200%';
+			if(active == undefined){
+				event.target.classList.add('active');
+				document.body.classList.add('state-open');
+				active = event.target;
+			}
+			else if( active == event.target ){
+				event.target.classList.remove('active');
+				document.body.classList.remove('state-open');
+				active = undefined;
+			}else{
+				active.classList.remove('active');
+				active = event.target;
+				active.classList.add('active');
+			}
+		},false);
+
+	</script>
 	</body>
 </html>

@@ -963,62 +963,72 @@ input[type="button"].btn-block {
 }
 
 /* line 3, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1 + p,
+.block-element .block-element__body h1 + p, .page-group .page-group__description h1 + p,
 .block-element .block-element__body h2 + p,
+.page-group .page-group__description h2 + p,
 .block-element .block-element__body h3 + p,
-.block-element .block-element__body h4 + p {
+.page-group .page-group__description h3 + p,
+.block-element .block-element__body h4 + p,
+.page-group .page-group__description h4 + p {
   margin-top: 0.75em;
 }
 /* line 9, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p, .block-element .block-element__body blockquote {
+.block-element .block-element__body p, .page-group .page-group__description p, .block-element .block-element__body blockquote, .page-group .page-group__description blockquote {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
 }
 /* line 13, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p:first-of-type {
+.block-element .block-element__body p:first-of-type, .page-group .page-group__description p:first-of-type {
   margin-top: 0;
 }
 /* line 16, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p:last-of-type {
+.block-element .block-element__body p:last-of-type, .page-group .page-group__description p:last-of-type {
   margin-bottom: 0;
 }
 /* line 20, ../sass/helpers/_extend.scss */
-.block-element .block-element__body blockquote {
+.block-element .block-element__body blockquote, .page-group .page-group__description blockquote {
   font-style: italic;
   border-left: 4px solid #4a85a1;
   padding-left: 1.5em;
 }
 /* line 26, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ul {
-  list-style: disc;
-  list-style-position: inside;
+.block-element .block-element__body ol, .page-group .page-group__description ol {
+  counter-reset: section;
 }
-/* line 30, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ol {
-  list-style: decimal;
-  list-style-position: inside;
-}
-/* line 35, ../sass/helpers/_extend.scss */
-.block-element .block-element__body a {
+/* line 28, ../sass/helpers/_extend.scss */
+.block-element .block-element__body ol li:before, .page-group .page-group__description ol li:before {
+  counter-increment: section;
+  content: counters(section,".") ".";
   color: #4a85a1;
+  padding-right: 0.75em;
 }
 /* line 38, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1 {
+.block-element .block-element__body ul li:before, .page-group .page-group__description ul li:before {
+  content: "\2022";
+  color: #4a85a1;
+  padding-right: 0.75em;
+}
+/* line 46, ../sass/helpers/_extend.scss */
+.block-element .block-element__body a, .page-group .page-group__description a {
+  color: #4a85a1;
+}
+/* line 49, ../sass/helpers/_extend.scss */
+.block-element .block-element__body h1, .page-group .page-group__description h1 {
   font-size: 1.125em;
   line-height: 1.33333em;
 }
-/* line 41, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h2 {
+/* line 52, ../sass/helpers/_extend.scss */
+.block-element .block-element__body h2, .page-group .page-group__description h2 {
   font-size: 1em;
   line-height: 1.5em;
 }
-/* line 44, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h3, .block-element .block-element__body h4 {
+/* line 55, ../sass/helpers/_extend.scss */
+.block-element .block-element__body h3, .page-group .page-group__description h3, .block-element .block-element__body h4, .page-group .page-group__description h4 {
   font-size: 0.875em;
   line-height: 1.71429em;
 }
-/* line 47, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1, .block-element .block-element__body h2, .block-element .block-element__body h3, .block-element .block-element__body h4 {
+/* line 58, ../sass/helpers/_extend.scss */
+.block-element .block-element__body h1, .page-group .page-group__description h1, .block-element .block-element__body h2, .page-group .page-group__description h2, .block-element .block-element__body h3, .page-group .page-group__description h3, .block-element .block-element__body h4, .page-group .page-group__description h4 {
   font-family: "Bitter", serif;
   font-weight: 700;
 }
@@ -1237,118 +1247,99 @@ input[type="button"].btn-block {
   content: "\e609";
 }
 
-/* line 3, ../sass/components/_layout.scss */
-nav[role=navigation] {
-  display: none;
-}
-
-/* line 7, ../sass/components/_layout.scss */
+/**
+ * MAIN CONTAINER
+ *
+ * Holds all content.
+ */
+/* line 12, ../sass/components/_layout.scss */
 main[role=main] {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   margin-bottom: 240px;
   background-color: white;
 }
-/* line 13, ../sass/components/_layout.scss */
-main[role=main] > header {
-  *zoom: 1;
-  /*
-  background-color: $color-blue;
-  h1{
-  	float: left;
-  	width: 20%;
-  	background-color: $color-white;
-  }
-  ul{
-  	float: left;
-  	width: 50%;
-  	@include pie-clearfix;
-  	li{
-  		float: left;
-  		padding: rhythm(1/2,$font-size-base);
-  		a{
-  			color: $color-white;
-  		}
-  	}
-  }
-  form{
-  	width: 20%;
-  	float: left;
-  }
-  */
+
+/* line 20, ../sass/components/_layout.scss */
+div.layout:before {
+  content: " ";
+  display: block;
+  background-image: url("images/header-logo-text.png");
+  background-repeat: no-repeat;
+  height: 31px;
+  width: 100%;
+  margin-left: -65px;
+  margin-bottom: 30px;
 }
-/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
-main[role=main] > header:after {
-  content: "";
+
+/**
+ * MAIN HEAD
+ *
+ * Within MAIN CONTAINER there is this header.
+ */
+/* line 36, ../sass/components/_layout.scss */
+.main__header {
   display: table;
-  clear: both;
+  table-layout: fixed;
+  width: 100%;
+  background-color: #292468;
 }
-/* line 43, ../sass/components/_layout.scss */
-main[role=main] .main__brand {
-  float: left;
-  font: 0/0 a;
+/* line 45, ../sass/components/_layout.scss */
+.main__header .main__brand {
+  display: table-cell;
   background-image: url("images/header-logo.png");
   background-repeat: no-repeat;
   background-position: right 0;
   background-color: #292468;
   width: 205px;
-  height: 111px;
+  height: 80px;
+  font: 0/0 a;
 }
-/* line 53, ../sass/components/_layout.scss */
-main[role=main] .main__menu {
-  margin-right: 205px;
+/* line 55, ../sass/components/_layout.scss */
+.main__header .main__menu {
+  display: table-cell;
   width: 100%;
-  *zoom: 1;
-  /*ul*/
-}
-/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
-main[role=main] .main__menu:after {
-  content: "";
-  display: table;
-  clear: both;
 }
 /* line 58, ../sass/components/_layout.scss */
-main[role=main] .main__menu .main__menu-items {
+.main__header .main__menu .main__menu-items {
   *zoom: 1;
-  float: left;
-  width: 62%;
-  background-color: #292468;
+  width: 100%;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
-main[role=main] .main__menu .main__menu-items:after {
+.main__header .main__menu .main__menu-items:after {
   content: "";
   display: table;
   clear: both;
 }
-/* line 63, ../sass/components/_layout.scss */
-main[role=main] .main__menu .main__menu-items li {
+/* line 62, ../sass/components/_layout.scss */
+.main__header .main__menu .main__menu-items > li {
   float: left;
 }
-/* line 66, ../sass/components/_layout.scss */
-main[role=main] .main__menu .main__menu-items li a {
-  font-size: 0.875em;
-  line-height: 1.71429em;
-  font-family: open-sans;
-  text-transform: uppercase;
+/* line 64, ../sass/components/_layout.scss */
+.main__header .main__menu .main__menu-items > li a {
   display: block;
-  padding: 1.71429em;
+  font-family: "Open Sans", sans-serif;
+  text-transform: uppercase;
   color: white;
+  padding: 1.5em;
 }
-/* line 76, ../sass/components/_layout.scss */
-main[role=main] .main__menu .main__search {
-  float: right;
-  width: 20%;
-}
-/* line 81, ../sass/components/_layout.scss */
-main[role=main] .main__search {
-  float: none;
-  width: 30%;
+/* line 74, ../sass/components/_layout.scss */
+.main__header .main__search {
+  display: table-cell;
+  width: 300px;
+  vertical-align: middle;
 }
 
-/* line 87, ../sass/components/_layout.scss */
+/**
+ * MAIN FOOTER
+ *
+ * This is the footer. It has the lowest z-index and
+ * lies under all content.
+ */
+/* line 90, ../sass/components/_layout.scss */
 footer[role=footer] {
   position: fixed;
-  z-index: 0;
+  z-index: 1;
   top: 0;
   right: 0;
   bottom: 0;
@@ -1357,13 +1348,13 @@ footer[role=footer] {
   height: 100%;
   background-color: #282828;
 }
-/* line 98, ../sass/components/_layout.scss */
+/* line 101, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper {
   position: absolute;
   width: 100%;
   bottom: 0;
 }
-/* line 102, ../sass/components/_layout.scss */
+/* line 105, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__inner {
   *zoom: 1;
   max-width: 960px;
@@ -1376,10 +1367,108 @@ footer[role=footer] .footer-wrapper .footer-wrapper__inner:after {
   display: table;
   clear: both;
 }
-/* line 108, ../sass/components/_layout.scss */
+/* line 111, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__item {
   float: left;
   width: 33.33%;
+}
+
+/* line 122, ../sass/components/_layout.scss */
+nav[role=navigation] {
+  background-color: #4a85a1;
+  transform: translate3d(-270px, 0, 0);
+  transition: all .4s;
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  width: 350px;
+  height: 100%;
+  *zoom: 1;
+  overflow: hidden;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+nav[role=navigation]:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 134, ../sass/components/_layout.scss */
+nav[role=navigation] .navigation__wrapper {
+  width: 270px;
+  overflow: hidden;
+  float: left;
+  position: relative;
+}
+/* line 142, ../sass/components/_layout.scss */
+nav[role=navigation] ul.navigation {
+  position: relative;
+  z-index: 5;
+  width: 400%;
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+nav[role=navigation] ul.navigation:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 149, ../sass/components/_layout.scss */
+nav[role=navigation] ul.navigation > li {
+  padding: 30px;
+  float: left;
+  width: 25%;
+}
+/* line 153, ../sass/components/_layout.scss */
+nav[role=navigation] ul.navigation > li a {
+  font-size: 0.75em;
+  line-height: 2em;
+  color: white;
+  font-family: "Open Sans", sans-serif;
+}
+/* line 162, ../sass/components/_layout.scss */
+nav[role=navigation] .categories {
+  position: relative;
+  z-index: 6;
+  float: right;
+  width: 80px;
+  height: 100%;
+  background-color: #282828;
+}
+/* line 169, ../sass/components/_layout.scss */
+nav[role=navigation] .categories a {
+  display: block;
+  height: 80px;
+  width: 80px;
+  color: white;
+  border-bottom: 1px solid #545454;
+  transition: all .2s;
+}
+/* line 177, ../sass/components/_layout.scss */
+nav[role=navigation] .categories a:hover, nav[role=navigation] .categories a.active {
+  background-color: #4a85a1;
+  border-bottom-color: #427790;
+}
+/* line 181, ../sass/components/_layout.scss */
+nav[role=navigation] .categories a.categories__home {
+  background-color: #4ca14a;
+  border-bottom: none;
+}
+
+/**
+ *
+ */
+/* line 194, ../sass/components/_layout.scss */
+body.state-login main[role=main],
+body.state-login footer[role=footer] {
+  margin-left: 80px;
+}
+/* line 203, ../sass/components/_layout.scss */
+body.state-login.state-open {
+  overflow: hidden;
+}
+/* line 210, ../sass/components/_layout.scss */
+body.state-login.state-open nav[role=navigation] {
+  transform: translate3d(0, 0, 0);
 }
 
 /* line 106, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/typography/_vertical_rhythm.scss */
@@ -1551,9 +1640,14 @@ a {
 }
 /* line 116, ../sass/components/_components.scss */
 .block-element .block-element__more {
+  display: block;
   text-align: right;
 }
-/* line 120, ../sass/components/_components.scss */
+/* line 119, ../sass/components/_components.scss */
+.block-element .block-element__more:after {
+  content: "\02026";
+}
+/* line 124, ../sass/components/_components.scss */
 .block-element .block-element__author-list {
   *zoom: 1;
   /*li*/
@@ -1564,17 +1658,17 @@ a {
   display: table;
   clear: both;
 }
-/* line 122, ../sass/components/_components.scss */
+/* line 126, ../sass/components/_components.scss */
 .block-element .block-element__author-list .block-element__author-item {
   float: left;
 }
-/* line 124, ../sass/components/_components.scss */
+/* line 128, ../sass/components/_components.scss */
 .block-element .block-element__author-list .block-element__author-item h2 {
   font-size: 0.875em;
   line-height: 1.71429em;
   font-family: open-sans;
 }
-/* line 128, ../sass/components/_components.scss */
+/* line 132, ../sass/components/_components.scss */
 .block-element .block-element__author-list .block-element__author-item img {
   border-radius: 50%;
 }
@@ -1588,32 +1682,32 @@ a {
  * to the block.
  *
  */
-/* line 145, ../sass/components/_components.scss */
+/* line 149, ../sass/components/_components.scss */
 .block-item {
   position: relative;
 }
-/* line 147, ../sass/components/_components.scss */
+/* line 151, ../sass/components/_components.scss */
 .block-item h2 {
   font-size: 1em;
   line-height: 1.5em;
   font-weight: 700;
   font-family: "Bitter", serif;
 }
-/* line 152, ../sass/components/_components.scss */
+/* line 156, ../sass/components/_components.scss */
 .block-item h3 {
   font-size: 1em;
   line-height: 1.5em;
   font-weight: 700;
   font-family: "Bitter", serif;
 }
-/* line 157, ../sass/components/_components.scss */
+/* line 161, ../sass/components/_components.scss */
 .block-item .block-item__time {
   font-size: 0.75em;
   line-height: 2em;
   font-family: "Open Sans", sans-serif;
   font-weight: 100;
 }
-/* line 162, ../sass/components/_components.scss */
+/* line 166, ../sass/components/_components.scss */
 .block-item .block-item__tags {
   *zoom: 1;
   font-size: 0.875em;
@@ -1627,30 +1721,30 @@ a {
   display: table;
   clear: both;
 }
-/* line 167, ../sass/components/_components.scss */
+/* line 171, ../sass/components/_components.scss */
 .block-item .block-item__tags li {
   float: left;
 }
-/* line 170, ../sass/components/_components.scss */
+/* line 174, ../sass/components/_components.scss */
 .block-item .block-item__tags li:after {
   font-weight: 700;
   content: "\00B7";
   padding: 0 0.42857em;
 }
-/* line 175, ../sass/components/_components.scss */
+/* line 179, ../sass/components/_components.scss */
 .block-item .block-item__tags li:last-child:after {
   content: "";
   padding: 0;
 }
-/* line 179, ../sass/components/_components.scss */
+/* line 183, ../sass/components/_components.scss */
 .block-item .block-item__tags a {
   color: #4a85a1;
 }
-/* line 184, ../sass/components/_components.scss */
+/* line 188, ../sass/components/_components.scss */
 .block-item .block-item__image img {
   width: 100%;
 }
-/* line 188, ../sass/components/_components.scss */
+/* line 192, ../sass/components/_components.scss */
 .block-item h2 {
   font-weight: 700;
 }
@@ -1664,18 +1758,38 @@ a {
  *
  */
 /*ul*/
-/* line 204, ../sass/components/_components.scss */
+/* line 208, ../sass/components/_components.scss */
 .block-list.block-list--separator > li {
   border-bottom: 1px solid lightgray;
 }
-/* line 208, ../sass/components/_components.scss */
+/* line 211, ../sass/components/_components.scss */
+.block-list.block-list--separator > li:last-child {
+  border-bottom: none;
+}
+/* line 215, ../sass/components/_components.scss */
 .block-list > li:first-child {
   padding-top: 0;
 }
-/* line 211, ../sass/components/_components.scss */
+/* line 218, ../sass/components/_components.scss */
 .block-list > li {
   position: relative;
   padding: 1.5em 0;
+}
+/* line 223, ../sass/components/_components.scss */
+.block-list.block-list--less > li {
+  padding: 0.375em 0;
+}
+/* line 226, ../sass/components/_components.scss */
+.block-list.block-list--less > li:first-child {
+  padding-top: 0;
+}
+/* line 231, ../sass/components/_components.scss */
+.block-list.block-list--small > li {
+  padding: 0.1875em 0;
+}
+/* line 234, ../sass/components/_components.scss */
+.block-list.block-list--small > li:first-child {
+  padding-top: 0;
 }
 
 /**
@@ -1687,7 +1801,7 @@ a {
  * make some air between the label and list.
  *
  */
-/* line 226, ../sass/components/_components.scss */
+/* line 249, ../sass/components/_components.scss */
 .layout__headline + .block-list {
   margin-top: 1.5em;
 }
@@ -1698,7 +1812,7 @@ a {
  * List of images displayed in a horizontal
  * order. Used for event page...
  */
-/* line 237, ../sass/components/_components.scss */
+/* line 260, ../sass/components/_components.scss */
 .block-gallery {
   *zoom: 1;
   margin-left: -0.1875em;
@@ -1710,13 +1824,13 @@ a {
   display: table;
   clear: both;
 }
-/* line 242, ../sass/components/_components.scss */
+/* line 265, ../sass/components/_components.scss */
 .block-gallery .block-gallery__item {
   float: left;
   width: 25%;
   padding: 0.1875em;
 }
-/* line 247, ../sass/components/_components.scss */
+/* line 270, ../sass/components/_components.scss */
 .block-gallery .block-gallery__image {
   border: 1px solid lightgray;
   padding: 0.1875em;
@@ -1730,29 +1844,34 @@ a {
  *
  */
 /*ul*/
-/* line 262, ../sass/components/_components.scss */
+/* line 285, ../sass/components/_components.scss */
 .block-supplement > li {
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
   padding: 0.375em 0;
 }
-/* line 265, ../sass/components/_components.scss */
+/* line 289, ../sass/components/_components.scss */
 .block-supplement a {
   font-size: 0.75em;
   line-height: 2em;
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
 }
-/* line 270, ../sass/components/_components.scss */
+/* line 295, ../sass/components/_components.scss */
 .block-supplement a:before {
   padding-right: 1em;
   font-family: 'icomoon';
   content: "\e60b";
 }
-/* line 275, ../sass/components/_components.scss */
+/* line 300, ../sass/components/_components.scss */
 .block-supplement a[href$=xls]:before,
 .block-supplement a[href$=xlsx]:before {
   content: "\e60c";
 }
-/* line 279, ../sass/components/_components.scss */
+/* line 304, ../sass/components/_components.scss */
 .block-supplement a[href$=pdf]:before {
   content: "\e60d";
 }
@@ -1766,7 +1885,7 @@ a {
  * ...implemented with a <dl> item
  */
 /*dl*/
-/* line 293, ../sass/components/_components.scss */
+/* line 318, ../sass/components/_components.scss */
 .block-property-value {
   *zoom: 1;
 }
@@ -1776,13 +1895,13 @@ a {
   display: table;
   clear: both;
 }
-/* line 295, ../sass/components/_components.scss */
+/* line 320, ../sass/components/_components.scss */
 .block-property-value dt {
   width: 50%;
   float: left;
   clear: left;
 }
-/* line 300, ../sass/components/_components.scss */
+/* line 325, ../sass/components/_components.scss */
 .block-property-value dd {
   width: 50%;
   float: left;
@@ -1801,7 +1920,7 @@ a {
  *		<aside></aside>
  * </div>
  */
-/* line 319, ../sass/components/_components.scss */
+/* line 344, ../sass/components/_components.scss */
 .layout {
   *zoom: 1;
   padding: 0 60px 60px 60px;
@@ -1822,29 +1941,29 @@ a {
   clear: both;
 }
 @media (max-width: 480px) {
-  /* line 319, ../sass/components/_components.scss */
+  /* line 344, ../sass/components/_components.scss */
   .layout {
     padding: 0 15px;
   }
 }
-/* line 326, ../sass/components/_components.scss */
+/* line 351, ../sass/components/_components.scss */
 .layout .layout__headline {
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
   text-transform: uppercase;
 }
-/* line 332, ../sass/components/_components.scss */
+/* line 357, ../sass/components/_components.scss */
 .layout h1.layout__headline {
   font-size: 0.875em;
   line-height: 1.71429em;
 }
-/* line 335, ../sass/components/_components.scss */
+/* line 360, ../sass/components/_components.scss */
 .layout h2.layout__headline {
   font-size: 0.875em;
   line-height: 1.71429em;
   font-weight: 700;
 }
-/* line 346, ../sass/components/_components.scss */
+/* line 371, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section {
   *zoom: 1;
   float: left;
@@ -1856,22 +1975,22 @@ a {
   display: table;
   clear: both;
 }
-/* line 350, ../sass/components/_components.scss */
+/* line 375, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section .layout__data {
   float: left;
   width: 60%;
 }
-/* line 354, ../sass/components/_components.scss */
+/* line 379, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section .layout__meta {
   float: left;
   width: 40%;
 }
-/* line 359, ../sass/components/_components.scss */
+/* line 384, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__aside {
   float: left;
   width: 20%;
 }
-/* line 369, ../sass/components/_components.scss */
+/* line 395, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section {
   *zoom: 1;
   float: left;
@@ -1883,33 +2002,33 @@ a {
   display: table;
   clear: both;
 }
-/* line 374, ../sass/components/_components.scss */
+/* line 400, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__data {
   float: left;
   width: 50%;
   padding-right: 0.75em;
 }
-/* line 379, ../sass/components/_components.scss */
+/* line 405, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta {
   float: left;
   width: 50%;
   padding-right: 0.75em;
   padding-left: 0.75em;
 }
-/* line 385, ../sass/components/_components.scss */
+/* line 411, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta > div:first-child {
   margin-top: 0;
 }
-/* line 388, ../sass/components/_components.scss */
+/* line 414, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta > div {
   margin-top: 30px;
 }
-/* line 393, ../sass/components/_components.scss */
+/* line 419, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout_article {
   padding-right: 0.75em;
 }
 @media (max-width: 768px) {
-  /* line 398, ../sass/components/_components.scss */
+  /* line 424, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section .layout__data, .layout.layout--three-columns .layout__section .layout__meta {
     float: none;
     width: auto;
@@ -1917,52 +2036,72 @@ a {
     padding-right: 0;
   }
 }
-/* line 406, ../sass/components/_components.scss */
+/* line 432, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__aside {
   float: left;
   width: 20%;
   padding-left: 0.75em;
 }
 @media (max-width: 768px) {
-  /* line 413, ../sass/components/_components.scss */
+  /* line 439, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section {
     width: 70%;
   }
-  /* line 416, ../sass/components/_components.scss */
+  /* line 442, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__aside {
     width: 30%;
   }
 }
 @media (max-width: 480px) {
-  /* line 421, ../sass/components/_components.scss */
+  /* line 447, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section {
     width: auto;
     float: none;
   }
-  /* line 425, ../sass/components/_components.scss */
+  /* line 451, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__aside {
     width: auto;
     float: none;
     padding-left: 0;
   }
 }
-/* line 437, ../sass/components/_components.scss */
+/* line 463, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__section {
+  *zoom: 1;
   float: right;
-  width: 80%;
+  width: 75%;
 }
-/* line 441, ../sass/components/_components.scss */
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.layout.layout--three-columns-reverse .layout__section:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 468, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__aside {
   float: left;
-  width: 20%;
+  width: 25%;
+  padding-right: 60px;
+}
+/* line 473, ../sass/components/_components.scss */
+.layout.layout--three-columns-reverse .layout__data {
+  float: left;
+  width: 50%;
+  padding-right: 30px;
+}
+/* line 478, ../sass/components/_components.scss */
+.layout.layout--three-columns-reverse .layout__meta {
+  float: left;
+  width: 50%;
+  padding-left: 30px;
 }
 @media (max-width: 480px) {
-  /* line 446, ../sass/components/_components.scss */
+  /* line 485, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__section {
     float: none;
     width: auto;
   }
-  /* line 450, ../sass/components/_components.scss */
+  /* line 489, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__aside {
     float: none;
     width: auto;
@@ -1977,14 +2116,32 @@ a {
  * needs to be displayed.
  */
 /*table*/
-/* line 467, ../sass/components/_components.scss */
+/* line 506, ../sass/components/_components.scss */
 .block-table td, .block-table td {
   vertical-align: top;
 }
-/* line 471, ../sass/components/_components.scss */
+/* line 509, ../sass/components/_components.scss */
+.block-table td.block-table__numeric {
+  text-align: right;
+  padding-left: 1.5em;
+}
+/* line 514, ../sass/components/_components.scss */
 .block-table thead td {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
+}
+/* line 524, ../sass/components/_components.scss */
+.block-table.block-table--data caption {
+  padding: 1.5em 0;
+  text-align: center;
+}
+/* line 528, ../sass/components/_components.scss */
+.block-table.block-table--data thead {
+  border-bottom: 2px solid lightgray;
+}
+/* line 532, ../sass/components/_components.scss */
+.block-table.block-table--data tbody tr {
+  border-bottom: 1px solid lightgray;
 }
 
 /**
@@ -1995,7 +2152,7 @@ a {
  * we need to add space below (actually on top) to
  * make some air between the label and table.
  */
-/* line 488, ../sass/components/_components.scss */
+/* line 547, ../sass/components/_components.scss */
 .layout__headline + .block-table {
   margin-top: 1.5em;
 }
@@ -2006,20 +2163,64 @@ a {
  * calendar month.
  *
  */
-/* line 499, ../sass/components/_components.scss */
+/* line 557, ../sass/components/_components.scss */
+.block-calendar {
+  position: relative;
+}
+/* line 559, ../sass/components/_components.scss */
 .block-calendar td {
+  position: relative;
   width: 14.28571%;
   vertical-align: top;
+  padding: 0.375em;
+  overflow: hidden;
 }
-/* line 508, ../sass/components/_components.scss */
+/* line 566, ../sass/components/_components.scss */
+.block-calendar .block-calendar__header {
+  font-family: "Open Sans", sans-serif;
+  color: #4a85a1;
+}
+/* line 570, ../sass/components/_components.scss */
+.block-calendar .block-calendar__header tr {
+  border-bottom: 2px solid lightgray;
+}
+/* line 577, ../sass/components/_components.scss */
 .block-calendar .block-calendar__body tr {
   border-bottom: 1px solid lightgray;
 }
-/* line 511, ../sass/components/_components.scss */
+/* line 580, ../sass/components/_components.scss */
 .block-calendar .block-calendar__body tr td a {
   font-family: open-sans;
   font-size: 0.75em;
   line-height: 0.25em;
+}
+/* line 589, ../sass/components/_components.scss */
+.block-calendar .block-calendar__caption {
+  position: relative;
+}
+/* line 593, ../sass/components/_components.scss */
+.block-calendar .block-calendar__pagination {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+/* line 599, ../sass/components/_components.scss */
+.block-calendar .block-calendar__headline {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-family: open-sans;
+  color: #4a85a1;
+  text-align: center;
+}
+/* line 606, ../sass/components/_components.scss */
+.block-calendar .block-calendar__date-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 4.5em;
+  line-height: 0.33333em;
+  color: #dae6ec;
+  z-index: -1;
 }
 
 /* line 1, ../sass/components/_web-components.scss */
@@ -2110,31 +2311,39 @@ stjonvisi-control {
   border-radius: 50%;
 }
 
-/* line 2, ../sass/components/_groups.scss */
-.group-block-list {
-  *zoom: 1;
-}
-/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
-.group-block-list:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-/* line 5, ../sass/components/_groups.scss */
-.group-block-list .group-block-list__aside {
-  float: right;
-  width: 40%;
-}
-/* line 9, ../sass/components/_groups.scss */
-.group-block-list .group-block-list__body {
-  float: left;
-  width: 60%;
-}
-
 /* line 3, ../sass/components/_form.scss */
 input[name=avatar] {
   text-indent: 70px;
   background-repeat: no-repeat;
+}
+
+/* line 9, ../sass/components/_form.scss */
+.btn-default {
+  background-color: #4a85a1;
+  color: white;
+  border: none;
+  font-size: 0.75em;
+  line-height: 2em;
+  padding: 0.5em 3em 0.375em 3em;
+  font-family: "Open Sans", sans-serif;
+  text-transform: uppercase;
+}
+
+/* line 43, ../sass/components/_form.scss */
+.attending {
+  padding: 1em 1.5em 0.75em 1.5em;
+  font-family: "Open Sans", sans-serif;
+  text-transform: uppercase;
+}
+/* line 47, ../sass/components/_form.scss */
+.attending.yes {
+  color: white;
+  background-color: #4ca14a;
+}
+/* line 51, ../sass/components/_form.scss */
+.attending.no {
+  color: white;
+  background-color: #ff4800;
 }
 
 /* line 4, ../sass/pages/_landing.scss */
@@ -2325,6 +2534,279 @@ input[name=avatar] {
     float: right;
     padding-left: 30px;
   }
+}
+
+/**
+ * /hopur/:name[/:date]
+ */
+/* line 9, ../sass/pages/_group.scss */
+.page-group .page-group__header {
+  position: relative;
+  margin-bottom: 30px;
+}
+/* line 15, ../sass/pages/_group.scss */
+.page-group .page-group__separator {
+  padding-top: 30px;
+  border-top: 1px solid lightgray;
+}
+/* line 22, ../sass/pages/_group.scss */
+.page-group .page-group__description {
+  clear: both;
+  margin-bottom: 30px;
+}
+/* line 30, ../sass/pages/_group.scss */
+.page-group .page-group__members {
+  clear: both;
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.page-group .page-group__members:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 33, ../sass/pages/_group.scss */
+.page-group .page-group__members .layout__headline {
+  margin-bottom: 1.5em;
+}
+/* line 38, ../sass/pages/_group.scss */
+.page-group .page-group__members-head {
+  float: left;
+  width: 33.33%;
+}
+/* line 42, ../sass/pages/_group.scss */
+.page-group .page-group__members-member {
+  float: left;
+  width: 66.66%;
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.page-group .page-group__members-member:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 46, ../sass/pages/_group.scss */
+.page-group .page-group__members-member > ul {
+  float: left;
+  width: 50%;
+}
+/* line 56, ../sass/pages/_group.scss */
+.page-group .page-group__headline {
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  font-size: 2.25em;
+  line-height: 1.33333em;
+}
+/* line 64, ../sass/pages/_group.scss */
+.page-group .page-group__subline.page-group__subline {
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  font-size: 1.5em;
+  line-height: 1em;
+  margin-bottom: 2em;
+}
+/* line 75, ../sass/pages/_group.scss */
+.page-group .page-group__register {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+/* line 83, ../sass/pages/_group.scss */
+.page-group .page-group__years {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.75em;
+  line-height: 2em;
+}
+/* line 88, ../sass/pages/_group.scss */
+.page-group .page-group__years li:before {
+  content: "\2022";
+  padding-right: 1em;
+  color: #4a85a1;
+}
+/* line 93, ../sass/pages/_group.scss */
+.page-group .page-group__years a {
+  color: #4a85a1;
+}
+/* line 100, ../sass/pages/_group.scss */
+.page-group .page-group__summary {
+  margin-bottom: 1.5em;
+}
+/* line 106, ../sass/pages/_group.scss */
+.page-group .page-group__members-item {
+  position: relative;
+  padding-bottom: 1.5em;
+}
+/* line 109, ../sass/pages/_group.scss */
+.page-group .page-group__members-item h3 {
+  font-family: "Open Sans", sans-serif;
+}
+/* line 112, ../sass/pages/_group.scss */
+.page-group .page-group__members-item span {
+  display: block;
+  color: #4a85a1;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.75em;
+  line-height: 2em;
+}
+/* line 121, ../sass/pages/_group.scss */
+.page-group .page-group__calendar {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+/* line 124, ../sass/pages/_group.scss */
+.page-group .page-group__calendar a {
+  display: block;
+  font-family: "Bitter", serif;
+  font-size: 0.75em;
+  line-height: 2em;
+}
+/* line 135, ../sass/pages/_group.scss */
+.page-group .layout__aside .layout__headline {
+  margin-top: 3em;
+}
+
+/* line 146, ../sass/pages/_group.scss */
+.page-group-list .page-group-list__item {
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.page-group-list .page-group-list__item:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 148, ../sass/pages/_group.scss */
+.page-group-list .page-group-list__item .page-group-list__header {
+  float: left;
+  width: 60%;
+  padding-right: 30px;
+}
+/* line 153, ../sass/pages/_group.scss */
+.page-group-list .page-group-list__item .page-group-list__aside {
+  float: right;
+  width: 40%;
+}
+/* line 157, ../sass/pages/_group.scss */
+.page-group-list .page-group-list__item .page-group-list__body {
+  float: left;
+  width: 60%;
+  padding-right: 30px;
+}
+/* line 164, ../sass/pages/_group.scss */
+.page-group-list .page-group-list__list-item {
+  font-family: "Bitter", serif;
+  font-size: 0.75em;
+  line-height: 2em;
+}
+
+/* line 4, ../sass/pages/_event.scss */
+.page-event form.page-event__register {
+  *zoom: 1;
+  border-top: 1px solid lightgray;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.page-event form.page-event__register:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 9, ../sass/pages/_event.scss */
+.page-event form.page-event__register p {
+  font-size: 0.875em;
+  line-height: 1.71429em;
+  font-family: "Open Sans", sans-serif;
+}
+/* line 13, ../sass/pages/_event.scss */
+.page-event form.page-event__register label {
+  font-size: 0.875em;
+  line-height: 1.71429em;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding-bottom: 0.75em;
+}
+/* line 21, ../sass/pages/_event.scss */
+.page-event form.page-event__register .form-group {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  width: 50%;
+  display: block;
+  float: left;
+}
+/* line 30, ../sass/pages/_event.scss */
+.page-event .block-element .block-element__body .block-element__image {
+  max-width: 100%;
+}
+
+/* line 5, ../sass/pages/_user.scss */
+.page-user-list .page-user-list__group {
+  width: 33.33%;
+  float: left;
+}
+
+/* line 2, ../sass/pages/_error.scss */
+.page-error {
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.page-error:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 4, ../sass/pages/_error.scss */
+.page-error .page-error__headline {
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  font-size: 2.25em;
+  line-height: 2em;
+}
+/* line 9, ../sass/pages/_error.scss */
+.page-error .page-error__message {
+  font-family: "Bitter", serif;
+  font-weight: 700;
+  font-size: 1.5em;
+  line-height: 1em;
+  color: #4a85a1;
+}
+/* line 16, ../sass/pages/_error.scss */
+.page-error .layout__message {
+  float: left;
+  width: 50%;
+}
+/* line 20, ../sass/pages/_error.scss */
+.page-error .layout__description {
+  float: left;
+  width: 50%;
+}
+/* line 24, ../sass/pages/_error.scss */
+.page-error .layout__exception {
+  clear: both;
+  width: 100%;
+}
+
+/**
+ *
+ */
+/**
+ *
+ */
+/**
+ *
+ */
+/* line 52, ../sass/pages/_error.scss */
+.page-exception pre {
+  font-family: monospace;
+  font-size: 0.75em;
+  line-height: 2em;
+  padding: 1.5em;
+  background-color: #e9e9e9;
+  overflow: scroll;
 }
 
 /*# sourceMappingURL=screen.css.map */

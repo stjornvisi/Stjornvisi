@@ -1,92 +1,95 @@
 
 
-	nav[role=navigation]{
-		display: none;
-	}
+$menu-size: 350px;
+$select-size: 80px;
 
+
+	/**
+	 * MAIN CONTAINER
+	 *
+	 * Holds all content.
+	 */
 	main[role=main]{
 		position: relative;
-		z-index: 1;
+		z-index: 2;
 		margin-bottom: $gutter*8;
 		background-color: $color-white;
 
-		> header {
-			@include pie-clearfix;
-			/*
-			background-color: $color-blue;
-			h1{
-				float: left;
-				width: 20%;
-				background-color: $color-white;
-			}
-			ul{
-				float: left;
-				width: 50%;
-				@include pie-clearfix;
-				li{
-					float: left;
-					padding: rhythm(1/2,$font-size-base);
-					a{
-						color: $color-white;
-					}
-				}
-			}
-			form{
-				width: 20%;
-				float: left;
-			}
-			*/
+	}
+
+div.layout:before{
+	content: " ";
+	display: block;
+	background-image: url("images/header-logo-text.png");
+	background-repeat: no-repeat;
+	height: 31px;
+	width: 100%;
+	margin-left: -65px;
+	margin-bottom: $gutter;
+}
+
+	/**
+	 * MAIN HEAD
+	 *
+	 * Within MAIN CONTAINER there is this header.
+	 */
+	.main__header{
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+		//margin-bottom: $gutter*2;
+		background-color: $color-blue;
+		&:after{
+
 		}
-
-
-		.main__header{}
 		.main__brand{
-			float: left;
-			font: 0/0 a;
+			display: table-cell;
 			background-image: url("images/header-logo.png");
 			background-repeat: no-repeat;
 			background-position: right 0;
 			background-color: $color-blue;
 			width: 205px;
-			height: 111px;
+			height: $select-size;
+			font: 0/0 a;
 		}
 		.main__menu{
-
-			margin-right: 205px;
+			display: table-cell;
 			width: 100%;
-			@include pie-clearfix;
-			/*ul*/.main__menu-items{
+			.main__menu-items{
 				@include pie-clearfix;
-				float: left;
-				width: 62%;
-				background-color: $color-blue;
-				li{
+				width: 100%;
 
+				> li{
 					float: left;
 					a{
-						@include adjust-font-size-to($font-size-sub,1,$font-size-base);
-						font-family: open-sans;
-						text-transform: uppercase;
 						display: block;
-						padding: rhythm(1,$font-size-sub);
+						font-family: $font-family-open;
+						text-transform: uppercase;
 						color: $color-white;
+						padding: rhythm(1,$font-size-base);
 					}
 				}
 			}
-			.main__search{
-				float: right;
-				width: 20%;
-			}
 		}
 		.main__search{
-			float: none;
-			width: 30%;
+
+			display: table-cell;
+			width: 300px;
+			vertical-align: middle;
+
 		}
 	}
 
+
+	/**
+	 * MAIN FOOTER
+	 *
+	 * This is the footer. It has the lowest z-index and
+	 * lies under all content.
+	 */
 	footer[role=footer]{
 		position: fixed;
-		z-index: 0;
+		z-index: 1;
 		top: 0;
 		right: 0;
 		bottom: 0;
@@ -108,6 +111,104 @@
 			.footer-wrapper__item{
 				float: left;
 				width: 33.33%;
+			}
+		}
+	}
+
+
+
+
+
+	nav[role=navigation]{
+		background-color: $color-green-sea;
+		transform: translate3d(- ($menu-size - $select-size),0,0);
+		transition: all .4s;
+		position: fixed;
+		z-index: 4;
+		top: 0;
+		width: $menu-size;
+		height: 100%;
+		@include pie-clearfix;
+		overflow: hidden;
+
+		.navigation__wrapper{
+			width: ($menu-size - $select-size);
+			overflow: hidden;
+			float: left;
+			position: relative;
+		}
+
+
+		ul.navigation{
+			position: relative;
+			z-index: 5;
+
+			width: 400%;
+
+			@include pie-clearfix;
+			> li{
+				padding: $gutter;
+				float: left;
+				width: ( 100% / 4 );
+				a{
+					@include adjust-font-size-to($font-size-small,1,$font-size-base);
+					color: $color-white;
+					font-family: $font-family-open;
+				}
+
+			}
+		}
+
+		.categories {
+			position: relative;
+			z-index: 6;
+			float: right;
+			width: $select-size;
+			height: 100%;
+			background-color: $color-black;
+			a{
+				display: block;
+				height: $select-size;
+				width: $select-size;
+				color: $color-white;
+				border-bottom: 1px solid shade($color-gray-light,60%);
+				transition: all .2s;
+			}
+			a:hover, a.active{
+				background-color: $color-green-sea;
+				border-bottom-color: shade($color-green-sea,10%);
+			}
+			a.categories__home{
+				background-color: $color-green;
+				border-bottom: none;
+			}
+		}
+	}
+
+
+
+	/**
+	 *
+	 */
+	body.state-login{
+		main[role=main],
+		footer[role=footer]{
+			margin-left: $select-size;
+		}
+
+		nav[role=navigation]{
+
+		}
+
+		&.state-open{
+			overflow: hidden;
+			main[role=main],
+			footer[role=footer]{
+				//transform: translate3d(300px,0,0);
+			}
+
+			nav[role=navigation]{
+				transform: translate3d(0,0,0);
 			}
 		}
 	}

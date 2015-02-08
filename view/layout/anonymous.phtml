@@ -24,23 +24,21 @@
 
 		<script src="<?=$this->basePath();?>/vendor/Stickyfill/src/stickyfill.js"></script>
 	</head>
-	<body class="logged-out">
-
-
-		<!--nav class="layout-nav">
-			<?=$this->subMenu()?>
-		</nav-->
-
+	<body class="state-logout">
 		<main role="main">
-			<header class="page-header">
-				<h1 class="page-brand"><a href="<?php echo $this->url('home') ?>">Stjórnvísi</a></h1>
-				<ul class="page-main-menu">
-					<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-					<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
-					<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-				</ul>
-				<form class="page-search-form" method="get" action="<?=$this->url('leita')?>">
-					<input name="q" class="typeahead" type="search" placeholder="Leit..." />
+			<header class="main__header">
+				<h1 class="main__brand">Stjórnvísi</h1>
+				<nav class="main__menu">
+					<ul class="main__menu-items">
+						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
+						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
+						<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjónunarverðlaunin</a></li>
+						<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
+					</ul>
+				</nav>
+				<form method="get" action="<?=$this->url('leita')?>" class="main__search">
+					<input name="q" type="search" placeholder="Leit..." />
 					<input type="submit" value="leita">
 				</form>
 			</header>

@@ -26,7 +26,7 @@ class News extends Form{
 
         $this->add(array(
             'name' => 'body',
-            'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Meginmál...',
                 'required' => 'required',

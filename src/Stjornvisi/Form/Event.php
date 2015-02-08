@@ -30,7 +30,6 @@ class Event extends Form implements InputFilterProviderInterface{
         $this->add(array(
             'name' => 'body',
             'type' => 'Stjornvisi\Form\Element\Rich',
-			//'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
 
             ),
@@ -119,8 +118,6 @@ class Event extends Form implements InputFilterProviderInterface{
             ),
             'options' => array(
                 'label' => 'Mynd',
-				//'url' => '/skrar/mynd',
-				//'max' => '2000'
             ),
         ));
 

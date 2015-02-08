@@ -17,16 +17,12 @@
 		</header>
 		<section class="block-element__body">
 			<?php if($this->news->avatar):?>
-				<img class="block-element__image" src="<?=$this->basePath("/images/300/{$this->news->avatar}")?>" />
+				<img class="block-element__image" src="<?=$this->basePath("/images/original/{$this->news->avatar}")?>" />
 			<?php endif;?>
 			<?=$this->paragrapher($this->news->body);?>
 		</section>
 		<aside class="block-element__aside">
-			<?php if($this->news->group):?>
-				<a href="<?=$this->url('hopur/index',array('id'=>$this->news->group->url)) ?>"><?=$this->news->group->name_short;?></a>
-			<?php else:?>
-				<span>Stjórnvísisfrétt</span>
-			<?php endif;?>
+
 		</aside>
 		<footer class="block-element__footer"></footer>
 	</article>

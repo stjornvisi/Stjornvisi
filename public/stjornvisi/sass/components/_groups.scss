@@ -1,13 +1,1 @@
 
-	.group-block-list{
-		@include pie-clearfix;
-		.group-block-list__header{}
-		.group-block-list__aside{
-			float: right;
-			width: 40%;
-		}
-		.group-block-list__body{
-			float: left;
-			width: 60%;
-		}
-	}

@@ -281,7 +281,10 @@ class GroupController extends AbstractActionController{
                 //  user doesn't have access
                 //TODO  403
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
             //GROUP NOT FOUND
             //  no group with this url
@@ -340,7 +343,7 @@ class GroupController extends AbstractActionController{
             //GROUP NOT FOUND
             //TODO 404
             }else{
-                var_dump('404');
+				return $this->notFoundAction();
             }
         //IS NOT LOGGED IN
         //  user is not logged in
@@ -386,14 +389,17 @@ class GroupController extends AbstractActionController{
             //ACCESS DENIED
             //TODO 403
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
             //GROUP NOT FOUND
         //  item not found in storage
         //todo 404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
 	}
@@ -481,13 +487,16 @@ class GroupController extends AbstractActionController{
             //  user has no access
             //TODO 403
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
         //NO GROUP
         //  group not found
         //TODO 404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 	}
 
@@ -548,7 +557,7 @@ class GroupController extends AbstractActionController{
         //ITEM NOT FOUND
         //  item wasn't found
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
 
@@ -611,7 +620,7 @@ class GroupController extends AbstractActionController{
         //ITEM NOT FOUND
         //
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
     }
 
@@ -702,13 +711,16 @@ class GroupController extends AbstractActionController{
                 }
             //NO ACCESS
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
         //ITEM NOT FOUND
         //
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
     }

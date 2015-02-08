@@ -26,7 +26,7 @@
 			</header>
 			<section class="block-element__body">
 				<?php if( $this->event->avatar):?>
-					<img src="<?=$this->basePath("/images/300/{$this->event->avatar}")?>" class="block-element__image" />
+					<img src="<?=$this->basePath("/images/original/{$this->event->avatar}")?>" class="block-element__image" />
 				<?php endif;?>
 				<?=$this->paragrapher($this->event->body);?>
 			</section>
@@ -35,7 +35,15 @@
 				<h3 class="block-element__location"><?=$this->event->address?></h3>
 			</aside>
 			<footer class="block-element__footer">
-
+				<div id="fb-root"></div>
+				<script>(function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id)) return;
+						js = d.createElement(s); js.id = id;
+						js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1645847542309046&version=v2.0";
+						fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));</script>
+				<div class="fb-like" data-href="http://<?=$_SERVER['HTTP_HOST']?><?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
 			</footer>
 		</article>
 
@@ -62,19 +70,21 @@
 						<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
 					<?php endif;?>
 				<?php else:?>
-					<form method="post" action="/vidburdir/<?=$this->event->id?>" class="form-inline">
+					<form method="post" action="/vidburdir/<?=$this->event->id?>" class="form-inline page-event__register">
 						<?php if($this->register_message):?>
 							<p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
 						<?php else:?>
-							<p>Þú virðist ekki vera skráð/ur inn</p>
-							<p>Þú getur samt skráð þig á viðburðinn sem gestur með því að
-								fylla út netfang hér fyrir neðan.</p>
+							<p>Þú virðist ekki vera skráð/ur inn.
+								Þú getur samt skráð þig á viðburðinn sem gestur með því að
+								fylla út nafn og netfang hér fyrir neðan.</p>
 						<?php endif;?>
 						<div class="form-group">
-							<input type="text" placeholder="Nafn" name="name" class="form-control" />
+							<label for="name">Nafn</label>
+							<input id="name" type="text" placeholder="Nafn" name="name" class="form-control" />
 						</div>
 						<div class="form-group">
-							<input type="email" placeholder="Netfang" name="email" class="form-control" />
+							<label for="email">Netfang</label>
+							<input id="email" type="email" placeholder="Netfang" name="email" class="form-control" />
 						</div>
 						<input type="submit" class="btn btn-default" value="Skrá" />
 					</form>

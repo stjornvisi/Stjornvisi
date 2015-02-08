@@ -81,9 +81,7 @@ class ImgElement extends FormInput
 	 * @return int
 	 */
 	private function getMaxSize(){
-
 		$converter = new SizeConvert();
 		return $converter->convert( ini_get('upload_max_filesize') );
-
 	}
 }

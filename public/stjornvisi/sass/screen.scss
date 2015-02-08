@@ -8,6 +8,7 @@
 @import "compass/typography/vertical_rhythm";
 @import "compass/css3/box-sizing";
 @import "compass/utilities/general/clearfix";
+@import "compass/typography/text/ellipsis";
 
 
 @import "../vendor/breakpoint-sass/stylesheets/breakpoint";
@@ -27,7 +28,12 @@
 @import "components/events";
 @import "components/company";
 @import "components/board";
-@import "components/groups";
+//@import "components/groups";
 @import "components/form";
 
 @import "pages/landing";
+@import "pages/group";
+@import "pages/event";
+@import "pages/dashboard";
+@import "pages/user";
+@import "pages/error";
