@@ -72,3 +72,37 @@ CREATE TABLE `Group_has_Conference` (
   CONSTRAINT `fk_Conference_has_Group_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_Conference_has_Group_Group1` FOREIGN KEY (`group_id`) REFERENCES `Group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Conference_has_User` (
+  `conference_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `attending` tinyint(3) unsigned DEFAULT NULL,
+  `register_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`conference_id`,`user_id`),
+  KEY `fk_Conference_has_User_User1` (`user_id`),
+  KEY `fk_Conference_has_User_Conference1` (`conference_id`),
+  CONSTRAINT `fk_Conference_has_User_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Conference_has_User_User1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Conference_has_Guest` (
+  `conference_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `register_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`conference_id`,`email`),
+  KEY `fk_Conference_has_Guest_Event1` (`conference_id`),
+  CONSTRAINT `fk_Conference_has_Guest_Event1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ConferenceGallery` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `conference_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_ConferenceGallery_Conference1` (`conference_id`),
+  CONSTRAINT `fk_ConferenceGallery_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
