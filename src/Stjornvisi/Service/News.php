@@ -235,7 +235,13 @@ class News extends AbstractService {
                 $item->group = $groupStatement->fetchObject();
             }
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-            return $news;
+			return array_map(function($item){
+				$item->created_date = ( !empty($item->created_date) )
+					? new DateTime($item->created_date)
+					: $item->created_date;
+				return $item;
+			},$news);
+
         }catch (PDOException $e){
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),

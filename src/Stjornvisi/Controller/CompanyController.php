@@ -39,12 +39,15 @@ class CompanyController extends AbstractActionController{
                 ));
             //ACCESS DENIED
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
         //COMPANY NOT FOUND
         //  404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
 	}
@@ -106,13 +109,16 @@ class CompanyController extends AbstractActionController{
             //ACCESS DENIED
             //  access denied
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
         //COMPANY NOT FOUND
         //  404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
     }
 
@@ -167,7 +173,10 @@ class CompanyController extends AbstractActionController{
 
             //ACCESS DENIED
         }else{
-            var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
         }
 
         /*
@@ -290,11 +299,7 @@ class CompanyController extends AbstractActionController{
             //
             if( $access->is_admin || $access->type != null ){
 
-                $form = new CompanyForm(
-                    $valueService->getBusinessTypes(),
-                    $valueService->getPostalCode(),
-                    $valueService->getCompanySizes()
-                );
+				$form = $sm->get('Stjornvisi\Form\Company');
                 $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/update',array('id'=>$company->id)));
                 //POST
                 //  http post request
@@ -325,12 +330,15 @@ class CompanyController extends AbstractActionController{
 
             //ACCESS DENIED
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
         //COMPANY NOT FOUND
         //  404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
 	    /*
@@ -417,13 +425,16 @@ class CompanyController extends AbstractActionController{
             //ACCESS DENIED
             //
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
         //COMPANY NOT FOUND
         //  404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 	}
 	

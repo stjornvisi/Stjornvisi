@@ -483,6 +483,7 @@ class Event extends AbstractService {
      * to events that are connected to groups that
      * the user is connected to, 6 month into the past.
      *
+	 * @todo Ithink that this does not select Stjornvisi events
      * @param int $id user ID
      * @return array
      * @throws Exception
@@ -496,19 +497,34 @@ class Event extends AbstractService {
 					GhE.group_id IN (SELECT group_id FROM Group_has_User GhU WHERE user_id = :id)
 				  AND
 					EM.created >= DATE_SUB(NOW(), INTERVAL 6 MONTH )
-				  ORDER BY EM.created DESC;
+				  ORDER BY GhE.event_id, EM.created DESC;
 			  ");
             $statement->execute(array('id'=>$id));
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             $media = $statement->fetchAll();
 			$eventStatement = $this->pdo->prepare("
-				SELECT E.id, E.subject FROM `Event` E WHERE id = :id
+				SELECT E.id, E.subject, E.event_date FROM `Event` E WHERE id = :id
 			");
-			return array_map(function($i) use($eventStatement){
-				$eventStatement->execute(array('id'=>$i->event_id));
-				$i->event = $eventStatement->fetchObject();
-				return $i;
-			},$media);
+
+			$array = array();
+			foreach( $media as $item ){
+				if( !isset($array[$item->event_id]->media) ){
+					$array[$item->event_id] = (object)array(
+						'media' => array(),
+						'event' => array()
+					);
+				}
+				$array[$item->event_id]->media[] = $item;
+			}
+
+			foreach( $array as $key => $item ){
+				$eventStatement->execute(array('id'=>$key));
+				$array[$key]->event = $eventStatement->fetchObject();
+				$array[$key]->event->event_date = new DateTime($array[$key]->event->event_date);
+			}
+
+			return array_values($array);
+
         }catch (PDOException $e){
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),

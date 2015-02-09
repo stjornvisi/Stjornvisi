@@ -34,7 +34,7 @@ class Author extends Form implements InputFilterProviderInterface{
 
 		$this->add(array(
 			'name' => 'info',
-			'type' => 'Zend\Form\Element\Textarea',
+			'type' => 'Stjornvisi\Form\Element\Rich',
 			'attributes' => array(
 				'placeholder' => 'Texti...',
 			),
@@ -45,9 +45,10 @@ class Author extends Form implements InputFilterProviderInterface{
 
 		$this->add(array(
 			'name' => 'avatar',
-			'type' => 'Zend\Form\Element\Text',
+			'type' => 'Stjornvisi\Form\Element\Img',
 			'attributes' => array(
 				'placeholder' => 'Mynd...',
+				'data-url' => '/skrar/mynd',	//TODO can I use a function to call the router?
 			),
 			'options' => array(
 				'label' => 'Mynd',

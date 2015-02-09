@@ -62,6 +62,11 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
 
 	}
 
+	public function testGetMediaByUser(){
+		$service = new Event( self::$pdo );
+		print_r($service->getMediaByUser(1));
+	}
+
 
 
 
@@ -235,6 +240,7 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
         return new ArrayDataSet([
 			'User' => [
 				['id'=>1, 'name'=>'n1', 'passwd'=>md5(rand(0,9)), 'email'=>'e@mail.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
+				['id'=>2, 'name'=>'n1', 'passwd'=>md5(rand(0,9)), 'email'=>'e@mail2.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
 			],
 			'Group' => [
 				[ 'id'=>1, 'name'=>'name1', 'name_short'=>'n1', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n1' ],
@@ -257,6 +263,9 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
 				['event_id'=>2, 'group_id'=>1,'primary'=>0],
 				['event_id'=>2, 'group_id'=>2,'primary'=>0],
 				['event_id'=>2, 'group_id'=>3,'primary'=>0],
+
+				['event_id'=>3, 'group_id'=>2,'primary'=>0],
+				['event_id'=>4, 'group_id'=>null,'primary'=>0],
 			],
 			'Event_has_Guest' => [
 				['event_id'=>1,'name'=>'n1','email'=>'e@a.is','register_time'=>date('Y-m-d H:i:s')],
@@ -267,6 +276,18 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
 			'Event_has_User' => [
 				['event_id' => 1, 'user_id'=>1,'attending'=>1,'register_time'=>date('Y-m-d H:i:s')],
 				['event_id' => 9, 'user_id'=>1,'attending'=>1,'register_time'=>date('Y-m-d H:i:s')],
+
+				['event_id' => 2, 'user_id'=>2,'attending'=>1,'register_time'=>date('Y-m-d H:i:s')],
+			],
+			'EventMedia' => [
+				['id' => 1, 'name' => 'hundur1', 'event_id' => 2, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
+				['id' => 2, 'name' => 'hundur2', 'event_id' => 2, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
+				['id' => 3, 'name' => 'hundur3', 'event_id' => 2, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
+				['id' => 4, 'name' => 'hundur4', 'event_id' => 3, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
+				['id' => 5, 'name' => 'hundur5', 'event_id' => 3, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
+				['id' => 6, 'name' => 'hundur6', 'event_id' => 3, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
+				['id' => 7, 'name' => 'hundur7', 'event_id' => 4, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
+				['id' => 8, 'name' => 'hundur8', 'event_id' => 4, 'description' => '', 'created'=>date('Y-m-d H:i:s')],
 			],
 
 		]);

@@ -6,10 +6,11 @@
  * Time: 8:45 PM
  */
 ?>
-<div class="entity-wrapper news-wrapper">
-	<?=$this->news;?>
-
-	<aside class="event-news-aside">
+<div class="layout layout--three-columns">
+	<section class="layout__section">
+		<?=$this->news;?>
+	</section>
+	<aside class="layout__aside">
 		<?=$this->aside;?>
     </aside>
 </div>

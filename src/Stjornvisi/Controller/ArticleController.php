@@ -155,12 +155,15 @@ class ArticleController extends AbstractActionController{
 			//NOT FOUND
 			//	404
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 	}
 
@@ -221,13 +224,13 @@ class ArticleController extends AbstractActionController{
 			//NOT FOUND
 			//	404
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}
@@ -237,12 +240,19 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return ViewModel
 	 */
-	public function listAuthorAction()
-	{
+	public function listAuthorAction(){
+		$sm = $this->getServiceLocator();
+		$userService = $sm->get('Stjornvisi\Service\User');
+		$auth = new AuthenticationService();
+		$access = $userService->getType(( $auth->hasIdentity() )
+			? $auth->getIdentity()->id
+			: null);
+
 		$sm = $this->getServiceLocator();
 		$articleService = $sm->get('Stjornvisi\Service\Article');
 		return new ViewModel(array(
-			'authors' => $articleService->fetchAllAuthors()
+			'authors' => $articleService->fetchAllAuthors(),
+			'access' => $access
 		));
 	}
 
@@ -291,7 +301,10 @@ class ArticleController extends AbstractActionController{
 		//ACCESS DENIED
 		//	no access
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 	}
 
@@ -343,7 +356,7 @@ class ArticleController extends AbstractActionController{
 		//AUTHOR NOT FOUND
 		//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 	}
 
@@ -370,12 +383,15 @@ class ArticleController extends AbstractActionController{
 				//AUTHOR NOT FOUND
 				//	404
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
 	}

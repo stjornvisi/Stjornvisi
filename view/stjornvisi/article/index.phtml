@@ -6,30 +6,41 @@
  * Time: 12:18 PM
  */
 ?>
-<h1><?=$this->article->title?></h1>
-<time><?=$this->article->published->format('Y-m-d')?></time>
-<h2>Birtist fyrst <?=$this->article->venue;?></h2>
-<?php if( $this->access->is_admin ):?>
-	<div class="btn-group">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			Action <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="<?=$this->url('greinar/update',array('id'=>$this->article->id));?>">uppfæra</a></li>
-			<li><a href="<?=$this->url('greinar/delete',array('id'=>$this->article->id));?>">eyða</a></li>
-		</ul>
-	</div>
-<?php endif; ?>
-<?=$this->paragrapher($this->article->summary);?>
-<?=$this->paragrapher($this->article->body);?>
-<ul>
-    <?php foreach($this->article->authors as $author):?>
-    <li>
-        <h2><?=$author->name?></h2>
-        <?php if($author->avatar):?>
-        <img src="<?=$this->basePath("/images/60/{$author->avatar}")?>" />
-        <?php endif;?>
-        <?=$this->paragrapher($author->info);?>
-    </li>
-    <?php endforeach;?>
-</ul>
+
+<div class="layout layout--three-columns">
+	<section class="layout__section">
+		<article class="block-element">
+			<header class="block-element__header">
+				<h1><?=$this->article->title?></h1>
+				<h2>Birtist fyrst <?=$this->article->venue;?></h2>
+				<time class="block-element__time" datetime="<?=$this->article->published->format('c')?>"><?=$this->date($this->article->published)?></time>
+			</header>
+			<section class="block-element__body">
+				<?=$this->paragrapher($this->article->summary);?>
+				<?=$this->paragrapher($this->article->body);?>
+			</section>
+			<aside class="block-element__aside">
+				<ul class="block-element__author-list">
+					<?php foreach($this->article->authors as $author):?>
+						<li class="block-element__author-item">
+							<h2><?=$author->name?></h2>
+							<?php if($author->avatar):?>
+								<img src="<?=$this->basePath("/images/60/{$author->avatar}")?>" />
+							<?php endif;?>
+							<?=$this->paragrapher($author->info);?>
+						</li>
+					<?php endforeach;?>
+				</ul>
+			</aside>
+			<footer></footer>
+		</article>
+	</section>
+	<aside class="layout__aside">
+		<?php if( $this->access->is_admin ):?>
+			<stjonvisi-control>
+				<a href="<?=$this->url('greinar/update',array('id'=>$this->article->id));?>">uppfæra</a>
+				<a href="<?=$this->url('greinar/delete',array('id'=>$this->article->id));?>">eyða</a>
+			</stjonvisi-control>
+		<?php endif; ?>
+	</aside>
+</div>

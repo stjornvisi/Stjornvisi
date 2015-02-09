@@ -1,0 +1,22 @@
+
+	.company-list{
+		@include pie-clearfix;
+		ul{
+			width: 33.33%;
+			float: left;
+		}
+	}
+
+
+	.company-block{
+		.company-block__header {
+			font-family: open-sans;
+			@include adjust-font-size-to($font-size-header,1,$font-size-base);
+		}
+		.company-block__type {
+
+		}
+		.company-block__since {
+			@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+		}
+	}

@@ -1,0 +1,33 @@
+
+	.page-event{
+
+		form.page-event__register{
+			@include pie-clearfix;
+			border-top: 1px solid $color-gray-light;
+			@include padding-leader(1,$font-size-base);
+			@include padding-trailer(1,$font-size-base);
+			p{
+				@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+				font-family: $font-family-open;
+			}
+			label{
+				@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+				font-family: $font-family-open;
+				font-weight: $font-weight-bold;
+				text-transform: uppercase;
+				@include padding-trailer(1/2,$font-size-base);
+			}
+
+			.form-group{
+				@include margin-leader(1,$font-size-base);
+				@include margin-trailer(1,$font-size-base);
+				width: 50%;
+				display: block;
+				float: left;
+			}
+		}
+
+		.block-element .block-element__body .block-element__image{
+			max-width: 100%;
+		}
+	}

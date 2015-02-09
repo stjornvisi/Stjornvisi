@@ -6,31 +6,34 @@
  * Time: 5:47 PM
  */
 
-	$stack = array_chunk( $this->users, ceil(count($this->users)/2) );
+	$stack = array_chunk( $this->users, ceil(count($this->users)/3) );
 
 ?>
+<div class="layout layout--three-columns page-user-list">
+	<section class="layout__section">
+		<h1>Notendur (<?=count($this->users)?>)</h1>
+		<?php foreach( $stack as $chunk ): ?>
+			<div class="page-user-list__group">
+				<ul class="block-list">
+				<?php foreach( $chunk as $user ): ?>
+					<li class="block-element">
+						<h2><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></h2>
+						<dd><?=($user->title)?$user->title:'&nbsp;'?></dd>
+						<time datetime="<?=$user->created_date->format('c')?>" class="block-element__time"><?=$this->date($user->created_date)?></time>
+						<?php if($user->company_id):?>
+							<dd><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$user->company_id))?>"><?=$user->company_name?></a></dd>
+						<?php else:?>
+							<dd>&nbsp;</dd>
+						<?php endif;?>
+						<dd><?=($user->key_user)?'Formaður':'&nbsp;';?></dd>
 
-<div class="default-wrapper">
-	<h1>Notendur (<?=count($this->users)?>)</h1>
-	<div class="row">
-	<?php foreach( $stack as $chunk ): ?>
-		<div class="col-md-6">
-			<dl class="users-list">
-			<?php foreach( $chunk as $user ): ?>
-				<dt><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></dt>
-				<dd><?=($user->title)?$user->title:'&nbsp;'?></dd>
-				<dd><?=$user->created_date->format('Y-m-d')?></dd>
-				<dd><?=$user->frequency?> innskráningar</dd>
-				<dd><?=($user->is_admin)?'Kerfisstjóri':'Notandi'?></dd>
-				<?php if($user->company_id):?>
-					<dd><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$user->company_id))?>"><?=$user->company_name?></a></dd>
-				<?php else:?>
-					<dd>&nbsp;</dd>
-				<?php endif;?>
-				<dd><?=($user->key_user)?'Formaður':'&nbsp;';?></dd>
-			<?php endforeach;?>
-			</dl>
-		</div>
-	<?php endforeach;?>
-	</div>
+					</li>
+				<?php endforeach;?>
+				</ul>
+			</div>
+		<?php endforeach;?>
+	</section>
+	<aside class="layout__aside">
+
+	</aside>
 </div>

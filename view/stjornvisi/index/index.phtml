@@ -1,142 +1,201 @@
 <?php if($this->identity):?>
 
-	<div class="content-wrapper dashboard-wrapper">
-		<section class="">
-			<div class="column index-event-list">
-				<h1>Viðburðir</h1>
-				<ul class="item-list theme-white">
-				<?php foreach( $this->events as $event ):?>
-					<li>
-						<article class="event">
-							<header>
-								<time><?=$event->event_date->format('Y-m-d');?> | <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?></time>
-								<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
-							</header>
-							<section>
-								<?php if($event->avatar):?>
-								<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-									<img src="<?=$this->basePath("/images/300/{$event->avatar}")?>" alt="mynd með viðburði" />
-								</a>
-								<?php endif;?>
-								<?=$this->paragrapher( mb_substr($event->body,0,350,'utf-8').'&#8230;'  );?>
-							</section>
-							<aside>
-								<ul class="event-groups-list">
-									<?php if( count($event->groups) == 0 ):?>
-										<li><span class="label label-default">Stjónvísisviðburður</span></li>
-									<?php else:?>
-										<?php foreach($event->groups as $group):?>
-											<li><a class="label label-default" href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
-										<?php endforeach;?>
-									<?php endif; ?>
-								</ul>
-							</aside>
-							<footer>
-								<?php if($event->attending === null):?>
-									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-								<?php elseif($event->attending == 0):?>
-									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-									<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
-								<?php elseif($event->attending == 1):?>
-									<span class="attending yes" title="Skrá mætingu">mæti</span>
-									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-								<?php endif;?>
-							</footer>
-						</article>
-					</li>
-				<?php endforeach;?>
-			</ul>
-			</div>
-
-			<div class="column index-news-list">
-				<h1>Fréttir</h1>
-				<ul class="item-list theme-white">
-				<?php foreach( $this->news as $news ):?>
-					<li>
-						<article class="news">
-							<header>
-								<time><?=$news->created_date?></time>
-								<h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
-							</header>
-							<section>
-								<?php if($news->avatar):?>
-								<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
-									<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" alt="mynd með frétt" />
-								</a>
-								<?php endif;?>
-								<?=$this->paragrapher( mb_substr($news->body,0,350,'utf-8').'&#8230;'  );?>
-							</section>
-							<aside>
-								<ul class="news-groups-list">
-									<li>
-										<?php if( $news->group_id ):?>
-										<a href="<?=$this->url('hopur/index',array('id' => $news->group->url))?>"><?=$news->group->name_short?></a>
+	<div class="layout layout--three-columns page-dashboard">
+		<section class="layout__section">
+			<div class="layout__data">
+				<h1 class="layout__headline">Viðburðir</h1>
+				<ul class="block-list block-list--separator">
+					<?php foreach( $this->events as $event ):?>
+						<li>
+							<article class="block-element">
+								<header class="block-element__header">
+									<time class="block-element__time" datetime="<?=$event->event_date->format('c');?>">
+										<?=$this->date($event->event_date)?> &middot; <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?>
+									</time>
+									<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
+								</header>
+								<section class="block-element__body">
+									<?php if($event->avatar):?>
+										<a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+											<img src="<?=$this->basePath("/images/300-square/{$event->avatar}")?>" alt="mynd með viðburði" />
+										</a>
+									<?php endif;?>
+									<?=$this->paragrapher( mb_substr($event->body,0,350,'utf-8').'&#8230;'  );?>
+								</section>
+								<aside class="block-element__aside">
+									<ul class="block-element__tags">
+										<?php if( count($event->groups) == 0 ):?>
+											<li><span>Stjónvísisviðburður</span></li>
 										<?php else:?>
-										<span>Stjórnvísi</span>
-										<?php endif;?>
-									</li>
-								</ul>
-							</aside>
-							<footer></footer>
-						</article>
-					</li>
-				<?php endforeach;?>
-			</ul>
+											<?php foreach($event->groups as $group):?>
+												<li><a href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
+											<?php endforeach;?>
+										<?php endif; ?>
+									</ul>
+								</aside>
+								<footer class="block-element__footer">
+									<?php if($event->attending === null):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+									<?php elseif($event->attending == 0):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+										<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
+									<?php elseif($event->attending == 1):?>
+										<span class="attending yes" title="Skrá mætingu">mæti</span>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+									<?php endif;?>
+								</footer>
+							</article>
+						</li>
+					<?php endforeach;?>
+				</ul>
+			</div>
+			<div class="layout__meta">
+				<h1 class="layout__headline">Fréttir</h1>
+				<ul class="block-list block-list--separator">
+					<?php foreach( $this->news as $news ):?>
+						<li>
+							<article class="block-element">
+								<header class="block-element__header">
+									<time class="block-element__time" datetime="<?=$news->created_date->format('c')?>">
+										<?=$this->date($news->created_date,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+									</time>
+									<h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
+								</header>
+								<section class="block-element__body">
+									<?php if($news->avatar):?>
+										<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
+											<img src="<?=$this->basePath("/images/300-square/{$news->avatar}")?>" alt="mynd með frétt" />
+										</a>
+									<?php endif;?>
+									<?=$this->paragrapher( mb_substr($news->body,0,350,'utf-8').'&#8230;'  );?>
+								</section>
+								<aside class="block-element__aside">
+									<ul class="block-element__tags">
+										<li>
+											<?php if( $news->group_id ):?>
+												<a href="<?=$this->url('hopur/index',array('id' => $news->group->url))?>"><?=$news->group->name_short?></a>
+											<?php else:?>
+												<span>Stjórnvísi</span>
+											<?php endif;?>
+										</li>
+									</ul>
+								</aside>
+								<footer></footer>
+							</article>
+						</li>
+					<?php endforeach;?>
+				</ul>
 			</div>
 		</section>
-		<aside class="">
-			<h1>Fylgiskrár</h1>
-			<ul>
-				<?php foreach( $this->media as $media ):?>
-					<li>
-						<a href="/image/original/<?=$media->name?>" title="<?=$media->name?>"><?=$media->name?></a>
-						<!--a href="<?=$this->url('vidburdir/index',array('id'=>$media->event->id))?>"><?=$media->event->subject?></a-->
-					</li>
-				<?php endforeach;?>
+		<aside class="layout__aside">
+			<h1 class="layout__headline">Fylgiskrár</h1>
+			<ul class="block-list">
+			<?php foreach( $this->media as $item ):?>
+				<li class="block-item">
+					<time class="block-item__time" datetime="<?=$item->event->event_date->format('c')?>">
+						<?=$this->date($item->event->event_date);?>
+					</time>
+					<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$item->event->id))?>"><?=$item->event->subject?></a></h2>
+					<ul class="block-supplement">
+						<?php foreach($item->media as $media):?>
+							<li>
+								<a href="/images/original/<?=$media->name?>" title="<?=$media->name?>" target="_blank"><?=$media->name?></a>
+							</li>
+						<?php endforeach;?>
+					</ul>
+				</li>
+			<?php endforeach;?>
 			</ul>
 		</aside>
 	</div>
 
+
 <?php else:?>
 <div class="landing-page">
-	<div class="hero">
-		<img src="<?=$this->basePath("/frontpage/logo-frontpage.png")?>"  />
+	<div class="landing-page__hero">
+		<img src="<?=$this->basePath("/stylesheets/images/logo-frontpage.png")?>"  />
 		<h4>Félag um framsækna stjórnun</h4>
 		<h1>Stjórnvísi er stærsta stjórnunarfélag á Íslandi
 			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h1>
-	</div>
-	<div class="login-buttons">
 		<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>Facebook innskráning</a>
 		<!--a href="<?=$this->url('auth',['type'=>'facebook'])?>" class="btn btn-default">Innskráning</a-->
 		<a href="" class="btn btn-success">Stofna aðgang</a>
 	</div>
 
-	<div class="about">
+	<div class="landing-page__panel">
 		<div>
-			<h1>Stjórnvísi er opið öllum einstaklingum, fyrirtækjum og stofnunum sem hafa áhuga á stjórnun;
-			stjórnendum, sérfræðingum, nemendum og öðrum áhugamönnum um stjórnun.</h1>
+			<h1 class="landing-page__headline"><i class="icon-home"></i> Stjórnvísi er opið öllum</h1>
+			<p>Stjórnvísi er opið öllum einstaklingum, fyrirtækjum og stofnunum sem hafa áhuga á stjórnun;
+			stjórnendum, sérfræðingum, nemendum og öðrum áhugamönnum um stjórnun.</p>
 			<p>Stjórnvísi býður hagstæðustu símenntunina um stjórnun á markaðnum.  Stjórnvísi er með kjarnastarf
 			sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið fyrir almennum ráðstefnum, viðburðum
 			og verðlaunum um stjórnun.</p>
-			<a href="<?=$this->url('um')?>" class="btn btn-success btn-green">Kynntu þér starfssemi Stjórnvísi</a>
+
+			<ul class="landing-page__cta">
+				<li class="landing-page__cta-item">
+					<a href="<?=$this->url('hopur')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta1.svg')?>">
+						<p>Hópar innan stjónvísi er undirstaða starfseminar.</p>
+						<h2 class="landing-page__headline">Kynntu þér hópana <i class="icon-chevron-right"></i></h2>
+					</a>
+				</li>
+				<li class="landing-page__cta-item">
+					<a href="<?=$this->url('vidburdir')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta2.svg')?>">
+						<p>Dagskrá Stjónvísi er margþætt og áhugaverð.</p>
+						<h2 class="landing-page__headline">Kynntu þér dagskrána <i class="icon-chevron-right"></i></h2>
+					</a>
+				</li>
+
+				<li class="landing-page__cta-item">
+					<a href="<?=$this->url('um')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta3.svg')?>">
+						<p>Bara örstuttur texti um stjónvísi og af hverju þú ættir að skoða.</p>
+						<h2 class="landing-page__headline">Kynntu þér starfsemina <i class="icon-chevron-right"></i></h2>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 
-	<div class="groups">
-		<div class="text">
-			<h1>Stjórnvísi er áhugamannafélag í eigu félagsmanna og starfar ekki með fjárhagslegan ágóða í huga.</h1>
+	<div class="landing-page__panel landing-page__carousel">
+		<div>
+			<h1 class="landing-page__headline">Eitthvað áhugavert að segja í carousel</h1>
+		</div>
+
+	</div>
+
+	<div class="landing-page__panel">
+		<div>
+			<h1 class="landing-page__headline"><i class="icon-horn"></i> Stjórnvísi er áhugamannafélag</h1>
+			<p>Stjórnvísi er áhugamannafélag í eigu félagsmanna og starfar ekki með fjárhagslegan ágóða í huga.</p>
 			<p>Stjórnvísi er með kjarastarf sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið
 			fyrir almennum ráðstefnum, viðburðum og verðlaunaveitingum í stjórnun.</p>
-			<a href="<?=$this->url('hopur')?>" class="btn btn-success btn-green">Kynntu þér faghópa innan Stjórnvísi</a>
+			<ul class="landing-page__cta">
+				<li class="landing-page__cta-item">
+					<a href="<?=$this->url('anaegjuvogin')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta4.svg')?>">
+						<p>Ánægjuvorin er veitt einu sinn á ári við hátíðlega athöfn.</p>
+						<h2 class="landing-page__headline">Ánægjuvogin</h2>
+					</a>
+				</li>
+				<li class="landing-page__cta-item">
+					<a href="<?=$this->url('stjornunarverdlaunin')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta5.svg')?>">
+						<p>Stjónunarverðlaunin er veitt vegna framúrskarandi árangus.</p>
+						<h2 class="landing-page__headline">Stjónunarverðlaunin</h2>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 
 
-	<div class="events-panel">
-		<h1>Viðburðir</h1>
+	<div class="landing-page__panel">
+		<div>
 		<?php if($this->event) : ?>
-			<article>
+			<article class="landing-page__element">
 				<aside>
 					<?php if($this->event->avatar):?>
 					<img src="<?=$this->basePath("/images/300-square/{$this->event->avatar}")?>" />
@@ -164,46 +223,53 @@
 		<?php else : ?>
 			<h1>Engir viðburðir skráðir</h1>
 		<?php endif; ?>
-		<div>
-			<a href="<?=$this->url('vidburdir')?>" class="btn btn-default">Allir viðburðir</a>
-		</div>
-
-	</div>
-
-
-	<div class="news-panel">
-		<h1>Fréttir</h1>
-		<article>
-			<aside>
-				<?php if($this->news->avatar):?>
-				<img src="<?=$this->basePath("/images/300-square/{$this->news->avatar}")?>" />
-				<?php endif;?>
-			</aside>
-			<header>
-				<h2><a href="<?=$this->url('frettir/index',array('id'=>$this->news->id))?>"><?=$this->news->title?></a></h2>
-				<time><?=$this->news->created_date->format('d. M Y')?></time>
-			</header>
-			<section>
-				<?=$this->paragrapher(mb_substr($this->news->body,0,600,'utf-8'));?>
-			</section>
-			<footer></footer>
-		</article>
-		<div>
-			<a href="<?=$this->url('frettir')?>" class="btn btn-default">Yfirlit frétta og greina</a>
+			<div>
+				<a href="<?=$this->url('vidburdir')?>" class="btn btn-default">Allir viðburðir</a>
+			</div>
 		</div>
 	</div>
 
 
-	<div class="image-boxes">
+	<div class="landing-page__panel">
+		<div>
+
+			<article class="landing-page__element">
+				<aside>
+					<?php if($this->news->avatar):?>
+					<img src="<?=$this->basePath("/images/300-square/{$this->news->avatar}")?>" />
+					<?php endif;?>
+				</aside>
+				<header>
+					<h2><a href="<?=$this->url('frettir/index',array('id'=>$this->news->id))?>"><?=$this->news->title?></a></h2>
+					<time><?=$this->news->created_date->format('d. M Y')?></time>
+				</header>
+				<section>
+					<?=$this->paragrapher(mb_substr($this->news->body,0,600,'utf-8'));?>
+				</section>
+				<footer></footer>
+			</article>
+			<div>
+				<a href="<?=$this->url('frettir')?>" class="btn btn-default">Yfirlit frétta og greina</a>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="landing-page__gallery">
 		<ul>
 			<?php foreach($this->gallery as $item):?>
-			<li>
+			<li class="landing-page__gallery-item">
 				<img src="<?=$this->basePath("/images/300-square/{$item->name}")?>" title="<?=$item->description?>" />
 			</li>
 			<?php endforeach;?>
 		</ul>
 	</div>
 </div>
+	<script>
+		window.addEventListener('load',function(event){
+			document.body.setAttribute('class','loaded');
+		},false);
+	</script>
 
 <?php endif;?>
 

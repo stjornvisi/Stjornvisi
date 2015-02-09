@@ -6,37 +6,60 @@
  * Time: 2:52 PM
  */
 ?>
-<h1>Hópar (<?=count($this->groups_all);?>)</h1>
+<div class="layout layout--three-columns page-group-list">
+	<section class="layout__section">
+		<!--h1>Hópar (<?=count($this->groups_all);?>)</h1-->
+		<ul class="block-list block-list--separator">
+		<?php foreach( $this->groups_all as $group ):?>
+			<li id="<?=$group->url?>">
+			<article class="block-element page-group-list__item">
+				<header class="block-element__header page-group-list__header">
+					<h1><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name?></a></h1>
+				</header>
+				<aside class="block-element__aside header page-group-list__aside">
+					<h2 class="layout__headline">Næstu viðburðir</h2>
+					<ul>
+						<?php foreach($group->events as $event):?>
+							<li>
+								<article class="block-element">
+									<header class="block-element__header">
+										<time class="block-element__time" datetime="<?=$event->event_date->format('c');?>">
+											<?=$this->date($event->event_date);?>
+										</time>
+										<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h2>
+									</header>
+									<section class="block-element__body">
+									<?php if($event->avatar):?>
+										<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>" class="block-element__image">
+											<img src="<?=$this->basePath("/images/60/{$event->avatar}")?>" />
+										</a>
+										<?=$this->paragrapher( mb_substr($event->body,0,100,'utf-8').'&hellip;' );?>
+									<?php endif;?>
+									</section>
 
-<div class="type-group-list">
-<?php foreach( $this->groups_all as $group ):?>
-	<article>
-		<header>
-			<h1><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name?></a></h1>
-		</header>
-		<aside>
-			<ul>
-				<?php foreach($group->events as $event):?>
-					<li>
-						<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
-						<?php if($event->avatar):?>
-						<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-							<img src="<?=$this->basePath("/images/60/{$event->avatar}")?>" />
-						</a>
-						<?php endif;?>
-						<time><?=$event->event_date->format('Y-m-d');?></time>
-						<div><?=$this->paragrapher( mb_substr($event->body,0,100,'utf-8').'&hellip;' );?></div>
-					</li>
-				<?php endforeach;?>
-			</ul>
-		</aside>
-		<section>
-			<?=$this->paragrapher($group->description);?>
-		</section>
-		<footer>
-			<a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>">Meira um <?=$group->name_short?></a>
-		</footer>
-	</article>
-<?php endforeach;?>
+								</article>
+							</li>
+						<?php endforeach;?>
+					</ul>
+				</aside>
+				<section class="block-element__body header page-group-list__body">
+					<?=$this->paragrapher($group->description);?>
+				</section>
+			</article>
+			</li>
+		<?php endforeach;?>
+		</ul>
+	</section>
+	<aside class="layout__aside">
+		<h2 class="layout__headline">Hópalisti</h2>
+		<ul class="block-list block-list--less">
+		<?php foreach( $this->groups_all as $group ):?>
+			<li class="block-item page-group-list__list-item">
+				<a href="#<?=$group->url?>" data-scroll><?=$group->name_short?></a>
+			</li>
+		<?php endforeach;?>
+		</ul>
+	</aside>
 </div>
+
 

@@ -1,0 +1,59 @@
+
+	.page-error{
+		@include pie-clearfix;
+		.page-error__headline{
+			font-family: $font-family-bitter;
+			font-weight: $font-weight-bold;
+			@include adjust-font-size-to($font-size-huge,3,$font-size-base);
+		}
+		.page-error__message{
+			font-family: $font-family-bitter;
+			font-weight: $font-weight-bold;
+			@include adjust-font-size-to($font-size-header,1,$font-size-base);
+			color: $color-green-sea;
+		}
+
+		.layout__message{
+			float: left;
+			width: 50%;
+		}
+		.layout__description{
+			float: left;
+			width: 50%;
+		}
+		.layout__exception{
+			clear: both;
+			width: 100%;
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	.page-404{
+
+	}
+
+	/**
+	 *
+	 */
+	.page-401{
+
+	}
+
+	/**
+	 *
+	 */
+	.page-exception{
+		code{
+
+		}
+		pre{
+			font-family: monospace;
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			padding: rhythm(1,$font-size-base);
+			background-color: tint($color-gray-light,50%);
+			overflow: scroll;
+		}
+	}

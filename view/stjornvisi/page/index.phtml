@@ -1,4 +1,11 @@
-<a href="#" class="editable-static-page-container-trigger" data-target="<?=$this->url('sida/update',array('id'=>$this->page->id))?>">edit</a>
-<div id="editable-static-page-container">
-	<?=$this->page->body?>
+<div class="layout layout--three-columns">
+	<section class="layout__section">
+		<div id="editable-static-page-container">
+			<?=$this->paragrapher($this->page->body)?>
+		</div>
+	</section>
+	<aside class="layout__aside">
+		<a href="#" class="editable-static-page-container-trigger" data-target="<?=$this->url('sida/update',array('id'=>$this->page->id))?>">edit</a>
+	</aside>
 </div>
+

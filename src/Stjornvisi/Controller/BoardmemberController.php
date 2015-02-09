@@ -81,7 +81,10 @@ class BoardmemberController extends AbstractActionController{
 		//ACCESS DENIED
 		//	403
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 	}
 
@@ -140,14 +143,17 @@ class BoardmemberController extends AbstractActionController{
 			//NOT FOUND
 			//
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 
 
 		//ACCESS DENIED
 		//	403
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 	}
 
@@ -200,7 +206,10 @@ class BoardmemberController extends AbstractActionController{
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
 	}
@@ -263,14 +272,17 @@ class BoardmemberController extends AbstractActionController{
 			//NOT FOUND
 			//	404
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 
 
 		//ACCESS DENIED
 		//	403
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
 	}
@@ -300,7 +312,10 @@ class BoardmemberController extends AbstractActionController{
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
 	}

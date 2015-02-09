@@ -1,46 +1,55 @@
-<div class="layout-content">
-	<h1>Fréttalisti</h1>
-	<ul class="news-list item-list theme-white">
-		<?php foreach($this->news as $news):?>
-		<li>
-			<article class="news news-columns">
-				<header>
-					<time><?=$news->created_date->format('Y-m-d')?></time>
-					<h1>
-						<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a>
-					</h1>
+<div class="layout layout--three-columns">
+	<section class="layout__section">
 
-				</header>
-				<section>
-					<?php if($news->avatar):?>
-						<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
-							<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" />
-						</a>
-					<?php endif;?>
-					<?=$this->paragrapher( $news->body );?>
-				</section>
-				<aside>
-					<ul class="news-groups-list">
-						<li>
-							<?php if($news->group):?>
-								<a href="<?=$this->url('hopur/index',array('id'=>$news->group->url)) ?>"><?=$news->group->name_short;?></a>
-							<?php else:?>
-								<span>Stjórnvísisfrétt</span>
-							<?php endif;?>
-						</li>
-					</ul>
-				</aside>
-			</article>
+		<ul class="block-list block-list--separator">
+			<?php foreach($this->news as $news):?>
+			<li>
+				<article class="block-element">
+					<header class="block-element__header">
+						<time class="block-element__time"><?= $this->date($news->created_date)?></time>
+						<h1>
+							<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a>
+						</h1>
+						<ul class="block-element__tags">
+							<li>
+								<?php if($news->group):?>
+									<a href="<?=$this->url('hopur/index',array('id'=>$news->group->url)) ?>"><?=$news->group->name_short;?></a>
+								<?php else:?>
+									<span>Stjórnvísisfrétt</span>
+								<?php endif;?>
+							</li>
+						</ul>
+					</header>
+					<section class="block-element__body block-element--three-columns">
+						<?php if($news->avatar):?>
+							<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
+								<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" />
+							</a>
+						<?php endif;?>
+						<?=$this->paragrapher( mb_substr($news->body,0,1200) );?>
+						<p class="block-element__more">
+							<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">meira</a>
+						</p>
 
-		</li>
-		<?php endforeach;?>
-	</ul>
+					</section>
+					<aside class="block-element__aside">
 
-	<ul class="pagination">
-		<?php foreach(range(0,$this->pages) as $item):?>
-		<li class="<?=($item == $this->no)?'active':''?>">
-			<a href="<?=$this->url('frettir/list',array('no'=>$item))?>"><?=$item+1?></a>
-		</li>
-		<?php endforeach;?>
-	</ul>
+					</aside>
+				</article>
+
+			</li>
+			<?php endforeach;?>
+		</ul>
+
+		<ul>
+			<?php foreach(range(0,$this->pages) as $item):?>
+			<li class="<?=($item == $this->no)?'active':''?>">
+				<a href="<?=$this->url('frettir/list',array('no'=>$item))?>"><?=$item+1?></a>
+			</li>
+			<?php endforeach;?>
+		</ul>
+	</section>
+	<aside class="layout__aside">
+
+	</aside>
 </div>

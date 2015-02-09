@@ -369,7 +369,7 @@ class ConsoleController extends AbstractActionController {
 
 		}
 		$progressBar->finish();
-		var_dump($report);
+
 	}
 
 	/**

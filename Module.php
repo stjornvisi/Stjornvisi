@@ -38,6 +38,7 @@ use Stjornvisi\Form\NewUserCompany;
 use Stjornvisi\Form\NewUserUniversitySelect;
 use Stjornvisi\Form\NewUserIndividual;
 use Stjornvisi\Form\NewUserCredentials;
+use Stjornvisi\Form\Company as CompanyForm;
 
 use Stjornvisi\Notify\Submission as SubmissionNotify;
 use Stjornvisi\Notify\Event as EventNotify;
@@ -75,6 +76,8 @@ class Module{
     public function onBootstrap(MvcEvent $e){
 
 
+		$auth = new AuthenticationService();
+
 		$config = $e->getApplication()
 			->getServiceManager()
 			->get('Configuration');
@@ -86,6 +89,17 @@ class Module{
 
 
         $eventManager        = $e->getApplication()->getEventManager();
+		$eventManager->attach('render',function($e) use ($auth){
+			/** @var $e \Zend\Mvc\MvcEvent  */
+			if( !$auth->hasIdentity() ){
+				if( $e->getRouteMatch()->getMatchedRouteName() == 'home' ){
+					$e->getViewModel()->setTemplate('layout/landing');
+				}else{
+					$e->getViewModel()->setTemplate('layout/anonymous');
+				}
+			}
+
+		});
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
@@ -347,6 +361,13 @@ class Module{
 						$sm->get('Stjornvisi\Service\User')
 					);
 				},
+				'Stjornvisi\Form\Company' => function($sm){
+						return new CompanyForm(
+							$sm->get('Stjornvisi\Service\Values'),
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
+
 				'Stjornvisi\Service\Skeleton' => function($sm){
 					return new Skeleton();
 				},
@@ -355,12 +376,18 @@ class Module{
 					$obj->setEventManager( $sm->get('ServiceEventManager') );
 					return $obj;
 				},
+
             )
         );
     }
 
 	public function getViewHelperConfig(){
 		return array(
+			'invokables' => array(
+				'formelement' => 'Stjornvisi\Form\View\Helper\FormElement',
+				'richelement'     => 'Stjornvisi\Form\View\Helper\RichElement',
+				'imgelement'     => 'Stjornvisi\Form\View\Helper\ImgElement',
+			),
 			'factories' => array(
 				'subMenu' => function($sm){
 					return new SubMenu(
@@ -373,12 +400,29 @@ class Module{
 		);
 	}
 
+	/*
 	public function init(ModuleManager $mm){
+
+
 		$auth = new AuthenticationService();
-		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'dispatch', function($e) use ($auth) {
+		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'render', function($e) use ($auth) {
+
+			$controller = $e->getController();
+			$controllerClass = $e->getControllerClass();
+			$meta = $e->getRequest()->getMetadata();
 			if( !$auth->hasIdentity() ){
-				$e->getTarget()->layout('layout/anonymous');
+//				$e->getTarget()->layout('layout/anonymous');
+			}
+		});
+		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'dispatch', function($e) use ($auth) {
+
+			$controller = $e->getController();
+			$controllerClass = $e->getControllerClass();
+			$meta = $e->getRequest()->getMetadata();
+			if( !$auth->hasIdentity() ){
+//				$e->getTarget()->layout('layout/anonymous');
 			}
 		});
 	}
+	*/
 }

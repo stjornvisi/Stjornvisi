@@ -1510,6 +1510,7 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'paragrapher' => 'Stjornvisi\View\Helper\Paragrapher',
+			'date' => 'Stjornvisi\View\Helper\Date',
 			'facebook' => 'Stjornvisi\View\Helper\Facebook',
         ),
     ),
@@ -1526,6 +1527,7 @@ return array(
         ),
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+			'layout/landing'           => __DIR__ . '/../view/layout/landing.phtml',
 			'layout/anonymous'           => __DIR__ . '/../view/layout/anonymous.phtml',
 			'layout/csv'           	  => __DIR__ . '/../view/layout/csv.phtml',
             'stjornvisi/index/index' => __DIR__ . '/../view/stjornvisi/index/index.phtml',

@@ -1,184 +1,182 @@
-
 <div class="column conference-conference-main">
-    <article class="conference">
-        <header>
-            <time>
-                <?=$this->conference->conference_date->format('Y-m-d');?> |
-                <?=($this->conference->conference_time)?$this->conference->conference_time->format('H:m'):'';?> |
-                <?=($this->conference->conference_end)?$this->conference->conference_end->format('H:m'):'';?>
-            </time>
-            <h1><?=$this->conference->subject?></h1>
-            <ul class="conference-groups-list">
-                <?php if( count($this->conference->groups)==0 ):?>
-                    <li>Stjórnvísisviðburður</li>
-                <?php else:?>
-                    <?php foreach( $this->conference->groups as $group ):?>
-                        <li>
-                            <?php if($group->id == null):?>
-                                <span>Almennur viðburður</span>
-                            <?php else:?>
-                                <a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a>
-                            <?php endif;?>
-                        </li>
-                    <?php endforeach;?>
-                <?php endif;?>
-            </ul>
-        </header>
-        <section>
-            <?php if( $this->conference->avatar):?>
-                <img src="<?=$this->basePath("/images/100/{$this->conference->avatar}")?>" />
-            <?php endif;?>
-            <?=$this->paragrapher($this->conference->body);?>
-            <h3><?=$this->conference->location?></h3>
-            <h3><?=$this->conference->address?></h3>
-        </section>
-        <aside></aside>
-        <footer>
-            <?php if( ($this->conference->conference_date > new DateTime()) && $this->logged_in ):?>
+	<article class="conference">
+		<header>
+			<time>
+				<?=$this->conference->conference_date->format('Y-m-d');?> |
+				<?=($this->conference->conference_time)?$this->conference->conference_time->format('H:m'):'';?> |
+				<?=($this->conference->conference_end)?$this->conference->conference_end->format('H:m'):'';?>
+			</time>
+			<h1><?=$this->conference->subject?></h1>
+			<ul class="conference-groups-list">
+				<?php if( count($this->conference->groups)==0 ):?>
+					<li>Stjórnvísisviðburður</li>
+				<?php else:?>
+					<?php foreach( $this->conference->groups as $group ):?>
+						<li>
+							<?php if($group->id == null):?>
+								<span>Almennur viðburður</span>
+							<?php else:?>
+								<a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a>
+							<?php endif;?>
+						</li>
+					<?php endforeach;?>
+				<?php endif;?>
+			</ul>
+		</header>
+		<section>
+			<?php if( $this->conference->avatar):?>
+				<img src="<?=$this->basePath("/images/100/{$this->conference->avatar}")?>" />
+			<?php endif;?>
+			<?=$this->paragrapher($this->conference->body);?>
+			<h3><?=$this->conference->location?></h3>
+			<h3><?=$this->conference->address?></h3>
+		</section>
+		<aside></aside>
+		<footer>
+			<?php if( ($this->conference->conference_date > new DateTime()) && $this->logged_in ):?>
 
-                <?php if( $this->conference->capacity == null || $this->conference->capacity > count($this->conference->attenders) ):?>
+				<?php if( $this->conference->capacity == null || $this->conference->capacity > count($this->conference->attenders) ):?>
 
-                    <?php if($this->conference->attending === null):?>
-                        ekki skráðu/ur inn
-                    <?php elseif($this->conference->attending === false):?>
-                        <a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-                        <a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>0))?>"  class="attending no" title="Afskrá mætingu">mæti ekki</a>
-                    <?php elseif($this->conference->attending == 0):?>
-                        <a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-                        <span  class="attending no" title="Afskrá mætingu">mæti ekki</span>
-                    <?php elseif($this->conference->attending == 1):?>
-                        <span class="attending yes" title="Skrá mætingu">mæti</span>
-                        <a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-                    <?php endif;?>
+					<?php if($this->conference->attending === null):?>
+						ekki skráðu/ur inn
+					<?php elseif($this->conference->attending === false):?>
+						<a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+						<a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>0))?>"  class="attending no" title="Afskrá mætingu">mæti ekki</a>
+					<?php elseif($this->conference->attending == 0):?>
+						<a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+						<span  class="attending no" title="Afskrá mætingu">mæti ekki</span>
+					<?php elseif($this->conference->attending == 1):?>
+						<span class="attending yes" title="Skrá mætingu">mæti</span>
+						<a href="<?=$this->url('radstefna/attending',array('id'=>$this->conference->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+					<?php endif;?>
 
-                <?php else:?>
-                    <p class="bg-danger">Fullt á viðburðinn</p>
-                <?php endif;?>
+				<?php else:?>
+					<p class="bg-danger">Fullt á viðburðinn</p>
+				<?php endif;?>
 
-            <?php endif;?>
-        </footer>
-    </article>
-    <!-- This logic is strange, it falls into else when logged in, even if the conference is not full! -->
-    <?php if( (!$this->logged_in && $this->conference->conference_date > new DateTime()) && ($this->conference->capacity == null || $this->conference->capacity < count($this->conference->attenders)) ):?>
-        <div class="well well-lg">
-            <form method="post" action="/radstefna/<?=$this->conference->id?>" class="form-inline">
-                <?php if($this->register_message):?>
-                    <p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
-                <?php else:?>
-                    <p>Þú virðist ekki vera skráð/ur inn</p>
-                    <p>Þú getur samt skráð þig á viðburðinn sem gestur með því að fylla út netfang hér fyrir neðan.</p>
-                <?php endif;?>
-                <div class="form-group">
-                    <input type="text" placeholder="Nafn" name="name" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <input type="email" placeholder="Netfang" name="email" class="form-control" />
-                </div>
-                <input type="submit" class="btn btn-default" value="Skrá" />
+			<?php endif;?>
+		</footer>
+	</article>
+	<!-- This logic is strange, it falls into else when logged in, even if the conference is not full! -->
+	<?php if( (!$this->logged_in && $this->conference->conference_date > new DateTime()) && ($this->conference->capacity == null || $this->conference->capacity < count($this->conference->attenders)) ):?>
+		<div class="well well-lg">
+			<form method="post" action="/radstefna/<?=$this->conference->id?>" class="form-inline">
+				<?php if($this->register_message):?>
+					<p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
+				<?php else:?>
+					<p>Þú virðist ekki vera skráð/ur inn</p>
+					<p>Þú getur samt skráð þig á viðburðinn sem gestur með því að fylla út netfang hér fyrir neðan.</p>
+				<?php endif;?>
+				<div class="form-group">
+					<input type="text" placeholder="Nafn" name="name" class="form-control" />
+				</div>
+				<div class="form-group">
+					<input type="email" placeholder="Netfang" name="email" class="form-control" />
+				</div>
+				<input type="submit" class="btn btn-default" value="Skrá" />
 
-            </form>
-        </div>
-    <?php else:?>
-        <p class="bg-danger">Viðburður fullur</p>
-    <?php endif;?>
-    <?php if($this->access->is_admin || $this->access->type >= 1):?>
-        <h2>Þátttakendur (<?=count($this->attendees)?>)</h2>
-        <table>
-            <thead>
-            <tr>
-                <td>#</td>
-                <td>Nafn</td>
-                <td>Titill</td>
-                <td>Skráning</td>
-            </tr>
-            </thead>
-            <tfoot>
-            <tr>
-                <td colspan="4">&nbsp;</td>
-            </tr>
-            </tfoot>
-            <tbody>
-            <?php foreach($this->attendees as $attendee):?>
-                <tr>
-                    <td><?=@++$i?></td>
-                    <td>
-                        <?php if($attendee->id):?>
-                            <a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>
-                        <?php else:?>
-                            <?=($attendee->name)?$attendee->name:$attendee->email;?>
-                        <?php endif;?>
-                    </td>
-                    <td>
-                        <?php if($attendee->title):?>
-                            <?=$attendee->title?>
-                        <?php else:?>
-                            &nbsp;
-                        <?php endif;?>
-                    </td>
-                    <td>
-                        <?=$attendee->register_time->format('Y-m-d H:i')?>
-                    </td>
-                </tr>
-            <?php endforeach;?>
-            </tbody>
+			</form>
+		</div>
+	<?php else:?>
+		<p class="bg-danger">Viðburður fullur</p>
+	<?php endif;?>
+	<?php if($this->access->is_admin || $this->access->type >= 1):?>
+		<h2>Þátttakendur (<?=count($this->attendees)?>)</h2>
+		<table>
+			<thead>
+			<tr>
+				<td>#</td>
+				<td>Nafn</td>
+				<td>Titill</td>
+				<td>Skráning</td>
+			</tr>
+			</thead>
+			<tfoot>
+			<tr>
+				<td colspan="4">&nbsp;</td>
+			</tr>
+			</tfoot>
+			<tbody>
+			<?php foreach($this->attendees as $attendee):?>
+				<tr>
+					<td><?=@++$i?></td>
+					<td>
+						<?php if($attendee->id):?>
+							<a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>
+						<?php else:?>
+							<?=($attendee->name)?$attendee->name:$attendee->email;?>
+						<?php endif;?>
+					</td>
+					<td>
+						<?php if($attendee->title):?>
+							<?=$attendee->title?>
+						<?php else:?>
+							&nbsp;
+						<?php endif;?>
+					</td>
+					<td>
+						<?=$attendee->register_time->format('Y-m-d H:i')?>
+					</td>
+				</tr>
+			<?php endforeach;?>
+			</tbody>
 
-        </table>
-    <?php endif;?>
+		</table>
+	<?php endif;?>
 
 </div>
 
 <div class="column conference-conference-meta">
 
-    <?php if( count($this->conference->gallery)>0 ):?>
-        <div class="conference-conference-meta-gallery">
-            <h1>Myndir</h1>
-            <ul class="conference-gallery-list">
-                <?php foreach($this->conference->gallery as $img):?>
-                    <li>
-                        <a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-lightbox="gallery">
-                            <img src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
-                        </a>
-                    </li>
-                <?php endforeach;?>
-            </ul>
-        </div>
-    <?php endif;?>
+	<?php if( count($this->conference->gallery)>0 ):?>
+		<div class="conference-conference-meta-gallery">
+			<h1>Myndir</h1>
+			<ul class="conference-gallery-list">
+				<?php foreach($this->conference->gallery as $img):?>
+					<li>
+						<a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-lightbox="gallery">
+							<img src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
+						</a>
+					</li>
+				<?php endforeach;?>
+			</ul>
+		</div>
+	<?php endif;?>
 
-    <?php if($this->conference->lat && $this->conference->lng):?>
-        <div class="conference-conference-meta-map">
-            <h1>Kort</h1>
-            <div id="map_canvas" data-lat="<?=$this->conference->lat?>" data-lng="<?=$this->conference->lng?>" style="height:300px"></div>
+	<?php if($this->conference->lat && $this->conference->lng):?>
+		<div class="conference-conference-meta-map">
+			<h1>Kort</h1>
+			<div id="map_canvas" data-lat="<?=$this->conference->lat?>" data-lng="<?=$this->conference->lng?>" style="height:300px"></div>
 
-            <script type="text/javascript">
-                function initialize() {
-                    var latlng = new google.maps.LatLng(<?=$this->conference->lat?>, <?=$this->conference->lng?>);
-                    var myOptions = {
-                        zoom: 15,
-                        center: latlng,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    var map = new google.maps.Map(document.getElementById("map_canvas"),
-                        myOptions);
-                    var marker = new google.maps.Marker({
-                        position: latlng
-                    });
+			<script type="text/javascript">
+				function initialize() {
+					var latlng = new google.maps.LatLng(<?=$this->conference->lat?>, <?=$this->conference->lng?>);
+					var myOptions = {
+						zoom: 15,
+						center: latlng,
+						mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+					var map = new google.maps.Map(document.getElementById("map_canvas"),
+						myOptions);
+					var marker = new google.maps.Marker({
+						position: latlng
+					});
+					// To add the marker to the map, call setMap();
+					marker.setMap(map);
+				}
+				initialize();
+			</script>
+		</div>
+	<?php endif;?>
 
-                    // To add the marker to the map, call setMap();
-                    marker.setMap(map);
-                }
-                initialize();
-            </script>
-        </div>
-    <?php endif;?>
-
-    <?php if(count($this->conference->reference)>0):?>
-        <div class="conference-conference-meta-resources">
-            <h1>Ítarefni</h1>
-            <ul class="conference-resources-list">
-                <?php foreach($this->conference->reference as $ref):?>
-                    <li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
-                <?php endforeach;?>
-            </ul>
-        </div>
-    <?php endif;?>
+	<?php if(count($this->conference->reference)>0):?>
+		<div class="conference-conference-meta-resources">
+			<h1>Ítarefni</h1>
+			<ul class="conference-resources-list">
+				<?php foreach($this->conference->reference as $ref):?>
+					<li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
+				<?php endforeach;?>
+			</ul>
+		</div>
+	<?php endif;?>
 </div>

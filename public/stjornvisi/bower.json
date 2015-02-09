@@ -1,16 +1,11 @@
 {
   "name": "stjornvisi",
-  "version": "0.0.1",
-  "homepage": "http://stjornvisi.is",
-  "description": "resources for Stjórnvísi",
-  "keywords": [
-    "stjornvisi"
-  ],
+  "version": "2.0.0",
+  "homepage": "https://github.com/fizk/Stjornvisi",
   "authors": [
-    "einarvalur"
+    "einarvalur <fizk78@gmail.com>"
   ],
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -20,13 +15,11 @@
     "tests"
   ],
   "dependencies": {
-    "handlebars": "~1.3.0",
-    "html5shiv-dist": "~3.6.2",
-    "typeahead.js": "~0.10.2",
-    "respond": "~1.4.2",
-    "lightbox2": "*",
-    "jquery": "~2.1.0",
-    "d3": "~3.4.3",
-    "jasny-bootstrap": "~3.1.0"
+    "html5shiv": "~3.7.2",
+    "breakpoint-sass": "~2.5.0",
+    "webcomponentsjs": "~0.5.3",
+    "bootstrap-sass-official": "~3.3.3",
+    "Stickyfill": "~1.1.1",
+    "photoswipe": "~4.0.5"
   }
 }

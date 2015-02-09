@@ -31,6 +31,7 @@ class EventController extends AbstractActionController{
 	 * @return array|ViewModel
 	 */
 	public function indexAction(){
+		//throw new \Exception('Hvað er í gangi');
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $eventService = $sm->get('Stjornvisi\Service\Event');
@@ -68,6 +69,7 @@ class EventController extends AbstractActionController{
 					)
 				);
 
+				/*
                 return new ViewModel(array(
                     'logged_in' => $authService->hasIdentity(),
                     'register_message' => true,
@@ -79,6 +81,35 @@ class EventController extends AbstractActionController{
                             $groupIds
                         ),
                 ));
+				*/
+
+				$eventView = new ViewModel(array(
+					'event' => $event,
+					'register_message' => true,
+					'logged_in' => $authService->hasIdentity(),
+					'access' => $userService->getTypeByGroup(
+							($authService->hasIdentity())?$authService->getIdentity()->id:null,
+							$groupIds
+						),
+					'attendees' => $userService->getByEvent($event->id),
+				));
+				$eventView->setTemplate('stjornvisi/event/partials/index-event');
+				$asideView = new ViewModel(array(
+					'access' => $userService->getTypeByGroup(
+							($authService->hasIdentity())?$authService->getIdentity()->id:null,
+							$groupIds
+						),
+					'event' => $event,
+					'related' => $eventService->getRelated($groupIds,$event->id),
+				));
+				$asideView->setTemplate('stjornvisi/event/partials/index-aside');
+
+				$mainView = new ViewModel();
+				$mainView
+					->addChild($eventView,'event')
+					->addChild($asideView,'aside');
+				return $mainView;
+
             }else{
 
 				$eventView = new ViewModel(array(
@@ -113,7 +144,7 @@ class EventController extends AbstractActionController{
         //NOT FOUND
         //  todo 404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 	}
 
@@ -384,12 +415,15 @@ class EventController extends AbstractActionController{
             //ACCESS DENIED
             //  user can't delete
             }else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
         //EVENT NOT FOUND
         //
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 	}
 
@@ -452,10 +486,13 @@ class EventController extends AbstractActionController{
 				return $response;
 
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 
@@ -538,13 +575,16 @@ class EventController extends AbstractActionController{
             //ACCESS DENIED
             //
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
         //EVENT NOT FOUND
         //  todo 404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 	}
 
@@ -641,7 +681,10 @@ class EventController extends AbstractActionController{
 			//ACCESS DENIED
 			//	403
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 		}
 
@@ -722,12 +765,15 @@ class EventController extends AbstractActionController{
 			//ACCESS DENIED
 			//
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 		//NOT FOUND
 		//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}
@@ -790,12 +836,15 @@ class EventController extends AbstractActionController{
 			//ACCESS DENIED
 			//	403
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 		//RESOURCE NOT FOUND
 		//
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 	}
 
@@ -856,13 +905,16 @@ class EventController extends AbstractActionController{
 			//ACCESS DENIED
 			//
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 
 		//NOT FOUND
 		//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}
@@ -901,13 +953,16 @@ class EventController extends AbstractActionController{
 			//ACCESS DENIED
 			//
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 
 		//NOT FOUND
 		//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}
@@ -949,12 +1004,15 @@ class EventController extends AbstractActionController{
 				//ACCESS DENIED
 				//
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 			//NOT FOUND
 			//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}
@@ -1017,12 +1075,15 @@ class EventController extends AbstractActionController{
 				//ACCESS DENIED
 				//	403
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 			//RESOURCE NOT FOUND
 			//
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 	}
 
@@ -1083,13 +1144,16 @@ class EventController extends AbstractActionController{
 				//ACCESS DENIED
 				//
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 
 			//NOT FOUND
 			//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}
@@ -1128,13 +1192,16 @@ class EventController extends AbstractActionController{
 				//ACCESS DENIED
 				//
 			}else{
-				var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
 			}
 
 			//NOT FOUND
 			//	404
 		}else{
-			var_dump('404');
+			return $this->notFoundAction();
 		}
 
 	}

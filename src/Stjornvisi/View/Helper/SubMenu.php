@@ -28,6 +28,7 @@ class SubMenu extends AbstractHelper {
 	}
 
 	public function __invoke(){
+
 		if( !self::$navigation ){
 
 			$view = $this->getView();
@@ -46,7 +47,7 @@ class SubMenu extends AbstractHelper {
 								'range' => '2013-2014'
 							)
 						);
-					},$this->groupService->fetchAll())
+					},$this->groupService->getByUser($this->authService->getIdentity()->id))
 				),
 				/*
 				array(
@@ -132,6 +133,7 @@ class SubMenu extends AbstractHelper {
 
 			self::$navigation = new Navigation($array);
 		}
+		$hundur = $this->getView()->navigation(self::$navigation);
 		return $this->getView()->navigation(self::$navigation);
 	}
 } 

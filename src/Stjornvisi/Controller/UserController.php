@@ -44,12 +44,15 @@ class UserController extends AbstractActionController{
 						),
 				));
 			}else{
-				var_dump('404');
+				return $this->notFoundAction();
 			}
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
 
@@ -134,7 +137,10 @@ class UserController extends AbstractActionController{
         //ACCESS DENIED
         //
         }else{
-            var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
         }
     }
 
@@ -158,7 +164,10 @@ class UserController extends AbstractActionController{
 		//ACCESS DENIED
 		//
 		}else{
-			var_dump('403');
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
     }
@@ -222,14 +231,17 @@ class UserController extends AbstractActionController{
             //ACCESS DENIED
             //
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
 
         //USER NOT FOUND
         //  404
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
 
@@ -404,7 +416,7 @@ class UserController extends AbstractActionController{
 
         //USER NOT FOUND
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
 

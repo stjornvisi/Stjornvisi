@@ -1,22 +1,19 @@
 <?php if($this->access->is_admin || $this->access->type >= 1):?>
-	<div class="btn-group">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			Action <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="<?=$this->url('frettir/update',array('id'=>$this->news->id));?>" class="control-update">Uppfæra</a></li>
-			<li><a href="<?=$this->url('frettir/delete',array('id'=>$this->news->id));?>">Eyða</a></li>
-		</ul>
-	</div>
+	<stjonvisi-control>
+		<a href="<?=$this->url('frettir/update',array('id'=>$this->news->id));?>" class="control-update">Uppfæra</a>
+		<a href="<?=$this->url('frettir/delete',array('id'=>$this->news->id));?>">Eyða</a>
+	</stjonvisi-control>
 <?php endif;?>
-<h1>Tengdar fréttir</h1>
-<ul>
+<h2 class="layout__headline">Tengdar fréttir</h2>
+<ul class="block-list">
 	<?php foreach($this->related as $news):?>
-		<li class="news">
-			<time><?=$news->created_date->format('Y-m-d H:i')?></time>
+		<li class="block-item">
+			<time class="block-item__time" datetime="<?=$news->created_date->format('c')?>">
+				<?=$this->date($news->created_date, \Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+			</time>
 			<?php if( $news->avatar ): ?>
-			<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">
-				<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" />
+			<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-item__image">
+				<img src="<?=$this->basePath("/images/300-square/{$news->avatar}")?>" />
 			</a>
 			<?php endif;?>
 			<h2><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h2>

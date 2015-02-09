@@ -141,11 +141,14 @@ class NewsController extends AbstractActionController{
             //ACCESS DENIED
             //  access denied
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 	}
 
@@ -211,13 +214,16 @@ class NewsController extends AbstractActionController{
             //ACCESS DENIED
             //  no access
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
 
 
 
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 	}
 
@@ -247,10 +253,13 @@ class NewsController extends AbstractActionController{
             //ACCESS DENIED
             //  access denied
             }else{
-                var_dump('403');
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
             }
         }else{
-            var_dump('404');
+			return $this->notFoundAction();
         }
 
 		

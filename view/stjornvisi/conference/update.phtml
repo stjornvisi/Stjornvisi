@@ -3,85 +3,85 @@ $this->form->setAttribute('class','form-horizontal');
 ?>
 <?=$this->form()->openTag($this->form);?>
 
-<div class="row half">
-    <div class="column">
-        <div class="form-group">
-            <?=$this->formLabel($form->get('subject'));?>
-            <?=$this->formElement($form->get('subject')->setAttribute('class','form-control'));?>
-            <?=$this->formElementErrors($form->get('subject'));?>
-        </div>
-        <div class="form-group">
-            <?=$this->formLabel($form->get('body'));?>
-            <?=$this->formElement($form->get('body')->setAttribute('class','form-control')->setAttribute('rows','25'));?>
-            <?=$this->formElementErrors($form->get('body'));?>
-        </div>
-        <div class="form-group">
-            <?=$this->formLabel($form->get('location'));?>
-            <?=$this->formElement($form->get('location')->setAttribute('class','form-control'));?>
-            <?=$this->formElementErrors($form->get('location'));?>
-        </div>
+	<div class="row half">
+		<div class="column">
+			<div class="form-group">
+				<?=$this->formLabel($form->get('subject'));?>
+				<?=$this->formElement($form->get('subject')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('subject'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formLabel($form->get('body'));?>
+				<?=$this->formElement($form->get('body')->setAttribute('class','form-control')->setAttribute('rows','25'));?>
+				<?=$this->formElementErrors($form->get('body'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formLabel($form->get('location'));?>
+				<?=$this->formElement($form->get('location')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('location'));?>
+			</div>
 
-        <div class="form-group">
-            <?=$this->formLabel($form->get('address'));?>
-            <?=$this->formElement($form->get('address')->setAttribute('class','form-control'));?>
-            <?=$this->formElementErrors($form->get('address'));?>
-        </div>
-        <div class="form-group">
-            <?=$this->formLabel($form->get('capacity'));?>
-            <?=$this->formElement($form->get('capacity')->setAttribute('class','form-control'));?>
-            <?=$this->formElementErrors($form->get('capacity'));?>
-        </div>
-    </div>
-    <div class="column">
+			<div class="form-group">
+				<?=$this->formLabel($form->get('address'));?>
+				<?=$this->formElement($form->get('address')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('address'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formLabel($form->get('capacity'));?>
+				<?=$this->formElement($form->get('capacity')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('capacity'));?>
+			</div>
+		</div>
+		<div class="column">
 
-        <div class="row third">
-            <div class="column">
-                <div class="form-group">
-                    <?=$this->formLabel($form->get('conference_date'));?>
-                    <?=$this->formElement($form->get('conference_date')->setAttribute('class','form-control'));?>
-                    <?=$this->formElementErrors($form->get('conference_date'));?>
-                </div>
-            </div>
-            <div class="column">
-                <div class="form-group">
-                    <?=$this->formLabel($form->get('conference_time'));?>
-                    <?=$this->formTime($form->get('conference_time')->setAttribute('class','form-control'));?>
-                    <?=$this->formElementErrors($form->get('conference_time'));?>
-                </div>
-            </div>
-            <div class="column">
-                <div class="form-group">
-                    <?=$this->formLabel($form->get('conference_end'));?>
-                    <?=$this->formTime($form->get('conference_end')->setAttribute('class','form-control'));?>
-                    <?=$this->formElementErrors($form->get('conference_end'));?>
-                </div>
-            </div>
-        </div>
+			<div class="row third">
+				<div class="column">
+					<div class="form-group">
+						<?=$this->formLabel($form->get('conference_date'));?>
+						<?=$this->formElement($form->get('conference_date')->setAttribute('class','form-control'));?>
+						<?=$this->formElementErrors($form->get('conference_date'));?>
+					</div>
+				</div>
+				<div class="column">
+					<div class="form-group">
+						<?=$this->formLabel($form->get('conference_time'));?>
+						<?=$this->formTime($form->get('conference_time')->setAttribute('class','form-control'));?>
+						<?=$this->formElementErrors($form->get('conference_time'));?>
+					</div>
+				</div>
+				<div class="column">
+					<div class="form-group">
+						<?=$this->formLabel($form->get('conference_end'));?>
+						<?=$this->formTime($form->get('conference_end')->setAttribute('class','form-control'));?>
+						<?=$this->formElementErrors($form->get('conference_end'));?>
+					</div>
+				</div>
+			</div>
 
-        <div class="form-group">
-            <?=$this->formLabel($form->get('avatar'));?>
-            <?=$this->formElement($form->get('avatar')->setAttribute('class','form-control avatar'));?>
-            <?=$this->formElementErrors($form->get('avatar'));?>
-        </div>
-
-
-        <div class="form-group">
-            <?=$this->formLabel($form->get('groups'));?>
-            <div class="checkbox"-->
-            <?=$this->formMultiCheckbox($form->get('groups'));?>
-            <?=$this->formElementErrors($form->get('groups'));?>
-        </div>
-    </div>
-</div>
-</div>
+			<div class="form-group">
+				<?=$this->formLabel($form->get('avatar'));?>
+				<?=$this->formElement($form->get('avatar')->setAttribute('class','form-control avatar'));?>
+				<?=$this->formElementErrors($form->get('avatar'));?>
+			</div>
 
 
+			<div class="form-group">
+				<?=$this->formLabel($form->get('groups'));?>
+				<div class="checkbox"-->
+				<?=$this->formMultiCheckbox($form->get('groups'));?>
+				<?=$this->formElementErrors($form->get('groups'));?>
+			</div>
+		</div>
+	</div>
+	</div>
 
 
 
-<div class="form-group">
-    <?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
-    <a href="#" class="btn cancel">Cancel</a>
-</div>
+
+
+	<div class="form-group">
+		<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+		<a href="#" class="btn cancel">Cancel</a>
+	</div>
 
 <?= $this->form()->closeTag() ?>
