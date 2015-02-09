@@ -986,6 +986,216 @@ return array(
 							),
 						)
 					),
+					'create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/stofna[/:id]',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'create'
+							),
+						)
+					),
+					'update' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/uppfaera',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'update'
+							),
+						)
+					),
+					'delete' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/eyda',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'delete'
+							),
+						)
+					),
+					'attending' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/skraning/:type',
+							'constraints' => array(
+								'id' => '[0-9]*',
+								'type' => '[01]'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'attend'
+							),
+						)
+					),
+					'send-mail' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/senda-post[/:type]',
+							'constraints' => array(
+								'id' => '[0-9]*',
+								'type' => 'allir|gestir'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'send-mail'
+							),
+						)
+					),
+					'export-attendees' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/thatttakendalisti',
+							'constraints' => array(
+								'id' => '[0-9]*',
+								'type' => 'allir|gestir'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'export-attendees'
+							),
+						)
+					),
+					'gallery-list' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/myndir',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'gallery-list'
+							),
+						)
+					),
+					'gallery-create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/myndir/stofna',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'gallery-create'
+							),
+						)
+					),
+					'gallery-update' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/myndir/uppfaera',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'gallery-update'
+							),
+						)
+					),
+					'gallery-delete' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/myndir/eyda',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'gallery-delete'
+							),
+						)
+					),
+					'resource-list' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/itarefni',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'resource-list'
+							),
+						)
+					),
+					'resource-create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/itarefni/stofna',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'resource-create'
+							),
+						)
+					),
+					'resource-update' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/itarefni/uppfaera',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'resource-update'
+							),
+						)
+					),
+					'resource-delete' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/itarefni/eyda',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'resource-delete'
+							),
+						)
+					),
+					'registry-distribution' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/dreifing/:type[/:from/:to]',
+							'constraints' => array(
+								'type' => 'klukka|dagur|manudur',
+								'from' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+								'to' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'registry-distribution'
+							),
+						)
+					),
+					'statistics' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/tolfraedi',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Conference',
+								'action' => 'statistics'
+							),
+						)
+					),
 				),
 			),
 			'skeletonlist' => array(

@@ -1,0 +1,35 @@
+<?php if($this->access->is_admin || $this->access->type >= 1):?>
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			Action <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a class="control-update" href="<?=$this->url('radstefna/update',array('id'=>$this->conference->id));?>">Uppfæra</a></li>
+			<li><a href="<?=$this->url('radstefna/delete',array('id'=>$this->conference->id));?>">Eyða</a></li>
+			<li class="divider"></li>
+			<li><a href="<?=$this->url('radstefna/send-mail',array('id'=>$this->conference->id,'type'=>'allir'));?>">Senda póst á meðlimi hópa</a></li>
+			<li><a href="<?=$this->url('radstefna/send-mail',array('id'=>$this->conference->id, 'type'=>'gestir'));?>">Senda póst á þátttakendur</a></li>
+			<li class="divider"></li>
+			<li><a href="<?=$this->url('radstefna/export-attendees',array('id'=>$this->conference->id));?>">Sækja þátttakendalista (csv)</a></li>
+			<li class="divider"></li>
+			<li><a href="<?=$this->url('radstefna/gallery-list',array('id'=>$this->conference->id));?>">Myndalisti</a></li>
+			<li><a href="<?=$this->url('radstefna/resource-list',array('id'=>$this->conference->id));?>">Ítarefni</a></li>
+		</ul>
+	</div>
+<?php endif;?>
+<h1>Tengdir viðburdir</h1>
+<ul>
+	<?php /**
+	<?php foreach($this->related as $conference):?>
+	<li class="event">
+	<time><?=$conference->event_date->format('Y-m-d');?></time>
+	<h2><a href="<?=$this->url('radstefna/index',array('id'=>$conference->id))?>"><?=$conference->subject?></a></h2>
+	<ul class="event-groups-list">
+	<?php foreach($conference->groups as $group):?>
+	<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a></li>
+	<?php endforeach;?>
+	</ul>
+	</li>
+	<?php endforeach;?>
+	 */?>
+</ul>

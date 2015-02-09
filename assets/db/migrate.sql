@@ -52,13 +52,67 @@ CREATE TABLE `Conference` (
   `location` varchar(45) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `capacity` int(4) DEFAULT NULL,
-  `event_date` date DEFAULT NULL,
-  `event_time` time DEFAULT NULL,
-  `event_end` time DEFAULT NULL,
+  `conference_date` date DEFAULT NULL,
+  `conference_time` time DEFAULT NULL,
+  `conference_end` time DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
   `lat` double(11,8) DEFAULT NULL,
   `lng` double(11,8) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `stjornvisi_production`.`Conference` (`subject`, `body`, `location`, `address`, `capacity`, `event_date`, `event_time`, `event_end`) VALUES ('Vorráðstefna Stjórvísi', '<p>Nú er komið að vorráðstefnu Stjórnvísi, en hún er jafnan haldin á vorin.  Stundum er hún þó haldin á haustin, en kallast þá haustráðtefna.  Stundum eru tvær ráðstefnur, bæði á vorin og haustin, en það er önnur saga.</p><p>Nú á s.s. að blása til sóknar og halda flotta ráðstefnu.  Endilega skoðaðu dagskrána hérna fyrir neðan.</p>', 'Harpa, Ráðstefnuhús', 'Austurbakka 2', '2000', '2015-03-10', '09:00', '17:00');
+INSERT INTO `stjornvisi_production`.`Conference` (`subject`, `body`, `location`, `address`, `capacity`, `conference_date`, `conference_time`, `conference_end`) VALUES ('Vorráðstefna Stjórvísi', '<p>Nú er komið að vorráðstefnu Stjórnvísi, en hún er jafnan haldin á vorin.  Stundum er hún þó haldin á haustin, en kallast þá haustráðtefna.  Stundum eru tvær ráðstefnur, bæði á vorin og haustin, en það er önnur saga.</p><p>Nú á s.s. að blása til sóknar og halda flotta ráðstefnu.  Endilega skoðaðu dagskrána hérna fyrir neðan.</p>', 'Harpa, Ráðstefnuhús', 'Austurbakka 2', '2000', '2015-03-10', '09:00', '17:00');
+
+CREATE TABLE `Group_has_Conference` (
+  `conference_id` int(10) unsigned NOT NULL,
+  `group_id` int(10) unsigned DEFAULT NULL,
+  `primary` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  KEY `fk_Conference_has_Group_Group1` (`group_id`),
+  KEY `fk_Conference_has_Group_Conference1` (`conference_id`),
+  CONSTRAINT `fk_Conference_has_Group_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_Conference_has_Group_Group1` FOREIGN KEY (`group_id`) REFERENCES `Group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Conference_has_User` (
+  `conference_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `attending` tinyint(3) unsigned DEFAULT NULL,
+  `register_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`conference_id`,`user_id`),
+  KEY `fk_Conference_has_User_User1` (`user_id`),
+  KEY `fk_Conference_has_User_Conference1` (`conference_id`),
+  CONSTRAINT `fk_Conference_has_User_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Conference_has_User_User1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Conference_has_Guest` (
+  `conference_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `register_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`conference_id`,`email`),
+  KEY `fk_Conference_has_Guest_Event1` (`conference_id`),
+  CONSTRAINT `fk_Conference_has_Guest_Event1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ConferenceGallery` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `conference_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_ConferenceGallery_Conference1` (`conference_id`),
+  CONSTRAINT `fk_ConferenceGallery_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ConferenceMedia` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `conference_id` int(10) unsigned DEFAULT NULL,
+  `description` text,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_ConferenceMedia_Conference1` (`conference_id`),
+  CONSTRAINT `fk_ConferenceMedia_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
