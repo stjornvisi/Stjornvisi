@@ -22,7 +22,7 @@
 				font-weight: bold;
 				text-shadow: 0 2px 3px rgba(0,0,0,.37);
 				margin: auto;
-				max-width: 960px;
+				max-width: 660px;
 				@include margin-leader(4,$font-size-huge);
 				@include margin-trailer(2,$font-size-huge);
 
@@ -39,6 +39,9 @@
 				font-family: $font-family-bitter;
 				transform: translate3d(0, 20px, 0);
 				transition: all 1s cubic-bezier(.39,1,.91,1);
+			}
+			.btn{
+				font-family: $font-family-open;
 			}
 		}
 
@@ -86,6 +89,9 @@
 				max-width: 960px;
 				margin: auto;
 				padding: $gutter*2 $gutter;
+			}
+			p{
+				text-align: center;
 			}
 		}
 
