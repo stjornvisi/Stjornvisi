@@ -17,3 +17,5 @@ public/stjornvisi/node_modules
 public/stjornvisi/images/
 .sass-cache
 .sass-cache/*
+
+*.jar

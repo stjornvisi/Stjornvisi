@@ -1,4 +1,12 @@
-<?php $this->form->setAttribute('class','form-horizontal'); ?>
+<?php
+	$this->headTitle( $this->event->subject );
+	$this->headTitle('Myndalisti - Stofna');
+	$this->headTitle('Viðburður');
+	$this->form->setAttribute('class','form-horizontal');
+?>
+
+
+
 <div class="layout layout--three-columns">
 	<section class="layout__section">
 		<h1>Setja inn mynd fyrir : <?=$this->event->subject;?></h1>

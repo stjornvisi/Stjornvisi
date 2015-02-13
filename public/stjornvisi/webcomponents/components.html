@@ -54,7 +54,7 @@
 			transform: translate3d(0, -700%, 0);
 		}
 
-		a {
+		:host a {
 			display: block;
 			width: 50px;
 			height: 50px;
@@ -75,9 +75,9 @@
 </template>
 
 <script>
-
-		var importDoc = document.currentScript.ownerDocument; // importee
-
+	(function(window, document, undefined){
+		// importee
+		var importDoc = (document._currentScript || document.currentScript).ownerDocument;
 
 		// Define and register <shadow-element>
 		// that uses Shadow DOM and a template.
@@ -145,6 +145,9 @@
 
 
 		document.registerElement('stjonvisi-control', {prototype: stjornvisiControlPrototype});
+
+	})(window, document, undefined);
+
 
 </script>
 
@@ -1910,7 +1913,8 @@
 		})();
 
 
-		var importDoc = document.currentScript.ownerDocument; // importee
+		//var importDoc = document.currentScript.ownerDocument; // importee
+		var importDoc = (document._currentScript || document.currentScript).ownerDocument;
 
 
 		// Define and register <shadow-element>
@@ -2125,8 +2129,8 @@
 	;(function(){
 
 
-		var importDoc = document.currentScript.ownerDocument; // importee
-
+		//var importDoc = document.currentScript.ownerDocument; // importee
+		var importDoc = (document._currentScript || document.currentScript).ownerDocument;
 
 		// Define and register <shadow-element>
 		// that uses Shadow DOM and a template.

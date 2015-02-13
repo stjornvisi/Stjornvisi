@@ -1,4 +1,9 @@
 
+	.page-event-list{
+		.block-calendar{
+			display: none;
+		}
+	}
 	.page-event{
 
 		form.page-event__register{
@@ -24,6 +29,17 @@
 				width: 50%;
 				display: block;
 				float: left;
+			}
+			@include breakpoint($phone){
+				label{
+					@include padding-trailer(1/4,$font-size-base);
+				}
+				.form-group{
+					@include margin-leader(1/2,$font-size-base);
+					@include margin-trailer(1/2,$font-size-base);
+					width: 100%;
+				}
+
 			}
 		}
 

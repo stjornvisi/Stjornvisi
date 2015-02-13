@@ -1,3 +1,8 @@
+<?php
+$this->headTitle( $this->event->subject );
+$this->headTitle('Skráarlisti');
+$this->headTitle('Viðburður');
+?>
 <div class="layout layout--three-columns">
 	<section class="layout__section">
 		<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h1>

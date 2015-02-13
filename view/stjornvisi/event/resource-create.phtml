@@ -1,9 +1,12 @@
+<?php
+$this->headTitle( $this->event->subject );
+$this->headTitle('Skráarlisti - Stofna');
+$this->headTitle('Viðburður');
+$this->form->setAttribute('class','form-horizontal');
+?>
 <div class="layout layout--three-columns">
 	<section class="layout__section">
 		<h1>Setja inn ítarefni fyrir : <?=$this->event->subject;?></h1>
-		<?php
-		$this->form->setAttribute('class','form-horizontal');
-		?>
 		<?=$this->form()->openTag($this->form);?>
 
 		<div class="form-group">

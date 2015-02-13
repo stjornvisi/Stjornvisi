@@ -681,6 +681,23 @@ class Event extends AbstractService {
             ));
             $events = $statement->fetchAll();
 
+			//IF NOTHING IS FOUND
+			//	the just select latest event
+			//	todo maybe this is not a good idea
+			if( !$events ){
+				$statement = $this->pdo->prepare("
+                SELECT E.* FROM Group_has_Event GhE
+                JOIN Event E ON (E.id = GhE.event_id)
+                WHERE E.event_date > NOW() AND GhE.event_id != :id
+					ORDER BY E.event_date ASC LIMIT 0,5
+				");
+				$statement->execute(array(
+					'id' => $exclude
+				));
+				$events = $statement->fetchAll();
+			}
+
+
             //GROUPS
             //  prepare a statement to get all groups
             //  that are connected to event

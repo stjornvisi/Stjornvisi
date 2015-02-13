@@ -16,6 +16,7 @@
 			padding: $gutter 0 $gutter*4 0;
 			box-shadow: 0 2px 5px rgba(0,0,0,.37);
 
+
 			h1{
 				@include adjust-font-size-to($font-size-huge,2,$font-size-base);
 				font-family: open-sans;
@@ -43,6 +44,22 @@
 			.btn{
 				font-family: $font-family-open;
 			}
+
+			@include breakpoint($phone){
+				padding-right: $gutter;
+				padding-left: $gutter;
+				padding-bottom: $gutter;
+				img{
+					width: 100%;
+				}
+				h1{
+					@include adjust-font-size-to($font-size-header,1.25,$font-size-base);
+				}
+				.btn{
+					@include margin-trailer(1,$font-size-base);
+				}
+
+			}
 		}
 
 
@@ -57,6 +74,9 @@
 					width: 100%;
 					vertical-align: bottom;
 				}
+				@include breakpoint($phone){
+					width: (100% / 4);
+				}
 			}
 		}
 
@@ -68,12 +88,26 @@
 		 */
 		.landing-page__panel{
 			background-color: $color-blue-light;
+
+			&.landing-page__panel--light{
+				background-color: $color-white;
+			}
+			&.landing-page__panel--content{
+				@include breakpoint($phone){
+					> div {padding-top: 0;}
+				}
+			}
+
 			.landing-page__headline {
 				font-family: $font-family-bitter;
 				font-weight: $font-weight-bold;
 				text-align: center;
-
+				i{
+					padding-left: rhythm(1/2,$font-size-big);
+					vertical-align: text-bottom;
+				}
 			}
+
 			h1.landing-page__headline {
 				@include adjust-font-size-to($font-size-huge,1,$font-size-base);
 				@include margin-trailer(2,$font-size-huge);
@@ -83,7 +117,6 @@
 					vertical-align: text-bottom;
 				}
 			}
-			h3.landing-page__headline {}
 
 			> div{
 				max-width: 960px;
@@ -92,6 +125,12 @@
 			}
 			p{
 				text-align: center;
+			}
+			@include breakpoint($phone){
+				h1.landing-page__headline {
+					@include adjust-font-size-to($font-size-header,1,$font-size-base);
+					@include margin-trailer(2,$font-size-header);
+				}
 			}
 		}
 
@@ -105,24 +144,99 @@
 
 		.landing-page__element{
 			@include pie-clearfix;
-			aside{
-				float: left;
-				width: 40%;
-			}
-			header, section, footer{
-				float: left;
-				width: 60%;
-			}
+
 			img{
 				width: 100%;
 				border-radius: 50%;
 			}
+
+			.landing-page__element__header{
+				float: left;
+				width: 60%;
+			}
+			.landing-page__element__aside{
+				padding-right: $gutter;
+				float: left;
+				width: 40%;
+			}
+			.landing-page__element__section{
+				@extend %rich-text;
+				float: left;
+				width: 60%;
+			}
+			.landing-page__element__footer{
+				float: right;
+				width: 60%;
+			}
+
+
+			.landing-page__element__tags{
+				  @include pie-clearfix;
+				  @include adjust-font-size-to($font-size-sub,1,$font-size-base);
+				  @include margin-leader(1/2,$font-size-sub);
+				  @include margin-trailer(1/2,$font-size-sub);
+
+				  font-family: $font-family-open;
+				  font-weight: $font-weight-thin;
+				  li{
+					  float: left;
+				  }
+				  li:after{
+					  font-weight: $font-weight-bold;
+					  content: "\00B7";
+					  padding: 0 rhythm(1/4,$font-size-sub);
+				  }
+				  li:last-child:after{
+					  content: "";
+					  padding: 0;
+				  }
+				  a{
+					  color: $color-green-sea;
+				  }
+			  }
+			.landing-page__element__headline{
+				@include margin-leader(1,$font-size-header);
+				@include margin-trailer(1,$font-size-header);
+				font-family: $font-family-bitter;
+				font-weight: $font-weight-bold;
+				@include adjust-font-size-to($font-size-header,1,$font-size-base);
+			}
+			.landing-page__element__time{
+				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+				font-family: $font-family-open;
+				color: $color-green-sea;
+			}
+
+			@include breakpoint($phone){
+				.landing-page__element__header{
+					float: none;
+					width: auto;
+				}
+				.landing-page__element__aside{
+					float: none;
+					width: auto;
+					padding-right: 0;
+					margin: (- $gutter) (- $gutter) 0 (- $gutter);
+					img{
+						border-radius: 0;
+					}
+				}
+				.landing-page__element__section{
+					float: none;
+					width: auto;
+				}
+				.landing-page__element__footer{
+					float: none;
+					width: auto;
+				}
+			}
 		}
 
 		.landing-page__cta{
+			border-top: 1px solid $color-gray-light;
 			@include pie-clearfix;
-			margin-left: - $gutter;
-			margin-right: - $gutter;
+			margin: $gutter*2 (- $gutter) 0 (- $gutter);
+
 			.landing-page__cta-item{
 				padding: $gutter;
 				float: left;
@@ -130,6 +244,9 @@
 				text-align: center;
 				img {
 					width: 100%;
+				}
+				.landing-page__headline{
+					@include margin-leader(1,$font-size-big);
 				}
 			}
 		}
@@ -140,24 +257,29 @@
 				.landing-page__cta-item{
 					float: none;
 					width: auto;
-					padding: $gutter/2 0;
+					padding: $gutter 0;
 					text-align: left;
 					@include pie-clearfix;
 					img{
-						width: 30%;
+						width: 40%;
 						float: left;
 					}
 					p{
 						padding-left: $gutter;
-						width: 70%;
+						width: 60%;
 						float: right;
+						text-align: left;
 
 					}
 					h2{
-						@include margin-leader(1/2,$font-size-base);
-						width: 70%;
-						float: right;
+
+					}
+					.landing-page__headline{
+						clear: both;
+						width: 100%;
 						padding-left: $gutter;
+						text-align: center;
+						@include padding-leader(1,$font-size-big);
 					}
 				}
 			}

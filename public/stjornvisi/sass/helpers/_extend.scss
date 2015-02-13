@@ -6,6 +6,9 @@
 		h4 + p{
 			@include margin-leader(1/2,$font-size-base);
 		}
+		p{
+			text-align: left;
+		}
 		p, blockquote{
 			@include margin-trailer(1,$font-size-base);
 			@include margin-leader(1,$font-size-base);
@@ -45,6 +48,7 @@
 
 		a{
 			color: $color-green-sea;
+			word-wrap: break-word;
 		}
 		h1{
 			@include adjust-font-size-to($font-size-big,1,$font-size-base);

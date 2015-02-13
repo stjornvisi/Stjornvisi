@@ -1,4 +1,18 @@
+<?php
+	$this->headTitle( $this->event->subject );
+	$this->headTitle('Viðburður');
 
+
+	$this->headMeta()->setProperty('og:title', $this->event->subject);
+	$this->headMeta()->setProperty('og:site_name', 'Stjórnvísi');
+	$this->headMeta()->setProperty('og:type', 'article');
+	$this->headMeta()->setProperty('og:description', mb_substr($this->event->body,0,200));
+	$this->headMeta()->setProperty('og:url', $this->basePath($this->url('vidburdir/index',array('id'=>$this->event->id))));
+	$this->headMeta()->setProperty('og:image', ($this->event->avatar)
+		? $this->basePath("/images/original/{$this->event->avatar}")
+		: $this->basePath("/stylesheets/images/simple-logo.jpg")
+	);
+?>
 	<div class="layout__data">
 		<article class="block-element">
 			<header class="block-element__header">

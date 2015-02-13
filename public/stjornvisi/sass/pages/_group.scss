@@ -76,6 +76,10 @@
 			position: absolute;
 			top: 0;
 			right: 0;
+			@include breakpoint($phone){
+				position: relative;
+				@include margin-leader(1,$font-size-base);
+			}
 		}
 
 		//YEARS

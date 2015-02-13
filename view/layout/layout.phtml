@@ -2,16 +2,17 @@
 <html lang="is">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('Stjórnvísi '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('Stjórnvísi ')->setSeparator(' / ')->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+			->appendName('viewport', 'width=device-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
 		<script src="<?=$this->basePath();?>/vendor/webcomponentsjs/webcomponents.min.js"></script>
 		<script src="<?=$this->basePath();?>/vendor/html5shiv/dist/html5shiv.js"></script>
 		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 		<link rel="import" href="<?=$this->basePath();?>/webcomponents/components.html">
+		<!--link rel="import" href="<?=$this->basePath();?>/webcomponents/elements.html" /-->
         <!-- Le styles -->
         <?php echo $this->headLink(array(
 			'rel' => 'icon',
@@ -29,12 +30,12 @@
 			</div>
 
 			<ul class="categories">
-				<li><a href="/" class="categories__home" title="Heim">heim</a></li>
-				<li><a href="#" class="categories__groups" title="Faghópar">groups</a></li>
+				<li><a href="/" class="categories__item categories__home" title="Heim">heim</a></li>
+				<li><a href="#" class="categories__item categories__groups" title="Faghópar">groups</a></li>
 				<!--li><a class="news control" href="" title="Fréttir">news</a></li-->
 				<!--li><a class="events control" href="" title="Viðburðir">events</a></li-->
-				<li><a href="#" class="categories__users" title="Notendur">user</a></li>
-				<li><a href="#" class="categories__config" title="Stillingar">config</a></li>
+				<li><a href="#" class="categories__item categories__users" title="Notendur">user</a></li>
+				<li><a href="#" class="categories__item categories__config" title="Stillingar">config</a></li>
 			</ul>
 		</nav>
 
