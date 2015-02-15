@@ -481,6 +481,19 @@ return array(
 							),
 						)
 					),
+					'ical' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/dagskra/ics',
+							'constraints' => array(
+								'id' => '[a-zA-Z][a-zA-Z0-9_-]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'calendar'
+							),
+						)
+					),
                 ),
             ),
 
@@ -1477,6 +1490,9 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
+		'factories' => array(
+			'IcalStrategy' => 'Stjornvisi\View\Strategy\IcalFactory',
+		),
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -1524,6 +1540,7 @@ return array(
         'strategies' => array(
             'ViewFeedStrategy',
 			'ViewJsonStrategy',
+			'IcalStrategy'
         ),
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',

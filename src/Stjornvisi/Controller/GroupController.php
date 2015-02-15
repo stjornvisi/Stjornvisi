@@ -3,6 +3,7 @@
 namespace Stjornvisi\Controller;
 
 
+use Stjornvisi\View\Model\IcalModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -750,5 +751,33 @@ class GroupController extends AbstractActionController{
 
 	public function statisticsAction(){
 
+	}
+
+	public function calendarAction(){
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group');
+		$newsService = $sm->get('Stjornvisi\Service\News');
+		$eventService = $sm->get('Stjornvisi\Service\Event'); /** @var $eventService \Stjornvisi\Service\Event */
+
+		$date = new DateTime();
+		$date->sub( new DateInterval('P12M') );
+
+		//return new JsonModel();
+		return new IcalModel(array(
+			'events' =>$eventService->getRange( $date )
+		));
+		/*
+		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
+			$response = $this->getResponse();
+
+			$response->getHeaders()->addHeaders(
+				//array('Content-Type'=>'text/calendar; charset=utf-8'));
+				array('Content-Type'=>'text/plain; charset=utf-8'));
+			var_dump($group);
+			return $response;
+		}else{
+			return $this->getResponse()->setStatusCode(404);
+		}
+		*/
 	}
 }
