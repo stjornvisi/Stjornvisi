@@ -56,7 +56,7 @@ class IcalRenderer implements Renderer, TreeRendererInterface {
 			$string .= "BEGIN:VEVENT\n";
 			$string .= "UID:{$event->id}@stjornvisi.is\n";
 			$string .= "DTSTART:{$event->event_time->format('Ymd\THis')}\n";
-			$string .= "DTEND:{$event->event_end->format('Ymd\THis\Z')}\n";
+			$string .= "DTEND:{$event->event_end->format('Ymd\THis')}\n";
 			if($event->lat && $event->lng){
 				$string .= "GEO:{$event->lat};{$event->lng}\n";
 			}
@@ -66,8 +66,7 @@ class IcalRenderer implements Renderer, TreeRendererInterface {
 				},$event->groups))):'Stjónvísisviðburður') ."\":no-reply@stjornvisi.is\n";
 
 			$string .= "LOCATION:{$event->location}\n";
-			$string .= "URL:/vidburdir/{$event->id}\n";
-
+			$string .= "URL:http://{$_SERVER['SERVER_NAME']}/vidburdir/{$event->id}\n";
 
 			$string .= "SUMMARY:{$event->subject}\n";
 			$string .= "END:VEVENT\n";

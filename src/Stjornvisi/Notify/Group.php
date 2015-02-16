@@ -89,7 +89,7 @@ class Group implements NotifyInterface {
 		//	send to all members of group or forman
 		$exclude = ( $this->params->recipients == 'allir' )
 			? array(-1) 	//everyone
-			: array(0,1) ; 	//forman
+			: array(0) ; 	//forman
 
 		//TEST OR REAL
 		//	if test, send ony to sender, else to all
@@ -101,10 +101,97 @@ class Group implements NotifyInterface {
 		//	get the group object
 		$group = $this->groupDAO->get( $this->params->group_id );
 
+
+
+
+
+		$child = new ViewModel(array(
+			'user' => $users,
+			'group' => $group,
+			'params' => $this->params
+		));
+		$child->setTemplate('group-letter');
+
+		$layout = new ViewModel();
+		$layout->setTemplate('email');
+		$layout->addChild($child, 'content');
+
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new Resolver\AggregateResolver();
+
+		$map = new Resolver\TemplateMapResolver(array(
+			'layout'      =>__DIR__ . '/../../../view/layout/email.phtml',
+		));
+		$stack = new Resolver\TemplatePathStack(array(
+			'script_paths' => array(
+				__DIR__ . '/../../../view/email/',
+			)
+		));
+		$resolver->attach($map)->attach($stack);
+
+
+		$phpRenderer->setResolver($resolver);
+
+
+
+		foreach ($layout as $child) {
+			if ($child->terminate()) {
+				continue;
+			}
+			$child->setOption('has_parent', true);
+			$result  = $phpRenderer->render($child);
+			$child->setOption('has_parent', null);
+			$capture = $child->captureTo();
+			if (!empty($capture)) {
+				if ($child->isAppend()) {
+					$oldResult=$model->{$capture};
+					$layout->setVariable($capture, $oldResult . $result);
+				} else {
+					$layout->setVariable($capture, $result);
+				}
+			}
+		}
+
+
+
+
+
+
+
+		/*
+		$view       = new \Zend\View\Renderer\PhpRenderer();
+		$resolver   = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'mailTemplate' => __DIR__ . '/../../../view/email/group-letter.phtml'
+		));
+		$view->setResolver($resolver);
+
+		$viewModel  = new ViewModel();
+		$viewModel->setTemplate('mailTemplate')->setVariables(array(
+			'user' => $users,
+			'group' => $group,
+			'params' => $this->params
+		));
+
+		$output = $view->render($viewModel);
+		*/
+
+
+
+
+		/*
+		 *
+		 *
+
+
+
 		//VIEW
 		//	create and config template/rendering engine
 		// 	and model and mash it together.
 		$renderer = new PhpRenderer();
+		$renderer->setCanRenderTrees(true);
 		$resolver = new Resolver\AggregateResolver();
 		$renderer->setResolver($resolver);
 		$map = new Resolver\TemplateMapResolver(array(
@@ -115,12 +202,9 @@ class Group implements NotifyInterface {
 				__DIR__ . '/../../../view/email/',
 			)
 		));
-		$model = new ViewModel(array(
-			'user' => $users,
-			'group' => $group
-		));
 		$resolver->attach($map)->attach($stack);
-		$model->setTemplate('group-letter');
+		*/
+
 
 		$this->logger->info("Group-email in " . ( $this->params->test?'':'none' ) . " test mode");
 
@@ -137,8 +221,9 @@ class Group implements NotifyInterface {
 				$result = array(
 					'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 					'subject' => $this->params->subject,
-					'body' => $renderer->render($model)
+					'body' => $phpRenderer->render($layout)
 				);
+
 				$msg = new AMQPMessage( json_encode($result),
 					array('delivery_mode' => 2) # make message persistent
 				);

@@ -484,7 +484,7 @@ return array(
 					'ical' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(
-							'route' => '/:id/dagskra/ics',
+							'route' => '/:id/dagskra.ics',
 							'constraints' => array(
 								'id' => '[a-zA-Z][a-zA-Z0-9_-]*',
 							),

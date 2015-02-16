@@ -62,7 +62,7 @@ class IcalStrategy extends AbstractListenerAggregate {
 		$headers = $response->getHeaders();
 
 
-		$headers->addHeaderLine('content-type', 'text/plain; charset=utf-8');
+		$headers->addHeaderLine('content-type', 'text/calendar; charset=utf-8');
 
 	}
 

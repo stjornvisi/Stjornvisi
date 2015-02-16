@@ -17,6 +17,7 @@ class Date extends AbstractHelper{
 	const FORMAT_DATE = '%e. %B %Y';
 	const FORMAT_DATE_TIME = '%e. %B %Y &middot %H:%M';
 	const FORMAT_TIME = '%H:%M';
+	const FORMAT_YEAR_MONTH = '%B %Y';
 
     public function __invoke($value, $format = Date::FORMAT_DATE){
 

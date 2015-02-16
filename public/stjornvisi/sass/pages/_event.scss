@@ -1,8 +1,11 @@
 
 	.page-event-list{
-		.block-calendar{
-			display: none;
+		@include breakpoint($phone){
+			.block-calendar{
+				display: none;
+			}
 		}
+
 	}
 	.page-event{
 

@@ -6,10 +6,10 @@ $this->headTitle('Viðburður');
 		<table class="block-calendar">
 			<caption class="block-calendar__caption">
 
-				<h2 class="block-calendar__headline"><?=$this->current->format('F Y')?></h2>
+				<h2 class="block-calendar__headline"><?=$this->date($this->current,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?></h2>
 				<nav class="block-calendar__pagination">
-					<a href="<?=$this->url('vidburdir/list',array('date'=>$this->prev->format('Y-m')))?>" class="prev">prev</a>
-					<a href="<?=$this->url('vidburdir/list',array('date'=>$this->next->format('Y-m')))?>" class="next">next</a>
+					<a href="<?=$this->url('vidburdir/list',array('date'=>$this->prev->format('Y-m')))?>" class="prev" title="<?=$this->date($this->prev,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">prev</a>
+					<a href="<?=$this->url('vidburdir/list',array('date'=>$this->next->format('Y-m')))?>" class="next" title="<?=$this->date($this->next,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">next</a>
 				</nav>
 			</caption>
 			<thead class="block-calendar__header">
@@ -31,12 +31,12 @@ $this->headTitle('Viðburður');
 			<?php endif;?>
 				<td>
 					<span class="block-calendar__date-label"><?=substr($key,8,2)?></span>
-					<ul>
+					<ul class="block-calendar__subject-list">
 						<?php if( !empty($column)):?>
 						<?php foreach($column as $event):?>
 						<li>
 							<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject;?></a>
-							<ul>
+							<ul class="block-calendar__group-list">
 								<?php if(count($event->groups)==0):?>
 									<li>Stjórnvísisviðburður</li>
 								<?php else:?>
@@ -85,6 +85,10 @@ $this->headTitle('Viðburður');
 			<?php endif;?>
 		<?php endforeach;?>
 		</ul>
+		<nav class="block-calendar__pagination">
+			<a href="<?=$this->url('vidburdir/list',array('date'=>$this->prev->format('Y-m')))?>" class="prev" title="<?=$this->date($this->prev,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">prev</a>
+			<a href="<?=$this->url('vidburdir/list',array('date'=>$this->next->format('Y-m')))?>" class="next" title="<?=$this->date($this->next,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">next</a>
+		</nav>
 	</aside>
 
 </div>

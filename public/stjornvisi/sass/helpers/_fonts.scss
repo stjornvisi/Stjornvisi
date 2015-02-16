@@ -180,7 +180,7 @@
 
 
 
-// - - - - - - [ OPEN SANS ] - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - [ ICONS ] - - - - - - - - - - - - - - - - - - - - - -
 @font-face {
 	font-family: 'icomoon';
 	src:url('fonts/icon/icomoon.eot?-zhk01q');
@@ -206,6 +206,14 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-chevron-left:before {
+	content: "\f0a4";
+}
+
+.icon-rss:before {
+	content: "\e610";
+}
+
 .icon-chevron-right:before {
 	content: "\e60e";
 }
@@ -224,6 +232,10 @@
 
 .icon-facebook:before {
 	content: "\e60a";
+}
+
+.icon-calendar-o:before {
+	content: "\e60f";
 }
 
 .icon-burger:before {
@@ -265,4 +277,3 @@
 .icon-yes:before {
 	content: "\e609";
 }
-

@@ -39,4 +39,40 @@
 
 	$color-green:		rgb(76,161,74);
 	$color-red:			rgb(255,72,0);
-	$color-yellow: rgb(196, 199, 77);
+	$color-orange: 		rgb(199, 171, 51);
+	$color-yellow: 		rgb(196, 199, 77);
+
+
+
+//.btn-default {
+	$btn-default-color 	: $color-white;
+	$btn-default-bg 	: shade($color-green-sea,10%);
+	$btn-default-border : shade($color-green-sea,10%);
+
+//.btn-primary {
+	$btn-primary-color 	: $color-white;
+	$btn-primary-bg 	: shade($color-green-sea,10%);
+	$btn-primary-border : shade($color-green-sea,10%);
+
+
+//.btn-success { // Success appears as green
+	$btn-success-color 	: $color-white;
+	$btn-success-bg		: shade($color-green,10%);
+	$btn-success-border	: shade($color-green,10%);
+
+
+//.btn-info { // Info appears as blue-green
+	$btn-info-color 	: $color-white;
+	$btn-info-bg		: shade($color-blue,10%);
+	$btn-info-border	: shade($color-blue,10%);
+
+
+//.btn-warning { // Warning appears as orange
+	$btn-warning-color	: $color-white;
+	$btn-warning-bg		: shade($color-orange,10%);
+	$btn-warning-border	: shade($color-orange,10%);
+
+//.btn-danger { // Danger and error appear as red
+	$btn-danger-color 	: $color-white;
+	$btn-danger-bg		: shade($color-red,10%);
+	$btn-danger-border	: shade($color-red,10%);

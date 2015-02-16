@@ -169,15 +169,88 @@
 			overflow: scroll;
 			display: none;
 		}
+
+		#help{
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: pink;
+			overflow: scroll;
+			display: none;
+		}
+		#help > div{
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 50%;
+			width: 50%;
+			overflow: scroll;
+		}
+		#help > textarea{
+			position: absolute;
+			top: 0;
+			right: 50%;
+			bottom: 0;
+			left: 0;
+			width: 50%;
+		}
+
 		.wrapper{
 			position: relative;
+		}
+		textarea.over{
+			box-shadow:  inset 0 10px 5px rgba(0,0,0,.5);
+		}
+		textarea.enter{
+			background-color: rgb(240,240,240);
+		}
+		textarea.prossess{
+			background-color: rgb(20,20,20);
 		}
 
 	</style>
 	<a href="#" id="hide-preview">edit</a>
 	<a href="#" id="show-preview">preview</a>
+	<a href="#" id="show-help">help</a>
 	<div class="wrapper">
 		<div id="preview"></div>
+		<div id="help">
+			<textarea id="help_textarea">#Markdown
+Markdown ritlar eru að ryðja sér til rúms, þeir eru einfaldari en
+heðbundnir ritlar og varna því að ólöglegir stílar komist inn í
+texta.
+
+Eina sem þarf að gera er að muna nokkar reglur:
+
+##Fyrirsögn
+Fyrirsagnir eru gerðar með því a setja # eða ## eða ### eftir því
+á hvaða level'i fyrirsögnin er
+
+## h2 fyrirsögn
+### h3 fyrirsögn
+#### h4 fyrirsögn
+
+Málsgreinar eru aðgreindar með tveimur línubilum.
+
+**Feitletrað** er gert með tveimur stjörnum á meðan
+
+*Skáletur* er gert með einni stjörnu.
+
+* það er
+* líka hægt
+* að gera lista
+
+>Tilvitnanir eru gerðar með "stærri en" merkinu.
+
+---
+
+Það er hægt að gera lágrétt strik með þremur mínus merkjum</textarea>
+			<div id="help_display"></div>
+
+		</div>
 		<content></content>
 	</div>
 </template>
@@ -1924,6 +1997,8 @@
 		stjornvisiRichPrototype.root = undefined;
 		stjornvisiRichPrototype.textarea = undefined;
 		stjornvisiRichPrototype.preview = undefined;
+		stjornvisiRichPrototype.helpTextarea = undefined;
+		stjornvisiRichPrototype.helpDisplay = undefined;
 
 
 		/**
@@ -1933,10 +2008,6 @@
 		 *  @param File file
 		 */
 		stjornvisiRichPrototype.upload = function(file, progress, error, done){
-
-
-
-
 
 			//DATA OBJECT
 			//	create file data object to carry
@@ -2018,6 +2089,9 @@
 			this.root = this.createShadowRoot();
 			this.root.appendChild(clone);
 			this.preview = this.root.querySelector("#preview");
+			this.help = this.root.querySelector("#help");
+			this.helpTextarea = this.root.querySelector("#help_textarea");
+			this.helpDisplay = this.root.querySelector("#help_display");
 			this.textarea = this.root.host.querySelector('textarea');
 
 			//SHOW PREVIEW
@@ -2037,26 +2111,41 @@
 			}.bind(this),false);
 
 
+			this.helpTextarea.addEventListener('keyup',function(event){
+				this.helpDisplay.innerHTML = Markdown.toHTML( this.helpTextarea.value );
+			}.bind(this),false);
+			this.root.querySelector('#show-help').addEventListener('click',function(event){
+				event.preventDefault();
+
+				this.help.style.display =
+						(this.help.style.display=='none' || this.help.style.display=='')
+								?'block':'none';
+				this.helpDisplay.innerHTML = Markdown.toHTML( this.helpTextarea.value );
+
+			}.bind(this),false);
+
+
 			//DRAG ENTER
 			//
 			this.textarea.addEventListener("dragenter", function(event){
 				event.stopPropagation();
 				event.preventDefault();
-				this.textarea.style.backgroundColor = 'pink';
+				this.textarea.classList.add('enter');
 			}.bind(this), false);
 			//DRAG OVER
 			//
 			this.textarea.addEventListener("dragover", function(event){
 				event.stopPropagation();
 				event.preventDefault();
-				this.textarea.style.backgroundColor = 'red';
+				this.textarea.classList.add('over');
 			}.bind(this), false);
 			//DRAG LEAVE
 			//
 			this.textarea.addEventListener("dragleave", function(event){
 				event.stopPropagation();
 				event.preventDefault();
-				this.textarea.style.backgroundColor = 'white';
+				this.textarea.classList.remove('enter');
+				this.textarea.classList.remove('over');
 			}.bind(this), false);
 			//DROP
 			//
@@ -2064,6 +2153,9 @@
 				event.stopPropagation();
 				event.preventDefault();
 
+				this.textarea.classList.remove('enter');
+				this.textarea.classList.remove('over');
+				this.textarea.setAttribute('readonly','readonly');
 				var begin = this.textarea.value.substr(0,this.textarea.selectionStart);
 				var middle = this.textarea.value.substr(this.textarea.selectionStart, (this.textarea.selectionEnd-this.textarea.selectionStart) );
 				var end = this.textarea.value.substr(this.textarea.selectionEnd);
@@ -2074,9 +2166,11 @@
 						this.textarea.value = (begin) + ('![Alt text]('+status+'%)') + (end);
 					}.bind(this),
 					function(object){
-						alert(JSON.stringify(object))
+						this.textarea.removeAttribute('readonly','readonly');
+						alert(JSON.stringify(object));
 					}.bind(this),
 					function(object){
+						this.textarea.removeAttribute('readonly','readonly');
 						this.textarea.value = (begin) + ('!['+middle+']('+object.info.media[0].thumb+')') + (end);
 					}.bind(this)
 				);

@@ -654,8 +654,11 @@ class GroupController extends AbstractActionController{
                 //  post request
                 if($this->request->isPost()){
 
+					$post = $this->getRequest()->getPost(); /** @var $post \ArrayObject */
+
+
                     $form = new GroupEmail();
-                    $form->setData($this->request->getPost() );
+                    $form->setData($post );
                     $form->setAttribute(
                         'action',
 						$this->url()->fromRoute('hopur/send-mail',array(
@@ -665,37 +668,59 @@ class GroupController extends AbstractActionController{
 						)
                     );
 
-					/*
-					//NOTIFY
-					//	notify user
-					$users = array();
-					$priority = false;
-					if( $this->params()->fromPost('test',false) ){
-						$users = array($auth->getIdentity());
-						$priority = true;
-					}else{
-						$users = ( $this->params()->fromRoute('type', 'allir') == 'formenn' )
-							? $userService->getUserMessageByGroup( array($group->id), array(0) )
-							: $userService->getUserMessageByGroup( array($group->id) );
-						$priority = false;
-					}
-					*/
-					$this->getEventManager()->trigger('notify',$this,array(
-						'action' => 'Stjornvisi\Notify\Group',
-						'data' => (object)array(
-							'group_id' => $group->id,
-							'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
-							'test' => (bool)$this->params()->fromPost('test',false),
-							'subject' => $form->get('subject')->getValue(),
-							'body' => $form->get('body')->getValue(),
-							'sender_id' => (int)$auth->getIdentity()->id
-						),
-					));
+					//VALID
+					//	form is valid
+					if( $form->isValid() ){
 
-					return new ViewModel(array(
-						'form' => isset($post['test'])?$form:null,
-						'msg' => isset($post['test'])?'Prufupóstur sendur':'Póstur sendur',
-					));
+						//TEST
+						//	send out test e-mail
+						if( $post->offsetGet('test') ){
+
+							$this->getEventManager()->trigger('notify',$this,array(
+								'action' => 'Stjornvisi\Notify\Group',
+								'data' => (object)array(
+										'group_id' => $group->id,
+										'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+										'test' => true,
+										'subject' => $form->get('subject')->getValue(),
+										'body' => $form->get('body')->getValue(),
+										'sender_id' => (int)$auth->getIdentity()->id
+									),
+							));
+							return new ViewModel(array(
+								'form' => $form,
+								'msg' => "Prufupóstur hefur verið sendur á {$auth->getIdentity()->email}",
+							));
+
+						//SEND
+						//	send out full e-mail
+						}else{
+							$this->getEventManager()->trigger('notify',$this,array(
+								'action' => 'Stjornvisi\Notify\Group',
+								'data' => (object)array(
+										'group_id' => $group->id,
+										'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+										'test' => false,
+										'subject' => $form->get('subject')->getValue(),
+										'body' => $form->get('body')->getValue(),
+										'sender_id' => (int)$auth->getIdentity()->id
+									),
+							));
+
+							return new ViewModel(array(
+								'form' => null,
+								'msg' => 'Póstur sendur',
+							));
+						}
+
+					//INVALID
+					// the form is invalid
+					}else{
+						return new ViewModel(array(
+							'form' => $form,
+							'msg' => '',
+						));
+					}
 
                 //QUERY
                 //  get request
@@ -753,19 +778,30 @@ class GroupController extends AbstractActionController{
 
 	}
 
+	/**
+	 * Generate iCal document one year back in tme from
+	 * currenr date.
+	 *
+	 * @return IcalModel
+	 */
 	public function calendarAction(){
 		$sm = $this->getServiceLocator();
 		$groupService = $sm->get('Stjornvisi\Service\Group');
 		$newsService = $sm->get('Stjornvisi\Service\News');
 		$eventService = $sm->get('Stjornvisi\Service\Event'); /** @var $eventService \Stjornvisi\Service\Event */
 
-		$date = new DateTime();
-		$date->sub( new DateInterval('P12M') );
+		if( ( $group = $groupService->get($this->params()->fromRoute('id',0) )) != null ){
+			$date = new DateTime();
+			$date->sub( new DateInterval('P12M') );
 
-		//return new JsonModel();
-		return new IcalModel(array(
-			'events' =>$eventService->getRange( $date )
-		));
+			return new IcalModel(array(
+				'events' =>$eventService->getRangeByGroup( $group->id, $date )
+			));
+		}else{
+			return $this->getResponse()->setStatusCode(404);
+		}
+
+
 		/*
 		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
 			$response = $this->getResponse();

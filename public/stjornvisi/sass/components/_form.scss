@@ -5,7 +5,18 @@
 		background-repeat: no-repeat;
 	}
 
+	.btn{
+		@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		font-family: $font-family-open;
+		font-weight: $font-weight-bold;
+		text-transform: uppercase;
+		text-shadow: 0 2px 1px rgba(0,0,0,.27);
+		border-radius: 0;
+		padding: rhythm(1/4,$font-size-small) rhythm(1,$font-size-small);
+	}
 
+
+	/*
 	.btn-default {
 		background-color: $color-green-sea;
 		//@include background-image(linear-gradient(to bottom, tint($color-green-sea,20%), $color-green-sea));
@@ -17,25 +28,7 @@
 		font-family: $font-family-open;
 		text-transform: uppercase;
 	}
-	.btn-primary {
-
-	}
-	// Success appears as green
-	.btn-success {
-
-	}
-	// Info appears as blue-green
-	.btn-info {
-
-	}
-	// Warning appears as orange
-	.btn-warning {
-
-	}
-	// Danger and error appear as red
-	.btn-danger {
-
-	}
+	*/
 
 
 

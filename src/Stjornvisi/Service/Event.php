@@ -606,20 +606,34 @@ class Event extends AbstractService {
      * @return array
      * @throws Exception
      */
-    public function getRangeByGroup($id, DateTime $from, DateTime $to){
+    public function getRangeByGroup($id, DateTime $from, DateTime $to = null){
         try{
-            $statement = $this->pdo->prepare("
-                SELECT * FROM Event E
-                JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
-                WHERE (E.event_date BETWEEN :from AND :to)
-                AND GhE.group_id = :id
-                ORDER BY E.event_date DESC;
-            ");
-            $statement->execute(array(
-                'from' => $from->format('Y-m-d'),
-                'to' => $to->format('Y-m-d'),
-                'id' => $id
-            ));
+			if($to == null){
+				$statement = $this->pdo->prepare("
+					SELECT * FROM Event E
+					JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
+					WHERE E.event_date >= :from
+					AND GhE.group_id = :id
+					ORDER BY E.event_date DESC;
+				");
+				$statement->execute(array(
+					'from' => $from->format('Y-m-d'),
+					'id' => $id
+				));
+			}else{
+				$statement = $this->pdo->prepare("
+					SELECT * FROM Event E
+					JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
+					WHERE (E.event_date BETWEEN :from AND :to)
+					AND GhE.group_id = :id
+					ORDER BY E.event_date DESC;
+				");
+				$statement->execute(array(
+					'from' => $from->format('Y-m-d'),
+					'to' => $to->format('Y-m-d'),
+					'id' => $id
+				));
+			}
             $events = $statement->fetchAll();
             //GROUPS
             //  prepare a statement to get all groups

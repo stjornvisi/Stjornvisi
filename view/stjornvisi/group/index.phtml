@@ -1,3 +1,15 @@
+<?php
+$this->headTitle( $this->group->name );
+$this->headTitle('Hópur');
+
+
+$this->headMeta()->setProperty('og:title', $this->group->name);
+$this->headMeta()->setProperty('og:site_name', 'Stjórnvísi');
+$this->headMeta()->setProperty('og:type', 'article');
+$this->headMeta()->setProperty('og:description', mb_substr($this->group->description,0,200));
+$this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->url('hopur/index',array('id'=>$this->group->url)));
+
+?>
 <div class="layout layout--three-columns-reverse page-group">
 	<section class="layout__section">
 		<div class="page-group__header">
@@ -14,7 +26,7 @@
 			<?php endif;?>
 		</div>
 		<div class="layout__data">
-			<h2 id="vidburdir" class="layout__headline">Viðburðir - <a href="<?=$this->url('rss/rss-events',array('name'=>$this->group->url))?>">rss</a></h2>
+			<h2 id="vidburdir" class="layout__headline">Viðburðir</h2>
 			<ul class="block-list block-list--separator">
 				<?php foreach($this->events as $event):?>
 					<li id="vidburdur-<?=$event->id?>">
@@ -63,7 +75,7 @@
 			</ul>
 		</div>
 		<div class="layout__meta">
-			<h2 id="frettir" class="layout__headline">Fréttir  - <a href="<?=$this->url('rss/rss-news',array('name'=>$this->group->url))?>">rss</a></h2>
+			<h2 id="frettir" class="layout__headline">Fréttir</h2>
 			<ul class="block-list block-list--separator">
 				<?php foreach($this->news as $news):?>
 					<li>
@@ -81,6 +93,7 @@
 									</a>
 								<?php endif;?>
 								<?=$this->paragrapher( mb_substr($news->body,0,300,'utf-8'));?>
+								<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__more">meira</a>
 							</section>
 							<aside>
 							</aside>
@@ -98,32 +111,68 @@
 			<?=$this->paragrapher($this->group->how_operates); ?>
 			<h3 class="layout__headline">Hvernig starfar hópurinn</h3>
 			<?=$this->paragrapher($this->group->for_whom); ?>
-		</div>
 
-		<?php if($this->access->is_admin || $this->access->type >= 1):?>
-			<div class="page-group__members page-group__separator">
-				<h2 id="medlimir" class="page-group__subline">Meðlimir</h2>
-				<div class="page-group__members-head">
-					<h2 class="layout__headline">Formenn (<?=count($this->chairmen)?>)</h2>
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) return;
+					js = d.createElement(s); js.id = id;
+					js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1645847542309046&version=v2.0";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));</script>
+			<div class="fb-like" data-href="http://<?=$_SERVER['HTTP_HOST']?><?=$this->url('hopur/index',array('id'=>$this->group->url))?>" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
+
+		</div>
+		<div class="page-group__members page-group__separator">
+			<?php if( isset($this->logged_in) && $this->logged_in == true /*$this->access->is_admin || $this->access->type >= 1*/):?>
+			<h2 id="medlimir" class="page-group__subline">Meðlimir</h2>
+			<div class="page-group__members-head">
+				<h2 class="layout__headline">Formenn (<?=count($this->chairmen)?>)</h2>
+				<ul>
+					<?php foreach($this->chairmen as $user):?>
+						<li class="page-group__members-item">
+							<h3><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a></h3>
+							<span><?=$user->title;?></span>
+							<?php if($this->access->is_admin || $this->access->type >= 1):?>
+								<stjonvisi-control class="inline">
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
+									</ul>
+								</stjonvisi-control>
+							<?php endif;?>
+						</li>
+					<?php endforeach;?>
+				</ul>
+				<h2 class="layout__headline">Stjórnendur (<?=count($this->managers)?>)</h2>
+				<ul>
+					<?php foreach($this->managers as $user):?>
+						<li class="page-group__members-item">
+							<h3><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a></h3>
+							<span><?=$user->title;?></span>
+							<?php if($this->access->is_admin || $this->access->type >= 1):?>
+								<stjonvisi-control class="inline">
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>2,'user_id'=>$user->id))?>">Gera að formanni</a></li>
+										<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
+									</ul>
+								</stjonvisi-control>
+							<?php endif;?>
+						</li>
+					<?php endforeach;?>
+				</ul>
+			</div>
+			<?php endif;?>
+			<div class="page-group__members-member">
+				<?php if($this->access->is_admin || $this->access->type != null):?>
+					<h2 class="layout__headline">Meðlimir (<?=count($this->users)?>)</h2>
+					<?php
+						$user_chunk = array_chunk($this->users,ceil(count($this->users) / 2));
+					?>
+
+					<?php foreach( $user_chunk as $chunk ):?>
 					<ul>
-						<?php foreach($this->chairmen as $user):?>
-							<li class="page-group__members-item">
-								<h3><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a></h3>
-								<span><?=$user->title;?></span>
-								<?php if($this->access->is_admin || $this->access->type >= 1):?>
-									<stjonvisi-control class="inline">
-										<ul class="dropdown-menu" role="menu">
-											<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
-											<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
-										</ul>
-									</stjonvisi-control>
-								<?php endif;?>
-							</li>
-						<?php endforeach;?>
-					</ul>
-					<h2 class="layout__headline">Stjórnendur (<?=count($this->managers)?>)</h2>
-					<ul>
-						<?php foreach($this->managers as $user):?>
+						<?php foreach($chunk as $user):?>
 							<li class="page-group__members-item">
 								<h3><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a></h3>
 								<span><?=$user->title;?></span>
@@ -131,44 +180,17 @@
 									<stjonvisi-control class="inline">
 										<ul class="dropdown-menu" role="menu">
 											<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>2,'user_id'=>$user->id))?>">Gera að formanni</a></li>
-											<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>0,'user_id'=>$user->id))?>">Gera að meðlim</a></li>
+											<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
 										</ul>
 									</stjonvisi-control>
 								<?php endif;?>
 							</li>
 						<?php endforeach;?>
 					</ul>
-				</div>
-				<div class="page-group__members-member">
-					<?php if($this->access->is_admin || $this->access->type != null):?>
-						<h2 class="layout__headline">Meðlimir (<?=count($this->users)?>)</h2>
-						<?php
-							$user_chunk = array_chunk($this->users,ceil(count($this->users) / 2));
-						?>
-
-						<?php foreach( $user_chunk as $chunk ):?>
-						<ul>
-							<?php foreach($chunk as $user):?>
-								<li class="page-group__members-item">
-									<h3><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=$user->name;?></a></h3>
-									<span><?=$user->title;?></span>
-									<?php if($this->access->is_admin || $this->access->type >= 1):?>
-										<stjonvisi-control class="inline">
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>2,'user_id'=>$user->id))?>">Gera að formanni</a></li>
-												<li><a href="<?=$this->url('hopur/user-status',array('id'=>$this->group->url,'type'=>1,'user_id'=>$user->id))?>">Gera að stjórnanda</a></li>
-											</ul>
-										</stjonvisi-control>
-									<?php endif;?>
-								</li>
-							<?php endforeach;?>
-						</ul>
-						<?php endforeach;?>
-					<?php endif;?>
-				</div>
+					<?php endforeach;?>
+				<?php endif;?>
 			</div>
-		<?php endif;?>
-
+		</div>
 
 	</section>
 	<aside class="layout__aside">
@@ -192,6 +214,13 @@
 			<?php if($this->access->is_admin || $this->access->type >= 1):?>
 			<li><a href="#medlimir" data-scroll>Meðlimir</a></li>
 			<?php endif; ?>
+		</ul>
+
+		<h1 class="layout__headline">Straumar</h1>
+		<ul class="page-group__years">
+			<li><a href="<?=$this->url('rss/rss-news',array('name'=>$this->group->url))?>" title="RSS fréttastraumur" target="_blank">Fréttir <i class="icon-rss"></i></a></li>
+			<li><a href="<?=$this->url('rss/rss-events',array('name'=>$this->group->url))?>" title="RSS viðburðastraumur" target="_blank">Viðburðir <i class="icon-rss"></i></a></li>
+			<li><a href="ical://<?=$_SERVER['HTTP_HOST']?><?=$this->url('hopur/ical',array('id'=>$this->group->url))?>" title="iCal viðburðastraumur" target="_blank">Viðburðir <i class="icon-calendar-o"></i></a></li>
 		</ul>
 
 		<h1 class="layout__headline">Viðburðadagatal</h1>

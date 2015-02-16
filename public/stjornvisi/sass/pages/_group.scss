@@ -9,6 +9,7 @@
 		.page-group__header{
 			position: relative;
 			margin-bottom: $gutter;
+
 		}
 
 
@@ -57,6 +58,7 @@
 			font-family: $font-family-bitter;
 			font-weight: $font-weight-bold;
 			@include adjust-font-size-to($font-size-huge,2,$font-size-base);
+			margin-right: 5*$gutter;
 		}
 
 		//SUBLINE
@@ -142,6 +144,11 @@
 		}
 
 
+		.fb_iframe_widget{
+			padding-top: rhythm(1,$font-size-base);
+		}
+
+
 	}
 
 
@@ -166,7 +173,7 @@
 		}
 
 		.page-group-list__list-item{
-			font-family: $font-family-bitter;
+			font-family: $font-family-open;
 			@include adjust-font-size-to($font-size-small,1,$font-size-base);
 		}
 	}

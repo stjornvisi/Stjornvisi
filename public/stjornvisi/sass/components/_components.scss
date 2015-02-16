@@ -570,7 +570,7 @@
 		position: relative;
 		width: (100% / 7);
 		vertical-align: top;
-		padding: rhythm(1/4,$font-size-base);
+		padding: rhythm(1/3,$font-size-base);
 		overflow: hidden;
 	}
 	.block-calendar__header{
@@ -585,11 +585,11 @@
 
 	.block-calendar__body{
 		tr{
-			border-bottom: 1px solid $color-gray-light;
+
 			td{
+				border: 1px solid $color-gray-light;
 				a{
-					font-family: open-sans;
-					@include adjust-font-size-to($font-size-small,1/8,$font-size-base);
+
 				}
 			}
 		}
@@ -602,25 +602,93 @@
 
 	.block-calendar__pagination{
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: -$gutter/2;
+		right: $gutter/2;
 	}
 
 	.block-calendar__headline{
 		@include adjust-font-size-to($font-size-header,1,$font-size-base);
+		@include margin-trailer(2,$font-size-header);
 		font-family: open-sans;
 		color: $color-green-sea;
 		text-align: center;
+		text-transform: capitalize;
 	}
 
 	.block-calendar__date-label{
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: 15px;
+		right: -10px;
+		font-family: $font-family-open;
+		font-weight: $font-weight-bold;
 		@include adjust-font-size-to($font-size-huge*2,1,$font-size-base);
-		color: tint($color-green-sea,80%);
+		color: tint($color-green-sea,90%);
 		z-index: -1;
+	}
+	.block-calendar__subject-list{
+		> li{
+			> a {
+
+				display: block;
+				font-family: $font-family-open;
+				font-weight: $font-weight-bold;
+				@include adjust-font-size-to($font-size-small,.75,$font-size-base);
+			}
+		}
+	}
+	.block-calendar__group-list{
+		> li{
+			font-family: $font-family-open;
+			@include adjust-font-size-to($font-size-small,.75,$font-size-base);
+			color: $color-green-sea;
+			> a {
+				color: $color-green-sea;
+			}
+		}
+	}
+}
+.block-calendar__pagination{
+
+	border: 1px solid $color-gray-light;
+	display: inline-block;
+	margin-bottom: $gutter;
+	a{
+		font-family: 'icomoon';
+		speak: none;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		line-height: 1;
+		display: inline-block;
+		padding: rhythm(1,$font-size-base);
+		font-size: 0;
+	}
+
+	a:before{
+		font-size: $font-size-base;
+		display: inline-block;
+		padding: rhythm(1/2,$font-size-base) rhythm(1,$font-size-base);
+	}
+	.prev:before{
+		content: "\f0a4";
+	}
+	.next:before{
+		content: "\e60e";
+		border-left: 1px solid $color-gray-light;
 	}
 }
 
+// - - - - - [SHAME] - - - - - - - - - - - - - - - - - - - - - -
 
+
+textarea.over{
+	box-shadow: inset 0 10 5px rgba(0,0,0,.5);
+}
+textarea.enter{
+	background-color: rgb(240,240,240);
+	border-style: dashed;
+}
+textarea.prossess{
+	background-color: rgb(220,220,220);
+}
