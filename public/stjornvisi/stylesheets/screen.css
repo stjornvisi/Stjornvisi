@@ -2886,18 +2886,19 @@ input[name=avatar] {
 /* line 245, ../sass/pages/_landing.scss */
 .landing-page .landing-page__cta .landing-page__cta-item img {
   width: 100%;
+  border-radius: 50%;
 }
-/* line 248, ../sass/pages/_landing.scss */
+/* line 249, ../sass/pages/_landing.scss */
 .landing-page .landing-page__cta .landing-page__cta-item .landing-page__headline {
   margin-top: 1.33333em;
 }
 @media (max-width: 480px) {
-  /* line 254, ../sass/pages/_landing.scss */
+  /* line 255, ../sass/pages/_landing.scss */
   .landing-page .landing-page__cta {
     margin-left: 0;
     margin-right: 0;
   }
-  /* line 257, ../sass/pages/_landing.scss */
+  /* line 258, ../sass/pages/_landing.scss */
   .landing-page .landing-page__cta .landing-page__cta-item {
     float: none;
     width: auto;
@@ -2911,19 +2912,19 @@ input[name=avatar] {
     display: table;
     clear: both;
   }
-  /* line 263, ../sass/pages/_landing.scss */
+  /* line 264, ../sass/pages/_landing.scss */
   .landing-page .landing-page__cta .landing-page__cta-item img {
     width: 40%;
     float: left;
   }
-  /* line 267, ../sass/pages/_landing.scss */
+  /* line 268, ../sass/pages/_landing.scss */
   .landing-page .landing-page__cta .landing-page__cta-item p {
     padding-left: 30px;
     width: 60%;
     float: right;
     text-align: left;
   }
-  /* line 277, ../sass/pages/_landing.scss */
+  /* line 278, ../sass/pages/_landing.scss */
   .landing-page .landing-page__cta .landing-page__cta-item .landing-page__headline {
     clear: both;
     width: 100%;
@@ -3235,6 +3236,53 @@ input[name=avatar] {
   padding: 1.5em;
   background-color: #e9e9e9;
   overflow: scroll;
+}
+
+/* line 4, ../sass/pages/_login.scss */
+.page-login .page-login__service p {
+  margin-bottom: 1.5em;
+}
+@media (max-width: 480px) {
+  /* line 8, ../sass/pages/_login.scss */
+  .page-login .page-login__service a {
+    display: block;
+    margin-bottom: 1.5em;
+  }
+}
+/* line 14, ../sass/pages/_login.scss */
+.page-login .page-login__manual {
+  border-left: 1px solid lightgray;
+  padding-left: 2em;
+}
+/* line 17, ../sass/pages/_login.scss */
+.page-login .page-login__manual p {
+  margin-bottom: 1.5em;
+}
+/* line 20, ../sass/pages/_login.scss */
+.page-login .page-login__manual .form-group {
+  margin-left: 0;
+  margin-right: 0;
+}
+/* line 25, ../sass/pages/_login.scss */
+.page-login .layout__section .layout__meta.page-login__manual {
+  padding-left: 2em;
+  /**
+   * this is a f**king hack 'cause
+   * .layout.layout--three-columns .layout__section .layout__meta
+   * always gets priority
+   */
+}
+@media (max-width: 480px) {
+  /* line 34, ../sass/pages/_login.scss */
+  .page-login .page-login__manual {
+    border-top: 1px solid lightgray;
+    border-left: none;
+    padding-top: 30px;
+  }
+  /* line 39, ../sass/pages/_login.scss */
+  .page-login .layout__section .layout__meta.page-login__manual {
+    padding-left: 0;
+  }
 }
 
 /*# sourceMappingURL=screen.css.map */

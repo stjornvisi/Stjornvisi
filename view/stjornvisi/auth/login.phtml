@@ -1,10 +1,16 @@
+<?php $this->form->setAttribute('class','form-horizontal'); ?>
 
-<div class="layout layout--three-columns">
+<div class="layout layout--three-columns page-login">
 	<section class="layout__section">
-		<div class="layout__data">
-			<?php
-			$this->form->setAttribute('class','form-horizontal');
-			?>
+		<div class="layout__data page-login__service">
+			<p>Stjónvísi býður nú upp á að notendur noti Facebook sem auðkenni. Auðvelt er
+				að tengja eldri notendareikninga við þessa þjónustu, prufaðu bara.</p>
+			<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a>
+
+			<a href="" class="btn btn-success">Stofna aðgang</a>
+		</div>
+		<div class="layout__meta page-login__manual">
+			<p>Að sjálfsögðu er hægt að skrá sig inn með gamla mátanum</p>
 			<?=$this->form()->openTag($this->form);?>
 
 			<div class="form-group">
@@ -23,10 +29,6 @@
 			</div>
 
 			<?= $this->form()->closeTag() ?>
-		</div>
-		<div class="layout__meta">
-			<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>Facebook innskráning</a>
-			<a href="" class="btn btn-success">Stofna aðgang</a>
 		</div>
 
 	</section>

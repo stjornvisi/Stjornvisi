@@ -309,11 +309,11 @@ class Module{
 					return new SmtpOptions(array(
 							'name'              => 'localhost.localdomain',
 							'host'              => 'mail.optusnet.com.au',
-							'connection_class'  => 'login',
-							'connection_config' => array(
-								'username' => 'user',
-								'password' => 'pass',
-							),
+							//'connection_class'  => 'plain',
+							//'connection_config' => array(
+							//	'username' => 'user',
+							//	'password' => 'pass',
+							//),
 						));
 
 						/*

@@ -101,111 +101,6 @@ class Group implements NotifyInterface {
 		//	get the group object
 		$group = $this->groupDAO->get( $this->params->group_id );
 
-
-
-
-
-		$child = new ViewModel(array(
-			'user' => $users,
-			'group' => $group,
-			'params' => $this->params
-		));
-		$child->setTemplate('group-letter');
-
-		$layout = new ViewModel();
-		$layout->setTemplate('email');
-		$layout->addChild($child, 'content');
-
-		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
-		$phpRenderer->setCanRenderTrees(true);
-
-		$resolver = new Resolver\AggregateResolver();
-
-		$map = new Resolver\TemplateMapResolver(array(
-			'layout'      =>__DIR__ . '/../../../view/layout/email.phtml',
-		));
-		$stack = new Resolver\TemplatePathStack(array(
-			'script_paths' => array(
-				__DIR__ . '/../../../view/email/',
-			)
-		));
-		$resolver->attach($map)->attach($stack);
-
-
-		$phpRenderer->setResolver($resolver);
-
-
-
-		foreach ($layout as $child) {
-			if ($child->terminate()) {
-				continue;
-			}
-			$child->setOption('has_parent', true);
-			$result  = $phpRenderer->render($child);
-			$child->setOption('has_parent', null);
-			$capture = $child->captureTo();
-			if (!empty($capture)) {
-				if ($child->isAppend()) {
-					$oldResult=$model->{$capture};
-					$layout->setVariable($capture, $oldResult . $result);
-				} else {
-					$layout->setVariable($capture, $result);
-				}
-			}
-		}
-
-
-
-
-
-
-
-		/*
-		$view       = new \Zend\View\Renderer\PhpRenderer();
-		$resolver   = new \Zend\View\Resolver\TemplateMapResolver();
-		$resolver->setMap(array(
-			'mailTemplate' => __DIR__ . '/../../../view/email/group-letter.phtml'
-		));
-		$view->setResolver($resolver);
-
-		$viewModel  = new ViewModel();
-		$viewModel->setTemplate('mailTemplate')->setVariables(array(
-			'user' => $users,
-			'group' => $group,
-			'params' => $this->params
-		));
-
-		$output = $view->render($viewModel);
-		*/
-
-
-
-
-		/*
-		 *
-		 *
-
-
-
-		//VIEW
-		//	create and config template/rendering engine
-		// 	and model and mash it together.
-		$renderer = new PhpRenderer();
-		$renderer->setCanRenderTrees(true);
-		$resolver = new Resolver\AggregateResolver();
-		$renderer->setResolver($resolver);
-		$map = new Resolver\TemplateMapResolver(array(
-			'layout'      =>__DIR__ . '/../../../view/layout/email.phtml',
-		));
-		$stack = new Resolver\TemplatePathStack(array(
-			'script_paths' => array(
-				__DIR__ . '/../../../view/email/',
-			)
-		));
-		$resolver->attach($map)->attach($stack);
-		*/
-
-
 		$this->logger->info("Group-email in " . ( $this->params->test?'':'none' ) . " test mode");
 
 		//MAIL
@@ -213,11 +108,62 @@ class Group implements NotifyInterface {
 		//	so we try to connect to Queue and send a message
 		//	to mail_queue
 		try{
+
+			//QUEUE
+			//	create and configure queue
 			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
 
+			$paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
+
+			//VIEW
+			//	create and configure view
+			$child = new ViewModel(array(
+				'user' => null,
+				'group' => $group,
+				'body' => $paragrapher->__invoke($this->params->body)
+			));
+			$child->setTemplate('script');
+
+			$layout = new ViewModel();
+			$layout->setTemplate('layout');
+			$layout->addChild($child, 'content');
+
+			$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+			$phpRenderer->setCanRenderTrees(true);
+
+			$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+			$resolver->setMap(array(
+				'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+				'script' => __DIR__ . '/../../../view/email/group-letter.phtml',
+			));
+			$phpRenderer->setResolver($resolver);
+
+			//FOR EVERY USER
+			//	for every user, render mail-template
+			//	and send to mail-queue
 			foreach($users as $user){
+
+				$child->setVariable('user',$user);
+				foreach ($layout as $child) {
+					if ($child->terminate()) {
+						continue;
+					}
+					$child->setOption('has_parent', true);
+					$result  = $phpRenderer->render($child);
+					$child->setOption('has_parent', null);
+					$capture = $child->captureTo();
+					if (!empty($capture)) {
+						if ($child->isAppend()) {
+							$oldResult=$model->{$capture};
+							$layout->setVariable($capture, $oldResult . $result);
+						} else {
+							$layout->setVariable($capture, $result);
+						}
+					}
+				}
+
 				$result = array(
 					'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 					'subject' => $this->params->subject,

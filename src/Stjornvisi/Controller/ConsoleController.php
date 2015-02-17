@@ -9,6 +9,7 @@
 namespace Stjornvisi\Controller;
 
 
+use Stjornvisi\Mail\Attacher;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Progressbar\Adapter\Console;
@@ -592,6 +593,13 @@ class ConsoleController extends AbstractActionController {
 							->addFrom('stjornvisi@stjornvisi.is')
 							->setSubject($messageObject->subject)
 							->setBody($messageObject->body);
+
+						//ATTACHER
+						//	you can read all about what this does in \Stjornvisi\Mail\Attacher
+						//	but basically what this does is: convert a simple html string into a
+						//	multy-part mime object with embedded attachments.
+						$attacher = new Attacher($message);
+						$message = $attacher->parse();
 
 						if($this->getRequest()->getParam('debug', false)){
 							$logger->debug( "{$classname}:mailAction ". print_r($messageObject,true) );

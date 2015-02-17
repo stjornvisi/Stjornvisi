@@ -118,8 +118,9 @@
 		<h4>Félag um framsækna stjórnun.</h4>
 		<h1>Stjórnvísi er stærsta stjórnunarfélag á Íslandi
 			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h1>
-		<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>Facebook innskráning</a>
-		<a href="" class="btn btn-success">Stofna aðgang</a>
+		<!--a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a-->
+		<a href="<?=$this->url('auth')?>" class="btn btn-primary">Innskrá</a>
+		<a href="<?=$this->url('auth/create')?>" class="btn btn-success">Stofna aðgang</a>
 	</div>
 
 	<div class="landing-page__panel">
@@ -134,14 +135,14 @@
 			<ul class="landing-page__cta">
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('hopur')?>">
-						<img src="<?=$this->basePath('stylesheets/images/cta1.svg')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta7.jpg')?>">
 						<p>Hópar innan stjónvísi er undirstaða starfseminar.</p>
 						<h2 class="landing-page__headline">Kynntu þér hópana <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('vidburdir')?>">
-						<img src="<?=$this->basePath('stylesheets/images/cta2.svg')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta8.jpg')?>">
 						<p>Dagskrá Stjónvísi er margþætt og áhugaverð.</p>
 						<h2 class="landing-page__headline">Kynntu þér dagskrána <i class="icon-chevron-right"></i></h2>
 					</a>
@@ -149,7 +150,7 @@
 
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('um')?>">
-						<img src="<?=$this->basePath('stylesheets/images/cta3.svg')?>">
+						<img src="<?=$this->basePath('stylesheets/images/cta9.jpg')?>">
 						<p>Bara örstuttur texti um stjónvísi og af hverju þú ættir að skoða.</p>
 						<h2 class="landing-page__headline">Kynntu þér starfsemina <i class="icon-chevron-right"></i></h2>
 					</a>
@@ -174,14 +175,14 @@
 			<ul class="landing-page__cta">
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('anaegjuvogin')?>">
-						<img src="<?=$this->basePath('stylesheets/images/cta4.svg')?>">
+						<img src="<?=$this->basePath('stylesheets/images/anaegjuvogin-logo.jpg')?>">
 						<p>Ánægjuvorin er veitt einu sinn á ári við hátíðlega athöfn.</p>
 						<h2 class="landing-page__headline">Ánægjuvogin <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('stjornunarverdlaunin')?>">
-						<img src="<?=$this->basePath('stylesheets/images/cta5.svg')?>">
+						<img src="<?=$this->basePath('stylesheets/images/stjornvisi-logo-square.jpg')?>">
 						<p>Stjónunarverðlaunin er veitt vegna framúrskarandi árangus.</p>
 						<h2 class="landing-page__headline">Stjónunarverðlaunin <i class="icon-chevron-right"></i></h2>
 					</a>

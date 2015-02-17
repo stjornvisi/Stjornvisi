@@ -1432,6 +1432,16 @@ return array(
 							),
 						),
 					),
+					'create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Literal',
+						'options' => array(
+							'route' => '/stofna',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'request-connection-facebook'
+							),
+						),
+					),
 
 				)
 			),

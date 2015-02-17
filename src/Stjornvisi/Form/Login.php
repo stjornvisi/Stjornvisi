@@ -24,7 +24,7 @@ class Login extends Form{
                 'type'  => 'text',
             ),
             'options' => array(
-                'label' => 'Username',
+                'label' => 'Netfang',
             ),
         ));
         $this->add(array(
@@ -33,7 +33,7 @@ class Login extends Form{
                 'type'  => 'password',
             ),
             'options' => array(
-                'label' => 'Password',
+                'label' => 'Lykilorð',
             ),
         ));
 		/*
@@ -54,7 +54,7 @@ class Login extends Form{
             'name' => 'submit',
             'attributes' => array(
                 'type'  => 'submit',
-                'value' => 'Go',
+                'value' => 'Innskrá',
                 'id' => 'submitbutton',
             ),
         ));

@@ -1,0 +1,43 @@
+
+	.page-login{
+		.page-login__service{
+			p{
+				@include margin-trailer(1,$font-size-base);
+			}
+			@include breakpoint($phone){
+				a{
+					display: block;
+					@include margin-trailer(1,$font-size-base);
+				}
+			}
+		}
+		.page-login__manual{
+			border-left: 1px solid $color-gray-light;
+			padding-left: 2em;
+			p{
+				@include margin-trailer(1,$font-size-base);
+			}
+			.form-group{
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+		.layout__section .layout__meta.page-login__manual{
+			padding-left: 2em;
+			/**
+			 * this is a f**king hack 'cause
+			 * .layout.layout--three-columns .layout__section .layout__meta
+			 * always gets priority
+			 */
+		}
+		@include breakpoint($phone){
+			.page-login__manual{
+				border-top: 1px solid $color-gray-light;
+				border-left: none;
+				padding-top: $gutter;
+			}
+			.layout__section .layout__meta.page-login__manual{
+				padding-left: 0;
+			}
+		}
+	}
