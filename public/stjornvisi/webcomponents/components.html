@@ -3,7 +3,7 @@
 -->
 
 <template id="tpl-stjornvisi-controls">
-	<style>
+	<style shim-shadowdom="" shim-shadowdom-css="">
 		:host-context(.inline){
 			position: absolute;
 			top: 0;
@@ -97,13 +97,20 @@
 			// get template in import
 			var template = importDoc.querySelector('#tpl-stjornvisi-controls');
 
-			var t = document.querySelector('#tpl-stjornvisi-controls');
 
 			//BUILD MARKUP
 			//	import template, create shadowDOM and
 			//	append that to the main document
 			var clone = document.importNode(template.content, true);
 			this.root = this.createShadowRoot();
+
+
+			if (Platform.ShadowCSS) {
+				var style = clone.querySelector('style');
+				var cssText = Platform.ShadowCSS.shimCssText( style.textContent, 'stjornvisi-rich');
+				Platform.ShadowCSS.addCssToDocument(cssText);
+			}
+
 			this.root.appendChild(clone);
 
 
@@ -158,7 +165,7 @@
 -->
 
 <template id="tpl-stjornvisi-rich">
-	<style>
+	<style shim-shadowdom="" shim-shadowdom-css="">
 		#preview{
 			position: absolute;
 			top: 0;
@@ -2087,6 +2094,7 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 			//	append that to the main document
 			var clone = document.importNode(template.content, true);
 			this.root = this.createShadowRoot();
+
 			this.root.appendChild(clone);
 			this.preview = this.root.querySelector("#preview");
 			this.help = this.root.querySelector("#help");
@@ -2239,7 +2247,7 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 		 *
 		 *  @param File file
 		 */
-		stjornvisiImgPrototype.upload = function(file){
+		stjornvisiImgPrototype.upload = function(file, done, error){
 
 			//DATA OBJECT
 			//	create file data object to carry
@@ -2282,13 +2290,13 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 			//	on file upload error
 			//@todo
 			xhr.addEventListener('error',function(event){
-
+				error.call(this,event);
 			},false);
 			//ABORT
 			//	on file upload abort
 			//@todo
 			xhr.addEventListener('abort',function(event){
-
+				error.call(this,event);
 			},false);
 			//LOAD
 			//	once the upload is over
@@ -2299,7 +2307,9 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 					this.input.style.backgroundImage = ('url('+media.thumb+')');
 					this.input.style.backgroundSize = 'auto 60px';
 					this.input.value = media.name;
+					done.call(this,event);
 				}else{
+					error.call(this,event);
 					alert(media.message);
 					this.input.value = '';
 				}
@@ -2339,7 +2349,7 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 			this.input.addEventListener("dragenter", function(event){
 				event.stopPropagation();
 				event.preventDefault();
-				this.input.style.backgroundColor = 'pink';
+				this.input.classList.add('enter');
 			}.bind(this), false);
 			/**
 			 *  Drag image over input
@@ -2347,6 +2357,7 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 			this.input.addEventListener("dragover", function(event){
 				event.stopPropagation();
 				event.preventDefault();
+				this.input.classList.add('over');
 			}.bind(this), false);
 			/**
 			 * Drag image out of input
@@ -2354,7 +2365,8 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 			this.input.addEventListener("dragleave", function(event){
 				event.stopPropagation();
 				event.preventDefault();
-				this.textarea.style.backgroundColor = 'white';
+				this.input.classList.remove('enter');
+				this.input.classList.remove('over');
 			}.bind(this), false);
 			/**
 			 * Drop image into input
@@ -2362,7 +2374,18 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 			this.input.addEventListener("drop", function(event){
 				event.stopPropagation();
 				event.preventDefault();
-				this.upload( event.dataTransfer.files[0] );
+				this.input.classList.remove('enter');
+				this.input.classList.remove('over');
+				this.input.setAttribute('readonly','readonly');
+				this.upload(
+						event.dataTransfer.files[0],
+						function(){
+							this.input.removeAttribute('readonly','readonly');
+						}.bind(this),
+						function(){
+							this.input.removeAttribute('readonly','readonly');
+						}.bind(this)
+				);
 			}.bind(this), false);
 
 			/**
@@ -2375,11 +2398,16 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 				fileElement.type = 'file';
 				fileElement.accept = "image/*";
 				fileElement.addEventListener('change',function(event){
-					this.upload( event.target.files[0] );
+					this.upload( event.target.files[0],function(){
+						fileElement.parentNode.removeChild(fileElement);
+					},function(){
+						fileElement.parentNode.removeChild(fileElement);
+					} );
 				}.bind(this),false);
 
 				fileElement.click();
-				this.root.appendChild(fileElement);
+				document.body.appendChild(fileElement);
+				//this.root.appendChild(fileElement);
 
 			}.bind(this),false);
 

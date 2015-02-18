@@ -263,6 +263,7 @@
 	margin-right: - rhythm(1/8,$font-size-base);
 
 	.block-gallery__item{
+		position: relative;
 		float: left;
 		width: 25%;
 		padding: rhythm(1/8,$font-size-base);
@@ -283,6 +284,7 @@
  */
 /*ul*/.block-supplement{
 	& > li{
+		position: relative;
 		@include ellipsis;
 		padding: rhythm(1/4,$font-size-base) 0;
 	}
@@ -352,7 +354,13 @@
 		font-family: $font-family-open;
 		color: $color-green-sea;
 		text-transform: uppercase;
-
+		a{
+			color: $color-green-sea;
+			text-decoration: underline;
+		}
+	}
+	.layout__headline.layout__headline--center{
+		text-align: center;
 	}
 	h1.layout__headline{
 		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
@@ -679,16 +687,36 @@
 	}
 }
 
+
+/**
+ *
+ */
+.block_pagination{
+	@include pie-clearfix;
+	.block_pagination__item{
+		float: left;
+	}
+	.block_pagination__link{
+		display: block;
+		padding: rhythm(1/4,$font-size-base) rhythm(1/2,$font-size-base);
+	}
+	.block_pagination__link:hover,
+	.block_pagination__link--active{
+		background-color: $color-green-sea;
+		color: $color-white;
+	}
+}
+
 // - - - - - [SHAME] - - - - - - - - - - - - - - - - - - - - - -
 
 
-textarea.over{
+textarea.over, input.over{
 	box-shadow: inset 0 10 5px rgba(0,0,0,.5);
 }
-textarea.enter{
+textarea.enter, input.enter{
 	background-color: rgb(240,240,240);
 	border-style: dashed;
 }
-textarea.prossess{
+textarea.prossess, input.prossess{
 	background-color: rgb(220,220,220);
 }

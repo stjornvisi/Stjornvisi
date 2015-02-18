@@ -111,21 +111,32 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 		$this->logger->info( get_class($this) . " " . (count($users)) . " user will get an email" .
 			"in connection with event {$event->subject}:{$event->id}");
 
+
+		$paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
+
 		//VIEW
-		//	create everything that is needed to render the
-		//	HTML of the email
-		$renderer = new PhpRenderer();
-		$resolver = new Resolver\AggregateResolver();
-		$renderer->setResolver($resolver);
-		$map = new Resolver\TemplateMapResolver(array(
-			'layout'      =>__DIR__ . '/../../../view/layout/email.phtml',
+		//	create and configure view
+		$child =new ViewModel(array(
+			'user' => null,
+			'event' => $event,
+			'body' => $paragrapher->__invoke($this->params->data->body)
 		));
-		$stack = new Resolver\TemplatePathStack(array(
-			'script_paths' => array(
-				__DIR__ . '/../../../view/email/',
-			)
+		$child->setTemplate('event');
+
+
+		$layout = new ViewModel();
+		$layout->setTemplate('layout');
+		$layout->addChild($child, 'content');
+
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+			'event' => __DIR__ . '/../../../view/email/event.phtml',
 		));
-		$resolver->attach($map)->attach($stack);
+		$phpRenderer->setResolver($resolver);
 
 
 
@@ -142,16 +153,28 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 			//	send to mail-queue
 			foreach( $users as $user ){
 
-				$model = new ViewModel(array(
-					'user' => $user,
-					'event' => $event,
-					'body' => $this->params->data->body
-				));
-				$model->setTemplate('event');
+				$child->setVariable('user',$user);
+				foreach ($layout as $child) {
+					if ($child->terminate()) {
+						continue;
+					}
+					$child->setOption('has_parent', true);
+					$result  = $phpRenderer->render($child);
+					$child->setOption('has_parent', null);
+					$capture = $child->captureTo();
+					if (!empty($capture)) {
+						if ($child->isAppend()) {
+							$oldResult=$model->{$capture};
+							$layout->setVariable($capture, $oldResult . $result);
+						} else {
+							$layout->setVariable($capture, $result);
+						}
+					}
+				}
 				$result = array(
 					'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 					'subject' => $this->params->data->subject,
-					'body' => $renderer->render($model)
+					'body' => $phpRenderer->render($layout)
 				);
 				$msg = new AMQPMessage( json_encode($result),
 					array('delivery_mode' => 2) # make message persistent

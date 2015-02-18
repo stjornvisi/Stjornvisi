@@ -103,47 +103,61 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 		//	is registering to.
 		$eventObject = $this->event->get( $this->params->data->event_id );
 
-		//VIEW
-		//	create and config template/rendering engine
-		// 	and model and mash it together.
-		$renderer = new PhpRenderer();
-		$resolver = new Resolver\AggregateResolver();
-		$renderer->setResolver($resolver);
-		$map = new Resolver\TemplateMapResolver(array(
-			'layout'      =>__DIR__ . '/../../../view/layout/email.phtml',
-		));
-		$stack = new Resolver\TemplatePathStack(array(
-			'script_paths' => array(
-				__DIR__ . '/../../../view/email/',
-			)
-		));
 
-		$model = new ViewModel(array(
+		//VIEW
+		//	create and configure view
+		$child = new ViewModel(array(
 			'user' => $userObject,
 			'event' => $eventObject
 		));
-		$resolver->attach($map)->attach($stack);
+		$child->setTemplate(($this->params->data->type)?'attend':'unattend');
+
+		$layout = new ViewModel();
+		$layout->setTemplate('layout');
+		$layout->addChild($child, 'content');
+
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+			'attend' => __DIR__ . '/../../../view/email/attending.phtml',
+			'unattend' => __DIR__ . '/../../../view/email/un-attending.phtml',
+		));
+		$phpRenderer->setResolver($resolver);
+		foreach ($layout as $child) {
+			if ($child->terminate()) {
+				continue;
+			}
+			$child->setOption('has_parent', true);
+			$result  = $phpRenderer->render($child);
+			$child->setOption('has_parent', null);
+			$capture = $child->captureTo();
+			if (!empty($capture)) {
+				if ($child->isAppend()) {
+					$oldResult=$model->{$capture};
+					$layout->setVariable($capture, $oldResult . $result);
+				} else {
+					$layout->setVariable($capture, $result);
+				}
+			}
+		}
 
 
 		//ATTEND / UN-ATTEND
 		//	check if the user is registering
 		//	or un-registering and render template to
 		//	accommodate.
-		if($this->params->data->type){
-			$model->setTemplate('attending');
-			$result = array(
-				'recipient' => array('name'=>$userObject->name, 'address'=>$userObject->email),
-				'subject' => "Þú hefur skráð þig á viðburðinn: {$eventObject->subject}",
-				'body' => $renderer->render($model)
-			);
-		}else{
-			$model->setTemplate('un-attending');
-			$result = array(
-				'recipient' => array('name'=>$userObject->name, 'address'=>$userObject->email),
-				'subject' => "Þú hefur afskráð þig á viðburðinn: {$eventObject->subject}",
-				'body' => $renderer->render($model)
-			);
-		}
+
+		$result = array(
+			'recipient' => array('name'=>$userObject->name, 'address'=>$userObject->email),
+			'subject' => ($this->params->data->type)
+					? "Þú hefur skráð þig á viðburðinn: {$eventObject->subject}"
+					: "Þú hefur afskráð þig á viðburðinn: {$eventObject->subject}",
+			'body' => $phpRenderer->render($layout)
+		);
+
 
 		//MAIL
 		//	now we want to send this to the user/quest via e-mail

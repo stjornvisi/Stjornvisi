@@ -7,35 +7,27 @@
 <div class="layout layout--three-columns">
 	<section class="layout__section">
 
-	<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h1>
-	<div class="btn-group">
-		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-			Action <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="<?=$this->url('vidburdir/gallery-create',array('id'=>$this->event->id));?>">Bæta við mynd</a></li>
-		</ul>
-	</div>
-	<ul>
-		<?php foreach($this->gallery as $image):?>
-		<li>
-			<img src="<?=$this->basePath("/images/60/{$image->name}")?>" />
+	<h1 class="layout__headline">
+		Myndir fyrir
+		<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a>
+	</h1>
 
-			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
-					Action <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu" role="menu">
-					<li><a href="<?=$this->url('vidburdir/gallery-update',array('id'=>$image->id))?>">uppfæra</a></li>
-					<li><a href="<?=$this->url('vidburdir/gallery-delete',array('id'=>$image->id))?>">eyða</a></li>
-				</ul>
-			</div>
+	<ul class="block-gallery">
+		<?php foreach($this->gallery as $image):?>
+			<li class="block-gallery__item">
+			<img class="block-gallery__image" src="<?=$this->basePath("/images/100/{$image->name}")?>" />
+
+			<stjonvisi-control class="inline">
+				<a href="<?=$this->url('vidburdir/gallery-update',array('id'=>$image->id))?>">uppfæra</a>
+				<a href="<?=$this->url('vidburdir/gallery-delete',array('id'=>$image->id))?>">eyða</a>
+			</stjonvisi-control>
 		</li>
 		<?php endforeach;?>
+
 	</ul>
 
 	</section>
 	<aside class="layout__aside">
-
+		<a href="<?=$this->url('vidburdir/gallery-create',array('id'=>$this->event->id));?>" class="btn btn-default">Bæta við mynd</a>
 	</aside>
 </div>

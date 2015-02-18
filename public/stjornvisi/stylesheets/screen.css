@@ -682,7 +682,7 @@ select[multiple].input-lg {
 }
 
 /* line 9, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_buttons.scss */
-.btn {
+.btn, .attending {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -703,25 +703,25 @@ select[multiple].input-lg {
   user-select: none;
 }
 /* line 26, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_buttons.scss */
-.btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
+.btn:focus, .attending:focus, .btn.focus, .focus.attending, .btn:active:focus, .attending:active:focus, .btn:active.focus, .attending:active.focus, .btn.active:focus, .active.attending:focus, .btn.active.focus, .active.focus.attending {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
 /* line 32, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_buttons.scss */
-.btn:hover, .btn:focus, .btn.focus {
+.btn:hover, .attending:hover, .btn:focus, .attending:focus, .btn.focus, .focus.attending {
   color: white;
   text-decoration: none;
 }
 /* line 39, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_buttons.scss */
-.btn:active, .btn.active {
+.btn:active, .attending:active, .btn.active, .active.attending {
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 /* line 46, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_buttons.scss */
-.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+.btn.disabled, .disabled.attending, .btn[disabled], [disabled].attending, fieldset[disabled] .btn, fieldset[disabled] .attending {
   cursor: not-allowed;
   pointer-events: none;
   opacity: 0.65;
@@ -1976,11 +1976,12 @@ a {
 }
 /* line 265, ../sass/components/_components.scss */
 .block-gallery .block-gallery__item {
+  position: relative;
   float: left;
   width: 25%;
   padding: 0.1875em;
 }
-/* line 270, ../sass/components/_components.scss */
+/* line 271, ../sass/components/_components.scss */
 .block-gallery .block-gallery__image {
   border: 1px solid lightgray;
   padding: 0.1875em;
@@ -1994,8 +1995,9 @@ a {
  *
  */
 /*ul*/
-/* line 285, ../sass/components/_components.scss */
+/* line 286, ../sass/components/_components.scss */
 .block-supplement > li {
+  position: relative;
   white-space: nowrap;
   overflow: hidden;
   -ms-text-overflow: ellipsis;
@@ -2003,25 +2005,25 @@ a {
   text-overflow: ellipsis;
   padding: 0.375em 0;
 }
-/* line 289, ../sass/components/_components.scss */
+/* line 291, ../sass/components/_components.scss */
 .block-supplement a {
   font-size: 0.75em;
   line-height: 2em;
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
 }
-/* line 295, ../sass/components/_components.scss */
+/* line 297, ../sass/components/_components.scss */
 .block-supplement a:before {
   padding-right: 1em;
   font-family: 'icomoon';
   content: "\e60b";
 }
-/* line 300, ../sass/components/_components.scss */
+/* line 302, ../sass/components/_components.scss */
 .block-supplement a[href$=xls]:before,
 .block-supplement a[href$=xlsx]:before {
   content: "\e60c";
 }
-/* line 304, ../sass/components/_components.scss */
+/* line 306, ../sass/components/_components.scss */
 .block-supplement a[href$=pdf]:before {
   content: "\e60d";
 }
@@ -2035,7 +2037,7 @@ a {
  * ...implemented with a <dl> item
  */
 /*dl*/
-/* line 318, ../sass/components/_components.scss */
+/* line 320, ../sass/components/_components.scss */
 .block-property-value {
   *zoom: 1;
 }
@@ -2045,13 +2047,13 @@ a {
   display: table;
   clear: both;
 }
-/* line 320, ../sass/components/_components.scss */
+/* line 322, ../sass/components/_components.scss */
 .block-property-value dt {
   width: 50%;
   float: left;
   clear: left;
 }
-/* line 325, ../sass/components/_components.scss */
+/* line 327, ../sass/components/_components.scss */
 .block-property-value dd {
   width: 50%;
   float: left;
@@ -2070,7 +2072,7 @@ a {
  *		<aside></aside>
  * </div>
  */
-/* line 344, ../sass/components/_components.scss */
+/* line 346, ../sass/components/_components.scss */
 .layout {
   *zoom: 1;
   padding: 0 60px 60px 60px;
@@ -2091,29 +2093,38 @@ a {
   clear: both;
 }
 @media (max-width: 480px) {
-  /* line 344, ../sass/components/_components.scss */
+  /* line 346, ../sass/components/_components.scss */
   .layout {
     padding: 0 15px;
   }
 }
-/* line 351, ../sass/components/_components.scss */
+/* line 353, ../sass/components/_components.scss */
 .layout .layout__headline {
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
   text-transform: uppercase;
 }
 /* line 357, ../sass/components/_components.scss */
+.layout .layout__headline a {
+  color: #4a85a1;
+  text-decoration: underline;
+}
+/* line 362, ../sass/components/_components.scss */
+.layout .layout__headline.layout__headline--center {
+  text-align: center;
+}
+/* line 365, ../sass/components/_components.scss */
 .layout h1.layout__headline {
   font-size: 0.875em;
   line-height: 1.71429em;
 }
-/* line 360, ../sass/components/_components.scss */
+/* line 368, ../sass/components/_components.scss */
 .layout h2.layout__headline {
   font-size: 0.875em;
   line-height: 1.71429em;
   font-weight: 700;
 }
-/* line 371, ../sass/components/_components.scss */
+/* line 379, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section {
   *zoom: 1;
   float: left;
@@ -2125,22 +2136,22 @@ a {
   display: table;
   clear: both;
 }
-/* line 375, ../sass/components/_components.scss */
+/* line 383, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section .layout__data {
   float: left;
   width: 60%;
 }
-/* line 379, ../sass/components/_components.scss */
+/* line 387, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section .layout__meta {
   float: left;
   width: 40%;
 }
-/* line 384, ../sass/components/_components.scss */
+/* line 392, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__aside {
   float: left;
   width: 20%;
 }
-/* line 395, ../sass/components/_components.scss */
+/* line 403, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section {
   *zoom: 1;
   float: left;
@@ -2152,33 +2163,33 @@ a {
   display: table;
   clear: both;
 }
-/* line 400, ../sass/components/_components.scss */
+/* line 408, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__data {
   float: left;
   width: 50%;
   padding-right: 0.75em;
 }
-/* line 405, ../sass/components/_components.scss */
+/* line 413, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta {
   float: left;
   width: 50%;
   padding-right: 0.75em;
   padding-left: 0.75em;
 }
-/* line 411, ../sass/components/_components.scss */
+/* line 419, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta > div:first-child {
   margin-top: 0;
 }
-/* line 414, ../sass/components/_components.scss */
+/* line 422, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta > div {
   margin-top: 30px;
 }
-/* line 419, ../sass/components/_components.scss */
+/* line 427, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout_article {
   padding-right: 0.75em;
 }
 @media (max-width: 768px) {
-  /* line 424, ../sass/components/_components.scss */
+  /* line 432, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section .layout__data, .layout.layout--three-columns .layout__section .layout__meta {
     float: none;
     width: auto;
@@ -2186,36 +2197,36 @@ a {
     padding-right: 0;
   }
 }
-/* line 432, ../sass/components/_components.scss */
+/* line 440, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__aside {
   float: left;
   width: 20%;
   padding-left: 0.75em;
 }
 @media (max-width: 768px) {
-  /* line 439, ../sass/components/_components.scss */
+  /* line 447, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section {
     width: 70%;
   }
-  /* line 442, ../sass/components/_components.scss */
+  /* line 450, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__aside {
     width: 30%;
   }
 }
 @media (max-width: 480px) {
-  /* line 447, ../sass/components/_components.scss */
+  /* line 455, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section {
     width: auto;
     float: none;
   }
-  /* line 451, ../sass/components/_components.scss */
+  /* line 459, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__aside {
     width: auto;
     float: none;
     padding-left: 0;
   }
 }
-/* line 463, ../sass/components/_components.scss */
+/* line 471, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__section {
   *zoom: 1;
   float: right;
@@ -2227,42 +2238,42 @@ a {
   display: table;
   clear: both;
 }
-/* line 468, ../sass/components/_components.scss */
+/* line 476, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__aside {
   float: left;
   width: 25%;
   padding-right: 60px;
 }
-/* line 473, ../sass/components/_components.scss */
+/* line 481, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__data {
   float: left;
   width: 50%;
   padding-right: 30px;
 }
-/* line 478, ../sass/components/_components.scss */
+/* line 486, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__meta {
   float: left;
   width: 50%;
   padding-left: 30px;
 }
 @media (max-width: 480px) {
-  /* line 485, ../sass/components/_components.scss */
+  /* line 493, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__section {
     float: none;
     width: auto;
   }
-  /* line 489, ../sass/components/_components.scss */
+  /* line 497, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__aside {
     float: none;
     width: auto;
   }
-  /* line 493, ../sass/components/_components.scss */
+  /* line 501, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__data {
     float: none;
     width: 100%;
     padding-right: 0;
   }
-  /* line 498, ../sass/components/_components.scss */
+  /* line 506, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__meta {
     float: none;
     width: 100%;
@@ -2278,30 +2289,30 @@ a {
  * needs to be displayed.
  */
 /*table*/
-/* line 516, ../sass/components/_components.scss */
+/* line 524, ../sass/components/_components.scss */
 .block-table td, .block-table td {
   vertical-align: top;
 }
-/* line 519, ../sass/components/_components.scss */
+/* line 527, ../sass/components/_components.scss */
 .block-table td.block-table__numeric {
   text-align: right;
   padding-left: 1.5em;
 }
-/* line 524, ../sass/components/_components.scss */
+/* line 532, ../sass/components/_components.scss */
 .block-table thead td {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
 }
-/* line 534, ../sass/components/_components.scss */
+/* line 542, ../sass/components/_components.scss */
 .block-table.block-table--data caption {
   padding: 1.5em 0;
   text-align: center;
 }
-/* line 538, ../sass/components/_components.scss */
+/* line 546, ../sass/components/_components.scss */
 .block-table.block-table--data thead {
   border-bottom: 2px solid lightgray;
 }
-/* line 542, ../sass/components/_components.scss */
+/* line 550, ../sass/components/_components.scss */
 .block-table.block-table--data tbody tr {
   border-bottom: 1px solid lightgray;
 }
@@ -2314,7 +2325,7 @@ a {
  * we need to add space below (actually on top) to
  * make some air between the label and table.
  */
-/* line 557, ../sass/components/_components.scss */
+/* line 565, ../sass/components/_components.scss */
 .layout__headline + .block-table {
   margin-top: 1.5em;
 }
@@ -2325,11 +2336,11 @@ a {
  * calendar month.
  *
  */
-/* line 567, ../sass/components/_components.scss */
+/* line 575, ../sass/components/_components.scss */
 .block-calendar {
   position: relative;
 }
-/* line 569, ../sass/components/_components.scss */
+/* line 577, ../sass/components/_components.scss */
 .block-calendar td {
   position: relative;
   width: 14.28571%;
@@ -2337,30 +2348,30 @@ a {
   padding: 0.5em;
   overflow: hidden;
 }
-/* line 576, ../sass/components/_components.scss */
+/* line 584, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header {
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
 }
-/* line 580, ../sass/components/_components.scss */
+/* line 588, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header tr {
   border-bottom: 2px solid lightgray;
 }
-/* line 589, ../sass/components/_components.scss */
+/* line 597, ../sass/components/_components.scss */
 .block-calendar .block-calendar__body tr td {
   border: 1px solid lightgray;
 }
-/* line 599, ../sass/components/_components.scss */
+/* line 607, ../sass/components/_components.scss */
 .block-calendar .block-calendar__caption {
   position: relative;
 }
-/* line 603, ../sass/components/_components.scss */
+/* line 611, ../sass/components/_components.scss */
 .block-calendar .block-calendar__pagination {
   position: absolute;
   top: -15px;
   right: 15px;
 }
-/* line 609, ../sass/components/_components.scss */
+/* line 617, ../sass/components/_components.scss */
 .block-calendar .block-calendar__headline {
   font-size: 1.5em;
   line-height: 1em;
@@ -2370,7 +2381,7 @@ a {
   text-align: center;
   text-transform: capitalize;
 }
-/* line 618, ../sass/components/_components.scss */
+/* line 626, ../sass/components/_components.scss */
 .block-calendar .block-calendar__date-label {
   position: absolute;
   top: 15px;
@@ -2382,7 +2393,7 @@ a {
   color: #ecf2f5;
   z-index: -1;
 }
-/* line 630, ../sass/components/_components.scss */
+/* line 638, ../sass/components/_components.scss */
 .block-calendar .block-calendar__subject-list > li > a {
   display: block;
   font-family: "Open Sans", sans-serif;
@@ -2390,25 +2401,25 @@ a {
   font-size: 0.75em;
   line-height: 1.5em;
 }
-/* line 640, ../sass/components/_components.scss */
+/* line 648, ../sass/components/_components.scss */
 .block-calendar .block-calendar__group-list > li {
   font-family: "Open Sans", sans-serif;
   font-size: 0.75em;
   line-height: 1.5em;
   color: #4a85a1;
 }
-/* line 644, ../sass/components/_components.scss */
+/* line 652, ../sass/components/_components.scss */
 .block-calendar .block-calendar__group-list > li > a {
   color: #4a85a1;
 }
 
-/* line 650, ../sass/components/_components.scss */
+/* line 658, ../sass/components/_components.scss */
 .block-calendar__pagination {
   border: 1px solid lightgray;
   display: inline-block;
   margin-bottom: 30px;
 }
-/* line 655, ../sass/components/_components.scss */
+/* line 663, ../sass/components/_components.scss */
 .block-calendar__pagination a {
   font-family: 'icomoon';
   speak: none;
@@ -2421,35 +2432,64 @@ a {
   padding: 1.5em;
   font-size: 0;
 }
-/* line 668, ../sass/components/_components.scss */
+/* line 676, ../sass/components/_components.scss */
 .block-calendar__pagination a:before {
   font-size: 16px;
   display: inline-block;
   padding: 0.75em 1.5em;
 }
-/* line 673, ../sass/components/_components.scss */
+/* line 681, ../sass/components/_components.scss */
 .block-calendar__pagination .prev:before {
   content: "\f0a4";
 }
-/* line 676, ../sass/components/_components.scss */
+/* line 684, ../sass/components/_components.scss */
 .block-calendar__pagination .next:before {
   content: "\e60e";
   border-left: 1px solid lightgray;
 }
 
-/* line 685, ../sass/components/_components.scss */
-textarea.over {
+/**
+ *
+ */
+/* line 694, ../sass/components/_components.scss */
+.block_pagination {
+  *zoom: 1;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.block_pagination:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 696, ../sass/components/_components.scss */
+.block_pagination .block_pagination__item {
+  float: left;
+}
+/* line 699, ../sass/components/_components.scss */
+.block_pagination .block_pagination__link {
+  display: block;
+  padding: 0.375em 0.75em;
+}
+/* line 703, ../sass/components/_components.scss */
+.block_pagination .block_pagination__link:hover,
+.block_pagination .block_pagination__link--active {
+  background-color: #4a85a1;
+  color: white;
+}
+
+/* line 713, ../sass/components/_components.scss */
+textarea.over, input.over {
   box-shadow: inset 0 10 5px rgba(0, 0, 0, 0.5);
 }
 
-/* line 688, ../sass/components/_components.scss */
-textarea.enter {
+/* line 716, ../sass/components/_components.scss */
+textarea.enter, input.enter {
   background-color: #f0f0f0;
   border-style: dashed;
 }
 
-/* line 692, ../sass/components/_components.scss */
-textarea.prossess {
+/* line 720, ../sass/components/_components.scss */
+textarea.prossess, input.prossess {
   background-color: gainsboro;
 }
 
@@ -2542,13 +2582,14 @@ stjonvisi-control {
 }
 
 /* line 3, ../sass/components/_form.scss */
+input.avatar,
 input[name=avatar] {
   text-indent: 70px;
   background-repeat: no-repeat;
 }
 
-/* line 8, ../sass/components/_form.scss */
-.btn {
+/* line 9, ../sass/components/_form.scss */
+.btn, .attending {
   font-size: 0.75em;
   line-height: 2em;
   font-family: "Open Sans", sans-serif;
@@ -2557,6 +2598,11 @@ input[name=avatar] {
   text-shadow: 0 2px 1px rgba(0, 0, 0, 0.27);
   border-radius: 0;
   padding: 0.5em 2em;
+}
+
+/* line 22, ../sass/components/_form.scss */
+.form-group .checkbox label {
+  display: block;
 }
 
 /*
@@ -2572,18 +2618,12 @@ input[name=avatar] {
 	text-transform: uppercase;
 }
 */
-/* line 36, ../sass/components/_form.scss */
-.attending {
-  padding: 1em 1.5em 0.75em 1.5em;
-  font-family: "Open Sans", sans-serif;
-  text-transform: uppercase;
-}
-/* line 40, ../sass/components/_form.scss */
+/* line 48, ../sass/components/_form.scss */
 .attending.yes {
   color: white;
   background-color: #4ca14a;
 }
-/* line 44, ../sass/components/_form.scss */
+/* line 52, ../sass/components/_form.scss */
 .attending.no {
   color: white;
   background-color: #ff4800;
@@ -2639,7 +2679,7 @@ input[name=avatar] {
   transition: all 1s cubic-bezier(0.39, 1, 0.91, 1);
 }
 /* line 44, ../sass/pages/_landing.scss */
-.landing-page .landing-page__hero .btn {
+.landing-page .landing-page__hero .btn, .landing-page .landing-page__hero .attending {
   font-family: "Open Sans", sans-serif;
 }
 @media (max-width: 480px) {
@@ -2659,7 +2699,7 @@ input[name=avatar] {
     line-height: 1.25em;
   }
   /* line 58, ../sass/pages/_landing.scss */
-  .landing-page .landing-page__hero .btn {
+  .landing-page .landing-page__hero .btn, .landing-page .landing-page__hero .attending {
     margin-bottom: 1.5em;
   }
 }
@@ -3122,9 +3162,6 @@ input[name=avatar] {
 /* line 12, ../sass/pages/_event.scss */
 .page-event form.page-event__register {
   *zoom: 1;
-  border-top: 1px solid lightgray;
-  padding-top: 1.5em;
-  padding-bottom: 1.5em;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
 .page-event form.page-event__register:after {
@@ -3132,13 +3169,13 @@ input[name=avatar] {
   display: table;
   clear: both;
 }
-/* line 17, ../sass/pages/_event.scss */
+/* line 14, ../sass/pages/_event.scss */
 .page-event form.page-event__register p {
   font-size: 0.875em;
   line-height: 1.71429em;
   font-family: "Open Sans", sans-serif;
 }
-/* line 21, ../sass/pages/_event.scss */
+/* line 18, ../sass/pages/_event.scss */
 .page-event form.page-event__register label {
   font-size: 0.875em;
   line-height: 1.71429em;
@@ -3147,7 +3184,7 @@ input[name=avatar] {
   text-transform: uppercase;
   padding-bottom: 0.75em;
 }
-/* line 29, ../sass/pages/_event.scss */
+/* line 26, ../sass/pages/_event.scss */
 .page-event form.page-event__register .form-group {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
@@ -3156,20 +3193,53 @@ input[name=avatar] {
   float: left;
 }
 @media (max-width: 480px) {
-  /* line 37, ../sass/pages/_event.scss */
+  /* line 34, ../sass/pages/_event.scss */
   .page-event form.page-event__register label {
     padding-bottom: 0.375em;
   }
-  /* line 40, ../sass/pages/_event.scss */
+  /* line 37, ../sass/pages/_event.scss */
   .page-event form.page-event__register .form-group {
     margin-top: 0.75em;
     margin-bottom: 0.75em;
     width: 100%;
   }
 }
-/* line 49, ../sass/pages/_event.scss */
+/* line 46, ../sass/pages/_event.scss */
 .page-event .block-element .block-element__body .block-element__image {
   max-width: 100%;
+}
+/* line 50, ../sass/pages/_event.scss */
+.page-event .page-event-element__attenders {
+  border-top: 1px solid lightgray;
+  padding: 30px 0;
+}
+/* line 54, ../sass/pages/_event.scss */
+.page-event .page-event-element__attenders.page-event-element__attenders--stop h3 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  color: #4a85a1;
+}
+/* line 61, ../sass/pages/_event.scss */
+.page-event .page-event-element__attenders.page-event-element__attenders--warn h3 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+}
+/* line 70, ../sass/pages/_event.scss */
+.page-event .page-event__attendees {
+  width: 100%;
+  font-size: 0.75em;
+  line-height: 2em;
+  font-family: "Open Sans", sans-serif;
+  color: #4a85a1;
+}
+/* line 76, ../sass/pages/_event.scss */
+.page-event .page-event__attendees tbody td {
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  padding: 0 0.25em 0 0;
 }
 
 /* line 5, ../sass/pages/_user.scss */

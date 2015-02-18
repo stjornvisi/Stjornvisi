@@ -1,6 +1,8 @@
 <div class="layout layout--three-columns">
 	<section class="layout__section">
-	<h1>Uppfæra ítarefni fyrir : <?=$this->event->subject;?></h1>
+		<h1 class="layout__headline layout__headline--center">
+			Ítarefni fyrir :<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject;?></a>
+		</h1>
 		<?php
 		$this->form->setAttribute('class','form-horizontal');
 		?>
@@ -20,7 +22,9 @@
 		</div>
 
 		<div class="form-group">
-			<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+			<?=$this->formElement(
+				$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Uppfæra')
+			);?>
 		</div>
 
 		<?= $this->form()->closeTag() ?>

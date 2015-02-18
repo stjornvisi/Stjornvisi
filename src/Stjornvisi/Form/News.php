@@ -51,7 +51,7 @@ class News extends Form{
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
-                'value' => 'Submit',
+                //'value' => 'Submit',
             ),
             'options' => array(
                 'label' => 'Submit',

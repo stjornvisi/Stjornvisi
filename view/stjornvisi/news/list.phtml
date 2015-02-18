@@ -41,10 +41,10 @@
 			<?php endforeach;?>
 		</ul>
 
-		<ul>
+		<ul class="block_pagination">
 			<?php foreach(range(0,$this->pages) as $item):?>
-			<li class="<?=($item == $this->no)?'active':''?>">
-				<a href="<?=$this->url('frettir/list',array('no'=>$item))?>"><?=$item+1?></a>
+			<li class="block_pagination__item">
+				<a href="<?=$this->url('frettir/list',array('no'=>$item+1))?>" class="block_pagination__link <?=($item == $this->no)?'block_pagination__link--active':''?>"><?=$item+1?></a>
 			</li>
 			<?php endforeach;?>
 		</ul>

@@ -5,35 +5,25 @@ $this->headTitle('Viðburður');
 ?>
 <div class="layout layout--three-columns">
 	<section class="layout__section">
-		<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h1>
-		<div class="btn-group">
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-				Action <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="<?=$this->url('vidburdir/resource-create',array('id'=>$this->event->id));?>">Bæta við ítarefni</a></li>
-			</ul>
-		</div>
-		<ul>
+		<h1 class="layout__headline">
+			Ítarefni fyrir
+			<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a>
+		</h1>
+		<ul class="block-supplement">
 			<?php foreach($this->resources as $resource):?>
 			<li>
-				<a href="<?=$this->basePath("/images/original/{$resource->name}")?>" ><?=$resource->name?></a>
+				<a href="<?=$this->basePath("/images/original/{$resource->name}")?>" target="_blank" ><?=$resource->name?></a>
 
-				<div class="btn-group">
-					<button type="button" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown">
-						Action <span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="<?=$this->url('vidburdir/resource-update',array('id'=>$resource->id))?>">uppfæra</a></li>
-						<li><a href="<?=$this->url('vidburdir/resource-delete',array('id'=>$resource->id))?>">eyða</a></li>
-					</ul>
-				</div>
+				<stjonvisi-control class="inline">
+					<a href="<?=$this->url('vidburdir/resource-update',array('id'=>$resource->id))?>">uppfæra</a>
+					<a href="<?=$this->url('vidburdir/resource-delete',array('id'=>$resource->id))?>">eyða</a>
+				</stjonvisi-control>
 			</li>
 			<?php endforeach;?>
 		</ul>
 	</section>
 	<aside class="layout__aside">
-
+		<a href="<?=$this->url('vidburdir/resource-create',array('id'=>$this->event->id));?>" class="btn btn-default">Bæta við ítarefni</a>
 	</aside>
 </div>
 

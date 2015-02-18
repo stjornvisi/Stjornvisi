@@ -11,9 +11,6 @@
 
 		form.page-event__register{
 			@include pie-clearfix;
-			border-top: 1px solid $color-gray-light;
-			@include padding-leader(1,$font-size-base);
-			@include padding-trailer(1,$font-size-base);
 			p{
 				@include adjust-font-size-to($font-size-sub,1,$font-size-base);
 				font-family: $font-family-open;
@@ -48,5 +45,39 @@
 
 		.block-element .block-element__body .block-element__image{
 			max-width: 100%;
+		}
+
+		.page-event-element__attenders{
+			border-top: 1px solid $color-gray-light;
+			padding: $gutter 0;
+			&.page-event-element__attenders--stop{
+				h3{
+					font-family: $font-family-open;
+					font-weight: $font-weight-bold;
+					color: $color-green-sea;
+				}
+			}
+			&.page-event-element__attenders--warn{
+				h3{
+					font-family: $font-family-open;
+					font-weight: $font-weight-bold;
+				}
+
+			}
+			&.page-event-element__attenders--default{}
+		}
+
+		.page-event__attendees{
+			width: 100%;
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			font-family: $font-family-open;
+			color: $color-green-sea;
+			tbody{
+				td{
+					@include ellipsis;
+					padding: 0 rhythm(1/8,$font-size-small) 0 0;
+				}
+			}
+
 		}
 	}

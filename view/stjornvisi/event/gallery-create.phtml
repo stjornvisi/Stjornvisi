@@ -9,7 +9,10 @@
 
 <div class="layout layout--three-columns">
 	<section class="layout__section">
-		<h1>Setja inn mynd fyrir : <?=$this->event->subject;?></h1>
+		<h1 class="layout__headline">
+			Setja inn mynd fyrir
+			<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject;?></a>
+		</h1>
 
 		<?=$this->form()->openTag($this->form);?>
 
@@ -27,7 +30,9 @@
 		</div>
 
 		<div class="form-group">
-			<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+			<?=$this->formElement(
+				$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Stofna')
+			);?>
 		</div>
 
 		<?= $this->form()->closeTag() ?>

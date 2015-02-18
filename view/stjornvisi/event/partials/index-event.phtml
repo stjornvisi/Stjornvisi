@@ -63,15 +63,16 @@
 
 
 		<?php if( $this->event->event_date < new DateTime()) : ?> <!-- ended -->
-			<div class="block-element__attenders">
-				viðburður liðinn
+			<div class="page-event-element__attenders page-event-element__attenders--stop">
+				<h3>Viðburður liðinn.</h3>
 			</div>
-		<?php elseif( $this->event->capacity !== null && $this->event->capacity < count($this->event->attenders) ):?>
-			<div class="block-element__attenders">
-				Viðburður er fullur
+		<?php elseif( $this->event->capacity !== null && $this->event->capacity <= count($this->event->attenders) ):?>
+			<div class="page-event-element__attenders page-event-element__attenders--warn">
+				<p>Lokað hefur verið fyrir skráningu.</p>
+				<h3>Viðburður er fullur.</h3>
 			</div>
 		<?php else:?>
-			<div class="block-element__attenders">
+			<div class="page-event-element__attenders page-event-element__attenders--default">
 				<?php if($this->logged_in): ?>
 					<?php if($this->event->attending === false):?>
 						<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
@@ -163,10 +164,9 @@
 		<?php if($this->access->is_admin || $this->access->type >= 1):?>
 			<div>
 				<h2 class="layout__headline">Þátttakendur (<?=count($this->attendees)?>)</h2>
-				<table class="block-table">
+				<table class="block-table page-event__attendees">
 					<thead>
 					<tr>
-						<td>#</td>
 						<td>Nafn</td>
 						<!--td>Titill</td-->
 						<td>Skráning</td>
@@ -174,13 +174,12 @@
 					</thead>
 					<tfoot>
 					<tr>
-						<td colspan="4">&nbsp;</td>
+						<td colspan="3">&nbsp;</td>
 					</tr>
 					</tfoot>
 					<tbody>
 					<?php foreach($this->attendees as $attendee):?>
 						<tr>
-							<td><?=@++$i?></td>
 							<td>
 								<?php if($attendee->id):?>
 									<a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>

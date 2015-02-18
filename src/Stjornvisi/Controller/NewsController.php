@@ -18,6 +18,7 @@ use Stjornvisi\Form\News as NewsForm;
 
 class NewsController extends AbstractActionController{
 
+	const NEWS_COUNT_PER_PAGE = 30;
 	/**
 	 * Display one news entry
 	 */
@@ -63,19 +64,21 @@ class NewsController extends AbstractActionController{
 	 * Display a list of news entries
 	 */
 	public function listAction(){
-		$perPage = 30;
 		$sm = $this->getServiceLocator();
 		$newsService = $sm->get('Stjornvisi\Service\News');
+		$page = ($this->params()->fromRoute('no',0) == 0)
+			? 0
+			: $this->params()->fromRoute('no',0) -1;
 		$news = $newsService->fetchAll(
-			$this->params()->fromRoute('no',0)*$perPage,
-			$perPage
+			$page*NewsController::NEWS_COUNT_PER_PAGE,
+			NewsController::NEWS_COUNT_PER_PAGE
 		);
 		$count = $newsService->count();
 		return new ViewModel(array(
 			'news' => $news,
 			'count' => $newsService->count(),
-			'pages' => (int)$count/30,
-			'no' => $this->params()->fromRoute('no',0)
+			'pages' => (int)$count/NewsController::NEWS_COUNT_PER_PAGE,
+			'no' => $page
 		));
 	}
 
@@ -90,66 +93,90 @@ class NewsController extends AbstractActionController{
 
         $authService = new AuthenticationService();
 
+		//ACCESS
+		//	let's check access
+		$access = $userService->getTypeByGroup(
+			($authService->hasIdentity())?$authService->getIdentity()->id:null,
+			$this->params()->fromRoute('id',null)
+		);
 
 
-        if( ( $group = $groupService->get($this->params()->fromRoute('id')) ) != false ){
+		//NO GROUP-ID AND NO ADMIN
+		//	the group-id param is not set and the user
+		//	is not admin.... lets just stop right here
+		if( $this->params()->fromRoute('id',null) == null && !$access->is_admin ){
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
+		}
 
-            $access = $userService->getTypeByGroup(
-			    ($authService->hasIdentity())?$authService->getIdentity()->id:null,
-			    $group->id
+		//NO GROUP
+		//	so let's mock one
+		if( $this->params()->fromRoute('id',null) == null ){
+			$group = (object)array(
+				'id' => null
 			);
+		//GROUP
+		//	let's get the group
+		}else{
+			$group = $groupService->get($this->params()->fromRoute('id'));
+			//GROUP NOT FOUND
+			//	if the group was not found: then 404
+			if( $group == false ){
+				return $this->notFoundAction();
+			}
+		}
 
-            //ACCESS GRANTED
-            //  access granted
-            if($access->is_admin || $access->type >= 1){
+		//ACCESS GRANTED
+		//  access granted
+		if($access->is_admin || $access->type >= 1){
 
-                $form = new NewsForm();
-				$form->setAttribute('action', $this->url()->fromRoute('frettir/create',array('id'=>$group->id)) );
+			$form = new NewsForm();
+			$form->setAttribute('action', $this->url()->fromRoute('frettir/create',array('id'=>$group->id)) );
 
-                //POST
-                //  http post request
-                if( $this->request->isPost() ){
+			//POST
+			//  http post request
+			if( $this->request->isPost() ){
 
-                    $form->setData( $this->request->getPost() );
-                    //VALID
-                    //  form is valid
-                    if( $form->isValid() ){
-                        $data = $form->getData();
-                        unset($data['submit']);
-                        $data['user_id'] = $authService->getIdentity()->id;
-                        $data['group_id'] = $group->id;
-                        $newsId = $newsService->create($data);
-                        return $this->redirect()->toRoute('frettir/index',array('id'=>$newsId));
-                    //INVALID
-                    //  form data is invalid
-                    }else{
-                        return new ViewModel(array(
-                            'form' => $form
-                        ));
-                    }
-                //QUERY
-                //  http get request
-                }else{
-					$view = new ViewModel(array(
-						'form' => $form
+				$form->setData( $this->request->getPost() );
+				//VALID
+				//  form is valid
+				if( $form->isValid() ){
+					$data = $form->getData();
+					unset($data['submit']);
+					$data['user_id'] = $authService->getIdentity()->id;
+					$data['group_id'] = $group->id;
+					$newsId = $newsService->create($data);
+					return $this->redirect()->toRoute('frettir/index',array('id'=>$newsId));
+					//INVALID
+					//  form data is invalid
+				}else{
+					return new ViewModel(array(
+						'form' => $form,
+						'group' => $group
 					));
+				}
+				//QUERY
+				//  http get request
+			}else{
+				return new ViewModel(array(
+					'form' => $form,
+					'group' => $group
+				));
 
-					return $view;
-                }
+			}
 
 
-            //ACCESS DENIED
-            //  access denied
-            }else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
-            }
+			//ACCESS DENIED
+			//  access denied
+		}else{
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
+		}
 
-        }else{
-			return $this->notFoundAction();
-        }
 	}
 
 	/**
@@ -160,6 +187,7 @@ class NewsController extends AbstractActionController{
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $newsService = $sm->get('Stjornvisi\Service\News');
+		$groupService = $sm->get('Stjornvisi\Service\Group');
 
         $authService = new AuthenticationService();
 
@@ -197,6 +225,7 @@ class NewsController extends AbstractActionController{
                         return new ViewModel(array(
                             'news' => $news,
                             'form' => $form ,
+							'group' => $groupService->get($news->group_id),
                         ));
                     }
                 //QUERY
@@ -206,6 +235,7 @@ class NewsController extends AbstractActionController{
 					$view = new ViewModel(array(
 						'news' => $news,
 						'form' => $form ,
+						'group' => $groupService->get($news->group_id),
 					));
 
 					$view->setTerminal( $this->request->isXmlHttpRequest() );

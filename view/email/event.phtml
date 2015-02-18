@@ -7,16 +7,6 @@
  */
 ?>
 
-<h3><?=$this->event->event_date->format('d. m Y');?> | <?=$this->event->event_time->format('h:i');?></h3>
-<h1><?=$this->event->subject;?></h1>
-<ul>
-<?php foreach($this->event->groups as $groups):?>
-	<li><?=$groups->name?></li>
-<?php endforeach;?>
-</ul>
-
-<?=$this->body;?>
-
-<p><?=$this->event->location;?></p>
-<p><?=$this->event->address;?></p>
-
+<?=print_r($this->user,true);?>
+<?=print_r($this->event,true);?>
+<?=print_r($this->body,true);?>
