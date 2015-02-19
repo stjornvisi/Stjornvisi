@@ -11,6 +11,7 @@ namespace Stjornvisi\Controller;
 */
 
 use \DateTime;
+use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -452,38 +453,26 @@ class EventController extends AbstractActionController{
 			//  user has accss
 			if( $access->is_admin || $access->type >= 1 ){
 
+
+
 				$csv = new Csv();
-				$csv->setHeader((object)array('Nafn','Titill','Netfang','Dags.'));
+				$csv->setHeader(array('Nafn','Titill','Netfang','Dags.'));
 				$csv->setName('maertingarlisti'.date('Y-m-d-H:i').'.csv');
 				$resultset = $userService->getByEvent($event->id);
 				foreach($resultset as $item){
-					$csv->add((object)array(
+					$csv->add(array(
 						'name' => $item->name,
 						'title' => $item->title,
 						'email' => $item->email,
 						'register_time' => $item->register_time->format('Y-m-d H:i'),
 					));
 				}
-				$view = new ViewModel();
-				$view->setTemplate('layout/csv')
-					->setVariable('result_set', $csv)
-					->setTerminal(true);
-				$output = $this->getServiceLocator()
-					->get('viewrenderer')
-					->render($view);
-				$response = $this->getResponse();
-				$headers = $response->getHeaders();
-				$headers->addHeaderLine('Content-Type', 'text/csv')
-					->addHeaderLine(
-						'Content-Disposition',
-						sprintf("attachment; filename=\"%s\"",$csv->getName())
-					)
-					->addHeaderLine('Accept-Ranges', 'bytes')
-					->addHeaderLine('Content-Length', strlen($output));
 
-				$response->setContent($output);
+				$model = new CsvModel();
+				$model->setData( $csv );
 
-				return $response;
+				return $model;
+
 
 			}else{
 				$this->getResponse()->setStatusCode(401);
@@ -494,10 +483,6 @@ class EventController extends AbstractActionController{
 		}else{
 			return $this->notFoundAction();
 		}
-
-
-
-
 
 
 		/*

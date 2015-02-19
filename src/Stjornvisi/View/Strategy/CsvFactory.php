@@ -1,18 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: einarvalur
- * Date: 2/23/14
- * Time: 1:41 PM
+ * User: einar
+ * Date: 15/02/15
+ * Time: 15:02
  */
 
 namespace Stjornvisi\View\Strategy;
+
+use Stjornvisi\View\Renderer\CsvRenderer;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class CsvFactory  implements FactoryInterface {
-    public function createService(ServiceLocatorInterface $serviceLocator){
-        $viewRenderer = $serviceLocator->get('ViewRenderer');
-        return new CsvStrategy($viewRenderer);
-    }
-} 
+class CsvFactory implements FactoryInterface
+{
+	public function createService(ServiceLocatorInterface $serviceLocator){
+
+		return new CsvStrategy(new CsvRenderer());
+	}
+}

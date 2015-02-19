@@ -387,6 +387,7 @@ class Module{
 				'formelement' => 'Stjornvisi\Form\View\Helper\FormElement',
 				'richelement'     => 'Stjornvisi\Form\View\Helper\RichElement',
 				'imgelement'     => 'Stjornvisi\Form\View\Helper\ImgElement',
+				'fileelement'     => 'Stjornvisi\Form\View\Helper\FileElement',
 			),
 			'factories' => array(
 				'subMenu' => function($sm){

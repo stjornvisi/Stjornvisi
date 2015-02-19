@@ -20,7 +20,7 @@ class Resource extends Form {
 
 		$this->add(array(
 			'name' => 'name',
-			'type' => 'Stjornvisi\Form\Element\Img',
+			'type' => 'Stjornvisi\Form\Element\File',
 			'attributes' => array(
 				'placeholder' => 'Nafn...',
 				'required' => 'required',

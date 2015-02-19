@@ -4,24 +4,47 @@
         <meta charset="utf-8">
         <?php echo $this->headTitle('Stjórnvísi ')->setSeparator(' / ')->setAutoEscape(false) ?>
 
+		<!-- Le Meta -->
         <?php echo $this->headMeta()
 			->appendName('viewport', 'width=device-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
-		<script src="<?=$this->basePath();?>/vendor/webcomponentsjs/webcomponents.min.js"></script>
-		<script src="<?=$this->basePath();?>/vendor/html5shiv/dist/html5shiv.js"></script>
-		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-		<link rel="import" href="<?=$this->basePath();?>/webcomponents/components.html">
-		<!--link rel="import" href="<?=$this->basePath();?>/webcomponents/elements.html" /-->
+
+		<!-- Le Scripts -->
+		<?=$this->headScript()
+			->appendFile(
+				$this->basePath('/vendor/webcomponentsjs/webcomponents.min.js'),
+				'text/javascript'
+			)->appendFile(
+				$this->basePath('/vendor/jquery/dist/jquery.min.js'),
+				'text/javascript'
+			)->appendFile(
+				$this->basePath('/vendor/fluidbox/jquery.fluidbox.min.js'),
+				'text/javascript'
+			)->appendFile(
+				$this->basePath('http://maps.googleapis.com/maps/api/js?sensor=false'),
+				'text/javascript'
+			)->appendFile(
+				$this->basePath('/vendor/html5shiv/dist/html5shiv.js'),
+				'text/javascript',
+				array('conditional' => 'IE 9')
+			)->appendFile(
+				$this->basePath('/javascripts/polyfills.js'),
+				'text/javascript',
+				array('conditional' => 'IE 9')
+			)
+		;?>
+
         <!-- Le styles -->
         <?php echo $this->headLink(array(
 			'rel' => 'icon',
 			'type' => 'image/png',
 			'href' => $this->basePath() . '/styles/img/favicon.png')
 			)
-			->appendStylesheet( $this->basePath() . '/stylesheets//screen.css' )
-			->appendStylesheet( $this->basePath() . '/stylesheets//ie.css','screen','IE 9')
+			->appendStylesheet( $this->basePath() . '/stylesheets/screen.css' )
+			->appendStylesheet( $this->basePath() . '/stylesheets/ie.css','screen','IE 9')
 		; ?>
+		<link rel="import" href="<?=$this->basePath('/webcomponents/components.html');?>">
     </head>
 	<body class="state-login">
 		<nav role="navigation">
@@ -41,7 +64,7 @@
 
 		<main role="main">
 			<header class="main__header">
-				<h1 class="main__brand">Stjórnvísi</h1>
+				<h1 class="main__brand"><a href="/">Stjórnvísi</a></h1>
 				<nav class="main__menu">
 					<ul class="main__menu-items">
 						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
@@ -62,9 +85,9 @@
 		<footer role="footer">
 			<div class="footer-wrapper">
 				<div class="footer-wrapper__inner">
-					<div class="footer-wrapper__item">
-						<h1>Stjórnvísi</h1>
-						<p>Innovation house</p>
+					<div class="footer-wrapper__item footer-wrapper__address">
+						<h1 class="footer-wrapper__brand">Stjórnvísi ehf</h1>
+						<p>Innovation House</p>
 						<p>Eiðistorgi 13-17 170 Seltjarnarnes</p>
 						<p>Kt: 650686-1609</p>
 						<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
@@ -79,79 +102,25 @@
 						<li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki innan Stjórnvísi</a></li>
 					</ul>
 					<ul class="footer-wrapper__item">
+						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
 						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
 						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
 						<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
-						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
 					</ul>
 				</div>
 			</div>
 		</footer>
 		<?php echo $this->inlineScript() ?>
-		<!-- Scripts -->
-		<?php echo $this->headScript()
-			//->appendFile($this->basePath() . '/vendor/html5shiv-dist/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
-			->appendFile($this->basePath() . '/javascripts/common.js')
-		; ?>
 	<script>
-		var active = undefined;
-		document.querySelector('.categories__groups').addEventListener('click',function(event){
-			event.preventDefault();
-			document.querySelector('ul.navigation').style.marginLeft = 0;
-			if(active == undefined){
-				event.target.classList.add('active');
-				document.body.classList.add('state-open');
-				active = event.target;
-			}
-			else if( active == event.target ){
-				event.target.classList.remove('active');
-				document.body.classList.remove('state-open');
-				active = undefined;
-			}else{
-				active.classList.remove('active');
-				active = event.target;
-				active.classList.add('active');
-			}
-
-
-		},false);
-		document.querySelector('.categories__users').addEventListener('click',function(event){
-			event.preventDefault();
-			document.querySelector('ul.navigation').style.marginLeft = '-100%';
-			if(active == undefined){
-				event.target.classList.add('active');
-				document.body.classList.add('state-open');
-				active = event.target;
-			}
-			else if( active == event.target ){
-				event.target.classList.remove('active');
-				document.body.classList.remove('state-open');
-				active = undefined;
-			}else{
-				active.classList.remove('active');
-				active = event.target;
-				active.classList.add('active');
-			}
-		},false);
-		document.querySelector('.categories__config').addEventListener('click',function(event){
-			event.preventDefault();
-			document.querySelector('ul.navigation').style.marginLeft = '-200%';
-			if(active == undefined){
-				event.target.classList.add('active');
-				document.body.classList.add('state-open');
-				active = event.target;
-			}
-			else if( active == event.target ){
-				event.target.classList.remove('active');
-				document.body.classList.remove('state-open');
-				active = undefined;
-			}else{
-				active.classList.remove('active');
-				active = event.target;
-				active.classList.add('active');
-			}
-		},false);
+		$(function () {
+			$('a[data-fluidbox]').fluidbox();
+		});
 
 	</script>
+		<?=$this->headScript()->deleteContainer();?>
+		<?=$this->headScript()->appendFile(
+			$this->basePath('/javascripts/common.js'),
+			'text/javascript'
+		);?>
 	</body>
 </html>

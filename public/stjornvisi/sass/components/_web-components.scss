@@ -1,3 +1,47 @@
+
+
+	@mixin stjonvisi-control-style{
+		text-align: right;
+		position: relative;
+		.stjonvisi-control__edit{
+			background-color: $color-red;
+			display: inline-block;
+			border-radius: 50%;
+			height: 25px;
+			width: 25px;
+			padding: $gutter/2;
+			svg g{ fill: $color-white; }
+		}
+
+		::content > *{
+			display: block;
+		}
+		.stjonvisi-control__wrapper > *{
+			display: block;
+		}
+		.stjonvisi-control__wrapper{
+			position: absolute;
+			background-color: $color-white;
+			z-index: 2;
+			box-shadow: 0 0 2px rgba(0,0,0,.27);
+			display: none;
+		}
+
+
+
+	}
+
+
+
+stjonvisi-control::shadow{
+	@include stjonvisi-control-style;
+}
 stjonvisi-control{
 	display: block;
+	@include stjonvisi-control-style;
+}
+stjonvisi-control.active{
+	.stjonvisi-control__wrapper{
+		display: block;
+	}
 }

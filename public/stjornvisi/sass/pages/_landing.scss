@@ -87,6 +87,7 @@
 		 * some cta buttons
 		 */
 		.landing-page__panel{
+			@include pie-clearfix;
 			background-color: $color-blue-light;
 
 			&.landing-page__panel--light{
@@ -233,7 +234,7 @@
 		}
 
 		.landing-page__cta{
-			border-top: 1px solid $color-gray-light;
+
 			@include pie-clearfix;
 			margin: $gutter*2 (- $gutter) 0 (- $gutter);
 
@@ -250,7 +251,9 @@
 					@include margin-leader(1,$font-size-big);
 				}
 			}
+
 		}
+
 		@include breakpoint($phone){
 			.landing-page__cta{
 				margin-left: 0;

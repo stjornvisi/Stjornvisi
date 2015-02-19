@@ -250,6 +250,10 @@
 	margin-top: rhythm(1,$font-size-base);
 }
 
+.layout__headline + .block-property-value{
+	margin-top: rhythm(1,$font-size-base);
+}
+
 
 /**
  * BLOCK-GALLERY
@@ -587,6 +591,9 @@
 		color: $color-green-sea;
 		tr{
 			border-bottom: 2px solid $color-gray-light;
+			td{
+				text-align: center;
+			}
 		}
 
 	}
@@ -596,6 +603,8 @@
 
 			td{
 				border: 1px solid $color-gray-light;
+				padding-top: rhythm(1,$font-size-base);
+				padding-bottom: rhythm(1,$font-size-base);
 				a{
 
 				}
@@ -621,6 +630,7 @@
 		color: $color-green-sea;
 		text-align: center;
 		text-transform: capitalize;
+
 	}
 
 	.block-calendar__date-label{
@@ -635,6 +645,7 @@
 	}
 	.block-calendar__subject-list{
 		> li{
+			margin-top: rhythm(1,$font-size-base);
 			> a {
 
 				display: block;
@@ -642,6 +653,9 @@
 				font-weight: $font-weight-bold;
 				@include adjust-font-size-to($font-size-small,.75,$font-size-base);
 			}
+		}
+		> li:first-child{
+			margin-top: 0;
 		}
 	}
 	.block-calendar__group-list{
@@ -689,7 +703,12 @@
 
 
 /**
+ * BLOCK-PAGINATION
  *
+ * This is just the classic pagination:
+ * a list of <a> elements displayed in a
+ * horizontal line with the active element
+ * emphasized
  */
 .block_pagination{
 	@include pie-clearfix;

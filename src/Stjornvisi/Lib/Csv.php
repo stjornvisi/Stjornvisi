@@ -22,7 +22,7 @@ class Csv implements \Iterator, \Countable {
 	private $counter = 0;
 
 	/**
-	 * @var object
+	 * @var array
 	 */
 	private $header = null;
 
@@ -34,11 +34,10 @@ class Csv implements \Iterator, \Countable {
 	/**
 	 * Set header record.
 	 *
-	 * @param object $header
-	 *
+	 * @param array $header
 	 * @return Csv
 	 */
-	public function setHeader( $header ){
+	public function setHeader( array $header ){
 		$this->header = $header;
 		return $this;
 	}
@@ -49,7 +48,7 @@ class Csv implements \Iterator, \Countable {
 	 * @return string
 	 */
 	public function getHeader(){
-		return $this->formatRow($this->header);
+		return $this->header;
 	}
 
 	/**
@@ -75,7 +74,7 @@ class Csv implements \Iterator, \Countable {
 	/**
 	 * Add record.
 	 *
-	 * @param object $data
+	 * @param array $data
 	 *
 	 * @return Csv
 	 */
@@ -84,18 +83,6 @@ class Csv implements \Iterator, \Countable {
 		return $this;
 	}
 
-	/**
-	 * Comma separate items.
-	 *
-	 * @param object $item
-	 *
-	 * @return string
-	 */
-	private function formatRow($item){
-		return implode(',',array_map(function($i){
-			return '"'.addslashes($i).'"';
-		},(array)$item));
-	}
 
 	/**
 	 * (PHP 5 &gt;= 5.0.0)<br/>
@@ -105,7 +92,7 @@ class Csv implements \Iterator, \Countable {
 	 * @return mixed Can return any type.
 	 */
 	public function current(){
-		return $this->formatRow($this->records[$this->counter]);
+		return $this->records[$this->counter];
 	}
 
 	/**

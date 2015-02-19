@@ -1,7 +1,6 @@
 
 
-$menu-size: 350px;
-$select-size: 80px;
+
 
 
 	/**
@@ -17,7 +16,7 @@ $select-size: 80px;
 		@include breakpoint($phone){
 			margin-bottom: $gutter*10;
 		}
-
+		box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5) ;
 	}
 
 	div.layout:before{
@@ -54,6 +53,11 @@ $select-size: 80px;
 			width: 205px;
 			height: $select-size;
 			font: 0/0 a;
+			a{
+				display: block;
+				width: 205px;
+				height: $select-size;
+			}
 		}
 		.main__menu{
 			display: table-cell;
@@ -110,26 +114,47 @@ $select-size: 80px;
 			position: absolute;
 			width: 100%;
 			bottom: 0;
-			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			@include adjust-font-size-to($font-size-sub,1,$font-size-base);
 			font-family: $font-family-open;
-			color: $color-yellow;
+			//color: $color-yellow;
+			color: $color-white;
 			a{
 				color: $color-white;
 			}
 			.footer-wrapper__inner{
 				@include pie-clearfix;
 				max-width: 960px;
-				margin: auto;
-				padding: $gutter;
+				margin: 0 $gutter*2;
+				padding: $gutter*2;
 			}
 			.footer-wrapper__item{
 				float: left;
 				width: 33.33%;
 			}
+			.footer-wrapper__address{
+				font-family: $font-family-bitter;
+				@include adjust-font-size-to($font-size-base,1,$font-size-sub);
+				a{
+					color: $color-orange;
+				}
+			}
+			.footer-wrapper__brand{
+				font-family: $font-family-open;
+				text-transform: uppercase;
+			}
+
 			@include breakpoint($phone){
+				.footer-wrapper__inner{
+					margin: 0;
+					padding: $gutter/2;
+				}
+				.footer-wrapper__address{
+
+				}
 				.footer-wrapper__item{
 					float: left;
 					width: 50%;
+					@include adjust-font-size-to($font-size-small,1,$font-size-sub);
 				}
 				.footer-wrapper__item:last-child{
 					clear: both;
@@ -140,6 +165,7 @@ $select-size: 80px;
 					li{
 						float: left;
 						padding: rhythm(1/2,$font-size-small);
+						width: 25%;
 					}
 				}
 			}

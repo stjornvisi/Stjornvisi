@@ -116,7 +116,7 @@
 				<ul class="block-gallery">
 					<?php foreach($this->event->gallery as $img):?>
 						<li class="block-gallery__item">
-							<a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-lightbox="gallery">
+							<a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-fluidbox="">
 								<img  class="block-gallery__image" src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
 							</a>
 						</li>

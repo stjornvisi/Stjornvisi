@@ -10,8 +10,10 @@ namespace Stjornvisi\Form\View\Helper;
 
 use Stjornvisi\Form\Element\Rich;
 use Stjornvisi\Form\Element\Img;
+use Stjornvisi\Form\Element\File;
 use Zend\Form\View\Helper\FormElement as BaseFormElement;
 use Zend\Form\ElementInterface;
+
 
 class FormElement extends BaseFormElement
 {
@@ -28,6 +30,9 @@ class FormElement extends BaseFormElement
 			return $helper($element);
 		}else if($element instanceof Img){
 			$helper = $renderer->plugin('imgelement');
+			return $helper($element);
+		}else if($element instanceof File){
+			$helper = $renderer->plugin('fileelement');
 			return $helper($element);
 		}
 

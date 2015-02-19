@@ -1502,6 +1502,7 @@ return array(
         ),
 		'factories' => array(
 			'IcalStrategy' => 'Stjornvisi\View\Strategy\IcalFactory',
+			'CsvStrategy' => 'Stjornvisi\View\Strategy\CsvFactory',
 		),
     ),
     'translator' => array(
@@ -1550,7 +1551,8 @@ return array(
         'strategies' => array(
             'ViewFeedStrategy',
 			'ViewJsonStrategy',
-			'IcalStrategy'
+			'IcalStrategy',
+			'CsvStrategy'
         ),
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',

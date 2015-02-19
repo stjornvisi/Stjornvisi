@@ -1,33 +1,52 @@
 <?php echo $this->doctype(); ?>
 <html lang="is">
-	<head>
-		<meta charset="utf-8">
-		<?php echo $this->headTitle('Stjórnvísi '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+<head>
+	<meta charset="utf-8">
+	<?= $this->headTitle('Stjórnvísi ')->setSeparator(' / ')->setAutoEscape(false) ?>
 
-		<?php echo $this->headMeta()
-			->appendName('viewport', 'width=device-width, initial-scale=1.0')
-			->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-		?>
+	<!-- Le Meta -->
+	<?= $this->headMeta()
+		->appendName('viewport', 'width=device-width, initial-scale=1.0')
+		->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+	?>
 
-
-		<script src="<?=$this->basePath();?>/vendor/html5shiv/dist/html5shiv.js"></script>
-		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-		<!-- Le styles -->
-		<?php echo $this->headLink(array(
-				'rel' => 'icon',
-				'type' => 'image/png',
-				'href' => $this->basePath() . '/styles/img/favicon.png')
+	<!-- Le Scripts -->
+	<?= $this->headScript()
+		->appendFile(
+			$this->basePath('/vendor/jquery/dist/jquery.min.js'),
+			'text/javascript'
+		)->appendFile(
+			$this->basePath('/vendor/fluidbox/jquery.fluidbox.min.js'),
+			'text/javascript'
+		)->appendFile(
+			$this->basePath('http://maps.googleapis.com/maps/api/js?sensor=false'),
+			'text/javascript'
+		)->appendFile(
+			$this->basePath('/vendor/html5shiv/dist/html5shiv.js'),
+			'text/javascript',
+			array('conditional' => 'IE 9')
+		)->appendFile(
+			$this->basePath('/javascripts/polyfills.js'),
+			'text/javascript',
+			array('conditional' => 'IE 9')
 		)
-			->appendStylesheet( $this->basePath() . '/stylesheets//screen.css' )
-			->appendStylesheet( $this->basePath() . '/stylesheets//ie.css','screen','IE 9')
-		; ?>
+	;?>
 
-		<script src="<?=$this->basePath();?>/vendor/Stickyfill/src/stickyfill.js"></script>
-	</head>
+	<!-- Le styles -->
+	<?= $this->headLink(array(
+			'rel' => 'icon',
+			'type' => 'image/png',
+			'href' => $this->basePath() . '/styles/img/favicon.png')
+	)
+		->appendStylesheet( $this->basePath() . '/stylesheets/screen.css' )
+		->appendStylesheet( $this->basePath() . '/stylesheets/ie.css','screen','IE 9')
+	; ?>
+
+</head>
 	<body class="state-logout">
 		<main role="main">
 			<header class="main__header">
-				<h1 class="main__brand">Stjórnvísi</h1>
+				<h1 class="main__brand"><a href="/">Stjórnvísi</a></h1>
 				<nav class="main__menu">
 					<ul class="main__menu-items">
 						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
@@ -43,16 +62,16 @@
 				</form>
 			</header>
 
-			<?php echo $this->content; ?>
+			<?= $this->content; ?>
 
 
 		</main>
 		<footer role="footer">
 			<div class="footer-wrapper">
 				<div class="footer-wrapper__inner">
-					<div class="footer-wrapper__item">
-						<h1>Stjórnvísi</h1>
-						<p>Innovation house</p>
+					<div class="footer-wrapper__item footer-wrapper__address">
+						<h1 class="footer-wrapper__brand">Stjórnvísi ehf</h1>
+						<p>Innovation House</p>
 						<p>Eiðistorgi 13-17 170 Seltjarnarnes</p>
 						<p>Kt: 650686-1609</p>
 						<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
@@ -67,15 +86,19 @@
 						<li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki innan Stjórnvísi</a></li>
 					</ul>
 					<ul class="footer-wrapper__item">
+						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
 						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
 						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
 						<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
-						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
 					</ul>
 				</div>
 			</div>
 		</footer>
-		<?php echo $this->inlineScript() ?>
-		<script src="<?=$this->basePath();?>/javascripts/polyfills.js"></script>
+		<?=$this->headScript()->deleteContainer();?>
+		<?=$this->headScript()->appendFile(
+			$this->basePath('/javascripts/common.js'),
+			'text/javascript'
+		);?>
+		<?= $this->inlineScript() ?>
 	</body>
 </html>
