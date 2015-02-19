@@ -9,8 +9,8 @@
 	$this->headMeta()->setProperty('og:description', mb_substr($this->event->body,0,200));
 	$this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->url('vidburdir/index',array('id'=>$this->event->id)));
 	$this->headMeta()->setProperty('og:image', ($this->event->avatar)
-		? $this->basePath("/images/original/{$this->event->avatar}")
-		: $this->basePath("/stylesheets/images/simple-logo.jpg")
+		? 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/images/original/{$this->event->avatar}")
+		: 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/stylesheets/images/simple-logo.jpg")
 	);
 ?>
 	<div class="layout__data">
