@@ -54,6 +54,9 @@ class Attacher {
 			@$domDocument->loadHTML( '<?xml encoding="utf-8" ?>' . $this->textBody );
 			$images = $domDocument->getElementsByTagName('img');
 
+
+			$parts = array();
+
 			//LOOP IMAGES
 			//	then for every image we find in body text, we extract
 			//	the src, check it that is a real file and if so, convert
@@ -82,12 +85,15 @@ class Attacher {
 					$fileContent = fopen(getcwd() . '/public' . $realName, 'r');
 					$attachment = new Part($fileContent);
 					$attachment->type = $mime;
+					$attachment->id = $cleanName;
 					$attachment->filename = $cleanName;
-					$attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
+					//$attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
+					$attachment->disposition = Mime::DISPOSITION_INLINE;
 					// Setting the encoding is recommended for binary data
 					$attachment->encoding = Mime::ENCODING_BASE64;
 
-					$mimeMessage->addPart( $attachment );
+					//$mimeMessage->addPart( $attachment );
+					$parts[] = $attachment;
 				}
 			}
 
@@ -104,11 +110,12 @@ class Attacher {
 					$domDocument->saveHTML()
 				)
 			));
-			$text->type = Mime::TYPE_TEXT;
+			$text->type = Mime::TYPE_HTML;
 			$text->charset = 'utf-8';
-			$mimeMessage->addPart( $text );
+			//$mimeMessage->addPart( $text );
 
-
+			$parts = array_merge( array($text),$parts );
+			$mimeMessage->setParts($parts);
 
 			$this->message->setBody( $mimeMessage );
 		}

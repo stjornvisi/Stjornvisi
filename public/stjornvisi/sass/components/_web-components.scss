@@ -1,5 +1,33 @@
 
+stjonvisi-control{
+	display: block;
+	position: relative;
+	z-index: 1;
+}
+stjonvisi-control::shadow{
+	.stjonvisi-control__edit{
+		display: inline-block;
+		width: 24px;
+		height: 24px;
+		background-color: $color-red;
+		padding: $gutter/3;
+		border-radius: 50%;
+		text-align: right;
+		svg path{ fill: $color-white; }
+	}
+	.stjonvisi-control__wrapper{
+		background-color: $color-white;
+		position: absolute;
+		box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
+	}
+}
+stjonvisi-control::content{
+	> * {
+		display: block;
+	}
+}
 
+/*
 	@mixin stjonvisi-control-style{
 		text-align: right;
 		position: relative;
@@ -45,3 +73,4 @@ stjonvisi-control.active{
 		display: block;
 	}
 }
+*/

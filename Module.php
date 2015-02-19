@@ -305,7 +305,7 @@ class Module{
 				'MailOptions' => function($sm){
 
 
-
+					/*
 					return new SmtpOptions(array(
 							'name'              => 'localhost.localdomain',
 							'host'              => 'mail.optusnet.com.au',
@@ -315,26 +315,28 @@ class Module{
 							//	'password' => 'pass',
 							//),
 						));
-
-						/*
-					return new FileOptions(array(
-							'path'              => './data/mail/',
-							'callback'  => function (FileTransport $transport) {
-									return 'Message_' . microtime(true) . '_' . mt_rand() . '.txt';
-								},
-						));
 					*/
+
+
+					return new FileOptions(array(
+						'path'      => './data/',
+						'callback'  => function (FileTransport $transport) {
+								return 'Message_' . microtime(true) . '.eml';
+							},
+					));
+
 				},
 				'MailTransport' => function($sm){
+					/*
 					$transport = new SmtpTransport();
 					$transport->setOptions($sm->get('MailOptions'));
 					return $transport;
+					*/
 
-					/*
 					$transport = new FileTransport();
 					$transport->setOptions($sm->get('MailOptions'));
 					return $transport;
-					*/
+
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
 					$config = $sm->get('config');

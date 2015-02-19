@@ -2583,82 +2583,86 @@ textarea.prossess, input.prossess {
   background-color: gainsboro;
 }
 
-/* line 36, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow {
-  text-align: right;
-  position: relative;
-}
-/* line 6, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__edit {
-  background-color: #ff4800;
-  display: inline-block;
-  border-radius: 50%;
-  height: 25px;
-  width: 25px;
-  padding: 15px;
-}
-/* line 13, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__edit svg g {
-  fill: white;
-}
-/* line 16, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow ::content > * {
-  display: block;
-}
-/* line 19, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__wrapper > * {
-  display: block;
-}
-/* line 22, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__wrapper {
-  position: absolute;
-  background-color: white;
-  z-index: 2;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.27);
-  display: none;
-}
-
-/* line 39, ../sass/components/_web-components.scss */
+/* line 2, ../sass/components/_web-components.scss */
 stjonvisi-control {
   display: block;
-  text-align: right;
   position: relative;
+  z-index: 1;
 }
-/* line 6, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__edit {
-  background-color: #ff4800;
+
+/* line 8, ../sass/components/_web-components.scss */
+stjonvisi-control::shadow .stjonvisi-control__edit {
   display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: #ff4800;
+  padding: 10px;
   border-radius: 50%;
-  height: 25px;
-  width: 25px;
-  padding: 15px;
-}
-/* line 13, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__edit svg g {
-  fill: white;
+  text-align: right;
 }
 /* line 16, ../sass/components/_web-components.scss */
-stjonvisi-control ::content > * {
-  display: block;
+stjonvisi-control::shadow .stjonvisi-control__edit svg path {
+  fill: white;
 }
-/* line 19, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper > * {
-  display: block;
-}
-/* line 22, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper {
-  position: absolute;
+/* line 18, ../sass/components/_web-components.scss */
+stjonvisi-control::shadow .stjonvisi-control__wrapper {
   background-color: white;
-  z-index: 2;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.27);
-  display: none;
+  position: absolute;
+  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
 }
 
-/* line 44, ../sass/components/_web-components.scss */
-stjonvisi-control.active .stjonvisi-control__wrapper {
+/* line 25, ../sass/components/_web-components.scss */
+stjonvisi-control::content > * {
   display: block;
 }
 
+/*
+	@mixin stjonvisi-control-style{
+		text-align: right;
+		position: relative;
+		.stjonvisi-control__edit{
+			background-color: $color-red;
+			display: inline-block;
+			border-radius: 50%;
+			height: 25px;
+			width: 25px;
+			padding: $gutter/2;
+			svg g{ fill: $color-white; }
+		}
+
+		::content > *{
+			display: block;
+		}
+		.stjonvisi-control__wrapper > *{
+			display: block;
+		}
+		.stjonvisi-control__wrapper{
+			position: absolute;
+			background-color: $color-white;
+			z-index: 2;
+			box-shadow: 0 0 2px rgba(0,0,0,.27);
+			display: none;
+		}
+
+
+
+	}
+
+
+
+stjonvisi-control::shadow{
+	@include stjonvisi-control-style;
+}
+stjonvisi-control{
+	display: block;
+	@include stjonvisi-control-style;
+}
+stjonvisi-control.active{
+	.stjonvisi-control__wrapper{
+		display: block;
+	}
+}
+*/
 /* line 2, ../sass/components/_company.scss */
 .company-list {
   *zoom: 1;
