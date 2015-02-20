@@ -13,10 +13,11 @@
 <div class="layout">
 	<section class="layout__section company-list">
 		<h1>Fyrirtæki (<?=count($this->companies);?>)</h1>
+		<stjornvisi-search>
 		<?php foreach($stack as $chunk):?>
 		<ul class="block-list">
 			<?php foreach($chunk as $company):?>
-				<li class="company-block">
+				<li class="company-block" data-search="<?=$company->name?>">
 					<?php if($access->is_admin):?>
 						<h1 class="company-block__header"><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$company->id))?>"><?=$company->name?></a></h1>
 					<?php else:?>
@@ -29,6 +30,7 @@
 			<?php endforeach;?>
 		</ul>
 		<?php endforeach;?>
+		</stjornvisi-search>
 
 	</section>
 	<aside class="layout__aside">

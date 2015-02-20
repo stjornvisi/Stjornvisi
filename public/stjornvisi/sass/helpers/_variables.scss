@@ -32,7 +32,7 @@
 
 
 //- - - - - - [ COLOR ] - - - - - - - - - - - - - - - - - - -
-	$color-black:	rgb(40,40,40);
+	$color-black:			rgb(40,40,40);
 	$color-gray-dark:	rgb(85,85,85);
 	$color-gray-light:	rgb(211,211,211);
 	$color-green-sea:	rgb(74,133,161);
@@ -44,38 +44,43 @@
 	$color-red:			rgb(255,72,0);
 	$color-orange: 		rgb(227, 151, 35);
 	$color-yellow: 		rgb(196, 199, 77);
+	$color-facebook:	rgb(59,89,152); //http://www.color-hex.com/color-palette/185
 
 
 
-//.btn-default {
+//.btn-default
 	$btn-default-color 	: $color-white;
 	$btn-default-bg 	: shade($color-green-sea,10%);
 	$btn-default-border : shade($color-green-sea,10%);
 
-//.btn-primary {
+//.btn-primary
 	$btn-primary-color 	: $color-white;
 	$btn-primary-bg 	: shade($color-green-sea,10%);
 	$btn-primary-border : shade($color-green-sea,10%);
 
 
-//.btn-success { // Success appears as green
+//.btn-success
 	$btn-success-color 	: $color-white;
 	$btn-success-bg		: shade($color-green,10%);
 	$btn-success-border	: shade($color-green,10%);
 
-
-//.btn-info { // Info appears as blue-green
+//.btn-info
 	$btn-info-color 	: $color-white;
 	$btn-info-bg		: shade($color-blue,10%);
 	$btn-info-border	: shade($color-blue,10%);
 
 
-//.btn-warning { // Warning appears as orange
+//.btn-warning
 	$btn-warning-color	: $color-white;
 	$btn-warning-bg		: shade($color-orange,10%);
 	$btn-warning-border	: shade($color-orange,10%);
 
-//.btn-danger { // Danger and error appear as red
+//.btn-danger
 	$btn-danger-color 	: $color-white;
 	$btn-danger-bg		: shade($color-red,10%);
 	$btn-danger-border	: shade($color-red,10%);
+
+//.btn-danger
+	$btn-facebook-color 	: $color-white;
+	$btn-facebook-bg		: shade($color-facebook,10%);
+	$btn-facebook-border	: shade($color-facebook,10%);

@@ -9,6 +9,7 @@
 namespace Stjornvisi\Event;
 
 
+use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\News;
 use Zend\EventManager\AbstractListenerAggregate;
@@ -120,6 +121,33 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 						$recipient,
 						'[Activity]:Frétt eytt',
 						"<p>Frétt <strong>{$data['title']}</strong> eytt</p>"
+					);
+					break;
+				default:
+					break;
+			}
+		}else if( $target instanceof Company ){
+			$data = $params['data'];
+			switch( $method ){
+				case 'create':
+					$this->send(
+						$recipient,
+						'[Activity]:Fyrirtæki stofnuð',
+						"<p>Fyrirtæki <strong>{$data['name']}</strong> stofnuð <a href=\"http://stjornvisi.is/fyrirtaeki/{$data['id']}\">http://stjornvisi.is/fyrirtaeki/{$data['id']}</a></p>"
+					);
+					break;
+				case 'update':
+					$this->send(
+						$recipient,
+						'[Activity]:Fyrirtæki uppfært',
+						"<p>Fyrirtæki <strong>{$data['name']}</strong> uppfært <a href=\"http://stjornvisi.is/fyrirtaeki/{$data['id']}\">http://stjornvisi.is/fyrirtaeki/{$data['id']}</p>"
+					);
+					break;
+				case 'delete':
+					$this->send(
+						$recipient,
+						'[Activity]:Fyrirtæki eytt',
+						"<p>Fyrirtæki <strong>{$data['name']}</strong> eytt</p>"
 					);
 					break;
 				default:

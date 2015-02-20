@@ -283,8 +283,11 @@ class Company extends AbstractService {
             $updateString = $this->updateString('Company',$data, "id={$id}");
             $statement = $this->pdo->prepare($updateString);
             $statement->execute($data);
-            $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			$data['id'] = $id;
+			$this->getEventManager()->trigger('update', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
             $this->getEventManager()->trigger('index', $this, array(
 				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
@@ -318,9 +321,11 @@ class Company extends AbstractService {
             $createStatement->execute($data);
 
             $id = (int)$this->pdo->lastInsertId();
-
-            $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$data['id'] = $id;
+            $this->getEventManager()->trigger('create', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
             $this->getEventManager()->trigger('index', $this, array(
 				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
@@ -381,26 +386,34 @@ class Company extends AbstractService {
      * @throws Exception
      */
     public function delete( $id ){
-        try{
-            $statement = $this->pdo->prepare("DELETE FROM Company WHERE id = :id");
-            $statement->execute(array(
-                'id' => $id
-            ));
-            $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
-            $this->getEventManager()->trigger('index', $this, array(
-				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
-                'id' => $id,
-				'name' => Company::NAME,
-            ));
-            return $statement->rowCount();
-        }catch (PDOException $e){
-            $this->getEventManager()->trigger('error', $this, array(
-                'exception' => $e->getTraceAsString(),
-                'sql' => array(
-                    isset($statement)?$statement->queryString:null,
-                )
-            ));
-            throw new Exception("Cant delete company. company[{$id}]",0,$e);
-        }
+		if( ($company=$this->get($id)) != false ){
+			try{
+				$statement = $this->pdo->prepare("DELETE FROM Company WHERE id = :id");
+				$statement->execute(array(
+					'id' => $id
+				));
+				$this->getEventManager()->trigger('delete', $this, array(
+					0 => __FUNCTION__,
+					'data' => (array)$company
+				));
+				$this->getEventManager()->trigger('index', $this, array(
+					0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+					'id' => $id,
+					'name' => Company::NAME,
+				));
+				return $statement->rowCount();
+			}catch (PDOException $e){
+				$this->getEventManager()->trigger('error', $this, array(
+					'exception' => $e->getTraceAsString(),
+					'sql' => array(
+						isset($statement)?$statement->queryString:null,
+					)
+				));
+				throw new Exception("Cant delete company. company[{$id}]",0,$e);
+			}
+		}else{
+			return 0;
+		}
+
     }
 }

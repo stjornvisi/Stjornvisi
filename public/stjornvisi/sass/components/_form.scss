@@ -16,6 +16,12 @@
 		padding: rhythm(1/4,$font-size-small) rhythm(1,$font-size-small);
 	}
 
+
+	.btn-facebook {
+		@include button-variant($btn-facebook-color, $btn-facebook-bg, $btn-facebook-border);
+	}
+
+
 	.form-group{
 		input[type=checkbox]{}
 		.checkbox{
