@@ -52,7 +52,7 @@ class GroupController extends AbstractActionController{
             for($i=0;$i<count($yearRange)-1;$i++){
                 $yearRangeArray[] = array_slice($yearRange,$i,2);
             }
-
+			$yearRangeArray = array_reverse($yearRangeArray);
             $from = null;
             $to = null;
             //CLIENT DEFINED RANGE

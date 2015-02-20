@@ -13,6 +13,7 @@ use Imagine;
 use \PDO;
 
 //use Stjornvisi\Event\SearchListenerAggregate;
+use Stjornvisi\Event\ActivityListener;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
@@ -160,7 +161,10 @@ class Module{
                     $logger = $sm->get('Logger');
                     $manager = new EventManager();
 					$manager->attach( new ServiceEventListener($logger) );
-					$manager->attach( new ServiceIndexListener($logger) );
+					//$manager->attach( new ServiceIndexListener($logger) );
+					$activityListener = new ActivityListener($logger);
+					$activityListener->setQueueConnectionFactory($sm->get('Stjornvisi\Lib\QueueConnectionFactory'));
+					$manager->attach( $activityListener );
                     return $manager;
                 },
                 'CsvStrategy' => 'Stjornvisi\View\Strategy\CsvFactory',

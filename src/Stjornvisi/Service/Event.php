@@ -301,8 +301,11 @@ class Event extends AbstractService {
                     'group_id' => $group
                 ));
             }
-            $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			$data['id'] = $id;
+            $this->getEventManager()->trigger('update', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
             $this->getEventManager()->trigger('index', $this, array(
 				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
@@ -330,31 +333,39 @@ class Event extends AbstractService {
      * @throws Exception
      */
     public function delete( $id ){
-        try{
-            $statement = $this->pdo->prepare("
+
+		if( ( $event = $this->get( $id ) )!= false ){
+			try{
+				$statement = $this->pdo->prepare("
                 DELETE FROM `Event` WHERE id = :id
             ");
-            $statement->execute(array(
-                'id' => $id
-            ));
-            $this->getEventManager()->trigger('delete', $this, array(
-                __FUNCTION__
-            ));
-            $this->getEventManager()->trigger('index', $this, array(
-				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
-                'id' => $id,
-				'name' => Event::NAME,
-            ));
-            return (int)$statement->rowCount();
-        }catch (PDOException $e){
-            $this->getEventManager()->trigger('error', $this, array(
-                'exception' => $e->getTraceAsString(),
-                array(
-                    isset($statement)?$statement->queryString:null,
-                )
-            ));
-            throw new Exception("Cant delete event. event:[{$id}]",0,$e);
-        }
+				$statement->execute(array(
+					'id' => $id
+				));
+				$this->getEventManager()->trigger('delete', $this, array(
+					0 => __FUNCTION__,
+					'data' => (array)$event
+				));
+				$this->getEventManager()->trigger('index', $this, array(
+					0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+					'id' => $id,
+					'name' => Event::NAME,
+				));
+				return (int)$statement->rowCount();
+			}catch (PDOException $e){
+				$this->getEventManager()->trigger('error', $this, array(
+					'exception' => $e->getTraceAsString(),
+					array(
+						isset($statement)?$statement->queryString:null,
+					)
+				));
+				throw new Exception("Cant delete event. event:[{$id}]",0,$e);
+			}
+		}else{
+			return 0;
+		}
+
+
     }
 
     /**
@@ -400,9 +411,12 @@ class Event extends AbstractService {
                     'group_id' => $group
                 ));
             }
-
-            $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$data['id'] = $id;
+            $this->getEventManager()->trigger('create', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
+
             $this->getEventManager()->trigger('index', $this, array(
 				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,

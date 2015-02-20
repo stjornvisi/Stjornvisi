@@ -384,8 +384,11 @@ class News extends AbstractService {
             $statement = $this->pdo->prepare($insertString);
             $statement->execute($data);
             $id = (int)$this->pdo->lastInsertId();
-            $this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			$data['id'] = $id;
+			$this->getEventManager()->trigger('create', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
             $this->getEventManager()->trigger('index', $this, array(
 				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
@@ -418,10 +421,13 @@ class News extends AbstractService {
             $updateString = $this->updateString('News',$data, "id={$id}");
             $statement = $this->pdo->prepare($updateString);
             $statement->execute($data);
-            $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			$data['id'] = $id;
 			$data['created_date'] = new DateTime($data['created_date']);
 			$data['modified_date'] = new DateTime($data['modified_date']);
+			$this->getEventManager()->trigger('update', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
             $this->getEventManager()->trigger('index', $this, array(
 				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
                 'id' => $id,
@@ -448,28 +454,36 @@ class News extends AbstractService {
      * @throws Exception
      */
     public function delete($id){
-        try{
-            $statement = $this->pdo->prepare('
+		if( ( $news = $this->get( $id ) ) != false ){
+			try{
+				$statement = $this->pdo->prepare('
                 DELETE FROM `News`
                 WHERE id = :id');
-            $statement->execute(array(
-                'id' => $id
-            ));
-            $this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
-            $this->getEventManager()->trigger('index', $this, array(
-				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
-                'id' => $id,
-				'name' => News::NAME,
-            ));
-            return $statement->rowCount();
-        }catch (PDOException $e){
-            $this->getEventManager()->trigger('error', $this, array(
-                'exception' => $e->getTraceAsString(),
-                'sql' => array(
-                    isset($statement)?$statement->queryString:null
-                )
-            ));
-            throw new Exception("can't delete news entry",0,$e);
-        }
+				$statement->execute(array(
+					'id' => $id
+				));
+				$this->getEventManager()->trigger('delete', $this, array(
+					0 => __FUNCTION__,
+					'data' => (array)$news
+				));
+				$this->getEventManager()->trigger('index', $this, array(
+					0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+					'id' => $id,
+					'name' => News::NAME,
+				));
+				return $statement->rowCount();
+			}catch (PDOException $e){
+				$this->getEventManager()->trigger('error', $this, array(
+					'exception' => $e->getTraceAsString(),
+					'sql' => array(
+						isset($statement)?$statement->queryString:null
+					)
+				));
+				throw new Exception("can't delete news entry",0,$e);
+			}
+		}else{
+			return 0;
+		}
+
     }
 }
