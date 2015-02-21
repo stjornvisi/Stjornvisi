@@ -24,9 +24,9 @@
 		display: block;
 		background-image: url("images/header-logo-text.png");
 		background-repeat: no-repeat;
-		height: 31px;
+		height: 21px;
 		width: 100%;
-		margin-left: -65px;
+		margin-left: -60px;
 		margin-bottom: $gutter;
 	}
 
@@ -46,16 +46,16 @@
 		}
 		.main__brand{
 			display: table-cell;
-			background-image: url("images/header-logo.png");
+			background-image: url("images/header-logo-01.png");
 			background-repeat: no-repeat;
 			background-position: right 0;
 			background-color: $color-blue;
-			width: 205px;
+			width: 272px;
 			height: $select-size;
 			font: 0/0 a;
 			a{
 				display: block;
-				width: 205px;
+				width: 272px;
 				height: $select-size;
 			}
 		}
@@ -73,7 +73,9 @@
 						font-family: $font-family-open;
 						text-transform: uppercase;
 						color: $color-white;
-						padding: rhythm(1,$font-size-base);
+						//padding: rhythm(1,$font-size-base);
+						padding: 1.7em rhythm(1,$font-size-base);
+						font-weight: $font-weight-bold;
 					}
 				}
 			}

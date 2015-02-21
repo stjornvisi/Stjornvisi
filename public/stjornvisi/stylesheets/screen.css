@@ -1332,9 +1332,9 @@ div.layout:before {
   display: block;
   background-image: url("images/header-logo-text.png");
   background-repeat: no-repeat;
-  height: 31px;
+  height: 21px;
   width: 100%;
-  margin-left: -65px;
+  margin-left: -60px;
   margin-bottom: 30px;
 }
 
@@ -1353,18 +1353,18 @@ div.layout:before {
 /* line 47, ../sass/components/_layout.scss */
 .main__header .main__brand {
   display: table-cell;
-  background-image: url("images/header-logo.png");
+  background-image: url("images/header-logo-01.png");
   background-repeat: no-repeat;
   background-position: right 0;
   background-color: #292468;
-  width: 205px;
+  width: 272px;
   height: 80px;
   font: 0/0 a;
 }
 /* line 56, ../sass/components/_layout.scss */
 .main__header .main__brand a {
   display: block;
-  width: 205px;
+  width: 272px;
   height: 80px;
 }
 /* line 62, ../sass/components/_layout.scss */
@@ -1393,9 +1393,10 @@ div.layout:before {
   font-family: "Open Sans", sans-serif;
   text-transform: uppercase;
   color: white;
-  padding: 1.5em;
+  padding: 1.7em 1.5em;
+  font-weight: 700;
 }
-/* line 81, ../sass/components/_layout.scss */
+/* line 83, ../sass/components/_layout.scss */
 .main__header .main__search {
   display: table-cell;
   width: 300px;
@@ -1403,7 +1404,7 @@ div.layout:before {
 }
 
 @media (max-width: 480px) {
-  /* line 91, ../sass/components/_layout.scss */
+  /* line 93, ../sass/components/_layout.scss */
   .main__header {
     display: none;
   }
@@ -1414,7 +1415,7 @@ div.layout:before {
  * This is the footer. It has the lowest z-index and
  * lies under all content.
  */
-/* line 102, ../sass/components/_layout.scss */
+/* line 104, ../sass/components/_layout.scss */
 footer[role=footer] {
   position: fixed;
   z-index: 1;
@@ -1426,7 +1427,7 @@ footer[role=footer] {
   height: 100%;
   background-color: #282828;
 }
-/* line 113, ../sass/components/_layout.scss */
+/* line 115, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper {
   position: absolute;
   width: 100%;
@@ -1436,11 +1437,11 @@ footer[role=footer] .footer-wrapper {
   font-family: "Open Sans", sans-serif;
   color: white;
 }
-/* line 121, ../sass/components/_layout.scss */
+/* line 123, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper a {
   color: white;
 }
-/* line 124, ../sass/components/_layout.scss */
+/* line 126, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__inner {
   *zoom: 1;
   max-width: 960px;
@@ -1453,40 +1454,40 @@ footer[role=footer] .footer-wrapper .footer-wrapper__inner:after {
   display: table;
   clear: both;
 }
-/* line 130, ../sass/components/_layout.scss */
+/* line 132, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__item {
   float: left;
   width: 33.33%;
 }
-/* line 134, ../sass/components/_layout.scss */
+/* line 136, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__address {
   font-family: "Bitter", serif;
   font-size: 1.14286em;
   line-height: 1.5em;
 }
-/* line 137, ../sass/components/_layout.scss */
+/* line 139, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__address a {
   color: #e39723;
 }
-/* line 141, ../sass/components/_layout.scss */
+/* line 143, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__brand {
   font-family: "Open Sans", sans-serif;
   text-transform: uppercase;
 }
 @media (max-width: 480px) {
-  /* line 147, ../sass/components/_layout.scss */
+  /* line 149, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__inner {
     margin: 0;
     padding: 15px;
   }
-  /* line 154, ../sass/components/_layout.scss */
+  /* line 156, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__item {
     float: left;
     width: 50%;
     font-size: 0.85714em;
     line-height: 2em;
   }
-  /* line 159, ../sass/components/_layout.scss */
+  /* line 161, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__item:last-child {
     clear: both;
     float: none;
@@ -1500,7 +1501,7 @@ footer[role=footer] .footer-wrapper .footer-wrapper__brand {
     display: table;
     clear: both;
   }
-  /* line 165, ../sass/components/_layout.scss */
+  /* line 167, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__item:last-child li {
     float: left;
     padding: 1em;
@@ -1508,7 +1509,7 @@ footer[role=footer] .footer-wrapper .footer-wrapper__brand {
   }
 }
 
-/* line 179, ../sass/components/_layout.scss */
+/* line 181, ../sass/components/_layout.scss */
 nav[role=navigation] {
   background-color: #4a85a1;
   transform: translate3d(-270px, 0, 0);
@@ -1527,14 +1528,14 @@ nav[role=navigation]:after {
   display: table;
   clear: both;
 }
-/* line 191, ../sass/components/_layout.scss */
+/* line 193, ../sass/components/_layout.scss */
 nav[role=navigation] .navigation__wrapper {
   width: 270px;
   overflow: hidden;
   float: left;
   position: relative;
 }
-/* line 199, ../sass/components/_layout.scss */
+/* line 201, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation {
   position: relative;
   z-index: 5;
@@ -1547,20 +1548,20 @@ nav[role=navigation] ul.navigation:after {
   display: table;
   clear: both;
 }
-/* line 206, ../sass/components/_layout.scss */
+/* line 208, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation > li {
   padding: 30px;
   float: left;
   width: 25%;
 }
-/* line 210, ../sass/components/_layout.scss */
+/* line 212, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation > li a {
   font-size: 0.75em;
   line-height: 2em;
   color: white;
   font-family: "Open Sans", sans-serif;
 }
-/* line 219, ../sass/components/_layout.scss */
+/* line 221, ../sass/components/_layout.scss */
 nav[role=navigation] .categories {
   position: relative;
   z-index: 6;
@@ -1569,7 +1570,7 @@ nav[role=navigation] .categories {
   height: 100%;
   background-color: #282828;
 }
-/* line 226, ../sass/components/_layout.scss */
+/* line 228, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a {
   display: block;
   height: 80px;
@@ -1578,16 +1579,16 @@ nav[role=navigation] .categories a {
   border-bottom: 1px solid #545454;
   transition: all .2s;
 }
-/* line 234, ../sass/components/_layout.scss */
+/* line 236, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a:hover, nav[role=navigation] .categories a.active {
   background-color: #4a85a1;
   border-bottom-color: #427790;
 }
-/* line 238, ../sass/components/_layout.scss */
+/* line 240, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__item {
   font-size: 0;
 }
-/* line 241, ../sass/components/_layout.scss */
+/* line 243, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__item:before {
   font-family: 'icomoon';
   speak: none;
@@ -1604,31 +1605,31 @@ nav[role=navigation] .categories a.categories__item:before {
   padding: 28px;
   display: block;
 }
-/* line 258, ../sass/components/_layout.scss */
+/* line 260, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__home {
   background-color: #4ca14a;
   border-bottom: none;
   font-size: 0;
 }
-/* line 263, ../sass/components/_layout.scss */
+/* line 265, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__home:before {
   content: "\e603";
 }
-/* line 266, ../sass/components/_layout.scss */
+/* line 268, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__groups:before {
   content: "\e604";
 }
-/* line 269, ../sass/components/_layout.scss */
+/* line 271, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__users:before {
   content: "\e608";
 }
-/* line 272, ../sass/components/_layout.scss */
+/* line 274, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__config:before {
   content: "\e602";
 }
 
 @media (max-width: 480px) {
-  /* line 278, ../sass/components/_layout.scss */
+  /* line 280, ../sass/components/_layout.scss */
   nav[role=navigation] {
     display: none;
     position: fixed;
@@ -1641,12 +1642,12 @@ nav[role=navigation] .categories a.categories__config:before {
     height: 100%;
     transform: translate3d(0, 0, 0);
   }
-  /* line 290, ../sass/components/_layout.scss */
+  /* line 292, ../sass/components/_layout.scss */
   nav[role=navigation] .navigation__wrapper {
     width: 100%;
     float: none;
   }
-  /* line 297, ../sass/components/_layout.scss */
+  /* line 299, ../sass/components/_layout.scss */
   nav[role=navigation] .categories {
     float: none;
     width: 100%;
@@ -1658,7 +1659,7 @@ nav[role=navigation] .categories a.categories__config:before {
     display: table;
     clear: both;
   }
-  /* line 301, ../sass/components/_layout.scss */
+  /* line 303, ../sass/components/_layout.scss */
   nav[role=navigation] .categories > li {
     float: left;
   }
@@ -1666,23 +1667,23 @@ nav[role=navigation] .categories a.categories__config:before {
 /**
  *
  */
-/* line 314, ../sass/components/_layout.scss */
+/* line 316, ../sass/components/_layout.scss */
 body.state-login main[role=main],
 body.state-login footer[role=footer] {
   margin-left: 80px;
 }
 @media (max-width: 480px) {
-  /* line 319, ../sass/components/_layout.scss */
+  /* line 321, ../sass/components/_layout.scss */
   body.state-login main[role=main],
   body.state-login footer[role=footer] {
     margin-left: 0;
   }
 }
-/* line 329, ../sass/components/_layout.scss */
+/* line 331, ../sass/components/_layout.scss */
 body.state-login.state-open {
   overflow: hidden;
 }
-/* line 336, ../sass/components/_layout.scss */
+/* line 338, ../sass/components/_layout.scss */
 body.state-login.state-open nav[role=navigation] {
   transform: translate3d(0, 0, 0);
 }
