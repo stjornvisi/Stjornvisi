@@ -12,7 +12,7 @@ namespace Stjornvisi\Controller;
 use Stjornvisi\Mail\Attacher;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Progressbar\Adapter\Console;
+use Zend\ProgressBar\Adapter\Console;
 use Zend\ProgressBar\ProgressBar;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\View\Model\ViewModel;
