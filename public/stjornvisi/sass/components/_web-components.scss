@@ -1,31 +1,172 @@
-
-stjonvisi-control{
-	display: block;
-	position: relative;
-	z-index: 1;
-}
-stjonvisi-control::shadow{
-	.stjonvisi-control__edit{
-		display: inline-block;
-		width: 24px;
-		height: 24px;
-		background-color: $color-red;
-		padding: $gutter/3;
-		border-radius: 50%;
-		text-align: right;
-		svg path{ fill: $color-white; }
-	}
-	.stjonvisi-control__wrapper{
-		background-color: $color-white;
-		position: absolute;
-		box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
-	}
-}
-stjonvisi-control::content{
-	> * {
+/**
+	:host-context(.active) .stjonvisi-control__wrapper{
 		display: block;
 	}
-}
+	:host-context(.inline){
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	:host-context(.inline) a{
+		width: 25px;
+		height: 25px;
+	}
+
+	:host{
+
+	}
+	:host-context(stjonvisi-control.active) ::content a:nth-child(1),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(2),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(3),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(4),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(5),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(6),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(7){
+		opacity: 1;
+		transform: translate3d(0, 0%, 0);
+		-webkit-transition:
+			-webkit-transform 0.6s cubic-bezier(0.4, 1, 0.3, 1),
+			opacity 0.6s linear
+	;
+	}
+
+	:host-context(stjonvisi-control) ::content a:nth-child(1){
+		transform: translate3d(0, -100%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(2){
+		transform: translate3d(0, -200%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(3){
+		transform: translate3d(0, -300%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(4){
+		transform: translate3d(0, -400%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(5){
+		transform: translate3d(0, -500%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(6){
+		transform: translate3d(0, -600%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(7){
+		transform: translate3d(0, -700%, 0);
+	}
+
+	:host a {
+		display: block;
+		width: 50px;
+		height: 50px;
+		background-color: red;
+		border-radius: 50%;
+		color:white;
+		text-decoration: none;
+	}
+
+	::content a {
+		display: block;
+		opacity: 0;
+	}
+
+*/
+
+
+
+
+
+
+
+	/**
+	 *
+	 */
+	stjonvisi-control{
+		display: block;
+		position: relative;
+		z-index: 1;
+		overflow: hidden;
+
+		> * {
+			display: block;
+		}
+
+		> a {
+			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			font-family: $font-family-open;
+			word-break: keep-all;
+			white-space: nowrap;
+			i {
+				color: tint($color-green-sea,30%);
+				padding-right: rhythm(1/4,$font-size-small);
+			}
+		}
+		a.update i{
+			color: $color-green;
+		}
+		a.delete i{
+			color: $color-red;
+		}
+	}
+	stjonvisi-control.inline{
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+
+	stjonvisi-control.active{
+		overflow: visible;
+	}
+	stjonvisi-control::shadow{
+		background-color: pink;
+		.stjonvisi-control__edit{
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			background-color: $color-red;
+			padding: $gutter/3;
+			border-radius: 50%;
+			z-index: 3;
+			position: relative;
+			svg path{ fill: $color-white; }
+		}
+
+		.stjonvisi-control__wrapper{
+			transform: translate3d(0,-100%,0);
+			background-color: $color-white;
+			position: absolute;
+			box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.17);
+			z-index: 2;
+			opacity: 0;
+			transition: all .2s;
+			padding: $gutter/2;
+			border-radius: 3px;
+		}
+	}
+	stjonvisi-control.active::shadow{
+		.stjonvisi-control__wrapper{
+			transform: translate3d(0,0%,0);
+			box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
+			opacity: 1;
+		}
+	}
+	stjonvisi-control.inline::shadow{
+		.stjonvisi-control__edit{
+			width: 12px;
+			height: 12px;
+		}
+		.stjonvisi-control__wrapper{
+			top: 0;
+			transform: translate3d(-100%,0%,0);
+		}
+	}
+	stjonvisi-control.active.inline::shadow{
+		transform: translate3d(0%,0%,0);
+	}
+
+	stjonvisi-control::content{
+			* {
+				display: block;
+			}
+
+	}
 
 /*
 	@mixin stjonvisi-control-style{

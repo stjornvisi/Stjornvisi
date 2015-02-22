@@ -206,6 +206,55 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+
+.icon-check:before {
+	content: "\f00c";
+}
+
+.icon-close:before {
+	content: "\f00d";
+}
+
+.icon-file-o:before {
+	content: "\f016";
+}
+
+.icon-list:before {
+	content: "\f03a";
+}
+
+.icon-plus:before {
+	content: "\f067";
+}
+
+.icon-minus:before {
+	content: "\f068";
+}
+
+.icon-envelope:before {
+	content: "\f0e0";
+}
+
+.icon-file-pdf-o:before {
+	content: "\f1c1";
+}
+
+.icon-file-word-o:before {
+	content: "\f1c2";
+}
+
+.icon-file-excel-o:before {
+	content: "\f1c3";
+}
+
+.icon-file-image-o:before {
+	content: "\f1c5";
+}
+
+.icon-calendar-o:before {
+	content: "\e60f";
+}
+
 .icon-mode-edit:before {
 	content: "\e611";
 }
@@ -236,34 +285,6 @@
 
 .icon-facebook:before {
 	content: "\e60a";
-}
-
-.icon-calendar-o:before {
-	content: "\e60f";
-}
-
-.icon-cancel:before {
-	content: "\e601";
-}
-
-.icon-cog:before {
-	content: "\e602";
-}
-
-.icon-home:before {
-	content: "\e603";
-}
-
-.icon-horn:before {
-	content: "\e604";
-}
-
-.icon-mail:before {
-	content: "\e605";
-}
-
-.icon-no:before {
-	content: "\e606";
 }
 
 .icon-burger:before {

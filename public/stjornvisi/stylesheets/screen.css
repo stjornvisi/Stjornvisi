@@ -1181,127 +1181,152 @@ input[type="button"].btn-block {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* line 209, ../sass/helpers/_fonts.scss */
-.icon-mode-edit:before {
-  content: "\e611";
+/* line 210, ../sass/helpers/_fonts.scss */
+.icon-check:before {
+  content: "\f00c";
 }
 
-/* line 213, ../sass/helpers/_fonts.scss */
-.icon-chevron-left:before {
-  content: "\f0a4";
+/* line 214, ../sass/helpers/_fonts.scss */
+.icon-close:before {
+  content: "\f00d";
 }
 
-/* line 217, ../sass/helpers/_fonts.scss */
-.icon-rss:before {
-  content: "\e610";
+/* line 218, ../sass/helpers/_fonts.scss */
+.icon-file-o:before {
+  content: "\f016";
 }
 
-/* line 221, ../sass/helpers/_fonts.scss */
-.icon-chevron-right:before {
-  content: "\e60e";
+/* line 222, ../sass/helpers/_fonts.scss */
+.icon-list:before {
+  content: "\f03a";
 }
 
-/* line 225, ../sass/helpers/_fonts.scss */
-.icon-document:before {
-  content: "\e60b";
+/* line 226, ../sass/helpers/_fonts.scss */
+.icon-plus:before {
+  content: "\f067";
 }
 
-/* line 229, ../sass/helpers/_fonts.scss */
-.icon-exel:before {
-  content: "\e60c";
+/* line 230, ../sass/helpers/_fonts.scss */
+.icon-minus:before {
+  content: "\f068";
 }
 
-/* line 233, ../sass/helpers/_fonts.scss */
-.icon-pdf:before {
-  content: "\e60d";
+/* line 234, ../sass/helpers/_fonts.scss */
+.icon-envelope:before {
+  content: "\f0e0";
 }
 
-/* line 237, ../sass/helpers/_fonts.scss */
-.icon-facebook:before {
-  content: "\e60a";
+/* line 238, ../sass/helpers/_fonts.scss */
+.icon-file-pdf-o:before {
+  content: "\f1c1";
 }
 
-/* line 241, ../sass/helpers/_fonts.scss */
+/* line 242, ../sass/helpers/_fonts.scss */
+.icon-file-word-o:before {
+  content: "\f1c2";
+}
+
+/* line 246, ../sass/helpers/_fonts.scss */
+.icon-file-excel-o:before {
+  content: "\f1c3";
+}
+
+/* line 250, ../sass/helpers/_fonts.scss */
+.icon-file-image-o:before {
+  content: "\f1c5";
+}
+
+/* line 254, ../sass/helpers/_fonts.scss */
 .icon-calendar-o:before {
   content: "\e60f";
 }
 
-/* line 245, ../sass/helpers/_fonts.scss */
-.icon-cancel:before {
-  content: "\e601";
+/* line 258, ../sass/helpers/_fonts.scss */
+.icon-mode-edit:before {
+  content: "\e611";
 }
 
-/* line 249, ../sass/helpers/_fonts.scss */
-.icon-cog:before {
-  content: "\e602";
+/* line 262, ../sass/helpers/_fonts.scss */
+.icon-chevron-left:before {
+  content: "\f0a4";
 }
 
-/* line 253, ../sass/helpers/_fonts.scss */
-.icon-home:before {
-  content: "\e603";
+/* line 266, ../sass/helpers/_fonts.scss */
+.icon-rss:before {
+  content: "\e610";
 }
 
-/* line 257, ../sass/helpers/_fonts.scss */
-.icon-horn:before {
-  content: "\e604";
+/* line 270, ../sass/helpers/_fonts.scss */
+.icon-chevron-right:before {
+  content: "\e60e";
 }
 
-/* line 261, ../sass/helpers/_fonts.scss */
-.icon-mail:before {
-  content: "\e605";
+/* line 274, ../sass/helpers/_fonts.scss */
+.icon-document:before {
+  content: "\e60b";
 }
 
-/* line 265, ../sass/helpers/_fonts.scss */
-.icon-no:before {
-  content: "\e606";
+/* line 278, ../sass/helpers/_fonts.scss */
+.icon-exel:before {
+  content: "\e60c";
 }
 
-/* line 269, ../sass/helpers/_fonts.scss */
+/* line 282, ../sass/helpers/_fonts.scss */
+.icon-pdf:before {
+  content: "\e60d";
+}
+
+/* line 286, ../sass/helpers/_fonts.scss */
+.icon-facebook:before {
+  content: "\e60a";
+}
+
+/* line 290, ../sass/helpers/_fonts.scss */
 .icon-burger:before {
   content: "\e600";
 }
 
-/* line 273, ../sass/helpers/_fonts.scss */
+/* line 294, ../sass/helpers/_fonts.scss */
 .icon-cancel:before {
   content: "\e601";
 }
 
-/* line 277, ../sass/helpers/_fonts.scss */
+/* line 298, ../sass/helpers/_fonts.scss */
 .icon-cog:before {
   content: "\e602";
 }
 
-/* line 281, ../sass/helpers/_fonts.scss */
+/* line 302, ../sass/helpers/_fonts.scss */
 .icon-home:before {
   content: "\e603";
 }
 
-/* line 285, ../sass/helpers/_fonts.scss */
+/* line 306, ../sass/helpers/_fonts.scss */
 .icon-horn:before {
   content: "\e604";
 }
 
-/* line 289, ../sass/helpers/_fonts.scss */
+/* line 310, ../sass/helpers/_fonts.scss */
 .icon-mail:before {
   content: "\e605";
 }
 
-/* line 293, ../sass/helpers/_fonts.scss */
+/* line 314, ../sass/helpers/_fonts.scss */
 .icon-no:before {
   content: "\e606";
 }
 
-/* line 297, ../sass/helpers/_fonts.scss */
+/* line 318, ../sass/helpers/_fonts.scss */
 .icon-search:before {
   content: "\e607";
 }
 
-/* line 301, ../sass/helpers/_fonts.scss */
+/* line 322, ../sass/helpers/_fonts.scss */
 .icon-users:before {
   content: "\e608";
 }
 
-/* line 305, ../sass/helpers/_fonts.scss */
+/* line 326, ../sass/helpers/_fonts.scss */
 .icon-yes:before {
   content: "\e609";
 }
@@ -2609,14 +2634,129 @@ textarea.prossess, input.prossess {
   background-color: gainsboro;
 }
 
-/* line 2, ../sass/components/_web-components.scss */
+/**
+	:host-context(.active) .stjonvisi-control__wrapper{
+		display: block;
+	}
+	:host-context(.inline){
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	:host-context(.inline) a{
+		width: 25px;
+		height: 25px;
+	}
+
+	:host{
+
+	}
+	:host-context(stjonvisi-control.active) ::content a:nth-child(1),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(2),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(3),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(4),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(5),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(6),
+	:host-context(stjonvisi-control.active) ::content a:nth-child(7){
+		opacity: 1;
+		transform: translate3d(0, 0%, 0);
+		-webkit-transition:
+			-webkit-transform 0.6s cubic-bezier(0.4, 1, 0.3, 1),
+			opacity 0.6s linear
+	;
+	}
+
+	:host-context(stjonvisi-control) ::content a:nth-child(1){
+		transform: translate3d(0, -100%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(2){
+		transform: translate3d(0, -200%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(3){
+		transform: translate3d(0, -300%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(4){
+		transform: translate3d(0, -400%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(5){
+		transform: translate3d(0, -500%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(6){
+		transform: translate3d(0, -600%, 0);
+	}
+	:host-context(stjonvisi-control) ::content a:nth-child(7){
+		transform: translate3d(0, -700%, 0);
+	}
+
+	:host a {
+		display: block;
+		width: 50px;
+		height: 50px;
+		background-color: red;
+		border-radius: 50%;
+		color:white;
+		text-decoration: none;
+	}
+
+	::content a {
+		display: block;
+		opacity: 0;
+	}
+
+*/
+/**
+ *
+ */
+/* line 81, ../sass/components/_web-components.scss */
 stjonvisi-control {
   display: block;
   position: relative;
   z-index: 1;
+  overflow: hidden;
+}
+/* line 87, ../sass/components/_web-components.scss */
+stjonvisi-control > * {
+  display: block;
+}
+/* line 91, ../sass/components/_web-components.scss */
+stjonvisi-control > a {
+  font-size: 0.75em;
+  line-height: 2em;
+  font-family: "Open Sans", sans-serif;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+/* line 96, ../sass/components/_web-components.scss */
+stjonvisi-control > a i {
+  color: #80a9bd;
+  padding-right: 0.5em;
+}
+/* line 101, ../sass/components/_web-components.scss */
+stjonvisi-control a.update i {
+  color: #4ca14a;
+}
+/* line 104, ../sass/components/_web-components.scss */
+stjonvisi-control a.delete i {
+  color: #ff4800;
 }
 
-/* line 8, ../sass/components/_web-components.scss */
+/* line 108, ../sass/components/_web-components.scss */
+stjonvisi-control.inline {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/* line 114, ../sass/components/_web-components.scss */
+stjonvisi-control.active {
+  overflow: visible;
+}
+
+/* line 117, ../sass/components/_web-components.scss */
+stjonvisi-control::shadow {
+  background-color: pink;
+}
+/* line 119, ../sass/components/_web-components.scss */
 stjonvisi-control::shadow .stjonvisi-control__edit {
   display: inline-block;
   width: 24px;
@@ -2624,21 +2764,51 @@ stjonvisi-control::shadow .stjonvisi-control__edit {
   background-color: #ff4800;
   padding: 10px;
   border-radius: 50%;
-  text-align: right;
+  z-index: 3;
+  position: relative;
 }
-/* line 16, ../sass/components/_web-components.scss */
+/* line 128, ../sass/components/_web-components.scss */
 stjonvisi-control::shadow .stjonvisi-control__edit svg path {
   fill: white;
 }
-/* line 18, ../sass/components/_web-components.scss */
+/* line 131, ../sass/components/_web-components.scss */
 stjonvisi-control::shadow .stjonvisi-control__wrapper {
+  transform: translate3d(0, -100%, 0);
   background-color: white;
   position: absolute;
-  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.17);
+  z-index: 2;
+  opacity: 0;
+  transition: all .2s;
+  padding: 15px;
+  border-radius: 3px;
 }
 
-/* line 25, ../sass/components/_web-components.scss */
-stjonvisi-control::content > * {
+/* line 144, ../sass/components/_web-components.scss */
+stjonvisi-control.active::shadow .stjonvisi-control__wrapper {
+  transform: translate3d(0, 0%, 0);
+  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
+  opacity: 1;
+}
+
+/* line 151, ../sass/components/_web-components.scss */
+stjonvisi-control.inline::shadow .stjonvisi-control__edit {
+  width: 12px;
+  height: 12px;
+}
+/* line 155, ../sass/components/_web-components.scss */
+stjonvisi-control.inline::shadow .stjonvisi-control__wrapper {
+  top: 0;
+  transform: translate3d(-100%, 0%, 0);
+}
+
+/* line 160, ../sass/components/_web-components.scss */
+stjonvisi-control.active.inline::shadow {
+  transform: translate3d(0%, 0%, 0);
+}
+
+/* line 165, ../sass/components/_web-components.scss */
+stjonvisi-control::content * {
   display: block;
 }
 
@@ -3281,7 +3451,11 @@ span.attending {
   float: left;
   width: 33.33%;
 }
-/* line 47, ../sass/pages/_group.scss */
+/* line 46, ../sass/pages/_group.scss */
+.page-group .page-group__members-head > ul {
+  padding-right: 30px;
+}
+/* line 50, ../sass/pages/_group.scss */
 .page-group .page-group__members-member {
   float: left;
   width: 66.66%;
@@ -3293,12 +3467,13 @@ span.attending {
   display: table;
   clear: both;
 }
-/* line 51, ../sass/pages/_group.scss */
+/* line 54, ../sass/pages/_group.scss */
 .page-group .page-group__members-member > ul {
+  padding-right: 30px;
   float: left;
   width: 50%;
 }
-/* line 61, ../sass/pages/_group.scss */
+/* line 65, ../sass/pages/_group.scss */
 .page-group .page-group__headline {
   font-family: "Bitter", serif;
   font-weight: 700;
@@ -3306,7 +3481,7 @@ span.attending {
   line-height: 1.33333em;
   margin-right: 150px;
 }
-/* line 70, ../sass/pages/_group.scss */
+/* line 74, ../sass/pages/_group.scss */
 .page-group .page-group__subline.page-group__subline {
   font-family: "Bitter", serif;
   font-weight: 700;
@@ -3314,20 +3489,20 @@ span.attending {
   line-height: 1em;
   margin-bottom: 2em;
 }
-/* line 81, ../sass/pages/_group.scss */
+/* line 85, ../sass/pages/_group.scss */
 .page-group .page-group__register {
   position: absolute;
   top: 0;
   right: 0;
 }
 @media (max-width: 480px) {
-  /* line 81, ../sass/pages/_group.scss */
+  /* line 85, ../sass/pages/_group.scss */
   .page-group .page-group__register {
     position: relative;
     margin-top: 1.5em;
   }
 }
-/* line 93, ../sass/pages/_group.scss */
+/* line 97, ../sass/pages/_group.scss */
 .page-group .page-group__years {
   margin-top: 0.75em;
   margin-bottom: 0.75em;
@@ -3335,30 +3510,30 @@ span.attending {
   font-size: 0.75em;
   line-height: 2em;
 }
-/* line 98, ../sass/pages/_group.scss */
+/* line 102, ../sass/pages/_group.scss */
 .page-group .page-group__years li:before {
   content: "\2022";
   padding-right: 1em;
   color: #4a85a1;
 }
-/* line 103, ../sass/pages/_group.scss */
+/* line 107, ../sass/pages/_group.scss */
 .page-group .page-group__years a {
   color: #4a85a1;
 }
-/* line 110, ../sass/pages/_group.scss */
+/* line 114, ../sass/pages/_group.scss */
 .page-group .page-group__summary {
   margin-bottom: 1.5em;
 }
-/* line 116, ../sass/pages/_group.scss */
+/* line 120, ../sass/pages/_group.scss */
 .page-group .page-group__members-item {
   position: relative;
   padding-bottom: 1.5em;
 }
-/* line 119, ../sass/pages/_group.scss */
+/* line 123, ../sass/pages/_group.scss */
 .page-group .page-group__members-item h3 {
   font-family: "Open Sans", sans-serif;
 }
-/* line 122, ../sass/pages/_group.scss */
+/* line 126, ../sass/pages/_group.scss */
 .page-group .page-group__members-item span {
   display: block;
   color: #4a85a1;
@@ -3366,28 +3541,28 @@ span.attending {
   font-size: 0.75em;
   line-height: 2em;
 }
-/* line 131, ../sass/pages/_group.scss */
+/* line 135, ../sass/pages/_group.scss */
 .page-group .page-group__calendar {
   margin-top: 0.75em;
   margin-bottom: 0.75em;
 }
-/* line 134, ../sass/pages/_group.scss */
+/* line 138, ../sass/pages/_group.scss */
 .page-group .page-group__calendar a {
   display: block;
   font-family: "Bitter", serif;
   font-size: 0.75em;
   line-height: 2em;
 }
-/* line 145, ../sass/pages/_group.scss */
+/* line 149, ../sass/pages/_group.scss */
 .page-group .layout__aside .layout__headline {
   margin-top: 3em;
 }
-/* line 151, ../sass/pages/_group.scss */
+/* line 155, ../sass/pages/_group.scss */
 .page-group .fb_iframe_widget {
   padding-top: 1.5em;
 }
 
-/* line 161, ../sass/pages/_group.scss */
+/* line 165, ../sass/pages/_group.scss */
 .page-group-list .page-group-list__item {
   *zoom: 1;
 }
@@ -3397,24 +3572,24 @@ span.attending {
   display: table;
   clear: both;
 }
-/* line 163, ../sass/pages/_group.scss */
+/* line 167, ../sass/pages/_group.scss */
 .page-group-list .page-group-list__item .page-group-list__header {
   float: left;
   width: 60%;
   padding-right: 30px;
 }
-/* line 168, ../sass/pages/_group.scss */
+/* line 172, ../sass/pages/_group.scss */
 .page-group-list .page-group-list__item .page-group-list__aside {
   float: right;
   width: 40%;
 }
-/* line 172, ../sass/pages/_group.scss */
+/* line 176, ../sass/pages/_group.scss */
 .page-group-list .page-group-list__item .page-group-list__body {
   float: left;
   width: 60%;
   padding-right: 30px;
 }
-/* line 179, ../sass/pages/_group.scss */
+/* line 183, ../sass/pages/_group.scss */
 .page-group-list .page-group-list__list-item {
   font-family: "Open Sans", sans-serif;
   font-size: 0.75em;

@@ -43,12 +43,16 @@
 		.page-group__members-head{
 			float: left;
 			width: 33.33%;
+			> ul{
+				padding-right: $gutter;
+			}
 		}
 		.page-group__members-member{
 			float: left;
 			width: 66.66%;
 			@include pie-clearfix;
 			> ul {
+				padding-right: $gutter;
 				float: left;
 				width: 50%;
 			}

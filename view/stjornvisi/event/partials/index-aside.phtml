@@ -1,12 +1,12 @@
 <?php if($this->access->is_admin || $this->access->type >= 1):?>
 	<stjonvisi-control>
-		<a href="<?=$this->url('vidburdir/update',array('id'=>$this->event->id));?>">Uppfæra</a>
-		<a href="<?=$this->url('vidburdir/delete',array('id'=>$this->event->id));?>">Eyða</a>
-		<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id,'type'=>'allir'));?>">Senda póst á meðlimi hópa</a>
-		<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id, 'type'=>'gestir'));?>">Senda póst á þátttakendur</a>
-		<a href="<?=$this->url('vidburdir/export-attendees',array('id'=>$this->event->id));?>">Sækja þátttakendalista (csv)</a>
-		<a href="<?=$this->url('vidburdir/gallery-list',array('id'=>$this->event->id));?>">Myndalisti</a>
-		<a href="<?=$this->url('vidburdir/resource-list',array('id'=>$this->event->id));?>">Ítarefni</a>
+		<a href="<?=$this->url('vidburdir/update',array('id'=>$this->event->id));?>" class="update"><i class="icon-check"></i> uppfæra</a>
+		<a href="<?=$this->url('vidburdir/delete',array('id'=>$this->event->id));?>" class="delete"><i class="icon-close"></i> eyða</a>
+		<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id,'type'=>'allir'));?>"><i class="icon-envelope"></i> meðlimi</a>
+		<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id, 'type'=>'gestir'));?>"><i class="icon-envelope"></i> þátttakendur</a>
+		<a href="<?=$this->url('vidburdir/export-attendees',array('id'=>$this->event->id));?>"><i class="icon-list"></i> þátttakendalista</a>
+		<a href="<?=$this->url('vidburdir/gallery-list',array('id'=>$this->event->id));?>"><i class="icon-file-image-o"></i> myndalisti</a>
+		<a href="<?=$this->url('vidburdir/resource-list',array('id'=>$this->event->id));?>"><i class="icon-file-o"></i> Ítarefni</a>
 	</stjonvisi-control>
 <?php endif;?>
 <h2 class="layout__headline">Tengdir viðburdir</h2>
