@@ -269,7 +269,7 @@ class Group extends AbstractService {
 			//UPCOMING EVENTS
 			//	statement to get upcoming event
 			$eventLatestStatement = $this->pdo->prepare("
-				SELECT E.* FROM `Group_has_Event` GhE
+				SELECT E.*, true as 'latest' FROM `Group_has_Event` GhE
 					JOIN `Event` E ON (E.id = GhE.event_id)
 				WHERE GhE.group_id = :group_id AND E.`event_date` >= NOW()
 				ORDER BY E.event_date ASC
@@ -277,7 +277,7 @@ class Group extends AbstractService {
 			//ALL EVENTS
 			//	statement to get all events.
 			$eventAllStatement = $this->pdo->prepare("
-				SELECT E.* FROM `Group_has_Event` GhE
+				SELECT E.*, false as 'latest' FROM `Group_has_Event` GhE
 					JOIN `Event` E ON (E.id = GhE.event_id)
 				WHERE GhE.group_id = :group_id
 				ORDER BY E.event_date DESC

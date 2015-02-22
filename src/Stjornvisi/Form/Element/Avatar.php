@@ -16,6 +16,7 @@ class Avatar extends Text{
 	 */
 	protected $attributes = array(
 		'type' => 'text',
-		'data-type' => 'avatar'
+		'data-type' => 'avatar',
+		'readonly' => 'readonly'
 	);
 } 

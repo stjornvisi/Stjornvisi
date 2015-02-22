@@ -11,6 +11,10 @@
 			margin-bottom: $gutter;
 
 		}
+		.page-group__period.page-group__period{
+			@include adjust-font-size-to($font-size-base,1,$font-size-base);
+			@include margin-leader(1/2,$font-size-base);
+		}
 
 
 		.page-group__separator{

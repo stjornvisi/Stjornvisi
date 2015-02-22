@@ -11,5 +11,10 @@ namespace Stjornvisi\Form\Element;
 use Zend\Form\Element;
 
 class Img extends Element{
-
+	/**
+	 * @var array
+	 */
+	protected $attributes = array(
+		'readonly' => 'readonly'
+	);
 } 

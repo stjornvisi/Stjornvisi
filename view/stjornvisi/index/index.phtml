@@ -33,7 +33,9 @@
 										<?php endif; ?>
 									</ul>
 								</aside>
+								<?php if( $event->can_attend ):?>
 								<footer class="block-element__footer">
+
 									<?php if($event->attending === null):?>
 										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
 										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
@@ -45,6 +47,10 @@
 										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
 									<?php endif;?>
 								</footer>
+								<?php else:?>
+									<!--Viðburður fullur-->
+								<?php endif;?>
+
 							</article>
 						</li>
 					<?php endforeach;?>

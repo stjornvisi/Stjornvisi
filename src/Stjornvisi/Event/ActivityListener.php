@@ -72,7 +72,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 		$params = $event->getParams();
 		$method = isset($params[0])?$params[0]:'';
 
-		if( $target instanceof Event ){
+		if( $target instanceof Event && isset($params['data']) ){
 			$data = $params['data'];
 			switch( $method ){
 				case 'create':
@@ -99,7 +99,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 				default:
 					break;
 			}
-		}else if( $target instanceof News ){
+		}else if( $target instanceof News && isset($params['data'])  ){
 			$data = $params['data'];
 			switch( $method ){
 				case 'create':
@@ -126,7 +126,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 				default:
 					break;
 			}
-		}else if( $target instanceof Company ){
+		}else if( $target instanceof Company && isset($params['data'])  ){
 			$data = $params['data'];
 			switch( $method ){
 				case 'create':
@@ -158,6 +158,8 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 	}
 
 	private function send( $recipient, $subject, $body ){
+		$channel = false;
+		$connection = false;
 		try{
 			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();

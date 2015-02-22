@@ -61,6 +61,16 @@
 			column-width: rhythm(1,$font-size-base);
 			column-count: 3;
 		}
+		&.block-element--two-columns{
+			-webkit-column-width: rhythm(1,$font-size-base);
+			-webkit-column-count: 2;
+			-moz-column-width: rhythm(1,$font-size-base);
+			-moz-column-count: 2;
+			-ms-column-width: rhythm(1,$font-size-base);
+			-ms-column-count: 2;
+			column-width: rhythm(1,$font-size-base);
+			column-count: 2;
+		}
 		@include breakpoint($phone){
 			&.block-element--three-columns{
 				-webkit-column-width: auto;

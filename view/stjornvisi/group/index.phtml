@@ -14,7 +14,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 	<section class="layout__section">
 		<div class="page-group__header">
 			<h1 class="page-group__headline"><?=$this->group->name;?></h1>
-			<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
+			<h2 class="layout__headline page-group__period">Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
 			<?php if($this->logged_in):?>
 				<?php if( $this->access->type === null ):?>
 					<a href="<?=$this->url('hopur/register',array('id'=>$this->group->url,'type'=>1))?>" class="btn btn-warning page-group__register">Skrá í hóp</a>
@@ -57,18 +57,20 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 									<?php endif; ?>
 								</ul>
 							</aside-->
-							<!--footer>
-							<?php if($event->attending === null):?>
-								<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-								<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-							<?php elseif($event->attending == 0):?>
-								<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-								<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
-							<?php elseif($event->attending == 1):?>
-								<span class="attending yes" title="Skrá mætingu">mæti</span>
-								<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+							<?php if( $this->logged_in && $event->can_attend ):?>
+							<footer>
+								<?php if( $event->attending === null):?>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+								<?php elseif($event->attending == 0):?>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
+									<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
+								<?php elseif($event->attending == 1):?>
+									<span class="attending yes" title="Skrá mætingu">mæti</span>
+									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+								<?php endif;?>
+							</footer>
 							<?php endif;?>
-						</footer-->
 						</article>
 					</li>
 				<?php endforeach;?>

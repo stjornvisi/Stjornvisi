@@ -18,7 +18,7 @@ use Stjornvisi\Form\News as NewsForm;
 
 class NewsController extends AbstractActionController{
 
-	const NEWS_COUNT_PER_PAGE = 30;
+	const NEWS_COUNT_PER_PAGE = 15;
 	/**
 	 * Display one news entry
 	 */
@@ -280,6 +280,7 @@ class NewsController extends AbstractActionController{
             //  access in granted
             if( $access->is_admin || $access->type >= 1 ){
                 $newsService->delete($news->id);
+				return $this->redirect()->toRoute('frettir');
             //ACCESS DENIED
             //  access denied
             }else{

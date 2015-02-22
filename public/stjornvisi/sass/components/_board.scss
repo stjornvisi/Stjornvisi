@@ -17,18 +17,26 @@
 
 	.boardmember-list{
 		@include pie-clearfix;
-		> li{
+		.boardmember-list__item{
 			position: relative;
-			width: 33.33%;
-			float: left;
+			//width: 33.33%;
+			width: 32.33%;
+			//float: left;
 			text-align: center;
 			padding: $gutter/2;
+			display: inline-block;
+			vertical-align: top;
+		}
+		.boardmember-list__item--large{
+			width: 49%;
 		}
 		.borardmember-list__name{
-			font-family: open-sans;
+			font-family: $font-family-open;
 		}
 		.borardmember-list__company{
 			@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			font-family: $font-family-open;
+			color: $color-green-sea;
 		}
 		.borardmember-list__type{
 			@include adjust-font-size-to($font-size-small,1,$font-size-base);

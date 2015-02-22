@@ -1,4 +1,4 @@
-<div class="layout layout--three-columns">
+<div class="layout layout--three-columns page-newslist">
 	<section class="layout__section">
 
 		<ul class="block-list block-list--separator">
@@ -20,10 +20,10 @@
 							</li>
 						</ul>
 					</header>
-					<section class="block-element__body block-element--three-columns">
+					<section class="block-element__body block-element--two-columns">
 						<?php if($news->avatar):?>
 							<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
-								<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" />
+								<img src="<?=$this->basePath("/images/300/{$news->avatar}")?>" />
 							</a>
 						<?php endif;?>
 						<?=$this->paragrapher( mb_substr($news->body,0,1200) );?>

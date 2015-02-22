@@ -88,7 +88,8 @@ class GroupController extends AbstractActionController{
                 'range' => (object)array('from'=>$from, 'to'=>$to, 'range'=>$yearRangeArray),
                 'group' => $group,
                 'news' => $newsService->getRangeByGroup( $group->id, $from, $to ),
-                'events' => $eventService->getRangeByGroup( $group->id, $from, $to ),
+                'events' => $eventService->getRangeByGroup(
+						$group->id, $from, $to, ($auth->hasIdentity())?$auth->getIdentity()->id:null ),
                 'chairmen' => $userService->getByGroup( $group->id,2 ),
                 'managers' => $userService->getByGroup( $group->id,1 ),
                 'users' => $userService->getByGroup( $group->id, 0 ),
@@ -247,6 +248,7 @@ class GroupController extends AbstractActionController{
 				$this->getResponse()->setStatusCode(401);
 				$model = new ViewModel();
 				$model->setTemplate('error/401');
+				return $model;
             }
 
         //ITEM NOT FOUND

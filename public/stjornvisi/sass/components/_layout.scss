@@ -29,6 +29,16 @@
 		margin-left: -60px;
 		margin-bottom: $gutter;
 	}
+	div.layout.layout--no-head:before{
+		content: " ";
+		display: block;
+		background-image: none;
+		background-repeat: no-repeat;
+		height: 0;
+		width: 100%;
+		margin-left: 0px;
+		margin-bottom: 0;
+	}
 
 	/**
 	 * MAIN HEAD
@@ -181,6 +191,7 @@
 	nav[role=navigation]{
 		background-color: $color-green-sea;
 		transform: translate3d(- ($menu-size - $select-size),0,0);
+		-webkit-transform: translate3d(- ($menu-size - $select-size),0,0);
 		transition: all .4s;
 		position: fixed;
 		z-index: 4;
@@ -337,6 +348,7 @@
 
 			nav[role=navigation]{
 				transform: translate3d(0,0,0);
+				-webkit-transform: translate3d(0,0,0);
 			}
 
 		}

@@ -15,7 +15,7 @@
 						<h1 class="boardmember__period"><?=$period?></h1>
 						<ul class="boardmember-list">
 							<?php foreach($board as $item):?>
-								<li>
+								<li class="boardmember-list__item <?= ($item->is_chairman||$item->is_manager)?'boardmember-list__item--large':'';?>">
 									<?php if($item->avatar):?>
 										<img src="<?=$this->basePath("/images/300-square/{$item->avatar}")?>" class="borardmember-list__avatar" />
 									<?php endif;?>
@@ -44,8 +44,8 @@
 			</ul>
 		</div>
 		<div class="layout__meta">
-			<h1>Stjórnvísi eru grasrótarsamtök</h1>
-			<h2>Stjórn Stjórnvísi</h2>
+			<h2 class="layout__headline">Stjórn Stjórnvísi</h2>
+			<p>Stjórnvísi eru grasrótarsamtök</p>
 			<p>Stjórn félagsins er kosin á aðalfundi og skal skipuð formanni og sex virkum félagsmönnum úr faghópastarfinu.
 				Stjórnin tekur ákvarðanir varðandi stjórnun félagsins og daglegan rekstur, þ.m.t. nýjungar í starfseminni og
 				eftirfylgni, í samstarfi við framkvæmdastjóra.</p>

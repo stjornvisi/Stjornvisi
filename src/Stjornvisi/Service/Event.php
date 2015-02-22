@@ -468,6 +468,8 @@ class Event extends AbstractService {
               WHERE GhE.event_id = :id;
             ");
 
+
+
             //FOR EVERY EVENT
             //  get all groups that are connected to event
             //  and add them as an array to the result
@@ -478,6 +480,44 @@ class Event extends AbstractService {
                 $event->event_date = new DateTime($event->event_date);
                 $event->groups = $groupsStatement->fetchAll();
             }
+
+
+
+			$countAttendanceStatement = $this->pdo->prepare(
+				"SELECT
+					(SELECT count(*) FROM Event_has_User EhU WHERE event_id = :event_id)
+ 					+
+					(SELECT count(*) FROM Event_has_Guest EhG WHERE event_id = :event_id)
+					AS 'total';"
+			);
+
+			//CAN USER ATTEND
+			array_map(function($event) use ($id, $countAttendanceStatement){
+				//EVENT AS NO CAPACITY
+				if( ((int)$event->capacity) <= 0 ){
+					$event->can_attend = true;
+					return $event;
+				}
+
+				//EVENT HAS CAPACITY
+				//	ok, the event has capacity and we
+				//	need to find out if it's
+				//	full or not.
+				$countAttendanceStatement->execute(array(
+					'event_id' => $event->id
+				));
+				$capacity = $countAttendanceStatement->fetchObject();
+
+				if( $capacity->total >= (int)$event->capacity ){
+					$event->can_attend = false;
+					return $event;
+				}else{
+					$event->can_attend = true;
+					return $event;
+				}
+
+			},$events);
+
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return $events;
         }catch (PDOException $e){
@@ -620,7 +660,7 @@ class Event extends AbstractService {
      * @return array
      * @throws Exception
      */
-    public function getRangeByGroup($id, DateTime $from, DateTime $to = null){
+    public function getRangeByGroup($id, DateTime $from, DateTime $to = null, $user = null){
         try{
 			if($to == null){
 				$statement = $this->pdo->prepare("
@@ -649,6 +689,8 @@ class Event extends AbstractService {
 				));
 			}
             $events = $statement->fetchAll();
+
+
             //GROUPS
             //  prepare a statement to get all groups
             //  that are connected to event
@@ -668,6 +710,74 @@ class Event extends AbstractService {
                 $event->event_date = new DateTime($event->event_date);
                 $event->groups = $groupsStatement->fetchAll();
             }
+
+			$countAttendanceStatement = $this->pdo->prepare(
+				"SELECT
+					(SELECT count(*) FROM Event_has_User EhU WHERE event_id = :event_id)
+ 					+
+					(SELECT count(*) FROM Event_has_Guest EhG WHERE event_id = :event_id)
+					AS 'total';"
+			);
+
+			//CAN USER ATTEND
+			array_map(function($event) use ($user, $countAttendanceStatement){
+				//NO USER OR EXPIRED
+				//	no user info provided of the the event
+				//	has expired
+				if(!$user || $event->event_date < new DateTime()){
+					$event->can_attend = false;
+					return $event;
+				}
+				//EVENT AS NO CAPACITY
+				if( ((int)$event->capacity) <= 0 ){
+					$event->can_attend = true;
+					return $event;
+				}
+
+				//EVENT HAS CAPACITY
+				//	ok, the event has capacity and we
+				//	need to find out if it's
+				//	full or not.
+				$countAttendanceStatement->execute(array(
+					'event_id' => $event->id
+				));
+				$capacity = $countAttendanceStatement->fetchObject();
+
+				if( $capacity->total >= (int)$event->capacity ){
+					$event->can_attend = false;
+					return $event;
+				}else{
+					$event->can_attend = true;
+					return $event;
+				}
+
+			},$events);
+
+			//IS USER ATTENDING EVENT?
+			//	now we need to know if the user is attending
+			//	the event or not
+			$attendanceStatement = $this->pdo->prepare("
+					SELECT attending FROM `Event_has_User`
+					WHERE event_id = :event_id AND user_id = :user_id
+				");
+			array_map(function($event) use ($attendanceStatement, $user){
+				if($event->can_attend){
+					$attendanceStatement->execute(array(
+						'event_id' => $event->id,
+						'user_id' => (int)$user
+					));
+					$attendance = $attendanceStatement->fetchObject();
+					$event->attending = ( $attendance && isset($attendance->attending))
+						? $attendance->attending
+						: null;
+					return $event;
+				}else{
+					$event->attending = null;
+					return $event;
+				}
+			},$events);
+
+
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return $events;
         }catch (PDOException $e){
