@@ -525,29 +525,29 @@ select[multiple].input-lg {
 .has-error .checkbox,
 .has-error .radio-inline,
 .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
-  color: #a94442;
+  color: #ff4800;
 }
 /* line 21, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
 .has-error .form-control {
-  border-color: #a94442;
+  border-color: #ff4800;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 /* line 24, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
 .has-error .form-control:focus {
-  border-color: #843534;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ce8483;
+  border-color: #cc3a00;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff9166;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #ff9166;
 }
 /* line 31, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
 .has-error .input-group-addon {
-  color: #a94442;
-  border-color: #a94442;
+  color: #ff4800;
+  border-color: #ff4800;
   background-color: #f2dede;
 }
 /* line 37, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_forms.scss */
 .has-error .form-control-feedback {
-  color: #a94442;
+  color: #ff4800;
 }
 
 /* line 394, ../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_forms.scss */
@@ -2078,13 +2078,24 @@ a {
   margin-top: 1.5em;
 }
 
+/* line 269, ../sass/components/_components.scss */
+.block-simple-list > li {
+  padding: 0.375em 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+/* line 274, ../sass/components/_components.scss */
+.layout__headline + .block-simple-list {
+  margin-top: 1.5em;
+}
+
 /**
  * BLOCK-GALLERY
  *
  * List of images displayed in a horizontal
  * order. Used for event page...
  */
-/* line 274, ../sass/components/_components.scss */
+/* line 284, ../sass/components/_components.scss */
 .block-gallery {
   *zoom: 1;
   margin-left: -0.1875em;
@@ -2096,14 +2107,14 @@ a {
   display: table;
   clear: both;
 }
-/* line 279, ../sass/components/_components.scss */
+/* line 289, ../sass/components/_components.scss */
 .block-gallery .block-gallery__item {
   position: relative;
   float: left;
   width: 25%;
   padding: 0.1875em;
 }
-/* line 285, ../sass/components/_components.scss */
+/* line 295, ../sass/components/_components.scss */
 .block-gallery .block-gallery__image {
   border: 1px solid lightgray;
   padding: 0.1875em;
@@ -2117,7 +2128,7 @@ a {
  *
  */
 /*ul*/
-/* line 300, ../sass/components/_components.scss */
+/* line 310, ../sass/components/_components.scss */
 .block-supplement > li {
   position: relative;
   white-space: nowrap;
@@ -2127,25 +2138,25 @@ a {
   text-overflow: ellipsis;
   padding: 0.375em 0;
 }
-/* line 305, ../sass/components/_components.scss */
+/* line 315, ../sass/components/_components.scss */
 .block-supplement a {
   font-size: 0.75em;
   line-height: 2em;
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
 }
-/* line 311, ../sass/components/_components.scss */
+/* line 321, ../sass/components/_components.scss */
 .block-supplement a:before {
   padding-right: 1em;
   font-family: 'icomoon';
   content: "\e60b";
 }
-/* line 316, ../sass/components/_components.scss */
+/* line 326, ../sass/components/_components.scss */
 .block-supplement a[href$=xls]:before,
 .block-supplement a[href$=xlsx]:before {
   content: "\e60c";
 }
-/* line 320, ../sass/components/_components.scss */
+/* line 330, ../sass/components/_components.scss */
 .block-supplement a[href$=pdf]:before {
   content: "\e60d";
 }
@@ -2159,7 +2170,7 @@ a {
  * ...implemented with a <dl> item
  */
 /*dl*/
-/* line 334, ../sass/components/_components.scss */
+/* line 344, ../sass/components/_components.scss */
 .block-property-value {
   *zoom: 1;
 }
@@ -2169,13 +2180,13 @@ a {
   display: table;
   clear: both;
 }
-/* line 336, ../sass/components/_components.scss */
+/* line 346, ../sass/components/_components.scss */
 .block-property-value dt {
   width: 50%;
   float: left;
   clear: left;
 }
-/* line 341, ../sass/components/_components.scss */
+/* line 351, ../sass/components/_components.scss */
 .block-property-value dd {
   width: 50%;
   float: left;
@@ -2194,7 +2205,7 @@ a {
  *		<aside></aside>
  * </div>
  */
-/* line 360, ../sass/components/_components.scss */
+/* line 370, ../sass/components/_components.scss */
 .layout {
   *zoom: 1;
   padding: 0 60px 60px 60px;
@@ -2215,38 +2226,84 @@ a {
   clear: both;
 }
 @media (max-width: 480px) {
-  /* line 360, ../sass/components/_components.scss */
+  /* line 370, ../sass/components/_components.scss */
   .layout {
     padding: 0 15px;
   }
 }
-/* line 367, ../sass/components/_components.scss */
+/* line 377, ../sass/components/_components.scss */
+.layout .layout__sepline,
 .layout .layout__headline {
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
   text-transform: uppercase;
 }
-/* line 371, ../sass/components/_components.scss */
+/* line 382, ../sass/components/_components.scss */
+.layout .layout__sepline a,
 .layout .layout__headline a {
   color: #4a85a1;
   text-decoration: underline;
 }
-/* line 376, ../sass/components/_components.scss */
+/* line 389, ../sass/components/_components.scss */
 .layout .layout__headline.layout__headline--center {
   text-align: center;
 }
-/* line 379, ../sass/components/_components.scss */
+/* line 392, ../sass/components/_components.scss */
+.layout h1.layout__sepline,
 .layout h1.layout__headline {
   font-size: 0.875em;
   line-height: 1.71429em;
 }
-/* line 382, ../sass/components/_components.scss */
+/* line 396, ../sass/components/_components.scss */
+.layout h2.layout__sepline,
 .layout h2.layout__headline {
   font-size: 0.875em;
   line-height: 1.71429em;
   font-weight: 700;
 }
-/* line 393, ../sass/components/_components.scss */
+/* line 400, ../sass/components/_components.scss */
+.layout h2.layout__sepline.layout__headline--top,
+.layout h2.layout__headline.layout__headline--top {
+  padding-top: 1.71429em;
+}
+/* line 403, ../sass/components/_components.scss */
+.layout h2.layout__sepline.layout__headline--bottom,
+.layout h2.layout__headline.layout__headline--bottom {
+  padding-bottom: 1.71429em;
+}
+/* line 412, ../sass/components/_components.scss */
+.layout .layout__sub-paragraph {
+  font-size: 0.75em;
+  line-height: 2em;
+  padding: 0.5em 0;
+}
+/* line 419, ../sass/components/_components.scss */
+.layout .layout__sepline {
+  overflow: hidden;
+  text-align: center;
+}
+/* line 423, ../sass/components/_components.scss */
+.layout .layout__sepline:before,
+.layout .layout__sepline:after {
+  background-color: lightgray;
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+/* line 433, ../sass/components/_components.scss */
+.layout .layout__sepline:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+/* line 437, ../sass/components/_components.scss */
+.layout .layout__sepline:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
+/* line 450, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section {
   *zoom: 1;
   float: left;
@@ -2258,22 +2315,22 @@ a {
   display: table;
   clear: both;
 }
-/* line 397, ../sass/components/_components.scss */
+/* line 454, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section .layout__data {
   float: left;
   width: 60%;
 }
-/* line 401, ../sass/components/_components.scss */
+/* line 458, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__section .layout__meta {
   float: left;
   width: 40%;
 }
-/* line 406, ../sass/components/_components.scss */
+/* line 463, ../sass/components/_components.scss */
 .layout.layout--two-columns .layout__aside {
   float: left;
   width: 20%;
 }
-/* line 417, ../sass/components/_components.scss */
+/* line 474, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section {
   *zoom: 1;
   float: left;
@@ -2285,33 +2342,33 @@ a {
   display: table;
   clear: both;
 }
-/* line 422, ../sass/components/_components.scss */
+/* line 479, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__data {
   float: left;
   width: 50%;
   padding-right: 0.75em;
 }
-/* line 427, ../sass/components/_components.scss */
+/* line 484, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta {
   float: left;
   width: 50%;
   padding-right: 0.75em;
   padding-left: 0.75em;
 }
-/* line 433, ../sass/components/_components.scss */
+/* line 490, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta > div:first-child {
   margin-top: 0;
 }
-/* line 436, ../sass/components/_components.scss */
+/* line 493, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout__meta > div {
   margin-top: 30px;
 }
-/* line 441, ../sass/components/_components.scss */
+/* line 498, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__section .layout_article {
   padding-right: 0.75em;
 }
 @media (max-width: 768px) {
-  /* line 446, ../sass/components/_components.scss */
+  /* line 503, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section .layout__data, .layout.layout--three-columns .layout__section .layout__meta {
     float: none;
     width: auto;
@@ -2319,36 +2376,36 @@ a {
     padding-right: 0;
   }
 }
-/* line 454, ../sass/components/_components.scss */
+/* line 511, ../sass/components/_components.scss */
 .layout.layout--three-columns .layout__aside {
   float: left;
   width: 20%;
   padding-left: 0.75em;
 }
 @media (max-width: 768px) {
-  /* line 461, ../sass/components/_components.scss */
+  /* line 518, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section {
     width: 70%;
   }
-  /* line 464, ../sass/components/_components.scss */
+  /* line 521, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__aside {
     width: 30%;
   }
 }
 @media (max-width: 480px) {
-  /* line 469, ../sass/components/_components.scss */
+  /* line 526, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__section {
     width: auto;
     float: none;
   }
-  /* line 473, ../sass/components/_components.scss */
+  /* line 530, ../sass/components/_components.scss */
   .layout.layout--three-columns .layout__aside {
     width: auto;
     float: none;
     padding-left: 0;
   }
 }
-/* line 485, ../sass/components/_components.scss */
+/* line 542, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__section {
   *zoom: 1;
   float: right;
@@ -2360,42 +2417,42 @@ a {
   display: table;
   clear: both;
 }
-/* line 490, ../sass/components/_components.scss */
+/* line 547, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__aside {
   float: left;
   width: 25%;
   padding-right: 60px;
 }
-/* line 495, ../sass/components/_components.scss */
+/* line 552, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__data {
   float: left;
   width: 50%;
   padding-right: 30px;
 }
-/* line 500, ../sass/components/_components.scss */
+/* line 557, ../sass/components/_components.scss */
 .layout.layout--three-columns-reverse .layout__meta {
   float: left;
   width: 50%;
   padding-left: 30px;
 }
 @media (max-width: 480px) {
-  /* line 507, ../sass/components/_components.scss */
+  /* line 564, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__section {
     float: none;
     width: auto;
   }
-  /* line 511, ../sass/components/_components.scss */
+  /* line 568, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__aside {
     float: none;
     width: auto;
   }
-  /* line 515, ../sass/components/_components.scss */
+  /* line 572, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__data {
     float: none;
     width: 100%;
     padding-right: 0;
   }
-  /* line 520, ../sass/components/_components.scss */
+  /* line 577, ../sass/components/_components.scss */
   .layout.layout--three-columns-reverse .layout__meta {
     float: none;
     width: 100%;
@@ -2411,30 +2468,30 @@ a {
  * needs to be displayed.
  */
 /*table*/
-/* line 538, ../sass/components/_components.scss */
+/* line 595, ../sass/components/_components.scss */
 .block-table td, .block-table td {
   vertical-align: top;
 }
-/* line 541, ../sass/components/_components.scss */
+/* line 598, ../sass/components/_components.scss */
 .block-table td.block-table__numeric {
   text-align: right;
   padding-left: 1.5em;
 }
-/* line 546, ../sass/components/_components.scss */
+/* line 603, ../sass/components/_components.scss */
 .block-table thead td {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
 }
-/* line 556, ../sass/components/_components.scss */
+/* line 613, ../sass/components/_components.scss */
 .block-table.block-table--data caption {
   padding: 1.5em 0;
   text-align: center;
 }
-/* line 560, ../sass/components/_components.scss */
+/* line 617, ../sass/components/_components.scss */
 .block-table.block-table--data thead {
   border-bottom: 2px solid lightgray;
 }
-/* line 564, ../sass/components/_components.scss */
+/* line 621, ../sass/components/_components.scss */
 .block-table.block-table--data tbody tr {
   border-bottom: 1px solid lightgray;
 }
@@ -2447,7 +2504,7 @@ a {
  * we need to add space below (actually on top) to
  * make some air between the label and table.
  */
-/* line 579, ../sass/components/_components.scss */
+/* line 636, ../sass/components/_components.scss */
 .layout__headline + .block-table {
   margin-top: 1.5em;
 }
@@ -2458,11 +2515,11 @@ a {
  * calendar month.
  *
  */
-/* line 589, ../sass/components/_components.scss */
+/* line 646, ../sass/components/_components.scss */
 .block-calendar {
   position: relative;
 }
-/* line 591, ../sass/components/_components.scss */
+/* line 648, ../sass/components/_components.scss */
 .block-calendar td {
   position: relative;
   width: 14.28571%;
@@ -2470,36 +2527,36 @@ a {
   padding: 0.5em;
   overflow: hidden;
 }
-/* line 598, ../sass/components/_components.scss */
+/* line 655, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header {
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
 }
-/* line 602, ../sass/components/_components.scss */
+/* line 659, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header tr {
   border-bottom: 2px solid lightgray;
 }
-/* line 604, ../sass/components/_components.scss */
+/* line 661, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header tr td {
   text-align: center;
 }
-/* line 614, ../sass/components/_components.scss */
+/* line 671, ../sass/components/_components.scss */
 .block-calendar .block-calendar__body tr td {
   border: 1px solid lightgray;
   padding-top: 1.5em;
   padding-bottom: 1.5em;
 }
-/* line 626, ../sass/components/_components.scss */
+/* line 683, ../sass/components/_components.scss */
 .block-calendar .block-calendar__caption {
   position: relative;
 }
-/* line 630, ../sass/components/_components.scss */
+/* line 687, ../sass/components/_components.scss */
 .block-calendar .block-calendar__pagination {
   position: absolute;
   top: -15px;
   right: 15px;
 }
-/* line 636, ../sass/components/_components.scss */
+/* line 693, ../sass/components/_components.scss */
 .block-calendar .block-calendar__headline {
   font-size: 1.5em;
   line-height: 1em;
@@ -2509,7 +2566,7 @@ a {
   text-align: center;
   text-transform: capitalize;
 }
-/* line 646, ../sass/components/_components.scss */
+/* line 703, ../sass/components/_components.scss */
 .block-calendar .block-calendar__date-label {
   position: absolute;
   top: 15px;
@@ -2521,11 +2578,11 @@ a {
   color: #ecf2f5;
   z-index: -1;
 }
-/* line 657, ../sass/components/_components.scss */
+/* line 714, ../sass/components/_components.scss */
 .block-calendar .block-calendar__subject-list > li {
   margin-top: 1.5em;
 }
-/* line 659, ../sass/components/_components.scss */
+/* line 716, ../sass/components/_components.scss */
 .block-calendar .block-calendar__subject-list > li > a {
   display: block;
   font-family: "Open Sans", sans-serif;
@@ -2533,29 +2590,29 @@ a {
   font-size: 0.75em;
   line-height: 1.5em;
 }
-/* line 667, ../sass/components/_components.scss */
+/* line 724, ../sass/components/_components.scss */
 .block-calendar .block-calendar__subject-list > li:first-child {
   margin-top: 0;
 }
-/* line 672, ../sass/components/_components.scss */
+/* line 729, ../sass/components/_components.scss */
 .block-calendar .block-calendar__group-list > li {
   font-family: "Open Sans", sans-serif;
   font-size: 0.75em;
   line-height: 1.5em;
   color: #4a85a1;
 }
-/* line 676, ../sass/components/_components.scss */
+/* line 733, ../sass/components/_components.scss */
 .block-calendar .block-calendar__group-list > li > a {
   color: #4a85a1;
 }
 
-/* line 682, ../sass/components/_components.scss */
+/* line 739, ../sass/components/_components.scss */
 .block-calendar__pagination {
   border: 1px solid lightgray;
   display: inline-block;
   margin-bottom: 30px;
 }
-/* line 687, ../sass/components/_components.scss */
+/* line 744, ../sass/components/_components.scss */
 .block-calendar__pagination a {
   font-family: 'icomoon';
   speak: none;
@@ -2568,17 +2625,17 @@ a {
   padding: 1.5em;
   font-size: 0;
 }
-/* line 700, ../sass/components/_components.scss */
+/* line 757, ../sass/components/_components.scss */
 .block-calendar__pagination a:before {
   font-size: 16px;
   display: inline-block;
   padding: 0.75em 1.5em;
 }
-/* line 705, ../sass/components/_components.scss */
+/* line 762, ../sass/components/_components.scss */
 .block-calendar__pagination .prev:before {
   content: "\f0a4";
 }
-/* line 708, ../sass/components/_components.scss */
+/* line 765, ../sass/components/_components.scss */
 .block-calendar__pagination .next:before {
   content: "\e60e";
   border-left: 1px solid lightgray;
@@ -2592,7 +2649,7 @@ a {
  * horizontal line with the active element
  * emphasized
  */
-/* line 723, ../sass/components/_components.scss */
+/* line 780, ../sass/components/_components.scss */
 .block_pagination {
   *zoom: 1;
 }
@@ -2602,36 +2659,50 @@ a {
   display: table;
   clear: both;
 }
-/* line 725, ../sass/components/_components.scss */
+/* line 782, ../sass/components/_components.scss */
 .block_pagination .block_pagination__item {
   float: left;
 }
-/* line 728, ../sass/components/_components.scss */
+/* line 785, ../sass/components/_components.scss */
 .block_pagination .block_pagination__link {
   display: block;
   padding: 0.375em 0.75em;
 }
-/* line 732, ../sass/components/_components.scss */
+/* line 789, ../sass/components/_components.scss */
 .block_pagination .block_pagination__link:hover,
 .block_pagination .block_pagination__link--active {
   background-color: #4a85a1;
   color: white;
 }
 
-/* line 742, ../sass/components/_components.scss */
+/**
+ * drag over file upload component
+ */
+/* line 802, ../sass/components/_components.scss */
 textarea.over, input.over {
   box-shadow: inset 0 10 5px rgba(0, 0, 0, 0.5);
 }
 
-/* line 745, ../sass/components/_components.scss */
+/* line 805, ../sass/components/_components.scss */
 textarea.enter, input.enter {
   background-color: #f0f0f0;
   border-style: dashed;
 }
 
-/* line 749, ../sass/components/_components.scss */
+/* line 809, ../sass/components/_components.scss */
 textarea.prossess, input.prossess {
   background-color: gainsboro;
+}
+
+/* line 815, ../sass/components/_components.scss */
+.separator {
+  text-align: center;
+  border-bottom: 1px solid lightgray;
+}
+/* line 818, ../sass/components/_components.scss */
+.separator span {
+  background-color: white;
+  display: inline-block;
 }
 
 /**
@@ -2968,13 +3039,57 @@ input[name=avatar] {
   cursor: pointer;
 }
 
+/* line 18, ../sass/components/_form.scss */
+.form-group.form-group--right {
+  text-align: right;
+}
+
+/**
+ * Twitter-Bootstrap styles were missing how a list
+ * of checkboxes was displayed, this adds a block
+ * element statement to the labels.
+ */
+/* line 30, ../sass/components/_form.scss */
+.form-group .checkbox label {
+  display: block;
+}
+
+/**
+ * ZF2 and Bootstrap differ in how an input error markup
+ * is constructed, in stead of overwriting the view-helper
+ * to make it compliant with Bootstrap, I'll just overwrite
+ * the css
+ */
+/* line 44, ../sass/components/_form.scss */
+.form-group.has-error ul li {
+  font-family: "Open Sans", sans-serif;
+  padding: 0.375em 0;
+  color: #ff4800;
+  text-align: right;
+}
+
+/* line 53, ../sass/components/_form.scss */
+[required] {
+  position: relative;
+}
+
+/* line 56, ../sass/components/_form.scss */
+[required]:before {
+  position: absolute;
+  display: block;
+  top: 0;
+  right: 0;
+  content: "*";
+  color: #ff4800;
+}
+
 /**
  * Buttons.
  *
  * This overwrites the Twitter-Bootstrap styles
  * for the things that I don't want inhered.
  */
-/* line 25, ../sass/components/_form.scss */
+/* line 71, ../sass/components/_form.scss */
 .btn, .attending {
   font-size: 0.75em;
   line-height: 2em;
@@ -2986,7 +3101,7 @@ input[name=avatar] {
   padding: 0.5em 2em;
 }
 
-/* line 35, ../sass/components/_form.scss */
+/* line 81, ../sass/components/_form.scss */
 .btn-facebook {
   color: white;
   background-color: #355088;
@@ -3019,41 +3134,51 @@ input[name=avatar] {
  * Hey inhered from Twitter-Bootstrap styles but are
  * then extended for the extra functionality.
  */
-/* line 47, ../sass/components/_form.scss */
+/* line 93, ../sass/components/_form.scss */
 .attending.yes {
   color: white;
   background-color: #4ca14a;
 }
-/* line 51, ../sass/components/_form.scss */
+/* line 97, ../sass/components/_form.scss */
 .attending.no {
   color: white;
   background-color: #ff4800;
 }
 
-/* line 57, ../sass/components/_form.scss */
+/* line 103, ../sass/components/_form.scss */
 a.attending.yes {
   color: white;
   background-color: rgba(76, 161, 74, 0.5);
 }
-/* line 61, ../sass/components/_form.scss */
+/* line 107, ../sass/components/_form.scss */
 a.attending.no {
   color: white;
   background-color: rgba(255, 72, 0, 0.5);
 }
 
-/* line 66, ../sass/components/_form.scss */
+/* line 112, ../sass/components/_form.scss */
 span.attending {
   cursor: default;
 }
 
-/**
- * Twitter-Bootstrap styles were missing how a list
- * of checkboxes was displayed, this adds a block
- * element statement to the labels.
- */
-/* line 79, ../sass/components/_form.scss */
-.form-group .checkbox label {
-  display: block;
+/* line 3, ../sass/components/_widget.scss */
+.widget-slider {
+  overflow: hidden;
+}
+/* line 5, ../sass/components/_widget.scss */
+.widget-slider .widget-slider__wrapper {
+  *zoom: 1;
+  transition: margin-left .2s ease-in;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.widget-slider .widget-slider__wrapper:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 9, ../sass/components/_widget.scss */
+.widget-slider .widget-slider__slide {
+  float: left;
 }
 
 /* line 4, ../sass/pages/_landing.scss */
@@ -3703,34 +3828,36 @@ span.attending {
   clear: both;
 }
 /* line 4, ../sass/pages/_error.scss */
-.page-error .page-error__headline {
+.page-error .layout__message {
+  float: left;
+  width: 50%;
+}
+/* line 8, ../sass/pages/_error.scss */
+.page-error .layout__description {
+  float: left;
+  width: 50%;
+}
+/* line 12, ../sass/pages/_error.scss */
+.page-error .layout__exception {
+  clear: both;
+  width: 100%;
+}
+
+/* line 18, ../sass/pages/_error.scss */
+.page-error__headline {
   font-family: "Bitter", serif;
   font-weight: 700;
   font-size: 2.25em;
   line-height: 2em;
 }
-/* line 9, ../sass/pages/_error.scss */
-.page-error .page-error__message {
+
+/* line 23, ../sass/pages/_error.scss */
+.page-error__message {
   font-family: "Bitter", serif;
   font-weight: 700;
   font-size: 1.5em;
   line-height: 1em;
   color: #4a85a1;
-}
-/* line 16, ../sass/pages/_error.scss */
-.page-error .layout__message {
-  float: left;
-  width: 50%;
-}
-/* line 20, ../sass/pages/_error.scss */
-.page-error .layout__description {
-  float: left;
-  width: 50%;
-}
-/* line 24, ../sass/pages/_error.scss */
-.page-error .layout__exception {
-  clear: both;
-  width: 100%;
 }
 
 /**
@@ -3742,7 +3869,7 @@ span.attending {
 /**
  *
  */
-/* line 52, ../sass/pages/_error.scss */
+/* line 51, ../sass/pages/_error.scss */
 .page-exception pre {
   font-family: monospace;
   font-size: 0.75em;
@@ -3818,6 +3945,62 @@ span.attending {
 .page-newslist .block-element__poster img {
   width: 100%;
   margin: 0;
+}
+
+/* line 2, ../sass/pages/_user-create.scss */
+.page-user-create {
+  /**
+   * Slider to select company or create one
+   */
+}
+/* line 3, ../sass/pages/_user-create.scss */
+.page-user-create .form-horizontal .form-group {
+  margin-left: 0;
+  margin-right: 0;
+}
+/* line 9, ../sass/pages/_user-create.scss */
+.page-user-create .page-user-create__main-menu {
+  *zoom: 1;
+  margin-bottom: 60px;
+  border: 1px solid lightgray;
+}
+/* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
+.page-user-create .page-user-create__main-menu:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 13, ../sass/pages/_user-create.scss */
+.page-user-create .page-user-create__main-menu li {
+  padding: 0.75em;
+  text-align: center;
+  width: 33.33%;
+  float: left;
+}
+/* line 19, ../sass/pages/_user-create.scss */
+.page-user-create .page-user-create__main-menu .page-user-create__main-menu--active {
+  font-weight: 700;
+}
+/* line 28, ../sass/pages/_user-create.scss */
+.page-user-create .company-connect .widget-slider__wrapper {
+  width: 400%;
+}
+/* line 31, ../sass/pages/_user-create.scss */
+.page-user-create .company-connect .widget-slider__slide {
+  width: 25%;
+}
+/* line 37, ../sass/pages/_user-create.scss */
+.page-user-create .user-create__help-section {
+  margin: 0.75em 0;
+  background-color: white;
+  padding: 0;
+  transition: all .4s;
+  cursor: pointer;
+}
+/* line 44, ../sass/pages/_user-create.scss */
+.page-user-create .user-create__help-section.user-create__help-section--active {
+  padding: 0.75em 0;
+  background-color: #f6f7fb;
 }
 
 /*# sourceMappingURL=screen.css.map */

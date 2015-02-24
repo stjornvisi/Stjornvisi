@@ -9,7 +9,9 @@
 namespace Stjornvisi\Form;
 
 use Stjornvisi\Service\Values;
+use Stjornvisi\Service\Company;
 use Stjornvisi\Validator\Kennitala;
+use Stjornvisi\Validator\UniqueSSN;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\Validator\InArray;
@@ -17,8 +19,10 @@ use Zend\Validator\InArray;
 class NewUserCompany extends Form implements InputFilterProviderInterface  {
 
 	private $values;
-	public function __construct(Values $values){
+	private $company;
+	public function __construct(Values $values, Company $company){
 		$this->values = $values;
+		$this->company = $company;
 		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
 
 		$this->setAttribute('method', 'post');
@@ -27,11 +31,11 @@ class NewUserCompany extends Form implements InputFilterProviderInterface  {
 			'name' => 'company-name',
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
-				'placeholder' => 'Nafn fyrirtækis.',
+				'placeholder' => 'Nafn.',
 				'required' => 'required',
 			),
 			'options' => array(
-				'label' => 'Nafn fyrirtækis',
+				'label' => 'Nafn',
 			),
 		));
 
@@ -43,7 +47,7 @@ class NewUserCompany extends Form implements InputFilterProviderInterface  {
 				'required' => 'required',
 			),
 			'options' => array(
-				'label' => 'Kennitala fyrirtækis',
+				'label' => 'Kennitala',
 			),
 		));
 
@@ -55,7 +59,7 @@ class NewUserCompany extends Form implements InputFilterProviderInterface  {
 				'required' => 'required',
 			),
 			'options' => array(
-				'label' => 'Heimilisfang fyrirtækis',
+				'label' => 'Heimilisfang',
 			),
 		));
 
@@ -67,7 +71,7 @@ class NewUserCompany extends Form implements InputFilterProviderInterface  {
 				'required' => 'required',
 			),
 			'options' => array(
-				'label' => 'Póstfang fyrirtækis',
+				'label' => 'Póstfang',
 				'empty_option' => 'Veldu póstfang',
 				'value_options' => $values->getPostalCode()
 			),
@@ -80,7 +84,7 @@ class NewUserCompany extends Form implements InputFilterProviderInterface  {
 				'placeholder' => 'http://www.',
 			),
 			'options' => array(
-				'label' => 'Heimasíða fyrirtækis',
+				'label' => 'Heimasíða',
 			),
 		));
 
@@ -151,6 +155,15 @@ class NewUserCompany extends Form implements InputFilterProviderInterface  {
 					),
 				),
 			),
+			'company-ssn' => array(
+				'validators' => array(
+					new UniqueSSN( $this->company )
+				),
+				'filters'  => array(
+					array('name' => 'Digits'),
+					array('name' => 'StringTrim'),
+				),
+			),
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			/*
 						'company-ssh' => array(
@@ -196,6 +209,7 @@ class NewUserCompany extends Form implements InputFilterProviderInterface  {
 			),
 			// - - - - - - - - - - - - - - - - - - - - - - - - - -
 			'company-web' => array(
+				'allow_empty' => true,
 				'filters'  => array(
 					array('name' => 'StringTrim'),
 				),

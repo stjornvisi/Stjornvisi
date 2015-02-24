@@ -994,14 +994,21 @@ class Event extends AbstractService {
 	}
 
 	/**
-	 * Get all gallery images.
+	 * Get images from event gallery
+	 *
+	 * @param null $limit
+	 * @param bool $rand
+	 * @return array
+	 * @throws Exception
 	 */
-	public function fetchGallery( $limit = null ){
+	public function fetchGallery( $limit = null, $rand = false ){
 		try{
 			if($limit){
 				$statement = $this->pdo->prepare("
-					SELECT * FROM EventGallery GE
-					ORDER BY `created` DESC
+					SELECT GE.*, E.subject FROM EventGallery GE
+					JOIN Event E ON (E.id = GE.event_id)
+					GROUP BY GE.event_id
+					ORDER BY ".(($rand)?'RAND()':'`created` DESC')."
 					LIMIT 0, ".$limit."
 				");
 				$statement->execute();

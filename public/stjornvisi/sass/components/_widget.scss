@@ -1,0 +1,13 @@
+
+
+	.widget-slider{
+		overflow: hidden;
+		.widget-slider__wrapper{
+			@include pie-clearfix;
+			transition: margin-left .2s ease-in;
+		}
+		.widget-slider__slide{
+			float: left;
+		}
+
+	}

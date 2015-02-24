@@ -6,8 +6,9 @@
     "use strict";
 
 
+    var mock = {addEventListener:function(){}};
     var active = undefined;
-    document.querySelector('.categories__groups').addEventListener('click',function(event){
+    (document.querySelector('.categories__groups')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = 0;
         if(active == undefined){
@@ -27,7 +28,7 @@
 
 
     },false);
-    document.querySelector('.categories__users').addEventListener('click',function(event){
+    (document.querySelector('.categories__users')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = '-100%';
         if(active == undefined){
@@ -45,7 +46,7 @@
             active.classList.add('active');
         }
     },false);
-    document.querySelector('.categories__config').addEventListener('click',function(event){
+    (document.querySelector('.categories__config')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = '-200%';
         if(active == undefined){

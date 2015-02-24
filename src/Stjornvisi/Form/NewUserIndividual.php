@@ -9,13 +9,18 @@
 namespace Stjornvisi\Form;
 
 
+use Stjornvisi\Service\Company;
+use Stjornvisi\Validator\UniqueSSN;
 use Zend\Form\Form;
 use Stjornvisi\Service\Values;
+use Zend\InputFilter\InputFilterProviderInterface;
 
-class NewUserIndividual extends Form {
+class NewUserIndividual extends Form implements InputFilterProviderInterface  {
 
-	public function __construct(Values $values){
+	private $company;
+	public function __construct(Values $values, Company $company){
 
+		$this->company = $company;
 		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
 
 		$this->setAttribute('method', 'post');
@@ -76,4 +81,25 @@ class NewUserIndividual extends Form {
 	}
 
 
+	/**
+	 * Should return an array specification compatible with
+	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
+	 *
+	 * @return array
+	 */
+	public function getInputFilterSpecification(){
+
+		return array(
+			'person-ssn' => array(
+				'validators' => array(
+					new UniqueSSN( $this->company )
+				),
+				'filters'  => array(
+					array('name' => 'Digits'),
+					array('name' => 'StringTrim'),
+				),
+			),
+		);
+
+	}
 } 

@@ -265,6 +265,16 @@
 }
 
 
+.block-simple-list{
+	> li{
+		padding: rhythm(1/4,$font-size-base) 0;
+		font-family: $font-family-open;
+	}
+}
+.layout__headline + /*ul*/.block-simple-list {
+	margin-top: rhythm(1,$font-size-base);
+}
+
 /**
  * BLOCK-GALLERY
  *
@@ -364,6 +374,7 @@
 		padding: 0 $gutter/2;
 	}
 
+	.layout__sepline,
 	.layout__headline {
 		font-family: $font-family-open;
 		color: $color-green-sea;
@@ -372,19 +383,65 @@
 			color: $color-green-sea;
 			text-decoration: underline;
 		}
+		&.layout__headline--top{}
+		&.layout__headline--bottom{}
 	}
 	.layout__headline.layout__headline--center{
 		text-align: center;
 	}
+	h1.layout__sepline,
 	h1.layout__headline{
 		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
 	}
+	h2.layout__sepline,
 	h2.layout__headline{
 		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
 		font-weight: $font-weight-bold;
+		&.layout__headline--top{
+			padding-top: rhythm(1,$font-size-sub);
+		}
+		&.layout__headline--bottom{
+			padding-bottom: rhythm(1,$font-size-sub);
+		}
 	}
+	h3.layout__sepline,
 	h3.layout__headline{}
+	h4.layout__sepline,
 	h4.layout__headline{}
+
+	.layout__sub-paragraph{
+		@include adjust-font-size-to($font-size-small,1,$font-size-base);
+		padding: rhythm(1/4,$font-size-small) 0;
+	}
+
+
+
+	.layout__sepline {
+		overflow: hidden;
+		text-align: center;
+	}
+	.layout__sepline:before,
+	.layout__sepline:after {
+		background-color: $color-gray-light;
+		content: "";
+		display: inline-block;
+		height: 1px;
+		position: relative;
+		vertical-align: middle;
+		width: 50%;
+	}
+	.layout__sepline:before {
+		right: 0.5em;
+		margin-left: -50%;
+	}
+	.layout__sepline:after {
+		left: 0.5em;
+		margin-right: -50%;
+	}
+
+
+
+
 
 	/**
 	 *
@@ -739,6 +796,9 @@
 // - - - - - [SHAME] - - - - - - - - - - - - - - - - - - - - - -
 
 
+/**
+ * drag over file upload component
+ */
 textarea.over, input.over{
 	box-shadow: inset 0 10 5px rgba(0,0,0,.5);
 }
@@ -748,4 +808,16 @@ textarea.enter, input.enter{
 }
 textarea.prossess, input.prossess{
 	background-color: rgb(220,220,220);
+}
+
+
+
+.separator{
+	text-align: center;
+	border-bottom: 1px solid $color-gray-light;
+	span {
+		background-color: $color-white;
+		display: inline-block;
+
+	}
 }

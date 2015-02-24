@@ -5,42 +5,64 @@
  * Date: 07/11/14
  * Time: 08:45
  */
-?>
 
-
-<ul>
-	<li>1# Notendaupplýsingar</li>
-	<li><strong>2# Fyrirtækjaupplýsingar</strong></li>
-	<li>3# Innskráning</li>
-</ul>
-
-<?php
 $this->form->setAttribute('class','form-horizontal');
 ?>
-<?=$this->form()->openTag($this->form);?>
 
-<div class="form-group">
-	<?=$this->formLabel($form->get('name'));?>
-	<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
-	<?=$this->formElementErrors($form->get('name'));?>
+<div class="layout layout--three-columns page-user-create">
+	<section class="layout__section">
+		<ul class="page-user-create__main-menu">
+			<li class="page-user-create__main-menu--active">1# Notendaupplýsingar</li>
+			<li>2# Fyrirtækjaupplýsingar</li>
+			<li>3# Innskráning</li>
+		</ul>
+		<div class="layout__data">
+			<?=$this->form()->openTag($this->form);?>
+
+			<div class="form-group <?=(!empty($this->form->get('name')->getMessages()))?'has-error':'';?> ">
+				<?=$this->formLabel($form->get('name'));?>
+				<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('name'));?>
+			</div>
+
+			<div class="form-group <?=(!empty($this->form->get('email')->getMessages()))?'has-error':'';?> ">
+				<?=$this->formLabel($form->get('email'));?>
+				<?=$this->formElement($form->get('email')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('email'));?>
+			</div>
+
+			<div class="form-group <?=(!empty($this->form->get('title')->getMessages()))?'has-error':'';?> ">
+				<?=$this->formLabel($form->get('title'));?>
+				<?=$this->formElement($form->get('title')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('title'));?>
+			</div>
+
+			<div class="form-group form-group--right">
+				<?=$this->formElement(
+					$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Stofna')
+				);?>
+			</div>
+
+			<?= $this->form()->closeTag() ?>
+		</div>
+		<div class="layout__meta">
+			<h1 class="layout__headline">Notenda upplýsingar</h1>
+			<p>Að stofna notendaaðgang er einfalt. Ferlið skiptist í þrjá hluta</p>
+			<ol>
+				<li>First þurfum við að fá frá þér fullt nafn, gilt netfang og starfstitil</li>
+				<li>Því næst þarft þú að tengja þig við fyrirtæki, stofnun eða skóla</li>
+				<li>Seinast skráir þú þig inn.</li>
+			</ol>
+			<h1 class="layout__headline">Verðskrá</h1>
+			<p>Þarf ekki hér að vera verðskrá?</p>
+			<p></p>
+		</div>
+	</section>
+	<aside class="layout__aside">
+
+	</aside>
 </div>
 
 
-<div class="form-group">
-	<?=$this->formLabel($form->get('email'));?>
-	<?=$this->formElement($form->get('email')->setAttribute('class','form-control'));?>
-	<?=$this->formElementErrors($form->get('email'));?>
-</div>
 
 
-<div class="form-group">
-	<?=$this->formLabel($form->get('title'));?>
-	<?=$this->formElement($form->get('title')->setAttribute('class','form-control'));?>
-	<?=$this->formElementErrors($form->get('title'));?>
-</div>
-
-<div class="form-group">
-	<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
-</div>
-
-<?= $this->form()->closeTag() ?>

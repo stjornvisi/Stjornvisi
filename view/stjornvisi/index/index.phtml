@@ -113,6 +113,17 @@
 				</li>
 			<?php endforeach;?>
 			</ul>
+
+			<h1 class="layout__headline">Myndir</h1>
+			<ul class="block-gallery">
+				<?php foreach($this->gallery as $img):?>
+				<li class="block-gallery__item">
+					<a href="<?=$this->url('vidburdir/index',array('id'=>$img->event_id))?>">
+					<img src="<?=$this->basePath('images/60/'.$img->name)?>" class="block-gallery__image" title="<?=$img->subject?>">
+					</a>
+				</li>
+				<?php endforeach;?>
+			</ul>
 		</aside>
 	</div>
 
@@ -125,7 +136,7 @@
 			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h1>
 		<!--a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a-->
 		<a href="<?=$this->url('auth')?>" class="btn btn-primary">Innskrá</a>
-		<a href="<?=$this->url('auth/create')?>" class="btn btn-success">Stofna aðgang</a>
+		<a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
 	</div>
 
 	<div class="landing-page__panel">

@@ -15,6 +15,52 @@
 	.form-control[readonly]{
 		cursor: pointer;
 	}
+	.form-group.form-group--right{
+		text-align: right;
+	}
+
+	/**
+	 * Twitter-Bootstrap styles were missing how a list
+	 * of checkboxes was displayed, this adds a block
+	 * element statement to the labels.
+	 */
+	.form-group{
+		input[type=checkbox]{}
+		.checkbox{
+			label{
+				display: block;
+			}
+		}
+	}
+
+	/**
+	 * ZF2 and Bootstrap differ in how an input error markup
+	 * is constructed, in stead of overwriting the view-helper
+	 * to make it compliant with Bootstrap, I'll just overwrite
+	 * the css
+	 */
+	.form-group.has-error{
+		ul {
+			li{
+				font-family: $font-family-open;
+				padding: rhythm(1/4,$font-size-base) 0;
+				color: $color-red;
+				text-align: right;
+			}
+		}
+	}
+
+	[required]{
+		position: relative;
+	}
+	[required]:before{
+		position: absolute;
+		display: block;
+		top: 0;
+		right: 0;
+		content: "*";
+		color: $color-red;
+	}
 
 	/**
 	 * Buttons.
@@ -68,16 +114,3 @@
 	}
 
 
-	/**
-	 * Twitter-Bootstrap styles were missing how a list
-	 * of checkboxes was displayed, this adds a block
-	 * element statement to the labels.
-	 */
-	.form-group{
-		input[type=checkbox]{}
-		.checkbox{
-			label{
-				display: block;
-			}
-		}
-	}

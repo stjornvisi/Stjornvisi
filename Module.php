@@ -353,13 +353,19 @@ class Module{
 					return new NewUserCompanySelect( $sm->get('Stjornvisi\Service\Company') );
 				},
 				'Stjornvisi\Form\NewUserCompany' => function($sm){
-					return new NewUserCompany( $sm->get('Stjornvisi\Service\Values') );
+					return new NewUserCompany(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\Company')
+					);
 				},
 				'Stjornvisi\Form\NewUserUniversitySelect' => function($sm){
 					return new NewUserUniversitySelect( $sm->get('Stjornvisi\Service\Company') );
 				},
 				'Stjornvisi\Form\NewUserIndividual' => function($sm){
-					return new NewUserIndividual( $sm->get('Stjornvisi\Service\Values') );
+					return new NewUserIndividual(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\Company')
+					);
 				},
 				'Stjornvisi\Form\NewUserCredentials' => function($sm){
 					return new NewUserCredentials(

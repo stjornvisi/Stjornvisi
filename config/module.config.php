@@ -1377,6 +1377,58 @@ return array(
 				),
 			),
 
+			'access' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/adgangur',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Auth',
+						'action' => 'login'
+					),
+				),
+				'child_routes' => array(
+					'create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/stofna',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'create-user'
+							),
+						)
+					),
+					'company' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/fyrirtaeki',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'create-user-company'
+							),
+						)
+					),
+					'login' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/innskra',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'create-user-login'
+							),
+						)
+					),
+					'confirm' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/stadfesta',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'create-user-confirm'
+							),
+						)
+					),
+				),
+			),
 
 
 			'auth-out' => array(
@@ -1445,51 +1497,6 @@ return array(
 
 				)
 			),
-
-
-
-			/*
-            'auth-in' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/innskra',
-                    'defaults' => array(
-                        'controller' => 'Stjornvisi\Controller\Auth',
-                        'action' => 'login'
-                    ),
-                ),
-            ),
-            'auth-out' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/utskra',
-                    'defaults' => array(
-                        'controller' => 'Stjornvisi\Controller\Auth',
-                        'action' => 'logout'
-                    ),
-                ),
-            ),
-            'auth-callback' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/callback',
-                    'defaults' => array(
-                        'controller' => 'Stjornvisi\Controller\Auth',
-                        'action' => 'callback'
-                    ),
-                ),
-            ),
-			'auth-connect' => array(
-				'type' => 'Zend\Mvc\Router\Http\Literal',
-				'options' => array(
-					'route' => '/facebook-connect',
-					'defaults' => array(
-						'controller' => 'Stjornvisi\Controller\Auth',
-						'action' => 'request-connection'
-					),
-				),
-			),
-			*/
         ),
     ),
     'service_manager' => array(

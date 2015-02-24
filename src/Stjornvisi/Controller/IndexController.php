@@ -50,6 +50,7 @@ class IndexController extends AbstractActionController{
                 'groups' => $groupService->getByUser( $auth->getIdentity()->id ),
                 'news' => $newsService->getByUser( $auth->getIdentity()->id ),
                 'events' => $eventService->getByUser( $auth->getIdentity()->id ),
+				'gallery' => $eventService->fetchGallery(16),
                 'media' => $eventService->getMediaByUser( $auth->getIdentity()->id ),
                 'is_connected' => $companyService->getByUser( $auth->getIdentity()->id ),
                 'identity' => $auth->getIdentity()
@@ -60,7 +61,7 @@ class IndexController extends AbstractActionController{
 				'groups' => $groupService->fetchAll(),
 				'event' => $eventService->getNext(),
 				'news' => $newsService->getNext(),
-                'gallery' => $eventService->fetchGallery(12),
+                'gallery' => $eventService->fetchGallery(12,true),
             ));
         }
 

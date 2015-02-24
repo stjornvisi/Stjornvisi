@@ -2,6 +2,7 @@
 
 namespace Stjornvisi\Controller;
 
+use Stjornvisi\Form\NewUserPassword;
 use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\SessionManager;
@@ -30,26 +31,34 @@ class AuthController extends AbstractActionController{
 	/**
 	 * Create user.
 	 *
-	 * @todo send email
+	 * First installment of creating new user in the system.
+	 *
+	 * If POST, all information is collected and stored in a session,
+	 * nothing is written to the database....
 	 *
 	 */
 	public function createUserAction(){
 
 		$session = new Container('create_user');
 		$sm = $this->getServiceLocator();
-		$form = $sm->get('Stjornvisi\Form\NewUserCredentials');
-		$form->setAttribute('action',$this->url()->fromRoute('notandi/create'));
+		$userService = $sm->get('Stjornvisi\Service\User'); /** @var  $userService \Stjornvisi\Service\User*/
+		$form = $sm->get('Stjornvisi\Form\NewUserCredentials'); /** @var $form \Stjornvisi\Form\NewUserCredentials */
+		$form->setAttribute('action',$this->url()->fromRoute('access/create'));
 
 		//POST
 		if($this->request->isPost() ){
 			$form->setData($this->request->getPost());
+
+			//VALIDATE FORM
+			//	validate the form and if valid, store the values in session
+			//	and move on to the next part of the creation process.
 			if( $form->isValid() ){
 				//$data = (array)$form->getData();
 				$session->name = $form->get('name')->getValue();
 				$session->email = $form->get('email')->getValue();
 				$session->title = $form->get('title')->getValue();
 
-				return $this->redirect()->toRoute('notandi/company');
+				return $this->redirect()->toRoute('access/company');
 
 			}else{
 				return new ViewModel(array(
@@ -64,6 +73,14 @@ class AuthController extends AbstractActionController{
 		}
 	}
 
+	/**
+	 * Create company.
+	 *
+	 * Next installment of creating new user in the system.
+	 * This time it's the company.
+	 *
+	 * @return \Zend\Http\Response|ViewModel
+	 */
 	public function createUserCompanyAction(){
 
 		$sm = $this->getServiceLocator();
@@ -71,10 +88,22 @@ class AuthController extends AbstractActionController{
 		$companyService = $sm->get('Stjornvisi\Service\Company');
 		/** @var  $companyService \Stjornvisi\Service\Company */
 
+		//FORMS
+		//	create and configure all needed forms.
 		$companyForm = $sm->get('Stjornvisi\Form\NewUserCompany');
+		$companyForm->setAttribute('action',$this->url()->fromRoute('access/company'));
+
 		$companySelectForm =  $sm->get('Stjornvisi\Form\NewUserCompanySelect');
+		$companySelectForm->setAttribute('action',$this->url()->fromRoute('access/company'));
+		/** @var $companySelectForm \Stjornvisi\Form\NewUserCompanySelect */
+
 		$individualForm = $sm->get('Stjornvisi\Form\NewUserIndividual');
+		$individualForm->setAttribute('action',$this->url()->fromRoute('access/company'));
+
 		$universitySelectForm =  $sm->get('Stjornvisi\Form\NewUserUniversitySelect');
+		$universitySelectForm->setAttribute('action',$this->url()->fromRoute('access/company'));
+
+		$session = new Container('create_user');
 
 		//POST
 		//	post request
@@ -99,33 +128,37 @@ class AuthController extends AbstractActionController{
 						'business_type' => $data['company-type']
 					));
 
-					$session = new Container('create_user');
 					$session->company = $id;
+					$session->company_key = 1;
 
-					return $this->redirect()->toRoute('notandi/login');
+					return $this->redirect()->toRoute('access/login');
 				}else{
 					return new ViewModel(array(
 						'companyForm' => $companyForm,
 						'companySelectForm' => $companySelectForm,
 						'individualForm' => $individualForm,
 						'universitySelectForm' => $universitySelectForm,
+						'panel' => 1,
 					));
 				}
 			//SELECT COMPANY
 			//	company exists, user selects
 			}elseif( isset($post['submit-company-select']) ){
 				$companySelectForm->setData($this->request->getPost());
+
 				if( $companySelectForm->isValid() ){
 					$data = (array)$companySelectForm->getData();
 					$session = new Container('create_user');
 					$session->company = $data['company-select'];
-					return $this->redirect()->toRoute('notandi/login');
+					$session->company_key = 0;
+					return $this->redirect()->toRoute('access/login');
 				}else{
 					return new ViewModel(array(
 						'companyForm' => $companyForm,
 						'companySelectForm' => $companySelectForm,
 						'individualForm' => $individualForm,
 						'universitySelectForm' => $universitySelectForm,
+						'panel' => 1,
 					));
 				}
 			//CREATE INDIVIDUAL
@@ -146,27 +179,34 @@ class AuthController extends AbstractActionController{
 					));
 
 					$session->company = $id;
+					$session->company_key = 1;
 
-					return $this->redirect()->toRoute('notandi/login');
+					return $this->redirect()->toRoute('access/login');
 				}else{
 					return new ViewModel(array(
 						'companyForm' => $companyForm,
 						'companySelectForm' => $companySelectForm,
 						'individualForm' => $individualForm,
 						'universitySelectForm' => $universitySelectForm,
+						'panel' => 3,
 					));
 				}
 			//SELECT UNIVERSITY
 			//	user is selecting university
 			}elseif( isset($post['submit-university-select']) ){
+				$universitySelectForm->setData( $this->getRequest()->getPost() );
 				if( $universitySelectForm->isValid() ){
+					$session->company = $universitySelectForm->get('university-select')->getValue();
+					$session->company_key = 0;
 
+					return $this->redirect()->toRoute('access/login');
 				}else{
 					return new ViewModel(array(
 						'companyForm' => $companyForm,
 						'companySelectForm' => $companySelectForm,
 						'individualForm' => $individualForm,
 						'universitySelectForm' => $universitySelectForm,
+						'panel' => 2,
 					));
 				}
 			}else{
@@ -181,19 +221,107 @@ class AuthController extends AbstractActionController{
 				'companySelectForm' => $companySelectForm,
 				'individualForm' => $individualForm,
 				'universitySelectForm' => $universitySelectForm,
+				'panel' => 0,
 			));
 		}
 
 	}
 
+	/**
+	 * Last installment of creating user in the system.
+	 * @return ViewModel
+	 */
 	public function createUserLoginAction(){
 		$session = new Container('create_user');
 
-		//TODO create user;
+		$form = new NewUserPassword();
+		$form->get('name')->setValue( $session->email );
 
-		return new ViewModel(array(
-			'data' => $session
+		if( $this->getRequest()->isPost() ){
+			$form->setData( $this->getRequest()->getPost() );
+			if( $form->isValid() ){
+				$session->password = $form->get('password')->getValue();
+				return $this->redirect()->toRoute('access/confirm');
+			}else{
+				return new ViewModel(array(
+					'data' => (object)$session->getArrayCopy(),
+					'form' => $form
+				));
+			}
+
+		}else{
+			return new ViewModel(array(
+				'data' => (object)$session->getArrayCopy(),
+				'form' => $form
+			));
+		}
+
+
+	}
+
+	/**
+	 * Create user
+	 * @return ViewModel
+	 */
+	public function createUserConfirmAction(){
+		$session = new Container('create_user');
+
+		$sm = $this->getServiceLocator();
+		$userService = $sm->get('Stjornvisi\Service\User');
+		/** @var $userService \Stjornvisi\Service\User */
+
+		$id = $userService->create(array(
+			'name' => $session->name,
+			'passwd' => isset($session->password)
+					? $session->password
+					: $this->_createPassword(10),
+			'email' => $session->email,
+			'title' => $session->title,
+			'company_id' => $session->company,
+			'key_user' => $session->company_key
 		));
+
+		if( isset($session->password) ){
+			$auth = new AuthenticationService();
+			$sm = $this->getServiceLocator();
+			$authAdapter =  $sm->get('Stjornvisi\Auth\Adapter');
+			$authAdapter->setCredentials($session->email,$session->password);
+			$result = $auth->authenticate($authAdapter);
+			if( $result->isValid() ){
+				$sessionManager = new SessionManager();
+				$sessionManager->rememberMe(21600000); //250 days
+				$session->getManager()->getStorage()->clear('create_user');
+				return $this->redirect()->toRoute('home');
+			}else{
+				throw new \Exception( implode(',', $result->getMessages()),500 );
+			}
+		}else{
+			//GET SERVER
+			//	 this check has to be done for instances where this
+			//	is not run as an web-application
+			$server = isset( $_SERVER['HTTP_HOST'] )
+				? "http://".$_SERVER['HTTP_HOST']
+				: 'http://0.0.0.0' ;
+
+			$user = $userService->get( $id );
+
+			//FACEBOOK CONFIG
+			//	get config and use it to configure facebook session
+			//	and login functionality
+			$config = $this->getServiceLocator()->get('Config');
+			FacebookSession::setDefaultApplication(
+				$config['facebook']['appId'],
+				$config['facebook']['secret']
+			);//TODO should this be in a global space
+			$helper = new FacebookRedirectLoginHelper(
+				$server. AuthController::LOGIN_CALLBACK_FACEBOOK . '?key='.$user->hash
+			);
+			$session->getManager()->getStorage()->clear('create_user');
+			$facebooklogin = $helper->getLoginUrl();
+			return $this->redirect()->toUrl( $facebooklogin );
+
+		}
+
 	}
 	/**
 	 * Login user
@@ -572,13 +700,8 @@ class AuthController extends AbstractActionController{
 	 * @return string
 	 */
 	private function _createPassword($length) {
-		$chars = "234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		$i = 0;
-		$password = "";
-		while ($i <= $length) {
-			$password .= $chars{mt_rand(0,strlen($chars))};
-			$i++;
-		}
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+		$password = substr( str_shuffle( $chars ), 0, $length );
 		return $password;
 	}
 

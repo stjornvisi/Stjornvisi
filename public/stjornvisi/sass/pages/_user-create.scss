@@ -1,0 +1,48 @@
+
+	.page-user-create{
+		.form-horizontal .form-group{
+			margin-left: 0;
+			margin-right: 0;
+		}
+
+
+		.page-user-create__main-menu{
+			@include pie-clearfix;
+			margin-bottom: $gutter*2;
+			border: 1px solid $color-gray-light;
+			li{
+				padding: rhythm(1/2,$font-size-base);
+				text-align: center;
+				width: 33.33%;
+				float: left;
+			}
+			.page-user-create__main-menu--active{
+				font-weight: $font-weight-bold;
+			}
+		}
+
+		/**
+		 * Slider to select company or create one
+		 */
+		.company-connect{
+			.widget-slider__wrapper{
+				width: 400%;
+			}
+			.widget-slider__slide{
+				width: (100% / 4);
+			}
+		}
+
+
+		.user-create__help-section{
+			margin: rhythm(1/2,$font-size-base) 0;
+			background-color: $color-white;
+			padding: 0;
+			transition: all .4s;
+			cursor: pointer;
+		}
+		.user-create__help-section.user-create__help-section--active{
+			padding: rhythm(1/2,$font-size-base) 0;
+			background-color: $color-blue-light;
+		}
+	}

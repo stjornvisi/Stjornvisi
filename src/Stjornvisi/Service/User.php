@@ -8,6 +8,7 @@ use \PDOException;
 class User extends AbstractService{
 
 	const REGISTER = 'user.register';
+	const NAME = 	'user.create';
 
 	/**
 	 * Get one user.
@@ -876,6 +877,70 @@ class User extends AbstractService{
 				)
 			));
 			throw new Exception("Can't get attendance for user. user:[{$id}]",0,$e);
+		}
+	}
+
+	/**
+	 * @param array $data
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function create( $data ){
+		try{
+
+			$company_id = isset($data['company_id'])
+				? $data['company_id']
+				: null;
+			$company_key = isset($data['key_user'])
+				? $data['key_user']
+				: 0;
+
+			unset($data['company_id']);
+			unset($data['key_user']);
+
+			$data['passwd'] = md5($data['passwd']);
+			$data['created_date'] = date('Y-m-d H:i:s');
+			$data['modified_date'] = date('Y-m-d H:i:s');
+
+			$createString = $this->insertString('User',$data);
+			$createStatement = $this->pdo->prepare($createString);
+			$createStatement->execute($data);
+
+			$id = (int)$this->pdo->lastInsertId();
+
+			if( $company_id ){
+				$value = array(
+					'user_id' => $id,
+					'company_id' => $company_id,
+					'key_user' => $company_key
+				);
+				$createCompanyString = $this->insertString('Company_has_User',$value);
+				$createCompanyStatement = $this->pdo->prepare($createCompanyString);
+				$createCompanyStatement->execute($value);
+			}
+
+
+			$data['id'] = $id;
+			$this->getEventManager()->trigger('create', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
+
+			$this->getEventManager()->trigger('index', $this, array(
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+				'id' => $id,
+				'name' => User::NAME,
+			));
+			return $id;
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($createStatement)?$createStatement->queryString:null,
+					isset($connectStatement)?$connectStatement->queryString:null,
+				)
+			));
+			throw new Exception("Can't create event. " . $e->getMessage() ,0,$e);
 		}
 	}
 }
