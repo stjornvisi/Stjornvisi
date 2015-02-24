@@ -13,6 +13,12 @@ use Stjornvisi\Lib\Imagine\Square;
 
 class MediaController extends AbstractActionController{
 
+	/**
+	 * Upload an image and crop it to correct
+	 * size an all...
+	 *
+	 * @return JsonModel
+	 */
 	public function imageAction(){
 		$sm = $this->getServiceLocator();
 		$renderer = $sm->get('Zend\View\Renderer\RendererInterface');
@@ -112,6 +118,12 @@ class MediaController extends AbstractActionController{
 		));
 	}
 
+	/**
+	 * Upload what ever else media
+	 * do nothing else with it.
+	 *
+	 * @return JsonModel
+	 */
 	public function mediaAction(){
 		$folder = './public/stjornvisi/images/';
 		$adapter = new Http();

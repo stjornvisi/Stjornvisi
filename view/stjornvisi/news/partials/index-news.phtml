@@ -30,7 +30,7 @@ $this->headMeta()->setProperty('og:image', ($this->news->avatar)
 				</li>
 			</ul>
 		</header>
-		<section class="block-element__body">
+		<section class="block-element__body block-element__body--two-column">
 			<?php if($this->news->avatar):?>
 				<img class="block-element__image" src="<?=$this->basePath("/images/original/{$this->news->avatar}")?>" />
 			<?php endif;?>

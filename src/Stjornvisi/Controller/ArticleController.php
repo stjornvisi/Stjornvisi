@@ -43,8 +43,8 @@ class ArticleController extends AbstractActionController{
 						: null)
             ));
         } else {
-			$this->getResponse()->setStatusCode(404);
-			return;
+			return $this->notFoundAction();
+
         }
 	}
 
@@ -53,8 +53,7 @@ class ArticleController extends AbstractActionController{
      *
      * @return ViewModel
      */
-    public function listAction()
-	{
+    public function listAction(){
 
         $sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
@@ -75,8 +74,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function createAction()
-	{
+	public function createAction(){
+
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -132,8 +131,8 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse
 	 */
-	public function deleteAction()
-	{
+	public function deleteAction(){
+
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -172,8 +171,7 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function updateAction()
-	{
+	public function updateAction(){
 
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
@@ -230,7 +228,10 @@ class ArticleController extends AbstractActionController{
 		//ACCESS DENIED
 		//
 		}else{
-			return $this->notFoundAction();
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 
 	}
@@ -261,8 +262,7 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function createAuthorAction()
-	{
+	public function createAuthorAction(){
 
 		$sm = $this->getServiceLocator();
 		$articleService = $sm->get('Stjornvisi\Service\Article');
@@ -313,50 +313,67 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse|ViewModel
 	 */
-	public function updateAuthorAction()
-	{
+	public function updateAuthorAction(){
 
 		$sm = $this->getServiceLocator();
+		$userService = $sm->get('Stjornvisi\Service\User');
 		$articleService = $sm->get('Stjornvisi\Service\Article');
 
-		//FIND AUTHOR
-		//
-		if( ($author = $articleService->getAuthor( $this->params()->fromRoute('id',0) )) != false ){
-			$form = new AuthorForm();
-			$form->setAttribute(
-				'action',
-				$this->url()->fromRoute('greinar/author-update',array('id'=>$author->id))
-			);
+		$auth = new AuthenticationService();
+		$access = $userService->getType(( $auth->hasIdentity() )
+			? $auth->getIdentity()->id
+			: null);
 
-			//POST
-			//	post request
-			if( $this->request->isPost() ){
-				$form->setData($this->request->getPost());
-				//VALID FORM
-				//
-				if($form->isValid()){
-					$articleService->updateAuthor( $author->id, $form->getData() );
-					return $this->redirect()->toRoute('greinar/author-list');
-				//INVALID
-				//
+		//ACCESS GRANTED
+		//	access granted
+		if( $access->is_admin ){
+
+			//FIND AUTHOR
+			//
+			if( ($author = $articleService->getAuthor( $this->params()->fromRoute('id',0) )) != false ){
+				$form = new AuthorForm();
+				$form->setAttribute(
+					'action',
+					$this->url()->fromRoute('greinar/author-update',array('id'=>$author->id))
+				);
+
+				//POST
+				//	post request
+				if( $this->request->isPost() ){
+					$form->setData($this->request->getPost());
+					//VALID FORM
+					//
+					if($form->isValid()){
+						$articleService->updateAuthor( $author->id, $form->getData() );
+						return $this->redirect()->toRoute('greinar/author-list');
+					//INVALID
+					//
+					}else{
+						return new ViewModel(array(
+							'form' => $form
+						));
+					}
+				//QUERY
+				//	get request
 				}else{
+					$form->bind( new \ArrayObject($author) );
 					return new ViewModel(array(
 						'form' => $form
 					));
 				}
-			//QUERY
-			//	get request
-			}else{
-				$form->bind( new \ArrayObject($author) );
-				return new ViewModel(array(
-					'form' => $form
-				));
-			}
 
-		//AUTHOR NOT FOUND
-		//	404
+			//AUTHOR NOT FOUND
+			//	404
+			}else{
+				return $this->notFoundAction();
+			}
+		//ACCESS DENIED
+		//	access denied
 		}else{
-			return $this->notFoundAction();
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
 		}
 	}
 
@@ -365,14 +382,20 @@ class ArticleController extends AbstractActionController{
 	 *
 	 * @return HttpResponse
 	 */
-	public function deleteAuthorAction()
-	{
+	public function deleteAuthorAction(){
+
 		$sm = $this->getServiceLocator();
+		$userService = $sm->get('Stjornvisi\Service\User');
 		$articleService = $sm->get('Stjornvisi\Service\Article');
-		$author = new AuthenticationService();
+
+		$auth = new AuthenticationService();
+		$access = $userService->getType(( $auth->hasIdentity() )
+			? $auth->getIdentity()->id
+			: null);
+
 		//ACCESS GRANTED
 		//
-		if( $author->hasIdentity() ){
+		if( $access->is_admin ){
 			//FIND AUTHOR
 			//
 			if( ($author = $articleService->getAuthor( $this->params()->fromRoute('id',0) )) != false ){
@@ -380,8 +403,8 @@ class ArticleController extends AbstractActionController{
 				$articleService->deleteAuthor($author->id);
 				return $this->redirect()->toRoute('greinar/author-list');
 
-				//AUTHOR NOT FOUND
-				//	404
+			//AUTHOR NOT FOUND
+			//	404
 			}else{
 				return $this->notFoundAction();
 			}

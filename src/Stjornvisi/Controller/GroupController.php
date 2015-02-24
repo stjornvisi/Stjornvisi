@@ -3,6 +3,7 @@
 namespace Stjornvisi\Controller;
 
 
+use Stjornvisi\View\Model\CsvModel;
 use Stjornvisi\View\Model\IcalModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -29,7 +30,6 @@ class GroupController extends AbstractActionController{
 	 * Display one group by url-name.
      *
      * @return \Zend\Http\Response|ViewModel
-     * @todo 404
 	 */
 	public function indexAction(){
 
@@ -103,7 +103,7 @@ class GroupController extends AbstractActionController{
         //NO GROUP
         //  this group ID not found
         }else{
-            var_dump($group);
+			return $this->notFoundAction();
         }
 
 	}
@@ -112,7 +112,6 @@ class GroupController extends AbstractActionController{
      * Create new Group.
      *
      * @return \Zend\Http\Response|ViewModel
-     * @todo 404 / 403
      */
     public function createAction(){
 
@@ -179,7 +178,6 @@ class GroupController extends AbstractActionController{
     /**
      * Update Group.
      *
-     * @todo 404 / 403
      * @return \Zend\Http\Response|ViewModel
      */
     public function updateAction(){
@@ -254,14 +252,13 @@ class GroupController extends AbstractActionController{
         //ITEM NOT FOUND
         //  404
         }else{
-            return $this->getResponse()->setStatusCode(404);
+			return $this->notFoundAction();
         }
     }
 
     /**
      * Delete Group.
      *
-     * @todo 404 / 403
      */
     public function deleteAction(){
         $sm = $this->getServiceLocator();
@@ -280,20 +277,18 @@ class GroupController extends AbstractActionController{
             //  user is manager or admin
             if($access->is_admin || $access->type >= 1){
                 $groupService->delete($group->id);
-                //ACCESS DENIED
-                //  user doesn't have access
-                //TODO  403
+			//ACCESS DENIED
+			//  user doesn't have access
             }else{
 				$this->getResponse()->setStatusCode(401);
 				$model = new ViewModel();
 				$model->setTemplate('error/401');
 				return $model;
             }
-            //GROUP NOT FOUND
-            //  no group with this url
-            //TODO 404
+		//GROUP NOT FOUND
+		//  no group with this url
         }else{
-            var_dump('item not found');
+			return $this->notFoundAction();
         }
     }
 
@@ -344,14 +339,17 @@ class GroupController extends AbstractActionController{
 				));
                 return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
             //GROUP NOT FOUND
-            //TODO 404
+            //	resource not found
             }else{
 				return $this->notFoundAction();
             }
         //IS NOT LOGGED IN
         //  user is not logged in
         }else{
-            var_dump(403);
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
         }
 
     }
@@ -362,8 +360,6 @@ class GroupController extends AbstractActionController{
      *  manager
      *  member
      *
-     * @todo 404 / 403
-     * @todo send an email to tell them about new status
      * @return \Zend\Http\Response
      */
     public function userStatusAction(){
@@ -390,7 +386,7 @@ class GroupController extends AbstractActionController{
                 );
                 return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
             //ACCESS DENIED
-            //TODO 403
+            //	access denied
             }else{
 				$this->getResponse()->setStatusCode(401);
 				$model = new ViewModel();
@@ -398,9 +394,8 @@ class GroupController extends AbstractActionController{
 				return $model;
             }
 
-            //GROUP NOT FOUND
+        //GROUP NOT FOUND
         //  item not found in storage
-        //todo 404
         }else{
 			return $this->notFoundAction();
         }
@@ -430,7 +425,7 @@ class GroupController extends AbstractActionController{
             if( $access->is_admin || $access->type >= 1 ){
 
 				$csv = new Csv();
-				$csv->setHeader((object)array(
+				$csv->setHeader(array(
 					'Nafn',
 					'Netfang',
 					'Titill',
@@ -455,7 +450,7 @@ class GroupController extends AbstractActionController{
 							$type = 'Meðlimur';
 							break;
 					}
-					$csv->add((object)array(
+					$csv->add(array(
 						'name' => $result->name,
 						'email' => $result->email,
 						'title' => $result->title,
@@ -464,31 +459,13 @@ class GroupController extends AbstractActionController{
 					));
 				}
 
-				$view = new ViewModel();
-				$view->setTemplate('layout/csv')
-					->setVariable('result_set', $csv)
-					->setTerminal(true);
+				$model = new CsvModel();
+				$model->setData( $csv );
 
-				$output = $this->getServiceLocator()
-					->get('viewrenderer')
-					->render($view);
-
-				$response = $this->getResponse();
-				$headers = $response->getHeaders();
-				$headers->addHeaderLine('Content-Type', 'text/csv')
-					->addHeaderLine(
-						'Content-Disposition',
-						sprintf("attachment; filename=\"%s\"", $csv->getName())
-					)
-					->addHeaderLine('Accept-Ranges', 'bytes')
-					->addHeaderLine('Content-Length', strlen($output));
-				$response->setContent($output);
-
-				return $response;
+				return $model;
 
             //ACCESS DENIED
             //  user has no access
-            //TODO 403
             }else{
 				$this->getResponse()->setStatusCode(401);
 				$model = new ViewModel();
@@ -508,7 +485,6 @@ class GroupController extends AbstractActionController{
      *
      * Get all events from two months back in time
      * @todo Re-thing the date range
-     * @todo 404
      */
     public function rssEventsAction(){
 
@@ -562,15 +538,12 @@ class GroupController extends AbstractActionController{
         }else{
 			return $this->notFoundAction();
         }
-
-
     }
 
     /**
      * RSS feed for all news
      *
      * Get all news from two months back in time
-     * @todo Re-thing the date range
      * @todo 404
      */
     public function rssNewsAction(){
@@ -757,6 +730,7 @@ class GroupController extends AbstractActionController{
 	 * Get statistics for al groups.
 	 *
 	 * @return JsonModel
+	 * @todo not fully implemented
 	 */
 	public function eventStatisticsAction(){
 		$sm = $this->getServiceLocator();
@@ -767,6 +741,10 @@ class GroupController extends AbstractActionController{
 		);
 	}
 
+	/**
+	 * @return JsonModel
+	 * @todo not fully implemented
+	 */
 	public function memberStatisticsAction(){
 		$sm = $this->getServiceLocator();
 		$groupService = $sm->get('Stjornvisi\Service\Group');
@@ -776,6 +754,10 @@ class GroupController extends AbstractActionController{
 		);
 	}
 
+	/**
+	 * @return JsonModel
+	 * @todo not fully implemented
+	 */
 	public function statisticsAction(){
 
 	}
@@ -789,8 +771,8 @@ class GroupController extends AbstractActionController{
 	public function calendarAction(){
 		$sm = $this->getServiceLocator();
 		$groupService = $sm->get('Stjornvisi\Service\Group');
-		$newsService = $sm->get('Stjornvisi\Service\News');
-		$eventService = $sm->get('Stjornvisi\Service\Event'); /** @var $eventService \Stjornvisi\Service\Event */
+		$eventService = $sm->get('Stjornvisi\Service\Event');
+		/** @var $eventService \Stjornvisi\Service\Event */
 
 		if( ( $group = $groupService->get($this->params()->fromRoute('id',0) )) != null ){
 			$date = new DateTime();
@@ -800,22 +782,8 @@ class GroupController extends AbstractActionController{
 				'events' =>$eventService->getRangeByGroup( $group->id, $date )
 			));
 		}else{
-			return $this->getResponse()->setStatusCode(404);
+			return $this->notFoundAction();
 		}
 
-
-		/*
-		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
-			$response = $this->getResponse();
-
-			$response->getHeaders()->addHeaders(
-				//array('Content-Type'=>'text/calendar; charset=utf-8'));
-				array('Content-Type'=>'text/plain; charset=utf-8'));
-			var_dump($group);
-			return $response;
-		}else{
-			return $this->getResponse()->setStatusCode(404);
-		}
-		*/
 	}
 }

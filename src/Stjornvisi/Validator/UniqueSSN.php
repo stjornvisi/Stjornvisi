@@ -17,6 +17,8 @@ class UniqueSSN extends AbstractValidator{
 
 	const SSN_IN_USE = 'emailInUse';
 
+	private $id;
+
 	/**
 	 * Validation failure message template definitions
 	 *
@@ -33,9 +35,11 @@ class UniqueSSN extends AbstractValidator{
 
 	/**
 	 * @param Company $company
+	 * @param int $id
 	 */
-	public function __construct( Company $company ){
+	public function __construct( Company $company, $id = null ){
 		$this->companyService = $company;
+		$this->id = $id;
 		parent::__construct();
 	}
 
@@ -52,7 +56,7 @@ class UniqueSSN extends AbstractValidator{
 	 */
 	public function isValid( $value ){
 		$company = $this->companyService->getBySsn( $value );
-		if( $company ){
+		if( $company && $company->id != $this->id ){
 			$this->error(self::SSN_IN_USE);
 			return false;
 		}

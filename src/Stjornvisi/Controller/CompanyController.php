@@ -7,6 +7,11 @@ use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Stjornvisi\Form\Company as CompanyForm;
 
+/**
+ * Class CompanyController
+ * @package Stjornvisi\Controller
+ *
+ */
 class CompanyController extends AbstractActionController{
 
 	/**
@@ -140,10 +145,10 @@ class CompanyController extends AbstractActionController{
         );
 
         //ACCESS GRANTED
-        //
-        if( $authService->hasIdentity() ){
+        //	only admin can create company
+        if( $access->is_admin ){
 
-            $form = new CompanyForm( $valueService );
+            $form = $sm->get('Stjornvisi\Form\Company');
 
             $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/create'));
             //POST
@@ -178,101 +183,6 @@ class CompanyController extends AbstractActionController{
 			$model->setTemplate('error/401');
 			return $model;
         }
-
-        /*
-		$auth = Zend_Auth::getInstance()->getIdentity();
-		//POST
-		//	post request
-		if( $this->_request->isPost() ){
-
-			$form = new Application_Form_Company();
-
-			//VALID
-			//	form is valid
-			if($form->isValid($this->_request->getPost())){
-				//TODO use Ext_Filter_Urlsave
-				$companyUrl = new Ext_Filter_Urlsafe($form->getValue('name'));
-				$companyDAO = new Application_Model_Company();
-				$companyhasuserDAO = new Application_Model_CompanyHasUser();
-
-				try{
-					$id = $companyDAO->insert(array(
-                		'name' => $form->getValue('name'),
-                		'ssn' => $form->getValue('ssn'),
-                		'address' => $form->getValue('address'),
-                		'zip' => $form->getValue('zip'),
-                		'business_type' => $form->getValue('businesstype'),
-                		'number_of_employees'	=> $form->getValue('noofemployees'),
-                		'website' => $form->getValue('website'),
-                		'safe_name' => $companyUrl->__toString()
-					));
-
-					$companyhasuserDAO->insert(array(
-        				'company_id'	=> $id,
-        				'user_id'		=> $auth->id,
-						'key_user'		=> true
-					));
-						
-						
-					//MAIL
-					//	compose, construct and send mail
-					$view = clone $this->view;
-					$view->user = Zend_Auth::getInstance()->getIdentity();
-					$view->company = $companyDAO->find($id)->current();
-						
-					$mail = new Ext_Mail('utf-8');
-					$mail->setSubject("[Stjórnvísi : tilkynning : Stofnun fyrirtækis");
-					$mail->addTo(
-					Zend_Auth::getInstance()->getIdentity()->email,
-					Zend_Auth::getInstance()->getIdentity()->name
-					);
-					$mail->addCc('stjornvisi@stjornvisi.is', "Stjórnvísi");
-					$mail->addBcc("stjornvisi@stjornvisi.is", "Stjórnvísi");
-					$mail->setBodyText( strip_tags($view->render("company/_mail-register.phtml") ));
-					$mail->setBodyHtml( $view->render("company/_mail-register.phtml") );
-
-						
-					$mail->send();
-						
-				}catch( Zend_Db_Exception $e ){
-					/*
-					 * If the error code 1062 exists in getMessage(), then gracefully
-					 * let the user know that the company already exists in the database.
-					 *
-					 *
-					$msg = $e->getMessage();
-
-					if (strlen(strstr($msg,'1062'))>0){
-						$this->_redirect("/company/error");
-						//TODO wouldn't it be a better idea to just display the create
-						//	form with the 'company-name' box in red (error)?
-					}else{
-						throw $e;
-					}
-				}
-
-				$this->_redirect("/fyrirtaeki/{$companyUrl->__toString()}");
-				//INVALID
-				//	form is invalid
-			}else{
-				$this->view->form = $form;
-			}
-
-			//GET
-			//	get request
-		}else{
-				
-			if( $this->_getParam('type',null)=='individual' ){
-				$this->view->form = new Application_Form_Company(null,(object)array(
-					'name' => Zend_Auth::getInstance()->getIdentity()->name,
-					'individual' => true
-				));
-			}else{
-				$this->view->form = new Application_Form_Company();
-			}
-
-		}
-        */
 	}
 
 	/**
@@ -284,7 +194,6 @@ class CompanyController extends AbstractActionController{
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $companyService = $sm->get('Stjornvisi\Service\Company');
-        $valueService = $sm->get('Stjornvisi\Service\Values');
 
         //COMPANY FOUND
         //
@@ -300,7 +209,8 @@ class CompanyController extends AbstractActionController{
             if( $access->is_admin || $access->type != null ){
 
 				$form = $sm->get('Stjornvisi\Form\Company');
-                $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/update',array('id'=>$company->id)));
+				$form->setIdentifier( $company->id )
+                	->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/update',array('id'=>$company->id)));
                 //POST
                 //  http post request
                 if( $this->request->isPost() ){
@@ -437,103 +347,5 @@ class CompanyController extends AbstractActionController{
 			return $this->notFoundAction();
         }
 	}
-	
-	/**
-	 * Remove user from list of employees
-	 * @throws Zend_Controller_Action_Exception
-	 */
-	public function disconnectUserAction(){
-		
-		if( $this->_helper->acl->validate( new Ext_Acl_Company($this->_getParam('company-id')), Ext_Acl_Company::RULE_MANAGE ) ){
-			$companyUserDAO = new Application_Model_CompanyHasUser();
-			$companyUserDAO->delete("user_id={$this->_getParam('user-id')} AND company_id={$this->_getParam('company-id')}");
-			$this->_redirect("fyrirtaeki/{$this->_getParam('company-id')}#starfsfolk");
-		}else{
-			throw new Zend_Controller_Action_Exception('Access Denied',401);
-		}
-	}
-	
-	/**
-	 * Connect user to a company.
-	 *
-	 * @throws Zend_Controller_Action_Exception
-	 * @deprecated
-	 */
-	public function connectUserAction(){
-		//LOGGED IN
-		//	user is logged in
-		if( Zend_Auth::getInstance()->hasIdentity() ){
-				
-			$this->view->university = ($this->_getParam('type')=='university')
-			? true
-			: false ;
-				
-			//POST
-			//	request is post, create entry
-			if( $this->_request->isPost() ){
-				$companyDAO = new Application_Model_Company();
 
-				//CONNECTION TYPE
-				//	is this an individual connecting to a company
-				//	or an individual connecting to a university.
-				if( $this->_getParam('type')=='university' ){
-					$form = new Application_Form_UserCompany(
-					null,$companyDAO->fetchAll( "business_type = 'Háskóli'", 'name ASC' ));
-				}else{
-					$form = new Application_Form_UserCompany(
-					null,$companyDAO->fetchAll( "business_type != 'einstaklingur'", 'name ASC' ));
-				}
-					
-				//VALID FORM
-				//	form is valid
-				if( $form->isValid($this->_request->getPost()) ){
-					$companyHasUserDAO = new Application_Model_CompanyHasUser();
-					//DELETE
-					//	delete old connections
-					$companyHasUserDAO->delete("user_id=".Zend_Auth::getInstance()->getIdentity()->id);
-					//INSERT
-					//	insert new connection
-					$companyHasUserDAO->insert( array(
-						"user_id"		=> Zend_Auth::getInstance()->getIdentity()->id,
-						"company_id"	=> $form->getValue( 'company' ),
-						"key_user"		=> false
-					));
-						
-					//Add the company to the session
-					$authobj = Zend_Auth::getInstance()->getStorage()->read();
-					$authobj->company_id = $form->getValue( 'company' );
-						
-					//Redirect the user to his entry page
-					$this->_redirect("/notandi");
-						
-					//INVALID FORM
-					//	the form is invalid
-				}else{
-					$this->view->form = $form;
-				}
-
-				//GET
-				//	query request
-			}else{
-				$companyDAO = new Application_Model_Company();
-				//CONNECTION TYPE
-				//	is this an individual connecting to a company
-				//	or an individual connecting to a university.
-				if( $this->_getParam('type')=='university' ){
-					$this->view->form = new Application_Form_UserCompany(
-					null,$companyDAO->fetchAll( "business_type = 'Háskóli'", 'name ASC' ));
-				}else{
-					$this->view->form = new Application_Form_UserCompany(
-					null,$companyDAO->fetchAll( "business_type != 'einstaklingur'", 'name ASC' ));
-				}
-
-			}
-				
-			//NOT LOGGED IN
-			//	user is not logged in, he will get 401
-		}else{
-			throw new Zend_Controller_Action_Exception("Access Denied",401);
-		}
-
-	}
 }

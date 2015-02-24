@@ -9,6 +9,7 @@
 namespace Stjornvisi\Form;
 
 
+use Stjornvisi\Validator\UniqueSSN;
 use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
@@ -22,6 +23,8 @@ class Company extends Form implements InputFilterProviderInterface{
 
 	private $company;
 	private $values;
+
+	private $id = null;
 
     public function __construct(Values $values, CompanyService $company = null){
 		$this->company = $company;
@@ -46,7 +49,7 @@ class Company extends Form implements InputFilterProviderInterface{
             'name' => 'ssn',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Kennitala...',
+                'placeholder' => '000000-0000',
                 'required' => 'required',
             ),
             'options' => array(
@@ -106,7 +109,7 @@ class Company extends Form implements InputFilterProviderInterface{
             'name' => 'website',
             'type' => 'Zend\Form\Element\Url',
             'attributes' => array(
-                'placeholder' => 'Heimasíða...',
+                'placeholder' => 'http://',
             ),
             'options' => array(
                 'label' => 'Heimasíða',
@@ -126,6 +129,24 @@ class Company extends Form implements InputFilterProviderInterface{
 
     }
 
+	/**
+	 * Set ID og the record being edited.
+	 *
+	 * This is required for the unique-snn validator.
+	 * If the validator would only allow for valid form it the SSN
+	 * in not in storage, we could not UPDATE a record. we have to
+	 * allow for the same SSN if this SSN is connected to THIS record.
+	 *
+	 * To know id this is THIS record, we need the Identifier..
+	 * therefor; this method :)
+	 *
+	 * @param $id
+	 * @return $this
+	 */
+	public function setIdentifier( $id ){
+		$this->id = $id;
+		return $this;
+	}
 
 	/**
 	 * Should return an array specification compatible with
@@ -153,11 +174,11 @@ class Company extends Form implements InputFilterProviderInterface{
 			),
 			'ssn' => array(
 				'filters'  => array(
-					array('name' => 'StripTags'),
+					array('name' => 'Digits'),
 					array('name' => 'StringTrim'),
-					array( new SsnFilter() ),
 				),
 				'validators' => array(
+					new UniqueSSN( $this->company, $this->id ),
 					array(
 						'name'    => 'StringLength',
 						'options' => array(
@@ -185,6 +206,10 @@ class Company extends Form implements InputFilterProviderInterface{
 						),
 					),
 				),
+			),
+			'website' => array(
+				'required' => false,
+				'allow_empty' => true,
 			),
 
 		);

@@ -48,7 +48,6 @@ class Author extends Form implements InputFilterProviderInterface{
 			'type' => 'Stjornvisi\Form\Element\Img',
 			'attributes' => array(
 				'placeholder' => 'Mynd...',
-				'data-url' => '/skrar/mynd',	//TODO can I use a function to call the router?
 			),
 			'options' => array(
 				'label' => 'Mynd',

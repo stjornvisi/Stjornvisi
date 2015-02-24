@@ -6,62 +6,65 @@
 ?>
 <div class="layout layout--three-columns">
 	<section class="layout__section">
+
+		<h1 class="layout__headline layout__headline--center">Stofna frétt</h1>
+
 	<?=$this->form()->openTag($this->form);?>
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('subject')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('subject'));?>
 			<?=$this->formElement($form->get('subject')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('subject'));?>
 		</div>
 
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('body')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('body'));?>
 			<?=$this->formElement($form->get('body')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('body'));?>
 		</div>
 
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('location')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('location'));?>
 			<?=$this->formElement($form->get('location')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('location'));?>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('address')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('address'));?>
 			<?=$this->formElement($form->get('address')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('address'));?>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('capacity')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('capacity'));?>
 			<?=$this->formElement($form->get('capacity')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('capacity'));?>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('event_date')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('event_date'));?>
 			<?=$this->formElement($form->get('event_date')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('event_date'));?>
 		</div>
 
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('event_time')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('event_time'));?>
 			<?=$this->formElement($form->get('event_time')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('event_time'));?>
 		</div>
 
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('event_end')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('event_end'));?>
 			<?=$this->formElement($form->get('event_end')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('event_end'));?>
 		</div>
 
 
-		<div class="form-group">
+		<div class="form-group <?=empty($this->form->get('avatar')->getMessages())?'':'has-error';?>">
 			<?=$this->formLabel($form->get('avatar'));?>
 			<?=$this->formElement($form->get('avatar')->setAttribute('class','form-control avatar'));?>
 			<?=$this->formElementErrors($form->get('avatar'));?>
@@ -77,7 +80,9 @@
 		</div>
 
 		<div class="form-group">
-			<?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+			<?=$this->formElement(
+				$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Stofna')
+			);?>
 		</div>
 
 	<?= $this->form()->closeTag() ?>

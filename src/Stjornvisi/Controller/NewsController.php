@@ -18,9 +18,15 @@ use Stjornvisi\Form\News as NewsForm;
 
 class NewsController extends AbstractActionController{
 
-	const NEWS_COUNT_PER_PAGE = 15;
 	/**
-	 * Display one news entry
+	 * Entries per page
+	 */
+	const NEWS_COUNT_PER_PAGE = 15;
+
+	/**
+	 * Display one news entry.
+	 *
+	 * @return array|ViewModel
 	 */
 	public function indexAction(){
         $sm = $this->getServiceLocator();
@@ -59,9 +65,11 @@ class NewsController extends AbstractActionController{
         }
 
 	}
-	
+
 	/**
-	 * Display a list of news entries
+	 * Display a list of news entries.
+	 *
+	 * @return ViewModel
 	 */
 	public function listAction(){
 		$sm = $this->getServiceLocator();
@@ -83,7 +91,9 @@ class NewsController extends AbstractActionController{
 	}
 
 	/**
-	 * Create new news entry
+	 * Create new news entry.
+	 *
+	 * @return array|\Zend\Http\Response|ViewModel
 	 */
 	public function createAction(){
         $sm = $this->getServiceLocator();
@@ -164,12 +174,10 @@ class NewsController extends AbstractActionController{
 					'form' => $form,
 					'group' => $group
 				));
-
 			}
 
-
-			//ACCESS DENIED
-			//  access denied
+		//ACCESS DENIED
+		//  access denied
 		}else{
 			$this->getResponse()->setStatusCode(401);
 			$model = new ViewModel();
@@ -180,8 +188,9 @@ class NewsController extends AbstractActionController{
 	}
 
 	/**
-	 * Update one news entry
-     *
+	 * Update one news entry.
+	 *
+	 * @return array|\Zend\Http\Response|ViewModel
 	 */
 	public function updateAction(){
         $sm = $this->getServiceLocator();
@@ -190,8 +199,6 @@ class NewsController extends AbstractActionController{
 		$groupService = $sm->get('Stjornvisi\Service\Group');
 
         $authService = new AuthenticationService();
-
-
 
         if( ( $news = $newsService->get($this->params()->fromRoute('id')) ) != false ){
 
@@ -259,8 +266,8 @@ class NewsController extends AbstractActionController{
 
 	/**
 	 * Delete one news entry.
-     *
-	 * @todo Redirect to a better place
+	 *
+	 * @return array|\Zend\Http\Response|ViewModel
 	 */
 	public function deleteAction(){
         $sm = $this->getServiceLocator();
@@ -292,8 +299,6 @@ class NewsController extends AbstractActionController{
         }else{
 			return $this->notFoundAction();
         }
-
-		
 	}
 
 }

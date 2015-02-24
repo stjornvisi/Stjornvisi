@@ -120,6 +120,11 @@ class SubMenu extends AbstractHelper {
 								'id' => 'event-statistics',
 								'uri' => '/hopur/stofna'
 							),
+							array(
+								'label' => 'Create Company',
+								'id' => 'event-statistics',
+								'uri' => '/fyrirtaeki/stofna'
+							),
 						),
 					);
 				}
@@ -133,7 +138,7 @@ class SubMenu extends AbstractHelper {
 
 			self::$navigation = new Navigation($array);
 		}
-		$hundur = $this->getView()->navigation(self::$navigation);
+
 		return $this->getView()->navigation(self::$navigation);
 	}
 } 

@@ -32,7 +32,7 @@ class EventController extends AbstractActionController{
 	 * @return array|ViewModel
 	 */
 	public function indexAction(){
-		//throw new \Exception('Hvað er í gangi');
+
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $eventService = $sm->get('Stjornvisi\Service\Event');
@@ -41,14 +41,16 @@ class EventController extends AbstractActionController{
 
         //EVENT FOUND
         //  an event with this ID was found
-        if( ($event = $eventService->get( $this->params()->fromRoute('id', 0), ($authService->hasIdentity())?$authService->getIdentity()->id:null )) != false ){
+        if( ($event = $eventService->get(
+				$this->params()->fromRoute('id', 0),
+				($authService->hasIdentity())?$authService->getIdentity()->id:null )) != false ){
 
             $groupIds = array_map(function($i){
                 return $i->id;
             },$event->groups);
 
-            //TODO don't use $_POST
-            //TODO send registration mail
+			//POST
+			//	post request
             if( $this->request->isPost() ){
                 $eventService->registerUser(
 					$event->id,
@@ -69,20 +71,6 @@ class EventController extends AbstractActionController{
 						),
 					)
 				);
-
-				/*
-                return new ViewModel(array(
-                    'logged_in' => $authService->hasIdentity(),
-                    'register_message' => true,
-                    'event' => $event,
-                    'related' => $eventService->getRelated($groupIds),
-                    'attendees' => $userService->getByEvent($event->id),
-                    'access' => $userService->getTypeByGroup(
-                            ($authService->hasIdentity())?$authService->getIdentity()->id:null,
-                            $groupIds
-                        ),
-                ));
-				*/
 
 				$eventView = new ViewModel(array(
 					'event' => $event,
@@ -111,6 +99,8 @@ class EventController extends AbstractActionController{
 					->addChild($asideView,'aside');
 				return $mainView;
 
+			//QUERY
+			//	get request
             }else{
 
 				$eventView = new ViewModel(array(
@@ -143,14 +133,15 @@ class EventController extends AbstractActionController{
 
 
         //NOT FOUND
-        //  todo 404
+        //  resource not found
         }else{
 			return $this->notFoundAction();
         }
 	}
 
 	/**
-	 * @todo implement
+	 * List events in a given period
+	 * ...both in a table and in a list.
 	 */
 	public function listAction(){
 
@@ -181,7 +172,6 @@ class EventController extends AbstractActionController{
 					return false;
 				}
 			});
-			//$array[$date] = array();
 			$offset++;
 		}
 
@@ -218,13 +208,14 @@ class EventController extends AbstractActionController{
         //  this is a global event, only admin has access
         if( $group_id === false ){
             //ACCESS DENIED
+			//	access denied
             if(!$access->is_admin){
 				$this->getResponse()->setStatusCode(401);
 				$model = new ViewModel();
 				$model->setTemplate('error/401');
 				return $model;
             //ACCESS GRANTED
-            //
+            //	access granted
             }else{
                 $form->setAttribute('action',$this->url()->fromRoute('vidburdir/create'));
             }
@@ -291,7 +282,6 @@ class EventController extends AbstractActionController{
         $eventService = $sm->get('Stjornvisi\Service\Event');
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $mapService = $sm->get('Stjornvisi\Service\Map');
-
 
 
         $authService = new AuthenticationService();
@@ -382,7 +372,7 @@ class EventController extends AbstractActionController{
         //NOT FOUND
 		//	entry not found
         }else{
-			$this->getResponse()->setStatusCode(404);
+			return $this->notFoundAction();
         }
 
 	}
@@ -483,42 +473,6 @@ class EventController extends AbstractActionController{
 		}else{
 			return $this->notFoundAction();
 		}
-
-
-		/*
-		//LOGGED IN
-		//	user is logged in
-		if( Zend_Auth::getInstance()->hasIdentity() ){
-			$eventDAO = new Application_Model_Event();
-			
-			//EVENT FOUND
-			//	the event exists
-			if( $event = $eventDAO->find($this->_getParam('id'))->current() ){
-			
-				$eventUsersDAO = new Application_Model_EventUserEntry();
-				$this->view->users = $eventUsersDAO->fetchAll(
-					"event_id={$event->id} AND attending=".Application_Model_EventHasUser::ATTENDING_YES);
-				$this->_helper->layout->disableLayout();
-				
-				//TODO since this method could deliver the list in many formats,
-				//	what is needed here is a clever way to select the correct output
-				
-				$this->_response->setHeader("Content-type", "text/csv; charset=utf-8");
-				$this->_response->setHeader("Content-Disposition", 
-					"attachment; filename=\"{$event->event_date}-{$event->subject}.csv\"");
-				
-			//EVENT NOT FOUND
-			//	event does not exist
-			}else{
-				throw new Zend_Controller_Action_Exception("Resource Not Found",404);
-			}
-		//NOT LOGGED IN
-		//	user is not logged in... 401:Access Denied
-		}else{
-			throw new Zend_Controller_Action_Exception("Access Denied",401);
-		}
-		*/
-		
 	}
 
 	/**
@@ -567,7 +521,7 @@ class EventController extends AbstractActionController{
             }
 
         //EVENT NOT FOUND
-        //  todo 404
+        //  tresource not found
         }else{
 			return $this->notFoundAction();
         }
@@ -609,21 +563,6 @@ class EventController extends AbstractActionController{
 					//VALID
 					//	valid form
 					if($form->isValid()){
-
-						//NOTIFY
-						//	notify user
-						//$users = array();
-						/*
-						if( $this->params()->fromPost('test',false) ){
-							$users = array($authService->getIdentity());
-							$priority = true;
-						}else{
-							$users = ( $this->params()->fromRoute('type', 'allir') == 'allir' )
-								? $userService->getUserMessageByGroup( $groupIds )
-								: $userService->getUserMessageByEvent($event->id) ;
-							$priority = false;
-						}
-						*/
 						$this->getEventManager()->trigger('notify',$this,array(
 							'action' => 'Stjornvisi\Notify\Event',
 							'data' => (object)array(
@@ -673,43 +612,6 @@ class EventController extends AbstractActionController{
 			}
 		}
 
-	}
-	
-	/**
-	 * Serve VCALENDAR VEVENT card
-	 * @throws Zend_Controller_Action_Exception
-	 */
-	public function icalAction(){
-	
-		$eventDAO = new Application_Model_Event();
-		if( ($event=$eventDAO->find($this->_getParam('id'))->current())!=null ){
-			$this->_helper->layout->disableLayout();
-			$this->_response->setHeader("Content-type", "text/calendar; charset=utf-8");
-//			$this->_response->setHeader("Content-type", "text/plain; charset=utf-8");
-
-			$begin_date = null;
-			$end_date = null;			
-			if( $event->event_date ){
-				$begin_time = ($event->event_time) ? $event->event_time : '00:00:00' ;
-				$end_time = ($event->event_end) ? $event->event_end : '00:00:00' ;
-				$begin_date = new Zend_Date($event->event_date . ' ' . $begin_time , Zend_Date::ISO_8601);
-				$end_date = new Zend_Date($event->event_date . ' ' . $end_time , Zend_Date::ISO_8601);
-			}else{
-				$begin_date = Zend_Date::now();
-				$end_date = Zend_Date::now();
-			}
-			
-			$event->event_date = $begin_date;
-			$event->event_end = $end_date;
-			
-			$this->view->event = $event;
-			
-			
-			
-		}else{
-			throw new Zend_Controller_Action_Exception("Resource Not Found",404);
-		}
-		
 	}
 
 
@@ -777,7 +679,10 @@ class EventController extends AbstractActionController{
 
 		//EVENT FOUND
 		//  an event with this ID was found
-		if( ($event = $eventService->get( $this->params()->fromRoute('id', 0), ($authService->hasIdentity())?$authService->getIdentity()->id:null )) != false ){
+		if( ($event = $eventService->get(
+				$this->params()->fromRoute('id', 0),
+				($authService->hasIdentity())?$authService->getIdentity()->id:null )
+			) != false ){
 
 			$groupIds = array_map(function($i){
 				return $i->id;
@@ -1016,7 +921,10 @@ class EventController extends AbstractActionController{
 
 		//EVENT FOUND
 		//  an event with this ID was found
-		if( ($event = $eventService->get( $this->params()->fromRoute('id', 0), ($authService->hasIdentity())?$authService->getIdentity()->id:null )) != false ){
+		if( ($event = $eventService->get(
+				$this->params()->fromRoute('id', 0),
+				($authService->hasIdentity())?$authService->getIdentity()->id:null )
+			) != false ){
 
 			$groupIds = array_map(function($i){
 				return $i->id;
@@ -1191,6 +1099,11 @@ class EventController extends AbstractActionController{
 
 	}
 
+	/**
+	 * Action for chart generation.
+	 * @return JsonModel
+	 * @todo not fully implemented
+	 */
 	public function registryDistributionAction(){
 
 		$sm = $this->getServiceLocator();
@@ -1222,7 +1135,9 @@ class EventController extends AbstractActionController{
 	}
 
 	/**
-	 * @todo accss controll
+	 * Action for chart generation.
+	 * @return JsonModel
+	 * @todo not fully implemented
 	 */
 	public function statisticsAction(){
 

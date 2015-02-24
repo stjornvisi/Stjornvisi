@@ -50,6 +50,24 @@
 			margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
 		}
 
+		&.block-element__body--two-column{
+			-webkit-column-width: $gutter;//rhythm(1,$font-size-base);
+			-webkit-column-count: 2;
+			-moz-column-width: $gutter;//rhythm(1,$font-size-base);
+			-moz-column-count: 2;
+			-ms-column-width: $gutter;//rhythm(1,$font-size-base);
+			-ms-column-count: 2;
+			column-width: $gutter;//rhythm(1,$font-size-base);
+			column-count: 2;
+			.block-element__image{
+				-webkit-column-span: all;
+				column-span: all;
+				width: 100%;
+				max-width: 100%;
+			}
+
+		}
+
 		//MODIFIER three column layout
 		&.block-element--three-columns{
 			-webkit-column-width: rhythm(1,$font-size-base);

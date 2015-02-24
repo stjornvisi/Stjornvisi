@@ -169,7 +169,14 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 				<?php if($this->access->is_admin || $this->access->type >= 1):?>
 					<h2 class="layout__headline">Meðlimir (<?=count($this->users)?>)</h2>
 					<?php
-						$user_chunk = array_chunk($this->users,ceil(count($this->users) / 2));
+						//SOME LOGIC
+						//	it would be super cool if I didn't have to do this here,
+						//	but I need to split the list up, and this has nothing to
+						//	with domain logic and everything with presentation
+						//	so I have to make the view dirty with some PHP code
+						$user_chunk =  (count($this->users))
+							? array_chunk($this->users,ceil(count($this->users) / 2))
+							: array() ;
 					?>
 
 					<?php foreach( $user_chunk as $chunk ):?>

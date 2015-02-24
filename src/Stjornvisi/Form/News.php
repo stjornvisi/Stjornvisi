@@ -18,6 +18,7 @@ class News extends Form{
             'attributes' => array(
                 'placeholder' => 'Titill...',
                 'required' => 'required',
+				'tabindex' => 1
             ),
             'options' => array(
                 'label' => 'Titill',
@@ -28,8 +29,9 @@ class News extends Form{
             'name' => 'body',
 			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
-                'placeholder' => 'Meginmál...',
+                'placeholder' => '...',
                 'required' => 'required',
+				'tabindex' => 2
             ),
             'options' => array(
                 'label' => 'Meginmál'
@@ -40,7 +42,7 @@ class News extends Form{
             'name' => 'avatar',
 			'type' => 'Stjornvisi\Form\Element\Img',
             'attributes' => array(
-				'data-url' => '/skrar/mynd'	//TODO can I use a function to call the router?
+				'tabindex' => 3
             ),
             'options' => array(
                 'label' => 'Mynd',

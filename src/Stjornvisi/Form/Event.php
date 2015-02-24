@@ -19,8 +19,9 @@ class Event extends Form implements InputFilterProviderInterface{
             'name' => 'subject',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Type something...',
+                'placeholder' => 'Titill...',
                 'required' => 'required',
+				'tabindex' => 1
             ),
             'options' => array(
                 'label' => 'Titill viðburðar',
@@ -31,7 +32,8 @@ class Event extends Form implements InputFilterProviderInterface{
             'name' => 'body',
             'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
-
+				'placeholder' => '...',
+				'tabindex' => 2
             ),
             'options' => array(
                 'label' => 'Meginmál',
@@ -43,6 +45,7 @@ class Event extends Form implements InputFilterProviderInterface{
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Landspítalinn, Hringsalur 1.hæð við Barnaspítal',
+				'tabindex' => 3
             ),
             'options' => array(
                 'label' => 'Staðsetning',
@@ -54,6 +57,7 @@ class Event extends Form implements InputFilterProviderInterface{
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
 				'placeholder' => 'Ofanleiti 2, 105 Reykjavík',
+				'tabindex' => 4
 			),
 			'options' => array(
 				'label' => 'Heimilisfang: (Götuheiti og húsnúmer, Póstnúmer Bæjarfélag)',
@@ -65,6 +69,7 @@ class Event extends Form implements InputFilterProviderInterface{
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
 				'placeholder' => '0',
+				'tabindex' => 5
 			),
 			'options' => array(
 				'label' => 'Fjöldatakmörkun, 0 er ótakmarkað',
@@ -78,6 +83,7 @@ class Event extends Form implements InputFilterProviderInterface{
                 'placeholder' => 'Type something...',
                 'required' => 'required',
                 'step' => '1',
+				'tabindex' => 6
             ),
             'options' => array(
                 'label' => 'Dagsetning',
@@ -89,8 +95,9 @@ class Event extends Form implements InputFilterProviderInterface{
             //'type' => 'Zend\Form\Element\Time',
 			'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Type something...',
+                'placeholder' => '00:00',
                 'required' => 'required',
+				'tabindex' => 7
             ),
             'options' => array(
                 'label' => 'Viðburður hefst',
@@ -102,8 +109,9 @@ class Event extends Form implements InputFilterProviderInterface{
             //'type' => 'Zend\Form\Element\Time',
 			'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-                'placeholder' => 'Type something...',
+				'placeholder' => '00:00',
                 'required' => 'required',
+				'tabindex' => 8
             ),
             'options' => array(
                 'label' => 'Viðburði líkur',
@@ -114,7 +122,7 @@ class Event extends Form implements InputFilterProviderInterface{
             'name' => 'avatar',
             'type' => 'Stjornvisi\Form\Element\Img',
             'attributes' => array(
-				'data-url' => '/skrar/mynd'	//TODO can I use a function to call the router?
+				'tabindex' => 9
             ),
             'options' => array(
                 'label' => 'Mynd',
