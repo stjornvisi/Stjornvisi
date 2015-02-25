@@ -162,6 +162,7 @@ class NewsController extends AbstractActionController{
 					//INVALID
 					//  form data is invalid
 				}else{
+					$this->getResponse()->setStatusCode(400);
 					return new ViewModel(array(
 						'form' => $form,
 						'group' => $group
@@ -229,6 +230,7 @@ class NewsController extends AbstractActionController{
                     //INVALID
                     //  form data is invalid
                     }else{
+						$this->getResponse()->setStatusCode(400);
                         return new ViewModel(array(
                             'news' => $news,
                             'form' => $form ,

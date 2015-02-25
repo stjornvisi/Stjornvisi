@@ -207,6 +207,7 @@ class ArticleController extends AbstractActionController{
 					//INVALID FORM
 					//	form is invalid
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'form' => $form
 						));
@@ -287,6 +288,7 @@ class ArticleController extends AbstractActionController{
 				//INVALID FORM
 				//
 				}else{
+					$this->getResponse()->setStatusCode(400);
 					return new ViewModel(array(
 						'form' => $form
 					));
@@ -349,6 +351,7 @@ class ArticleController extends AbstractActionController{
 					//INVALID
 					//
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'form' => $form
 						));

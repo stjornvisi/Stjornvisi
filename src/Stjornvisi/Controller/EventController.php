@@ -443,8 +443,6 @@ class EventController extends AbstractActionController{
 			//  user has accss
 			if( $access->is_admin || $access->type >= 1 ){
 
-
-
 				$csv = new Csv();
 				$csv->setHeader(array('Nafn','Titill','Netfang','Dags.'));
 				$csv->setName('maertingarlisti'.date('Y-m-d-H:i').'.csv');
@@ -709,6 +707,7 @@ class EventController extends AbstractActionController{
 					//FORM INVALID
 					//
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'access' => $access,
 							'event' => $event,
@@ -778,6 +777,7 @@ class EventController extends AbstractActionController{
 						$eventService->updateGallery($item->id,$form->getData());
 						return $this->redirect()->toRoute('vidburdir/gallery-list',array('id'=>$event->id));
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'event' => $event,
 							'form' => $form
@@ -948,9 +948,10 @@ class EventController extends AbstractActionController{
 					if($form->isValid()){
 						$eventService->addResource($event->id,$form->getData());
 						return $this->redirect()->toRoute('vidburdir/resource-list',array('id'=>$event->id));
-						//FORM INVALID
-						//
+					//FORM INVALID
+					//
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'access' => $access,
 							'event' => $event,
@@ -965,8 +966,8 @@ class EventController extends AbstractActionController{
 					));
 				}
 
-				//ACCESS DENIED
-				//	403
+			//ACCESS DENIED
+			//	403
 			}else{
 				$this->getResponse()->setStatusCode(401);
 				$model = new ViewModel();
@@ -1020,6 +1021,7 @@ class EventController extends AbstractActionController{
 						$eventService->updateResource($item->id,$form->getData());
 						return $this->redirect()->toRoute('vidburdir/resource-list',array('id'=>$event->id));
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'event' => $event,
 							'form' => $form

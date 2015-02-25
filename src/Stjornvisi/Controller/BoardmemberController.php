@@ -67,6 +67,7 @@ class BoardmemberController extends AbstractActionController{
 				//INVALID
 				//	invalid form
 				}else{
+					$this->getResponse()->setStatusCode(400);
 					return new ViewModel(array(
 						'form' => $form
 					));
@@ -128,6 +129,7 @@ class BoardmemberController extends AbstractActionController{
 					//INVALID
 					//	invalid form
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'form' => $form
 						));
@@ -192,6 +194,7 @@ class BoardmemberController extends AbstractActionController{
 				//INVALID
 				//	invalid form
 				}else{
+					$this->getResponse()->setStatusCode(400);
 					return new ViewModel(array(
 						'form' => $form,
 					));
@@ -256,6 +259,7 @@ class BoardmemberController extends AbstractActionController{
 					//INVALID
 					//	invalid form
 					}else{
+						$this->getResponse()->setStatusCode(400);
 						return new ViewModel(array(
 							'form' => $form
 						));

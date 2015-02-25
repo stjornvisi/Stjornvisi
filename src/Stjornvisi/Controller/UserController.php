@@ -212,6 +212,7 @@ class UserController extends AbstractActionController{
                     //INVALID
                     //
                     }else{
+						$this->getResponse()->setStatusCode(400);
                         return new ViewModel(array(
                             'form' => $form,
                             'user' => $user,

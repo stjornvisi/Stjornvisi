@@ -162,6 +162,7 @@ class CompanyController extends AbstractActionController{
                     $companyService->addUser($id, $authService->getIdentity()->id,1);
                     return $this->redirect()->toRoute('fyrirtaeki/index',array('id'=>$id));
                 }else{
+					$this->getResponse()->setStatusCode(400);
                     return new ViewModel(array(
                         'access' => $access,
                         'form' => $form
@@ -221,6 +222,7 @@ class CompanyController extends AbstractActionController{
                         $companyService->update($company->id, $data);
                         return $this->redirect()->toRoute('fyrirtaeki/index',array('id'=>$company->id));
                     }else{
+						$this->getResponse()->setStatusCode(400);
                         return new ViewModel(array(
                             'company' => $company,
                             'access' => $access,
@@ -250,62 +252,6 @@ class CompanyController extends AbstractActionController{
         }else{
 			return $this->notFoundAction();
         }
-
-	    /*
-		$companyDAO = new Application_Model_Company();
-		
-		//RESOURCE FOUND
-		//	found the resource
-		if( ( $company=$companyDAO->find($this->_getParam('id'))->current() )!= null ){
-			
-			//ACCESS GRANTED
-			//	user has access to this resource
-			if( $this->_helper->acl()->validate( new Ext_Acl_Company($company->id), Ext_Acl_Company::RULE_MANAGE ) ){
-				
-				//POST
-				//	http post request
-				if( $this->_request->isPost() ){
-					
-					$form = new Application_Form_Company();
-					//VALID
-					//	form is valid
-					if($form->isValid($this->_request->getPost())){
-						$companyDAO->update(array(
-							'name' => $form->getValue('name'),
-						    'ssn' => $form->getValue('ssn'),
-		                	'address' => $form->getValue('address'),
-		                	'zip' => $form->getValue('zip'),
-		                	'business_type' => $form->getValue('businesstype'),
-		                	'number_of_employees'	=> $form->getValue('noofemployees'),
-		                	'website' => $form->getValue('website'),
-						), "id = {$this->_getParam('id')}");
-						
-						$this->_redirect("/fyrirtaeki/{$company->id}");
-						
-					//INVALID
-					//	form is invalid
-					}else{
-						$this->view->form = $form;
-					}
-					
-				//GET
-				//	http query request
-				}else{
-					$this->view->form = new Application_Form_Company('update', $company, null);
-				}
-				
-			//ACCESS DENIED
-			//	user is not allowed 
-			}else{
-				throw new Zend_Controller_Action_Exception("Access Denied",401);
-			}
-			
-		//RESOURCE NOT FOUND
-		//	the resource does not exist
-		}else{
-			throw new Zend_Controller_Action_Exception("Resource Not Found",404);
-		}
-        */
 	}
 
 	/**
