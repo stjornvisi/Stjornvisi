@@ -1,3 +1,4 @@
+/** Update script for pages */
 update Page set body = "#Stjórnunarverðlaun Stjórnvísi
 Stjórnunarverðlaun Stjórnvísi eru veitt árlega þeim stjórnendum sem þykja hafa skarað framúr á sínu sviði. Félagar í Stjórnvísi tilnefna stjórnendur (1 eða fleiri), út frá þeim viðmiðum sem sett eru hverju sinni. Síðan tekur dómnefnd við öllum tilnefningargögnum og vinnur úr þeim. Dómnefnd birtir lista yfir þá sem hljóta lámarksfjölda tilnefninga. Stjórnunarverðlaunin voru veitt í fyrsta sinn í mars 2010.
 
