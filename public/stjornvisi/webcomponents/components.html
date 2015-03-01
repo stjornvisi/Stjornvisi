@@ -15,7 +15,6 @@
 		<content></content>
 	</div>
 </template>
-
 <script>
 	(function(window, document, undefined){
 		// importee
@@ -109,7 +108,7 @@
 -->
 
 <template id="tpl-stjornvisi-rich">
-	<style shim-shadowdom="" shim-shadowdom-css="">
+	<!--style>
 		#preview{
 			position: absolute;
 			top: 0;
@@ -162,45 +161,17 @@
 			background-color: rgb(20,20,20);
 		}
 
-	</style>
-	<a href="#" id="hide-preview">edit</a>
-	<a href="#" id="show-preview">preview</a>
-	<a href="#" id="show-help">help</a>
-	<div class="wrapper">
-		<div id="preview"></div>
-		<div id="help">
-			<textarea id="help_textarea">#Markdown
-Markdown ritlar eru að ryðja sér til rúms, þeir eru einfaldari en
-heðbundnir ritlar og varna því að ólöglegir stílar komist inn í
-texta.
-
-Eina sem þarf að gera er að muna nokkar reglur:
-
-##Fyrirsögn
-Fyrirsagnir eru gerðar með því a setja # eða ## eða ### eftir því
-á hvaða level'i fyrirsögnin er
-
-## h2 fyrirsögn
-### h3 fyrirsögn
-#### h4 fyrirsögn
-
-Málsgreinar eru aðgreindar með tveimur línubilum.
-
-**Feitletrað** er gert með tveimur stjörnum á meðan
-
-*Skáletur* er gert með einni stjörnu.
-
-* það er
-* líka hægt
-* að gera lista
-
->Tilvitnanir eru gerðar með "stærri en" merkinu.
-
----
-
-Það er hægt að gera lágrétt strik með þremur mínus merkjum</textarea>
+	</style-->
+	<nav class="stjornvisi-rich__controls">
+		<a href="#" id="hide-preview" tabindex="-1">ritill</a>
+		<a href="#" id="show-preview" tabindex="-1">sýnishorn</a>
+		<a href="#" id="show-help" tabindex="-1">hjálp</a>
+	</nav>
+	<div class="wrapper stjornvisi-rich__wrapper">
+		<div id="preview" class="stjornvisi-rich__preview"></div>
+		<div id="help" class="stjornvisi-rich__help">
+			<textarea id="help_textarea"></textarea>
 			<div id="help_display"></div>
-
 		</div>
 		<content></content>
 	</div>
@@ -2123,7 +2094,7 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 					}.bind(this),
 					function(object){
 						this.textarea.removeAttribute('readonly','readonly');
-						this.textarea.value = (begin) + ('!['+middle+']('+object.info.media[0].thumb+')') + (end);
+						this.textarea.value = (begin) + ('!['+middle+']('+object.info.media[0].medium+')') + (end);
 					}.bind(this)
 				);
 
@@ -2391,10 +2362,6 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 
 
 
-
-
-
-
 <!--
 	STJORNVISI-FILE
 
@@ -2406,232 +2373,216 @@ Málsgreinar eru aðgreindar með tveimur línubilum.
 	<content></content>
 </template>
 <script>
-;(function(){
+	;(function(){
 
 
-	//var importDoc = document.currentScript.ownerDocument; // importee
-	var importDoc = (document._currentScript || document.currentScript).ownerDocument;
+		//var importDoc = document.currentScript.ownerDocument; // importee
+		var importDoc = (document._currentScript || document.currentScript).ownerDocument;
 
-	// Define and register <shadow-element>
-	// that uses Shadow DOM and a template.
-	var stjornvisiFilePrototype = Object.create(HTMLElement.prototype);
+		// Define and register <shadow-element>
+		// that uses Shadow DOM and a template.
+		var stjornvisiFilePrototype = Object.create(HTMLElement.prototype);
 
-	stjornvisiFilePrototype.root = undefined;
-	stjornvisiFilePrototype.input = undefined;
+		stjornvisiFilePrototype.root = undefined;
+		stjornvisiFilePrototype.input = undefined;
 
-	/**
-	 *  Upload one file via XmlHttpRequest and the media
-	 *  API that Stjornvisi provides.
-	 *
-	 *  @param File file
-	 */
-	stjornvisiFilePrototype.upload = function(file, done, error){
+		/**
+		 *  Upload one file via XmlHttpRequest and the media
+		 *  API that Stjornvisi provides.
+		 *
+		 *  @param File file
+		 */
+		stjornvisiFilePrototype.upload = function(file, done, error){
 
-		//DATA OBJECT
-		//	create file data object to carry
-		//	the image to the server
-		var formData = new FormData();
-		formData.append('file',file);
+			//DATA OBJECT
+			//	create file data object to carry
+			//	the image to the server
+			var formData = new FormData();
+			formData.append('file',file);
 
-		//VALIDATE
-		//	check if the file is to big, or that it's the
-		//	right type
-		var maxSize = parseInt(this.getAttribute('max')) || 0;
-		if( file.size > maxSize ){
-			alert('The image is to big');
-			return false;
-		}
-
-
-		//TRANSMISSION OBJECT
-		//	create xhr object to send data object
-		//	to the server. The host element should contain a 'url'
-		//	attribute to use as a service end-point, if not then
-		//	root is used.
-		var xhr = new XMLHttpRequest();
-		xhr.open('post',this.getAttribute('url') || '/');
-
-		//PROGRESS
-		//	on file upload progress
-		xhr.upload.addEventListener('progress',function(event){
-			var status = (event.loaded / event.total * 100 );
-			this.input.value = (parseInt(status) + '%');
-			this.input.style.backgroundImage = 'linear-gradient(90deg, ' +
-					'rgba(215,225,235,1) 0%, rgba(215,225,235,1) '+status+'%, ' +
-					'rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)';
-		}.bind(this),false);
-		//ERROR
-		//	on file upload error
-		//@todo
-		xhr.addEventListener('error',function(event){
-			error.call(this,event);
-		},false);
-		//ABORT
-		//	on file upload abort
-		//@todo
-		xhr.addEventListener('abort',function(event){
-			error.call(this,event);
-		},false);
-		//LOAD
-		//	once the upload is over
-		xhr.addEventListener('load',function(event){
-			var object = JSON.parse( event.target.responseText );
-			var media = object.info.media[0];
-			if( parseInt( media.code/100 ) == 2 ){
-				this.input.value = media.name;
-				done.call(this,event);
-			}else{
-				error.call(this,event);
-				alert(media.message);
-				this.input.value = '';
+			//VALIDATE
+			//	check if the file is to big, or that it's the
+			//	right type
+			var maxSize = parseInt(this.getAttribute('max')) || 0;
+			if( file.size > maxSize ){
+				alert('The image is to big');
+				return false;
 			}
-		}.bind(this),false);
-
-		//SEND
-		//	send the image
-		xhr.send(formData);
 
 
-	};
+			//TRANSMISSION OBJECT
+			//	create xhr object to send data object
+			//	to the server. The host element should contain a 'url'
+			//	attribute to use as a service end-point, if not then
+			//	root is used.
+			var xhr = new XMLHttpRequest();
+			xhr.open('post',this.getAttribute('url') || '/');
 
-	/**
-	 * When the element is created.
-	 *
-	 * Clone and attache the markup
-	 * Add event listeners to this markup.
-	 */
-	stjornvisiFilePrototype.createdCallback = function() {
-		// get template in import
-		var template = importDoc.querySelector('#tpl-stjornvisi-file');
-
-		//BUILD MARKUP
-		//	import template, create shadowDOM and
-		//	append that to the main document
-		var clone = document.importNode(template.content, true);
-		this.root = this.createShadowRoot();
-		this.root.appendChild(clone);
-
-
-		this.input = this.root.host.querySelector('input');
-
-
-		/**
-		 *  Drag image into input
-		 */
-		this.input.addEventListener("dragenter", function(event){
-			event.stopPropagation();
-			event.preventDefault();
-			this.input.classList.add('enter');
-		}.bind(this), false);
-		/**
-		 *  Drag image over input
-		 */
-		this.input.addEventListener("dragover", function(event){
-			event.stopPropagation();
-			event.preventDefault();
-			this.input.classList.add('over');
-		}.bind(this), false);
-		/**
-		 * Drag image out of input
-		 */
-		this.input.addEventListener("dragleave", function(event){
-			event.stopPropagation();
-			event.preventDefault();
-			this.input.classList.remove('enter');
-			this.input.classList.remove('over');
-		}.bind(this), false);
-		/**
-		 * Drop image into input
-		 */
-		this.input.addEventListener("drop", function(event){
-			event.stopPropagation();
-			event.preventDefault();
-			this.input.classList.remove('enter');
-			this.input.classList.remove('over');
-			this.input.setAttribute('readonly','readonly');
-			this.upload(
-					event.dataTransfer.files[0],
-					function(){
-						this.input.removeAttribute('readonly','readonly');
-					}.bind(this),
-					function(){
-						this.input.removeAttribute('readonly','readonly');
-					}.bind(this)
-			);
-		}.bind(this), false);
-
-		/**
-		 * Click on input
-		 */
-		this.input.addEventListener('click',function(event){
-			event.preventDefault();
-
-			var fileElement = document.createElement('input');
-			fileElement.type = 'file';
-			fileElement.accept = "*/*";
-			fileElement.addEventListener('change',function(event){
-				this.upload( event.target.files[0],function(){
-					fileElement.parentNode.removeChild(fileElement);
-				},function(){
-					fileElement.parentNode.removeChild(fileElement);
-				} );
+			//PROGRESS
+			//	on file upload progress
+			xhr.upload.addEventListener('progress',function(event){
+				var status = (event.loaded / event.total * 100 );
+				this.input.value = (parseInt(status) + '%');
+				this.input.style.backgroundImage = 'linear-gradient(90deg, ' +
+						'rgba(215,225,235,1) 0%, rgba(215,225,235,1) '+status+'%, ' +
+						'rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)';
+			}.bind(this),false);
+			//ERROR
+			//	on file upload error
+			//@todo
+			xhr.addEventListener('error',function(event){
+				error.call(this,event);
+			},false);
+			//ABORT
+			//	on file upload abort
+			//@todo
+			xhr.addEventListener('abort',function(event){
+				error.call(this,event);
+			},false);
+			//LOAD
+			//	once the upload is over
+			xhr.addEventListener('load',function(event){
+				var object = JSON.parse( event.target.responseText );
+				var media = object.info.media[0];
+				if( parseInt( media.code/100 ) == 2 ){
+					this.input.value = media.name;
+					done.call(this,event);
+				}else{
+					error.call(this,event);
+					alert(media.message);
+					this.input.value = '';
+				}
 			}.bind(this),false);
 
-			fileElement.click();
-			document.body.appendChild(fileElement);
-			//this.root.appendChild(fileElement);
-
-		}.bind(this),false);
-
-	};
-
-	/**
-	 * When the attributes is changed,
-	 *
-	 * @param {string} attrName
-	 * @param {string} oldVal
-	 * @param {string} newVal
-	 */
-	stjornvisiFilePrototype.attributeChangedCallback = function(attrName, oldVal, newVal){};
-
-	/**
-	 * When the element is attached to
-	 * the DOM tree
-	 */
-	stjornvisiFilePrototype.attachedCallback = function(){
-		var value = this.input.getAttribute('value');
-		this.input.style.backgroundImage = ( 'url(/stjornvisi/images/60/'+value+')' );
-	};
-
-	/**
-	 * When the element is removed from the DOM.
-	 *
-	 * Do some cleanup.
-	 * Like remove event handlers added to elements
-	 */
-	stjornvisiFilePrototype.detachedCallback = function(){};
+			//SEND
+			//	send the image
+			xhr.send(formData);
 
 
-	document.registerElement('stjornvisi-file', {prototype: stjornvisiFilePrototype});
+		};
 
-})();
+		/**
+		 * When the element is created.
+		 *
+		 * Clone and attache the markup
+		 * Add event listeners to this markup.
+		 */
+		stjornvisiFilePrototype.createdCallback = function() {
+			// get template in import
+			var template = importDoc.querySelector('#tpl-stjornvisi-file');
+
+			//BUILD MARKUP
+			//	import template, create shadowDOM and
+			//	append that to the main document
+			var clone = document.importNode(template.content, true);
+			this.root = this.createShadowRoot();
+			this.root.appendChild(clone);
+
+
+			this.input = this.root.host.querySelector('input');
+
+
+			/**
+			 *  Drag image into input
+			 */
+			this.input.addEventListener("dragenter", function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				this.input.classList.add('enter');
+			}.bind(this), false);
+			/**
+			 *  Drag image over input
+			 */
+			this.input.addEventListener("dragover", function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				this.input.classList.add('over');
+			}.bind(this), false);
+			/**
+			 * Drag image out of input
+			 */
+			this.input.addEventListener("dragleave", function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				this.input.classList.remove('enter');
+				this.input.classList.remove('over');
+			}.bind(this), false);
+			/**
+			 * Drop image into input
+			 */
+			this.input.addEventListener("drop", function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				this.input.classList.remove('enter');
+				this.input.classList.remove('over');
+				this.input.setAttribute('readonly','readonly');
+				this.upload(
+						event.dataTransfer.files[0],
+						function(){
+							this.input.removeAttribute('readonly','readonly');
+						}.bind(this),
+						function(){
+							this.input.removeAttribute('readonly','readonly');
+						}.bind(this)
+				);
+			}.bind(this), false);
+
+			/**
+			 * Click on input
+			 */
+			this.input.addEventListener('click',function(event){
+				event.preventDefault();
+
+				var fileElement = document.createElement('input');
+				fileElement.type = 'file';
+				fileElement.accept = "*/*";
+				fileElement.addEventListener('change',function(event){
+					this.upload( event.target.files[0],function(){
+						fileElement.parentNode.removeChild(fileElement);
+					},function(){
+						fileElement.parentNode.removeChild(fileElement);
+					} );
+				}.bind(this),false);
+
+				fileElement.click();
+				document.body.appendChild(fileElement);
+				//this.root.appendChild(fileElement);
+
+			}.bind(this),false);
+
+		};
+
+		/**
+		 * When the attributes is changed,
+		 *
+		 * @param {string} attrName
+		 * @param {string} oldVal
+		 * @param {string} newVal
+		 */
+		stjornvisiFilePrototype.attributeChangedCallback = function(attrName, oldVal, newVal){};
+
+		/**
+		 * When the element is attached to
+		 * the DOM tree
+		 */
+		stjornvisiFilePrototype.attachedCallback = function(){
+			var value = this.input.getAttribute('value');
+			this.input.style.backgroundImage = ( 'url(/stjornvisi/images/60/'+value+')' );
+		};
+
+		/**
+		 * When the element is removed from the DOM.
+		 *
+		 * Do some cleanup.
+		 * Like remove event handlers added to elements
+		 */
+		stjornvisiFilePrototype.detachedCallback = function(){};
+
+
+		document.registerElement('stjornvisi-file', {prototype: stjornvisiFilePrototype});
+
+	})();
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!--

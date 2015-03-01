@@ -98,18 +98,30 @@ class User extends AbstractService{
 	/**
 	 * Get all users.
 	 *
+	 * @param bool $valid
 	 * @return array
 	 * @throws Exception
 	 */
-	public function fetchAll(){
+	public function fetchAll( $valid = false ){
 		try{
-			$statement = $this->pdo->prepare("
-				SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
-				FROM `User` U
-				LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
-				LEFT JOIN Company C ON (C.id = ChU.company_id )
-				ORDER BY U.name;
-			");
+			if( $valid ){
+				$statement = $this->pdo->prepare("
+					SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
+					FROM `User` U
+					LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
+					LEFT JOIN Company C ON (C.id = ChU.company_id )
+					WHERE U.email IS NOT NULL
+					ORDER BY U.name;
+				");
+			}else{
+				$statement = $this->pdo->prepare("
+					SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
+					FROM `User` U
+					LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
+					LEFT JOIN Company C ON (C.id = ChU.company_id )
+					ORDER BY U.name;
+				");
+			}
 			$statement->execute();
 			$users = $statement->fetchAll();
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
@@ -126,6 +138,54 @@ class User extends AbstractService{
 				)
 			));
 			throw new Exception("Can't get all users",0,$e);
+		}
+
+
+	}
+
+
+	/**
+	 * Get all users.
+	 *
+	 * @param bool $valid
+	 * @return array
+	 * @throws Exception
+	 */
+	public function fetchAllLeaders( $valid = false ){
+		try{
+			if( $valid ){
+				$statement = $this->pdo->prepare("
+					SELECT U.* FROM `User` U
+					JOIN Group_has_User GhU ON (U.id = GhU.user_id)
+					WHERE GhU.type IN (1,2) AND U.email IS NOT NULL
+					GROUP BY U.email
+					ORDER BY U.name;
+				");
+			}else{
+				$statement = $this->pdo->prepare("
+					SELECT U.* FROM `User` U
+					JOIN Group_has_User GhU ON (U.id = GhU.user_id)
+					WHERE GhU.type IN (1,2)
+					GROUP BY U.email
+					ORDER BY U.name;
+				");
+			}
+			$statement->execute();
+			$users = $statement->fetchAll();
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return array_map(function($i){
+				$i->created_date = new DateTime($i->created_date);
+				$i->modified_date = new DateTime($i->modified_date);
+				return $i;
+			},$users);
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			throw new Exception("Can't get all leaders",0,$e);
 		}
 
 
@@ -746,18 +806,20 @@ class User extends AbstractService{
 	 * @param int $id
 	 * @param string $key
 	 * @param string $service
+	 * @param string $gender
 	 * @return int affected rows
 	 * @throws Exception
 	 */
-	public function setOauth( $id, $key, $service ){
+	public function setOauth( $id, $key, $service, $gender = null ){
 		try{
 			$statement = $this->pdo->prepare("
-				UPDATE `User` SET oauth_key = :key, oauth_type = :type, modified_date = NOW()
+				UPDATE `User` SET oauth_key = :key, oauth_type = :type, gender = :gender, modified_date = NOW()
 				WHERE id = :id");
 			$statement->execute(array(
 				'key' => $key,
 				'type' => $service,
-				'id' => $id
+				'id' => $id,
+				'gender' => $gender
 			));
 			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			return $statement->rowCount();
@@ -768,7 +830,12 @@ class User extends AbstractService{
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't set user's oAuth. user:[{$id}]",0,$e);
+			if( ((int)$e->getCode()) == 23000 ){
+				throw new \UnexpectedValueException("oAuth code already exists, {$service} user already in the system code[{$key}]. user:[{$id}]",0,$e);
+			}else{
+				throw new Exception("Can't set user's oAuth. user:[{$id}]",0,$e);
+			}
+
 		}
 	}
 
@@ -940,7 +1007,66 @@ class User extends AbstractService{
 					isset($connectStatement)?$connectStatement->queryString:null,
 				)
 			));
-			throw new Exception("Can't create event. " . $e->getMessage() ,0,$e);
+			throw new Exception("Can't create user. " . $e->getMessage() ,0,$e);
+		}
+	}
+
+	public function update( $id, $data ){
+		try{
+
+			$company_id = isset($data['company_id'])
+				? $data['company_id']
+				: null;
+
+			unset($data['company_id']);
+			unset($data['key_user']);
+
+			$data['modified_date'] = date('Y-m-d H:i:s');
+
+			$updateString = $this->updateString('User',$data,"id={$id}");
+			$updateStatement = $this->pdo->prepare($updateString);
+			$updateStatement->execute($data);
+
+
+			if( $company_id ){
+				$deleteStatement = $this->pdo->prepare("
+					DELETE FROM `Company_has_User` WHERE user_id = :user_id
+				");
+				$deleteStatement->execute(array(
+					'user_id' => $id
+				));
+				$value = array(
+					'user_id' => $id,
+					'company_id' => $company_id,
+					'key_user' => 0
+				);
+				$createCompanyString = $this->insertString('Company_has_User',$value);
+				$createCompanyStatement = $this->pdo->prepare($createCompanyString);
+				$createCompanyStatement->execute($value);
+			}
+
+
+			$data['id'] = $id;
+			$this->getEventManager()->trigger('update', $this, array(
+				0 => __FUNCTION__,
+				'data' => $data
+			));
+
+			$this->getEventManager()->trigger('index', $this, array(
+				0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+				'id' => $id,
+				'name' => User::NAME,
+			));
+			return $id;
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($createStatement)?$createStatement->queryString:null,
+					isset($connectStatement)?$connectStatement->queryString:null,
+				)
+			));
+			throw new Exception("Can't update user[$id]. " . $e->getMessage() ,0,$e);
 		}
 	}
 }

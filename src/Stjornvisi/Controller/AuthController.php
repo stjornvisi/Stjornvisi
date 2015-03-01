@@ -262,6 +262,7 @@ class AuthController extends AbstractActionController{
 	/**
 	 * Create user
 	 * @return ViewModel
+	 * @throws \Exception
 	 */
 	public function createUserConfirmAction(){
 		$session = new Container('create_user');
@@ -518,7 +519,7 @@ class AuthController extends AbstractActionController{
 				$userService = $sm->get('Stjornvisi\Service\User');
 				/** @var $userService \Stjornvisi\Service\User */
 				if( ($user = $userService->getByHash( $key )) != null ){
-					$userService->setOauth( $user->id, $me['id'], 'facebook' );
+					$userService->setOauth( $user->id, $me['id'], 'facebook', $me['gender'] );
 				//USER NOT FOUND
 				//	can't find the user based on hash
 				}else{
@@ -594,7 +595,8 @@ class AuthController extends AbstractActionController{
 
 			$post = $this->request->getPost()->getArrayCopy();
 			$sm = $this->getServiceLocator();
-			$userService = $sm->get('Stjornvisi\Service\User'); /** @var  $userService \Stjornvisi\Service\User */
+			$userService = $sm->get('Stjornvisi\Service\User');
+			/** @var  $userService \Stjornvisi\Service\User */
 
 			$user = $userService->get( $post['email'] );
 			if( $user ){

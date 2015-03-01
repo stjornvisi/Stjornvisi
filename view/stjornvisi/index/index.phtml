@@ -28,7 +28,7 @@
 											<li><span>Stjónvísisviðburður</span></li>
 										<?php else:?>
 											<?php foreach($event->groups as $group):?>
-												<li><a href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
+												<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a></li>
 											<?php endforeach;?>
 										<?php endif; ?>
 									</ul>
@@ -105,9 +105,9 @@
 					<h2><a href="<?=$this->url('vidburdir/index',array('id'=>$item->event->id))?>"><?=$item->event->subject?></a></h2>
 					<ul class="block-supplement">
 						<?php foreach($item->media as $media):?>
-							<li>
-								<a href="/images/original/<?=$media->name?>" title="<?=$media->name?>" target="_blank"><?=$media->name?></a>
-							</li>
+						<li>
+							<a href="<?=$this->basePath("/images/original/{$media->name}")?>" title="<?=$media->name?>" target="_blank"><?=$media->name?></a>
+						</li>
 						<?php endforeach;?>
 					</ul>
 				</li>

@@ -7,17 +7,23 @@
  */
 
 ?>
+<div class="layout layout--three-columns">
+	<section class="layout__section">
+		<div class="page-group__header">
+			<?php if( $this->user ):?>
+				<h1 class="layout__headline">Póstur hefur verið sendur</h1>
+				<p>Til þess að ganga úr skugga um að þú sért réttur handhafi netfangsins
+					hefur tölvupóstur verið sendur á tilgreint netfang. Í honum er slóð
+					sem þú þarft að fylgja til að klára skráningu.</p>
+				<pre><?= $this->facebook;?></pre>
+			<?php else:?>
+				<h1 class="layout__headline">Netfang ekki á skrá</h1>
+				<p>Netfang er ekki á skrá.</p>
+			<?php endif;?>
+		</div>
+	</section>
+	<aside class="layout__aside"></aside>
+</div>
 
-	<?php if( $this->user ):?>
-		<p>Póstur hefur verið sendur. Lestu hann vandlega.</p>
-		<p>OK, það var ekki sendur neinn póstur, ég útfæri það seinna, það sem þú þarft að gera er að
-			copy/paste'a þessa slóð í brower'inn þinn.</p>
-		<pre><?= $this->facebook;?></pre>
-	<?php else:?>
-		<p>Netfang er ekki á skrá. Viltu reyna aftur</p>
-		<form action="<?=$this->url('auth/facebook-connect')?>" method="post">
-			<input type="email" name="email" />
-			<input type="submit" value="submit" />
-		</form>
-	<?php endif;?>
+
 

@@ -11,6 +11,7 @@
 		text-indent: 70px;
 		background-repeat: no-repeat;
 		cursor: pointer;
+		padding: $gutter 0;
 	}
 	.form-control[readonly]{
 		cursor: pointer;

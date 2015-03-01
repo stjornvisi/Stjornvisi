@@ -19,6 +19,8 @@
    ADD oauth_key VARCHAR (255),
    ADD oauth_type varchar (20);
 
+ ALTER TABLE `User`
+   ADD gender VARCHAR (20) DEFAULT NULL;
 
  ALTER TABLE `User`
   ADD get_message TINYINT (1),

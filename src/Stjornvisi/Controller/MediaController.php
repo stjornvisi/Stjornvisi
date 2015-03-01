@@ -89,7 +89,10 @@ class MediaController extends AbstractActionController{
 						'message' => 'Success',
 						'name' => $newFileName. '.'.$nameArray[3],
 						'original' => $originalFileName,
-						'thumb' => $renderer->basePath('/images/60/'.$newFileName. '.'.$nameArray[3])
+						'thumb' => $renderer->basePath('/images/60/'.$newFileName. '.'.$nameArray[3]),
+						'medium' => $renderer->basePath('/images/100/'.$newFileName. '.'.$nameArray[3]),
+						'big' => $renderer->basePath('/images/300-square/'.$newFileName. '.'.$nameArray[3]),
+						'path' => $renderer->basePath('/images/original/'.$newFileName. '.'.$nameArray[3])
 					);
 
 				}else{

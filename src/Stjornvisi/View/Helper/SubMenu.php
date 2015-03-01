@@ -29,61 +29,79 @@ class SubMenu extends AbstractHelper {
 
 	public function __invoke(){
 
+		$view = $this->getView();
+		/** @var $view \Zend\View\Renderer\PhpRenderer */
+
+
+
 		if( !self::$navigation ){
 
-			$view = $this->getView();
-			$array = array(
-				array(
-					'label' => 'Faghópar',
-					'id' => 'group-link',
-					'uri' => '#',
-					'pages' => array_map(function($i) use ($view){
-						return array(
-							'label' => $i->name_short,
-							'id' => $i->id,
-							'uri' => '/hopur/'.$i->url,
-							'params' => array(
-								'id' => $i->url,
-								'range' => '2013-2014'
+			$array = array();
+			$userGroups = $this->groupService->getByUser($this->authService->getIdentity()->id);
+			if( empty($userGroups) ){
+				$array = array(
+					array(
+						'label' => 'Faghópar',
+						'id' => 'group-link',
+						'class' => 'headline',
+						'uri' => $view->url('hopur'),
+						'pages' => array(
+							array(
+								'label' => 'Þú hefur ekki skráð þig í neina faghópa',
+								'uri' => $view->url('hopur'),
 							)
-						);
-					},$this->groupService->getByUser($this->authService->getIdentity()->id))
-				),
-				/*
-				array(
-					'label' => 'Viðburðir',
-					'uri' => '/vidburdir'
-				),
-				array(
-					'label' => 'Fréttir',
-					'uri' => '/frettir',
-				),
-				*/
+						)
+					),
+				);
+			}else{
+				$array = array(
+					array(
+						'label' => 'Faghópar',
+						'id' => 'group-link',
+						'class' => 'headline',
+						'uri' => $view->url('hopur'),
+						'pages' => array_map(function($i) use ($view){
+							return array(
+								'label' => $i->name_short,
+								'id' => $i->id,
+								'uri' => $view->url('hopur/index',array('id'=>$i->url)),
+								'class' => 'icon-horn',
+								'params' => array(
+									'id' => $i->url,
+									'range' => '2013-2014'
+								)
+							);
+						},$this->groupService->getByUser($this->authService->getIdentity()->id))
+					),
 
-			);
+				);
+			}
+
+
 
 			if( $this->authService->hasIdentity() ){
 
 				$array[] = array(
 					'label' => $this->authService->getIdentity()->name,
 					'uri' => '/notandi/'.$this->authService->getIdentity()->id,
+					'class' => 'headline',
 					'pages' => array(
 						array(
 							'label' => 'Notendastillingar',
-							'uri' => "/notandi/{$this->authService->getIdentity()->id}/uppfaera"
+							'uri' => $view->url('notandi/update',array('id'=>$this->authService->getIdentity()->id))//"/notandi/{$this->authService->getIdentity()->id}/uppfaera"
 						),
 						array(
 							'label' => 'Hópastillingar',
-							//'uri' => "/notandi/{$this->authService->getIdentity()->id}/hopar"
-							'uri' => "/notandi/hopar"
+							'uri' => $view->url('notandi/manage-groups')
 						),
 						array(
 							'label' => 'Lykilorð',
-							'uri' => "/notandi/{$this->authService->getIdentity()->id}/lykilord"
+							'uri' => $view->url('notandi/change-password',array('id'=>$this->authService->getIdentity()->id))
 						),
 						array(
 							'label' => 'Útskrá',
-							'uri' => '/utskra'
+							'uri' => $view->url('auth-out'),
+							'class' => 'icon-close'
 						),
 					),
 				);
@@ -93,46 +111,90 @@ class SubMenu extends AbstractHelper {
 					$array[] = array(
 						'label' => 'Admin',
 						'id' => 'admin-link',
+						'class' => 'headline',
 						'uri' => '#',
 
 						'pages' => array(
 							array(
-								'label' => 'Group Statistics',
-								'uri' => '/hopur/tolfraedi'
+								'label' => 'Frétt',
+								'id' => 'news-create',
+								'uri' => $view->url('frettir/create'),
+								'class' => 'icon-plus',
+								'title' => 'Stofna nýja frétt'
 							),
 							array(
-								'label' => 'Event Statistics',
-								'id' => 'event-statistics',
-								'uri' => '/vidburdir/tolfraedi'
+								'label' => 'Viðburður',
+								'id' => 'event-create',
+								'uri' => $view->url('vidburdir/create'),
+								'class' => 'icon-plus',
+								'title' => 'Stofna nýjann viðburð',
+								'pages' => array(
+									array(
+										'label' => 'Tölfræði',
+										'title' => 'Tölfræði viðburða',
+										'id' => 'event-statistics',
+										'uri' => $view->url('vidburdir/statistics'),
+										'class' => 'icon-bar-chart'
+									),
+								),
 							),
 							array(
-								'label' => 'Create Event',
-								'id' => 'event-statistics',
-								'uri' => '/vidburdir/stofna'
+								'label' => 'Hópur',
+								'id' => 'group-create',
+								'uri' => $view->url('hopur/create'),
+								'class' => 'icon-plus',
+								'title' => 'Stofna nýjann hóp',
+								'pages' => array(
+									array(
+										'label' => 'Group Statistics',
+										'title' => 'Tölfræði faghópa',
+										'uri' => $view->url('hopur/statistics'),
+										'class' => 'icon-bar-chart'
+									),
+								),
 							),
 							array(
-								'label' => 'Create News',
-								'id' => 'event-statistics',
-								'uri' => '/frettir/stofna'
+								'label' => 'Fyrirtæki',
+								'id' => 'company-list',
+								'uri' => $view->url('fyrirtaeki'),
+								'class' => 'icon-list',
+								'title' => 'Fyrirtækjalisti',
+								'pages' => array(array(
+									'label' => 'Fyrirtæki',
+									'id' => 'company-create',
+									'uri' => $view->url('fyrirtaeki/create'),
+									'class' => 'icon-plus',
+									'title' => 'Stofna nýtt fyrirtæki'
+								))
 							),
+
 							array(
-								'label' => 'Create Group',
-								'id' => 'event-statistics',
-								'uri' => '/hopur/stofna'
-							),
-							array(
-								'label' => 'Create Company',
-								'id' => 'event-statistics',
-								'uri' => '/fyrirtaeki/stofna'
+								'label' => 'Notendur',
+								'id' => 'user-list',
+								'uri' => $view->url('notandi'),
+								'class' => 'icon-list',
+								'title' => 'Notendalisti',
+								'pages' => array(
+									array(
+										'label' => 'Allir',
+										'id' => 'mail-all',
+										'uri' => $view->url('email/send',array('type'=>'allir')),
+										'class' => 'icon-mail',
+										'title' => 'Senda póst á alla'
+									),
+									array(
+										'label' => 'Stjórnendur',
+										'id' => 'mail-all',
+										'uri' => $view->url('email/send',array('type'=>'formenn')),
+										'class' => 'icon-mail',
+										'title' => 'Senda póst á stjórnendur faghópa'
+									),
+								)
 							),
 						),
 					);
 				}
 
-				$array[] = array(
-					'label' => 'Útskrá',
-					'uri' => '/utskra'
-				);
 			}
 
 

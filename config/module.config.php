@@ -25,6 +25,7 @@ return array(
                     ),
                 ),
             ),
+			/*
 			'group-overview' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -35,6 +36,7 @@ return array(
 					),
 				),
 			),
+			*/
             'rss' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -443,6 +445,19 @@ return array(
                             ),
                         )
                     ),
+					'event-export' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/vidburdalisti',
+							'constraints' => array(
+								'id' => '[a-zA-Z][a-zA-Z0-9_-]*'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'export-events'
+							),
+						)
+					),
 					'event-statistics' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(
@@ -773,6 +788,16 @@ return array(
 							'defaults' => array(
 								'controller' => 'Stjornvisi\Controller\User',
 								'action' => 'groups'
+							),
+						)
+					),
+					'export' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/notendalisti',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\User',
+								'action' => 'export'
 							),
 						)
 					),
@@ -1497,6 +1522,35 @@ return array(
 
 				)
 			),
+
+			'email' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/tolvupostur',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Email',
+						'action' => 'list'
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'send' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/senda[/:type]',
+							'constraints' => array(
+								'id' => '[a-zA-Z][a-zA-Z0-9_-]*',
+								'type' => 'allir|formenn'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Email',
+								'action' => 'send'
+							),
+						)
+					),
+
+				)
+			),
         ),
     ),
     'service_manager' => array(
@@ -1539,6 +1593,7 @@ return array(
 			'Stjornvisi\Controller\Console' => 'Stjornvisi\Controller\ConsoleController',
 			'Stjornvisi\Controller\Skeleton' => 'Stjornvisi\Controller\SkeletonController',
 			'Stjornvisi\Controller\Conference' => 'Stjornvisi\Controller\ConferenceController',
+			'Stjornvisi\Controller\Email' => 'Stjornvisi\Controller\EmailController',
         ),
     ),
     'view_helpers' => array(

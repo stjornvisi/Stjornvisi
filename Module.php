@@ -45,6 +45,7 @@ use Stjornvisi\Notify\Submission as SubmissionNotify;
 use Stjornvisi\Notify\Event as EventNotify;
 use Stjornvisi\Notify\Password as PasswordNotify;
 use Stjornvisi\Notify\Group as GroupNotify;
+use Stjornvisi\Notify\All as AllNotify;
 use Stjornvisi\Notify\Attend as AttendNotify;
 
 use Zend\Authentication\AuthenticationService;
@@ -76,6 +77,36 @@ class Module{
 
     public function onBootstrap(MvcEvent $e){
 
+		$logger = $e->getApplication()->getServiceManager()->get('Logger');
+		register_shutdown_function(function () use ($logger){
+			if ($e = error_get_last()) {
+				$logger->err("Here we go again");
+				$logger->err($e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
+				$logger->__destruct();
+			}
+		});
+
+		$eventManager        = $e->getApplication()->getEventManager();
+		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
+			$exception = $e->getParam('exception');
+			/** @var $exception \Exception */
+			while( $exception ){
+				$logger->err($exception->getMessage());
+				$logger->err(print_r($exception->getTraceAsString(),true));
+				$exception = $exception->getPrevious();
+			}
+
+		} );
+		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e) use ($logger) {
+			$exception = $e->getParam('exception');
+			/** @var $exception \Exception */
+			while( $exception ){
+				$logger->err($exception->getMessage());
+				$logger->err(print_r($exception->getTraceAsString(),true));
+				$exception = $exception->getPrevious();
+			}
+
+		} );
 
 		$auth = new AuthenticationService();
 
@@ -89,7 +120,8 @@ class Module{
 		$sessionManager->start();
 
 
-        $eventManager        = $e->getApplication()->getEventManager();
+
+
 		$eventManager->attach('render',function($e) use ($auth){
 			/** @var $e \Zend\Mvc\MvcEvent  */
 			if( !$auth->hasIdentity() ){
@@ -104,7 +136,7 @@ class Module{
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-		$logger = $e->getApplication()->getServiceManager()->get('Logger');
+
 		$connectionFactory = $e->getApplication()->getServiceManager()->get('Stjornvisi\Lib\QueueConnectionFactory');
 		$sem = $eventManager->getSharedManager();
 
@@ -278,6 +310,16 @@ class Module{
 						$obj = new GroupNotify(
 							$sm->get('Stjornvisi\Service\User'),
 							$sm->get('Stjornvisi\Service\Group')
+						);
+						$obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
+						$obj->setLogger( $sm->get('Logger') );
+						return $obj;
+					},
+				'Stjornvisi\Notify\All' => function($sm){
+						$obj = new AllNotify(
+							$sm->get('Stjornvisi\Service\User')
 						);
 						$obj->setQueueConnectionFactory(
 							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')

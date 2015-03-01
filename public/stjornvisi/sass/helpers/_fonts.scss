@@ -206,7 +206,6 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-
 .icon-check:before {
 	content: "\f00c";
 }
@@ -231,6 +230,10 @@
 	content: "\f068";
 }
 
+.icon-bar-chart:before {
+	content: "\f080";
+}
+
 .icon-envelope:before {
 	content: "\f0e0";
 }
@@ -249,6 +252,14 @@
 
 .icon-file-image-o:before {
 	content: "\f1c5";
+}
+
+.icon-area-chart:before {
+	content: "\f1fe";
+}
+
+.icon-pie-chart:before {
+	content: "\f200";
 }
 
 .icon-calendar-o:before {

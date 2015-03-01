@@ -117,8 +117,8 @@ class Group extends AbstractService {
         if( $register ){
             try{
                 $statement = $this->pdo->prepare("
-                    INSERT INTO `Group_has_User` (`group_id`,`user_id`,`type`)
-                    VALUES (:group_id,:user_id,:type)");
+                    INSERT INTO `Group_has_User` (`group_id`,`user_id`,`type`, `notify`)
+                    VALUES (:group_id,:user_id,:type,1)");
                 $statement->execute(array(
                     'group_id' => $group_id,
                     'user_id' => $user_id,

@@ -12,6 +12,7 @@ namespace Stjornvisi\Event;
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\News;
+use Stjornvisi\Service\User;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Log\LoggerInterface;
@@ -65,6 +66,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 	 * Actually do the logging.
 	 *
 	 * @param EventInterface $event
+	 * @todo this requires a major rewrite
 	 */
 	public function log(EventInterface $event){
 		$target = $event->getTarget();
@@ -148,6 +150,19 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 						$recipient,
 						'[Activity]:Fyrirtæki eytt',
 						"<p>Fyrirtæki <strong>{$data['name']}</strong> eytt</p>"
+					);
+					break;
+				default:
+					break;
+			}
+		}elseif ( $target instanceof User && isset($params['data'])  ){
+			$data = $params['data'];
+			switch( $method ){
+				case 'create':
+					$this->send(
+						$recipient,
+						'[Activity]:Notandi stofnaður',
+						"<p>Notandi <strong>{$data['name']}</strong> stofnaður <a href=\"http://stjornvisi.is/notandi/{$data['id']}\">http://stjornvisi.is/notandi/{$data['id']}</a></p>"
 					);
 					break;
 				default:

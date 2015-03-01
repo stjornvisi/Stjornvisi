@@ -220,6 +220,29 @@
 				padding: $gutter;
 				float: left;
 				width: ( 100% / 4 );
+				> ul > li > ul {
+					padding-left: $gutter;
+				}
+				a.headline{
+					@include adjust-font-size-to($font-size-base,1,$font-size-base);
+					display: block;
+					@include margin-trailer(1,$font-size-base);
+					border-bottom: 1px solid tint($color-green-sea,50%);
+				}
+				a:before{
+					font-family: 'icomoon';
+					speak: none;
+					font-style: normal;
+					font-weight: normal;
+					font-variant: normal;
+					text-transform: none;
+					line-height: 1;
+
+					/* Better Font Rendering =========== */
+					-webkit-font-smoothing: antialiased;
+					-moz-osx-font-smoothing: grayscale;
+					padding-right: rhythm(1/4,$font-size-small);
+				}
 				a{
 					@include adjust-font-size-to($font-size-small,1,$font-size-base);
 					color: $color-white;

@@ -459,10 +459,39 @@ class ConsoleController extends AbstractActionController {
 			while(count($channel->callbacks)) {
 				$channel->wait();
 			}
-		}catch (\Exception $e){
-			$logger->warn( "Can't start IndexListener: {$e->getMessage()}" );
+		}catch (\PhpAmqpLib\Exception\AMQPOutOfBoundsException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
 			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPProtocolException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPRuntimeException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPConnectionException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPChannelException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPTimeoutException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\Exception $e){
+			$logger->warn( "Warning in NotifyListener: {$e->getMessage()}" );
+			$logger->warn( print_r($e->getTraceAsString(),true) );
 		}
+
 
 	}
 
@@ -527,10 +556,37 @@ class ConsoleController extends AbstractActionController {
 
 			$channel->close();
 			$connection->close();
-		}catch (\Exception $e){
-			$logger->warn( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->warn( print_r($e->getTraceAsString(),true) );
+		}catch (\PhpAmqpLib\Exception\AMQPOutOfBoundsException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
 			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPProtocolException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPRuntimeException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPConnectionException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPChannelException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPTimeoutException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\Exception $e){
+			$logger->warn( "Warning in NotifyListener: {$e->getMessage()}" );
+			$logger->warn( print_r($e->getTraceAsString(),true) );
 		}
 
 
@@ -638,12 +694,37 @@ class ConsoleController extends AbstractActionController {
 			$channel->close();
 			$connection->close();
 
-		}catch (AMQPRuntimeException $e){
-			$logger->warn( "Can't start Mail Queue: {$e->getMessage()}" );
+		}catch (\PhpAmqpLib\Exception\AMQPOutOfBoundsException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPProtocolException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPRuntimeException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPConnectionException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPChannelException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPTimeoutException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPException $e){
+			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
+			$logger->err( print_r($e->getTraceAsString(),true) );
 			exit(1);
 		}catch (\Exception $e){
-			$logger->warn( "{$e->getMessage() }\n".print_r($e->getTraceAsString(),true) );
-			exit(1);
+			$logger->warn( "Warning in NotifyListener: {$e->getMessage()}" );
+			$logger->warn( print_r($e->getTraceAsString(),true) );
 		}
 
 	}

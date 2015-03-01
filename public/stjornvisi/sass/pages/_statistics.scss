@@ -1,0 +1,50 @@
+
+	.page-statistics{
+
+		.statistics__wrapper{
+			@include margin-leader(1,$font-size-base);
+			@include margin-trailer(1,$font-size-base);
+		}
+
+		.statistics__container{
+			padding: $gutter;
+			background-color: $color-blue-light;
+			@include margin-leader(1,$font-size-base);
+			@include margin-trailer(1,$font-size-base);
+		}
+
+
+
+
+		.bar {
+			//fill: steelblue;
+			fill: $color-green-sea;
+		}
+
+		.bar:hover {
+			//fill: brown;
+			fill: $color-blue;
+		}
+
+		.axis {
+			font: 10px sans-serif;
+		}
+
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+
+		.x.axis path {
+			display: none;
+		}
+
+		#distribution-events .tick{
+			//transform: rotate(90deg);
+		}
+
+
+
+	}

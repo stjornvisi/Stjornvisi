@@ -30,7 +30,6 @@ class IndexController extends AbstractActionController{
      * if the use is not logged in, else it will be the user's personal
      * profile.
      *
-     * @todo create splash/landing for anonymous users
      */
     public function indexAction(){
 
@@ -71,74 +70,6 @@ class IndexController extends AbstractActionController{
     public function sitemapRobotAction(){
         $this->getHelper('layout')->disableLayout();
     }
-
-    /**
-     * RSS feed for all events
-     *
-     * Get all events from two months back in time
-     * @todo change content-type to application/rss+xml
-     *      disable layout
-     */ /*
-    public function rssEventsAction(){
-
-        $sm = $this->getServiceLocator();
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-        $from = new DateTime();
-        $from->sub( new DateInterval('P2M') );
-
-        $feed = new Feed();
-        $feed->setTitle('Feed Example');
-        $feed->setFeedLink('http://ourdomain.com/rss', 'atom');
-        $feed->addAuthor(array(
-            'name'  => 'Stjórnvísi',
-            'email' => 'stjornvisi@stjornvisi.is',
-            'uri'   => 'http://stjornvisi.is',
-        ));
-        $feed->setDescription('Viðburðir');
-        $feed->setLink('http://ourdomain.com');
-        $feed->setDateModified(new DateTime());
-
-        $data = array();
-
-        foreach($eventService->getRange( $from ) as $row){
-            //create entry...
-            $entry = $feed->createEntry();
-            $entry->setTitle($row->subject);
-            $entry->setLink( 'http://stjornvisi.is/' );
-            $entry->setDescription($row->body.'.');
-
-            $entry->setDateModified($row->event_date);
-            $entry->setDateCreated($row->event_date);
-
-            $feed->addEntry($entry);
-        }
-
-        $feed->export('rss');
-
-        $feedmodel = new FeedModel();
-        $feedmodel->setFeed($feed);
-
-        return $feedmodel;
-
-    }*/
-
-    /**
-     * RSS feed for all news
-     *
-     * Get all news from two months back in time
-     * @todo change content-type to application/rss+xml
-     *      disable layout
-     */ /*
-    public function rssNewsAction(){
-        $sm = $this->getServiceLocator();
-        $newsService = $sm->get('Stjornvisi\Service\News');
-        $from = new DateTime();
-        $from->sub( new DateInterval('P2M') );
-
-        return new ViewModel(array(
-            'news' => $newsService->getRange( $from )
-        ));
-    }*/
 
     /**
      * @todo do we need this?

@@ -14,25 +14,25 @@
 			<?php endif;?>
 
 			<h1 class="layout__headline"><?=$this->user->name;?></h1>
-			<dl class="block-property-value">
+			<dl class="block-property-value block-property-value--em">
 				<dt>Titill</dt>
 				<dd><?=$this->user->title?></dd>
 				<dt>Netfang</dt>
-				<dd><?=$this->user->email?></dd>
+				<dd><a href="mailto:<?=$this->user->email?>"><?=$this->user->email?></a></dd>
 				<dt>Síðan</dt>
-				<dd><?=$this->user->created_date->format('Y-m-d')?></dd>
+				<dd><?=$this->date($this->user->created_date,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?></dd>
 				<dt>Innskráningar</dt>
 				<dd><?=$this->user->frequency;?></dd>
 				<dt>Kerfisstjóri</dt>
-				<dd><?=($this->user->is_admin)?'já':'nei'?></dd>
+				<dd><i class="<?=($this->user->is_admin)?'icon-check':'icon-close'?>" title="<?=($this->user->is_admin)?'já':'nei'?>"></i></dd>
 			</dl>
 
 			<h2 class="layout__headline">Fyrirtæki</h2>
-			<dl class="block-property-value">
+			<dl class="block-property-value block-property-value--em">
 				<dt>Nafn</dt>
 				<dd><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$this->user->company->id))?>"><?=$this->user->company->name?></a></dd>
 				<dt>Lykilstarfsmaður</dt>
-				<dd><?=($this->user->company->key_user)?'já':'nei';?></dd>
+				<dd><i class="<?=($this->user->company->key_user)?'icon-check':'icon-close'?>" title="<?=($this->user->company->key_user)?'já':'nei';?>"></i></dd>
 			</dl>
 
 			<h2 class="layout__headline">Hópar</h2>
@@ -101,16 +101,16 @@
 	<aside class="layout__aside">
 		<?php if( $this->access->is_admin || $this->access->type == 1 ):?>
 			<stjonvisi-control>
-				<a href="<?=$this->url('notandi/update',array('id'=>$this->user->id));?>">Uppfæra</a>
-				<a href="<?=$this->url('notandi/delete',array('id'=>$this->user->id));?>">Eyða</a>
+				<a href="<?=$this->url('notandi/update',array('id'=>$this->user->id));?>" class="update"><i class="icon-check"></i> uppfæra</a>
+				<!--a href="<?=$this->url('notandi/delete',array('id'=>$this->user->id));?>" class="update"><i class="icon-close"></i> eyða</a-->
 				<?php if( $this->access->is_admin ):?>
 				<?php if( $this->user->is_admin ):?>
-				<a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>0));?>">Taka admin réttindi af</a></li>
+				<a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>0));?>"><i class="icon-minus"></i> Taka admin réttindi af</a></li>
 				<?php else:?>
-				<a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>1));?>">Setja admin réttindi á</a></li>
+				<a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>1));?>"><i class="icon-plus"></i> Setja admin réttindi á</a></li>
 				<?php endif;?>
 				<?php endif;?>
-				<a href="<?=$this->url('notandi/change-password',array('id'=>$this->user->id))?>">Breyta lykilorði</a> </li>
+				<a href="<?=$this->url('notandi/change-password',array('id'=>$this->user->id))?>"><i class="icon-plus"></i> Breyta lykilorði</a> </li>
 			</stjonvisi-control>
 		<?php endif;?>
 	</aside>

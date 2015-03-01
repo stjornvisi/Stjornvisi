@@ -275,11 +275,13 @@
  *
  */
 .layout__headline + /*ul*/.block-list {
-	margin-top: rhythm(1,$font-size-base);
+	margin-top: rhythm(1/2,$font-size-base);
+	margin-bottom: rhythm(1,$font-size-base);
 }
 
 .layout__headline + .block-property-value{
-	margin-top: rhythm(1,$font-size-base);
+	margin-top: rhythm(1/2,$font-size-base);
+	margin-bottom: rhythm(1,$font-size-base);
 }
 
 
@@ -369,6 +371,12 @@
 	dd{
 		width: 50%;
 		float: left;
+	}
+
+	&.block-property-value--em{
+		dt{
+			font-weight: $font-weight-bold;
+		}
 	}
 }
 
@@ -754,6 +762,7 @@
 		}
 	}
 }
+
 .block-calendar__pagination{
 
 	border: 1px solid $color-gray-light;

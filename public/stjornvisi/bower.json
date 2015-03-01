@@ -21,6 +21,7 @@
     "bootstrap-sass-official": "~3.3.3",
     "Stickyfill": "~1.1.1",
     "photoswipe": "~4.0.5",
-    "fluidbox": "~1.4.3"
+    "fluidbox": "~1.4.3",
+    "d3": "~3.5.5"
   }
 }

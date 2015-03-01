@@ -11,21 +11,21 @@
 ?>
 <div class="layout layout--three-columns page-user-list">
 	<section class="layout__section">
-		<h1>Notendur (<?=count($this->users)?>)</h1>
+		<h1 class="layout__headline">Notendur (<?=count($this->users)?>)</h1>
 		<?php foreach( $stack as $chunk ): ?>
 			<div class="page-user-list__group">
 				<ul class="block-list">
 				<?php foreach( $chunk as $user ): ?>
-					<li class="block-element">
+					<li class="block-item">
 						<h2><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></h2>
-						<dd><?=($user->title)?$user->title:'&nbsp;'?></dd>
-						<time datetime="<?=$user->created_date->format('c')?>" class="block-element__time"><?=$this->date($user->created_date)?></time>
+						<p><?=($user->title)?$user->title:'&nbsp;'?></p>
+						<time datetime="<?=$user->created_date->format('c')?>" class="block-item__time"><?=$this->date($user->created_date)?></time>
 						<?php if($user->company_id):?>
-							<dd><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$user->company_id))?>"><?=$user->company_name?></a></dd>
+							<p><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$user->company_id))?>"><?=$user->company_name?></a></p>
 						<?php else:?>
-							<dd>&nbsp;</dd>
+							<p>&nbsp;</p>
 						<?php endif;?>
-						<dd><?=($user->key_user)?'Formaður':'&nbsp;';?></dd>
+						<p><?=($user->key_user)?'Formaður':'&nbsp;';?></p>
 
 					</li>
 				<?php endforeach;?>
@@ -34,6 +34,10 @@
 		<?php endforeach;?>
 	</section>
 	<aside class="layout__aside">
-
+		<?php if($this->admin):?>
+		<stjonvisi-control>
+			<a href="<?=$this->url('notandi/export')?>"><i class="icon-list"></i>notendalisti</a>
+		</stjonvisi-control>
+		<?php endif;?>
 	</aside>
 </div>

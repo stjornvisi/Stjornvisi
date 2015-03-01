@@ -1,5 +1,6 @@
 
 	%rich-text{
+		@include pie-clearfix;
 		h1 + p,
 		h2 + p,
 		h3 + p,
@@ -27,6 +28,9 @@
 		}
 
 		ol{
+			list-style: none;
+			margin: 0;
+			padding: 0;
 			counter-reset: section;
 			li:before{
 				counter-increment: section;
@@ -38,6 +42,9 @@
 
 
 		ul{
+			list-style: none;
+			margin: 0;
+			padding: 0;
 			li:before{
 				content: "\2022";
 				color: $color-green-sea;
@@ -63,5 +70,17 @@
 			font-family: $font-family-bitter;
 			font-weight: $font-weight-bold;
 		}
+		img[alt*=left]{
+			float: left;
+			margin: $gutter/2 $gutter/2	$gutter/2 0;
+		}
+		img[alt*=right]{
+			float: left;
+			margin: $gutter/2 0 $gutter/2 $gutter/2;
+		}
+		img{
+			//max-width: 50%;
+		}
+
 
 	}

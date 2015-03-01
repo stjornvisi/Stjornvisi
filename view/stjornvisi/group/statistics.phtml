@@ -7,46 +7,17 @@
  */
 $this->headScript()->appendFile( $this->basePath().'/vendor/d3/d3.min.js' );
 ?>
-<div class="layout layout--three-columns">
+<div class="layout layout--two-columns page-statistics">
 	<section class="layout__section">
-		<script src="<?=$this->basePath().'/vendor/d3/d3.min.js'?>"></script>
-		<style>
 
-			.bar {
-				fill: steelblue;
-			}
-
-			.bar:hover {
-				fill: brown;
-			}
-
-			.axis {
-				font: 10px sans-serif;
-			}
-
-			.axis path,
-			.axis line {
-				fill: none;
-				stroke: #000;
-				shape-rendering: crispEdges;
-			}
-
-			.x.axis path {
-				display: none;
-			}
-
-		</style>
-
-
-
-		<section id="distribution-events">
-			<h1>Fjöldi viðburða á hóp</h1>
-			<div></div>
+		<section id="distribution-events" class="statistics__wrapper">
+			<h1 class="layout__headline">Fjöldi viðburða á hóp</h1>
+			<div class="statistics__container"></div>
 		</section>
 
-		<section id="distribution-members">
-			<h1>Fjöldi meðlima á hóp</h1>
-			<div></div>
+		<section id="distribution-members" class="statistics__wrapper">
+			<h1 class="layout__headline">Fjöldi meðlima á hóp</h1>
+			<div class="statistics__container"></div>
 		</section>
 
 
@@ -90,7 +61,12 @@ $this->headScript()->appendFile( $this->basePath().'/vendor/d3/d3.min.js' );
 					svg.append("g")
 						.attr("class", "x axis")
 						.attr("transform", "translate(0," + height + ")")
-						.call(xAxis);
+						.call(xAxis).selectAll("text")
+						.attr("y", 0)
+						.attr("x", 9)
+						.attr("dy", ".35em")
+						.attr("transform", "rotate(90)")
+						.style("text-anchor", "start");
 
 					svg.append("g")
 						.attr("class", "y axis")

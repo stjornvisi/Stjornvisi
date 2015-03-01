@@ -402,12 +402,12 @@ class GroupController extends AbstractActionController{
 
 	}
 
-    /**
-     * Export members list in CSV
-     *
-     * @return ViewModel
-     */
-    public function exportMembersAction(){
+	/**
+	 * Export members list in CSV
+	 *
+	 * @return array|CsvModel|ViewModel
+	 */
+	public function exportMembersAction(){
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $userService = $sm->get('Stjornvisi\Service\User');
@@ -478,6 +478,78 @@ class GroupController extends AbstractActionController{
         }else{
 			return $this->notFoundAction();
         }
+	}
+
+	/**
+	 * Export events list in CSV
+	 *
+	 * @return array|CsvModel|ViewModel
+	 */
+	public function exportEventsAction(){
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group');
+		$userService = $sm->get('Stjornvisi\Service\User');
+		$eventService = $sm->get('Stjornvisi\Service\Event');
+		/** @var $eventService \Stjornvisi\Service\Event */
+
+
+
+		//GROUP
+		//  group found
+		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
+			$auth = new AuthenticationService();
+			$access = $userService->getTypeByGroup(
+				( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+				$group->id
+			);
+			//ACCESS GRANTED
+			//  user has access
+			if( $access->is_admin || $access->type >= 1 ){
+
+				$server = isset( $_SERVER['HTTP_HOST'] )
+					? "http://".$_SERVER['HTTP_HOST']
+					: 'http://0.0.0.0' ;
+
+				$csv = new Csv();
+				$csv->setHeader(array(
+					'Nafn',
+					'Hópar',
+					'Dags.',
+					'Slóð',
+				));
+				$csv->setName('vidburdalistilisti'.date('Y-m-d-H:i').'.csv');
+				$events = $eventService->getByGroup( $group->id );
+				foreach( $events as $result ){
+
+					$csv->add(array(
+						'name' => $result->subject,
+						'groups' => implode(', ',array_map(function($item){
+							return $item->name_short;
+						},$result->groups)),
+						'date' => $result->event_date->format('Y-m-d'),
+						'url' => $server.$this->url()->fromRoute('vidburdir/index',array('id'=>$result->id))
+					));
+				}
+
+				$model = new CsvModel();
+				$model->setData( $csv );
+
+				return $model;
+
+				//ACCESS DENIED
+				//  user has no access
+			}else{
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
+			}
+			//NO GROUP
+			//  group not found
+			//TODO 404
+		}else{
+			return $this->notFoundAction();
+		}
 	}
 
     /**
@@ -707,7 +779,7 @@ class GroupController extends AbstractActionController{
 						)
 					));
                     return new ViewModel(array(
-                        'form' => new GroupEmail()
+                        'form' => $from
                     ));
                 }
             //NO ACCESS

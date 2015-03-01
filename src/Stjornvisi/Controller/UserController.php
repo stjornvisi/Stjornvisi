@@ -2,6 +2,8 @@
 namespace Stjornvisi\Controller;
 
 use ArrayObject;
+use Stjornvisi\Lib\Csv;
+use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
@@ -158,8 +160,15 @@ class UserController extends AbstractActionController{
 			$sm = $this->getServiceLocator();
 			$userService = $sm->get('Stjornvisi\Service\User');
 
+
+			$access = $userService->getTypeByGroup(
+				( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+				null
+			);
+
 			return new ViewModel(array(
-				'users'=> $userService->fetchAll()
+				'users'=> $userService->fetchAll(),
+				'admin' => $access->is_admin
 			));
 		//ACCESS DENIED
 		//
@@ -173,6 +182,61 @@ class UserController extends AbstractActionController{
     }
 
 	/**
+	 * Export all users as CSV file
+	 *
+	 * @return CsvModel|ViewModel
+	 */
+	public function exportAction(){
+		$auth = new AuthenticationService();
+		if( $auth->hasIdentity() ){
+			$server = isset( $_SERVER['HTTP_HOST'] )
+				? "http://".$_SERVER['HTTP_HOST']
+				: 'http://0.0.0.0' ;
+			$sm = $this->getServiceLocator();
+			$userService = $sm->get('Stjornvisi\Service\User');
+			/** @var  $userService \Stjornvisi\Service\User */
+			$users = $userService->fetchAll();
+
+			$csv = new Csv();
+			$csv->setHeader(array(
+				'Nafn',
+				'Netfang',
+				'Fyrirtæki',
+				'Lykilstarfsmaður fyrirtækis',
+				'Stofna',
+				'Seinast innskráðu(ur)',
+				'Tíðni innskráninga',
+				'Kerfisstjóri',
+				'Slóð'
+			))->setName('notendalisti'.date('Y-m-d-h:i').'.csv');
+
+			foreach( $users as $user ){
+				$csv->add(array(
+					$user->name,
+					$user->email,
+					$user->company_name,
+					($user->key_user)?'já':'nei',
+					$user->created_date->format('Y-m-d'),
+					$user->modified_date->format('Y-m-d'),
+					$user->frequency,
+					( $user->is_admin )?'já':'nei',
+					$server . $this->url()->fromRoute('notandi/index',array('id'=>$user->id))
+				));
+			}
+
+			$model = new CsvModel();
+			$model->setData( $csv );
+			return $model;
+
+		}else{
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
+		}
+	}
+
+	/**
 	 * Update user's properties.
 	 *
 	 * @return \Zend\Http\Response|ViewModel
@@ -181,6 +245,7 @@ class UserController extends AbstractActionController{
 
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
+		/** @var  $userService \Stjornvisi\Service\User */
         $companyService = $sm->get('Stjornvisi\Service\Company');
         $valuesService = $sm->get('Stjornvisi\Service\Values');
 
@@ -208,6 +273,13 @@ class UserController extends AbstractActionController{
                     //VALID FORM
                     //
                     if( $form->isValid() ){
+						$data = $form->getData();
+						$data['company_id'] = $data['company'];
+						unset($data['submit']);
+						unset($data['company']);
+						$userService->update(
+							$user->id, $data
+						);
                         return $this->redirect()->toRoute('notandi/index',array('id'=>$user->id));
                     //INVALID
                     //

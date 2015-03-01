@@ -657,6 +657,7 @@ class Event extends AbstractService {
      * @param int $id group ID
      * @param DateTime $from
      * @param DateTime $to
+	 * @param int $user
      * @return array
      * @throws Exception
      */
@@ -791,6 +792,65 @@ class Event extends AbstractService {
             throw new Exception("Can't read events in a group by date range",0,$e);
         }
     }
+
+
+	/**
+	 * Get all events by a date-range in a
+	 * given group
+	 *
+	 * @param int $id group ID
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getByGroup($id){
+		try{
+
+			$statement = $this->pdo->prepare("
+				SELECT * FROM Event E
+				JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
+				WHERE GhE.group_id = :id
+				ORDER BY E.event_date DESC;
+			");
+			$statement->execute(array(
+				'id' => $id
+			));
+
+			$events = $statement->fetchAll();
+
+
+			//GROUPS
+			//  prepare a statement to get all groups
+			//  that are connected to event
+			$groupsStatement = $this->pdo->prepare("
+                  SELECT G.* FROM Group_has_Event GhE
+                  LEFT JOIN `Group` G ON (G.id = GhE.group_id)
+                  WHERE GhE.event_id = :id;
+              ");
+
+			//FOR EVERY EVENT
+			//  get all groups that are connected to event
+			//  and add them as an array to the result
+			foreach($events as $event){
+				$groupsStatement->execute(array('id'=>$event->id));
+				$event->event_time = new Time($event->event_date.' '.$event->event_time);
+				$event->event_end = new Time($event->event_date.' '.$event->event_end);
+				$event->event_date = new DateTime($event->event_date);
+				$event->groups = $groupsStatement->fetchAll();
+			}
+
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return $events;
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+					isset($groupsStatement)?$groupsStatement->queryString:null,
+				)
+			));
+			throw new Exception("Can't read events in a group",0,$e);
+		}
+	}
 
     /**
      * Get events related to group(s).

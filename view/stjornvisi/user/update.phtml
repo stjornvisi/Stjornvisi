@@ -1,7 +1,10 @@
-<!--pre><?php print_r($this->user);?></pre-->
+
 <?php
 $this->form->setAttribute('class','form-horizontal');
 ?>
+<div class="layout layout--three-columns">
+	<section class="layout__section">
+		<div class="layout__data">
 <?=$this->form()->openTag($this->form);?>
 
 <div class="form-group">
@@ -29,7 +32,14 @@ $this->form->setAttribute('class','form-horizontal');
 </div>
 
 <div class="form-group">
-    <?=$this->formElement($form->get('submit')->setAttribute('class','btn btn-default'));?>
+    <?=$this->formElement(
+		$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Uppfæra')
+	);?>
 </div>
 
 <?= $this->form()->closeTag() ?>
+			</div>
+		<div class="layout__meta">&nbsp;</div>
+		</section>
+	<aside class="layout__aside">&nbsp;</aside>
+</div>

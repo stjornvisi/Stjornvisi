@@ -46,17 +46,6 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 								<?=$this->paragrapher( mb_substr($event->body,0,300,'utf-8'));?>
 								<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>" class="block-element__more">meira</a>
 							</section>
-							<!--aside class="block-element__aside">
-								<ul class="block-element__tags">
-									<?php if( count($event->groups) == 0 ):?>
-										<li><span class="label label-default">Stjónvísisviðburður</span></li>
-									<?php else:?>
-										<?php foreach($event->groups as $group):?>
-											<li><a class="label label-default" href="/hopur/<?=$group->url;?>"><?=$group->name_short;?></a></li>
-										<?php endforeach;?>
-									<?php endif; ?>
-								</ul>
-							</aside-->
 							<?php if( $this->logged_in && $event->can_attend ):?>
 							<footer>
 								<?php if( $event->attending === null):?>
@@ -215,6 +204,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 				<a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'allir'));?>" ><i class="icon-envelope"></i> allir</a>
 				<a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'formenn'));?>"><i class="icon-envelope"></i> stjórnendur</a>
 				<a href="<?=$this->url('hopur/user-export',array('id'=>$this->group->url));?>"><i class="icon-list"></i> meðlimalisti</a>
+				<a href="<?=$this->url('hopur/event-export',array('id'=>$this->group->url));?>"><i class="icon-list"></i> viðburðalisti</a>
 			</stjonvisi-control>
 		<?php endif;?>
 		<div class="page-group__summary">
