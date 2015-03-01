@@ -31,9 +31,9 @@
  ALTER TABLE `User`
    ADD UNIQUE INDEX `unique_oauth_key` (`oauth_key`);
  
- UPDATE `User`
-   SET `oauth_key`='100000279755387', `oauth_type`='facebook'
-   WHERE `id`='2199';
+-- UPDATE `User`
+--   SET `oauth_key`='100000279755387', `oauth_type`='facebook'
+--   WHERE `id`='2199';
  
  ALTER TABLE `Event_has_Guest`
    ADD name VARCHAR (255) AFTER event_id;
@@ -47,7 +47,8 @@ ALTER TABLE `Group_has_User`
 
 UPDATE  `Group_has_User` SET `notify` = 1;
 
-CREATE TABLE `Conference` (
+DROP TABLE IF EXISTS `Conference`;
+CREATE TABLE IF NOT EXISTS `Conference` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `subject` varchar(100) NOT NULL,
   `body` text,
@@ -63,9 +64,12 @@ CREATE TABLE `Conference` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `stjornvisi_production`.`Conference` (`subject`, `body`, `location`, `address`, `capacity`, `conference_date`, `conference_time`, `conference_end`) VALUES ('Vorráðstefna Stjórvísi', '<p>Nú er komið að vorráðstefnu Stjórnvísi, en hún er jafnan haldin á vorin.  Stundum er hún þó haldin á haustin, en kallast þá haustráðtefna.  Stundum eru tvær ráðstefnur, bæði á vorin og haustin, en það er önnur saga.</p><p>Nú á s.s. að blása til sóknar og halda flotta ráðstefnu.  Endilega skoðaðu dagskrána hérna fyrir neðan.</p>', 'Harpa, Ráðstefnuhús', 'Austurbakka 2', '2000', '2015-03-10', '09:00', '17:00');
+-- INSERT INTO `Conference` (`subject`, `body`, `location`, `address`, `capacity`, `conference_date`, `conference_time`, `conference_end`) VALUES
+--  ('Vorráðstefna Stjórvísi',
+--  '<p>Nú er komið að vorráðstefnu Stjórnvísi, en hún er jafnan haldin á vorin.  Stundum er hún þó haldin á haustin, en kallast þá haustráðtefna.  Stundum eru tvær ráðstefnur, bæði á vorin og haustin, en það er önnur saga.</p><p>Nú á s.s. að blása til sóknar og halda flotta ráðstefnu.  Endilega skoðaðu dagskrána hérna fyrir neðan.</p>', 'Harpa, Ráðstefnuhús', 'Austurbakka 2', '2000', '2015-03-10', '09:00', '17:00');
 
-CREATE TABLE `Group_has_Conference` (
+DROP TABLE IF EXISTS `Group_has_Conference`;
+CREATE TABLE IF NOT EXISTS  `Group_has_Conference` (
   `conference_id` int(10) unsigned NOT NULL,
   `group_id` int(10) unsigned DEFAULT NULL,
   `primary` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -75,7 +79,8 @@ CREATE TABLE `Group_has_Conference` (
   CONSTRAINT `fk_Conference_has_Group_Group1` FOREIGN KEY (`group_id`) REFERENCES `Group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `Conference_has_User` (
+DROP TABLE IF EXISTS `Conference_has_User`;
+CREATE TABLE IF NOT EXISTS  `Conference_has_User` (
   `conference_id` int(10) unsigned NOT NULL,
   `user_id` int(10) unsigned NOT NULL,
   `attending` tinyint(3) unsigned DEFAULT NULL,
@@ -87,7 +92,8 @@ CREATE TABLE `Conference_has_User` (
   CONSTRAINT `fk_Conference_has_User_User1` FOREIGN KEY (`user_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `Conference_has_Guest` (
+DROP TABLE IF EXISTS `Conference_has_Guest`;
+CREATE TABLE IF NOT EXISTS  `Conference_has_Guest` (
   `conference_id` int(10) unsigned NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
@@ -97,7 +103,8 @@ CREATE TABLE `Conference_has_Guest` (
   CONSTRAINT `fk_Conference_has_Guest_Event1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `ConferenceGallery` (
+DROP TABLE IF EXISTS `ConferenceGallery`;
+CREATE TABLE IF NOT EXISTS  `ConferenceGallery` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `conference_id` int(10) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -108,7 +115,8 @@ CREATE TABLE `ConferenceGallery` (
   CONSTRAINT `fk_ConferenceGallery_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `ConferenceMedia` (
+DROP TABLE IF EXISTS `ConferenceMedia`;
+CREATE TABLE IF NOT EXISTS  `ConferenceMedia` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `conference_id` int(10) unsigned DEFAULT NULL,

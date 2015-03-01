@@ -273,3 +273,8 @@ and then you can pass in some arguments.
 
 You can read the [Process documentation](https://github.com/fizk/Stjornvisi/wiki/Processes) for
 detailed examples.
+
+
+(LOCK TABLES)(([\w\W]*?))(UNLOCK TABLES;)
+
+AUTO_INCREMENT=[0-9]*
