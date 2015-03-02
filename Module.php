@@ -124,7 +124,7 @@ class Module{
 
 		$eventManager->attach('render',function($e) use ($auth){
 			/** @var $e \Zend\Mvc\MvcEvent  */
-			if( !$auth->hasIdentity() ){
+			if( !$auth->hasIdentity() && $e ){
 				if( $e->getRouteMatch()->getMatchedRouteName() == 'home' ){
 					$e->getViewModel()->setTemplate('layout/landing');
 				}else{
