@@ -124,8 +124,9 @@ class Module{
 
 		$eventManager->attach('render',function($e) use ($auth){
 			/** @var $e \Zend\Mvc\MvcEvent  */
-			if( !$auth->hasIdentity() && $e && method_exists($e,'getMatchedRouteName') ){
-				if( $e->getRouteMatch()->getMatchedRouteName() == 'home' ){
+			if( !$auth->hasIdentity() ){
+				$router = $e->getRouteMatch();
+				if( method_exists($router,'getMatchedRouteName') && $router->getMatchedRouteName() == 'home' ){
 					$e->getViewModel()->setTemplate('layout/landing');
 				}else{
 					$e->getViewModel()->setTemplate('layout/anonymous');
