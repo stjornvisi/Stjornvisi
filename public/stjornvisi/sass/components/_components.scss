@@ -418,6 +418,7 @@
 	h1.layout__sepline,
 	h1.layout__headline{
 		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+
 	}
 	h2.layout__sepline,
 	h2.layout__headline{
@@ -443,6 +444,8 @@
 
 
 	.layout__sepline {
+		@include padding-leader(1,$font-size-sub);
+		@include padding-trailer(1,$font-size-sub);
 		overflow: hidden;
 		text-align: center;
 	}

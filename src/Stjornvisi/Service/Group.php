@@ -125,7 +125,7 @@ class Group extends AbstractService {
                     'type' => 0
                 ));
                 $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
-                return 1;
+				return 1;
 
             }catch (PDOException $e){
                 $this->getEventManager()->trigger('error', $this, array(
@@ -134,7 +134,7 @@ class Group extends AbstractService {
                         isset($statement)?$statement->queryString:null,
                     )
                 ));
-                return 0;
+				throw new Exception("Can't register user to group. user:[{$user_id}], group[{$group_id}]",0,$e);
             }
         }else{
             try{
@@ -154,7 +154,7 @@ class Group extends AbstractService {
                         isset($statement)?$statement->queryString:null
                     )
                 ));
-                return 0;
+				throw new Exception("Can't unregister user to group. user:[{$user_id}], group[{$group_id}]",0,$e);
             }
         }
     }

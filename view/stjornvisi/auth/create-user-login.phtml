@@ -23,7 +23,7 @@
 		<div class="layout__data">
 			<h1 class="layout__headline">Facebook</h1>
 			<p>Facebook auðkenni er æskileg leið.</p>
-			<a href="<?=$this->url('access/confirm');?>?facebook=1" class="btn btn-facebook js-btn-facebook">| Auðkenna með Facebook</a>
+			<a href="<?=$this->url('access/confirm');?>?facebook=1" class="btn btn-facebook js-btn-facebook"><i class="icon-facebook"></i> | Auðkenna með Facebook</a>
 
 			<h2 class="layout__sepline">eða</h2>
 			<h1 class="layout__headline">Notendanafn / lykilorð</h1>
@@ -46,7 +46,9 @@
 					<?=$this->formElementErrors($this->form->get('password-again'));?>
 				</div>
 				<div class="form-group">
-					<?=$this->formElement($this->form->get('submit')->setAttribute('class','btn btn-default'));?>
+					<?=$this->formElement(
+						$this->form->get('submit')->setAttribute('class','btn btn-default')->setValue('Stofna')
+					);?>
 				</div>
 
 			<?= $this->form()->closeTag() ?>

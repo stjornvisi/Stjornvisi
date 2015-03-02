@@ -42,6 +42,28 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase{
 	}
 
 	/**
+	 * Test get company by SSN
+	 */
+	public function testGetBySsn(){
+		$service = new Company( self::$pdo );
+
+		$result = $service->getBySsn('1234567890');
+		$this->assertInstanceOf('\stdClass',$result);
+
+		$result = $service->getBySsn('0000000000');
+		$this->assertFalse($result);
+	}
+
+	/**
+	 * Test get company SSN exception
+	 * @expectedException Exception
+	 */
+	public function testGetBySsnException(){
+		$service = new Company( new PDOMock() );
+		$service->getBySsn('1234567890');
+	}
+
+	/**
 	 * Should throe exception if service can't
 	 * connect to storage.
 	 * @expectedException Exception
@@ -68,6 +90,25 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase{
 
 		$result = $service->fetchAll(array('sf','ohf','hf'));
 		$this->assertCount(0,$result);
+	}
+
+	/**
+	 * Get company by type test
+	 */
+	public function testFetchType(){
+		$service = new Company( self::$pdo );
+
+		$result = $service->fetchType();
+		$this->assertEquals( 4, count($result) );
+		$this->assertInternalType('array',$result);
+
+
+		$result = $service->fetchType(array('hf'));
+		$this->assertEquals( 2, count($result) );
+
+		$result = $service->fetchType(array('hundur'));
+		$this->assertEquals( 0, count($result) );
+
 	}
 
 	/**

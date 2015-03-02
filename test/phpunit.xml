@@ -4,14 +4,12 @@
     <testsuites>
         <testsuite name="Most">
             <directory>./Service</directory>
-            <directory>./Filter</directory>
+            <!--directory>./Filter</directory>
             <directory>./Form</directory>
             <directory>./Lib</directory>
             <directory>./Mail</directory>
-            <directory>./Notify</directory>
-            <directory>./Validator</directory>
+            <directory>./Validator</directory-->
         </testsuite>
-
     </testsuites>
 
 

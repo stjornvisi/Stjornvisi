@@ -29,6 +29,7 @@
 				width: 400%;
 			}
 			.widget-slider__slide{
+				position: relative;
 				width: (100% / 4);
 			}
 		}
@@ -44,5 +45,12 @@
 		.user-create__help-section.user-create__help-section--active{
 			padding: rhythm(1/2,$font-size-base) 0;
 			background-color: $color-blue-light;
+		}
+
+		.btn-facebook{
+			vertical-align: middle;
+			display: block;
+			@include margin-leader(1,$font-size-base);
+			@include margin-trailer(1,$font-size-base);
 		}
 	}
