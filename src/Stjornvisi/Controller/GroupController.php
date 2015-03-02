@@ -354,6 +354,37 @@ class GroupController extends AbstractActionController{
 
     }
 
+	/**
+	 * Register or unregister to email
+	 * notifications from a group.
+	 *
+	 * @return array|ViewModel
+	 */
+	public function registerMailAction(){
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group');
+		/** @var $groupService \Stjornvisi\Service\Group */
+
+		$auth = new AuthenticationService();
+
+		if( $auth->hasIdentity() ){
+			if( ($group = $groupService->get( $this->params()->fromRoute('id',0) )) != false ){
+				$groupService->registerMailUser(
+					$group->id,
+					$auth->getIdentity()->id,
+					(bool)( (int)$this->params()->fromRoute('type',0) )
+				);
+			}else{
+				return $this->notFoundAction();
+			}
+		}else{
+			$this->getResponse()->setStatusCode(401);
+			$model = new ViewModel();
+			$model->setTemplate('error/401');
+			return $model;
+		}
+	}
+
     /**
      * Set the status of a user in a group:
      *  chairman

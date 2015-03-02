@@ -2,12 +2,16 @@
 
 <phpunit bootstrap="Bootstrap.php" colors="true">
     <testsuites>
-        <!--testsuite name="Service">
+        <testsuite name="Most">
             <directory>./Service</directory>
-        </testsuite-->
-        <testsuite name="Notify">
+            <directory>./Filter</directory>
+            <directory>./Form</directory>
+            <directory>./Lib</directory>
+            <directory>./Mail</directory>
             <directory>./Notify</directory>
+            <directory>./Validator</directory>
         </testsuite>
+
     </testsuites>
 
 
@@ -17,6 +21,7 @@
             <exclude>
                 <!--file>../application/Bootstrap.php</file-->
                 <directory suffix=".phtml">../view/</directory>
+                <directory>./Controller</directory>
             </exclude>
         </whitelist>
     </filter>

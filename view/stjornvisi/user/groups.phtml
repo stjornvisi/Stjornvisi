@@ -13,13 +13,28 @@
 		<ul>
 			<?php foreach($this->groups as $group): ?>
 			<li>
-				<input type="checkbox" <?=($group->notify)?'checked':''?> />
-				<?=$group->name?>
+				<input
+					data-url="<?=$this->url('hopur/register-email',array('id'=>$group->url,'type'=>0))?>"
+					class="js-checboxes" id="g_<?=$group->group_id?>"
+					type="checkbox" value="<?=$group->group_id?>" <?=($group->notify)?'checked':''?> />
+				<label for="g_<?=$group->group_id?>"><?=$group->name?></label>
 				<!--?=$group->type?-->
 			</li>
 			<?php endforeach ?>
 		</ul>
 
+		<script>
+			var inputs = document.querySelectorAll('.js-checboxes');
+			Array.prototype.forEach.call(inputs,function(item){
+				item.addEventListener('change',function(event){
+					console.log( item.checked );
+
+					var xhr = new XMLHttpRequest();
+					xhr.open('get','/')
+
+				},false);
+			});
+		</script>
 	</section>
 	<aside class="layout__aside"></aside>
 </div>

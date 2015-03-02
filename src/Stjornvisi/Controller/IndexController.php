@@ -93,15 +93,6 @@ class IndexController extends AbstractActionController{
         //$this->view->attendance = $semposiumDAO->fetchAll(null, "name");
     }
 
-	public function groupOverviewAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
-		return new ViewModel(array(
-			'identity' => null,
-			'groups' => $groupService->fetchAll(),
-		));
-	}
-
 	public function stjornvisiOverviewAction(){
 		return new ViewModel(array(
 			'identity' => null,

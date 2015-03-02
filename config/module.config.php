@@ -25,18 +25,6 @@ return array(
                     ),
                 ),
             ),
-			/*
-			'group-overview' => array(
-				'type' => 'Zend\Mvc\Router\Http\Literal',
-				'options' => array(
-					'route'    => '/yfirlit-faghopa',
-					'defaults' => array(
-						'controller' => 'Stjornvisi\Controller\Index',
-						'action'     => 'group-overview',
-					),
-				),
-			),
-			*/
             'rss' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -417,6 +405,20 @@ return array(
                             ),
                         )
                     ),
+					'register-email' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/skilabod/:type',
+							'constraints' => array(
+								'id' => '[a-zA-Z][a-zA-Z0-9_-]*',
+								'type' => '[01]'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'register-mail'
+							),
+						)
+					),
                     'user-status' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(

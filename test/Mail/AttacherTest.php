@@ -26,7 +26,7 @@ class AttacherTest extends \PHPUnit_Framework_TestCase {
 
 		$attacher = new Attacher($message);
 		$result = $attacher->parse();
-		echo $result->toString();
+		//echo $result->toString();
 
 
 	}

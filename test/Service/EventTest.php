@@ -64,7 +64,7 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
 
 	public function testGetMediaByUser(){
 		$service = new Event( self::$pdo );
-		print_r($service->getMediaByUser(1));
+		$service->getMediaByUser(1);
 	}
 
 
@@ -218,9 +218,9 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
         if( $this->conn === null ){
             if (self::$pdo == null){
                 self::$pdo = new PDO(
-					$this->config['db']['dns'],
-					$this->config['db']['user'],
-					$this->config['db']['password'],
+					$GLOBALS['DB_DSN'],
+					$GLOBALS['DB_USER'],
+					$GLOBALS['DB_PASSWD'],
                     array(
                         PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

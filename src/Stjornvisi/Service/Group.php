@@ -159,6 +159,41 @@ class Group extends AbstractService {
         }
     }
 
+	/**
+	 * Does the user want to get email notifications
+	 * from a group of not.
+	 *
+	 * @param $group_id
+	 * @param $user_id
+	 * @param bool $register
+	 * @return int
+	 * @throws Exception
+	 */
+	public function registerMailUser( $group_id, $user_id, $register = true ){
+		try{
+			$statement = $this->pdo->prepare("
+				UPDATE `Group_has_User` SET `notify` = :register WHERE user_id = :user_id
+				AND group_id = :group_id
+			");
+			$statement->execute(array(
+				'register' => ($register)?1:0,
+				'user_id' => $user_id,
+				'group_id' => $group_id
+			));
+			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			return $statement->rowCount();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			throw new Exception("Cant set status of user's email notifications in a group. group:[{$group_id}], user:[{$user_id}], status:[{$register}]",0,$e);
+		}
+	}
+
     /**
      * Update user status in a group.
      *
@@ -211,7 +246,7 @@ class Group extends AbstractService {
 
 		try{
 			$statement = $this->pdo->prepare('
-			SELECT G.name, GhU.* FROM `Group` G
+			SELECT G.name, G.name_short, G.url, GhU.* FROM `Group` G
 				JOIN Group_has_User GhU ON (G.id = GhU.group_id)
 			WHERE GhU.user_id = :user_id;
 			');

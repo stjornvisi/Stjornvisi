@@ -438,6 +438,10 @@ class UserController extends AbstractActionController{
 		/** @var $groupService \Stjornvisi\Service\Group */
 		$groups = $groupService->userConnections( $auth->getIdentity()->id  );
 
+		if( $this->getRequest()->isPost() ){
+
+		}
+
 		return new ViewModel(array(
 			'groups' => $groups
 		));
