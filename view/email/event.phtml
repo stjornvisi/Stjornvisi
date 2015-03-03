@@ -8,11 +8,10 @@
 setlocale(LC_ALL,'is_IS.utf-8');
 
 ?>
-<p>Halló <?=$this->user->name?></p>
+<p>Sæl(l) <?=$this->user->name?></p>
 <?=$this->body?>
 
-<!--blockquote><?=$this->event->body?></blockquote-->
-<dl>
+<dl style="margin-top: 30px; padding-top:30px;  border-top: 1px solid rgb(230,230,230)">
 	<dt style="font-weight: bold">Viðburður</dt>
 	<dd><a href="http://stjornvisi.is/vidburdir/<?=$this->event->id;?>"><?=$this->event->subject?></a></dd>
 	<dt style="font-weight: bold">Tími</dt>
@@ -22,7 +21,7 @@ setlocale(LC_ALL,'is_IS.utf-8');
 	<dd><?=$this->event->location;?></dd>
 	<dt style="font-weight: bold">Hópar</dt>
 	<dd>
-		<ul style="list-style-type: none">
+		<ul style="list-style-type: none; margin: 0; padding: 0">
 			<?php foreach($this->event->groups as $group):?>
 			<li><?=$group->name?></li>
 			<?php endforeach;?>
