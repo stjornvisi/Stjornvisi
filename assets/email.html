@@ -51,7 +51,50 @@
 			</tr>
 			<tr>
 				<td style="width: 20%">&nbsp;</td>
-				<td class="content">hundur</td>
+				<td class="content">
+
+
+					<p>Sæl(l) <?=$this->user->name;?></p>
+
+					<p>Vikan <?=$this->from->format('d. M Y')?> - <?=$this->to->format('d. M Y')?> hjá Stjórnvísi</p>
+
+
+
+					<div style="margin-top: 30px; padding-top:30px;  border-top: 1px solid rgb(230,230,230)">
+						<h2><?=$event->subject?></h2>
+						<span><?=$event->event_date->format('d. M Y');?> | <?=$event->event_time->format('H:i');?> - <?=$event->event_end->format('H:i');?></span>
+						<?=$event->body;?>
+						<dl style="font-size: 14px">
+							<dt>Faghópar</dt>
+							<dd>
+								<ul style="list-style-type:none;margin:0;padding:0">
+									<?php foreach($event->groups as $group):?>
+									<li><a href="http://stjornvisi.is/vidburdir/<?=$group->url?>"><?=$group->name_short?></a></li>
+									<?php endforeach;?>
+								</ul>
+							</dd>
+							<dt>Viðburður</dt>
+							<dd><?=$event->subject;?></dd>
+							<dt>Staður</dt>
+							<dd><?=$event->location;?></dd>
+							<dt>Tími</dt>
+							<dd><?=$event->event_date->format('d. M Y');?> | <?=$event->event_time->format('H:i');?><?php if($event->event_end):?> - <?=$event->event_end->format('H:i');?><?php endif;?></dd>
+							<dt>Skráning</dt>
+							<dd><a href="http://www.stjornvisi.is/vidburdir/<?=$event->id;?>" target="_blank">http://www.stjornvisi.is/vidburdir/<?=$event->id;?></a></dd>
+						</dl>
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+				</td>
 				<td style="width: 20%">&nbsp;</td>
 			</tr>
 			<tr>

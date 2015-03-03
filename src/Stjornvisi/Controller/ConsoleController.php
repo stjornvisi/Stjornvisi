@@ -199,6 +199,7 @@ class ConsoleController extends AbstractActionController {
 		$users = $userService->getUserMessage();
 		$logger->info("Queue Service says: Fetching users who want upcoming events, ".count($users)." user will get email ");
 
+		/*
 		//VIEW
 		//	prep the view and the template engine.
 		$renderer = new PhpRenderer();
@@ -217,6 +218,34 @@ class ConsoleController extends AbstractActionController {
 		));
 
 		$model->setTemplate('news-digest');
+		*/
+
+
+
+
+		//VIEW
+		//	create and configure view
+		$child =new ViewModel(array(
+			'events' => $events,
+			'from' => $from,
+			'to' => $to
+		));
+		$child->setTemplate('news-digest');
+
+
+		$layout = new ViewModel();
+		$layout->setTemplate('layout');
+		$layout->addChild($child, 'content');
+
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+			'news-digest' => __DIR__ . '/../../../view/email/news-digest.phtml',
+		));
+		$phpRenderer->setResolver($resolver);
 
 		//QUEUE
 		//	try to connect to Queue and send messages to it.
@@ -230,6 +259,42 @@ class ConsoleController extends AbstractActionController {
 			$channel->queue_declare('mail_queue', false, true, false, false);
 
 			foreach ($users as $user){
+
+				$child->setVariable('user',$user);
+				foreach ($layout as $child) {
+					if ($child->terminate()) {
+						continue;
+					}
+					$child->setOption('has_parent', true);
+					$result  = $phpRenderer->render($child);
+					$child->setOption('has_parent', null);
+					$capture = $child->captureTo();
+					if (!empty($capture)) {
+						if ($child->isAppend()) {
+							$oldResult=$model->{$capture};
+							$layout->setVariable($capture, $oldResult . $result);
+						} else {
+							$layout->setVariable($capture, $result);
+						}
+					}
+				}
+				$result = array(
+					'subject' => "Vikan framundan | {$from->format('j. n.')} - {$to->format('j. n. Y')}",
+					'body' => $phpRenderer->render($layout),
+					'recipient' => (object)array(
+							'name' => $user->name,
+							'address' => $user->email,
+						),
+					'key' => md5(time())
+				);
+				$msg = new AMQPMessage( json_encode($result),
+					array('delivery_mode' => 2) # make message persistent
+				);
+
+
+
+
+				/*
 				$model->setVariable('user',$user);
 				$msg = new AMQPMessage(
 					json_encode( (object)array(
@@ -244,6 +309,7 @@ class ConsoleController extends AbstractActionController {
 					array('delivery_mode' => 2) # make message persistent
 				);
 
+				*/
 				$channel->basic_publish($msg, '', 'mail_queue');
 				$logger->info("Queue Service says: Fetching users who want upcoming events, {$user->email} in queue ");
 			}
