@@ -350,30 +350,31 @@ class Module{
 						return $obj;
 					},
 				'MailOptions' => function($sm){
-					/*
+
 					return new SmtpOptions(array(
 						'name'              => 'localhost.localdomain',
 						'host'              => '127.0.0.1',
 					));
-					*/
 
+
+					/*
 					return new FileOptions(array(
 						'path'      => './data/',
 						'callback'  => function (FileTransport $transport) {
 								return 'Message_' . microtime(true) . '.eml';
 							},
 					));
+					*/
 				},
 				'MailTransport' => function($sm){
-					/*
 					$transport = new SmtpTransport();
 					$transport->setOptions($sm->get('MailOptions'));
 					return $transport;
-					*/
-
+					/*
 					$transport = new FileTransport();
 					$transport->setOptions($sm->get('MailOptions'));
 					return $transport;
+						*/
 
 
 				},
