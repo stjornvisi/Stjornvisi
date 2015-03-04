@@ -16,7 +16,7 @@ use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -30,7 +30,7 @@ class All implements NotifyInterface {
 	/** @var \stdClass */
 	private $params;
 
-	/** @var  \Zend\Log\LoggerInterface */
+	/** @var  \Psr\Log\LoggerInterface; */
 	private $logger;
 
 	/**
@@ -86,7 +86,9 @@ class All implements NotifyInterface {
 				? $this->userDAO->fetchAll(true)
 				:  $this->userDAO->fetchAllLeaders(true)) ;
 
-		$this->logger->info("Email in " . ( $this->params->test?'':'none' ) . " test mode");
+		$this->logger->info(
+			get_class($this) . " sending email to [{$this->params->recipients}] in" .
+			( $this->params->test ? ' ' : 'non-' ) . "test mode");
 
 		//MAIL
 		//	now we want to send this to the user/quest via e-mail
@@ -158,13 +160,16 @@ class All implements NotifyInterface {
 					array('delivery_mode' => 2) # make message persistent
 				);
 
-				$this->logger->info("Admin-email to user:{$user->email}");
+				$this->logger->info(get_class($this)." sending mail to user:{$user->email}");
 
 				$channel->basic_publish($msg, '', 'mail_queue');
 			}
 
 		}catch (\Exception $e){
-			$this->logger->warn(get_class($this) . ":send says: {$e->getMessage()}");
+			$this->logger->critical(
+				get_class($this) . ":send says: {$e->getMessage()}",
+				$e->getTrace()
+			);
 		}finally{
 			if( $channel ){
 				$channel->close();

@@ -80,6 +80,9 @@
 				width: 272px;
 				height: $select-size;
 			}
+			.main__burger{
+				display: none;
+			}
 		}
 		.main__menu{
 			display: table-cell;
@@ -109,13 +112,75 @@
 			vertical-align: middle;
 
 		}
+
+
+		@include breakpoint($phone){
+			display: block;
+			.main__brand{
+				display: block;
+				width: auto;
+				background-image: none;
+				background-repeat: no-repeat;
+				background-position: center center;
+				height: auto;
+				margin-bottom: $gutter;
+				position: relative;
+				z-index: 2;
+				a{
+					background-image: url("images/header-logo.svg");
+					background-repeat: no-repeat;
+					background-position: center center;
+					height: 70px;
+					width: 140px;
+					margin: auto;
+				}
+				.main__burger{
+					position: absolute;
+					top: 0;
+					right: 0;
+					background: none;
+					display: block;
+
+					i{
+						color: $color-white;
+						font-size: 50px;
+					}
+				}
+			}
+			.main__menu{
+				background-color: $color-green-sea;
+				position: absolute;
+				z-index: 1;
+				top: -2%;
+				left: 0;
+				width: 100%;
+				-webkit-transition: top .4s, top .5s;
+				-moz-transition: top .4s, top .5s;
+				-ms-transition: top .4s, top .5s;
+				-o-transition: top .4s, top .5s;
+				transition: top .4s, top .5s;
+				box-shadow: 0 0px 0px rgba(0,0,0,.37);
+				.main__menu-items {
+					padding: rhythm(1/2,$font-size-base) 0;
+					> li {
+						float: none;
+						a{
+							padding: rhythm(1/2,$font-size-base) rhythm(1/2,$font-size-base) rhythm(1/2,$font-size-base) rhythm(1,$font-size-base);
+						}
+					}
+				}
+			}
+		}
+
 	}
 
-	@include breakpoint($phone){
-		.main__header{
-
+	body.state-mobile-menu-open{
+		.main__header .main__menu{
+			top: 70px;
+			box-shadow: 0 4px 8px rgba(0,0,0,.37);
 		}
 	}
+
 
 	/**
 	 * MAIN FOOTER

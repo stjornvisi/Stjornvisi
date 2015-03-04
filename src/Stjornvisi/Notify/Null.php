@@ -8,7 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 class Null implements NotifyInterface {
 

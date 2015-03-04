@@ -596,20 +596,25 @@ class ConsoleController extends AbstractActionController {
 			//	here is where everything happens. the rest of the code
 			//	is just connect and deconnect to RabbitMQ
 			$callback = function($msg) use ($logger, $sm){
+				//MESSAGE AND HANDLER
+				//	try to decode the JSON string into object
+				//	and set up a default handler that does nothing
 				$message = json_decode( $msg->body );
 				$handler = new \Stjornvisi\Notify\Null();
+
 				try{
 					$handler = $sm->get($message->action);
 					$logger->info("Notify message [{$message->action}] obtained");
+
+					$handler->setData( $message );
+					$handler->send();
+
+					$logger->info("Notify message [{$message->action}] processed");
+					$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+
 				}catch (ServiceNotFoundException $e){
-					$logger->error("Notify message [{$message->action}] not found");
+					$logger->critical("Notify message [{$message->action}] not found",$e->getTrace());
 				}
-
-				$handler->setData( $message );
-				$handler->send();
-
-				$logger->info("Notify message [{$message->action}] processed");
-				$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 
 			};// end of - MAGIC
 
@@ -622,37 +627,30 @@ class ConsoleController extends AbstractActionController {
 
 			$channel->close();
 			$connection->close();
+
 		}catch (\PhpAmqpLib\Exception\AMQPOutOfBoundsException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPProtocolException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPRuntimeException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPConnectionException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPChannelException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPTimeoutException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\Exception $e){
-			$logger->warn( "Warning in NotifyListener: {$e->getMessage()}" );
-			$logger->warn( print_r($e->getTraceAsString(),true) );
+			$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
 		}
 
 
@@ -723,30 +721,38 @@ class ConsoleController extends AbstractActionController {
 						$attacher = new Attacher($message);
 						$message = $attacher->parse();
 
+						//DEBUG MODE
+						//	process started with --debug flag
 						if($this->getRequest()->getParam('debug', false)){
 							$logger->debug( "{$classname}:mailAction ". print_r($messageObject,true) );
+						//TRACE MODE
+						//	process started with --trace flag
 						}else if($this->getRequest()->getParam('trace', false)){
 							$logger->debug( "{$classname}:mailAction ". $message->toString() );
+						//NORMAL MODE
+						//	process started in normal mode. e-mail will be sent
 						}else{
 							try{
 								$transport = $sm->get('MailTransport');
+								/** @var $transport \Zend\Mail\Transport\Smtp */
+								$transport->getConnection()->connect();
 								$transport->send($message);
+								$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 							}catch (\Exception $e){
-								$logger->err( $e->getMessage() . "\n" .$e->getTraceAsString() );
+								$logger->critical( $e->getMessage(), $e->getTrace() );
 							}
 						}
-
+					//INVALID MESSAGE
+					//	the message object is missing values
 					}else{
-						$logger->warn( "Mail Message object is missing values ". print_r($messageObject,true) );
+						$logger->error( "Mail Message object is missing values ". print_r($messageObject,true) );
 					}
 
 				//JSON INVALID
 				//	the message could not ne decoded
 				}else{
-					$logger->warn("Could not decode mail-message");
+					$logger->error("Could not decode mail-message");
 				}
-
-				$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 
 			};// end of - MAGIC
 
@@ -761,37 +767,50 @@ class ConsoleController extends AbstractActionController {
 			$connection->close();
 
 		}catch (\PhpAmqpLib\Exception\AMQPOutOfBoundsException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPProtocolException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPRuntimeException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPConnectionException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPChannelException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPTimeoutException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPException $e){
-			$logger->err( "Can't start NotifyListener: {$e->getMessage()}" );
-			$logger->err( print_r($e->getTraceAsString(),true) );
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\Exception $e){
-			$logger->warn( "Warning in NotifyListener: {$e->getMessage()}" );
-			$logger->warn( print_r($e->getTraceAsString(),true) );
+			$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
 		}
 
+	}
+
+	/**
+	 * Export the router as a MARKDOWN list
+	 */
+	public function routerAction(){
+		$config = $this->getServiceLocator()->get('Config');
+		$this->_printer($config['router']['routes']);
+	}
+
+	/**
+	 * @param array $value
+	 * @param string $indent
+	 */
+	private function _printer( $value, $indent = "" ){
+		foreach( $value as $item  ){
+			echo $indent . '* '. $item['options']['route'] . " { _{$item['options']['defaults']['controller']}::{$item['options']['defaults']['action']}_ }" . PHP_EOL;
+			if( isset($item['child_routes']) ){
+				$this->_printer($item['child_routes'], ($indent."    ") );
+			}
+		}
 	}
 }

@@ -14,7 +14,7 @@ use Zend\EventManager\EventManagerInterface;
 use Psr\Log\LoggerInterface;
 use Zend\EventManager\EventInterface;
 
-class ServiceEventListener extends AbstractListenerAggregate {
+class ErrorEventListener extends AbstractListenerAggregate {
 
 	/** @var \Psr\Log\LoggerInterface;  */
 	private $logger;
@@ -40,7 +40,7 @@ class ServiceEventListener extends AbstractListenerAggregate {
      */
     public function attach(EventManagerInterface $events){
         $this->listeners[] = $events->attach(
-			array('create','read','update','delete','index'),
+			array('error'),
 			array($this, 'log')
 		);
     }
@@ -52,9 +52,12 @@ class ServiceEventListener extends AbstractListenerAggregate {
 	 */
 	public function log(EventInterface $event){
 		$params = $event->getParams();
-		$method = isset($params[0])?$params[0]:'';
-		$this->logger->info(
-			get_class($event->getTarget())."::{$method} - {$event->getName()}"
+		$method = '?';
+		$exception = isset($params['exception'])?$params['exception']:'';
+		$sql = isset($params['sql'])?$params['sql']:array();
+		$this->logger->critical(
+			get_class($event->getTarget())."::{$method} - {$exception}",
+			$sql
 		);
 
 	}

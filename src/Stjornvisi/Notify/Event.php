@@ -11,7 +11,7 @@ namespace Stjornvisi\Notify;
 use Stjornvisi\Service\User as UserService;
 use Stjornvisi\Service\Event as EventService;
 
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
@@ -38,7 +38,7 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 	/** @var \Stjornvisi\Service\User */
 	private $user;
 
-	/** @var  \Zend\Log\LoggerInterface */
+	/** @var  \Psr\Log\LoggerInterface; */
 	private $logger;
 
 	/** @var \Stjornvisi\Lib\QueueConnectionFactoryInterface  */
@@ -187,7 +187,10 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 			}
 
 		}catch (\Exception $e){
-			$this->logger->warn("Mail Queue Service says: {$e->getMessage()}");
+			$this->logger->critical(
+				"Mail Queue Service says: {$e->getMessage()}",
+				$e->getTrace()
+			);
 		}finally{
 			if($channel){
 				$channel->close();

@@ -10,10 +10,12 @@
 namespace Stjornvisi;
 
 use Imagine;
+use Monolog\Handler\SlackHandler;
 use \PDO;
 
-//use Stjornvisi\Event\SearchListenerAggregate;
+
 use Stjornvisi\Event\ActivityListener;
+use Stjornvisi\Event\ErrorEventListener;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
@@ -53,7 +55,8 @@ use Zend\EventManager\EventManager;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Log\Logger;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 use Zend\Http\Client;
 
 use Zend\Session\Config\SessionConfig;
@@ -75,53 +78,84 @@ use Zend\Mail\Transport\FileOptions;
 
 class Module{
 
-    public function onBootstrap(MvcEvent $e){
+	/**
+	 * Run for every request to the system.
+	 *
+	 * This function does a lot. It register all kinds of event.
+	 * Logs critical error. Select correct layouts, just to
+	 * name a few points....
+	 *
+	 * @param MvcEvent $e
+	 */
+	public function onBootstrap(MvcEvent $e){
 
 		$logger = $e->getApplication()->getServiceManager()->get('Logger');
+
+		//SHUT DOWN
+		//	register shutdown function that will log a critical message
+		//
 		register_shutdown_function(function () use ($logger){
 			if ($e = error_get_last()) {
-				$logger->err("Here we go again");
-				$logger->err($e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
-				$logger->__destruct();
+				$logger->critical($e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
+				echo "Smá vandræði";
 			}
 		});
 
+		//EVENT MANAGER
+		//	get event manager and attache event handlers to it. These
+		//	event are something required for the MVC to work. And
+		//	error events in the MVC application; ie. if something
+		//	goes wrong in Dispatch or Rendering, these events will be called,
+		//	they will  log a critical message
 		$eventManager        = $e->getApplication()->getEventManager();
+
+		$moduleRouteListener = new ModuleRouteListener();
+		$moduleRouteListener->attach($eventManager);
+
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
+			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
+			$errorString = "";
 			/** @var $exception \Exception */
 			while( $exception ){
-				$logger->err($exception->getMessage());
-				$logger->err(print_r($exception->getTraceAsString(),true));
+				$errorString .= ($exception->getMessage() . PHP_EOL);
+				$errorString .= (print_r($exception->getTraceAsString(),true) . PHP_EOL);
 				$exception = $exception->getPrevious();
 			}
-
+			$logger->critical($errorString,$topexception->getTrace());
 		} );
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e) use ($logger) {
+			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
+			$errorString = "";
 			/** @var $exception \Exception */
 			while( $exception ){
-				$logger->err($exception->getMessage());
-				$logger->err(print_r($exception->getTraceAsString(),true));
+				$errorString .= ($exception->getMessage() . PHP_EOL);
+				$errorString .= (print_r($exception->getTraceAsString(),true) . PHP_EOL);
 				$exception = $exception->getPrevious();
 			}
-
+			$logger->critical($errorString,$topexception->getTrace());
 		} );
 
-		$auth = new AuthenticationService();
-
+		//CONFIG
+		//	get config values from the application
+		//	config files.
 		$config = $e->getApplication()
 			->getServiceManager()
 			->get('Configuration');
 
+		//SESSION
+		//	config and start session
 		$sessionConfig = new SessionConfig();
 		$sessionConfig->setOptions($config['session']);
 		$sessionManager = new SessionManager($sessionConfig);
 		$sessionManager->start();
 
-
-
-
+		//AUTH
+		//	select correct layout based on the user
+		//	and if he is on the landing page and if he
+		//	is logged in
+		$auth = new AuthenticationService();
 		$eventManager->attach('render',function($e) use ($auth){
 			/** @var $e \Zend\Mvc\MvcEvent  */
 			if( !$auth->hasIdentity() ){
@@ -132,19 +166,20 @@ class Module{
 					$e->getViewModel()->setTemplate('layout/anonymous');
 				}
 			}
-
 		});
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
 
+		//QUEUE CONNECTION FACTORY
+		//	we are gonna send messages to the notify-queue
+		//	so we need an instance of it
+		$connectionFactory = $e->getApplication()
+			->getServiceManager()
+			->get('Stjornvisi\Lib\QueueConnectionFactory');
 
-		$connectionFactory = $e->getApplication()->getServiceManager()->get('Stjornvisi\Lib\QueueConnectionFactory');
-		$sem = $eventManager->getSharedManager();
-
-		//NOTIFY
+		//NOTIFY VIA SHARED EVENTS
 		//	listen for the 'notify' event, usually coming from the
 		//	controllers. This indicates that the application want to
 		//	notify a user using external service like e-mail or maybe facebook.
+		$sem = $eventManager->getSharedManager();
 		$sem->attach(__NAMESPACE__,'notify',function($event) use ($logger,$connectionFactory){
 
 			try{
@@ -161,18 +196,27 @@ class Module{
 				$channel->close();
 				$connection->close();
 			}catch (\Exception $e){
-				$logger->warn("Queue Service says: {$e->getMessage()}");
+				$logger->critical("Notify Service Event says: {$e->getMessage()}",$e->getTrace());
 			}
 		});
 
     }
 
-
-    public function getConfig(){
+	/**
+	 * Load the application config.
+	 *
+	 * @return mixed
+	 */
+	public function getConfig(){
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function getAutoloaderConfig(){
+	/**
+	 * Get how to autoload the application.
+	 *
+	 * @return array
+	 */
+	public function getAutoloaderConfig(){
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -182,21 +226,40 @@ class Module{
         );
     }
 
+	/**
+	 * Load the services.
+	 *
+	 * @return array
+	 */
 	public function getServiceConfig(){
         return array(
             'factories' => array(
                 'Logger' => function($sm){
-                        $logger = new Logger;
-                        $logger->addWriter('stream', null, array('stream' => 'php://stdout'));
-                        return $logger;
+
+						$log = new Logger('stjornvisi');
+						//$log->pushHandler(new StreamHandler('php://stdout'));
+						$log->pushHandler(new SlackHandler(
+							"xoxp-3745519896-3745519908-3921078470-26445a",
+							"#stjornvisi",
+							"Angry Hamster",
+							true,
+							null,
+							Logger::CRITICAL
+						));
+
+						return $log;
+
                 },
                 'ServiceEventManager' => function($sm){
                     $logger = $sm->get('Logger');
                     $manager = new EventManager();
+
+					$manager->attach( new ErrorEventListener($logger) );
 					$manager->attach( new ServiceEventListener($logger) );
-					//$manager->attach( new ServiceIndexListener($logger) );
 					$activityListener = new ActivityListener($logger);
-					$activityListener->setQueueConnectionFactory($sm->get('Stjornvisi\Lib\QueueConnectionFactory'));
+					$activityListener->setQueueConnectionFactory(
+						$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+					);
 					$manager->attach( $activityListener );
                     return $manager;
                 },
@@ -429,6 +492,11 @@ class Module{
         );
     }
 
+	/**
+	 * Load view helpers
+	 *
+	 * @return array
+	 */
 	public function getViewHelperConfig(){
 		return array(
 			'invokables' => array(
@@ -449,29 +517,4 @@ class Module{
 		);
 	}
 
-	/*
-	public function init(ModuleManager $mm){
-
-
-		$auth = new AuthenticationService();
-		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'render', function($e) use ($auth) {
-
-			$controller = $e->getController();
-			$controllerClass = $e->getControllerClass();
-			$meta = $e->getRequest()->getMetadata();
-			if( !$auth->hasIdentity() ){
-//				$e->getTarget()->layout('layout/anonymous');
-			}
-		});
-		$mm->getEventManager()->getSharedManager()->attach(__NAMESPACE__, 'dispatch', function($e) use ($auth) {
-
-			$controller = $e->getController();
-			$controllerClass = $e->getControllerClass();
-			$meta = $e->getRequest()->getMetadata();
-			if( !$auth->hasIdentity() ){
-//				$e->getTarget()->layout('layout/anonymous');
-			}
-		});
-	}
-	*/
 }

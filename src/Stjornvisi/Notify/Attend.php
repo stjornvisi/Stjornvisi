@@ -8,7 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Stjornvisi\Service\User as UserDAO;
 use Stjornvisi\Service\Event as EventDAO;
 
@@ -32,7 +32,7 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 	/** @var \stdClass */
 	private $params;
 
-	/** @var  \Zend\Log\LoggerInterface */
+	/** @var  \Psr\Log\LoggerInterface; */
 	private $logger;
 
 	/** @var \Stjornvisi\Service\User  */
@@ -177,7 +177,10 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 
 
 		}catch (\Exception $e){
-			$this->logger->warn(get_class($this) . ":send says: {$e->getMessage()}");
+			$this->logger->critical(
+				get_class($this) . ":send says: {$e->getMessage()}",
+				$e->getTrace()
+			);
 		}finally{
 			if( $channel ){
 				$channel->close();

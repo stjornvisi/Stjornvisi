@@ -65,6 +65,10 @@
         }
     },false);
 
+    (document.querySelector('.main__burger')||mock).addEventListener('click',function(event){
+        event.preventDefault();
+        document.body.classList.toggle('state-mobile-menu-open');
+    },false);
 
 
 })();

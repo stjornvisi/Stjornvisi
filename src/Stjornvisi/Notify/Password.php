@@ -8,7 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Handler for when a user registers / un-registers to a group.
@@ -20,7 +20,7 @@ class Password implements NotifyInterface {
 	/** @var \stdClass */
 	private $params;
 
-	/** @var  \Zend\Log\LoggerInterface */
+	/** @var  \Psr\Log\LoggerInterface */
 	private $logger;
 
 

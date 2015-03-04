@@ -1,0 +1,15 @@
+{
+  "name": "stjornvisi",
+  "version": "1.0.0",
+  "description": "Node related stuff for stjornvisi.is",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.8.11",
+    "gulp-csslint": "^0.1.5"
+  }
+}

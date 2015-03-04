@@ -102,6 +102,16 @@
 			column-count: 2;
 		}
 		@include breakpoint($phone){
+			&.block-element--two-columns{
+				-webkit-column-width: auto;
+				-webkit-column-count: auto;
+				-moz-column-width: auto;
+				-moz-column-count: auto;
+				-ms-column-width: auto;
+				-ms-column-count: auto;
+				column-width: auto;
+				column-count: auto;
+			}
 			&.block-element--three-columns{
 				-webkit-column-width: auto;
 				-webkit-column-count: auto;

@@ -10,6 +10,14 @@
 <html lang="is">
 	<head>
 		<meta charset="utf-8">
+		<?= $this->headMeta()
+			->appendName('viewport', 'width=device-width, initial-scale=1.0')
+			->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+		?>
+		<meta name="msapplication-TileColor" content="#292468">
+		<meta name="msapplication-TileImage" content="<?=$this->basePath("favicons/mstile-144x144.png");?>">
+		<meta name="theme-color" content="#292468">
+
 		<?= $this->headTitle('Stjórnvísi ')->setSeparator(' / ')->setAutoEscape(false) ?>
 
 		<link rel="apple-touch-icon" sizes="57x57" href="<?=$this->basePath("favicons/apple-touch-icon-57x57.png");?>">
@@ -26,21 +34,8 @@
 		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-96x96.png");?>" sizes="96x96">
 		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>" sizes="16x16">
 		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>">
-		<meta name="msapplication-TileColor" content="#292468">
-		<meta name="msapplication-TileImage" content="<?=$this->basePath("favicons/mstile-144x144.png");?>">
-		<meta name="theme-color" content="#292468">
 
-		<?= $this->headMeta()
-			->appendName('viewport', 'width=device-width, initial-scale=1.0')
-			->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-		?>
-
-		<!-- Le styles -->
-		<?= $this->headLink(array(
-				'rel' => 'icon',
-				'type' => 'image/png',
-				'href' => $this->basePath() . '/styles/img/favicon.png')
-			)
+		<?= $this->headLink()
 			->appendStylesheet( $this->basePath() . '/stylesheets//screen.css' )
 			->appendStylesheet( $this->basePath() . '/stylesheets//ie.css','screen','IE 9')
 		; ?>

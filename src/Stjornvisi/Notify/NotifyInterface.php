@@ -8,9 +8,9 @@
 
 namespace Stjornvisi\Notify;
 
-use Zend\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-interface NotifyInterface extends LoggerAwareInterface {
+interface NotifyInterface {
 
 	/**
 	 * Set the data that is coming from the
@@ -28,4 +28,11 @@ interface NotifyInterface extends LoggerAwareInterface {
 	 * @return mixed
 	 */
 	public function send();
-} 
+
+	/**
+	 * Set logger instance
+	 *
+	 * @param \Psr\Log\LoggerInterface
+	 */
+	public function setLogger(LoggerInterface $logger);
+}

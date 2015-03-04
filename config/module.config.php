@@ -1681,6 +1681,15 @@ return array(
 						)
 					)
 				),
+				'router' => array(
+					'options' => array(
+						'route'    => 'router',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'router'
+						)
+					)
+				),
             ),
         ),
     ),

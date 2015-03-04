@@ -11,6 +11,7 @@
 		.landing-page__hero{
 			background-image: url("images/header-image.jpg");
 			background-size: cover;
+			background-color: rgb(196,199,162);
 			text-align: center;
 			color: $color-white;
 			padding: $gutter 0 $gutter*4 0;
@@ -21,11 +22,13 @@
 				@include adjust-font-size-to($font-size-huge,2,$font-size-base);
 				font-family: open-sans;
 				font-weight: bold;
-				text-shadow: 0 2px 3px rgba(0,0,0,.37);
+				text-shadow:
+					0 1px 1px rgba(0, 0, 0, 0.57),
+					0 0px 11px rgba(0, 0, 0, 0.37);
 				margin: auto;
 				max-width: 660px;
-				@include margin-leader(4,$font-size-huge);
-				@include margin-trailer(2,$font-size-huge);
+				@include margin-leader(1,$font-size-huge);
+				@include margin-trailer(3,$font-size-huge);
 
 			}
 			h4{
@@ -149,6 +152,7 @@
 			img{
 				width: 100%;
 				border-radius: 50%;
+				box-shadow: 0 2px 1px rgba(0, 0, 0, 0.37);
 			}
 
 			.landing-page__element__header{
@@ -237,7 +241,9 @@
 
 			@include pie-clearfix;
 			margin: $gutter*2 (- $gutter) 0 (- $gutter);
-
+			&.landing-page__cta--tight{
+				margin-top: 0;
+			}
 			.landing-page__cta-item{
 				padding: $gutter;
 				float: left;
@@ -246,6 +252,7 @@
 				img {
 					width: 100%;
 					border-radius: 50%;
+					box-shadow: 0 2px 1px rgba(0,0,0,.37);
 				}
 				.landing-page__headline{
 					@include margin-leader(1,$font-size-big);
@@ -279,10 +286,10 @@
 
 					}
 					.landing-page__headline{
-						clear: both;
-						width: 100%;
+						width: 60%;
+						float: right;
 						padding-left: $gutter;
-						text-align: center;
+						text-align: left;
 						@include padding-leader(1,$font-size-big);
 					}
 				}

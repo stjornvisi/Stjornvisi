@@ -12,14 +12,14 @@ use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class ServiceIndexListener extends AbstractListenerAggregate {
 
-	/** @var \Zend\Log\LoggerInterface  */
+	/** @var \Psr\Log\LoggerInterface;  */
 	private $logger;
 
 	/**

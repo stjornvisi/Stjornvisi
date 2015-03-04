@@ -10,7 +10,7 @@ namespace Stjornvisi\Notify;
 
 
 use Stjornvisi\Service\User;
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
@@ -22,7 +22,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 
-	/** @var  \Zend\Log\LoggerInterface */
+	/** @var  \Psr\Log\LoggerInterface */
 	private $logger;
 
 	/** @var \stdClass */
@@ -127,7 +127,10 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 
 
 		}catch (\Exception $e){
-			$this->logger->warn(get_class($this) . ":send says: {$e->getMessage()}");
+			$this->logger->critical(
+				get_class($this) . ":send says: {$e->getMessage()}",
+				$e->getTrace()
+			);
 		}finally{
 			if( $channel ){
 				$channel->close();

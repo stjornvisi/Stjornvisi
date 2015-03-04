@@ -15,7 +15,7 @@ use Stjornvisi\Service\News;
 use Stjornvisi\Service\User;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Zend\EventManager\EventInterface;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
@@ -30,7 +30,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  */
 class ActivityListener extends AbstractListenerAggregate implements QueueConnectionAwareInterface {
 
-	/** @var \Zend\Log\LoggerInterface  */
+	/** @var  \Psr\Log\LoggerInterface; */
 	private $logger;
 
 	/** @var \Stjornvisi\Lib\QueueConnectionFactoryInterface  */
@@ -191,7 +191,10 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 
 
 		}catch (\Exception $e){
-			$this->logger->warn(get_class($this) . ":send says: {$e->getMessage()}");
+			$this->logger->critical(
+				get_class($this) . ":send says: {$e->getMessage()}",
+				$e->getTrace()
+			);
 		}finally{
 			if( $channel ){
 				$channel->close();

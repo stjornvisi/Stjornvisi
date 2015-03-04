@@ -16,7 +16,7 @@ use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -30,7 +30,7 @@ class Group implements NotifyInterface {
 	/** @var \stdClass */
 	private $params;
 
-	/** @var  \Zend\Log\LoggerInterface */
+	/** @var  \Psr\Log\LoggerInterface; */
 	private $logger;
 
 	/**
@@ -180,7 +180,10 @@ class Group implements NotifyInterface {
 			}
 
 		}catch (\Exception $e){
-			$this->logger->warn(get_class($this) . ":send says: {$e->getMessage()}");
+			$this->logger->critical(
+				get_class($this) . ":send says: {$e->getMessage()}",
+				$e->getTrace()
+			);
 		}finally{
 			if( $channel ){
 				$channel->close();

@@ -8,10 +8,11 @@
 
 namespace Stjornvisi\Mail\Service;
 
-use Zend\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 class File implements ServiceInterface {
 
+	/** @var \Psr\Log\LoggerInterface  */
     private $logger;
 
     private $group;
