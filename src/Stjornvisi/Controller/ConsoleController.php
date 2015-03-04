@@ -737,12 +737,16 @@ class ConsoleController extends AbstractActionController {
 								/** @var $transport \Zend\Mail\Transport\Smtp */
 								if( ($connect = $transport->getConnection()) ){
 									$connect->connect();
-									//$connect->rset();
+									$connect->helo('localhost.localdomain');
+									$connect->rset();
+									$transport->send($message);
+								}else{
+									$transport->send($message);
 								}
-								$transport->send($message);
+
 								$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 							}catch (\Exception $e){
-								$logger->critical( $e->getMessage(), $e->getTrace() );
+								$logger->critical( $e->getMessage() /*,$e->getTrace()*/ );
 							}
 						}
 					//INVALID MESSAGE
