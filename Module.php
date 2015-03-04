@@ -237,7 +237,7 @@ class Module{
                 'Logger' => function($sm){
 
 						$log = new Logger('stjornvisi');
-						//$log->pushHandler(new StreamHandler('php://stdout'));
+						$log->pushHandler(new StreamHandler('php://stdout'));
 						$log->pushHandler(new SlackHandler(
 							"xoxp-3745519896-3745519908-3921078470-26445a",
 							"#stjornvisi",
