@@ -122,7 +122,7 @@ class Module{
 				$errorString .= (print_r($exception->getTraceAsString(),true) . PHP_EOL);
 				$exception = $exception->getPrevious();
 			}
-			$logger->critical($errorString,$topexception->getTrace());
+			$logger->critical($errorString,($topexception)?$topexception->getTrace():array());
 		} );
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e) use ($logger) {
 			$topexception = $e->getParam('exception');
@@ -430,9 +430,19 @@ class Module{
 					*/
 				},
 				'MailTransport' => function($sm){
+
+					$transport = new SmtpTransport();
+					//$transport->setOptions($sm->get('MailOptions'));
+					$protocol = new \Zend\Mail\Protocol\Smtp();
+					$transport->setConnection( $protocol );
+
+					return $transport;
+
+						/*
 					$transport = new SmtpTransport();
 					$transport->setOptions($sm->get('MailOptions'));
 					return $transport;
+						*/
 					/*
 					$transport = new FileTransport();
 					$transport->setOptions($sm->get('MailOptions'));

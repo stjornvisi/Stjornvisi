@@ -735,7 +735,10 @@ class ConsoleController extends AbstractActionController {
 							try{
 								$transport = $sm->get('MailTransport');
 								/** @var $transport \Zend\Mail\Transport\Smtp */
-								$transport->getConnection()->connect();
+								if( ($connect = $transport->getConnection()) ){
+									$connect->connect();
+									//$connect->rset();
+								}
 								$transport->send($message);
 								$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 							}catch (\Exception $e){
