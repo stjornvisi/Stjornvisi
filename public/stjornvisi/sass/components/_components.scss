@@ -67,6 +67,18 @@
 			}
 
 		}
+		@include breakpoint($phone){
+			&.block-element__body--two-column{
+				-webkit-column-width: $gutter;//rhythm(1,$font-size-base);
+				-webkit-column-count: 1;
+				-moz-column-width: $gutter;//rhythm(1,$font-size-base);
+				-moz-column-count: 1;
+				-ms-column-width: $gutter;//rhythm(1,$font-size-base);
+				-ms-column-count: 1;
+				column-width: $gutter;//rhythm(1,$font-size-base);
+				column-count: 1;
+			}
+		}
 
 		//MODIFIER three column layout
 		&.block-element--three-columns{

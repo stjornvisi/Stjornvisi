@@ -11,9 +11,9 @@
 	<section class="layout__section">
 		<article class="block-element">
 			<header class="block-element__header">
-				<h1><?=$this->article->title?></h1>
-				<h2>Birtist fyrst <?=$this->article->venue;?></h2>
+				<h1 class="layout__headline"><?=$this->article->title?></h1>
 				<time class="block-element__time" datetime="<?=$this->article->published->format('c')?>"><?=$this->date($this->article->published)?></time>
+				<p>Birtist fyrst <?=$this->article->venue;?></p>
 			</header>
 			<section class="block-element__body">
 				<?=$this->paragrapher($this->article->summary);?>

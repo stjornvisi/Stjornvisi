@@ -39,6 +39,18 @@
 		margin-left: 0px;
 		margin-bottom: 0;
 	}
+	@include breakpoint($phone){
+		div.layout:before{
+			content: " ";
+			display: block;
+			background-image: none;
+			background-repeat: no-repeat;
+			height: 0;
+			width: 100%;
+			margin-left: 0px;
+			margin-bottom: 0;
+		}
+	}
 
 	/**
 	 * MAIN HEAD
@@ -101,7 +113,7 @@
 
 	@include breakpoint($phone){
 		.main__header{
-			display: none;
+
 		}
 	}
 
