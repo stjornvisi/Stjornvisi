@@ -735,11 +735,20 @@ class ConsoleController extends AbstractActionController {
 							try{
 								$transport = $sm->get('MailTransport');
 								/** @var $transport \Zend\Mail\Transport\Smtp */
-								if( ($connect = $transport->getConnection()) ){
-									$connect->connect();
-									$connect->helo('localhost.localdomain');
-									$connect->rset();
-									$transport->send($message);
+
+								if( ($protocol = $transport->getConnection()) ){
+									if($protocol->hasSession()){
+										$transport->send($message);
+									}else{
+										$protocol->connect();
+										$protocol->helo('localhost.localdomain');
+										$protocol->rset();
+										$transport->send($message);
+									}
+
+									$protocol->quit();
+									$protocol->disconnect();
+
 								}else{
 									$transport->send($message);
 								}
