@@ -3,13 +3,13 @@
 		<div class="layout__message">
 			<h1 class="page-error__headline">{404} File Not Found</h1>
 			<h2 class="page-error__message">Síða fannst ekki</h2>
-			<form>
+			<!--form>
 				<input type="search" />
 				<input type="submit" value="leita"  />
-			</form>
+			</form-->
 		</div>
 		<div class="layout__description">
-			<img src="<?=$this->basepath();?>/stylesheets/images/404.png" />
+			<img src="<?=$this->basePath("stylesheets/images/404.png");?>" />
 		</div>
 		<div class="layout__exception">
 			<?php if (isset($this->display_exceptions) && $this->display_exceptions):?>

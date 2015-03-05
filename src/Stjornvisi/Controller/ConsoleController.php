@@ -736,7 +736,7 @@ class ConsoleController extends AbstractActionController {
 								$transport = $sm->get('MailTransport');
 								/** @var $transport \Zend\Mail\Transport\Smtp */
 
-								if( ($protocol = $transport->getConnection()) ){
+								if( method_exists($transport,'getConnection') && ($protocol = $transport->getConnection()) ){
 									if($protocol->hasSession()){
 										$transport->send($message);
 									}else{
@@ -755,7 +755,7 @@ class ConsoleController extends AbstractActionController {
 
 								$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 							}catch (\Exception $e){
-								$logger->critical( $e->getMessage() /*,$e->getTrace()*/ );
+								$logger->critical( $e->getMessage() ,$e->getTrace() );
 							}
 						}
 					//INVALID MESSAGE

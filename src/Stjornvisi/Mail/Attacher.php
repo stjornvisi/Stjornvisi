@@ -65,6 +65,13 @@ class Attacher {
 				$realName = $image->getAttribute('src');
 				$cleanName = $this->cleanName(preg_replace('/^.+[\\\\\\/]/', '', $realName));
 
+
+				$templateImage = !$image->hasAttribute('template');
+				if( !$image->hasAttribute('template') ){
+					$image->setAttribute('align','left');
+					$image->setAttribute('style','margin:0 10px 0 0;width:100%;max-width:100%');
+				}
+
 				if( is_file( getcwd() . '/public' . $realName ) ){
 
 					//MIME

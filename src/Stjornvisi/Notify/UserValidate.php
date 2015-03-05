@@ -79,28 +79,28 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 		//	get the user.
 		$user = $this->user->get( $this->params->user_id );
 
+
 		//VIEW
-		//	create and config template/rendering engine
-		// 	and model and mash it together.
-		$renderer = new PhpRenderer();
-		$resolver = new Resolver\AggregateResolver();
-		$renderer->setResolver($resolver);
-		$map = new Resolver\TemplateMapResolver(array(
-			'layout'      =>__DIR__ . '/../../../view/layout/email.phtml',
-		));
-		$stack = new Resolver\TemplatePathStack(array(
-			'script_paths' => array(
-				__DIR__ . '/../../../view/email/',
-			)
-		));
-		$model = new ViewModel(array(
+		//	create and configure view
+		$child = new ViewModel(array(
 			'user' => $user,
 			'link' => $this->params->facebook
 		));
-		$resolver->attach($map)->attach($stack);
-		$model->setTemplate('user-validate');
+		$child->setTemplate('script');
 
-		$this->logger->info("User validate");
+		$layout = new ViewModel();
+		$layout->setTemplate('layout');
+		$layout->addChild($child, 'content');
+
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+			'script' => __DIR__ . '/../../../view/email/user-validate.phtml',
+		));
+		$phpRenderer->setResolver($resolver);
 
 		//MAIL
 		//	now we want to send this to the user/quest via e-mail
@@ -111,11 +111,28 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
 
+			foreach ($layout as $child) {
+				if ($child->terminate()) {
+					continue;
+				}
+				$child->setOption('has_parent', true);
+				$result  = $phpRenderer->render($child);
+				$child->setOption('has_parent', null);
+				$capture = $child->captureTo();
+				if (!empty($capture)) {
+					if ($child->isAppend()) {
+						$oldResult=$model->{$capture};
+						$layout->setVariable($capture, $oldResult . $result);
+					} else {
+						$layout->setVariable($capture, $result);
+					}
+				}
+			}
 
 			$result = array(
 				'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 				'subject' => "Stjórnvísi, staðfesting á aðgangi",
-				'body' => $renderer->render($model)
+				'body' => $phpRenderer->render($layout)
 			);
 			$msg = new AMQPMessage( json_encode($result),
 				array('delivery_mode' => 2) # make message persistent

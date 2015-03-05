@@ -165,7 +165,7 @@
 	<nav class="stjornvisi-rich__controls">
 		<a href="#" id="hide-preview" tabindex="-1">ritill</a>
 		<a href="#" id="show-preview" tabindex="-1">sýnishorn</a>
-		<a href="#" id="show-help" tabindex="-1">hjálp</a>
+		<!--a href="#" id="show-help" tabindex="-1">hjálp</a-->
 	</nav>
 	<div class="wrapper stjornvisi-rich__wrapper">
 		<div id="preview" class="stjornvisi-rich__preview"></div>
@@ -1919,8 +1919,8 @@
 		stjornvisiRichPrototype.root = undefined;
 		stjornvisiRichPrototype.textarea = undefined;
 		stjornvisiRichPrototype.preview = undefined;
-		stjornvisiRichPrototype.helpTextarea = undefined;
-		stjornvisiRichPrototype.helpDisplay = undefined;
+		//stjornvisiRichPrototype.helpTextarea = undefined;
+		//stjornvisiRichPrototype.helpDisplay = undefined;
 
 
 		/**
@@ -2013,8 +2013,8 @@
 			this.root.appendChild(clone);
 			this.preview = this.root.querySelector("#preview");
 			this.help = this.root.querySelector("#help");
-			this.helpTextarea = this.root.querySelector("#help_textarea");
-			this.helpDisplay = this.root.querySelector("#help_display");
+			//this.helpTextarea = this.root.querySelector("#help_textarea");
+			//this.helpDisplay = this.root.querySelector("#help_display");
 			this.textarea = this.root.host.querySelector('textarea');
 
 			//SHOW PREVIEW
@@ -2037,6 +2037,7 @@
 			this.helpTextarea.addEventListener('keyup',function(event){
 				this.helpDisplay.innerHTML = Markdown.toHTML( this.helpTextarea.value );
 			}.bind(this),false);
+			/*
 			this.root.querySelector('#show-help').addEventListener('click',function(event){
 				event.preventDefault();
 
@@ -2046,6 +2047,7 @@
 				this.helpDisplay.innerHTML = Markdown.toHTML( this.helpTextarea.value );
 
 			}.bind(this),false);
+			*/
 
 
 			//DRAG ENTER
@@ -2093,8 +2095,12 @@
 						alert(JSON.stringify(object));
 					}.bind(this),
 					function(object){
+						var bucked = 'medium';
+						if( this.hasAttribute('bucket') ){
+							bucked = this.getAttribute('bucket');
+						}
 						this.textarea.removeAttribute('readonly','readonly');
-						this.textarea.value = (begin) + ('!['+middle+']('+object.info.media[0].medium+')') + (end);
+						this.textarea.value = (begin) + ('!['+middle+']('+object.info.media[0][bucked]+')') + (end);
 					}.bind(this)
 				);
 

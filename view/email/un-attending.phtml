@@ -5,7 +5,27 @@
  * Date: 29/09/14
  * Time: 14:27
  */
+setlocale(LC_ALL,'is_IS.utf-8');
 ?>
-<h1><?=$this->event->subject?></h1>
-<pre><?=print_r($this->event,true)?></pre>
-<pre><?=print_r($this->user,true)?></pre>
+<p>Sæl(l) <?=$this->user->name?></p>
+<p>Þú hefur afskráð þig af viðburðnum <strong><?=$this->event->subject?></strong></p>
+
+<dl style="margin-top: 30px; padding-top:30px;  border-top: 1px solid rgb(230,230,230); font-size: 80%">
+	<dt style="font-weight: bold">Viðburður</dt>
+	<dd><a href="http://stjornvisi.is/vidburdir/<?=$this->event->id;?>"><?=$this->event->subject?></a></dd>
+	<dt style="font-weight: bold">Tími</dt>
+	<dd><?=strftime('%e. %B %Y',$this->event->event_date->format('U'))?> | <?=$this->event->event_time->format('H:i')?> - <?=$this->event->event_end->format('H:i')?></dd>
+	<dt style="font-weight: bold">Staður</dt>
+	<dd><?=$this->event->address;?></dd>
+	<dd><?=$this->event->location;?></dd>
+	<dt style="font-weight: bold">Hópar</dt>
+	<dd>
+		<ul style="list-style-type: none; margin: 0; padding: 0">
+			<?php foreach($this->event->groups as $group):?>
+				<li><?=$group->name?></li>
+			<?php endforeach;?>
+		</ul>
+	</dd>
+	<dt style="font-weight: bold">Skráning</dt>
+	<dd><a href="http://stjornvisi.is/vidburdir/<?=$this->event->id;?>">http://stjornvisi.is/vidburdir/<?=$this->event->id;?></a></dd>
+</dl>

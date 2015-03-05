@@ -237,7 +237,8 @@ class Module{
                 'Logger' => function($sm){
 
 						$log = new Logger('stjornvisi');
-						$log->pushHandler(new StreamHandler('php://stdout'));
+						//$log->pushHandler(new StreamHandler('php://stdout'));
+						$log->pushHandler(new StreamHandler('./data/log/system.log'));
 						$log->pushHandler(new SlackHandler(
 							"xoxp-3745519896-3745519908-3921078470-26445a",
 							"#stjornvisi",
@@ -411,44 +412,28 @@ class Module{
 						);
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
-					},
-				'MailOptions' => function($sm){
-
-					return new SmtpOptions(array(
-						'name'              => 'localhost.localdomain',
-						'host'              => '127.0.0.1',
-					));
-
-
+				},
+				'MailTransport' => function($sm){
 					/*
-					return new FileOptions(array(
+					$transport = new SmtpTransport();
+					//$transport->setOptions(new SmtpOptions(array(
+					//	'name'              => 'localhost.localdomain',
+					//	'host'              => '127.0.0.1',
+					//)));
+					$protocol = new \Zend\Mail\Protocol\Smtp();
+					$transport->setConnection( $protocol );
+					return $transport;
+					*/
+
+
+					$transport = new FileTransport();
+					$transport->setOptions(new FileOptions(array(
 						'path'      => './data/',
 						'callback'  => function (FileTransport $transport) {
 								return 'Message_' . microtime(true) . '.eml';
 							},
-					));
-					*/
-				},
-				'MailTransport' => function($sm){
-
-					$transport = new SmtpTransport();
-					//$transport->setOptions($sm->get('MailOptions'));
-					$protocol = new \Zend\Mail\Protocol\Smtp();
-					$transport->setConnection( $protocol );
-
+					)));
 					return $transport;
-
-						/*
-					$transport = new SmtpTransport();
-					$transport->setOptions($sm->get('MailOptions'));
-					return $transport;
-						*/
-					/*
-					$transport = new FileTransport();
-					$transport->setOptions($sm->get('MailOptions'));
-					return $transport;
-						*/
-
 
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){

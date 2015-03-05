@@ -59,7 +59,7 @@
 
 
     </head>
-	<body class="state-login state-mobile-menu-open">
+	<body class="state-login">
 		<nav role="navigation">
 			<div class="navigation__wrapper">
 				<?=$this->subMenu()?>
@@ -77,7 +77,10 @@
 
 		<main role="main">
 			<header class="main__header">
-				<h1 class="main__brand"><a href="/">Stjórnvísi</a></h1>
+				<h1 class="main__brand">
+					<a href="/">Stjórnvísi</a>
+					<a href="#" class="main__burger"><i class="icon-burger"></i></a>
+				</h1>
 				<nav class="main__menu">
 					<ul class="main__menu-items">
 						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>

@@ -40,6 +40,7 @@ class  Email extends Form{
             ),
             'options' => array(
                 'label' => 'Texti',
+				'bucket' => 'path'
             ),
         ));
 

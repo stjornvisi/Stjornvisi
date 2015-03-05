@@ -87,45 +87,55 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface {
 
 
 		//VIEW
-		//	create and config template/rendering engine
-		// 	and model and mash it together.
-		$renderer = new PhpRenderer();
-		$resolver = new Resolver\AggregateResolver();
-		$renderer->setResolver($resolver);
-		$map = new Resolver\TemplateMapResolver(array(
-			'layout'      =>__DIR__ . '/../../../view/layout/email.phtml',
-		));
-		$stack = new Resolver\TemplatePathStack(array(
-			'script_paths' => array(
-				__DIR__ . '/../../../view/email/',
-			)
-		));
-
-		$model = new ViewModel(array(
+		//	create and configure view
+		$child = new ViewModel(array(
 			'user' => $userObject,
 			'group' => $groupObject
 		));
-		$resolver->attach($map)->attach($stack);
+		$child->setTemplate( ($this->params->data->register)
+			? 'group-register'
+			: 'group-unregister');
 
+		$layout = new ViewModel();
+		$layout->setTemplate('layout');
+		$layout->addChild($child, 'content');
 
-		//TEMPLATE AND DATA
-		//	select the correct template to render
-		//	and fill data object with correct data.
-		if($this->params->data->register){
-			$model->setTemplate('group-register');
-			$result = array(
-				'recipient' => array('name'=>$userObject->name, 'address'=>$userObject->email),
-				'subject' => "Þú hefur skráð þig í hópinn: {$groupObject->name}",
-				'body' => $renderer->render($model)
-			);
-		}else{
-			$model->setTemplate('group-unregister');
-			$result = array(
-				'recipient' => array('name'=>$userObject->name, 'address'=>$userObject->email),
-				'subject' => "Þú hefur afskráð þig úr hópnum: {$groupObject->name}",
-				'body' => $renderer->render($model)
-			);
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+			'group-register' => __DIR__ . '/../../../view/email/group-register.phtml',
+			'group-unregister' => __DIR__ . '/../../../view/email/group-unregister.phtml',
+		));
+		$phpRenderer->setResolver($resolver);
+
+		foreach ($layout as $child) {
+			if ($child->terminate()) {
+				continue;
+			}
+			$child->setOption('has_parent', true);
+			$result  = $phpRenderer->render($child);
+			$child->setOption('has_parent', null);
+			$capture = $child->captureTo();
+			if (!empty($capture)) {
+				if ($child->isAppend()) {
+					$oldResult=$model->{$capture};
+					$layout->setVariable($capture, $oldResult . $result);
+				} else {
+					$layout->setVariable($capture, $result);
+				}
+			}
 		}
+
+		$result = array(
+			'recipient' => array('name'=>$userObject->name, 'address'=>$userObject->email),
+			'subject' => ($this->params->data->register)
+					? "Þú hefur skráð þig í hópinn: {$groupObject->name}"
+					: "Þú hefur afskráð þig úr hópnum: {$groupObject->name}",
+			'body' => $phpRenderer->render($layout)
+		);
 
 		//MAIL
 		//	now we want to send this to the user/quest via e-mail
