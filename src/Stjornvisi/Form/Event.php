@@ -147,6 +147,7 @@ class Event extends Form implements InputFilterProviderInterface{
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '64.1237224',
+                'required' => 'required',
                 'tabindex' => 10
             ),
             'options' => array(
@@ -159,6 +160,7 @@ class Event extends Form implements InputFilterProviderInterface{
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '-21.9264241',
+                'required' => 'required',
                 'tabindex' => 10
             ),
             'options' => array(
