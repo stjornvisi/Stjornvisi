@@ -25,7 +25,7 @@
 								<aside class="block-element__aside">
 									<ul class="block-element__tags">
 										<?php if( count($event->groups) == 0 ):?>
-											<li><span>Stjónvísisviðburður</span></li>
+											<li><span>Stjórnvísisviðburður</span></li>
 										<?php else:?>
 											<?php foreach($event->groups as $group):?>
 												<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a></li>
@@ -133,7 +133,7 @@
 	<div class="landing-page__hero">
 		<img src="<?=$this->basePath("/stylesheets/images/logo-frontpage.png")?>"  />
 		<h1>Stjórnvísi er stærsta stjórnunarfélag á Íslandi
-			með 2.150 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h1>
+			með 3.000 virka félagsmenn og yfir 300 fyrirtæki innan sinna raða.</h1>
 		<!--a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-primary btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a-->
 		<a href="<?=$this->url('auth')?>" class="btn btn-primary">Innskrá</a>
 		<a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
@@ -159,7 +159,7 @@
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('vidburdir')?>">
 						<img src="<?=$this->basePath('stylesheets/images/cta8.jpg')?>">
-						<p>Dagskrá Stjónvísi er margþætt og áhugaverð.</p>
+						<p>Dagskrá Stjórnvísi er margþætt og áhugaverð.</p>
 						<h2 class="landing-page__headline">Kynntu þér dagskrána <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
@@ -167,7 +167,7 @@
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('um')?>">
 						<img src="<?=$this->basePath('stylesheets/images/cta9.jpg')?>">
-						<p>Bara örstuttur texti um stjónvísi og af hverju þú ættir að skoða.</p>
+						<p>Fjöldi faghópafunda í hverri viku, áhugaverðir fyrirlestrar og ráðstefnur.</p>
 						<h2 class="landing-page__headline">Kynntu þér starfsemina <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
@@ -191,14 +191,14 @@
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('anaegjuvogin')?>">
 						<img src="<?=$this->basePath('stylesheets/images/anaegjuvogin-logo.jpg')?>">
-						<p>Ánægjuvorin er veitt einu sinn á ári við hátíðlega athöfn.</p>
+						<p>Ánægjuvogin er veitt einu sinn á ári við hátíðlega athöfn.</p>
 						<h2 class="landing-page__headline">Ánægjuvogin <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('stjornunarverdlaunin')?>">
 						<img src="<?=$this->basePath('stylesheets/images/stjornvisi-logo-square.jpg')?>">
-						<p>Stjónunarverðlaunin er veitt vegna framúrskarandi árangus.</p>
+						<p>Stjórnunarverðlaunin er veitt vegna framúrskarandi árangus.</p>
 						<h2 class="landing-page__headline">Stjónunarverðlaunin <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>

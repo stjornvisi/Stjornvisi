@@ -23,8 +23,8 @@
 				<dd><?=$this->date($this->user->created_date,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?></dd>
 				<dt>Innskráningar</dt>
 				<dd><?=$this->user->frequency;?></dd>
-				<dt>Kerfisstjóri</dt>
-				<dd><i class="<?=($this->user->is_admin)?'icon-check':'icon-close'?>" title="<?=($this->user->is_admin)?'já':'nei'?>"></i></dd>
+				<!--<dt>Kerfisstjóri</dt>
+				<dd><i class="<?php//=($this->user->is_admin)?'icon-check':'icon-close'?>" title="<?php//=($this->user->is_admin)?'já':'nei'?>"></i></dd>-->
 			</dl>
 
 			<h2 class="layout__headline">Fyrirtæki</h2>

@@ -53,7 +53,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
 								<?php elseif($event->attending == 0):?>
 									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-									<span class="attending no" title="Afkrá mætingu">mæti ekki</span>
+									<span class="attending no" title="Afskrá mætingu">mæti ekki</span>
 								<?php elseif($event->attending == 1):?>
 									<span class="attending yes" title="Skrá mætingu">mæti</span>
 									<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
