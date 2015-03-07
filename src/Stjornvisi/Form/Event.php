@@ -143,7 +143,7 @@ class Event extends Form implements InputFilterProviderInterface{
         ));
 
         $this->add(array(
-            'name' => 'latitude',
+            'name' => 'lat',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '64.1237224',
@@ -155,7 +155,7 @@ class Event extends Form implements InputFilterProviderInterface{
         ));
 
         $this->add(array(
-            'name' => 'longitude',
+            'name' => 'lng',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '-21.9264241',
