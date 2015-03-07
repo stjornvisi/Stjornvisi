@@ -42,6 +42,8 @@
 				<?php if( $this->event->avatar):?>
 					<img src="<?=$this->basePath("/images/original/{$this->event->avatar}")?>" class="block-element__image" />
 				<?php endif;?>
+                <h3 class="block-element__location"><?=$this->event->location?></h3>
+                <h3 class="block-element__location"><?=$this->event->address?></h3>
 				<?=$this->paragrapher($this->event->body);?>
 			</section>
 			<aside class="block-element__aside">
