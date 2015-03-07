@@ -60,6 +60,20 @@
 					</div>
 				</div>
 
+                <p>Hægt er að nota þessa vefslóð til að finna nákvæm hnit á staðsetningu: <a target="_blank" href="http://www.mapcoordinates.net/en">http://www.mapcoordinates.net/en</a></p>
+
+                <div class="form-group <?=empty($this->form->get('latitude')->getMessages())?'':'has-error';?>">
+                    <?=$this->formLabel($form->get('latitude'));?>
+                    <?=$this->formElement($form->get('latitude')->setAttribute('class','form-control'));?>
+                    <?=$this->formElementErrors($form->get('latitude'));?>
+                </div>
+
+                <div class="form-group <?=empty($this->form->get('longitude')->getMessages())?'':'has-error';?>">
+                    <?=$this->formLabel($form->get('longitude'));?>
+                    <?=$this->formElement($form->get('longitude')->setAttribute('class','form-control'));?>
+                    <?=$this->formElementErrors($form->get('longitude'));?>
+                </div>
+
 				<div class="form-group <?=empty($this->form->get('avatar')->getMessages())?'':'has-error';?>">
 					<?=$this->formLabel($form->get('avatar'));?>
 					<?=$this->formElement($form->get('avatar')->setAttribute('class','form-control avatar'));?>
