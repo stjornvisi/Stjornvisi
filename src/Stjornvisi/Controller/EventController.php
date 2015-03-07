@@ -246,12 +246,12 @@ class EventController extends AbstractActionController{
                 $data = (array)$form->getData();
                 unset($data['submit']);
 
-
-				$mapService = $sm->get('Stjornvisi\Service\Map');
+                /** Mapping Service removed, and fields exposed for editing */
+				//$mapService = $sm->get('Stjornvisi\Service\Map');
 				/** @var  $maService \Stjornvisi\Service\JaMap */
-				$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
-				$data['lat'] = $mapResult->lat;
-				$data['lng'] = $mapResult->lng;
+				//$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
+				//$data['lat'] = $mapResult->lat;
+				//$data['lng'] = $mapResult->lng;
 
                 $id = $eventService->create( $data );
                 return $this->redirect()->toRoute('vidburdir/index',array('id'=>$id));
@@ -281,7 +281,7 @@ class EventController extends AbstractActionController{
         $userService = $sm->get('Stjornvisi\Service\User');
         $eventService = $sm->get('Stjornvisi\Service\Event');
         $groupService = $sm->get('Stjornvisi\Service\Group');
-        $mapService = $sm->get('Stjornvisi\Service\Map');
+        //$mapService = $sm->get('Stjornvisi\Service\Map');
 
 
         $authService = new AuthenticationService();
@@ -314,11 +314,11 @@ class EventController extends AbstractActionController{
 
                         $data = $form->getData();
                         unset($data['submit']);
-						$mapService = $sm->get('Stjornvisi\Service\Map');
+						//$mapService = $sm->get('Stjornvisi\Service\Map');
 						/** @var  $maService \Stjornvisi\Service\JaMap */
-						$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
-						$data['lat'] = $mapResult->lat;
-						$data['lng'] = $mapResult->lng;
+						//$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
+						//$data['lat'] = $mapResult->lat;
+						//$data['lng'] = $mapResult->lng;
 
                         $eventService->update($event->id, $data);
 						if( $this->request->isXmlHttpRequest() ){

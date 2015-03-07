@@ -143,6 +143,30 @@ class Event extends Form implements InputFilterProviderInterface{
         ));
 
         $this->add(array(
+            'name' => 'latitude',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => '64.1237224',
+                'tabindex' => 10
+            ),
+            'options' => array(
+                'label' => 'Latitude (Breiddargráða)',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'longitude',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => '-21.9264241',
+                'tabindex' => 10
+            ),
+            'options' => array(
+                'label' => 'Longitude (Lengdargráða)',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
             'attributes' => array(
