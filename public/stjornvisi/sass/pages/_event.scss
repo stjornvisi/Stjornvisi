@@ -9,6 +9,18 @@
 	}
 	.page-event{
 
+		@include breakpoint($tablet){
+			&.layout.layout--three-columns{
+				.layout__data,
+				.layout__meta{
+					float: none;
+					width: auto;
+					padding-right: 0;
+					padding-left: 0;
+				}
+			}
+		}
+
 		form.page-event__register{
 			@include pie-clearfix;
 			p{

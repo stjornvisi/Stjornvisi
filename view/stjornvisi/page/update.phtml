@@ -1,0 +1,26 @@
+<?php $this->form->setAttribute('class','form-horizontal'); ?>
+	<div class="layout layout--three-columns">
+		<section class="layout__section">
+			<?=$this->form()->openTag($this->form);?>
+
+			<div class="form-group">
+				<?=$this->formLabel($form->get('label'));?>
+				<?=$this->formElement($form->get('label')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('label'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formLabel($form->get('body'));?>
+				<?=$this->formElement($form->get('body')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($form->get('body'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formElement(
+					$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Uppfæra')
+				);?>
+			</div>
+			<?= $this->form()->closeTag() ?>
+		</section>
+		<aside class="layout__aside">
+
+		</aside>
+	</div>

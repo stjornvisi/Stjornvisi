@@ -597,6 +597,9 @@ class GroupController extends AbstractActionController{
         //ITEM FOUND
         //  item is in storage
         if( ($group = $groupService->get($this->params()->fromRoute('name', 0))) != null ){
+			$server = isset($_SERVER['HTTP_HOST'])
+				? $_SERVER['HTTP_HOST']
+				: '0.0.0.0';
             $eventService = $sm->get('Stjornvisi\Service\Event');
             $from = new DateTime();
             $from->sub( new DateInterval('P2M') );
@@ -605,11 +608,11 @@ class GroupController extends AbstractActionController{
 
             $feed = new Feed();
             $feed->setTitle("Viðburðir {$group->name}");
-            $feed->setFeedLink($_SERVER['HTTP_REFERER'], 'atom');
+            $feed->setFeedLink("http://{$server}", 'atom');
             $feed->addAuthor(array(
                 'name'  => 'Stjórnvísi',
                 'email' => 'stjornvisi@stjornvisi.is',
-                'uri'   => "http://{$_SERVER['HTTP_HOST']}",
+                'uri'   => "http://{$server}",
             ));
             $feed->setDescription('Viðburðir');
             $feed->setLink("http://{$_SERVER['HTTP_HOST']}");

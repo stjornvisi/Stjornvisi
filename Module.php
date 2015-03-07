@@ -30,7 +30,6 @@ use Stjornvisi\Service\JaMap;
 use Stjornvisi\Service\Skeleton;
 use Stjornvisi\Service\Conference;
 use Stjornvisi\Service\Values;
-use Stjornvisi\Mail\Service\File;
 use Stjornvisi\View\Helper\SubMenu;
 use Stjornvisi\View\Helper\User as UserMenu;
 use Stjornvisi\Event\ServiceIndexListener;
@@ -235,21 +234,18 @@ class Module{
         return array(
             'factories' => array(
                 'Logger' => function($sm){
-
-						$log = new Logger('stjornvisi');
-						//$log->pushHandler(new StreamHandler('php://stdout'));
-						$log->pushHandler(new StreamHandler('./data/log/system.log'));
-						$log->pushHandler(new SlackHandler(
-							"xoxp-3745519896-3745519908-3921078470-26445a",
-							"#stjornvisi",
-							"Angry Hamster",
-							true,
-							null,
-							Logger::CRITICAL
-						));
-
-						return $log;
-
+					$log = new Logger('stjornvisi');
+					$log->pushHandler(new StreamHandler('php://stdout'));
+					$log->pushHandler(new StreamHandler('./data/log/system.log'));
+					$log->pushHandler(new SlackHandler(
+						"xoxp-3745519896-3745519908-3921078470-26445a",
+						"#stjornvisi",
+						"Angry Hamster",
+						true,
+						null,
+						Logger::CRITICAL
+					));
+					return $log;
                 },
                 'ServiceEventManager' => function($sm){
                     $logger = $sm->get('Logger');
@@ -264,24 +260,18 @@ class Module{
 					$manager->attach( $activityListener );
                     return $manager;
                 },
-                'CsvStrategy' => 'Stjornvisi\View\Strategy\CsvFactory',
                 'Stjornvisi\Service\Values' => function($sm){
                     return new Values();
                 },
                 'Stjornvisi\Service\Map' => function($sm){
                     return new JaMap( new Client() );
                 },
-                'Stjornvisi\Mail\Service' => function($sm){
-                    $logger = new Logger;
-                    $logger->addWriter('stream', null, array('stream' => 'php://stdout'));
-                    return new File( $logger );
-                },
                 'Stjornvisi\Auth\Adapter' => function($sm){
                     return new Adapter($sm->get('PDO'));
                  },
                 'Stjornvisi\Auth\Facebook' => function($sm){
                         return new AuthFacebook($sm->get('PDO'));
-                    },
+                },
                 'PDO' => function($sm){
 					$config = $sm->get('config');
                     return new PDO(
@@ -295,12 +285,6 @@ class Module{
 							//PDO::ATTR_EMULATE_PREPARES => false,
                         ));
                  },
-				/*
-				'Facebook' => function($sm){
-					$config = $sm->get('config');
-					return new Facebook($config['facebook']);
-				},
-				*/
 				'Imagine\Image\Imagine' => function(){
 						return new Imagine\Gd\Imagine();
 				},
@@ -365,12 +349,12 @@ class Module{
 						);
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
-					},
+				},
 				'Stjornvisi\Notify\Password' => function($sm){
 						$obj = new PasswordNotify();
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
-					},
+				},
 				'Stjornvisi\Notify\Group' => function($sm){
 						$obj = new GroupNotify(
 							$sm->get('Stjornvisi\Service\User'),
@@ -381,7 +365,7 @@ class Module{
 						);
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
-					},
+				},
 				'Stjornvisi\Notify\All' => function($sm){
 						$obj = new AllNotify(
 							$sm->get('Stjornvisi\Service\User')
@@ -391,7 +375,7 @@ class Module{
 						);
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
-					},
+				},
 				'Stjornvisi\Notify\Attend' => function($sm){
 						$obj = new AttendNotify(
 							$sm->get('Stjornvisi\Service\User'),
@@ -402,7 +386,7 @@ class Module{
 						);
 						$obj->setLogger( $sm->get('Logger') );
 						return $obj;
-					},
+				},
 				'Stjornvisi\Notify\UserValidate' => function($sm){
 						$obj = new \Stjornvisi\Notify\UserValidate(
 							$sm->get('Stjornvisi\Service\User')
@@ -444,7 +428,9 @@ class Module{
 				},
 
 				'Stjornvisi\Form\NewUserCompanySelect' => function($sm){
-					return new NewUserCompanySelect( $sm->get('Stjornvisi\Service\Company') );
+					return new NewUserCompanySelect(
+						$sm->get('Stjornvisi\Service\Company')
+					);
 				},
 				'Stjornvisi\Form\NewUserCompany' => function($sm){
 					return new NewUserCompany(
@@ -453,7 +439,9 @@ class Module{
 					);
 				},
 				'Stjornvisi\Form\NewUserUniversitySelect' => function($sm){
-					return new NewUserUniversitySelect( $sm->get('Stjornvisi\Service\Company') );
+					return new NewUserUniversitySelect(
+						$sm->get('Stjornvisi\Service\Company')
+					);
 				},
 				'Stjornvisi\Form\NewUserIndividual' => function($sm){
 					return new NewUserIndividual(
@@ -468,11 +456,11 @@ class Module{
 					);
 				},
 				'Stjornvisi\Form\Company' => function($sm){
-						return new CompanyForm(
-							$sm->get('Stjornvisi\Service\Values'),
-							$sm->get('Stjornvisi\Service\Company')
-						);
-					},
+					return new CompanyForm(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\Company')
+					);
+				},
 
 				'Stjornvisi\Service\Skeleton' => function($sm){
 					return new Skeleton();

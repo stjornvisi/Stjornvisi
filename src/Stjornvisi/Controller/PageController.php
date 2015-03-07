@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\Controller;
 
+use Stjornvisi\Form\Page;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -38,19 +39,33 @@ class PageController extends AbstractActionController {
 		//PAGE FOUND
 		//
 		if( ( $page = $pageService->getObject($this->params()->fromRoute('id',0) ) ) != false ){
+			$form = new Page();
 			if( $this->request->isPost() ){
-				$pageService->update(
-					$this->params()->fromRoute('id',0),
-					$this->request->getPost()->toArray()
-				);
-				return false;
+				$form->setData($this->request->getPost() );
+				if( $form->isValid() ){
+
+					$data = $form->getData();
+					unset($data['submit']);
+					$pageService->update($page->id,$data);
+					return $this->redirect()->toUrl( $page->label );
+				}else{
+					return new ViewModel(array(
+						'form' => $form
+					));
+				}
+
 			}else{
 
+
+				$form->bind( new \ArrayObject((array)$page) );
+				return new ViewModel(array(
+					'form' => $form
+				));
 			}
 		//NOT FOUND
 		//	404
 		}else{
-			var_dump('404 no stuff');
+			return $this->notFoundAction();
 		}
 
 	}

@@ -550,7 +550,7 @@
 				padding-right: rhythm(1/2,$font-size-base);
 			}
 
-			@include breakpoint($tablet){
+			@include breakpoint($phone){
 				.layout__data, .layout__meta{
 					float: none;
 					width: auto;
@@ -558,6 +558,7 @@
 					padding-right: 0;
 				}
 			}
+
 		}
 		.layout__aside{
 			float: left;
@@ -565,14 +566,7 @@
 			padding-left: rhythm(1/2,$font-size-base);
 		}
 
-		@include breakpoint($tablet){
-			.layout__section{
-				width: 70%;
-			}
-			.layout__aside{
-				width: 30%;
-			}
-		}
+
 		@include breakpoint($phone){
 			.layout__section{
 				width: auto;
@@ -582,6 +576,19 @@
 				width: auto;
 				float: none;
 				padding-left: 0;
+			}
+		}
+
+		@include breakpoint($tablet){
+			.layout__section{
+				//width: 70%;
+				width: auto;
+				float: none;
+			}
+			.layout__aside{
+				//width: 30%;
+				width: auto;
+				float: none;
 			}
 		}
 	}

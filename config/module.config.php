@@ -1553,6 +1553,31 @@ return array(
 
 				)
 			),
+
+			'page' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/textasida',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Page',
+						'action' => 'list'
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'update' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/uppfaera',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Page',
+								'action' => 'update'
+							),
+						)
+					),
+
+				)
+			),
         ),
     ),
     'service_manager' => array(

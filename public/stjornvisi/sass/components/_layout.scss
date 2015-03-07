@@ -113,8 +113,24 @@
 
 		}
 
+		/**
+		 * The main menu (the dark-blue with white letters) as seen in small
+		 * desktop machines (<=1024)
+		 */
+		@include breakpoint($desktop){
+			.main__brand{
+				background-image: url("images/header-logo.svg");
+				background-position: center 7px;
+				width: 140px;
+			}
 
-		@include breakpoint($phone){
+		}
+
+		/**
+		 * The main menu (the dark-blue with white letters) as seen in tables
+		 *
+		 */
+		@include breakpoint($tablet){
 			display: block;
 			.main__brand{
 				display: block;
@@ -130,7 +146,7 @@
 					background-image: url("images/header-logo.svg");
 					background-repeat: no-repeat;
 					background-position: center center;
-					height: 70px;
+					height: 80px;
 					width: 140px;
 					margin: auto;
 				}
@@ -151,14 +167,15 @@
 				background-color: $color-green-sea;
 				position: absolute;
 				z-index: 1;
-				top: -2%;
+				top: -4%;
 				left: 0;
 				width: 100%;
-				-webkit-transition: top .4s, top .5s;
-				-moz-transition: top .4s, top .5s;
-				-ms-transition: top .4s, top .5s;
-				-o-transition: top .4s, top .5s;
-				transition: top .4s, top .5s;
+				opacity: 0;
+				-webkit-transition: top .4s, top .5s, opacity .2s;
+				-moz-transition: top .4s, top .5s, opacity .2s;
+				-ms-transition: top .4s, top .5s, opacity .2s;
+				-o-transition: top .4s, top .5s, opacity .2s;
+				transition: top .4s, top .5s, opacity .2s;
 				box-shadow: 0 0px 0px rgba(0,0,0,.37);
 				.main__menu-items {
 					padding: rhythm(1/2,$font-size-base) 0;
@@ -172,12 +189,20 @@
 			}
 		}
 
+		@include breakpoint($phone){
+			.main__brand{
+				a{
+					height: 70px;
+				}
+			}
+		}
 	}
 
 	body.state-mobile-menu-open{
 		.main__header .main__menu{
 			top: 70px;
 			box-shadow: 0 4px 8px rgba(0,0,0,.37);
+			opacity: 1;
 		}
 	}
 

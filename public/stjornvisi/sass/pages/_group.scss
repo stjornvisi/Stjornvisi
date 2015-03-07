@@ -210,6 +210,19 @@
 			font-family: $font-family-open;
 			@include adjust-font-size-to($font-size-small,1,$font-size-base);
 		}
+
+		@include breakpoint($tablet){
+			.layout__aside{
+				.block-list{
+					column-width: $gutter;
+					column-count:2;
+					-webkit-column-width: $gutter;
+					-webkit-column-count:2;
+					-moz-column-width: $gutter;
+					-moz-column-count:2;
+				}
+			}
+		}
 	}
 
 
