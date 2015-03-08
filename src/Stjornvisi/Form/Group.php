@@ -44,6 +44,39 @@ class Group extends Form implements InputFilterProviderInterface{
         ));
 
         $this->add(array(
+            'name' => 'summary',
+            'type' => 'Stjornvisi\Form\Element\Rich',
+            'attributes' => array(
+                'placeholder' => 'Inngangur.  Birtist á yfirlitssíðum.  Má ekki vera mjög langur texti.',
+            ),
+            'options' => array(
+                'label' => 'Inngangur',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'body',
+            'type' => 'Stjornvisi\Form\Element\Rich',
+            'attributes' => array(
+                'placeholder' => 'Lýsing faghópsins.  Birtist á síðu faghópsins sjálfs.  Inngangurinn birtist ekki þar.',
+            ),
+            'options' => array(
+                'label' => 'Meginmál',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'description',
+            'type' => 'Stjornvisi\Form\Element\Rich',
+            'attributes' => array(
+                'placeholder' => 'Lýsing...',
+            ),
+            'options' => array(
+                'label' => 'Lýsing',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'description',
 			'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
@@ -151,6 +184,22 @@ class Group extends Form implements InputFilterProviderInterface{
 					),
 				),
 			),
+            'summary' => array(
+                'required' => true,
+                'allow_empty' => false,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            'body' => array(
+                'required' => true,
+                'allow_empty' => false,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+            ),
 			'description' => array(
 				'required' => false,
 				'allow_empty' => true,
