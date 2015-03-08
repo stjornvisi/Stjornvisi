@@ -1324,6 +1324,20 @@ return array(
 				),
 
 			),
+            'adild-og-felagsgjold' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/adild-og-felagsgjold[/:id]',
+                    'constraints' => array(
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Stjornvisi\Controller\Page',
+                        'action' => 'index'
+                    ),
+                ),
+
+            ),
 			'log-arsskyrslur-og-arsreikningar' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
