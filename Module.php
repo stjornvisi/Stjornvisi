@@ -116,7 +116,7 @@ class Module{
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
 
 
-			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError(),array(
+			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError() .implode(",",array(
 				'error'      => $e->getParam('error'),
 				'identity'   => $e->getParam('identity'),
 				'controller' => $e->getParam('controller'),
@@ -125,7 +125,7 @@ class Module{
 				'excpetion' => ($e->getParam('exception'))
 						? $e->getParam('exception')->getMessage()
 						: ''
-			) );
+			) ));
 			/*
 			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError() );
 
