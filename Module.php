@@ -95,7 +95,7 @@ class Module{
 		//
 		register_shutdown_function(function () use ($logger){
 			if ($e = error_get_last()) {
-				$logger->critical($e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
+				$logger->critical("register_shutdown_function:".$e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
 				echo "Smá vandræði";
 			}
 		});
@@ -114,7 +114,7 @@ class Module{
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
 			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
-			$errorString = "";
+			$errorString = "EVENT_DISPATCH_ERROR:";
 			/** @var $exception \Exception */
 			while( $exception ){
 				$errorString .= ($exception->getMessage() . PHP_EOL);
@@ -126,14 +126,14 @@ class Module{
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e) use ($logger) {
 			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
-			$errorString = "";
+			$errorString = "EVENT_RENDER_ERROR:";
 			/** @var $exception \Exception */
 			while( $exception ){
 				$errorString .= ($exception->getMessage() . PHP_EOL);
 				$errorString .= (print_r($exception->getTraceAsString(),true) . PHP_EOL);
 				$exception = $exception->getPrevious();
 			}
-			$logger->critical($errorString,$topexception->getTrace());
+			$logger->critical($errorString,($topexception)?$topexception->getTrace():array());
 		} );
 
 		//CONFIG

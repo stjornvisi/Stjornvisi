@@ -82,5 +82,12 @@
 			//max-width: 50%;
 		}
 
+		em,i{
+			font-style: italic;
+		}
+		strong, b{
+			font-weight: $font-weight-bold;
+		}
+
 
 	}

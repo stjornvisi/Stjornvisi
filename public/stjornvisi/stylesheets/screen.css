@@ -1076,6 +1076,14 @@ stjornvisi-rich::shadow .stjornvisi-rich__preview h4 + p,
   float: left;
   margin: 15px 0 15px 15px;
 }
+/* line 85, ../sass/helpers/_extend.scss */
+.block-element .block-element__body em, stjornvisi-rich::shadow .stjornvisi-rich__preview em, .landing-page .landing-page__element .landing-page__element__section em, .page-group .page-group__description em, .page-pages em, .block-element .block-element__body i, stjornvisi-rich::shadow .stjornvisi-rich__preview i, .landing-page .landing-page__element .landing-page__element__section i, .page-group .page-group__description i, .page-pages i {
+  font-style: italic;
+}
+/* line 88, ../sass/helpers/_extend.scss */
+.block-element .block-element__body strong, stjornvisi-rich::shadow .stjornvisi-rich__preview strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .block-element .block-element__body b, stjornvisi-rich::shadow .stjornvisi-rich__preview b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b {
+  font-weight: 700;
+}
 
 @font-face {
   font-family: 'Open Sans';
