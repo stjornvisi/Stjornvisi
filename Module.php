@@ -112,6 +112,8 @@ class Module{
 		$moduleRouteListener->attach($eventManager);
 
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
+			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError() );
+
 			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
 			$errorString = "EVENT_DISPATCH_ERROR:";
