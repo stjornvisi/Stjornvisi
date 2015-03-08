@@ -12,6 +12,36 @@
 <div class="layout layout--three-columns page-user-list">
 	<section class="layout__section">
 		<h1 class="layout__headline">Notendur (<?=count($this->users)?>)</h1>
+        <?php /** Ætla að skilja þetta eftir svona, það þarf að stíla þetta, en að öðru leiti tilbúið
+        <table>
+            <thead>
+                <tr>
+                    <td>Nafn</td>
+                    <td>Starfstitill</td>
+                    <td>Meðlimur síðan</td>
+                    <td>Fyrirtæki</td>
+                    <td>Lykilstarfsmaður</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach( $this->users as $user ) : ?>
+                    <tr>
+                        <td><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></td>
+                        <td><?=($user->title)?$user->title:'&nbsp;'?></td>
+                        <td><time datetime="<?=$user->created_date->format('c')?>" class="block-item__time"><?=$this->date($user->created_date)?></time></td>
+                        <td>
+                            <?php if($user->company_id):?>
+                                <p><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$user->company_id))?>"><?=$user->company_name?></a></p>
+                            <?php else:?>
+                                <p>&nbsp;</p>
+                            <?php endif;?>
+                        </td>
+                        <td><p><?=($user->key_user)?'Formaður':'&nbsp;';?></p></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+         */?>
 		<?php foreach( $stack as $chunk ): ?>
 			<div class="page-user-list__group">
 				<ul class="block-list">
