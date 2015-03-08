@@ -72,6 +72,12 @@
 			<div class="page-event-element__attenders page-event-element__attenders--warn">
 				<p>Lokað hefur verið fyrir skráningu.</p>
 				<h3>Viðburður er fullur.</h3>
+                <?php if($this->logged_in) : ?>
+                    <?php if($this->event->attending == 1):?>
+                        <span class="attending yes" title="Skrá mætingu">mæti</span>
+                        <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
+                    <?php endif; ?>
+                <?php endif; ?>
 			</div>
 		<?php else:?>
 			<div class="page-event-element__attenders page-event-element__attenders--default">
