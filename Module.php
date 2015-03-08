@@ -75,6 +75,8 @@ use Zend\Mail\Transport\SmtpOptions;
 use Zend\Mail\Transport\File as FileTransport;
 use Zend\Mail\Transport\FileOptions;
 
+use Zend\Http\Response as HttpResponse;
+
 class Module{
 
 	/**
@@ -112,18 +114,32 @@ class Module{
 		$moduleRouteListener->attach($eventManager);
 
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
+
+
+			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError(),array(
+				'error'      => $e->getParam('error'),
+				'identity'   => $e->getParam('identity'),
+				'controller' => $e->getParam('controller'),
+				'action' => $e->getParam('action'),
+				'route' => $e->getParam('route'),
+				'excpetion' => ($e->getParam('exception'))
+						? $e->getParam('exception')->getMessage()
+						: ''
+			) );
+			/*
 			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError() );
 
 			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
 			$errorString = "EVENT_DISPATCH_ERROR:";
-			/** @var $exception \Exception */
+
 			while( $exception ){
 				$errorString .= ($exception->getMessage() . PHP_EOL);
 				$errorString .= (print_r($exception->getTraceAsString(),true) . PHP_EOL);
 				$exception = $exception->getPrevious();
 			}
 			$logger->critical($errorString,($topexception)?$topexception->getTrace():array());
+			*/
 		} );
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e) use ($logger) {
 			$topexception = $e->getParam('exception');
@@ -502,4 +518,8 @@ class Module{
 		);
 	}
 
+
+	private function eventDispatchError(){
+
+	}
 }
