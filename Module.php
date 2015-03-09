@@ -424,7 +424,7 @@ class Module{
 						return $obj;
 				},
 				'MailTransport' => function($sm){
-					/*
+
 					$transport = new SmtpTransport();
 					//$transport->setOptions(new SmtpOptions(array(
 					//	'name'              => 'localhost.localdomain',
@@ -433,9 +433,9 @@ class Module{
 					$protocol = new \Zend\Mail\Protocol\Smtp();
 					$transport->setConnection( $protocol );
 					return $transport;
-					*/
 
 
+					/*
 					$transport = new FileTransport();
 					$transport->setOptions(new FileOptions(array(
 						'path'      => './data/',
@@ -444,6 +444,7 @@ class Module{
 							},
 					)));
 					return $transport;
+					*/
 
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
