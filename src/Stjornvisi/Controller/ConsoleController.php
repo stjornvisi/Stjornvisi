@@ -704,6 +704,13 @@ class ConsoleController extends AbstractActionController {
 						isset($messageObject->recipient->name) &&
 						isset($messageObject->subject) &&
 						isset($messageObject->body)){
+
+						if (!filter_var($messageObject->recipient->address, FILTER_VALIDATE_EMAIL)){
+							$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+							$logger->error( "Main mailer: Invalid mail address [{$messageObject->recipient->address}]" );
+							return;
+						}
+
 						$logger->info( "Send e-mail to [{$messageObject->recipient->address}, {$messageObject->recipient->name}]" );
 
 						//CREATE / SEND
