@@ -9,6 +9,7 @@
 namespace Stjornvisi\Controller;
 
 use Stjornvisi\Form\Page;
+use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
