@@ -10,7 +10,7 @@
 							<article class="block-element">
 								<header class="block-element__header">
 									<time class="block-element__time" datetime="<?=$event->event_date->format('c');?>">
-										<?=$this->date($event->event_date)?> &middot; <?=$event->event_time->format('H:m');?> - <?=$event->event_end->format('H:m');?>
+										<?=$this->date($event->event_date)?> &middot; <?=$event->event_time->format('H:i');?> - <?=$event->event_end->format('H:i');?>
 									</time>
 									<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
 								</header>

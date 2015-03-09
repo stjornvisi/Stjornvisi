@@ -18,8 +18,8 @@
 			<header class="block-element__header">
 				<time class="block-element__time" datetime="<?=$this->event->event_date->format('c')?>">
 					<?=$this->date($this->event->event_date);?> &middot;
-					<?=($this->event->event_time)? $this->event->event_time->format('H:m'):'';?> -
-					<?=($this->event->event_end)?$this->event->event_end->format('H:m'):'';?>
+					<?=($this->event->event_time)? $this->event->event_time->format('H:i'):'';?> -
+					<?=($this->event->event_end)?$this->event->event_end->format('H:i'):'';?>
 				</time>
 				<h1><?=$this->event->subject?></h1>
                 <h3 class="block-element__location"><?=$this->event->location?></h3>

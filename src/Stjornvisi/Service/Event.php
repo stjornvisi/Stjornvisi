@@ -36,9 +36,11 @@ class Event extends AbstractService {
             //EVENT FOUND
             //  event found in database
             if( $event ){
-                $event->event_time = new Time($event->event_date.' '.$event->event_time);
-                $event->event_end = ( $event->event_end )
-                    ? new Time($event->event_date.' '.$event->event_end)
+				$from = "{$event->event_date} {$event->event_time}";
+				$to = ($event->event_end)?"{$event->event_date} {$event->event_end}":null;
+                $event->event_time = new Time($from);
+                $event->event_end = ( $to )
+                    ? new Time($to)
                     : null ;
                 $event->event_date = new  DateTime($event->event_date);
 
@@ -150,9 +152,16 @@ class Event extends AbstractService {
 				__FUNCTION__
 			));
 			return array_map(function($i){
-				$i->event_time = new Time( ($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00" );
-				$i->event_end = new Time( ($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00" );
+				$from = "{$i->event_date} {$i->event_time}";
+				$to = ($i->event_end)? "{$i->event_date} {$i->event_end}" : null;
+
+				$i->event_time = new Time($from);
+				$i->event_end = ($to)? new Time($to) : null ;
 				$i->event_date = new DateTime($i->event_date);
+
+				//$i->event_time = new Time( ($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00" );
+				//$i->event_end = new Time( ($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00" );
+				//$i->event_date = new DateTime($i->event_date);
 				return $i;
 			},$statement->fetchAll());
 		}catch (PDOException $e){
@@ -185,10 +194,16 @@ class Event extends AbstractService {
 			//EVENT FOUND
 			//  event found in database
 			if( $event ){
-				$event->event_time = new Time($event->event_date.' '.$event->event_time);
-				$event->event_end = ( $event->event_end )
-					? new Time($event->event_date.' '.$event->event_end)
-					: null ;
+				$from = "{$event->event_date} {$event->event_time}";
+				$to = ($event->event_date)?"{$event->event_date} {$event->event_end}":null;
+
+				$event->event_time = new Time($from);
+				$event->event_end = ($to)?new Time($to):null;
+
+				//$event->event_time = new Time($event->event_date.' '.$event->event_time);
+				//$event->event_end = ( $event->event_end )
+				//	? new Time($event->event_date.' '.$event->event_end)
+				//	: null ;
 				$event->event_date = new  DateTime($event->event_date);
 
 				//GROUPS
@@ -475,8 +490,15 @@ class Event extends AbstractService {
             //  and add them as an array to the result
             foreach($events as $event){
                 $groupsStatement->execute(array('id'=>$event->id));
-                $event->event_time = new Time($event->event_date.' '.$event->event_time);
-                $event->event_end = new Time($event->event_date.' '.$event->event_end);
+
+				$from = "{$event->event_date} {$event->event_time}";
+				$to = ($event->event_end)?"{$event->event_date} {$event->event_end}":null;
+
+				$event->event_time = new Time($from);
+				$event->event_end = ($to)?new Time($to):null;
+
+                //$event->event_time = new Time($event->event_date.' '.$event->event_time);
+                //$event->event_end = new Time($event->event_date.' '.$event->event_end);
                 $event->event_date = new DateTime($event->event_date);
                 $event->groups = $groupsStatement->fetchAll();
             }
@@ -631,8 +653,15 @@ class Event extends AbstractService {
             //  and add them as an array to the result
             foreach($events as $event){
                 $groupsStatement->execute(array('id'=>$event->id));
-                $event->event_time = new Time($event->event_date.' '.$event->event_time);
-                $event->event_end = new Time($event->event_date.' '.$event->event_end);
+
+				$from = "{$event->event_date} {$event->event_time}";
+				$to = ($event->event_end)?"{$event->event_date} {$event->event_end}":null;
+
+				$event->event_time = new Time($from);
+				$event->event_end = ($to)?new Time($to):null;
+
+                //$event->event_time = new Time($event->event_date.' '.$event->event_time);
+                //$event->event_end = new Time($event->event_date.' '.$event->event_end);
                 $event->event_date = new DateTime($event->event_date);
                 $event->groups = $groupsStatement->fetchAll();
             }
@@ -706,9 +735,18 @@ class Event extends AbstractService {
             //  and add them as an array to the result
             foreach($events as $event){
                 $groupsStatement->execute(array('id'=>$event->id));
-                $event->event_time = new Time($event->event_date.' '.$event->event_time);
-                $event->event_end = new Time($event->event_date.' '.$event->event_end);
-                $event->event_date = new DateTime($event->event_date);
+
+				$from = "{$event->event_date} {$event->event_time}";
+				$to = ($event->event_end)?"{$event->event_date} {$event->event_end}":null;
+
+				$event->event_time = new Time($from);
+				$event->event_end = ($to)?new Time($to):null;
+
+				//$event->event_time = new Time($event->event_date.' '.$event->event_time);
+				//$event->event_end = new Time($event->event_date.' '.$event->event_end);
+				$event->event_date = new DateTime($event->event_date);
+
+
                 $event->groups = $groupsStatement->fetchAll();
             }
 
@@ -832,8 +870,14 @@ class Event extends AbstractService {
 			//  and add them as an array to the result
 			foreach($events as $event){
 				$groupsStatement->execute(array('id'=>$event->id));
-				$event->event_time = new Time($event->event_date.' '.$event->event_time);
-				$event->event_end = new Time($event->event_date.' '.$event->event_end);
+				$from = "{$event->event_date} {$event->event_time}";
+				$to = ($event->event_end)?"{$event->event_date} {$event->event_end}":null;
+
+				$event->event_time = new Time($from);
+				$event->event_end = ($to)?new Time($to):null;
+
+				//$event->event_time = new Time($event->event_date.' '.$event->event_time);
+				//$event->event_end = new Time($event->event_date.' '.$event->event_end);
 				$event->event_date = new DateTime($event->event_date);
 				$event->groups = $groupsStatement->fetchAll();
 			}
@@ -909,9 +953,15 @@ class Event extends AbstractService {
             //  and add them as an array to the result
             foreach($events as $event){
                 $groupsStatement->execute(array('id'=>$event->id));
-                $event->event_time = new Time($event->event_date.' '.$event->event_time);
-                $event->event_end = new Time($event->event_date.' '.$event->event_end);
-                $event->event_date = new DateTime($event->event_date);
+				$from = "{$event->event_date} {$event->event_time}";
+				$to = ($event->event_end)?"{$event->event_date} {$event->event_end}":null;
+
+				$event->event_time = new Time($from);
+				$event->event_end = ($to)?new Time($to):null;
+
+				//$event->event_time = new Time($event->event_date.' '.$event->event_time);
+				//$event->event_end = new Time($event->event_date.' '.$event->event_end);
+				$event->event_date = new DateTime($event->event_date);
                 $event->groups = $groupsStatement->fetchAll();
             }
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
