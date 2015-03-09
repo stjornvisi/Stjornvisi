@@ -33,7 +33,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 						<article class="block-element <?=($event->event_date < new DateTime())?'archived':''?>">
 							<header class="block-element__header">
 								<time class="block-element__time" datetime="<?=$event->event_date->format('c');?>">
-									<?=$this->date($event->event_date)?> &middot <?=$event->event_time->format('H:i');?> - <?=$event->event_end->format('H:i');?>
+									<?=$this->date($event->event_date)?> &middot <?=($event->event_time)?$event->event_time->format('H:i'):'';?> - <?=($event->event_end)?$event->event_end->format('H:i'):'';?>
 								</time>
 								<h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
 							</header>
