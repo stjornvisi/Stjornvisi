@@ -38,17 +38,6 @@
 		@include pie-clearfix;
 		@extend %rich-text;
 		padding: rhythm(1/2,$font-size-base) 0;
-		.block-element__poster{
-			float: left;
-			img {
-				margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
-			}
-		}
-		.block-element__image{
-			max-width: 50%;
-			float: left;
-			margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
-		}
 
 		&.block-element__body--two-column{
 			-webkit-column-width: $gutter;//rhythm(1,$font-size-base);
@@ -62,8 +51,6 @@
 			.block-element__image{
 				-webkit-column-span: all;
 				column-span: all;
-				width: 100%;
-				max-width: 100%;
 			}
 
 		}
@@ -130,6 +117,35 @@
 	}
 	.block-element__footer{
 		padding: rhythm(1/2,$font-size-base) 0;
+	}
+
+	/**
+	 * Link that has a img element inside used as a avatar
+	 * or a poster for an entity.
+	 */
+	.block-element__poster{
+		display: block;
+		float: left;
+		width: 50%;
+		max-width: 100%;
+		margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
+		img{
+			width: 100%;
+		}
+		@include breakpoint($tablet){
+			float: none;
+			width: 100%;
+			margin: 0;
+		}
+	}
+	/**
+	 * Image in an entry. Usually the full size
+	 */
+	.block-element__image{
+		float: left;
+		width: 100%;
+		max-width: 100%;
+		margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
 	}
 
 	/*ul*/.block-element__tags{

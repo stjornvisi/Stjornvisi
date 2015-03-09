@@ -39,8 +39,8 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 							</header>
 							<section class="block-element__body">
 								<?php if($event->avatar):?>
-									<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>" class="block-element__image">
-										<img src="<?=$this->basePath("/images/100/{$event->avatar}")?>" alt="mynd með viðburði" />
+									<a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>" class="block-element__poster">
+										<img src="<?=$this->basePath("/images/300-square/{$event->avatar}")?>" alt="mynd með viðburði" />
 									</a>
 								<?php endif;?>
 								<?=$this->paragrapher( mb_substr($event->body,0,300,'utf-8'));?>
@@ -79,8 +79,8 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 							</header>
 							<section class="block-element__body">
 								<?php if($news->avatar):?>
-									<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__image">
-										<img src="<?=$this->basePath("/images/100/{$news->avatar}")?>" alt="mynd með frétt" />
+									<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
+										<img src="<?=$this->basePath("/images/300-square/{$news->avatar}")?>" alt="mynd með frétt" />
 									</a>
 								<?php endif;?>
 								<?=$this->paragrapher( mb_substr($news->body,0,300,'utf-8'));?>
