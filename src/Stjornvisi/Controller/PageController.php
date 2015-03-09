@@ -17,12 +17,20 @@ class PageController extends AbstractActionController {
 	public function indexAction(){
 		$sm = $this->getServiceLocator();
 		$pageService = $sm->get('Stjornvisi\Service\Page');
+		$userService = $sm->get('Stjornvisi\Service\User');
+
+		$authService = new AuthenticationService();
+		$access = $userService->getTypeByGroup(
+			($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
+			null
+		);
 
 		//FOUND
 		//	page found
 		if( ( $page = $pageService->get($this->request->getUri()->getPath()) ) != false ){
 			return new ViewModel(array(
-				'page' => $page
+				'page' => $page,
+				'admin' => $access->is_admin
 			));
 		//NOT FOUND
 		//	404
