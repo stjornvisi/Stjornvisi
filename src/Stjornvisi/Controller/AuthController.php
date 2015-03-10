@@ -341,6 +341,9 @@ class AuthController extends AbstractActionController{
         //  user is not logged in
         }else{
 
+			$lostForm = new LostPasswordForm();
+			$lostForm->setAttribute('action',$this->url()->fromRoute('access/lost-password'));
+
             //POST
             //  http post request, trying to log in
             if( $this->request->isPost() ){
@@ -365,7 +368,8 @@ class AuthController extends AbstractActionController{
                         return $this->redirect()->toRoute('home');
                     }else{
                         return new ViewModel(array(
-                            'form' => $form
+                            'form' => $form,
+							'lost' => $lostForm,
                         ));
                     }
                 //INVALID
@@ -373,6 +377,7 @@ class AuthController extends AbstractActionController{
                 }else{
                     return new ViewModel(array(
                         'form' => $form,
+						'lost' => $lostForm,
 						//'facebook' => $this->getServiceLocator()->get('Facebook')
                     ));
                 }
@@ -381,8 +386,6 @@ class AuthController extends AbstractActionController{
             //QUERY
             //  http get request, user gets login form
             }else{
-				$lostForm = new LostPasswordForm();
-				$lostForm->setAttribute('action',$this->url()->fromRoute('access/lost-password'));
                 return new ViewModel(array(
                     'form' => new Login(),
 					'lost' => $lostForm,
