@@ -70,5 +70,10 @@
         document.body.classList.toggle('state-mobile-menu-open');
     },false);
 
+    (document.querySelector('.main__home')||mock).addEventListener('click',function(event){
+        event.preventDefault();
+        document.body.classList.toggle('state-open');
+    },false);
+
 
 })();

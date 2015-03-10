@@ -150,16 +150,32 @@
 					width: 140px;
 					margin: auto;
 				}
+				.main__home{
+					position: absolute;
+					top: 0;
+					left: 0;
+					background: none;
+					display: block;
+					text-align: left;
+					padding: 22px;
+
+					i{
+						color: $color-white;
+						font-size: 24px;
+					}
+				}
 				.main__burger{
 					position: absolute;
 					top: 0;
 					right: 0;
 					background: none;
 					display: block;
+					text-align: right;
+					padding: 22px;
 
 					i{
 						color: $color-white;
-						font-size: 50px;
+						font-size: 24px;
 					}
 				}
 			}
@@ -413,7 +429,10 @@
 		}
 	}
 	@include breakpoint($phone){
+
 		nav[role=navigation]{
+			transform: translate3d(-100%, 0, 0);
+		/*
 			display: none;
 			position: fixed;
 			top: 0;
@@ -440,7 +459,9 @@
 					float: left;
 				}
 			}
+			*/
 		}
+
 	}
 
 
@@ -458,11 +479,14 @@
 			footer[role=footer]{
 				margin-left: 0;
 			}
+
+
 		}
 
 		nav[role=navigation]{
 
 		}
+
 
 		&.state-open{
 			overflow: hidden;
@@ -474,6 +498,12 @@
 			nav[role=navigation]{
 				transform: translate3d(0,0,0);
 				-webkit-transform: translate3d(0,0,0);
+			}
+
+			@include breakpoint($phone){
+				nav[role=navigation]{
+					transform: translate3d(-0%, 0, 0);
+				}
 			}
 
 		}
