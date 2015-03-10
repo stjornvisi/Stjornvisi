@@ -3484,13 +3484,21 @@ a.attending.yes {
   color: white;
   background-color: rgba(76, 161, 74, 0.5);
 }
-/* line 108, ../sass/components/_form.scss */
+/* line 107, ../sass/components/_form.scss */
+a.attending.yes:hover {
+  background-color: rgba(60, 128, 59, 0.5);
+}
+/* line 111, ../sass/components/_form.scss */
 a.attending.no {
   color: white;
   background-color: rgba(255, 72, 0, 0.5);
 }
+/* line 114, ../sass/components/_form.scss */
+a.attending.no:hover {
+  background-color: rgba(204, 57, 0, 0.5);
+}
 
-/* line 113, ../sass/components/_form.scss */
+/* line 119, ../sass/components/_form.scss */
 span.attending {
   cursor: default;
 }
