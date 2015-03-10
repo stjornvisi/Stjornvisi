@@ -376,13 +376,16 @@ class AuthController extends AbstractActionController{
 						//'facebook' => $this->getServiceLocator()->get('Facebook')
                     ));
                 }
+				//lost-password
 
             //QUERY
             //  http get request, user gets login form
             }else{
+				$lostForm = new LostPasswordForm();
+				$lostForm->setAttribute('action',$this->url()->fromRoute('access/lost-password'));
                 return new ViewModel(array(
                     'form' => new Login(),
-					//'facebook' => $this->getServiceLocator()->get('Facebook')
+					'lost' => $lostForm,
                 ));
             }
         }
@@ -656,7 +659,7 @@ class AuthController extends AbstractActionController{
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$form = new LostPasswordForm();
-		$form->setAttribute('action',$this->url()->fromRoute('notandi/lost-password'));
+		$form->setAttribute('action',$this->url()->fromRoute('access/lost-password'));
 		if( $this->request->isPost() ){
 			$form->setData( $this->request->getPost() );
 			if( $form->isValid() ){
@@ -667,7 +670,7 @@ class AuthController extends AbstractActionController{
 					$this->getEventManager()->trigger('notify',$this,array(
 						'action' => 'Stjornvisi\Notify\Password',
 						'data' => (object)array(
-								'user_id' => $user->id,
+								'recipients' => $user,
 								'password' => $password,
 							),
 					));
@@ -694,6 +697,7 @@ class AuthController extends AbstractActionController{
 				'message' => null
 			));
 		}
+
 	}
 
 	/**

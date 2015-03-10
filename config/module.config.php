@@ -773,6 +773,7 @@ return array(
                             ),
                         )
                     ),
+					/*
 					'lost-password' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(
@@ -783,6 +784,7 @@ return array(
 							),
 						)
 					),
+					*/
 					'manage-groups' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(
@@ -1465,6 +1467,16 @@ return array(
 							'defaults' => array(
 								'controller' => 'Stjornvisi\Controller\Auth',
 								'action' => 'create-user-confirm'
+							),
+						)
+					),
+					'lost-password' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/tynt-lykilord',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'lost-password'
 							),
 						)
 					),

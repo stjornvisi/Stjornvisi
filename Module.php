@@ -379,6 +379,9 @@ class Module{
 				'Stjornvisi\Notify\Password' => function($sm){
 						$obj = new PasswordNotify();
 						$obj->setLogger( $sm->get('Logger') );
+						$obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
 						return $obj;
 				},
 				'Stjornvisi\Notify\Group' => function($sm){
@@ -445,6 +448,7 @@ class Module{
 					)));
 					return $transport;
 					*/
+
 
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
