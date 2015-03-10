@@ -1484,7 +1484,7 @@ div.layout.layout--no-head:before {
   height: 80px;
 }
 /* line 83, ../sass/components/_layout.scss */
-.main__header .main__brand .main__burger {
+.main__header .main__brand .main__burger, .main__header .main__brand .main__home {
   display: none;
 }
 /* line 87, ../sass/components/_layout.scss */
