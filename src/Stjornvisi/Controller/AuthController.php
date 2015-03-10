@@ -367,6 +367,7 @@ class AuthController extends AbstractActionController{
                         $sessionManager->rememberMe(21600000); //250 days
                         return $this->redirect()->toRoute('home');
                     }else{
+						$form->get('email')->setMessages(array("Rangt lykilorð"));
                         return new ViewModel(array(
                             'form' => $form,
 							'lost' => $lostForm,
@@ -378,7 +379,6 @@ class AuthController extends AbstractActionController{
                     return new ViewModel(array(
                         'form' => $form,
 						'lost' => $lostForm,
-						//'facebook' => $this->getServiceLocator()->get('Facebook')
                     ));
                 }
 				//lost-password
