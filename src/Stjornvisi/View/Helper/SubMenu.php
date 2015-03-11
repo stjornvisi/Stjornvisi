@@ -65,7 +65,7 @@ class SubMenu extends AbstractHelper {
 								'label' => $i->name_short,
 								'id' => $i->id,
 								'uri' => $view->url('hopur/index',array('id'=>$i->url)),
-								'class' => 'icon-horn',
+								//'class' => 'icon-horn',
 								'params' => array(
 									'id' => $i->url,
 									'range' => '2013-2014'

@@ -301,7 +301,7 @@ class GroupController extends AbstractActionController{
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
         return new ViewModel(array(
-            'groups_all' => $groupService->fetchAllExtended(),
+            'groups_all' => $groupService->fetchAllExtended(1),
         ));
     }
 

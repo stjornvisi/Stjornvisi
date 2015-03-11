@@ -143,9 +143,11 @@
 	 */
 	.block-element__image{
 		float: left;
-		width: 100%;
-		max-width: 100%;
 		margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
+		img{
+			width: 100%;
+			max-width: 100%;
+		}
 	}
 
 	/*ul*/.block-element__tags{

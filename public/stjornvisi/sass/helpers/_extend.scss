@@ -1,24 +1,17 @@
 
 	%rich-text{
 		@include pie-clearfix;
-		h1 + p,
-		h2 + p,
-		h3 + p,
-		h4 + p{
-			@include margin-leader(1/2,$font-size-base);
-		}
+
 		p{
 			text-align: left;
 		}
-		p, blockquote{
+		p, blockquote,ul, ol{
 			@include margin-trailer(1,$font-size-base);
 			@include margin-leader(1,$font-size-base);
 		}
-		p:first-of-type{
-			margin-top: 0;
-		}
-		p:last-of-type{
-			margin-bottom: 0;
+
+		blockquote,ul, ol, h1, h2, h3, h4{
+			clear: both;
 		}
 
 		blockquote {
@@ -29,7 +22,6 @@
 
 		ol{
 			list-style: none;
-			margin: 0;
 			padding: 0;
 			counter-reset: section;
 			li:before{
@@ -43,7 +35,6 @@
 
 		ul{
 			list-style: none;
-			margin: 0;
 			padding: 0;
 			li:before{
 				content: "\2022";
@@ -57,19 +48,49 @@
 			color: $color-green-sea;
 			word-wrap: break-word;
 		}
+
 		h1{
 			@include adjust-font-size-to($font-size-big,1,$font-size-base);
+			margin: rhythm(1,$font-size-big) 0;
 		}
 		h2{
 			@include adjust-font-size-to($font-size-base,1,$font-size-base);
+			margin: rhythm(1,$font-size-base) 0;
 		}
 		h3, h4 {
 			@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+			margin: rhythm(1,$font-size-sub) 0;
 		}
+
 		h1, h2, h3, h4{
 			font-family: $font-family-bitter;
 			font-weight: $font-weight-bold;
 		}
+
+		h1 + p,
+		h2 + p,
+		h3 + p,
+		h4 + p{
+			margin-top: - rhythm(.75,$font-size-base);
+		}
+
+		p + ul,
+		p + ol{
+			margin-top: - rhythm(1/2,$font-size-base);
+			margin-bottom: - rhythm(1/2,$font-size-base);
+		}
+
+		h1:first-child,
+		h2:first-child,
+		h3:first-child,
+		h4:first-child,
+		p:first-child,
+		ol:first-child,
+		ul:first-child,
+		blockquote:first-child{
+			margin-top: 0;
+		}
+
 		img[alt*=left]{
 			float: left;
 			margin: $gutter/2 $gutter/2	$gutter/2 0;
@@ -79,6 +100,8 @@
 			margin: $gutter/2 0 $gutter/2 $gutter/2;
 		}
 		img{
+			float: left;
+			margin: 0 rhythm(1/2, $font-size-base) rhythm(1/2, $font-size-base) 0;
 			//max-width: 50%;
 		}
 

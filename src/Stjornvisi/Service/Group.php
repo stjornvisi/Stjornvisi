@@ -295,7 +295,7 @@ class Group extends AbstractService {
 	 * @throws Exception
 	 * @todo what if there are no events returned
 	 */
-	public function fetchAllExtended(){
+	public function fetchAllExtended( $limit = 2 ){
 		try{
 			$statement = $this->pdo->prepare("SELECT * FROM `Group` G ORDER BY G.name_short");
 			$statement->execute();
@@ -308,7 +308,7 @@ class Group extends AbstractService {
 					JOIN `Event` E ON (E.id = GhE.event_id)
 				WHERE GhE.group_id = :group_id AND E.`event_date` >= NOW()
 				ORDER BY E.event_date ASC
-				LIMIT 0, 2");
+				LIMIT 0, {$limit}");
 			//ALL EVENTS
 			//	statement to get all events.
 			$eventAllStatement = $this->pdo->prepare("
@@ -316,7 +316,7 @@ class Group extends AbstractService {
 					JOIN `Event` E ON (E.id = GhE.event_id)
 				WHERE GhE.group_id = :group_id
 				ORDER BY E.event_date DESC
-				LIMIT 0, 2");
+				LIMIT 0, {$limit}");
 			//FOR EVERY GROUP
 			//	for every group we get events
 			array_walk( $groups, function($i) use ($eventLatestStatement, $eventAllStatement){
