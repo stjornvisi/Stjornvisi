@@ -51,6 +51,7 @@
 			.block-element__image{
 				-webkit-column-span: all;
 				column-span: all;
+				max-width: 100%;
 			}
 
 		}
@@ -64,6 +65,9 @@
 				-ms-column-count: 1;
 				column-width: $gutter;//rhythm(1,$font-size-base);
 				column-count: 1;
+				.block-element__image{
+					max-width: 100%;
+				}
 			}
 		}
 
