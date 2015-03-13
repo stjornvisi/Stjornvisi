@@ -4276,6 +4276,10 @@ span.attending {
   text-overflow: ellipsis;
   padding: 0 0.25em 0 0;
 }
+/* line 98, ../sass/pages/_event.scss */
+.page-event .block-element__image {
+  max-width: 100%;
+}
 
 /* line 5, ../sass/pages/_user.scss */
 .page-user-list .page-user-list__group {
