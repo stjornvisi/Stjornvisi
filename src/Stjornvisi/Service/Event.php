@@ -53,7 +53,10 @@ class Event extends AbstractService {
                 $groupStatement->execute(array(
                     'id' => $event->id
                 ));
-                $event->groups = $groupStatement->fetchAll();
+                $event->groups = array_map(function($i){
+					$i->id = (int)$i->id;
+					return $i;
+				},$groupStatement->fetchAll());
 
 				//ATTENDERS
 				//	get all user/guests that are
@@ -118,6 +121,7 @@ class Event extends AbstractService {
             $this->getEventManager()->trigger('read', $this, array(
                 __FUNCTION__
             ));
+			$event->id = (int)$event->id;
             return $event;
         }catch (PDOException $e){
             $this->getEventManager()->trigger("error", $this, array(
@@ -152,6 +156,7 @@ class Event extends AbstractService {
 				__FUNCTION__
 			));
 			return array_map(function($i){
+				$i->id = (int)$i->id;
 				$from = "{$i->event_date} {$i->event_time}";
 				$to = ($i->event_end)? "{$i->event_date} {$i->event_end}" : null;
 

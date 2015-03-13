@@ -261,8 +261,9 @@ class Module{
             'factories' => array(
                 'Logger' => function($sm){
 					$log = new Logger('stjornvisi');
-					$log->pushHandler(new StreamHandler('php://stdout'));
+					//$log->pushHandler(new StreamHandler('php://stdout'));
 					$log->pushHandler(new StreamHandler('./data/log/system.log'));
+					$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
 					$log->pushHandler(new SlackHandler(
 						"xoxp-3745519896-3745519908-3921078470-26445a",
 						"#stjornvisi",
@@ -437,7 +438,6 @@ class Module{
 					$transport->setConnection( $protocol );
 					return $transport;
 
-
 					/*
 					$transport = new FileTransport();
 					$transport->setOptions(new FileOptions(array(
@@ -448,7 +448,6 @@ class Module{
 					)));
 					return $transport;
 					*/
-
 
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
