@@ -1135,6 +1135,26 @@ stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote:first-child,
 .block-element .block-element__body strong, stjornvisi-rich::shadow .stjornvisi-rich__preview strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .block-element .block-element__body b, stjornvisi-rich::shadow .stjornvisi-rich__preview b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b {
   font-weight: 700;
 }
+/* line 116, ../sass/helpers/_extend.scss */
+.block-element .block-element__body table, stjornvisi-rich::shadow .stjornvisi-rich__preview table, .landing-page .landing-page__element .landing-page__element__section table, .page-group .page-group__description table, .page-pages table {
+  margin-bottom: 1.5em;
+  margin-top: 1.5em;
+  font-family: "Open Sans", sans-serif;
+  border-collapse: collapse;
+}
+/* line 122, ../sass/helpers/_extend.scss */
+.block-element .block-element__body table td, stjornvisi-rich::shadow .stjornvisi-rich__preview table td, .landing-page .landing-page__element .landing-page__element__section table td, .page-group .page-group__description table td, .page-pages table td, .block-element .block-element__body table th, stjornvisi-rich::shadow .stjornvisi-rich__preview table th, .landing-page .landing-page__element .landing-page__element__section table th, .page-group .page-group__description table th, .page-pages table th {
+  padding: 0.375em 0.75em;
+}
+/* line 125, ../sass/helpers/_extend.scss */
+.block-element .block-element__body table thead, stjornvisi-rich::shadow .stjornvisi-rich__preview table thead, .landing-page .landing-page__element .landing-page__element__section table thead, .page-group .page-group__description table thead, .page-pages table thead {
+  border-bottom: 2px solid lightgray;
+  color: #4a85a1;
+}
+/* line 131, ../sass/helpers/_extend.scss */
+.block-element .block-element__body table tbody tr:nth-child(even), stjornvisi-rich::shadow .stjornvisi-rich__preview table tbody tr:nth-child(even), .landing-page .landing-page__element .landing-page__element__section table tbody tr:nth-child(even), .page-group .page-group__description table tbody tr:nth-child(even), .page-pages table tbody tr:nth-child(even) {
+  background-color: #fbfbfb;
+}
 
 @font-face {
   font-family: 'Open Sans';

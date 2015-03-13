@@ -113,4 +113,26 @@
 		}
 
 
+		table{
+			@include margin-trailer(1,$font-size-base);
+			@include margin-leader(1,$font-size-base);
+			font-family: $font-family-open;
+			//width: 100%;
+			border-collapse: collapse;
+			td,th{
+				padding: rhythm(1/4,$font-size-base) rhythm(1/2,$font-size-base);
+			}
+			thead{
+				border-bottom: 2px solid $color-gray-light;
+				color: $color-green-sea;
+			}
+			tfoot{}
+			tbody{
+				tr:nth-child(even){
+					background-color: tint( $color-gray-light,93% );
+				}
+			}
+		}
+
+
 	}
