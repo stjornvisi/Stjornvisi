@@ -539,6 +539,7 @@ class User extends AbstractService{
 			");
 			$statement->execute(array('id'=>$event_id));
 			$user = $statement->fetchAll();
+			return $user;
 
 			$guestStatement = $this->pdo->prepare("
 				SELECT null as id, EhG.name, EhG.email
