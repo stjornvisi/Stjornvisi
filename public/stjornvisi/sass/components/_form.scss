@@ -104,10 +104,16 @@
 		&.yes{
 			color: $color-white;
 			background-color: rgba($color-green,.5);
+			&:hover{
+				background-color: rgba( shade( $color-green,20%),.5);
+			}
 		}
 		&.no{
 			color: $color-white;
 			background-color: rgba($color-red,.5);
+			&:hover{
+				background-color: rgba( shade( $color-red,20%),.5);
+			}
 		}
 	}
 	span.attending{

@@ -3,8 +3,8 @@
 		<header>
 			<time>
 				<?=$this->conference->conference_date->format('Y-m-d');?> |
-				<?=($this->conference->conference_time)?$this->conference->conference_time->format('H:m'):'';?> |
-				<?=($this->conference->conference_end)?$this->conference->conference_end->format('H:m'):'';?>
+				<?=($this->conference->conference_time)?$this->conference->conference_time->format('H:i'):'';?> |
+				<?=($this->conference->conference_end)?$this->conference->conference_end->format('H:i'):'';?>
 			</time>
 			<h1><?=$this->conference->subject?></h1>
 			<ul class="conference-groups-list">

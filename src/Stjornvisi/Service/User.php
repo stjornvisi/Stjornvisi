@@ -543,7 +543,7 @@ class User extends AbstractService{
 			$guestStatement = $this->pdo->prepare("
 				SELECT null as id, EhG.name, EhG.email
 				FROM Event_has_Guest EhG
-				WHERE Ehg.event_id = :id;
+				WHERE EhG.event_id = :id;
 			");
 			$guestStatement->execute(array('id'=>$event_id));
 			$guest = $guestStatement->fetchAll();
@@ -599,9 +599,11 @@ class User extends AbstractService{
 			//MEMBERS
 			//  get all members
 			$statement = $this->pdo->prepare("
-				SELECT U.id,U.name,U.title,U.email, EhU.register_time
+				SELECT U.id,U.name,U.title,U.email, EhU.register_time, C.name as company_name, C.id as company_id
 				FROM Event_has_User  EhU
 				JOIN `User` U ON (U.id = EhU.user_id)
+                JOIN `Company_has_User` ChU ON (U.id = ChU.user_id)
+                JOIN `Company` C ON (C.id = ChU.company_id)
 				WHERE event_id = :id AND EhU.attending = 1
 				ORDER BY EhU.register_time
 			");
@@ -625,7 +627,9 @@ class User extends AbstractService{
 					'name' => $guest->name,
 					'email' => $guest->email,
 					'title' => null,
-					'register_time' => $guest->register_time
+					'register_time' => $guest->register_time,
+					'company_name' => null,
+					'company_id' => null,
 				);
 			}
 

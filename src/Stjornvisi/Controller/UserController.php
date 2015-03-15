@@ -5,6 +5,7 @@ use ArrayObject;
 use Stjornvisi\Lib\Csv;
 use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 
@@ -56,62 +57,17 @@ class UserController extends AbstractActionController{
 			$model->setTemplate('error/401');
 			return $model;
 		}
+	}
 
+	public function attendanceAction(){
 
+		$sm = $this->getServiceLocator();
+		$userService = $sm->get('Stjornvisi\Service\User');
+		$attendance = $userService->attendance( $this->params('id') );
 
-		/*
-		$userEntryDAO = new Application_Model_UserEntry();
-		//RESOURCE FOUND
-		//	found user
-		if( ($user=$userEntryDAO->find($this->_getParam('id',Zend_Auth::getInstance()->getIdentity()->id))->current())!=null ){
-
-			//ACCESS GRANTED
-			//	user is this user or admin
-			if( $this->_helper->acl()->validate(new Ext_Acl_User($user->id),Ext_Acl_User::RULE_READ) ){
-				$this->view->user = $user;
-
-				//AJAX
-				//	xml http request
-				if( $this->_request->isXmlHttpRequest() ){
-					$this->getHelper('layout')->disableLayout();
-					$this->getHelper('viewRenderer')->setNoRender();
-
-					$this->_response->setBody($this->view->render("user/_partial-user-properties.phtml"));
-
-					//NORMAL
-					//	normal http request
-				}else{
-					$rangeObj = new Ext_Stjornvisi_DateRange();
-					$currentRange = $rangeObj->getCurrentRange();
-					$lastRange = $rangeObj->getLastRange();
-						
-					$statisticsDAO = new Application_Model_Statistics();
-					$this->view->groupsAndEventsNow =
-					$statisticsDAO->findGroupsAndEventsForUser(
-							$this->view->user->id,
-							$currentRange->rangeBegins->toString( 'YYYY-MM-dd'),
-							$currentRange->rangeEnds->toString( 'YYYY-MM-dd') );
-						
-					$this->view->groupsAndEventsLast =
-					$statisticsDAO->findGroupsAndEventsForUser(
-							$this->view->user->id,
-							$lastRange->rangeBegins->toString( 'YYYY-MM-dd' ),
-							$lastRange->rangeEnds->toString( 'YYYY-MM-dd') );
-				}
-
-				//ACCESS DENIED
-				//	user has no access
-			}else{
-				throw new Zend_Controller_Action_Exception("Access Denied",401);
-
-			}
-
-			//RESOURCE NOT FOUND
-			//	found user
-		}else{
-			throw new Zend_Controller_Action_Exception("Resource Not Found",404);
-		}
-		*/
+		return new JsonModel(array(
+			$attendance
+		));
 	}
 
 	/**

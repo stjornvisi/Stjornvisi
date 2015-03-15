@@ -9,7 +9,8 @@
 namespace Stjornvisi\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
-use \Parsedown;
+//use \Parsedown;
+use Stjornvisi\Lib\Parsedown;
 
 class Paragrapher extends AbstractHelper{
 

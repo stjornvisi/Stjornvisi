@@ -10,12 +10,21 @@ namespace Stjornvisi\Notify;
 
 use Psr\Log\LoggerInterface;
 
+use Zend\View\Model\ViewModel;
+use Zend\View\Renderer\PhpRenderer;
+use Zend\View\Resolver;
+
+use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Lib\QueueConnectionFactoryInterface;
+
+use PhpAmqpLib\Message\AMQPMessage;
+
 /**
  * Handler for when a user registers / un-registers to a group.
  *
  * @package Stjornvisi\Notify
  */
-class Password implements NotifyInterface {
+class Password implements NotifyInterface, QueueConnectionAwareInterface {
 
 	/** @var \stdClass */
 	private $params;
@@ -23,6 +32,8 @@ class Password implements NotifyInterface {
 	/** @var  \Psr\Log\LoggerInterface */
 	private $logger;
 
+	/** @var \Stjornvisi\Lib\QueueConnectionFactoryInterface  */
+	private $queueFactory;
 
 	public function __construct( ){
 
@@ -36,10 +47,98 @@ class Password implements NotifyInterface {
 	}
 
 	public function send(){
-		$this->logger->info("---Now I need to aggregate who will get the message");
-		$this->logger->info(__NAMESPACE__ . get_class($this).__FUNCTION__);
-		$this->logger->info(print_r($this->params,true));
-		$this->logger->info("--Aggregate done");
+
+		//VIEW
+		//	create and configure view
+		$child = new ViewModel(array(
+			'user' => $this->params->data->recipients,
+			'password' => $this->params->data->password,
+		));
+		$child->setTemplate('script');
+
+		$layout = new ViewModel();
+		$layout->setTemplate('layout');
+		$layout->addChild($child, 'content');
+
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+			'script' => __DIR__ . '/../../../view/email/lost-password.phtml',
+		));
+		$phpRenderer->setResolver($resolver);
+		foreach ($layout as $child) {
+			if ($child->terminate()) {
+				continue;
+			}
+			$child->setOption('has_parent', true);
+			$result  = $phpRenderer->render($child);
+			$child->setOption('has_parent', null);
+			$capture = $child->captureTo();
+			if (!empty($capture)) {
+				if ($child->isAppend()) {
+					$oldResult=$model->{$capture};
+					$layout->setVariable($capture, $oldResult . $result);
+				} else {
+					$layout->setVariable($capture, $result);
+				}
+			}
+		}
+
+
+		//ATTEND / UN-ATTEND
+		//	check if the user is registering
+		//	or un-registering and render template to
+		//	accommodate.
+
+		$result = array(
+			'recipient' => array(
+				'name'=>$this->params->data->recipients->name,
+				'address'=>$this->params->data->recipients->email),
+			'subject' => "Nýtt lykilorð",
+			'body' => $phpRenderer->render($layout)
+		);
+
+
+		//MAIL
+		//	now we want to send this to the user/quest via e-mail
+		//	so we try to connect to Queue and send a message
+		//	to mail_queue
+		try{
+			$connection = $this->queueFactory->createConnection();
+			$channel = $connection->channel();
+			$channel->queue_declare('mail_queue', false, true, false, false);
+			$msg = new AMQPMessage( json_encode($result),
+				array('delivery_mode' => 2) # make message persistent
+			);
+			$this->logger->info( $this->params->data->recipients->name ." is requesting new password");
+			$channel->basic_publish($msg, '', 'mail_queue');
+
+
+		}catch (\Exception $e){
+			$this->logger->critical(
+				get_class($this) . ":send says: {$e->getMessage()}",
+				$e->getTrace()
+			);
+		}finally{
+			if( $channel ){
+				$channel->close();
+			}
+			if( $connection ){
+				$connection->close();
+			}
+		}
+
 	}
 
+	/**
+	 * Set Queue factory
+	 * @param QueueConnectionFactoryInterface $factory
+	 * @return mixed
+	 */
+	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
+		$this->queueFactory = $factory;
+	}
 } 

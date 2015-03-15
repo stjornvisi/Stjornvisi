@@ -240,6 +240,9 @@ class Module{
 	 */
 	public function getAutoloaderConfig(){
         return array(
+			'Zend\Loader\ClassMapAutoloader' => array(
+				__DIR__ . '/vendor/composer/autoload_classmap.php',
+			),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
@@ -258,8 +261,9 @@ class Module{
             'factories' => array(
                 'Logger' => function($sm){
 					$log = new Logger('stjornvisi');
-					$log->pushHandler(new StreamHandler('php://stdout'));
+					//$log->pushHandler(new StreamHandler('php://stdout'));
 					$log->pushHandler(new StreamHandler('./data/log/system.log'));
+					$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
 					$log->pushHandler(new SlackHandler(
 						"xoxp-3745519896-3745519908-3921078470-26445a",
 						"#stjornvisi",
@@ -376,6 +380,9 @@ class Module{
 				'Stjornvisi\Notify\Password' => function($sm){
 						$obj = new PasswordNotify();
 						$obj->setLogger( $sm->get('Logger') );
+						$obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
 						return $obj;
 				},
 				'Stjornvisi\Notify\Group' => function($sm){
@@ -421,7 +428,7 @@ class Module{
 						return $obj;
 				},
 				'MailTransport' => function($sm){
-					/*
+
 					$transport = new SmtpTransport();
 					//$transport->setOptions(new SmtpOptions(array(
 					//	'name'              => 'localhost.localdomain',
@@ -430,9 +437,8 @@ class Module{
 					$protocol = new \Zend\Mail\Protocol\Smtp();
 					$transport->setConnection( $protocol );
 					return $transport;
-					*/
 
-
+					/*
 					$transport = new FileTransport();
 					$transport->setOptions(new FileOptions(array(
 						'path'      => './data/',
@@ -441,7 +447,7 @@ class Module{
 							},
 					)));
 					return $transport;
-
+					*/
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
 					$config = $sm->get('config');
@@ -523,8 +529,4 @@ class Module{
 		);
 	}
 
-
-	private function eventDispatchError(){
-
-	}
 }

@@ -9,6 +9,9 @@
 <div class="layout layout--three-columns">
 	<section class="layout__section">
 		<h1 class="layout__headline">Hópastillingar</h1>
+		<?php if( empty($this->groups) ):?>
+			<p>Þú ert ekki skráð(ur) í neina hópa.</p>
+		<?php else:?>
 		<p>Ég vil fá sendan póst frá eftirtöldum faghópum</p>
 		<ul>
 			<?php foreach($this->groups as $group): ?>
@@ -35,6 +38,7 @@
 				},false);
 			});
 		</script>
+		<?php endif;?>
 	</section>
 	<aside class="layout__aside"></aside>
 </div>

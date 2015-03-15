@@ -199,29 +199,6 @@ class ConsoleController extends AbstractActionController {
 		$users = $userService->getUserMessage();
 		$logger->info("Queue Service says: Fetching users who want upcoming events, ".count($users)." user will get email ");
 
-		/*
-		//VIEW
-		//	prep the view and the template engine.
-		$renderer = new PhpRenderer();
-		$resolver = new Resolver\AggregateResolver();
-		$renderer->setResolver($resolver);
-		$stack = new Resolver\TemplatePathStack(array(
-			'script_paths' => array(
-				__DIR__.'/../../../view/email'
-			)
-		));
-		$resolver->attach($stack);
-		$model = new ViewModel(array(
-			'events' => $events,
-			'from' => $from,
-			'to' => $to
-		));
-
-		$model->setTemplate('news-digest');
-		*/
-
-
-
 
 		//VIEW
 		//	create and configure view
@@ -291,40 +268,36 @@ class ConsoleController extends AbstractActionController {
 					array('delivery_mode' => 2) # make message persistent
 				);
 
-
-
-
-				/*
-				$model->setVariable('user',$user);
-				$msg = new AMQPMessage(
-					json_encode( (object)array(
-						'subject' => "Vikan framundan | {$from->format('j. n.')} - {$to->format('j. n. Y')}",
-						'body' => $renderer->render($model),
-						'recipient' => (object)array(
-							'name' => $user->name,
-							'address' => $user->email,
-						),
-						'key' => md5(time())
-					)),
-					array('delivery_mode' => 2) # make message persistent
-				);
-
-				*/
 				$channel->basic_publish($msg, '', 'mail_queue');
-				$logger->info("Queue Service says: Fetching users who want upcoming events, {$user->email} in queue ");
+				$logger->debug("Queue Service says: Fetching users who want upcoming events, {$user->email} in queue ");
 			}
 			$channel->close();
 			$connection->close();
 		//QUEUE RUNTIME EXCEPTION
 		//
-		}catch (AMQPRuntimeException $e){
-			$logger->warn( "Can't start Mail Queue: {$e->getMessage()}" );
+		}catch (\PhpAmqpLib\Exception\AMQPOutOfBoundsException $e){
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
-		//EXCEPTION
-		//
+		}catch (\PhpAmqpLib\Exception\AMQPProtocolException $e){
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPRuntimeException $e){
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPConnectionException $e){
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPChannelException $e){
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPTimeoutException $e){
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			exit(1);
+		}catch (\PhpAmqpLib\Exception\AMQPException $e){
+			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			exit(1);
 		}catch (\Exception $e){
-			$logger->warn( print_r($e->getTraceAsString(),true) );
-			exit(1);
+			$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
 		}
 
 		$logger->info("Queue Service says: Fetching upcoming events done, users are in queue");
@@ -704,6 +677,13 @@ class ConsoleController extends AbstractActionController {
 						isset($messageObject->recipient->name) &&
 						isset($messageObject->subject) &&
 						isset($messageObject->body)){
+
+						if (!filter_var($messageObject->recipient->address, FILTER_VALIDATE_EMAIL)){
+							$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+							$logger->error( "Main mailer: Invalid mail address [{$messageObject->recipient->address}]" );
+							return;
+						}
+
 						$logger->info( "Send e-mail to [{$messageObject->recipient->address}, {$messageObject->recipient->name}]" );
 
 						//CREATE / SEND
@@ -828,5 +808,11 @@ class ConsoleController extends AbstractActionController {
 				$this->_printer($item['child_routes'], ($indent."    ") );
 			}
 		}
+	}
+
+
+	public function pdfAction(){
+
+
 	}
 }

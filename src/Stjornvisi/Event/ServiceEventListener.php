@@ -53,7 +53,7 @@ class ServiceEventListener extends AbstractListenerAggregate {
 	public function log(EventInterface $event){
 		$params = $event->getParams();
 		$method = isset($params[0])?$params[0]:'';
-		$this->logger->info(
+		$this->logger->debug(
 			get_class($event->getTarget())."::{$method} - {$event->getName()}"
 		);
 

@@ -81,6 +81,7 @@ class EventController extends AbstractActionController{
 							$groupIds
 						),
 					'attendees' => $userService->getByEvent($event->id),
+					'aggregate' => $eventService->aggregateAttendance( $event->id )
 				));
 				$eventView->setTemplate('stjornvisi/event/partials/index-event');
 				$asideView = new ViewModel(array(
@@ -112,6 +113,7 @@ class EventController extends AbstractActionController{
 							$groupIds
 						),
 					'attendees' => $userService->getByEvent($event->id),
+					'aggregate' => $eventService->aggregateAttendance( $event->id )
 				));
 				$eventView->setTemplate('stjornvisi/event/partials/index-event');
 				$asideView = new ViewModel(array(

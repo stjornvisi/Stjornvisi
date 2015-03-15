@@ -5,9 +5,31 @@
 		<div class="layout__data page-login__service">
 			<p>Stjónvísi býður nú upp á að notendur noti Facebook sem auðkenni. Auðvelt er
 				að tengja eldri notendareikninga við þessa þjónustu, prufaðu bara.</p>
-			<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a>
+			<div class="page-login__buttons">
+				<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a>
+				<a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
+			</div>
 
-			<a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
+
+
+			<h2 class="layout__headline">Gleymt lykilorð</h2>
+			<p>Ef þú hefur gleymt lykilorðinu þínu, sláðu þá inn netfang og
+				fáðu nýtt sent í pósti</p>
+			<?=$this->form()->openTag($this->lost);?>
+			<div class="form-group">
+				<?=$this->formLabel($this->lost->get('email'));?>
+				<?=$this->formElement($this->lost->get('email')->setAttribute('class','form-control'));?>
+				<?=$this->formElementErrors($this->lost->get('email'));?>
+			</div>
+			<div class="form-group">
+				<?=$this->formElement(
+					$this->lost->get('submit')->setAttribute('class','btn btn-default')->setValue('Senda')
+				);?>
+			</div>
+			<?= $this->form()->closeTag() ?>
+
+
+
 		</div>
 		<div class="layout__meta page-login__manual">
 			<p>Að sjálfsögðu er hægt að skrá sig inn með gamla mátanum</p>
@@ -29,6 +51,8 @@
 			</div>
 
 			<?= $this->form()->closeTag() ?>
+
+
 		</div>
 
 	</section>

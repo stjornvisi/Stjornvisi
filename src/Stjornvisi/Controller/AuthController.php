@@ -341,6 +341,9 @@ class AuthController extends AbstractActionController{
         //  user is not logged in
         }else{
 
+			$lostForm = new LostPasswordForm();
+			$lostForm->setAttribute('action',$this->url()->fromRoute('access/lost-password'));
+
             //POST
             //  http post request, trying to log in
             if( $this->request->isPost() ){
@@ -364,8 +367,10 @@ class AuthController extends AbstractActionController{
                         $sessionManager->rememberMe(21600000); //250 days
                         return $this->redirect()->toRoute('home');
                     }else{
+						$form->get('email')->setMessages(array("Rangt lykilorð"));
                         return new ViewModel(array(
-                            'form' => $form
+                            'form' => $form,
+							'lost' => $lostForm,
                         ));
                     }
                 //INVALID
@@ -373,16 +378,17 @@ class AuthController extends AbstractActionController{
                 }else{
                     return new ViewModel(array(
                         'form' => $form,
-						//'facebook' => $this->getServiceLocator()->get('Facebook')
+						'lost' => $lostForm,
                     ));
                 }
+				//lost-password
 
             //QUERY
             //  http get request, user gets login form
             }else{
                 return new ViewModel(array(
                     'form' => new Login(),
-					//'facebook' => $this->getServiceLocator()->get('Facebook')
+					'lost' => $lostForm,
                 ));
             }
         }
@@ -656,7 +662,7 @@ class AuthController extends AbstractActionController{
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');
 		$form = new LostPasswordForm();
-		$form->setAttribute('action',$this->url()->fromRoute('notandi/lost-password'));
+		$form->setAttribute('action',$this->url()->fromRoute('access/lost-password'));
 		if( $this->request->isPost() ){
 			$form->setData( $this->request->getPost() );
 			if( $form->isValid() ){
@@ -667,7 +673,7 @@ class AuthController extends AbstractActionController{
 					$this->getEventManager()->trigger('notify',$this,array(
 						'action' => 'Stjornvisi\Notify\Password',
 						'data' => (object)array(
-								'user_id' => $user->id,
+								'recipients' => $user,
 								'password' => $password,
 							),
 					));
@@ -694,6 +700,7 @@ class AuthController extends AbstractActionController{
 				'message' => null
 			));
 		}
+
 	}
 
 	/**
@@ -702,7 +709,7 @@ class AuthController extends AbstractActionController{
 	 * @return string
 	 */
 	private function _createPassword($length) {
-		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_-=+;:?";
 		$password = substr( str_shuffle( $chars ), 0, $length );
 		return $password;
 	}

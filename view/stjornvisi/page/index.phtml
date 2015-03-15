@@ -5,9 +5,10 @@
 		</div>
 	</section>
 	<aside class="layout__aside">
+		<?php if($this->admin):?>
 		<stjonvisi-control>
 			<a href="<?=$this->url('page/update',array('id'=>$this->page->id))?>">Uppfæra</a>
 		</stjonvisi-control>
+		<?php endif;?>
 	</aside>
 </div>
-

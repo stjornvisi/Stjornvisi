@@ -18,8 +18,8 @@
 			<header class="block-element__header">
 				<time class="block-element__time" datetime="<?=$this->event->event_date->format('c')?>">
 					<?=$this->date($this->event->event_date);?> &middot;
-					<?=($this->event->event_time)? $this->event->event_time->format('H:m'):'';?> -
-					<?=($this->event->event_end)?$this->event->event_end->format('H:m'):'';?>
+					<?=($this->event->event_time)? $this->event->event_time->format('H:i'):'';?> -
+					<?=($this->event->event_end)?$this->event->event_end->format('H:i'):'';?>
 				</time>
 				<h1><?=$this->event->subject?></h1>
                 <h3 class="block-element__location"><?=$this->event->location?></h3>
@@ -41,9 +41,6 @@
 				</ul>
 			</header>
 			<section class="block-element__body">
-				<?php if( $this->event->avatar):?>
-					<img src="<?=$this->basePath("/images/original/{$this->event->avatar}")?>" class="block-element__image" />
-				<?php endif;?>
 				<?=$this->paragrapher($this->event->body);?>
 			</section>
 			<aside class="block-element__aside">
@@ -119,6 +116,11 @@
 	</div>
 
 	<div class="layout__meta">
+
+		<?php if( $this->event->avatar):?>
+			<img src="<?=$this->basePath("/images/original/{$this->event->avatar}")?>" class="block-element__image" />
+		<?php endif;?>
+
 		<?php if( count($this->event->gallery)>0 ):?>
 			<div>
 				<ul class="block-gallery">
@@ -169,48 +171,139 @@
 			</div>
 		<?php endif;?>
 
-		<?php if($this->access->is_admin || $this->access->type >= 1):?>
-			<div>
-				<h2 class="layout__headline">Þátttakendur (<?=count($this->attendees)?>)</h2>
-				<table class="block-table page-event__attendees">
-					<thead>
-					<tr>
-						<td>Nafn</td>
-						<!--td>Titill</td-->
-						<td>Skráning</td>
-					</tr>
-					</thead>
-					<tfoot>
-					<tr>
-						<td colspan="3">&nbsp;</td>
-					</tr>
-					</tfoot>
-					<tbody>
-					<?php foreach($this->attendees as $attendee):?>
-						<tr>
-							<td>
-								<?php if($attendee->id):?>
-									<a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>
-								<?php else:?>
-									<?=($attendee->name)?$attendee->name:$attendee->email;?>
-								<?php endif;?>
-							</td>
-							<!--td>
-								<?php if($attendee->title):?>
-									<?=$attendee->title?>
-								<?php else:?>
-									&nbsp;
-								<?php endif;?>
-							</td-->
-							<td>
-								<time datetime="<?=$attendee->register_time->format('c')?>">
-									<?=$this->date($attendee->register_time,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
-								</time>
-							</td>
-						</tr>
-					<?php endforeach;?>
-					</tbody>
-				</table>
-			</div>
-		<?php endif;?>
 	</div>
+
+
+	<div class="layout__info">
+
+		<?php if($this->access->is_admin || $this->access->type >= 1):?>
+			<h2 class="layout__headline">Þátttakendur (<?=count($this->attendees)?>)</h2>
+			<table class="block-table page-event__attendees">
+				<thead>
+				<tr>
+					<td>Nafn</td>
+					<td>Titill</td>
+					<td>Fyrirtæki</td>
+					<td>Skráning</td>
+				</tr>
+				</thead>
+				<tfoot>
+				<tr>
+					<td colspan="3">&nbsp;</td>
+				</tr>
+				</tfoot>
+				<tbody>
+				<?php foreach($this->attendees as $attendee):?>
+					<tr>
+						<td>
+							<?php if($attendee->id):?>
+								<a href="<?=$this->url('notandi/index',array('id'=>$attendee->id))?>"><?=$attendee->name?></a>
+							<?php else:?>
+								<?=($attendee->name)?$attendee->name:$attendee->email;?>
+							<?php endif;?>
+						</td>
+						<td>
+							<?php if($attendee->title):?>
+								<?=$attendee->title?>
+							<?php else:?>
+								&nbsp;
+							<?php endif;?>
+						</td>
+						<td>
+							<?php if($attendee->company_name):?>
+								<a href="<?=$this->url('fyrirtaeki/index',array('id'=>$attendee->company_id))?>">
+									<?=$attendee->company_name;?>
+								</a>
+							<?php else:?>
+								&nbsp;
+							<?php endif;?>
+						</td>
+						<td>
+							<time datetime="<?=$attendee->register_time->format('c')?>">
+								<?=$this->date($attendee->register_time,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+							</time>
+						</td>
+					</tr>
+				<?php endforeach;?>
+				</tbody>
+			</table>
+
+			<h2 class="layout__headline">Dreyfing skráninga á daga</h2>
+			<div id="js-chart" class="page-statistics"></div>
+
+			<?php $this->headScript()->appendFile( $this->basePath("vendor/d3/d3.min.js") );?>
+			<script>
+				var data = <?=json_encode( $this->aggregate )?>;
+				var margin = {top: 20, right: 20, bottom: 70, left: 40},
+					width = 600 - margin.left - margin.right,
+					height = 300 - margin.top - margin.bottom;
+
+				// Parse the date / time
+				var parseDate = d3.time.format("%Y-%m-%d").parse;
+
+				var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+				var y = d3.scale.linear().range([height, 0]);
+
+				var xAxis = d3.svg.axis()
+					.scale(x)
+					.orient("bottom")
+					.tickFormat(d3.time.format("%Y-%m-%d"));
+
+				var yAxis = d3.svg.axis()
+					.scale(y)
+					.orient("left")
+					.ticks(10);
+
+				var svg = d3.select("#js-chart").append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					.attr("transform",
+						"translate(" + margin.left + "," + margin.top + ")");
+
+
+				data.forEach(function(d) {
+					d.date = parseDate(d.date);
+					d.count = +d.count;
+				});
+
+				x.domain(data.map(function(d) { return d.date; }));
+				y.domain([0, d3.max(data, function(d) { return d.count; })]);
+
+				svg.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + height + ")")
+					.call(xAxis)
+					.selectAll("text")
+					.style("text-anchor", "end")
+					.attr("dx", "-.8em")
+					.attr("dy", "-.55em")
+					.attr("transform", "rotate(-90)" );
+
+				svg.append("g")
+					.attr("class", "y axis")
+					.call(yAxis)
+					.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", 6)
+					.attr("dy", ".71em")
+					.style("text-anchor", "end");
+
+				svg.selectAll("bar")
+					.data(data)
+					.enter().append("rect")
+					.attr("class", "bar")
+					//.style("fill", "steelblue")
+					.attr("x", function(d) { return x(d.date); })
+					.attr("width", x.rangeBand())
+					.attr("y", function(d) { return y(d.count); })
+					.attr("height", function(d) { return height - y(d.count); });
+
+
+			</script>
+		<?php endif;?>
+
+
+	</div>
+

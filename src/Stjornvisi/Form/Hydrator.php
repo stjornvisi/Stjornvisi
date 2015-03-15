@@ -37,7 +37,7 @@ class Hydrator extends ArraySerializable {
                 continue;
             }
             if( $value instanceof Time ){
-                $data[$name] = $this->extractValue($name, $value->format('H:m'));
+                $data[$name] = $this->extractValue($name, $value->format('H:i'));
             }else if($value instanceof \DateTime){
                 $data[$name] = $this->extractValue($name, $value->format('Y-m-d'));
             }else{

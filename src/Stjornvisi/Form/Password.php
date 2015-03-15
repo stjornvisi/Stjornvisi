@@ -50,37 +50,3 @@ class Password extends Form{
         ));
     }
 }
-
-/**
- * 
- * @category Stjornvisi
- * @package Form
- * @author einarvalur
- */
-/*
-class Application_Form_Password extends Zend_Form{
-
-	public function init(){
-		$pass1Element = new Zend_Form_Element_Password("pass1");
-		$pass1Element->setRequired(true)
-			->setLabel("Lykilorð");
-		$pass2Element = new Zend_Form_Element_Password("pass2");
-		$pass2Element->setRequired(true)
-			//TODO this doesn't work... why?
-//			->setValidators(array(new Zend_Validate_Identical(array('token'=>'pass1','strict'=>false))))
-			->setLabel("Lykilorð aftur");
-			
-		$submitElement = new Zend_Form_Element_Submit("submit");
-		$submitElement->setLabel("uppfæra");
-		
-		$this->addElements(array(
-			$pass1Element,
-			$pass2Element,
-			$submitElement
-		));
-		
-	}
-
-
-}
-*/

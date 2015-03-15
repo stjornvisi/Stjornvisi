@@ -773,16 +773,6 @@ return array(
                             ),
                         )
                     ),
-					'lost-password' => array(
-						'type' => 'Zend\Mvc\Router\Http\Segment',
-						'options' => array(
-							'route' => '/tynt/lykilord',
-							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Auth',
-								'action' => 'lost-password'
-							),
-						)
-					),
 					'manage-groups' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(
@@ -817,6 +807,20 @@ return array(
                             ),
                         )
                     ),
+
+					'attendance' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/maetingar',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\User',
+								'action' => 'attendance'
+							),
+						)
+					),
                 ),
             ),
             'greinar' => array(
@@ -1468,6 +1472,16 @@ return array(
 							),
 						)
 					),
+					'lost-password' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/tynt-lykilord',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Auth',
+								'action' => 'lost-password'
+							),
+						)
+					),
 				),
 			),
 
@@ -1726,6 +1740,15 @@ return array(
 						'defaults' => array(
 							'controller' => 'Stjornvisi\Controller\Console',
 							'action'     => 'router'
+						)
+					)
+				),
+				'pdf' => array(
+					'options' => array(
+						'route'    => 'pdf',
+						'defaults' => array(
+							'controller' => 'Stjornvisi\Controller\Console',
+							'action'     => 'pdf'
 						)
 					)
 				),
