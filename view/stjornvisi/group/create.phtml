@@ -13,6 +13,18 @@
 			<?=$this->formElement($form->get('name_short')->setAttribute('class','form-control'));?>
 			<?=$this->formElementErrors($form->get('name_short'));?>
 		</div>
+        <div class="form-group">
+            <?=$this->formLabel($form->get('summary'));?>
+            <?=$this->formElement($form->get('summary')->setAttribute('class','form-control'));?>
+            <?=$this->formElementErrors($form->get('summary'));?>
+        </div>
+        <div class="form-group">
+            <?=$this->formLabel($form->get('body'));?>
+            <?=$this->formElement($form->get('body')->setAttribute('class','form-control'));?>
+            <?=$this->formElementErrors($form->get('body'));?>
+        </div>
+        <h2>Hér fyrir neðan eru svæði sem verða ekki birt mikið lengur!</h2>
+        <p>Sameinið textann úr þeim í svæðin hér fyrir ofan.</p>
 		<div class="form-group">
 			<?=$this->formLabel($form->get('description'));?>
 			<?=$this->formElement($form->get('description')->setAttribute('class','form-control'));?>

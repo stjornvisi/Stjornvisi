@@ -126,3 +126,7 @@ CREATE TABLE IF NOT EXISTS  `ConferenceMedia` (
   KEY `fk_ConferenceMedia_Conference1` (`conference_id`),
   CONSTRAINT `fk_ConferenceMedia_Conference1` FOREIGN KEY (`conference_id`) REFERENCES `Conference` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `Group`
+ADD COLUMN `summary` TEXT NOT NULL AFTER `name_short`,
+ADD COLUMN `body` TEXT NOT NULL AFTER `summary`;
