@@ -513,9 +513,6 @@
 	}
 
 
-
-
-
 	/**
 	 *
 	 */
@@ -566,7 +563,9 @@
 				> div{
 					margin-top: $gutter;
 				}
-
+			}
+			.layout__info{
+				clear: both;
 			}
 			.layout_article{
 				padding-right: rhythm(1/2,$font-size-base);

@@ -3,6 +3,7 @@
 <phpunit bootstrap="Bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="Most">
+            <!--file>./Service/EventTest.php</file-->
             <directory>./Service</directory>
             <!--directory>./Filter</directory>
             <directory>./Form</directory>

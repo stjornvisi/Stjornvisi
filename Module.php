@@ -448,7 +448,6 @@ class Module{
 					)));
 					return $transport;
 					*/
-
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
 					$config = $sm->get('config');

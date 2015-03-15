@@ -26,23 +26,34 @@ class Event extends AbstractService {
     public function get( $id, $user_id = null ){
 
         try{
-            $statement = $this->pdo->prepare("
+			//GET EVENT
+			//	first of we will try to query for a simple
+			//	event, this is a simple as can be.
+			$statement = $this->pdo->prepare("
                 SELECT * FROM `Event` E WHERE E.id = :id
             ");
             $statement->execute(array(
                 'id' => $id
             ));
             $event = $statement->fetchObject();
+
             //EVENT FOUND
             //  event found in database
             if( $event ){
-				$from = "{$event->event_date} {$event->event_time}";
-				$to = ($event->event_end)?"{$event->event_date} {$event->event_end}":null;
-                $event->event_time = new Time($from);
-                $event->event_end = ( $to )
-                    ? new Time($to)
+
+				//TYPECAST
+				//	typecast ID to int and dates to date
+				//	and time
+				$event->id = (int)$event->id;
+                $event->event_time = new Time("{$event->event_date} {$event->event_time}");
+                $event->event_end = ( $event->event_end )
+                    ? new Time("{$event->event_date} {$event->event_end}")
                     : null ;
                 $event->event_date = new  DateTime($event->event_date);
+				//$event->lat = ($event->lat)? (float)$event->lat : null;
+				//$event->lng = ($event->lng)? (float)$event->lng : null;
+				$event->capacity = ($event->capacity)?(int)$event->capacity:null;
+				$event->avatar = (empty($event->avatar))?null:$event->avatar;
 
                 //GROUPS
                 //  groups that are hosting the event
@@ -73,7 +84,12 @@ class Event extends AbstractService {
 						'event_user_id' => $event->id,
 						'event_guest_id' => $event->id,
 					));
-					$event->attenders = $attendStatement->fetchAll();
+					$event->attenders = array_map(function($i){
+						$i->event_id = (int)$i->event_id;
+						$i->user_id = (int)$i->user_id;
+						$i->register_time = new DateTime($i->register_time);
+						return $i;
+					},$attendStatement->fetchAll());
 				}else{
 					$event->attenders = array();
 				}
@@ -90,6 +106,7 @@ class Event extends AbstractService {
                         'event_id' => $id
                     ));
                     $event->attending = $attendingStatement->fetchColumn();
+					//$event->attending = ($event->attending==null)?null:(bool)$event->attending;
                 }else{
                     $event->attending = null;
                 }
@@ -103,7 +120,12 @@ class Event extends AbstractService {
                 $galleryStatement->execute(array(
                     'id' => $event->id
                 ));
-                $event->gallery = $galleryStatement->fetchAll();
+                $event->gallery = array_map(function($i){
+					$i->id = (int)$i->id;
+					$i->event_id = (int)$i->event_id;
+					$i->created = new DateTime($i->created);
+					return $i;
+				},$galleryStatement->fetchAll());
 
                 //REFERENCE
                 //
@@ -114,14 +136,19 @@ class Event extends AbstractService {
                 $referenceStatement->execute(array(
                     'id' => $event->id
                 ));
-                $event->reference = $referenceStatement->fetchAll();
+                $event->reference = array_map(function($i){
+					$i->id = (int)$i->id;
+					$i->event_id = (int)$i->event_id;
+					$i->created = new DateTime($i->created);
+					return $i;
+				},$referenceStatement->fetchAll());
 
 
             }
             $this->getEventManager()->trigger('read', $this, array(
                 __FUNCTION__
             ));
-			$event->id = (int)$event->id;
+
             return $event;
         }catch (PDOException $e){
             $this->getEventManager()->trigger("error", $this, array(
@@ -142,31 +169,35 @@ class Event extends AbstractService {
 	/**
 	 * Get all event entries in reverse order.
 	 *
+	 * @param int $offset
+	 * @param int $count
 	 * @return array
 	 * @throws Exception
 	 */
-	public function fetchAll(){
+	public function fetchAll( $offset = null, $count = null ){
 		try{
-			$statement = $this->pdo->prepare("
-				SELECT * FROM Event E
-				ORDER BY E.event_date DESC;
-			");
+			if( $offset != null && $count != null ){
+				$statement = $this->pdo->prepare("
+					SELECT * FROM Event E
+					ORDER BY E.event_date DESC
+					LIMIT {$offset},{$count};
+				");
+			}else{
+				$statement = $this->pdo->prepare("
+					SELECT * FROM Event E
+					ORDER BY E.event_date DESC;
+				");
+			}
+
 			$statement->execute();
 			$this->getEventManager()->trigger('read', $this, array(
 				__FUNCTION__
 			));
 			return array_map(function($i){
 				$i->id = (int)$i->id;
-				$from = "{$i->event_date} {$i->event_time}";
-				$to = ($i->event_end)? "{$i->event_date} {$i->event_end}" : null;
-
-				$i->event_time = new Time($from);
-				$i->event_end = ($to)? new Time($to) : null ;
+				$i->event_time = new Time( ($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00" );
+				$i->event_end = new Time( ($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00" );
 				$i->event_date = new DateTime($i->event_date);
-
-				//$i->event_time = new Time( ($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00" );
-				//$i->event_end = new Time( ($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00" );
-				//$i->event_date = new DateTime($i->event_date);
 				return $i;
 			},$statement->fetchAll());
 		}catch (PDOException $e){
@@ -292,6 +323,14 @@ class Event extends AbstractService {
 				? null
 				: $data['capacity'] ;
 
+			$data['lat'] = (empty($data['lat']))
+				? null
+				: $data['lat'];
+
+			$data['lng'] = (empty($data['lng']))
+				? null
+				: $data['lng'];
+
             //UPDATE
             //  update event entry
             $statement = $this->pdo->prepare(
@@ -414,6 +453,14 @@ class Event extends AbstractService {
 			$data['capacity'] = ($data['capacity'] <= 0)
 				? null
 				: $data['capacity'] ;
+
+			$data['lat'] = (empty($data['lat']))
+				? null
+				: $data['lat'];
+
+			$data['lng'] = (empty($data['lng']))
+				? null
+				: $data['lng'];
 
             $createString = $this->insertString('Event',$data);
             $createStatement = $this->pdo->prepare($createString);
@@ -836,6 +883,75 @@ class Event extends AbstractService {
         }
     }
 
+	/**
+	 * Aggregate attendance calendar
+	 *
+	 * @param $id
+	 * @return array
+	 * @throws Exception
+	 */
+	public function aggregateAttendance( $id ){
+		try{
+			$statement = $this->pdo->prepare("
+				select count(*) as total, DATE(U.register_time) as register_time from (
+					(select event_id, register_time from Event_has_User
+					where event_id = :id AND attending = 1)
+					union
+					(select event_id, register_time from Event_has_Guest
+					where event_id = :id)
+				) as U
+				GROUP BY DATE(register_time)
+				ORDER BY register_time;
+			");
+			$statement->execute(array(
+				'id' => $id
+			));
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+
+			$rows = $statement->fetchAll();
+			if( count($rows) == 0 ){
+				return array();
+			}else{
+				$endDate = new DateTime( $rows[ count($rows)-1 ]->register_time );
+				$currentDate = new DateTime( $rows[0]->register_time );
+
+				$dateRange = array();
+				$returnRange = array();
+
+				while( $currentDate <= $endDate ){
+					$dateRange[] = $currentDate->format('Y-m-d');
+					$currentDate->add( new \DateInterval('P1D') );
+				}
+
+
+				foreach( $dateRange as $date ){
+					$tmp = (object)array(
+						'count' => 0,
+						'date' => $date
+					);
+					//search date in $row
+					foreach($rows as $item){
+						if($item->register_time == $date){
+							$tmp->count = $item->total;
+						}
+					}
+					$returnRange[] = $tmp;
+				}
+
+				//return $array;
+				return $returnRange;
+			}
+
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null,
+				)
+			));
+			throw new Exception("Can't aggregate attendance data for event:[{$id}]",0,$e);
+		}
+	}
 
 	/**
 	 * Get all events by a date-range in a
