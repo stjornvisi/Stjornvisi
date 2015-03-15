@@ -603,7 +603,7 @@ class User extends AbstractService{
 				FROM Event_has_User  EhU
 				JOIN `User` U ON (U.id = EhU.user_id)
                 JOIN `Company_has_User` ChU ON (U.id = ChU.user_id)
-                JOIN `Company` C ON (c.id = ChU.company_id)
+                JOIN `Company` C ON (C.id = ChU.company_id)
 				WHERE event_id = :id AND EhU.attending = 1
 				ORDER BY EhU.register_time
 			");
