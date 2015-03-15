@@ -150,20 +150,7 @@
 					width: 140px;
 					margin: auto;
 				}
-				.main__home{
-					position: absolute;
-					top: 0;
-					left: 0;
-					background: none;
-					display: block;
-					text-align: left;
-					padding: 22px;
 
-					i{
-						color: $color-white;
-						font-size: 24px;
-					}
-				}
 				.main__burger{
 					position: absolute;
 					top: 0;
@@ -209,6 +196,20 @@
 			.main__brand{
 				a{
 					height: 70px;
+				}
+				.main__home{
+					position: absolute;
+					top: 0;
+					left: 0;
+					background: none;
+					display: block;
+					text-align: left;
+					padding: 22px;
+
+					i{
+						color: $color-white;
+						font-size: 24px;
+					}
 				}
 			}
 		}

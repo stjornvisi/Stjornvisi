@@ -1,0 +1,17 @@
+
+	.style-guide{
+		@extend %rich-text;
+		svg{
+			width: 25%;
+			float: left;
+		}
+		pre{
+			@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+			font-family: monospace;
+			background-color: tint($color-gray-light,80%);
+		}
+		code{
+			font-family: monospace;
+			background-color: tint($color-gray-light,80%);
+		}
+	}

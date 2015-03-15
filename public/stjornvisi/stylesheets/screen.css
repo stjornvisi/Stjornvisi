@@ -964,195 +964,206 @@ input[type="button"].btn-block {
 }
 
 /* line 2, ../sass/helpers/_extend.scss */
-.block-element .block-element__body, stjornvisi-rich::shadow .stjornvisi-rich__preview, .landing-page .landing-page__element .landing-page__element__section, .page-group .page-group__description, .page-pages {
+.block-element .block-element__body, stjornvisi-rich::shadow .stjornvisi-rich__preview, .landing-page .landing-page__element .landing-page__element__section, .page-group .page-group__description, .page-pages, .style-guide {
   *zoom: 1;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
-.block-element .block-element__body:after, stjornvisi-rich::shadow .stjornvisi-rich__preview:after, .landing-page .landing-page__element .landing-page__element__section:after, .page-group .page-group__description:after, .page-pages:after {
+.block-element .block-element__body:after, stjornvisi-rich::shadow .stjornvisi-rich__preview:after, .landing-page .landing-page__element .landing-page__element__section:after, .page-group .page-group__description:after, .page-pages:after, .style-guide:after {
   content: "";
   display: table;
   clear: both;
 }
 /* line 5, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p {
+.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p {
   text-align: left;
 }
 /* line 8, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol {
+.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p, .block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
 }
 /* line 13, ../sass/helpers/_extend.scss */
-.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4 {
+.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
   clear: both;
 }
 /* line 17, ../sass/helpers/_extend.scss */
-.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote {
+.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote {
   font-style: italic;
   border-left: 4px solid #4a85a1;
   padding-left: 1.5em;
 }
 /* line 23, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol {
+.block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol {
   list-style: none;
   padding: 0;
   counter-reset: section;
 }
 /* line 27, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ol li:before, stjornvisi-rich::shadow .stjornvisi-rich__preview ol li:before, .landing-page .landing-page__element .landing-page__element__section ol li:before, .page-group .page-group__description ol li:before, .page-pages ol li:before {
+.block-element .block-element__body ol li:before, stjornvisi-rich::shadow .stjornvisi-rich__preview ol li:before, .landing-page .landing-page__element .landing-page__element__section ol li:before, .page-group .page-group__description ol li:before, .page-pages ol li:before, .style-guide ol li:before {
   counter-increment: section;
   content: counters(section,".") ".";
   color: #4a85a1;
   padding-right: 0.75em;
 }
 /* line 36, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul {
+.block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul {
   list-style: none;
   padding: 0;
 }
 /* line 39, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ul li:before, stjornvisi-rich::shadow .stjornvisi-rich__preview ul li:before, .landing-page .landing-page__element .landing-page__element__section ul li:before, .page-group .page-group__description ul li:before, .page-pages ul li:before {
+.block-element .block-element__body ul li:before, stjornvisi-rich::shadow .stjornvisi-rich__preview ul li:before, .landing-page .landing-page__element .landing-page__element__section ul li:before, .page-group .page-group__description ul li:before, .page-pages ul li:before, .style-guide ul li:before {
   content: "\2022";
   color: #4a85a1;
   padding-right: 0.75em;
 }
 /* line 47, ../sass/helpers/_extend.scss */
-.block-element .block-element__body a, stjornvisi-rich::shadow .stjornvisi-rich__preview a, .landing-page .landing-page__element .landing-page__element__section a, .page-group .page-group__description a, .page-pages a {
+.block-element .block-element__body a, stjornvisi-rich::shadow .stjornvisi-rich__preview a, .landing-page .landing-page__element .landing-page__element__section a, .page-group .page-group__description a, .page-pages a, .style-guide a {
   color: #4a85a1;
   word-wrap: break-word;
 }
 /* line 52, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1 {
+.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1 {
   font-size: 1.125em;
   line-height: 1.33333em;
   margin: 1.33333em 0;
 }
 /* line 56, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2 {
+.block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2 {
   font-size: 1em;
   line-height: 1.5em;
   margin: 1.5em 0;
 }
 /* line 60, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4 {
+.block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
   font-size: 0.875em;
   line-height: 1.71429em;
   margin: 1.71429em 0;
 }
 /* line 65, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4 {
+.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
   font-family: "Bitter", serif;
   font-weight: 700;
 }
 /* line 70, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1 + p, stjornvisi-rich::shadow .stjornvisi-rich__preview h1 + p, .landing-page .landing-page__element .landing-page__element__section h1 + p, .page-group .page-group__description h1 + p, .page-pages h1 + p,
+.block-element .block-element__body h1 + p, stjornvisi-rich::shadow .stjornvisi-rich__preview h1 + p, .landing-page .landing-page__element .landing-page__element__section h1 + p, .page-group .page-group__description h1 + p, .page-pages h1 + p, .style-guide h1 + p,
 .block-element .block-element__body h2 + p,
 stjornvisi-rich::shadow .stjornvisi-rich__preview h2 + p,
 .landing-page .landing-page__element .landing-page__element__section h2 + p,
 .page-group .page-group__description h2 + p,
 .page-pages h2 + p,
+.style-guide h2 + p,
 .block-element .block-element__body h3 + p,
 stjornvisi-rich::shadow .stjornvisi-rich__preview h3 + p,
 .landing-page .landing-page__element .landing-page__element__section h3 + p,
 .page-group .page-group__description h3 + p,
 .page-pages h3 + p,
+.style-guide h3 + p,
 .block-element .block-element__body h4 + p,
 stjornvisi-rich::shadow .stjornvisi-rich__preview h4 + p,
 .landing-page .landing-page__element .landing-page__element__section h4 + p,
 .page-group .page-group__description h4 + p,
-.page-pages h4 + p {
+.page-pages h4 + p,
+.style-guide h4 + p {
   margin-top: -1.125em;
 }
 /* line 77, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p + ul, stjornvisi-rich::shadow .stjornvisi-rich__preview p + ul, .landing-page .landing-page__element .landing-page__element__section p + ul, .page-group .page-group__description p + ul, .page-pages p + ul,
+.block-element .block-element__body p + ul, stjornvisi-rich::shadow .stjornvisi-rich__preview p + ul, .landing-page .landing-page__element .landing-page__element__section p + ul, .page-group .page-group__description p + ul, .page-pages p + ul, .style-guide p + ul,
 .block-element .block-element__body p + ol,
 stjornvisi-rich::shadow .stjornvisi-rich__preview p + ol,
 .landing-page .landing-page__element .landing-page__element__section p + ol,
 .page-group .page-group__description p + ol,
-.page-pages p + ol {
+.page-pages p + ol,
+.style-guide p + ol {
   margin-top: -0.75em;
   margin-bottom: -0.75em;
 }
 /* line 83, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1:first-child, stjornvisi-rich::shadow .stjornvisi-rich__preview h1:first-child, .landing-page .landing-page__element .landing-page__element__section h1:first-child, .page-group .page-group__description h1:first-child, .page-pages h1:first-child,
+.block-element .block-element__body h1:first-child, stjornvisi-rich::shadow .stjornvisi-rich__preview h1:first-child, .landing-page .landing-page__element .landing-page__element__section h1:first-child, .page-group .page-group__description h1:first-child, .page-pages h1:first-child, .style-guide h1:first-child,
 .block-element .block-element__body h2:first-child,
 stjornvisi-rich::shadow .stjornvisi-rich__preview h2:first-child,
 .landing-page .landing-page__element .landing-page__element__section h2:first-child,
 .page-group .page-group__description h2:first-child,
 .page-pages h2:first-child,
+.style-guide h2:first-child,
 .block-element .block-element__body h3:first-child,
 stjornvisi-rich::shadow .stjornvisi-rich__preview h3:first-child,
 .landing-page .landing-page__element .landing-page__element__section h3:first-child,
 .page-group .page-group__description h3:first-child,
 .page-pages h3:first-child,
+.style-guide h3:first-child,
 .block-element .block-element__body h4:first-child,
 stjornvisi-rich::shadow .stjornvisi-rich__preview h4:first-child,
 .landing-page .landing-page__element .landing-page__element__section h4:first-child,
 .page-group .page-group__description h4:first-child,
 .page-pages h4:first-child,
+.style-guide h4:first-child,
 .block-element .block-element__body p:first-child,
 stjornvisi-rich::shadow .stjornvisi-rich__preview p:first-child,
 .landing-page .landing-page__element .landing-page__element__section p:first-child,
 .page-group .page-group__description p:first-child,
 .page-pages p:first-child,
+.style-guide p:first-child,
 .block-element .block-element__body ol:first-child,
 stjornvisi-rich::shadow .stjornvisi-rich__preview ol:first-child,
 .landing-page .landing-page__element .landing-page__element__section ol:first-child,
 .page-group .page-group__description ol:first-child,
 .page-pages ol:first-child,
+.style-guide ol:first-child,
 .block-element .block-element__body ul:first-child,
 stjornvisi-rich::shadow .stjornvisi-rich__preview ul:first-child,
 .landing-page .landing-page__element .landing-page__element__section ul:first-child,
 .page-group .page-group__description ul:first-child,
 .page-pages ul:first-child,
+.style-guide ul:first-child,
 .block-element .block-element__body blockquote:first-child,
 stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote:first-child,
 .landing-page .landing-page__element .landing-page__element__section blockquote:first-child,
 .page-group .page-group__description blockquote:first-child,
-.page-pages blockquote:first-child {
+.page-pages blockquote:first-child,
+.style-guide blockquote:first-child {
   margin-top: 0;
 }
 /* line 94, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img[alt*=left], stjornvisi-rich::shadow .stjornvisi-rich__preview img[alt*=left], .landing-page .landing-page__element .landing-page__element__section img[alt*=left], .page-group .page-group__description img[alt*=left], .page-pages img[alt*=left] {
+.block-element .block-element__body img[alt*=left], stjornvisi-rich::shadow .stjornvisi-rich__preview img[alt*=left], .landing-page .landing-page__element .landing-page__element__section img[alt*=left], .page-group .page-group__description img[alt*=left], .page-pages img[alt*=left], .style-guide img[alt*=left] {
   float: left;
   margin: 15px 15px 15px 0;
 }
 /* line 98, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img[alt*=right], stjornvisi-rich::shadow .stjornvisi-rich__preview img[alt*=right], .landing-page .landing-page__element .landing-page__element__section img[alt*=right], .page-group .page-group__description img[alt*=right], .page-pages img[alt*=right] {
+.block-element .block-element__body img[alt*=right], stjornvisi-rich::shadow .stjornvisi-rich__preview img[alt*=right], .landing-page .landing-page__element .landing-page__element__section img[alt*=right], .page-group .page-group__description img[alt*=right], .page-pages img[alt*=right], .style-guide img[alt*=right] {
   float: left;
   margin: 15px 0 15px 15px;
 }
 /* line 102, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img, stjornvisi-rich::shadow .stjornvisi-rich__preview img, .landing-page .landing-page__element .landing-page__element__section img, .page-group .page-group__description img, .page-pages img {
+.block-element .block-element__body img, stjornvisi-rich::shadow .stjornvisi-rich__preview img, .landing-page .landing-page__element .landing-page__element__section img, .page-group .page-group__description img, .page-pages img, .style-guide img {
   float: left;
   margin: 0 0.75em 0.75em 0;
 }
 /* line 108, ../sass/helpers/_extend.scss */
-.block-element .block-element__body em, stjornvisi-rich::shadow .stjornvisi-rich__preview em, .landing-page .landing-page__element .landing-page__element__section em, .page-group .page-group__description em, .page-pages em, .block-element .block-element__body i, stjornvisi-rich::shadow .stjornvisi-rich__preview i, .landing-page .landing-page__element .landing-page__element__section i, .page-group .page-group__description i, .page-pages i {
+.block-element .block-element__body em, stjornvisi-rich::shadow .stjornvisi-rich__preview em, .landing-page .landing-page__element .landing-page__element__section em, .page-group .page-group__description em, .page-pages em, .style-guide em, .block-element .block-element__body i, stjornvisi-rich::shadow .stjornvisi-rich__preview i, .landing-page .landing-page__element .landing-page__element__section i, .page-group .page-group__description i, .page-pages i, .style-guide i {
   font-style: italic;
 }
 /* line 111, ../sass/helpers/_extend.scss */
-.block-element .block-element__body strong, stjornvisi-rich::shadow .stjornvisi-rich__preview strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .block-element .block-element__body b, stjornvisi-rich::shadow .stjornvisi-rich__preview b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b {
+.block-element .block-element__body strong, stjornvisi-rich::shadow .stjornvisi-rich__preview strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .style-guide strong, .block-element .block-element__body b, stjornvisi-rich::shadow .stjornvisi-rich__preview b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b, .style-guide b {
   font-weight: 700;
 }
 /* line 116, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table, stjornvisi-rich::shadow .stjornvisi-rich__preview table, .landing-page .landing-page__element .landing-page__element__section table, .page-group .page-group__description table, .page-pages table {
+.block-element .block-element__body table, stjornvisi-rich::shadow .stjornvisi-rich__preview table, .landing-page .landing-page__element .landing-page__element__section table, .page-group .page-group__description table, .page-pages table, .style-guide table {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
   font-family: "Open Sans", sans-serif;
   border-collapse: collapse;
 }
 /* line 122, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table td, stjornvisi-rich::shadow .stjornvisi-rich__preview table td, .landing-page .landing-page__element .landing-page__element__section table td, .page-group .page-group__description table td, .page-pages table td, .block-element .block-element__body table th, stjornvisi-rich::shadow .stjornvisi-rich__preview table th, .landing-page .landing-page__element .landing-page__element__section table th, .page-group .page-group__description table th, .page-pages table th {
+.block-element .block-element__body table td, stjornvisi-rich::shadow .stjornvisi-rich__preview table td, .landing-page .landing-page__element .landing-page__element__section table td, .page-group .page-group__description table td, .page-pages table td, .style-guide table td, .block-element .block-element__body table th, stjornvisi-rich::shadow .stjornvisi-rich__preview table th, .landing-page .landing-page__element .landing-page__element__section table th, .page-group .page-group__description table th, .page-pages table th, .style-guide table th {
   padding: 0.375em 0.75em;
 }
 /* line 125, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table thead, stjornvisi-rich::shadow .stjornvisi-rich__preview table thead, .landing-page .landing-page__element .landing-page__element__section table thead, .page-group .page-group__description table thead, .page-pages table thead {
+.block-element .block-element__body table thead, stjornvisi-rich::shadow .stjornvisi-rich__preview table thead, .landing-page .landing-page__element .landing-page__element__section table thead, .page-group .page-group__description table thead, .page-pages table thead, .style-guide table thead {
   border-bottom: 2px solid lightgray;
   color: #4a85a1;
 }
 /* line 131, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table tbody tr:nth-child(even), stjornvisi-rich::shadow .stjornvisi-rich__preview table tbody tr:nth-child(even), .landing-page .landing-page__element .landing-page__element__section table tbody tr:nth-child(even), .page-group .page-group__description table tbody tr:nth-child(even), .page-pages table tbody tr:nth-child(even) {
+.block-element .block-element__body table tbody tr:nth-child(even), stjornvisi-rich::shadow .stjornvisi-rich__preview table tbody tr:nth-child(even), .landing-page .landing-page__element .landing-page__element__section table tbody tr:nth-child(even), .page-group .page-group__description table tbody tr:nth-child(even), .page-pages table tbody tr:nth-child(even), .style-guide table tbody tr:nth-child(even) {
   background-color: #fbfbfb;
 }
 
@@ -1627,22 +1638,7 @@ div.layout.layout--no-head:before {
     width: 140px;
     margin: auto;
   }
-  /* line 153, ../sass/components/_layout.scss */
-  .main__header .main__brand .main__home {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: none;
-    display: block;
-    text-align: left;
-    padding: 22px;
-  }
-  /* line 162, ../sass/components/_layout.scss */
-  .main__header .main__brand .main__home i {
-    color: white;
-    font-size: 24px;
-  }
-  /* line 167, ../sass/components/_layout.scss */
+  /* line 154, ../sass/components/_layout.scss */
   .main__header .main__brand .main__burger {
     position: absolute;
     top: 0;
@@ -1652,12 +1648,12 @@ div.layout.layout--no-head:before {
     text-align: right;
     padding: 22px;
   }
-  /* line 176, ../sass/components/_layout.scss */
+  /* line 163, ../sass/components/_layout.scss */
   .main__header .main__brand .main__burger i {
     color: white;
     font-size: 24px;
   }
-  /* line 182, ../sass/components/_layout.scss */
+  /* line 169, ../sass/components/_layout.scss */
   .main__header .main__menu {
     background-color: #4a85a1;
     position: absolute;
@@ -1673,27 +1669,42 @@ div.layout.layout--no-head:before {
     transition: top .4s, top .5s, opacity .2s;
     box-shadow: 0 0px 0px rgba(0, 0, 0, 0.37);
   }
-  /* line 196, ../sass/components/_layout.scss */
+  /* line 183, ../sass/components/_layout.scss */
   .main__header .main__menu .main__menu-items {
     padding: 0.75em 0;
   }
-  /* line 198, ../sass/components/_layout.scss */
+  /* line 185, ../sass/components/_layout.scss */
   .main__header .main__menu .main__menu-items > li {
     float: none;
   }
-  /* line 200, ../sass/components/_layout.scss */
+  /* line 187, ../sass/components/_layout.scss */
   .main__header .main__menu .main__menu-items > li a {
     padding: 0.75em 0.75em 0.75em 1.5em;
   }
 }
 @media (max-width: 480px) {
-  /* line 210, ../sass/components/_layout.scss */
+  /* line 197, ../sass/components/_layout.scss */
   .main__header .main__brand a {
     height: 70px;
   }
+  /* line 200, ../sass/components/_layout.scss */
+  .main__header .main__brand .main__home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: none;
+    display: block;
+    text-align: left;
+    padding: 22px;
+  }
+  /* line 209, ../sass/components/_layout.scss */
+  .main__header .main__brand .main__home i {
+    color: white;
+    font-size: 24px;
+  }
 }
 
-/* line 218, ../sass/components/_layout.scss */
+/* line 219, ../sass/components/_layout.scss */
 body.state-mobile-menu-open .main__header .main__menu {
   top: 70px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.37);
@@ -1706,7 +1717,7 @@ body.state-mobile-menu-open .main__header .main__menu {
  * This is the footer. It has the lowest z-index and
  * lies under all content.
  */
-/* line 232, ../sass/components/_layout.scss */
+/* line 233, ../sass/components/_layout.scss */
 footer[role=footer] {
   position: fixed;
   z-index: 1;
@@ -1718,7 +1729,7 @@ footer[role=footer] {
   height: 100%;
   background-color: #282828;
 }
-/* line 243, ../sass/components/_layout.scss */
+/* line 244, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper {
   position: absolute;
   width: 100%;
@@ -1728,11 +1739,11 @@ footer[role=footer] .footer-wrapper {
   font-family: "Open Sans", sans-serif;
   color: white;
 }
-/* line 251, ../sass/components/_layout.scss */
+/* line 252, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper a {
   color: white;
 }
-/* line 254, ../sass/components/_layout.scss */
+/* line 255, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__inner {
   *zoom: 1;
   max-width: 960px;
@@ -1745,40 +1756,40 @@ footer[role=footer] .footer-wrapper .footer-wrapper__inner:after {
   display: table;
   clear: both;
 }
-/* line 260, ../sass/components/_layout.scss */
+/* line 261, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__item {
   float: left;
   width: 33.33%;
 }
-/* line 264, ../sass/components/_layout.scss */
+/* line 265, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__address {
   font-family: "Bitter", serif;
   font-size: 1.14286em;
   line-height: 1.5em;
 }
-/* line 267, ../sass/components/_layout.scss */
+/* line 268, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__address a {
   color: #e39723;
 }
-/* line 271, ../sass/components/_layout.scss */
+/* line 272, ../sass/components/_layout.scss */
 footer[role=footer] .footer-wrapper .footer-wrapper__brand {
   font-family: "Open Sans", sans-serif;
   text-transform: uppercase;
 }
 @media (max-width: 480px) {
-  /* line 277, ../sass/components/_layout.scss */
+  /* line 278, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__inner {
     margin: 0;
     padding: 15px;
   }
-  /* line 284, ../sass/components/_layout.scss */
+  /* line 285, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__item {
     float: left;
     width: 50%;
     font-size: 0.85714em;
     line-height: 2em;
   }
-  /* line 289, ../sass/components/_layout.scss */
+  /* line 290, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__item:last-child {
     clear: both;
     float: none;
@@ -1792,7 +1803,7 @@ footer[role=footer] .footer-wrapper .footer-wrapper__brand {
     display: table;
     clear: both;
   }
-  /* line 295, ../sass/components/_layout.scss */
+  /* line 296, ../sass/components/_layout.scss */
   footer[role=footer] .footer-wrapper .footer-wrapper__item:last-child li {
     float: left;
     padding: 1em;
@@ -1800,7 +1811,7 @@ footer[role=footer] .footer-wrapper .footer-wrapper__brand {
   }
 }
 
-/* line 309, ../sass/components/_layout.scss */
+/* line 310, ../sass/components/_layout.scss */
 nav[role=navigation] {
   background-color: #4a85a1;
   transform: translate3d(-270px, 0, 0);
@@ -1820,14 +1831,14 @@ nav[role=navigation]:after {
   display: table;
   clear: both;
 }
-/* line 322, ../sass/components/_layout.scss */
+/* line 323, ../sass/components/_layout.scss */
 nav[role=navigation] .navigation__wrapper {
   width: 270px;
   overflow: hidden;
   float: left;
   position: relative;
 }
-/* line 330, ../sass/components/_layout.scss */
+/* line 331, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation {
   position: relative;
   z-index: 5;
@@ -1840,17 +1851,17 @@ nav[role=navigation] ul.navigation:after {
   display: table;
   clear: both;
 }
-/* line 337, ../sass/components/_layout.scss */
+/* line 338, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation > li {
   padding: 30px;
   float: left;
   width: 25%;
 }
-/* line 341, ../sass/components/_layout.scss */
+/* line 342, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation > li > ul > li > ul {
   padding-left: 30px;
 }
-/* line 344, ../sass/components/_layout.scss */
+/* line 345, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation > li a.headline {
   font-size: 1em;
   line-height: 1.5em;
@@ -1858,7 +1869,7 @@ nav[role=navigation] ul.navigation > li a.headline {
   margin-bottom: 1.5em;
   border-bottom: 1px solid #a4c2d0;
 }
-/* line 350, ../sass/components/_layout.scss */
+/* line 351, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation > li a:before {
   font-family: 'icomoon';
   speak: none;
@@ -1872,14 +1883,14 @@ nav[role=navigation] ul.navigation > li a:before {
   -moz-osx-font-smoothing: grayscale;
   padding-right: 0.5em;
 }
-/* line 364, ../sass/components/_layout.scss */
+/* line 365, ../sass/components/_layout.scss */
 nav[role=navigation] ul.navigation > li a {
   font-size: 0.75em;
   line-height: 2em;
   color: white;
   font-family: "Open Sans", sans-serif;
 }
-/* line 373, ../sass/components/_layout.scss */
+/* line 374, ../sass/components/_layout.scss */
 nav[role=navigation] .categories {
   position: relative;
   z-index: 6;
@@ -1888,7 +1899,7 @@ nav[role=navigation] .categories {
   height: 100%;
   background-color: #282828;
 }
-/* line 380, ../sass/components/_layout.scss */
+/* line 381, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a {
   display: block;
   height: 80px;
@@ -1897,16 +1908,16 @@ nav[role=navigation] .categories a {
   border-bottom: 1px solid #545454;
   transition: all .2s;
 }
-/* line 388, ../sass/components/_layout.scss */
+/* line 389, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a:hover, nav[role=navigation] .categories a.active {
   background-color: #4a85a1;
   border-bottom-color: #427790;
 }
-/* line 392, ../sass/components/_layout.scss */
+/* line 393, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__item {
   font-size: 0;
 }
-/* line 395, ../sass/components/_layout.scss */
+/* line 396, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__item:before {
   font-family: 'icomoon';
   speak: none;
@@ -1923,31 +1934,31 @@ nav[role=navigation] .categories a.categories__item:before {
   padding: 28px;
   display: block;
 }
-/* line 412, ../sass/components/_layout.scss */
+/* line 413, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__home {
   background-color: #4ca14a;
   border-bottom: none;
   font-size: 0;
 }
-/* line 417, ../sass/components/_layout.scss */
+/* line 418, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__home:before {
   content: "\e603";
 }
-/* line 420, ../sass/components/_layout.scss */
+/* line 421, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__groups:before {
   content: "\e604";
 }
-/* line 423, ../sass/components/_layout.scss */
+/* line 424, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__users:before {
   content: "\e608";
 }
-/* line 426, ../sass/components/_layout.scss */
+/* line 427, ../sass/components/_layout.scss */
 nav[role=navigation] .categories a.categories__config:before {
   content: "\e602";
 }
 
 @media (max-width: 480px) {
-  /* line 433, ../sass/components/_layout.scss */
+  /* line 434, ../sass/components/_layout.scss */
   nav[role=navigation] {
     transform: translate3d(-100%, 0, 0);
     		/*
@@ -1983,29 +1994,29 @@ nav[role=navigation] .categories a.categories__config:before {
 /**
  *
  */
-/* line 473, ../sass/components/_layout.scss */
+/* line 474, ../sass/components/_layout.scss */
 body.state-login main[role=main],
 body.state-login footer[role=footer] {
   margin-left: 80px;
 }
 @media (max-width: 480px) {
-  /* line 478, ../sass/components/_layout.scss */
+  /* line 479, ../sass/components/_layout.scss */
   body.state-login main[role=main],
   body.state-login footer[role=footer] {
     margin-left: 0;
   }
 }
-/* line 491, ../sass/components/_layout.scss */
+/* line 492, ../sass/components/_layout.scss */
 body.state-login.state-open {
   overflow: hidden;
 }
-/* line 498, ../sass/components/_layout.scss */
+/* line 499, ../sass/components/_layout.scss */
 body.state-login.state-open nav[role=navigation] {
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
 }
 @media (max-width: 480px) {
-  /* line 504, ../sass/components/_layout.scss */
+  /* line 505, ../sass/components/_layout.scss */
   body.state-login.state-open nav[role=navigation] {
     transform: translate3d(0%, 0, 0);
   }
@@ -4558,6 +4569,24 @@ span.attending {
 /* line 40, ../sass/pages/_statistics.scss */
 .page-statistics .x.axis path {
   display: none;
+}
+
+/* line 4, ../sass/pages/_style-guide.scss */
+.style-guide svg {
+  width: 25%;
+  float: left;
+}
+/* line 8, ../sass/pages/_style-guide.scss */
+.style-guide pre {
+  font-size: 0.875em;
+  line-height: 1.71429em;
+  font-family: monospace;
+  background-color: #f6f6f6;
+}
+/* line 13, ../sass/pages/_style-guide.scss */
+.style-guide code {
+  font-family: monospace;
+  background-color: #f6f6f6;
 }
 
 /*# sourceMappingURL=screen.css.map */

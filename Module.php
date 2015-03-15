@@ -261,7 +261,7 @@ class Module{
             'factories' => array(
                 'Logger' => function($sm){
 					$log = new Logger('stjornvisi');
-					//$log->pushHandler(new StreamHandler('php://stdout'));
+					$log->pushHandler(new StreamHandler('php://stdout'));
 					$log->pushHandler(new StreamHandler('./data/log/system.log'));
 					$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
 					$log->pushHandler(new SlackHandler(

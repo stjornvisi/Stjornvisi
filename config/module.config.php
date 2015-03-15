@@ -1606,6 +1606,17 @@ return array(
 
 				)
 			),
+
+			'style-guide' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/style-guide',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Index',
+						'action'     => 'style-guide',
+					),
+				),
+			),
         ),
     ),
     'service_manager' => array(

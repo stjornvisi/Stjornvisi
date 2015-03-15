@@ -98,4 +98,8 @@ class IndexController extends AbstractActionController{
 			'identity' => null,
 		));
 	}
+
+	public function styleGuideAction(){
+
+	}
 }

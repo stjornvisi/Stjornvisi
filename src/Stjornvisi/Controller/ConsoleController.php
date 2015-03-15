@@ -690,7 +690,7 @@ class ConsoleController extends AbstractActionController {
 						//	create a mail message and actually send it
 						$message = new Message();
 						$message->addTo($messageObject->recipient->address,$messageObject->recipient->name)
-							->addFrom('stjornvisi@stjornvisi.is')
+							->addFrom('stjornvisi@stjornvisi.is', "Stjórnvísi")
 							->setSubject($messageObject->subject)
 							->setBody($messageObject->body);
 
