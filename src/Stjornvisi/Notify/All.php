@@ -166,10 +166,14 @@ class All implements NotifyInterface {
 			}
 
 		}catch (\Exception $e){
-			$this->logger->critical(
-				get_class($this) . ":send says: {$e->getMessage()}",
-				$e->getTrace()
-			);
+			while($e){
+				$this->logger->critical(
+					get_class($this) . ":send says: {$e->getMessage()}",
+					$e->getTrace()
+				);
+				$e = $e->getPrevious();
+			}
+
 		}finally{
 			if( $channel ){
 				$channel->close();

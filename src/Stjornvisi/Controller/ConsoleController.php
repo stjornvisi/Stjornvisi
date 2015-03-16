@@ -202,7 +202,7 @@ class ConsoleController extends AbstractActionController {
 
 		//VIEW
 		//	create and configure view
-		$child =new ViewModel(array(
+		$child = new ViewModel(array(
 			'events' => $events,
 			'from' => $from,
 			'to' => $to
@@ -297,7 +297,10 @@ class ConsoleController extends AbstractActionController {
 			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\Exception $e){
-			$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
+			while($e){
+				$logger->critical( "Exception in Upcoming events: {$e->getMessage()}", $e->getTrace() );
+				$e = $e->getPrevious();
+			}
 		}
 
 		$logger->info("Queue Service says: Fetching upcoming events done, users are in queue");
@@ -587,6 +590,11 @@ class ConsoleController extends AbstractActionController {
 
 				}catch (ServiceNotFoundException $e){
 					$logger->critical("Notify message [{$message->action}] not found",$e->getTrace());
+				}catch(\Exception $e){
+					while($e){
+						$logger->critical($e->getMessage(),$e->getTrace());
+						$e = $e->getPrevious();
+					}
 				}
 
 			};// end of - MAGIC
@@ -623,7 +631,11 @@ class ConsoleController extends AbstractActionController {
 			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\Exception $e){
-			$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
+			while($e){
+				$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
+				$e = $e->getPrevious();
+			}
+
 		}
 
 
@@ -735,7 +747,11 @@ class ConsoleController extends AbstractActionController {
 
 								$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 							}catch (\Exception $e){
-								$logger->critical( $e->getMessage() ,$e->getTrace() );
+								while($e){
+									$logger->critical( $e->getMessage() ,$e->getTrace() );
+									$e = $e->getPrevious();
+								}
+
 							}
 						}
 					//INVALID MESSAGE
@@ -784,7 +800,11 @@ class ConsoleController extends AbstractActionController {
 			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\Exception $e){
-			$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
+			while($e){
+				$logger->critical( "Exception in MailQueue: {$e->getMessage()}", $e->getTrace() );
+				$e = $e->getPrevious();
+			}
+
 		}
 
 	}

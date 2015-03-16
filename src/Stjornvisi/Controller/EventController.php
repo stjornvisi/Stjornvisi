@@ -33,6 +33,7 @@ class EventController extends AbstractActionController{
 	 */
 	public function indexAction(){
 
+
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $eventService = $sm->get('Stjornvisi\Service\Event');

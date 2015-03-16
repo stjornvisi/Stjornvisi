@@ -52,6 +52,7 @@ use Stjornvisi\Notify\Attend as AttendNotify;
 use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\EventManager;
 use Zend\ModuleManager\ModuleManager;
+use Zend\Mvc\Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Monolog\Logger;
@@ -97,7 +98,7 @@ class Module{
 		//
 		register_shutdown_function(function () use ($logger){
 			if ($e = error_get_last()) {
-				$logger->critical("register_shutdown_function:".$e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
+				$logger->critical("register_shutdown_function: ".$e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
 				echo "Smá vandræði";
 			}
 		});
@@ -113,50 +114,34 @@ class Module{
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
 
+		//EVENT_DISPATCH_ERROR
+		//
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
 
 
-			if( ($exception = $e->getParam('exception')) != false ){
-				$logger->critical('EVENT_DISPATCH_ERROR:'.$exception->getMessage(),$exception->getTrace());
-			}
-
-			/*
-			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError() .implode(",",array(
-				'error'      => $e->getParam('error'),
-				'identity'   => $e->getParam('identity'),
-				'controller' => $e->getParam('controller'),
-				'action' => $e->getParam('action'),
-				'route' => $e->getParam('route'),
-				'excpetion' => ($e->getParam('exception'))
-						? $e->getParam('exception')->getMessage()
-						: ''
-			) ));
-
-			$logger->critical( "EVENT_DISPATCH_ERROR: ".$e->getError() );
-
-			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
-			$errorString = "EVENT_DISPATCH_ERROR:";
-
 			while( $exception ){
-				$errorString .= ($exception->getMessage() . PHP_EOL);
-				$errorString .= (print_r($exception->getTraceAsString(),true) . PHP_EOL);
+				$logger->critical('EVENT_DISPATCH_ERROR: '.$exception->getMessage(),$exception->getTrace());
 				$exception = $exception->getPrevious();
 			}
-			$logger->critical($errorString,($topexception)?$topexception->getTrace():array());
-			*/
+			if( ( $e->isError() ) == true && $e->getError() == Application::ERROR_EXCEPTION ){
+				$logger->critical('EVENT_DISPATCH_ERROR: '.$e->getError());
+			}
 		} );
+		//EVENT_RENDER_ERROR
+		//
 		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e) use ($logger) {
-			$topexception = $e->getParam('exception');
 			$exception = $e->getParam('exception');
-			$errorString = "EVENT_RENDER_ERROR:";
-			/** @var $exception \Exception */
+			/** @var $exception \Zend\Mvc\Router\Exception\InvalidArgumentException */
+
+			$request = $e->getRequest();
+			/** @var  $request \Zend\Http\PhpEnvironment\Request */
+
 			while( $exception ){
-				$errorString .= ($exception->getMessage() . PHP_EOL);
-				$errorString .= (print_r($exception->getTraceAsString(),true) . PHP_EOL);
+				$logger->critical('EVENT_RENDER_ERROR: '.$exception->getMessage(). " in path [{$request->getUriString()}]", $exception->getTrace());
 				$exception = $exception->getPrevious();
 			}
-			$logger->critical($errorString,($topexception)?$topexception->getTrace():array());
+
 		} );
 
 		//CONFIG
