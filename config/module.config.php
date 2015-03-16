@@ -616,6 +616,19 @@ return array(
                             ),
                         )
                     ),
+					'order' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/rada[/:order]',
+							'constraints' => array(
+								'order' => 'nafn|tegund|dags',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Company',
+								'action' => 'list'
+							),
+						)
+					),
                     'update' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(

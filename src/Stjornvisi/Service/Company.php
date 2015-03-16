@@ -121,21 +121,46 @@ class Company extends AbstractService {
      * business_type to exclude from the list.
      *
      * @param array $exclude
+	 * @param string $order [nafn|tegund|dags]
      * @return array
      * @throws Exception
      */
-    public function fetchAll( array $exclude = array() ){
+    public function fetchAll( array $exclude = array(), $order = null ){
         try{
+			$orderArray = array(
+				'nafn' => '`name`',
+				'tegund' => '`business_type`',
+				'dags' => '`created` DESC'
+			);
+			$statement = null;
             if( empty($exclude) ){
-                $statement = $this->pdo->prepare("SELECT * FROM Company C ORDER BY C.name");
+				if( array_key_exists($order,$orderArray) ){
+					$statement = $this->pdo->prepare("
+						SELECT * FROM Company C ORDER BY {$orderArray[$order]}
+					");
+				}else{
+					$statement = $this->pdo->prepare("SELECT * FROM Company C ORDER BY C.name");
+				}
+
             }else{
-                $statement = $this->pdo->prepare("
-                SELECT * FROM Company C
-                WHERE C.business_type NOT IN (".
-                    implode(',',array_map(function($i){ return "'{$i}'"; },$exclude) ).
-                    ")
-                    ORDER BY C.name
-                ");
+				if( array_key_exists($order,$orderArray) ){
+					$statement = $this->pdo->prepare("
+                		SELECT * FROM Company C
+                		WHERE C.business_type NOT IN (".
+						implode(',',array_map(function($i){ return "'{$i}'"; },$exclude) ).
+						")
+						ORDER BY {$orderArray[$order]}
+					");
+				}else{
+					$statement = $this->pdo->prepare("
+                		SELECT * FROM Company C
+                		WHERE C.business_type NOT IN (".
+						implode(',',array_map(function($i){ return "'{$i}'"; },$exclude) ).
+						")
+						ORDER BY C.name
+					");
+				}
+
             }
             $statement->execute();
             $companies =  $statement->fetchAll();

@@ -74,7 +74,7 @@ class CompanyController extends AbstractActionController{
         );
 
         return new ViewModel(array(
-            'companies' => $companyService->fetchAll(array('einstaklingur')),
+            'companies' => $companyService->fetchAll(array('einstaklingur'),$this->params('order','nafn')),
             'access' => $access
         ));
 
