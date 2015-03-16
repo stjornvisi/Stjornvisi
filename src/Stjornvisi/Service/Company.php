@@ -130,7 +130,8 @@ class Company extends AbstractService {
 			$orderArray = array(
 				'nafn' => '`name`',
 				'tegund' => '`business_type`',
-				'dags' => '`created` DESC'
+				'dags' => '`created` DESC',
+				'staerd' => '`number_of_employees`',
 			);
 			$statement = null;
             if( empty($exclude) ){

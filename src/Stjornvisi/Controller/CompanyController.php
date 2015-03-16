@@ -2,6 +2,8 @@
 namespace Stjornvisi\Controller;
 
 use ArrayObject;
+use Stjornvisi\Lib\Csv;
+use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
@@ -74,7 +76,9 @@ class CompanyController extends AbstractActionController{
         );
 
         return new ViewModel(array(
-            'companies' => $companyService->fetchAll(array('einstaklingur'),$this->params('order','nafn')),
+            'companies' => ($access->is_admin)
+					? $companyService->fetchAll(array(),$this->params('order','nafn'))
+					: $companyService->fetchAll(array('einstaklingur'),$this->params('order','nafn')),
             'access' => $access
         ));
 
@@ -292,6 +296,44 @@ class CompanyController extends AbstractActionController{
         }else{
 			return $this->notFoundAction();
         }
+	}
+
+
+	public function exportAction(){
+
+		$sm = $this->getServiceLocator();
+		$userService = $sm->get('Stjornvisi\Service\User');
+		$companyService = $sm->get('Stjornvisi\Service\Company');
+
+		$csv = new Csv();
+		$csv->setHeader(array(
+			'Nafn',
+			'Kennitala',
+			'Heimilisfang.',
+			'Póstnúmer',
+			'Stærð',
+			'Tegung',
+			'Stofnað',
+		));
+		$csv->setName('fyrirtaekjalisti-'.date('Y-m-d-H:i').'.csv');
+		$companies = $companyService->fetchAll(array());
+		foreach( $companies as $result ){
+
+			$csv->add(array(
+				'name' => $result->name,
+				'ssn' => $result->ssn,
+				'address' => $result->address,
+				'zip' => $result->zip,
+				'number_of_employees' => $result->number_of_employees,
+				'business_type' => $result->business_type,
+				'created' => $result->created->format('Y-m-d'),
+			));
+		}
+
+		$model = new CsvModel();
+		$model->setData( $csv );
+
+		return $model;
 	}
 
 }

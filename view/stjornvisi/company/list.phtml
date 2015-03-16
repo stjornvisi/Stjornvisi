@@ -10,7 +10,7 @@
 
 ?>
 
-<div class="layout">
+<div class="layout layout--three-columns">
 	<section class="layout__section company-list">
 		<h1 class="layout__headline">Fyrirtæki (<?=count($this->companies);?>)</h1>
 
@@ -20,6 +20,7 @@
 					<tr>
 						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'nafn'))?>">Nafn</a></td>
 						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'tegund'))?>">Tegund</a></td>
+						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'staerd'))?>">Stærð</a></td>
 						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'dags'))?>">Síðan</a></td>
 					</tr>
 				</thead>
@@ -32,6 +33,9 @@
 						</td>
 						<td>
 							<?=$company->business_type?>
+						</td>
+						<td>
+							<?=$company->number_of_employees?>
 						</td>
 						<td>
 							<?=$this->date($company->created)?>
@@ -60,6 +64,11 @@
 		<?php endif;?>
 	</section>
 	<aside class="layout__aside">
-
+		<?php if($this->access->is_admin):?>
+		<stjonvisi-control>
+			<a href="<?=$this->url('fyrirtaeki/create')?>"><i class="icon-plus"></i>fyrirtæki</a>
+			<a href="<?=$this->url('fyrirtaeki/export')?>"><i class="icon-list"></i>fyrirtækjalisti</a>
+		</stjonvisi-control>
+		<?php endif;?>
 	</aside>
 </div>

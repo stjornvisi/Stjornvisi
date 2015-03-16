@@ -621,7 +621,7 @@ return array(
 						'options' => array(
 							'route' => '/rada[/:order]',
 							'constraints' => array(
-								'order' => 'nafn|tegund|dags',
+								'order' => 'nafn|tegund|dags|staerd',
 							),
 							'defaults' => array(
 								'controller' => 'Stjornvisi\Controller\Company',
@@ -679,6 +679,16 @@ return array(
                             ),
                         )
                     ),
+					'export' => array(
+						'type' => 'Zend\Mvc\Router\Http\Literal',
+						'options' => array(
+							'route' => '/fyrirtaekjalisti',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Company',
+								'action' => 'export'
+							),
+						)
+					),
                 ),
             ),
             'notandi' => array(
