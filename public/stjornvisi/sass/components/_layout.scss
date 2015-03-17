@@ -11,10 +11,10 @@
 	main[role=main]{
 		position: relative;
 		z-index: 2;
-		margin-bottom: $gutter*8;
+		margin-bottom: $gutter*13;
 		background-color: $color-white;
 		@include breakpoint($phone){
-			margin-bottom: $gutter*10;
+			margin-bottom: 0;
 		}
 		box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5) ;
 	}
@@ -252,11 +252,19 @@
 			a{
 				color: $color-white;
 			}
+			.footer-wrapper__social{
+				@include pie-clearfix;
+				//max-width: 960px;
+				margin: 0 $gutter*2;
+				padding: $gutter/2 $gutter/2 $gutter $gutter/2;
+				border-top: 1px solid tint($color-black,5%);
+			}
 			.footer-wrapper__inner{
 				@include pie-clearfix;
-				max-width: 960px;
+				//max-width: 960px;
 				margin: 0 $gutter*2;
-				padding: $gutter*2;
+				padding: $gutter/2;
+				border-bottom: 1px solid shade($color-black,15%);
 			}
 			.footer-wrapper__item{
 				float: left;
@@ -268,12 +276,44 @@
 				a{
 					color: $color-orange;
 				}
+				i{
+					padding-right: $gutter/4;
+				}
+				i.icon-mobile{
+					padding-right: 13px;
+				}
 			}
 			.footer-wrapper__brand{
 				font-family: $font-family-open;
 				text-transform: uppercase;
+				@include margin-trailer(1/2,$font-size-base);
 			}
 
+			.footer-wrapper__icon{
+				float: left;
+				color: shade($color-gray-light,30%);
+				i{
+					@include adjust-font-size-to($font-size-header,1,$font-size-base);
+					padding-right: $gutter/2;
+				}
+
+			}
+			.footer-wrapper__social-list{
+				@include pie-clearfix;
+				@include adjust-font-size-to($font-size-header,1,$font-size-base);
+				float: right;
+				li{
+					float: left;
+					a{
+						color: shade($color-gray-light,30%);
+					}
+					a:hover{
+						color: $color-white;
+					}
+				}
+
+			}
+			/*
 			@include breakpoint($phone){
 				.footer-wrapper__inner{
 					margin: 0;
@@ -298,6 +338,38 @@
 						padding: rhythm(1/2,$font-size-small);
 						width: 25%;
 					}
+				}
+			}
+			*/
+		}
+
+		@include breakpoint($phone){
+			position: relative;
+			.footer-wrapper{
+				position: relative;
+
+				.footer-wrapper__inner{
+					margin: 0 $gutter;
+					padding:$gutter 0;
+
+					.footer-wrapper__item{
+						width: auto;
+						float: none;
+						border-top: 1px solid tint($color-black,5%);
+						border-bottom: 1px solid shade($color-black,15%);
+						padding: $gutter 0;
+					}
+					.footer-wrapper__item:first-child{
+						padding-top: 0;
+						border-top: none;
+					}.footer-wrapper__item:last-child{
+						padding-bottom: 0;
+						border-bottom: none;
+					 }
+				}
+				.footer-wrapper__social{
+					margin: 0 $gutter;
+					padding:$gutter 0;
 				}
 			}
 		}

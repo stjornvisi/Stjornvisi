@@ -206,6 +206,14 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-stjornvisi:before {
+	content: "\e613";
+}
+
+.icon-facebook2:before {
+	content: "\e612";
+}
+
 .icon-check:before {
 	content: "\f00c";
 }
@@ -234,8 +242,16 @@
 	content: "\f080";
 }
 
+.icon-phone:before {
+	content: "\f095";
+}
+
 .icon-envelope:before {
 	content: "\f0e0";
+}
+
+.icon-mobile:before {
+	content: "\f10b";
 }
 
 .icon-file-pdf-o:before {

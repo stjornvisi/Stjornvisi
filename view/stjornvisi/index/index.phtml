@@ -141,34 +141,31 @@
 
 	<div class="landing-page__panel">
 		<div>
-			<h1 class="landing-page__headline"><i class="icon-home"></i> Stjórnvísi er opið öllum</h1>
-			<p>Stjórnvísi er opið öllum einstaklingum, fyrirtækjum og stofnunum sem hafa áhuga á stjórnun;
+			<h1 class="landing-page__headline">Stjórnvísi er öllum opin.</h1>
+			<p class="landing-page__paragraph">Stjórnvísi er opið öllum einstaklingum, fyrirtækjum og stofnunum sem hafa áhuga á stjórnun;
 			stjórnendum, sérfræðingum, nemendum og öðrum áhugamönnum um stjórnun.</p>
-			<p>Stjórnvísi býður hagstæðustu símenntunina um stjórnun á markaðnum.  Stjórnvísi er með kjarnastarf
-			sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið fyrir almennum ráðstefnum, viðburðum
-			og verðlaunum um stjórnun.</p>
 
 			<ul class="landing-page__cta">
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('hopur')?>">
 						<img src="<?=$this->basePath('stylesheets/images/cta7.jpg')?>">
+						<h2 class="landing-page__headline">Hóparnir</h2>
 						<p>Faghóparnir innan Stjórnvísi eru undirstaða starfseminnar.</p>
-						<h2 class="landing-page__headline">Kynntu þér hópana <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('vidburdir')?>">
 						<img src="<?=$this->basePath('stylesheets/images/cta8.jpg')?>">
+						<h2 class="landing-page__headline">Dagskráin</h2>
 						<p>Dagskrá Stjórnvísi er margþætt og áhugaverð.</p>
-						<h2 class="landing-page__headline">Kynntu þér dagskrána <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('um')?>">
 						<img src="<?=$this->basePath('stylesheets/images/cta9.jpg')?>">
+						<h2 class="landing-page__headline">Starfsemin</h2>
 						<p>Fjöldi faghópafunda í hverri viku, áhugaverðir fyrirlestrar og ráðstefnur.</p>
-						<h2 class="landing-page__headline">Kynntu þér starfsemina <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 			</ul>
@@ -177,10 +174,12 @@
 
 	<div class="landing-page__panel landing-page__carousel">
 		<div>
-			<h1 class="landing-page__headline"><i class="icon-horn"></i> Stjórnvísi er áhugamannafélag</h1>
-			<p>Stjórnvísi er áhugamannafélag í eigu félagsmanna og starfar ekki með fjárhagslegan ágóða í huga.</p>
-			<p>Stjórnvísi er með kjarastarf sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið
-				fyrir almennum ráðstefnum, viðburðum og verðlaunaveitingum í stjórnun.</p>
+			<h1 class="landing-page__headline">Stjórnvísi er áhugamannafélag.</h1>
+			<p class="landing-page__paragraph">Stjórnvísi er áhugamannafélag í eigu félagsmanna og starfar
+				ekki með fjárhagslegan ágóða í huga.</p>
+			<p class="landing-page__paragraph">Stjórnvísi er með kjarastarf sitt í kraftmiklum faghópum
+				félagsmanna en jafnframt stendur félagið fyrir almennum ráðstefnum, viðburðum og
+				verðlaunaveitingum í stjórnun.</p>
 		</div>
 
 	</div>
@@ -190,16 +189,16 @@
 			<ul class="landing-page__cta landing-page__cta--tight">
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('anaegjuvogin')?>">
-						<img src="<?=$this->basePath('stylesheets/images/anaegjuvogin-logo.jpg')?>">
+						<img src="<?=$this->basePath('stylesheets/images/islenskaanaeguvogin-variant2.svg')?>">
+						<h2 class="landing-page__headline">Ánægjuvogin</h2>
 						<p>Ánægjuvogin er veitt einu sinn á ári við hátíðlega athöfn.</p>
-						<h2 class="landing-page__headline">Ánægjuvogin <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 				<li class="landing-page__cta-item">
 					<a href="<?=$this->url('stjornunarverdlaunin')?>">
-						<img src="<?=$this->basePath('stylesheets/images/stjornvisi-logo-square.jpg')?>">
+						<img src="<?=$this->basePath('stylesheets/images/stjornvisi-logo-dark.svg')?>">
+						<h2 class="landing-page__headline">Stjórnunarverðlaunin</h2>
 						<p>Stjórnunarverðlaunin er veitt vegna framúrskarandi árangurs.</p>
-						<h2 class="landing-page__headline">Stjórnunarverðlaunin <i class="icon-chevron-right"></i></h2>
 					</a>
 				</li>
 			</ul>
@@ -207,52 +206,48 @@
 	</div>
 
 
-	<div class="landing-page__panel landing-page__panel--content landing-page__panel--light">
+	<div class="landing-page__panel landing-page__content landing-page__panel--light">
 		<div>
-		<?php if($this->event) : ?>
+			<h1 class="landing-page__headline">Fréttir og viðburðir</h1>
+			<p class="landing-page__paragraph">Starfsemi innan Stjónvísi er mikil. Fjöldi viðburða er
+				haldnir í mánuði hverjum.</p>
+			<hr/>
+			<?php if($this->event) : ?>
+				<article class="landing-page__element">
+					<header class="landing-page__element__header">
+						<time class="landing-page__element__time" datetime="<?=$this->event->event_date->format('c')?>" >
+							<?=$this->date($this->event->event_date)?>
+						</time>
+						<h2 class="landing-page__element__headline"><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h2>
+						<ul class="landing-page__element__tags">
+							<?php foreach($this->event->groups as $group):?>
+								<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
+							<?php endforeach;?>
+						</ul>
+					</header>
+					<section class="landing-page__element__section">
+						<?php if($this->event->avatar):?>
+							<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>">
+								<img src="<?=$this->basePath("/images/300-square/{$this->event->avatar}")?>" />
+							</a>
+						<?php endif;?>
+						<?=$this->paragrapher(mb_substr($this->event->body,0,400,'utf-8'));?>
+					</section>
+					<footer class="landing-page__element__footer">
+
+						<a href="<?=$this->url('vidburdir')?>" class="landing-page__headline">Allir viðburðir <i class="icon-chevron-right"></i></a>
+					</footer>
+				</article>
+			<?php else : ?>
+				<article class="landing-page__element">
+					<section class="landing-page__element__section">
+						<h1>Engir viðburðir skráðir</h1>
+					</section>
+				</article>
+			<?php endif; ?>
+
+
 			<article class="landing-page__element">
-				<aside class="landing-page__element__aside">
-					<?php if($this->event->avatar):?>
-					<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>">
-					<img src="<?=$this->basePath("/images/300-square/{$this->event->avatar}")?>" />
-					</a>
-					<?php endif;?>
-				</aside>
-				<header class="landing-page__element__header">
-					<time class="landing-page__element__time" datetime="<?=$this->event->event_date->format('c')?>" >
-						<?=$this->date($this->event->event_date)?>
-					</time>
-					<h2 class="landing-page__element__headline"><a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a></h2>
-				</header>
-				<section class="landing-page__element__section">
-					<?=$this->paragrapher(mb_substr($this->event->body,0,400,'utf-8'));?>
-				</section>
-				<footer class="landing-page__element__footer">
-					<ul class="landing-page__element__tags">
-						<?php foreach($this->event->groups as $group):?>
-							<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
-						<?php endforeach;?>
-					</ul>
-					<a href="<?=$this->url('vidburdir')?>" class="landing-page__headline">Allir viðburðir <i class="icon-chevron-right"></i></a>
-				</footer>
-			</article>
-		<?php else : ?>
-			<h1>Engir viðburðir skráðir</h1>
-		<?php endif; ?>
-
-		</div>
-	</div>
-
-
-	<div class="landing-page__panel landing-page__panel--content">
-		<div>
-
-			<article class="landing-page__element">
-				<aside class="landing-page__element__aside">
-					<?php if($this->news->avatar):?>
-					<img src="<?=$this->basePath("/images/300-square/{$this->news->avatar}")?>" />
-					<?php endif;?>
-				</aside>
 				<header class="landing-page__element__header">
 					<time class="landing-page__element__time" datetime="<?=$this->news->created_date->format('c')?>">
 						<?=$this->date($this->news->created_date);?>
@@ -260,19 +255,23 @@
 					<h2 class="landing-page__element__headline">
 						<a href="<?=$this->url('frettir/index',array('id'=>$this->news->id))?>"><?=$this->news->title?></a>
 					</h2>
-				</header>
-				<section class="landing-page__element__section">
-					<?=$this->paragrapher(mb_substr($this->news->body,0,600,'utf-8'));?>
-				</section>
-				<footer class="landing-page__element__footer">
 					<ul class="landing-page__element__tags">
 						<?php foreach($this->event->groups as $group):?>
 							<li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
 						<?php endforeach;?>
 					</ul>
+				</header>
+				<section class="landing-page__element__section">
+					<?php if($this->news->avatar):?>
+						<img src="<?=$this->basePath("/images/300-square/{$this->news->avatar}")?>" />
+					<?php endif;?>
+					<?=$this->paragrapher(mb_substr($this->news->body,0,600,'utf-8'));?>
+				</section>
+				<footer class="landing-page__element__footer">
 					<a href="<?=$this->url('frettir')?>" class="landing-page__headline">Yfirlit frétta og greina <i class="icon-chevron-right"></i></a>
 				</footer>
 			</article>
+
 		</div>
 	</div>
 
@@ -285,6 +284,16 @@
 			</li>
 			<?php endforeach;?>
 		</ul>
+	</div>
+
+	<div class="landing-page__panel landing-page__join">
+		<div>
+			<h1 class="landing-page__headline">Vertu með.</h1>
+			<p class="landing-page__paragraph">Stjórnvísi býður hagstæðustu símenntunina um stjórnun á markaðnum.  Stjórnvísi er með kjarnastarf
+			sitt í kraftmiklum faghópum félagsmanna en jafnframt stendur félagið fyrir almennum ráðstefnum, viðburðum
+			og verðlaunum um stjórnun.</p>
+			<a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
+		</div>
 	</div>
 </div>
 	<script>

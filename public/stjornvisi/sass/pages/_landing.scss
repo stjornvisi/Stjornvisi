@@ -8,9 +8,89 @@
 
 	.landing-page{
 
+
+		/**
+		 * LANDING-PAGE-PANEL
+		 *
+		 * A simple panel that contains headline, paragraphs and maybe
+		 * some cta buttons
+		 */
+		.landing-page__panel{
+			@include pie-clearfix;
+			background-color: $color-blue-light;
+
+			&.landing-page__panel--light{
+				background-color: $color-white;
+			}
+			&.landing-page__panel--content{
+				@include breakpoint($phone){
+					> div {padding-top: 0;}
+				}
+			}
+
+			.landing-page__headline {
+				font-family: $font-family-bitter;
+				font-weight: $font-weight-bold;
+				text-align: center;
+				i{
+					padding-left: rhythm(1/2,$font-size-big);
+					vertical-align: text-bottom;
+				}
+			}
+			.landing-page__paragraph{
+				max-width: 600px;
+				margin: auto;
+			}
+			.landing-page__paragraph + .landing-page__paragraph{
+				@include margin-leader(2,$font-size-base);
+			}
+
+			h1.landing-page__headline {
+				@include adjust-font-size-to($font-size-huge,1,$font-size-base);
+				@include margin-trailer(2,$font-size-huge);
+			}
+			h2.landing-page__headline {
+				i{
+					vertical-align: text-bottom;
+				}
+			}
+
+			hr{
+				width: 50%;
+				margin: rhythm(3,$font-size-base) auto;
+				height: 1px;
+				border:none;
+				border-bottom: 1px solid $color-gray-light;
+			}
+
+			> div{
+				max-width: 960px;
+				margin: auto;
+				padding: $gutter*3 $gutter;
+			}
+			p{
+				text-align: center;
+			}
+
+			@include breakpoint($phone){
+				h1.landing-page__headline {
+					@include adjust-font-size-to($font-size-header,1,$font-size-base);
+					@include margin-trailer(2,$font-size-header);
+				}
+			}
+		}
+
+
+		/**
+		 * HERO PANEL
+		 *
+		 * First panel of landing page,
+		 * contains a big hero image and some caption
+		 */
 		.landing-page__hero{
 			background-image: url("images/header-image.jpg");
 			background-size: cover;
+			background-attachment: fixed;
 			background-color: rgb(196,199,162);
 			text-align: center;
 			color: $color-white;
@@ -46,6 +126,7 @@
 			}
 			.btn{
 				font-family: $font-family-open;
+				box-shadow: 0 0 5px rgba(0,0,0,.37);
 			}
 
 			@include breakpoint($phone){
@@ -66,6 +147,9 @@
 		}
 
 
+		/**
+		 *
+		 */
 		.landing-page__gallery{
 			ul{
 				@include pie-clearfix;
@@ -83,78 +167,62 @@
 			}
 		}
 
+
 		/**
-		 * LANDING-PAGE-PANEL
-		 *
-		 * A simple panel that contains headline, paragraphs and maybe
-		 * some cta buttons
+		 * Last panel.
+		 * One large cal-to-action button with some text on a pail
+		 * background logo
 		 */
-		.landing-page__panel{
-			@include pie-clearfix;
-			background-color: $color-blue-light;
+		.landing-page__join{
+			background-image: url("images/background-logo.svg");
+			background-size: auto 80%;
+			background-repeat: no-repeat;
+			background-position: center;
+			text-align: center;
 
-			&.landing-page__panel--light{
-				background-color: $color-white;
-			}
-			&.landing-page__panel--content{
-				@include breakpoint($phone){
-					> div {padding-top: 0;}
-				}
-			}
-
-			.landing-page__headline {
-				font-family: $font-family-bitter;
-				font-weight: $font-weight-bold;
-				text-align: center;
-				i{
-					padding-left: rhythm(1/2,$font-size-big);
-					vertical-align: text-bottom;
-				}
-			}
-
-			h1.landing-page__headline {
-				@include adjust-font-size-to($font-size-huge,1,$font-size-base);
-				@include margin-trailer(2,$font-size-huge);
-			}
-			h2.landing-page__headline {
-				i{
-					vertical-align: text-bottom;
-				}
-			}
-
-			> div{
-				max-width: 960px;
-				margin: auto;
-				padding: $gutter*2 $gutter;
-			}
-			p{
-				text-align: center;
-			}
-			@include breakpoint($phone){
-				h1.landing-page__headline {
-					@include adjust-font-size-to($font-size-header,1,$font-size-base);
-					@include margin-trailer(2,$font-size-header);
-				}
+			.btn{
+				box-shadow: 0 0 5px rgba(0,0,0,.37);
+				@include adjust-font-size-to($font-size-header,2,$font-size-base);
+				margin: rhythm(2,$font-size-header) auto;
 			}
 		}
 
-
+		/**
+		 * CAROUSEL
+		 *
+		 * this name is a legacy issue, 'cause it's not a carousel.
+		 * but a simple image that takes the whole panel and has some
+		 * text on top of it
+		 */
 		.landing-page__carousel {
-			background-image: url(images/faghopar.jpg);
+			background-image: url(images/faghopar2.jpg);
 			background-size: cover;
 			background-position: center;
+			background-attachment: fixed;
 			color: $color-white;
+			h1{
+				text-shadow:
+					0 1px 1px rgba(0, 0, 0, 0.57),
+					0 0px 11px rgba(0, 0, 0, 0.37);
+			}
 		}
 
 		.landing-page__element{
 			@include pie-clearfix;
+			width: 50%;
+			float: left;
+			padding: $gutter;
 
 			img{
-				width: 100%;
+				width: 50%;
+				float: left;
 				border-radius: 50%;
-				box-shadow: 0 2px 1px rgba(0, 0, 0, 0.37);
+				box-shadow: 0 0 22px 0px rgba(0, 0, 0, 0.17);
 			}
-
+			.landing-page__element__section{
+				@extend %rich-text;
+			}
+			/*
 			.landing-page__element__header{
 				float: left;
 				width: 60%;
@@ -173,6 +241,7 @@
 				float: right;
 				width: 60%;
 			}
+			*/
 
 
 			.landing-page__element__tags{
@@ -237,31 +306,94 @@
 			}
 		}
 
+		.landing-page__content{
+			> div{
+				@include pie-clearfix;
+				padding-left: 0;
+				padding-right: 0;
+			}
+		}
+
+
+		/**
+		 * CALL-TO-ACTION
+		 *
+		 * Call to action buttons
+		 *
+		 */
 		.landing-page__cta{
 
-			@include pie-clearfix;
+			//@include pie-clearfix;
+			text-align: center;
 			margin: $gutter*2 (- $gutter) 0 (- $gutter);
 			&.landing-page__cta--tight{
 				margin-top: 0;
 			}
 			.landing-page__cta-item{
 				padding: $gutter;
-				float: left;
-				width: 33.33%;
+				//float: left;
+				width: 32.5%;
+				vertical-align: top;
 				text-align: center;
+				display: inline-block;
 				img {
-					width: 100%;
+					width: 80%;
 					border-radius: 50%;
-					box-shadow: 0 2px 1px rgba(0,0,0,.37);
+					box-shadow: 0 0 22px 0px rgba(0, 0, 0, 0.17);
 				}
 				.landing-page__headline{
 					@include margin-leader(1,$font-size-big);
+					@include margin-trailer(1,$font-size-big);
 				}
 			}
 
 		}
 
+
+
+
+
 		@include breakpoint($phone){
+			.landing-page__hero{
+				background-attachment: inherit;
+			}
+
+			.landing-page__cta{
+				.landing-page__cta-item{
+					display: block;
+					width: auto;
+					img{
+						width: 50%;
+					}
+				}
+
+			}
+
+			.landing-page__carousel{
+				background-attachment: inherit;
+			}
+
+
+			.landing-page__element{
+				width: auto;
+				float: none;
+				padding-left: 0;
+				padding-right: 0;
+
+				.landing-page__element__headline{
+					@include adjust-font-size-to($font-size-base,1,$font-size-base);
+				}
+			}
+
+			.landing-page__content{
+				padding-left: $gutter;
+				padding-right: $gutter;
+			}
+
+
+
+
+			/*
 			.landing-page__cta{
 				margin-left: 0;
 				margin-right: 0;
@@ -294,5 +426,6 @@
 					}
 				}
 			}
+			*/
 		}
 	}

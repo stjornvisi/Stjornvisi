@@ -513,7 +513,6 @@ return array(
 					),
                 ),
             ),
-
             'frettir' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -1444,7 +1443,6 @@ return array(
 					),
 				),
 			),
-
 			'access' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -1507,8 +1505,6 @@ return array(
 					),
 				),
 			),
-
-
 			'auth-out' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -1637,6 +1633,17 @@ return array(
 					'defaults' => array(
 						'controller' => 'Stjornvisi\Controller\Index',
 						'action'     => 'style-guide',
+					),
+				),
+			),
+
+			'gaedareglur' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/gaedareglur',
+					'defaults' => array(
+						'controller' => 'Stjornvisi\Controller\Page',
+						'action'     => 'index',
 					),
 				),
 			),
