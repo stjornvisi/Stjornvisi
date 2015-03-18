@@ -248,7 +248,6 @@ class Module{
 					$log->pushHandler(new StreamHandler('php://stdout'));
 					$log->pushHandler(new StreamHandler('./data/log/system.log'));
 					$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
-						/*
 					$log->pushHandler(new SlackHandler(
 						"xoxp-3745519896-3745519908-3921078470-26445a",
 						"#stjornvisi",
@@ -257,7 +256,6 @@ class Module{
 						null,
 						Logger::CRITICAL
 					));
-						*/
 					return $log;
                 },
                 'ServiceEventManager' => function($sm){
@@ -410,7 +408,6 @@ class Module{
 							->setLogger( $sm->get('Logger') );
 				},
 				'MailTransport' => function($sm){
-					/*
 					$transport = new SmtpTransport();
 					//$transport->setOptions(new SmtpOptions(array(
 					//	'name'              => 'localhost.localdomain',
@@ -419,9 +416,8 @@ class Module{
 					$protocol = new \Zend\Mail\Protocol\Smtp();
 					$transport->setConnection( $protocol );
 					return $transport;
-					*/
 
-
+					/*
 					$transport = new FileTransport();
 					$transport->setOptions(new FileOptions(array(
 						'path'      => './data/',
@@ -430,6 +426,7 @@ class Module{
 							},
 					)));
 					return $transport;
+					*/
 
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
