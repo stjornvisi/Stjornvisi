@@ -10,6 +10,7 @@ use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 
 use Stjornvisi\Form\User as UserForm;
+use Stjornvisi\Form\UserGroups;
 use Stjornvisi\Form\Password as PasswordForm;
 /**
  * Company
@@ -383,6 +384,9 @@ class UserController extends AbstractActionController{
 	/**
 	 * Get all groups by user.
 	 *
+	 * Allow user to update which groups he/she wants to
+	 * be notified about.
+	 *
 	 * @return ViewModel
 	 */
 	public function groupsAction(){
@@ -392,15 +396,55 @@ class UserController extends AbstractActionController{
 		$sm = $this->getServiceLocator();
 		$groupService = $sm->get('Stjornvisi\Service\Group');
 		/** @var $groupService \Stjornvisi\Service\Group */
+
+		//FORM AND GROUPS
+		//	get all groups user is connected to and
+		//	feed that into th form
 		$groups = $groupService->userConnections( $auth->getIdentity()->id  );
+		$form = new UserGroups( $groups );
 
+
+		//POST
+		//	request is post
 		if( $this->getRequest()->isPost() ){
+			$form->setData($this->request->getPost() );
 
+			//VALID
+			//	form is valid, update service
+			if( $form->isValid() ){
+				$value = $form->getData();
+				$groupService->notifyUser( $value['groups'] ,$auth->getIdentity()->id );
+
+				return new ViewModel(array(
+					'message' => true,
+					'form' => $form
+				));
+			//INVALID
+			//	form is invalid
+			}else{
+				return new ViewModel(array(
+					'message' => false,
+					'form' => $form
+				));
+			}
+
+		//QUERY
+		//	request is get
+		}else{
+			//BIND GROUPS
+			//	bind only groups user wants to be notified
+			//	about
+			$form->bind( new \ArrayObject(
+				array(
+					'groups'=> $groupService->fetchNotifyUser($auth->getIdentity()->id)
+				)
+			));
+
+			return new ViewModel(array(
+				'message' => false,
+				'form' => $form
+			));
 		}
-
-		return new ViewModel(array(
-			'groups' => $groups
-		));
 	}
 
 	/**

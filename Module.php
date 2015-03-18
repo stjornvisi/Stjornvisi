@@ -11,7 +11,7 @@ namespace Stjornvisi;
 
 use Imagine;
 use Monolog\Handler\SlackHandler;
-use \PDO;
+use Stjornvisi\Lib\PDO;
 
 
 use Stjornvisi\Event\ActivityListener;
@@ -32,7 +32,6 @@ use Stjornvisi\Service\Conference;
 use Stjornvisi\Service\Values;
 use Stjornvisi\View\Helper\SubMenu;
 use Stjornvisi\View\Helper\User as UserMenu;
-use Stjornvisi\Event\ServiceIndexListener;
 use Stjornvisi\Event\ServiceEventListener;
 
 use Stjornvisi\Form\NewUserCompanySelect;
@@ -249,6 +248,7 @@ class Module{
 					$log->pushHandler(new StreamHandler('php://stdout'));
 					$log->pushHandler(new StreamHandler('./data/log/system.log'));
 					$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
+						/*
 					$log->pushHandler(new SlackHandler(
 						"xoxp-3745519896-3745519908-3921078470-26445a",
 						"#stjornvisi",
@@ -257,6 +257,7 @@ class Module{
 						null,
 						Logger::CRITICAL
 					));
+						*/
 					return $log;
                 },
                 'ServiceEventManager' => function($sm){
@@ -284,18 +285,28 @@ class Module{
                 'Stjornvisi\Auth\Facebook' => function($sm){
                         return new AuthFacebook($sm->get('PDO'));
                 },
-                'PDO' => function($sm){
+				'PDO\Config' => function( $sm ){
 					$config = $sm->get('config');
-                    return new PDO(
-                        $config['db']['dns'],
-						$config['db']['user'],
-						$config['db']['password'],
-                        array(
-                            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+					return array(
+						'dns' => $config['db']['dns'],
+						'user' => $config['db']['user'],
+						'password' => $config['db']['password'],
+						'options' => array(
+							PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+							PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+							PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
 							//PDO::ATTR_EMULATE_PREPARES => false,
-                        ));
+						)
+					);
+				},
+                'PDO' => function($sm){
+					$config = $sm->get('PDO\Config');
+					return new \Stjornvisi\Lib\PDO(
+						$config['dns'],
+						$config['user'],
+						$config['password'],
+						$config['options']
+					);
                  },
 				'Imagine\Image\Imagine' => function(){
 						return new Imagine\Gd\Imagine();
@@ -345,75 +356,61 @@ class Module{
 							$sm->get('Stjornvisi\Service\User'),
 							$sm->get('Stjornvisi\Service\Group')
 						);
-						$obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
-						$obj->setLogger( $sm->get('Logger') );
-						return $obj;
+						return $obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
+							->setLogger( $sm->get('Logger') );
 				},
 				'Stjornvisi\Notify\Event' => function($sm){
 						$obj = new EventNotify(
 							$sm->get('Stjornvisi\Service\User'),
 							$sm->get('Stjornvisi\Service\Event')
 						);
-						$obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
-						$obj->setLogger( $sm->get('Logger') );
-						return $obj;
+						return $obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
+							->setLogger( $sm->get('Logger') );
 				},
 				'Stjornvisi\Notify\Password' => function($sm){
 						$obj = new PasswordNotify();
-						$obj->setLogger( $sm->get('Logger') );
-						$obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
-						return $obj;
+						return $obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
+							->setLogger( $sm->get('Logger') );
 				},
 				'Stjornvisi\Notify\Group' => function($sm){
 						$obj = new GroupNotify(
 							$sm->get('Stjornvisi\Service\User'),
 							$sm->get('Stjornvisi\Service\Group')
 						);
-						$obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
-						$obj->setLogger( $sm->get('Logger') );
-						return $obj;
+						return $obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
+							->setLogger( $sm->get('Logger') );
 				},
 				'Stjornvisi\Notify\All' => function($sm){
 						$obj = new AllNotify(
 							$sm->get('Stjornvisi\Service\User')
 						);
-						$obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
-						$obj->setLogger( $sm->get('Logger') );
-						return $obj;
+						return $obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
+							->setLogger( $sm->get('Logger') );
 				},
 				'Stjornvisi\Notify\Attend' => function($sm){
 						$obj = new AttendNotify(
 							$sm->get('Stjornvisi\Service\User'),
 							$sm->get('Stjornvisi\Service\Event')
 						);
-						$obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
-						$obj->setLogger( $sm->get('Logger') );
-						return $obj;
+						return $obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
+							->setLogger( $sm->get('Logger') );
 				},
 				'Stjornvisi\Notify\UserValidate' => function($sm){
 						$obj = new \Stjornvisi\Notify\UserValidate(
 							$sm->get('Stjornvisi\Service\User')
 						);
-						$obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
-						$obj->setLogger( $sm->get('Logger') );
-						return $obj;
+						return $obj->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
+							->setLogger( $sm->get('Logger') );
 				},
 				'MailTransport' => function($sm){
-
+					/*
 					$transport = new SmtpTransport();
 					//$transport->setOptions(new SmtpOptions(array(
 					//	'name'              => 'localhost.localdomain',
@@ -422,8 +419,9 @@ class Module{
 					$protocol = new \Zend\Mail\Protocol\Smtp();
 					$transport->setConnection( $protocol );
 					return $transport;
+					*/
 
-					/*
+
 					$transport = new FileTransport();
 					$transport->setOptions(new FileOptions(array(
 						'path'      => './data/',
@@ -432,7 +430,7 @@ class Module{
 							},
 					)));
 					return $transport;
-					*/
+
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
 					$config = $sm->get('config');

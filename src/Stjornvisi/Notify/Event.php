@@ -24,25 +24,41 @@ use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
- * Class Event
+ * Emails sent from an event to all or attendees.
+ *
  * @package Stjornvisi\Notify
  */
 class Event implements NotifyInterface, QueueConnectionAwareInterface {
 
-	/** @var \stdClass */
+	/**
+	 * @var \stdClass
+	 */
 	private $params;
 
-	/** @var \Stjornvisi\Service\Event */
+	/**
+	 * @var \Stjornvisi\Service\Event
+	 */
 	private $event;
 
-	/** @var \Stjornvisi\Service\User */
+	/**
+	 * @var \Stjornvisi\Service\User
+	 */
 	private $user;
 
-	/** @var  \Psr\Log\LoggerInterface; */
+	/**
+	 * @var  \Psr\Log\LoggerInterface;
+	 */
 	private $logger;
 
-	/** @var \Stjornvisi\Lib\QueueConnectionFactoryInterface  */
+	/**
+	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
+	 */
 	private $queueFactory;
+
+	/**
+	 * @var array
+	 */
+	private $config;
 
 	/**
 	 * Create an instance of this handler. It requires
@@ -61,29 +77,34 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 	 * producer.
 	 *
 	 * @param $data
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setData( $data ){
 		$this->params = $data;
+		return $this;
 	}
 
 	/**
 	 * Set logger instance
 	 *
 	 * @param LoggerInterface $logger
-	 * @return void
+	 * @return $this|NotifyInterface
 	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
+		return $this;
 	}
 
 	/**
 	 * Send notification to what ever media or outlet
 	 * required by the implementer.
 	 *
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function send(){
+
+		$this->user->validateConnection();
+		$this->event->validateConnection();
 
 		//EVENT
 		//	first of all, find the event in question
@@ -199,15 +220,18 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 				$connection->close();
 			}
 		}
+		return $this;
 	}
 
 	/**
-	 * Set Queue factory
+	 * Set Queue factory.
+	 *
 	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
+		return $this;
 	}
 
 } 

@@ -17,7 +17,7 @@ interface NotifyInterface {
 	 * producer.
 	 *
 	 * @param $data
-	 * @return mixed
+	 * @return NotifyInterface
 	 */
 	public function setData( $data );
 
@@ -25,7 +25,7 @@ interface NotifyInterface {
 	 * Send notification to what ever media or outlet
 	 * required by the implementer.
 	 *
-	 * @return mixed
+	 * @return NotifyInterface
 	 */
 	public function send();
 
@@ -33,6 +33,8 @@ interface NotifyInterface {
 	 * Set logger instance
 	 *
 	 * @param \Psr\Log\LoggerInterface
+	 * @return NotifyInterface
 	 */
 	public function setLogger(LoggerInterface $logger);
+
 }

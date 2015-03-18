@@ -35,6 +35,7 @@ use PhpAmqpLib\Exception\AMQPRuntimeException;
 
 use Zend\Mail\Message;
 
+
 class ConsoleController extends AbstractActionController {
 
 	/**
@@ -576,7 +577,6 @@ class ConsoleController extends AbstractActionController {
 				//	try to decode the JSON string into object
 				//	and set up a default handler that does nothing
 				$message = json_decode( $msg->body );
-				$handler = new \Stjornvisi\Notify\Null();
 
 				try{
 					$handler = $sm->get($message->action);
@@ -704,7 +704,8 @@ class ConsoleController extends AbstractActionController {
 						$message->addTo($messageObject->recipient->address,$messageObject->recipient->name)
 							->addFrom('stjornvisi@stjornvisi.is', "Stjórnvísi")
 							->setSubject($messageObject->subject)
-							->setBody($messageObject->body);
+							->setBody($messageObject->body)
+							->setEncoding("UTF-8");
 
 						//ATTACHER
 						//	you can read all about what this does in \Stjornvisi\Mail\Attacher
@@ -833,6 +834,49 @@ class ConsoleController extends AbstractActionController {
 
 	public function pdfAction(){
 
+		$sm = $this->getServiceLocator();
+		$companyService = $sm->get('Stjornvisi\Service\Company'); /** @var  $companyDAO \Stjornvisi\Service\Company */
+		$userService = $sm->get('Stjornvisi\Service\User'); /** @var  $companyDAO \Stjornvisi\Service\User */
+
+		$company = $companyService->get(14);
+
+
+		array_walk($company->members,function($member) use ($userService) {
+			$attendance = $userService->attendance( $member->id );
+			$member->attendance = ( count($attendance) <= 2 )
+				? $attendance
+				: array_slice( $attendance, -2, 2, false ) ;
+		});
+
+
+
+
+
+
+
+		$layout = new ViewModel(array(
+			'company' => $company
+		));
+		$layout->setTemplate('script');
+
+
+		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer->setCanRenderTrees(true);
+
+		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver->setMap(array(
+			'script' => __DIR__ . '/../../../view/pdf/company-report.phtml',
+		));
+		$phpRenderer->setResolver($resolver);
+
+
+
+
+
+		$pdf = new \CanGelis\PDF\PDF('/usr/local/bin/wkhtmltopdf');
+
+		$pdf->loadHTML($phpRenderer->render($layout))
+			->save("out.pdf", new \League\Flysystem\Adapter\Local('/Users/einar/Desktop/'),true);
 
 	}
 }

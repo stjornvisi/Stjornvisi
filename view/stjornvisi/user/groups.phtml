@@ -8,37 +8,31 @@
 ?>
 <div class="layout layout--three-columns">
 	<section class="layout__section">
-		<h1 class="layout__headline">Hópastillingar</h1>
-		<?php if( empty($this->groups) ):?>
-			<p>Þú ert ekki skráð(ur) í neina hópa.</p>
-		<?php else:?>
-		<p>Ég vil fá sendan póst frá eftirtöldum faghópum</p>
-		<ul>
-			<?php foreach($this->groups as $group): ?>
-			<li>
-				<input
-					data-url="<?=$this->url('hopur/register-email',array('id'=>$group->url,'type'=>0))?>"
-					class="js-checboxes" id="g_<?=$group->group_id?>"
-					type="checkbox" value="<?=$group->group_id?>" <?=($group->notify)?'checked':''?> />
-				<label for="g_<?=$group->group_id?>"><?=$group->name?></label>
-				<!--?=$group->type?-->
-			</li>
-			<?php endforeach ?>
-		</ul>
 
-		<script>
-			var inputs = document.querySelectorAll('.js-checboxes');
-			Array.prototype.forEach.call(inputs,function(item){
-				item.addEventListener('change',function(event){
-					console.log( item.checked );
-
-					var xhr = new XMLHttpRequest();
-					xhr.open('get','/')
-
-				},false);
-			});
-		</script>
+		<?php if($this->message):?>
+			<div>
+				Tengingar hafa verið uppfærðar.
+			</div>
 		<?php endif;?>
+		<?php $this->form->setAttribute('class','form-horizontal');?>
+		<?=$this->form()->openTag($this->form);?>
+
+		<div class="form-group">
+			<?=$this->formLabel($form->get('groups'));?>
+			<div class="checkbox">
+				<?=$this->formMultiCheckbox($form->get('groups'));?>
+				<?=$this->formElementErrors($form->get('groups'));?>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<?=$this->formElement(
+				$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Uppfæra')
+			);?>
+		</div>
+
+		<?= $this->form()->closeTag() ?>
+
 	</section>
 	<aside class="layout__aside"></aside>
 </div>

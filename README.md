@@ -278,3 +278,11 @@ detailed examples.
 (LOCK TABLES)(([\w\W]*?))(UNLOCK TABLES;)
 
 AUTO_INCREMENT=[0-9]*
+
+
+http://brewformulas.org/Wkhtmltopdf
+
+http://sourceforge.net/projects/wkhtmltopdf/?source=typ_redirect
+
+https://github.com/cangelis/php-pdf
+https://github.com/wkhtmltopdf/wkhtmltopdf

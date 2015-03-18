@@ -20,12 +20,21 @@ use Zend\View\Resolver;
 
 use PhpAmqpLib\Message\AMQPMessage;
 
+/**
+ * Facebbok OAuth URL sent to user in an e-mail.
+ *
+ * @package Stjornvisi\Notify
+ */
 class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 
-	/** @var  \Psr\Log\LoggerInterface */
+	/**
+	 * @var  \Psr\Log\LoggerInterface
+	 */
 	private $logger;
 
-	/** @var \stdClass */
+	/**
+	 * @var \stdClass
+	 */
 	private $params;
 
 	/**
@@ -39,6 +48,11 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 	private $user;
 
 	/**
+	 * @var array
+	 */
+	private $config;
+
+	/**
 	 * @param User $user
 	 */
 	public function __construct( User $user ){
@@ -46,10 +60,14 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 	}
 
 	/**
+	 * Set logger to monitor.
+	 *
 	 * @param LoggerInterface $logger
+	 * @return $this|NotifyInterface
 	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
+		return $this;
 	}
 
 	/**
@@ -61,19 +79,22 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 	 *	@url: string
 	 *	@facebook: string
 	 * }
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setData( $data ){
 		$this->params = $data->data;
+		return $this;
 	}
 
 	/**
 	 * Send notification to what ever media or outlet
 	 * required by the implementer.
 	 *
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function send(){
+
+		$this->user->validateConnection();
 
 		//USER
 		//	get the user.
@@ -156,14 +177,18 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 				$connection->close();
 			}
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Set Queue factory
 	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
+		return $this;
 	}
+
 }

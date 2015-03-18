@@ -16,7 +16,9 @@
         "erusev/parsedown": "dev-master",
         "videlalvaro/php-amqplib": "v2.1.0",
         "elasticsearch/elasticsearch": "~1.0",
-        "monolog/monolog": "~1.12@dev"
+        "monolog/monolog": "~1.12@dev",
+        "cangelis/pdf": "2.1.*",
+        "samchristy/piechart": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",

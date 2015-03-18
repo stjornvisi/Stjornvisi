@@ -872,7 +872,10 @@ class User extends AbstractService{
 			$firstYear = ( $user->created_date->format('n') < 9 )
 				? ((int)$user->created_date->format('Y'))-1
 				: $user->created_date->format('Y');
-			$yearRange = range($firstYear,date('Y'));
+			$yearRange = range(
+				$firstYear,
+				( date('n') < 9 )?date('Y')-1: date('Y')
+			);
 
 
 			$groupStatement = $this->pdo->prepare("

@@ -21,16 +21,20 @@ use Psr\Log\LoggerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
- * Handler for when a user registers / un-registers to a group.
+ * Email sent from a group to all or board.
  *
  * @package Stjornvisi\Notify
  */
 class Group implements NotifyInterface {
 
-	/** @var \stdClass */
+	/**
+	 * @var \stdClass
+	 */
 	private $params;
 
-	/** @var  \Psr\Log\LoggerInterface; */
+	/**
+	 * @var  \Psr\Log\LoggerInterface;
+	 */
 	private $logger;
 
 	/**
@@ -47,6 +51,11 @@ class Group implements NotifyInterface {
 	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
 	 */
 	private $queueFactory;
+
+	/**
+	 * @var array
+	 */
+	private $config;
 
 	/**
 	 * @param UserDAO $user
@@ -66,24 +75,31 @@ class Group implements NotifyInterface {
 	 * 	@body: string
 	 * 	@sender_id: int
 	 * }
-	 * @return mixed|void
+	 * @return $this|NotifyInterface
 	 */
 	public function setData( $data ){
 		$this->params = $data->data;
+		return $this;
 	}
 
 	/**
 	 * @param LoggerInterface $logger
+	 * @return $this|NotifyInterface
 	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
+		return $this;
 	}
 
 	/**
-	 * @return mixed|void
+	 * Run the handler.
 	 *
+	 * @return $this|NotifyInterface
 	 */
 	public function send(){
+
+		$this->userDAO->validateConnection();
+		$this->groupDAO->validateConnection();
 
 		//ALL OR FORMEN
 		//	send to all members of group or forman
@@ -193,15 +209,18 @@ class Group implements NotifyInterface {
 			}
 		}
 
+		return $this;
 	}
 
 	/**
-	 * Set Queue factory
+	 * Set Queue factory.
+	 *
 	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
+		return $this;
 	}
 
 } 

@@ -29,21 +29,35 @@ use PhpAmqpLib\Message\AMQPMessage;
  */
 class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 
-	/** @var \stdClass */
+	/**
+	 * @var \stdClass
+	 */
 	private $params;
 
-	/** @var  \Psr\Log\LoggerInterface; */
+	/**
+	 * @var  \Psr\Log\LoggerInterface;
+	 */
 	private $logger;
 
-	/** @var \Stjornvisi\Service\User  */
+	/**
+	 * @var \Stjornvisi\Service\User
+	 */
 	private $user;
 
-	/** @var \Stjornvisi\Service\Event */
+	/**
+	 * @var \Stjornvisi\Service\Event
+	 */
 	private $event;
 
-	/** @var \Stjornvisi\Lib\QueueConnectionFactoryInterface  */
+	/**
+	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
+	 */
 	private $queueFactory;
 
+	/**
+	 * @var array
+	 */
+	private $config;
 
 	/**
 	 * Create an instance to this handler.
@@ -62,29 +76,34 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 	 * producer.
 	 *
 	 * @param $data
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setData( $data ){
 		$this->params = $data;
+		return $this;
 	}
 
 	/**
 	 * Set logger instance
 	 *
 	 * @param LoggerInterface $logger
-	 * @return void
+	 * @return $this|NotifyInterface
 	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
+		return $this;
 	}
 
 	/**
 	 * Send notification to what ever media or outlet
 	 * required by the implementer.
 	 *
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function send(){
+
+		$this->user->validateConnection();
+		$this->event->validateConnection();
 
 		//USER
 		//	user can be in the system or he can be
@@ -189,14 +208,17 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 				$connection->close();
 			}
 		}
+
+		return $this;
 	}
 
 	/**
 	 * Set Queue factory
 	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
+	 * @return Attend
 	 */
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
+		return $this;
 	}
 }

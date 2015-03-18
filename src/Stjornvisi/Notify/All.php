@@ -9,8 +9,6 @@
 namespace Stjornvisi\Notify;
 
 use Stjornvisi\Service\User as UserDAO;
-use Stjornvisi\Service\Group as GroupDAO;
-use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
 use Zend\View\Model\ViewModel;
@@ -21,16 +19,23 @@ use Psr\Log\LoggerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
- * Handler for when a user registers / un-registers to a group.
+ * Handler for sending e-mail to everyone
+ *
+ * This will transcend all Group config. Only
+ * Admin can do this.
  *
  * @package Stjornvisi\Notify
  */
 class All implements NotifyInterface {
 
-	/** @var \stdClass */
+	/**
+	 * @var \stdClass
+	 */
 	private $params;
 
-	/** @var  \Psr\Log\LoggerInterface; */
+	/**
+	 * @var  \Psr\Log\LoggerInterface;
+	 */
 	private $logger;
 
 	/**
@@ -44,6 +49,13 @@ class All implements NotifyInterface {
 	private $queueFactory;
 
 	/**
+	 * @var array
+	 */
+	private $config;
+
+	/**
+	 * Create handler.
+	 *
 	 * @param UserDAO $user
 	 */
 	public function __construct( UserDAO $user ){
@@ -51,6 +63,8 @@ class All implements NotifyInterface {
 	}
 
 	/**
+	 * The the data to be passed to the mail process.
+	 *
 	 * @param $data {
 	 * 	@group_id: int
 	 *  @recipients: allir|formenn
@@ -59,24 +73,32 @@ class All implements NotifyInterface {
 	 * 	@body: string
 	 * 	@sender_id: int
 	 * }
-	 * @return mixed|void
+	 * @return $this|NotifyInterface
 	 */
 	public function setData( $data ){
 		$this->params = $data->data;
+		return $this;
 	}
 
 	/**
+	 * Set a logger object to monitor the handler.
+	 *
 	 * @param LoggerInterface $logger
+	 * @return $this|NotifyInterface
 	 */
 	public function setLogger(LoggerInterface $logger){
 		$this->logger = $logger;
+		return $this;
 	}
 
 	/**
-	 * @return mixed|void
+	 * Run the handler.
 	 *
+	 * @return $this|NotifyInterface
 	 */
 	public function send(){
+
+		$this->userDAO->validateConnection();
 
 		//TEST OR REAL
 		//	if test, send ony to sender, else to all
@@ -183,15 +205,19 @@ class All implements NotifyInterface {
 			}
 		}
 
+		return $this;
+
 	}
 
 	/**
-	 * Set Queue factory
+	 * Set Queue factory.
+	 *
 	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
+		return $this;
 	}
 
-} 
+}

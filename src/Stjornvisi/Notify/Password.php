@@ -20,32 +20,59 @@ use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
- * Handler for when a user registers / un-registers to a group.
+ * Get new password sent to user in e-mail
  *
  * @package Stjornvisi\Notify
  */
 class Password implements NotifyInterface, QueueConnectionAwareInterface {
 
-	/** @var \stdClass */
+	/**
+	 * @var \stdClass
+	 */
 	private $params;
 
-	/** @var  \Psr\Log\LoggerInterface */
+	/**
+	 * @var  \Psr\Log\LoggerInterface
+	 */
 	private $logger;
 
-	/** @var \Stjornvisi\Lib\QueueConnectionFactoryInterface  */
+	/**
+	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
+	 */
 	private $queueFactory;
 
-	public function __construct( ){
+	/**
+	 * @var array
+	 */
+	private $config;
 
-	}
-
+	/**
+	 * Set the data to send.
+	 *
+	 * @param $data
+	 * @return $this|NotifyInterface
+	 */
 	public function setData( $data ){
 		$this->params = $data;
-	}
-	public function setLogger(LoggerInterface $logger){
-		$this->logger = $logger;
+		return $this;
 	}
 
+	/**
+	 * Set logger object to monitor this handler.
+	 *
+	 * @param LoggerInterface $logger
+	 * @return $this|NotifyInterface
+	 */
+	public function setLogger(LoggerInterface $logger){
+		$this->logger = $logger;
+		return $this;
+	}
+
+	/**
+	 * Send the notification
+	 *
+	 * @return $this|NotifyInterface
+	 */
 	public function send(){
 
 		//VIEW
@@ -131,14 +158,18 @@ class Password implements NotifyInterface, QueueConnectionAwareInterface {
 			}
 		}
 
+		return $this;
+
 	}
 
 	/**
 	 * Set Queue factory
+	 *
 	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
+	 * @return $this|NotifyInterface
 	 */
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
+		return $this;
 	}
 } 

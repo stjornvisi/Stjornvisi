@@ -112,6 +112,7 @@ class Group extends AbstractService {
      * @param $user_id
      * @param bool $register
      * @return int affected rows
+	 * @throws Exception
      */
     public function registerUser( $group_id, $user_id, $register = true ){
         if( $register ){
@@ -163,6 +164,11 @@ class Group extends AbstractService {
 	 * Does the user want to get email notifications
 	 * from a group of not.
 	 *
+	 * This method is similar to self::registerMailUser, but while
+	 * that function will reset notification for all groups user is
+	 * connected to. This method will toggle `notify` filed on/off
+	 * for one group connection only
+	 *
 	 * @param $group_id
 	 * @param $user_id
 	 * @param bool $register
@@ -192,6 +198,93 @@ class Group extends AbstractService {
 			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			throw new Exception("Cant set status of user's email notifications in a group. group:[{$group_id}], user:[{$user_id}], status:[{$register}]",0,$e);
 		}
+	}
+
+	/**
+	 * Set notification flags for all groups user is connected to.
+	 *
+	 * This method will reset all connection flags.
+	 *
+	 * Given a user_id and an array og group_ids, First this method will
+	 * set all `notify` to 0.
+	 *
+	 * Then loop through the `$group_id` array (an array which should only contain
+	 * ids of groups and nothing else) and for every id, it will set the notify flag
+	 * to 1
+	 *
+	 * @param array $group_id
+	 * @param $user_id
+	 * @throws Exception
+	 */
+	public function notifyUser( array $group_id, $user_id ){
+
+		try{
+			$updateStatement = $this->pdo->prepare("
+				UPDATE `Group_has_User` SET `notify` = 0
+				WHERE user_id = :user_id
+			");
+			$updateStatement->execute(array(
+				'user_id' => $user_id
+			));
+
+			$insertStatement = $this->pdo->prepare("
+				UPDATE `Group_has_User` SET `notify` = 1
+				WHERE user_id = :user_id AND group_id = :group_id
+			");
+
+			foreach( $group_id as $id ){
+				$insertStatement->execute(array(
+					'user_id' => $user_id,
+					'group_id' => $id
+				));
+			}
+		}catch (\PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($updateStatement)?$updateStatement->queryString:null,
+					isset($insertStatement)?$insertStatement->queryString:null,
+				)
+			));
+			throw new Exception(
+				"Can't update user notifications to group. user:[{$user_id}], groups[".implode(',',$group_id)."]",0,$e);
+		}
+
+
+	}
+
+	/**
+	 * Get only groups tha a user want to be notified about.
+	 *
+	 * This method will the return he connection database table.
+	 * which is called `Group_has_User`, so don't expect to get
+	 * any data about the Group itself from this method :)
+	 *
+	 * @param $user_id
+	 * @return array
+	 * @throws Exception
+	 */
+	public function fetchNotifyUser( $user_id ){
+
+		try{
+			$statement = $this->pdo->prepare("
+				select * from Group_has_User where user_id = :user_id AND `notify` = 1;
+			");
+			$statement->execute(array(
+				'user_id' => $user_id
+			));
+			return $statement->fetchAll();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
+			throw new Exception("Can't fetch only groups user wants to be notified about, user:[{$user_id}]",0,$e);
+		}
+
 	}
 
     /**
@@ -232,7 +325,7 @@ class Group extends AbstractService {
     }
 
 	/**
-	 * This will return an array of all groups tha a user is connected to
+	 * This will return an array of all groups that a user is connected to
 	 * and all the properties that are set with the connection.
 	 *
 	 * This can be the user's role with the group and if he wants to be notified
@@ -289,11 +382,14 @@ class Group extends AbstractService {
     }
 
 	/**
-	 * Get all Groups and add to the result, the next 5 upcoming events.
+	 * Get all Groups and add to the result, the next `$limit` upcoming events.
 	 *
+	 * If there are no upcoming events, then this method wil go ahead and just
+	 * get the last `$limit` events, even though they have passed.
+	 *
+	 * @param int $limit
 	 * @return array
 	 * @throws Exception
-	 * @todo what if there are no events returned
 	 */
 	public function fetchAllExtended( $limit = 2 ){
 		try{
