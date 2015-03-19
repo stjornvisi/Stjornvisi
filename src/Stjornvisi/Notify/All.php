@@ -100,6 +100,8 @@ class All implements NotifyInterface {
 
 		$this->userDAO->validateConnection();
 
+		$emailId = md5( time() + rand(0,1000) );
+
 		//TEST OR REAL
 		//	if test, send ony to sender, else to all
 		$users = ($this->params->test)
@@ -148,6 +150,8 @@ class All implements NotifyInterface {
 			));
 			$phpRenderer->setResolver($resolver);
 
+
+
 			//FOR EVERY USER
 			//	for every user, render mail-template
 			//	and send to mail-queue
@@ -175,7 +179,13 @@ class All implements NotifyInterface {
 				$result = array(
 					'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 					'subject' => $this->params->subject,
-					'body' => $phpRenderer->render($layout)
+					'body' => $phpRenderer->render($layout),
+					'id' => $emailId,
+					'user_id' => md5( (string)$emailId . $user->email  ),
+					'entity_id' => null,
+					'type' => 'All',
+					'parameters' => $this->params->recipients,
+					'test' => $this->params->test
 				);
 
 				$msg = new AMQPMessage( json_encode($result),

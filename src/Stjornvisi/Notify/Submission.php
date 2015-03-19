@@ -154,7 +154,12 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface {
 			'subject' => ($this->params->data->register)
 					? "Þú hefur skráð þig í hópinn: {$groupObject->name}"
 					: "Þú hefur afskráð þig úr hópnum: {$groupObject->name}",
-			'body' => $phpRenderer->render($layout)
+			'body' => $phpRenderer->render($layout),
+			'user_id' => null,
+			'type' => '',
+			'entity_id' => null,
+			'parameters' => '',
+			'test' => true
 		);
 
 		//MAIL

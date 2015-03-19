@@ -106,6 +106,8 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 		$this->user->validateConnection();
 		$this->event->validateConnection();
 
+		$emailId = md5( time() + rand(0,1000) );
+
 		//EVENT
 		//	first of all, find the event in question
 		$event = $this->event->get( $this->params->data->event_id );
@@ -195,7 +197,13 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 				$result = array(
 					'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 					'subject' => $this->params->data->subject,
-					'body' => $phpRenderer->render($layout)
+					'body' => $phpRenderer->render($layout),
+					'id' => $emailId,
+					'user_id' => md5( (string)$emailId . $user->email  ),
+					'type' => 'Event',
+					'entity_id' => $event->id,
+					'parameters' => $this->params->data->recipients,
+					'test' => $this->params->data->test
 				);
 				$msg = new AMQPMessage( json_encode($result),
 					array('delivery_mode' => 2) # make message persistent

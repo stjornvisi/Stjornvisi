@@ -125,7 +125,12 @@ class Password implements NotifyInterface, QueueConnectionAwareInterface {
 				'name'=>$this->params->data->recipients->name,
 				'address'=>$this->params->data->recipients->email),
 			'subject' => "Nýtt lykilorð",
-			'body' => $phpRenderer->render($layout)
+			'body' => $phpRenderer->render($layout),
+			'user_id' => null,
+			'type' => '',
+			'entity_id' => null,
+			'parameters' => '',
+			'test' => true
 		);
 
 

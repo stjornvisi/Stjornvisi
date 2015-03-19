@@ -153,7 +153,12 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 			$result = array(
 				'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 				'subject' => "Stjórnvísi, staðfesting á aðgangi",
-				'body' => $phpRenderer->render($layout)
+				'body' => $phpRenderer->render($layout),
+				'user_id' => null,
+				'type' => '',
+				'entity_id' => null,
+				'parameters' => '',
+				'test' => true
 			);
 			$msg = new AMQPMessage( json_encode($result),
 				array('delivery_mode' => 2) # make message persistent

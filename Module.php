@@ -18,6 +18,7 @@ use Stjornvisi\Event\ActivityListener;
 use Stjornvisi\Event\ErrorEventListener;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Service\Company;
+use Stjornvisi\Service\Email;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\Group;
 use Stjornvisi\Service\News;
@@ -246,16 +247,23 @@ class Module{
                 'Logger' => function($sm){
 					$log = new Logger('stjornvisi');
 					$log->pushHandler(new StreamHandler('php://stdout'));
-					$log->pushHandler(new StreamHandler('./data/log/system.log'));
-					$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
-					$log->pushHandler(new SlackHandler(
-						"xoxp-3745519896-3745519908-3921078470-26445a",
-						"#stjornvisi",
-						"Angry Hamster",
-						true,
-						null,
-						Logger::CRITICAL
-					));
+
+					$evn = getenv('APPLICATION_ENV') ?: 'production';
+					if( $evn == 'development' ){
+
+					}else{
+						$log->pushHandler(new StreamHandler('./data/log/system.log'));
+						$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
+						$log->pushHandler(new SlackHandler(
+							"xoxp-3745519896-3745519908-3921078470-26445a",
+							"#stjornvisi",
+							"Angry Hamster",
+							true,
+							null,
+							Logger::CRITICAL
+						));
+					}
+
 					return $log;
                 },
                 'ServiceEventManager' => function($sm){
@@ -344,6 +352,24 @@ class Module{
                         $obj->setEventManager( $sm->get('ServiceEventManager') );
                         return $obj;
                 },
+				'Stjornvisi\Service\Email' => function($sm){
+						$obj = new Email(
+							new \Stjornvisi\Lib\PDO(
+								array(
+									'dns' => $config['tracker']['dns'],
+									'user' => $config['tracker']['user'],
+									'password' => $config['tracker']['password'],
+									'options' => array(
+										PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+										PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+										PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+									)
+								)
+							)
+						);
+						$obj->setEventManager( $sm->get('ServiceEventManager') );
+						return $obj;
+					},
 				'Stjornvisi\Service\Page' => function($sm){
 						$obj = new Page( $sm->get('PDO') );
 						$obj->setEventManager( $sm->get('ServiceEventManager') );
@@ -408,26 +434,28 @@ class Module{
 							->setLogger( $sm->get('Logger') );
 				},
 				'MailTransport' => function($sm){
-					$transport = new SmtpTransport();
-					//$transport->setOptions(new SmtpOptions(array(
-					//	'name'              => 'localhost.localdomain',
-					//	'host'              => '127.0.0.1',
-					//)));
-					$protocol = new \Zend\Mail\Protocol\Smtp();
-					$transport->setConnection( $protocol );
-					return $transport;
 
-					/*
-					$transport = new FileTransport();
-					$transport->setOptions(new FileOptions(array(
-						'path'      => './data/',
-						'callback'  => function (FileTransport $transport) {
-								return 'Message_' . microtime(true) . '.eml';
-							},
-					)));
-					return $transport;
-					*/
+					$evn = getenv('APPLICATION_ENV') ?: 'production';
 
+					if( $evn == 'development' ){
+						$transport = new SmtpTransport();
+						//$transport->setOptions(new SmtpOptions(array(
+						//	'name'              => 'localhost.localdomain',
+						//	'host'              => '127.0.0.1',
+						//)));
+						$protocol = new \Zend\Mail\Protocol\Smtp();
+						$transport->setConnection( $protocol );
+						return $transport;
+					}else{
+						$transport = new FileTransport();
+						$transport->setOptions(new FileOptions(array(
+							'path'      => './data/',
+							'callback'  => function (FileTransport $transport) {
+									return 'Message_' . microtime(true) . '.eml';
+								},
+						)));
+						return $transport;
+					}
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
 					$config = $sm->get('config');

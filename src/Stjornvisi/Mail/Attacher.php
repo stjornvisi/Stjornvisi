@@ -33,9 +33,10 @@ class Attacher {
 	}
 
 	/**
+	 * @param string $trackerString
 	 * @return \Zend\Mail\Message
 	 */
-	public function parse(){
+	public function parse( $trackerString = null ){
 
 		//IF BODY
 		//	if the body is not empty, the we can
@@ -103,6 +104,22 @@ class Attacher {
 					$parts[] = $attachment;
 				}
 			}
+
+
+			//TRACKER IMAGE
+			//	if there is a tracker string passed,
+			//	we will set that as the SRC attribute of an IMG
+			//	element, this is done to try to track if a user opens
+			//	his/her mail.
+			if( $trackerString ){
+				$trackerImage = $domDocument->createElement('img'); /** @var $trackerImage \DOMElement */
+				$trackerImage->setAttribute('src',$trackerString);
+				$trackerImage->setAttribute('height',1);
+				$trackerImage->setAttribute('width',1);
+				$domDocument->getElementsByTagName('body')->item(0)->appendChild($trackerImage);
+			}
+
+
 
 			//TEXT
 			//	one part of the mime-message is the actual body-text

@@ -174,7 +174,12 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 			'subject' => ($this->params->data->type)
 					? "Þú hefur skráð þig á viðburðinn: {$eventObject->subject}"
 					: "Þú hefur afskráð þig á viðburðinn: {$eventObject->subject}",
-			'body' => $phpRenderer->render($layout)
+			'body' => $phpRenderer->render($layout),
+			'id' => '',
+			'user_id' => 0,
+			'type' => '',
+			'parameters' => '',
+			'test' => true
 		);
 
 

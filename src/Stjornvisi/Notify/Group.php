@@ -101,6 +101,8 @@ class Group implements NotifyInterface {
 		$this->userDAO->validateConnection();
 		$this->groupDAO->validateConnection();
 
+		$emailId = md5( time() + rand(0,1000) );
+
 		//ALL OR FORMEN
 		//	send to all members of group or forman
 		$exclude = ( $this->params->recipients == 'allir' )
@@ -183,7 +185,12 @@ class Group implements NotifyInterface {
 				$result = array(
 					'recipient' => array('name'=>$user->name, 'address'=>$user->email),
 					'subject' => $this->params->subject,
-					'body' => $phpRenderer->render($layout)
+					'body' => $phpRenderer->render($layout),
+					'user_id' => md5( (string)$emailId . $user->email  ),
+					'type' => 'Event',
+					'entity_id' => $group->id,
+					'parameters' => $this->params->recipients,
+					'test' => $this->params->test
 				);
 
 				$msg = new AMQPMessage( json_encode($result),

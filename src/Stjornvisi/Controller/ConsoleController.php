@@ -661,6 +661,7 @@ class ConsoleController extends AbstractActionController {
 
 		$sm = $this->getServiceLocator();
 		$logger = $sm->get('Logger'); /** @var $logger \Zend\Log\Logger */
+		$emailService = $sm->get('Stjornvisi\Service\Email'); /** @var $emailService \Stjornvisi\Service\Email */
 
 		try{
 			$connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
@@ -675,7 +676,7 @@ class ConsoleController extends AbstractActionController {
 			//THE MAGIC
 			//	here is where everything happens. the rest of the code
 			//	is just connect and deconnect to RabbitMQ
-			$callback = function($msg) use ($logger, $sm, $classname){
+			$callback = function($msg) use ($logger, $sm, $classname, $emailService){
 
 				//JSON VALID
 				//	fist make sure that the JSON is valid
@@ -696,7 +697,7 @@ class ConsoleController extends AbstractActionController {
 							return;
 						}
 
-						$logger->info( "Send e-mail to [{$messageObject->recipient->address}, {$messageObject->recipient->name}]" );
+						$logger->debug( "Send e-mail to [{$messageObject->recipient->address}, {$messageObject->recipient->name}]" );
 
 						//CREATE / SEND
 						//	create a mail message and actually send it
@@ -712,7 +713,7 @@ class ConsoleController extends AbstractActionController {
 						//	but basically what this does is: convert a simple html string into a
 						//	multy-part mime object with embedded attachments.
 						$attacher = new Attacher($message);
-						$message = $attacher->parse();
+						$message = $attacher->parse( "http://tracker.stjornvisi.is/spacer.gif?id={$messageObject->user_id}" );
 
 						//DEBUG MODE
 						//	process started with --debug flag
@@ -747,6 +748,29 @@ class ConsoleController extends AbstractActionController {
 								}
 
 								$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
+
+
+								if( $messageObject->test == true ){
+									$logger->debug( "This is just a test e-mail notofcation -- we will ignore it" );
+								}else{
+
+									try{
+										$emailService->validateConnection()->create(array(
+											'subject' => $messageObject->subject,
+											'body' => $messageObject->body,
+											'hash' => $messageObject->id,
+											'user_hash' => $messageObject->user_id,
+											'type' => $messageObject->type,
+											'entity_id' => $messageObject->entity_id,
+											'params' => $messageObject->parameters,
+										));
+									}catch (\Exception $e){
+										$logger->critical( $e->getMessage(),$e->getTrace() );
+									}
+
+
+								}
+
 							}catch (\Exception $e){
 								while($e){
 									$logger->critical( $e->getMessage() ,$e->getTrace() );
