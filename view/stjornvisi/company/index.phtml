@@ -25,7 +25,59 @@
 				<dd><?=$this->company->business_type;?></dd>
 				<dt>Stofnað</dt>
 				<dd><?=$this->date($this->company->created);?></dd>
+				<dt>Skráðir starfsmenn</dt>
+				<dd><?=count($this->company->members)?></dd>
 			</dl>
+
+			<h2 class="layout__headline">Dreifing starfsmanna</h2>
+			<table class="block-table block-table--data block-table--compact">
+				<thead>
+					<tr>
+						<td>Hópur</td>
+						<td class="block-table__numeric">Starfsmenn</td>
+					</tr>
+				</thead>
+				<tfoot></tfoot>
+				<tbody>
+					<?php foreach($this->distribution as $value):?>
+					<tr>
+						<td><a href="<?=$this->url('hopur/index',array('id'=>$value->url))?>"><?=$value->name_short?></td>
+						<td class="block-table__numeric"><?=$value->group_count?></td>
+					</tr>
+					<?php endforeach;?>
+				</tbody>
+			</table>
+
+
+			<h2 class="layout__headline">Mætingar á starfsári</h2>
+			<?php foreach($this->attendance as $value):?>
+
+				<table class="block-table block-table--data block-table--compact">
+					<caption>
+						<?=$value->from->format('Y')?> - <?=$value->to->format('Y')?>
+					</caption>
+					<thead>
+						<tr>
+							<td>Starfsmaður</td>
+							<td class="block-table__numeric">Mætingar</td>
+						</tr>
+					</thead>
+					<tfoot></tfoot>
+					<tbody>
+					<?php foreach($value->list as $item): ?>
+						<tr>
+							<td><a href="<?=$this->url('notandi/index',array('id'=>$item->id))?>"><?=$item->name?></a></td>
+							<td class="block-table__numeric"><?=$item->counter?></td>
+						</tr>
+					<?php endforeach;?>
+					</tbody>
+
+				</table>
+			<?php endforeach;?>
+
+			<!--pre>
+				<?php print_r($this->attendance)?>
+			</pre-->
 		</div>
 		<div class="layout__meta">
 			<h2 class="layout__headline">Starfsmenn</h2>

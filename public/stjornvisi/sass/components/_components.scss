@@ -705,6 +705,17 @@
 			}
 		}
 	}
+
+	&.block-table--compact{
+		width: 100%;
+		tbody{
+			td{
+				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+				//font-family: $font-family-open;
+				//font-weight: $font-weight-bold;
+			}
+		}
+	}
 }
 
 /**
@@ -716,6 +727,10 @@
  * make some air between the label and table.
  */
 .layout__headline + /*table*/.block-table{
+	margin-top: rhythm(1,$font-size-base);
+}
+
+/*table*/.block-table + .layout__headline{
 	margin-top: rhythm(1,$font-size-base);
 }
 

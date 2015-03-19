@@ -266,6 +266,27 @@ class Company extends AbstractService {
         }
     }
 
+	public function fetchEmployeesTimeRange( $id, DateTime $from, DateTime $to ){
+
+		$statement = $this->pdo->prepare("
+			SELECT U.id as id, U.name as name, count(U.id) as counter
+			FROM `Event_has_User` EhU
+			JOIN `User` U ON (EhU.user_id = U.id)
+			JOIN `Company_has_User` ChU ON (U.id = ChU.user_id )
+			JOIN `Event` E ON (E.id = EhU.event_id)
+			WHERE ChU.company_id = :id
+			AND E.event_date BETWEEN :from AND :to
+			GROUP BY U.id
+			ORDER BY U.name;
+		");
+		$statement->execute(array(
+			'id' => $id,
+			'from' => $from->format('Y-m-d'),
+			'to' => $to->format('Y-m-d'),
+		));
+		return $statement->fetchAll();
+	}
+
     /**
      * Get company by user.
      *

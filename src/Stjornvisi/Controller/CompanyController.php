@@ -24,7 +24,8 @@ class CompanyController extends AbstractActionController{
 	public function indexAction(){
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
-        $companyService = $sm->get('Stjornvisi\Service\Company');
+        $companyService = $sm->get('Stjornvisi\Service\Company');  /** @var $companyService \Stjornvisi\Service\Company */
+		$groupService = $sm->get('Stjornvisi\Service\Group'); /** @var $groupService \Stjornvisi\Service\Group */
 
 
         //COMPANY FOUND
@@ -40,7 +41,35 @@ class CompanyController extends AbstractActionController{
             //
             if( $access->is_admin || $access->type != null ){
 
+
+				//CURRENT RANGE
+				$currentFrom = (date('n') < 9)
+					? new \DateTime(((int)date('Y')-1) . "-09-01")
+					: new \DateTime((date('Y')). '-09-01') ;
+				$currentTo = (date('n') < 9)
+					? new \DateTime(((int)date('Y')) . "-08-31")
+					: new \DateTime(((int)date('Y')+1) . "-08-31");
+
+				$lastFrom = new \DateTime( $currentFrom->format('Y-m-d') );
+				$lastFrom->sub( new \DateInterval('P1Y') );
+				$lastTo = new \DateTime( $currentTo->format('Y-m-d') );
+				$lastTo->sub( new \DateInterval('P1Y') );
+
                 return new ViewModel(array(
+					'attendance' => array(
+						(object)array(
+							'from' => $currentFrom,
+							'to' => $currentTo,
+							'list' => $companyService->fetchEmployeesTimeRange( $company->id, $currentFrom, $currentTo ),
+						),
+						(object)array(
+							'from' => $lastFrom,
+							'to' => $lastTo,
+							'list' => $companyService->fetchEmployeesTimeRange( $company->id, $lastFrom, $lastTo ),
+						),
+
+					),
+					'distribution' => $groupService->fetchCompanyEmployeeCount( $company->id ),
                     'company' => $company,
                     'access' => $access
                 ));

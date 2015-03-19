@@ -445,6 +445,41 @@ class Group extends AbstractService {
 		}
 	}
 
+	/**
+	 * Get all groups and how employees of a given
+	 * company are distributed onto these groups
+	 *
+	 * @param $company_id
+	 * @return array
+	 * @throws Exception
+	 */
+	public function fetchCompanyEmployeeCount( $company_id ){
+		try{
+			$statement = $this->pdo->prepare("
+				SELECT G.id, G.name, G.name_short, G.url, count(GU.group_id) as group_count
+				FROM GroupUser GU
+				INNER JOIN `Group` G ON (G.id = GU.group_id)
+				INNER JOIN UserEntry UE ON (UE.id = GU.id )
+				WHERE UE.company_id = :company_id
+				GROUP BY group_id
+				ORDER BY G.name
+			");
+			$statement->execute(array(
+				'company_id' => $company_id
+			));
+			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+			return $statement->fetchAll();
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			throw new Exception("Can't count employees per group for company[{$company_id}]",0,$e);
+		}
+	}
+
     /**
      * Create a Groups.
      *
