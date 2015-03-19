@@ -353,6 +353,7 @@ class Module{
                         return $obj;
                 },
 				'Stjornvisi\Service\Email' => function($sm){
+						$config = $sm->get('config');
 						$obj = new Email(
 							new \Stjornvisi\Lib\PDO(
 								array(
