@@ -439,15 +439,6 @@ class Module{
 					$evn = getenv('APPLICATION_ENV') ?: 'production';
 
 					if( $evn == 'development' ){
-						$transport = new SmtpTransport();
-						//$transport->setOptions(new SmtpOptions(array(
-						//	'name'              => 'localhost.localdomain',
-						//	'host'              => '127.0.0.1',
-						//)));
-						$protocol = new \Zend\Mail\Protocol\Smtp();
-						$transport->setConnection( $protocol );
-						return $transport;
-					}else{
 						$transport = new FileTransport();
 						$transport->setOptions(new FileOptions(array(
 							'path'      => './data/',
@@ -455,6 +446,15 @@ class Module{
 									return 'Message_' . microtime(true) . '.eml';
 								},
 						)));
+						return $transport;
+					}else{
+						$transport = new SmtpTransport();
+						//$transport->setOptions(new SmtpOptions(array(
+						//	'name'              => 'localhost.localdomain',
+						//	'host'              => '127.0.0.1',
+						//)));
+						$protocol = new \Zend\Mail\Protocol\Smtp();
+						$transport->setConnection( $protocol );
 						return $transport;
 					}
 				},
