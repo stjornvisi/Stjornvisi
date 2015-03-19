@@ -166,6 +166,8 @@ class ConsoleController extends AbstractActionController {
 
 		$logger->info("Queue Service says: Fetching upcoming events");
 
+		$emailId = md5( time() + rand(0,1000) );
+
 		//TIME RANGE
 		//	calculate time range and create from and
 		//	to date objects for the range.
@@ -263,7 +265,13 @@ class ConsoleController extends AbstractActionController {
 							'name' => $user->name,
 							'address' => $user->email,
 						),
-					'key' => md5(time())
+					'key' => md5(time()),
+					'id' => $emailId,
+					'user_id' => md5( (string)$emailId . $user->email  ),
+					'entity_id' => null,
+					'type' => 'Digest',
+					'parameters' => 'allir',
+					'test' => false
 				);
 				$msg = new AMQPMessage( json_encode($result),
 					array('delivery_mode' => 2) # make message persistent
