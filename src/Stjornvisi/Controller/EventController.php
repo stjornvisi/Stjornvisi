@@ -50,6 +50,13 @@ class EventController extends AbstractActionController{
                 return $i->id;
             },$event->groups);
 
+
+			$access = $userService->getTypeByGroup(
+				($authService->hasIdentity())?$authService->getIdentity()->id:null,
+				$groupIds
+			);
+
+
 			//POST
 			//	post request
             if( $this->request->isPost() ){
@@ -77,25 +84,21 @@ class EventController extends AbstractActionController{
 					'event' => $event,
 					'register_message' => true,
 					'logged_in' => $authService->hasIdentity(),
-					'access' => $userService->getTypeByGroup(
-							($authService->hasIdentity())?$authService->getIdentity()->id:null,
-							$groupIds
-						),
-					'attendees' => $userService->getByEvent($event->id),
-					'aggregate' => $eventService->aggregateAttendance( $event->id )
+					'access' => $access,
 				));
 				$eventView->setTemplate('stjornvisi/event/partials/index-event');
 				$asideView = new ViewModel(array(
-					'access' => $userService->getTypeByGroup(
-							($authService->hasIdentity())?$authService->getIdentity()->id:null,
-							$groupIds
-						),
+					'access' => $access,
 					'event' => $event,
 					'related' => $eventService->getRelated($groupIds,$event->id),
 				));
 				$asideView->setTemplate('stjornvisi/event/partials/index-aside');
 
-				$mainView = new ViewModel();
+				$mainView = new ViewModel(array(
+					'access' => $access,
+					'attendees' => $userService->getByEvent($event->id),
+					'aggregate' => $eventService->aggregateAttendance( $event->id )
+				));
 				$mainView
 					->addChild($eventView,'event')
 					->addChild($asideView,'aside');
@@ -109,25 +112,22 @@ class EventController extends AbstractActionController{
 					'event' => $event,
 					'register_message' => false,
 					'logged_in' => $authService->hasIdentity(),
-					'access' => $userService->getTypeByGroup(
-							($authService->hasIdentity())?$authService->getIdentity()->id:null,
-							$groupIds
-						),
-					'attendees' => $userService->getByEvent($event->id),
-					'aggregate' => $eventService->aggregateAttendance( $event->id )
+					'access' => $access,
 				));
 				$eventView->setTemplate('stjornvisi/event/partials/index-event');
 				$asideView = new ViewModel(array(
-					'access' => $userService->getTypeByGroup(
-							($authService->hasIdentity())?$authService->getIdentity()->id:null,
-							$groupIds
-						),
+					'access' => $access,
 					'event' => $event,
 					'related' => $eventService->getRelated($groupIds,$event->id),
 				));
 				$asideView->setTemplate('stjornvisi/event/partials/index-aside');
 
-				$mainView = new ViewModel();
+				$mainView = new ViewModel(array(
+					'logged_in' => $authService->hasIdentity(),
+					'access' => $access,
+					'attendees' => $userService->getByEvent($event->id),
+					'aggregate' => $eventService->aggregateAttendance( $event->id )
+				));
 				$mainView
 					->addChild($eventView,'event')
 					->addChild($asideView,'aside');

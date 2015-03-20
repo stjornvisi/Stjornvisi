@@ -81,20 +81,6 @@
 			&.page-event-element__attenders--default{}
 		}
 
-		.page-event__attendees{
-			width: 100%;
-			@include adjust-font-size-to($font-size-small,1,$font-size-base);
-			font-family: $font-family-open;
-			color: $color-green-sea;
-			tbody{
-				td{
-					@include ellipsis;
-					padding: 0 rhythm(1/8,$font-size-small) 0 0;
-				}
-			}
-
-		}
-
 		.block-element__image{
 			max-width: 100%;
 		}

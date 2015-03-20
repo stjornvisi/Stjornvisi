@@ -32,7 +32,7 @@ $this->headMeta()->setProperty('og:image', ($this->news->avatar)
 		</header>
 		<section class="block-element__body block-element__body--two-column">
 			<?php if($this->news->avatar):?>
-				<img class="block-element__image" src="<?=$this->basePath("/images/original/{$this->news->avatar}")?>" />
+				<img class="block-element__image" src="<?=$this->basePath("/images/300/{$this->news->avatar}")?>" />
 			<?php endif;?>
 			<?=$this->paragrapher($this->news->body);?>
 		</section>

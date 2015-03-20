@@ -663,6 +663,15 @@
 			}
 		}
 	}
+
+	&.layout__footer{
+		padding: $gutter*2;
+		background-color: tint($color-gray-light,70%);
+		box-shadow: inset 0 0px 8px 0px rgba(0, 0, 0, 0.37);
+		@include breakpoint($phone){
+			display: none;
+		}
+	}
 }
 
 
@@ -708,9 +717,12 @@
 
 	&.block-table--compact{
 		width: 100%;
+		font-family: $font-family-open;
 		tbody{
+			color: $color-green-sea;
 			td{
 				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+				@include ellipsis;
 				//font-family: $font-family-open;
 				//font-weight: $font-weight-bold;
 			}
