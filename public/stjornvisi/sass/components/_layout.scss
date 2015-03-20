@@ -73,10 +73,10 @@
 			background-position: right 0;
 			background-color: $color-blue;
 			width: 272px;
-			height: $select-size;
+			//height: $select-size;
 			font: 0/0 a;
 			a{
-				display: block;
+				display: none;
 				width: 272px;
 				height: $select-size;
 			}
@@ -122,6 +122,9 @@
 				background-image: url("images/header-logo.svg");
 				background-position: center 7px;
 				width: 140px;
+				a{
+					display: block;
+				}
 			}
 
 		}
