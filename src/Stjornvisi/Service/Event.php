@@ -696,7 +696,7 @@ class Event extends AbstractService {
             //  prepare a statement to get all groups
             //  that are connected to event
             $groupsStatement = $this->pdo->prepare("SELECT G.* FROM Group_has_Event GhE
-                LEFT JOIN `Group` G ON (G.id = GhE.group_id)
+                JOIN `Group` G ON (G.id = GhE.group_id)
                 WHERE GhE.event_id = :id;
               ");
 
