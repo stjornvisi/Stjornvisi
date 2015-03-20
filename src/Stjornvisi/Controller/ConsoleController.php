@@ -758,7 +758,7 @@ class ConsoleController extends AbstractActionController {
 								$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 
 
-								if( $messageObject->test == true ){
+								if( !isset($messageObject->test) || $messageObject->test == true ){
 									$logger->debug( "This is just a test e-mail notofcation -- we will ignore it" );
 								}else{
 
