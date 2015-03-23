@@ -3236,6 +3236,11 @@ textarea.prossess, input.prossess {
   display: inline-block;
 }
 
+/* line 936, ../sass/components/_components.scss */
+.block-supplement.resource-list li {
+  overflow: visible;
+}
+
 /**
 	:host-context(.active) .stjonvisi-control__wrapper{
 		display: block;

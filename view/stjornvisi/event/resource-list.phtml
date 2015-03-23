@@ -9,7 +9,7 @@ $this->headTitle('Viðburður');
 			Ítarefni fyrir
 			<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a>
 		</h1>
-		<ul class="block-supplement">
+		<ul class="block-supplement resource-list">
 			<?php foreach($this->resources as $resource):?>
 			<li>
 				<a href="<?=$this->basePath("/images/original/{$resource->name}")?>" target="_blank" ><?=$resource->name?></a>
