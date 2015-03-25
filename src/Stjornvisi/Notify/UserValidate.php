@@ -9,6 +9,7 @@
 namespace Stjornvisi\Notify;
 
 
+use Psr\Log\LoggerAwareInterface;
 use Stjornvisi\Service\User;
 use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
@@ -26,7 +27,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
+class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface, LoggerAwareInterface {
 
 	/**
 	 * @var  \Psr\Log\LoggerInterface

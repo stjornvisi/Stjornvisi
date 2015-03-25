@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\User;
@@ -28,7 +29,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
+class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface, LoggerAwareInterface {
 
 	/**
 	 * @var \stdClass
