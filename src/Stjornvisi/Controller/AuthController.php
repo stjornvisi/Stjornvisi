@@ -508,6 +508,12 @@ class AuthController extends AbstractActionController{
 			//	get user object/properties from facebook graph
 			$session = $helper->getSessionFromRedirect();
 
+			if( !$session ){
+				throw new \Exception(
+					"Facebook session was NULL, key[{$key}], url[{$helper->getReRequestUrl()}]"
+				);
+			}
+
 			$me = (new FacebookRequest(
 				$session, 'GET', '/me'
 			))->execute()->getGraphObject(GraphUser::className())->asArray();
@@ -569,11 +575,11 @@ class AuthController extends AbstractActionController{
 		//ERROR
 		//	There was a more generic error
 		//	When validation fails or other local issues
-		} catch(\Exception $ex) {
+		} /*catch(\Exception $ex) {
 			return new ViewModel(array(
 				'error' => $ex->getMessage()
 			));
-		}
+		}*/
 
     }
 
