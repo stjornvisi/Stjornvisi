@@ -510,7 +510,161 @@ class GroupController extends AbstractActionController{
 			return $this->notFoundAction();
         }
 	}
+	/**
+	 * Export chair and board list in CSV
+	 *
+	 * @return array|CsvModel|ViewModel
+	 */
+	public function exportBoardAction(){
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group');
+		$userService = $sm->get('Stjornvisi\Service\User');
 
+		//GROUP
+		//  group found
+		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
+			$auth = new AuthenticationService();
+			$access = $userService->getTypeByGroup(
+				( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+				$group->id
+			);
+			//ACCESS GRANTED
+			//  user has access
+			if( $access->is_admin || $access->type >= 1 ){
+
+				$csv = new Csv();
+				$csv->setHeader(array(
+					'Nafn',
+					'Netfang',
+					'Titill',
+					'Dags.',
+					'Hlutverk'
+				));
+				$csv->setName('stjornendalisti-'.date('Y-m-d-H:i').'.csv');
+				$resultset = $userService->getByGroup( $group->id, array(1,2)  );
+				foreach( $resultset as $result ){
+					$type = '';
+					switch($result->type){
+						case 0:
+							$type = 'Meðlimur';
+							break;
+						case 1:
+							$type = 'Stjórnandi';
+							break;
+						case 2:
+							$type = 'Formaður';
+							break;
+						default:
+							$type = 'Meðlimur';
+							break;
+					}
+					$csv->add(array(
+						'name' => $result->name,
+						'email' => $result->email,
+						'title' => $result->title,
+						'created_date' => $result->created_date->format('Y-m-d'),
+						'type' => $type
+					));
+				}
+
+				$model = new CsvModel();
+				$model->setData( $csv );
+
+				return $model;
+
+				//ACCESS DENIED
+				//  user has no access
+			}else{
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
+			}
+			//NO GROUP
+			//  group not found
+			//TODO 404
+		}else{
+			return $this->notFoundAction();
+		}
+	}
+
+	/**
+	 * Export chair and board list in CSV
+	 *
+	 * @return array|CsvModel|ViewModel
+	 */
+	public function exportChairAction(){
+		$sm = $this->getServiceLocator();
+		$groupService = $sm->get('Stjornvisi\Service\Group');
+		$userService = $sm->get('Stjornvisi\Service\User');
+
+		//GROUP
+		//  group found
+		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
+			$auth = new AuthenticationService();
+			$access = $userService->getTypeByGroup(
+				( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+				$group->id
+			);
+			//ACCESS GRANTED
+			//  user has access
+			if( $access->is_admin || $access->type >= 1 ){
+
+				$csv = new Csv();
+				$csv->setHeader(array(
+					'Nafn',
+					'Netfang',
+					'Titill',
+					'Dags.',
+					'Hlutverk'
+				));
+				$csv->setName('formannalisti-'.date('Y-m-d-H:i').'.csv');
+				$resultset = $userService->getByGroup( $group->id, 2  );
+				foreach( $resultset as $result ){
+					$type = '';
+					switch($result->type){
+						case 0:
+							$type = 'Meðlimur';
+							break;
+						case 1:
+							$type = 'Stjórnandi';
+							break;
+						case 2:
+							$type = 'Formaður';
+							break;
+						default:
+							$type = 'Meðlimur';
+							break;
+					}
+					$csv->add(array(
+						'name' => $result->name,
+						'email' => $result->email,
+						'title' => $result->title,
+						'created_date' => $result->created_date->format('Y-m-d'),
+						'type' => $type
+					));
+				}
+
+				$model = new CsvModel();
+				$model->setData( $csv );
+
+				return $model;
+
+				//ACCESS DENIED
+				//  user has no access
+			}else{
+				$this->getResponse()->setStatusCode(401);
+				$model = new ViewModel();
+				$model->setTemplate('error/401');
+				return $model;
+			}
+			//NO GROUP
+			//  group not found
+			//TODO 404
+		}else{
+			return $this->notFoundAction();
+		}
+	}
 	/**
 	 * Export events list in CSV
 	 *

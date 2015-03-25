@@ -305,13 +305,14 @@ class User extends AbstractService implements DataSourceAwareInterface {
 	 * that are of given type.
 	 *
 	 * @param int $id group id
-	 * @param int $type
+	 * @param int|array $type
 	 * @return array
 	 * @throws Exception
 	 */
 	public function getByGroup( $id, $type = null ){
 		try{
-			if( $type !== null ){
+
+			if( is_numeric( $type ) ){
 				$statement = $this->pdo->prepare("
 				  SELECT U.*, GhU.type FROM Group_has_User GhU
 				  JOIN `User` U ON (U.id = GhU.user_id)
@@ -322,6 +323,21 @@ class User extends AbstractService implements DataSourceAwareInterface {
 				$statement->execute(array(
 					'id' => (int)$id,
 					'type' => $type
+				));
+			}else if( is_array( $type ) ){
+				$typeList = implode(",",array_map(function($i){
+					return (int)$i;
+				},$type));
+
+				$statement = $this->pdo->prepare("
+				  SELECT U.*, GhU.type FROM Group_has_User GhU
+				  JOIN `User` U ON (U.id = GhU.user_id)
+				  WHERE GhU.group_id = :id
+				  AND GhU.type IN (".$typeList.")
+				  ORDER BY GhU.type DESC, U.name
+				");
+				$statement->execute(array(
+					'id' => (int)$id,
 				));
 			}else{
 				$statement = $this->pdo->prepare("
@@ -334,6 +350,7 @@ class User extends AbstractService implements DataSourceAwareInterface {
 					'id' => (int)$id
 				));
 			}
+
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
 			return array_map(function($i){
 				$i->created_date = new DateTime($i->created_date);

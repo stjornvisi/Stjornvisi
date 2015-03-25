@@ -204,6 +204,8 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 				<a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'allir'));?>" ><i class="icon-envelope"></i> allir</a>
 				<a href="<?=$this->url('hopur/send-mail',array('id'=>$this->group->url,'type'=>'formenn'));?>"><i class="icon-envelope"></i> stjórnendur</a>
 				<a href="<?=$this->url('hopur/user-export',array('id'=>$this->group->url));?>"><i class="icon-list"></i> meðlimalisti</a>
+				<a href="<?=$this->url('hopur/board-export',array('id'=>$this->group->url));?>"><i class="icon-list"></i> stjórnendalisti</a>
+				<a href="<?=$this->url('hopur/chair-export',array('id'=>$this->group->url));?>"><i class="icon-list"></i> formannalisti</a>
 				<a href="<?=$this->url('hopur/event-export',array('id'=>$this->group->url));?>"><i class="icon-list"></i> viðburðalisti</a>
 			</stjonvisi-control>
 		<?php endif;?>

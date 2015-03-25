@@ -447,6 +447,32 @@ return array(
                             ),
                         )
                     ),
+					'board-export' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/stjornendalisti',
+							'constraints' => array(
+								'id' => '[a-zA-Z][a-zA-Z0-9_-]*'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'export-board'
+							),
+						)
+					),
+					'chair-export' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/formannalisti',
+							'constraints' => array(
+								'id' => '[a-zA-Z][a-zA-Z0-9_-]*'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Group',
+								'action' => 'export-chair'
+							),
+						)
+					),
 					'event-export' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(
