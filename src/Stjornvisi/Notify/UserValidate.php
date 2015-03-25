@@ -101,6 +101,7 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 	 */
 	public function send(){
 
+		$this->logger->debug("User validate");
 		$pdo = new \PDO(
 			$this->dataStore['dns'],
 			$this->dataStore['user'],
@@ -115,6 +116,7 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 		//	get the user.
 		$user = $this->user->get( $this->params->user_id );
 
+		$this->logger->debug("User validate [{$user->email}]");
 
 		//VIEW
 		//	create and configure view
@@ -175,10 +177,10 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 				'parameters' => '',
 				'test' => true
 			);
+			$this->logger->debug("Confirm user validate [{$user->email}]");
 			$msg = new AMQPMessage( json_encode($result),
 				array('delivery_mode' => 2) # make message persistent
 			);
-
 			$this->logger->info("User validate email to [{$user->email}]");
 
 			$channel->basic_publish($msg, '', 'mail_queue');
