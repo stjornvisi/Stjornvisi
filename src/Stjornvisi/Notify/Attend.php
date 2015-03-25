@@ -113,6 +113,10 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 		$this->event->setDataSource( $pdo )
 			->setEventManager( $this->getEventManager() );
 
+		if( !isset($this->params->data->recipients) ){
+			return true;
+		}
+
 		//USER
 		//	user can be in the system or he can be
 		//	a guest, we have to prepare for both.
