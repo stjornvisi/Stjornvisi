@@ -60,13 +60,6 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 	protected $events;
 
 	/**
-	 * @param User $user
-	 */
-	public function __construct( User $user ){
-		$this->user = $user;
-	}
-
-	/**
 	 * Set logger to monitor.
 	 *
 	 * @param LoggerInterface $logger
