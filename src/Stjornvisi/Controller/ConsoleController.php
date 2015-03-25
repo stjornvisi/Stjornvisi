@@ -725,8 +725,11 @@ class ConsoleController extends AbstractActionController {
 						//	you can read all about what this does in \Stjornvisi\Mail\Attacher
 						//	but basically what this does is: convert a simple html string into a
 						//	multy-part mime object with embedded attachments.
+						$trackerId = ($messageObject->user_id)
+							? $messageObject->user_id
+							: '';
 						$attacher = new Attacher($message);
-						$message = $attacher->parse( "http://tracker.stjornvisi.is/spacer.gif?id={$messageObject->user_id}" );
+						$message = $attacher->parse( "http://tracker.stjornvisi.is/spacer.gif?id={$trackerId}" );
 
 						//DEBUG MODE
 						//	process started with --debug flag
