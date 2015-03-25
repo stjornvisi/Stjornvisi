@@ -298,7 +298,7 @@ class Module{
 				'Stjornvisi\Notify\Group'		=> 'Stjornvisi\Notify\Group',
 				'Stjornvisi\Notify\All'			=> 'Stjornvisi\Notify\All',
 				'Stjornvisi\Notify\Attend' 		=> 'Stjornvisi\Notify\Attend',
-				'Stjornvisi\Notify\UserValidate' => 'Stjornvisi\Notify\Attend',
+				'Stjornvisi\Notify\UserValidate' => 'Stjornvisi\Notify\UserValidate',
 
 				'Imagine\Image\Imagine'			=> 'Imagine\Gd\Imagine',
 
