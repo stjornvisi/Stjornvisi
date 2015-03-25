@@ -33,8 +33,6 @@ class IndexController extends AbstractActionController{
      */
     public function indexAction(){
 
-		throw new \Exception( "þetta er svona skilaboð",100, new \Exception("þetta er annað") );
-
         //SERVICES
         //  load all services
         $sm = $this->getServiceLocator();
