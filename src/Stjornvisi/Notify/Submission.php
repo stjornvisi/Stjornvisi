@@ -8,8 +8,8 @@
 
 namespace Stjornvisi\Notify;
 
-use Stjornvisi\Service\User as UserService;
-use Stjornvisi\Service\Group as GroupService;
+use Stjornvisi\Service\Group;
+use Stjornvisi\Service\User;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
@@ -17,6 +17,7 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
 use Psr\Log\LoggerInterface;
+use Zend\EventManager\EventManagerInterface;
 
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -25,7 +26,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class Submission implements NotifyInterface, QueueConnectionAwareInterface {
+class Submission implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
 
 	/**
 	 * @var \stdClass
@@ -55,16 +56,12 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface {
 	/**
 	 * @var array
 	 */
-	private $config;
+	private $dataStore;
 
 	/**
-	 * @param UserService $userService
-	 * @param GroupService $groupService
+	 * @var \Zend\EventManager\EventManager
 	 */
-	public function __construct( UserService $userService, GroupService $groupService ){
-		$this->user = $userService;
-		$this->group = $groupService;
-	}
+	protected $events;
 
 	/**
 	 * Set the data that is coming from the
@@ -97,8 +94,19 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface {
 	 */
 	public function send(){
 
-		$this->user->validateConnection();
-		$this->group->validateConnection();
+		$pdo = new \PDO(
+			$this->dataStore['dns'],
+			$this->dataStore['user'],
+			$this->dataStore['password'],
+			$this->dataStore['options']
+		);
+
+		$this->user	= new User();
+		$this->user->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
+		$this->group = new Group();
+		$this->group->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
 
 		//VALUE OBJECTS
 		//	use the services to get the values objects needed.
@@ -191,6 +199,10 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface {
 			if( $connection ){
 				$connection->close();
 			}
+
+			$pdo = null;
+			$this->user	= null;
+			$this->group = null;
 		}
 
 		return $this;
@@ -204,5 +216,38 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface {
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
 		return $this;
+	}
+
+
+	public function setDateStore($config){
+		$this->dataStore = $config;
+		return $this;
+	}
+
+	/**
+	 * Set EventManager
+	 *
+	 * @param EventManagerInterface $events
+	 * @return $this|void
+	 */
+	public function setEventManager(EventManagerInterface $events){
+		$events->setIdentifiers(array(
+			__CLASS__,
+			get_called_class(),
+		));
+		$this->events = $events;
+		return $this;
+	}
+
+	/**
+	 * Get event manager
+	 *
+	 * @return EventManagerInterface
+	 */
+	public function getEventManager(){
+		if (null === $this->events) {
+			$this->setEventManager(new EventManager());
+		}
+		return $this->events;
 	}
 } 

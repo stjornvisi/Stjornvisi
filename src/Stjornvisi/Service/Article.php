@@ -4,10 +4,16 @@ namespace Stjornvisi\Service;
 
 use \PDOException;
 use \DateTime;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class Article extends AbstractService {
+class Article extends AbstractService implements DataSourceAwareInterface {
 
 	const NAME = 'article';
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
 
     /**
      * Get one article.
@@ -387,5 +393,9 @@ class Article extends AbstractService {
 			));
 			throw new Exception("Can't update article author. author[{$id}]",0,$e);
 		}
+	}
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
 	}
 }

@@ -9,10 +9,11 @@
 namespace Stjornvisi\Auth;
 
 use \PDO;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 
-class Facebook implements AdapterInterface {
+class Facebook implements AdapterInterface, DataSourceAwareInterface {
 
     /**
      * @var \PDO
@@ -23,13 +24,6 @@ class Facebook implements AdapterInterface {
      * @var string
      */
     private $id;
-
-    /**
-     * @param PDO $pdo
-     */
-    public function __construct( PDO $pdo ){
-        $this->pdo = $pdo;
-    }
 
     /**
      * Set Facebook key.
@@ -71,4 +65,8 @@ class Facebook implements AdapterInterface {
             return new Result( Result::FAILURE_IDENTITY_AMBIGUOUS,null );
         }
     }
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
+	}
 }

@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
+use Zend\EventManager\EventManagerInterface;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
@@ -24,7 +25,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class Password implements NotifyInterface, QueueConnectionAwareInterface {
+class Password implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
 
 	/**
 	 * @var \stdClass
@@ -45,6 +46,13 @@ class Password implements NotifyInterface, QueueConnectionAwareInterface {
 	 * @var array
 	 */
 	private $config;
+
+	private $dataStore;
+
+	/**
+	 * @var \Zend\EventManager\EventManager
+	 */
+	protected $events;
 
 	/**
 	 * Set the data to send.
@@ -176,5 +184,38 @@ class Password implements NotifyInterface, QueueConnectionAwareInterface {
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
 		return $this;
+	}
+
+
+	public function setDateStore($config){
+		$this->dataStore = $config;
+		return $this;
+	}
+
+	/**
+	 * Set EventManager
+	 *
+	 * @param EventManagerInterface $events
+	 * @return $this|void
+	 */
+	public function setEventManager(EventManagerInterface $events){
+		$events->setIdentifiers(array(
+			__CLASS__,
+			get_called_class(),
+		));
+		$this->events = $events;
+		return $this;
+	}
+
+	/**
+	 * Get event manager
+	 *
+	 * @return EventManagerInterface
+	 */
+	public function getEventManager(){
+		if (null === $this->events) {
+			$this->setEventManager(new EventManager());
+		}
+		return $this->events;
 	}
 } 

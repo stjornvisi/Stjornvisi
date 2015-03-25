@@ -9,12 +9,13 @@
 namespace Stjornvisi\Notify;
 
 use Psr\Log\LoggerInterface;
-use Stjornvisi\Service\User as UserDAO;
-use Stjornvisi\Service\Event as EventDAO;
+use Stjornvisi\Service\Event;
+use Stjornvisi\Service\User;
 
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
+use Zend\EventManager\EventManagerInterface;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
@@ -27,7 +28,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class Attend implements NotifyInterface, QueueConnectionAwareInterface {
+class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
 
 	/**
 	 * @var \stdClass
@@ -59,17 +60,13 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 	 */
 	private $config;
 
+	private $dataStore;
+
+
 	/**
-	 * Create an instance to this handler.
-	 * It requires two services.
-	 *
-	 * @param UserDAO $user
-	 * @param EventDAO $event
+	 * @var \Zend\EventManager\EventManager
 	 */
-	public function __construct( UserDAO $user, EventDAO $event ){
-		$this->user = $user;
-		$this->event = $event;
-	}
+	protected $events;
 
 	/**
 	 * Set the data that is coming from the
@@ -102,8 +99,19 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 	 */
 	public function send(){
 
-		$this->user->validateConnection();
-		$this->event->validateConnection();
+		$pdo = new \PDO(
+			$this->dataStore['dns'],
+			$this->dataStore['user'],
+			$this->dataStore['password'],
+			$this->dataStore['options']
+		);
+
+		$this->user = new User();
+		$this->user->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
+		$this->event = new Event();
+		$this->event->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
 
 		//USER
 		//	user can be in the system or he can be
@@ -212,6 +220,11 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 			if( $connection ){
 				$connection->close();
 			}
+
+			$pdo = null;
+
+			$this->user = null;
+			$this->event = null;
 		}
 
 		return $this;
@@ -225,5 +238,38 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface {
 	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
 		$this->queueFactory = $factory;
 		return $this;
+	}
+
+
+	public function setDateStore($config){
+		$this->dataStore = $config;
+		return $this;
+	}
+
+	/**
+	 * Set EventManager
+	 *
+	 * @param EventManagerInterface $events
+	 * @return $this|void
+	 */
+	public function setEventManager(EventManagerInterface $events){
+		$events->setIdentifiers(array(
+			__CLASS__,
+			get_called_class(),
+		));
+		$this->events = $events;
+		return $this;
+	}
+
+	/**
+	 * Get event manager
+	 *
+	 * @return EventManagerInterface
+	 */
+	public function getEventManager(){
+		if (null === $this->events) {
+			$this->setEventManager(new EventManager());
+		}
+		return $this->events;
 	}
 }

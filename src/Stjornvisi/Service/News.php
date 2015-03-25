@@ -4,10 +4,17 @@ namespace Stjornvisi\Service;
 
 use \DateTime;
 use \PDOException;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class News extends AbstractService {
+class News extends AbstractService implements DataSourceAwareInterface {
 
 	const NAME = 'news';
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
+
     /**
      * Get one news entry.
      *
@@ -486,4 +493,8 @@ class News extends AbstractService {
 		}
 
     }
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
+	}
 }

@@ -7,49 +7,12 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 
-abstract class AbstractService implements EventManagerAwareInterface{
-
-	/**
-	 * @var \Stjornvisi\Lib\PDO
-	 */
-	protected $pdo;
+abstract class AbstractService implements ServiceEventManagerAwareInterface{
 
 	/**
 	 * @var \Zend\EventManager\EventManager
 	 */
 	protected $events;
-
-	/**
-	 * @var array
-	 */
-	private $connectionOptions = array();
-
-	/**
-	 * @param \Stjornvisi\Lib\PDO $pdo
-	 */
-	public function __construct( PDO $pdo ){
-        $this->pdo = $pdo;
-		$this->connectionOptions['dsn'] = $pdo->getDsn();
-		$this->connectionOptions['user'] = $pdo->getUsername();
-		$this->connectionOptions['password'] = $pdo->getPassword();
-		$this->connectionOptions['options'] = $pdo->getOptions();
-    }
-
-	/**
-	 *
-	 * @return $this
-	 */
-	public function validateConnection(){
-		if( !$this->pdo ){
-			$this->pdo = new PDO(
-				$this->connectionOptions['dsn'],
-				$this->connectionOptions['user'],
-				$this->connectionOptions['password'],
-				$this->connectionOptions['options']
-			);
-		}
-		return $this;
-	}
 
 	/**
 	 * Set EventManager

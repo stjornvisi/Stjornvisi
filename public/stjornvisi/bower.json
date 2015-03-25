@@ -22,6 +22,8 @@
     "Stickyfill": "~1.1.1",
     "photoswipe": "~4.0.5",
     "fluidbox": "~1.4.3",
-    "d3": "~3.5.5"
+    "d3": "~3.5.5",
+    "better-dateinput-polyfill": "~1.5.2",
+    "Chart.js": "~1.0.2"
   }
 }

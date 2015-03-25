@@ -10,27 +10,26 @@
 namespace Stjornvisi;
 
 use Imagine;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\SlackHandler;
+use Psr\Log\LoggerAwareInterface;
 use Stjornvisi\Lib\PDO;
 
 
 use Stjornvisi\Event\ActivityListener;
 use Stjornvisi\Event\ErrorEventListener;
+use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactory;
-use Stjornvisi\Service\Company;
+use Stjornvisi\Notify\DataStoreInterface;
+use Stjornvisi\Notify\NotifyEventManagerAwareInterface;
+
 use Stjornvisi\Service\Email;
-use Stjornvisi\Service\Event;
-use Stjornvisi\Service\Group;
-use Stjornvisi\Service\News;
-use Stjornvisi\Service\Board;
-use Stjornvisi\Service\Article;
-use Stjornvisi\Service\Page;
+
 use Stjornvisi\Auth\Adapter;
 use Stjornvisi\Auth\Facebook as AuthFacebook;
 use Stjornvisi\Service\JaMap;
-use Stjornvisi\Service\Skeleton;
+use Stjornvisi\Service\ServiceEventManagerAwareInterface;
 use Stjornvisi\Service\Conference;
-use Stjornvisi\Service\Values;
 use Stjornvisi\View\Helper\SubMenu;
 use Stjornvisi\View\Helper\User as UserMenu;
 use Stjornvisi\Event\ServiceEventListener;
@@ -42,15 +41,9 @@ use Stjornvisi\Form\NewUserIndividual;
 use Stjornvisi\Form\NewUserCredentials;
 use Stjornvisi\Form\Company as CompanyForm;
 
-use Stjornvisi\Notify\Submission as SubmissionNotify;
-use Stjornvisi\Notify\Event as EventNotify;
-use Stjornvisi\Notify\Password as PasswordNotify;
-use Stjornvisi\Notify\Group as GroupNotify;
-use Stjornvisi\Notify\All as AllNotify;
-use Stjornvisi\Notify\Attend as AttendNotify;
-
 use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Application;
 use Zend\Mvc\ModuleRouteListener;
@@ -65,9 +58,7 @@ use Zend\Session\Container;
 use Zend\EventManager\EventInterface;
 
 use Stjornvisi\Lib\Facebook;
-use Stjornvisi\Service\User;
 
-use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 use Zend\Mail\Transport\Smtp as SmtpTransport;
@@ -242,275 +233,236 @@ class Module{
 	 * @return array
 	 */
 	public function getServiceConfig(){
-        return array(
-            'factories' => array(
-                'Logger' => function($sm){
-					$log = new Logger('stjornvisi');
-					$log->pushHandler(new StreamHandler('php://stdout'));
-
-					$evn = getenv('APPLICATION_ENV') ?: 'production';
-					if( $evn == 'development' ){
-
-					}else{
-						$log->pushHandler(new StreamHandler('./data/log/system.log'));
-						$log->pushHandler(new StreamHandler('./data/log/info.log', Logger::INFO));
-						$log->pushHandler(new SlackHandler(
-							"xoxp-3745519896-3745519908-3921078470-26445a",
-							"#stjornvisi",
-							"Angry Hamster",
-							true,
-							null,
-							Logger::CRITICAL
-						));
+		return array(
+			'initializers' => array(
+				'DataSourceAwareInterface' => function($instance, $sm){
+					if( $instance instanceof \Stjornvisi\Lib\DataSourceAwareInterface ){
+						$instance->setDataSource( $sm->get('PDO') );
 					}
+				},
+				'QueueConnectionAwareInterface' => function($instance, $sm){
+					if( $instance instanceof QueueConnectionAwareInterface ){
+						$instance->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
+					}
+				},
+				'LoggerAwareInterface' => function($instance, $sm){
+					if( $instance instanceof LoggerAwareInterface ){
+						$instance->setLogger( $sm->get('Logger') );
+					}
+				},
+				'DataStoreInterface' => function($instance, $sm){
+					if( $instance instanceof DataStoreInterface ){
+						$instance->setDateStore( $sm->get('PDO\Config') );
+					}
+				},
+				'NotifyEventManagerAwareInterface' => function($instance, $sm){
+					if( $instance instanceof NotifyEventManagerAwareInterface ){
+						$instance->setEventManager( $sm->get('ServiceEventManager') );
+					}
+				},
+				'ServiceEventManagerAwareInterface' => function($instance, $sm){
+					if( $instance instanceof ServiceEventManagerAwareInterface ){
+						$instance->setEventManager( $sm->get('ServiceEventManager') );
+					}
+					/**
+					if ($instance instanceof EventManagerAwareInterface) {
+						$eventManager = $instance->getEventManager();
 
-					return $log;
-                },
-                'ServiceEventManager' => function($sm){
-                    $logger = $sm->get('Logger');
-                    $manager = new EventManager();
+						if ($eventManager instanceof EventManagerInterface) {
+							$eventManager->setSharedManager($serviceLocator->get('SharedEventManager'));
+						} else {
+							$instance->setEventManager($serviceLocator->get('EventManager'));
+						}
+					}
+					 */
+				},
+			),
+			'invokables' => array(
+				'Stjornvisi\Service\User' 		=> 'Stjornvisi\Service\User',
+				'Stjornvisi\Service\Company' 	=> 'Stjornvisi\Service\Company',
+				'Stjornvisi\Service\Event' 		=> 'Stjornvisi\Service\Event',
+				'Stjornvisi\Service\Group' 		=> 'Stjornvisi\Service\Group',
+				'Stjornvisi\Service\News' 		=> 'Stjornvisi\Service\News',
+				'Stjornvisi\Service\Board' 		=> 'Stjornvisi\Service\Board',
+				'Stjornvisi\Service\Article' 	=> 'Stjornvisi\Service\Article',
+				'Stjornvisi\Service\Page' 		=> 'Stjornvisi\Service\Page',
+				'Stjornvisi\Service\Values' 	=> 'Stjornvisi\Service\Values',
+				'Stjornvisi\Service\Conference' => 'Stjornvisi\Service\Conference',
+				'Stjornvisi\Service\Skeleton' 	=> 'Stjornvisi\Service\Skeleton',
 
-					$manager->attach( new ErrorEventListener($logger) );
-					$manager->attach( new ServiceEventListener($logger) );
-					$activityListener = new ActivityListener($logger);
-					$activityListener->setQueueConnectionFactory(
-						$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-					);
-					$manager->attach( $activityListener );
-                    return $manager;
-                },
-                'Stjornvisi\Service\Values' => function($sm){
-                    return new Values();
-                },
-                'Stjornvisi\Service\Map' => function($sm){
-                    return new JaMap( new Client() );
-                },
-                'Stjornvisi\Auth\Adapter' => function($sm){
-                    return new Adapter($sm->get('PDO'));
-                 },
-                'Stjornvisi\Auth\Facebook' => function($sm){
-                        return new AuthFacebook($sm->get('PDO'));
-                },
-				'PDO\Config' => function( $sm ){
+				'Stjornvisi\Notify\Submission' 	=> 'Stjornvisi\Notify\Submission',
+				'Stjornvisi\Notify\Event'		=> 'Stjornvisi\Notify\Event',
+				'Stjornvisi\Notify\Password' 	=> 'Stjornvisi\Notify\Password',
+				'Stjornvisi\Notify\Group'		=> 'Stjornvisi\Notify\Group',
+				'Stjornvisi\Notify\All'			=> 'Stjornvisi\Notify\All',
+				'Stjornvisi\Notify\Attend' 		=> 'Stjornvisi\Notify\Attend',
+				'Stjornvisi\Notify\UserValidate' => 'Stjornvisi\Notify\Attend',
+
+				'Imagine\Image\Imagine'			=> 'Imagine\Gd\Imagine',
+
+				'Stjornvisi\Auth\Adapter'		=> 'Stjornvisi\Auth\Adapter',
+				'Stjornvisi\Auth\Facebook'		=> 'Stjornvisi\Auth\Facebook',
+
+			),
+			'aliases' => array(
+				'UserService' => 'Stjornvisi\Service\User',
+				'GroupService' => 'Stjornvisi\Service\Group'
+			),
+			'factories' => array(
+				'Logger' => function($sm){
+						$log = new Logger('stjornvisi');
+						$log->pushHandler(new StreamHandler('php://stdout'));
+
+						$evn = getenv('APPLICATION_ENV') ?: 'production';
+						if( $evn == 'development' ){
+
+						}else{
+
+							$handler = new StreamHandler('./data/log/error.json', Logger::ERROR);
+							$handler->setFormatter( new \Stjornvisi\Lib\JsonFormatter() );
+							$log->pushHandler($handler);
+
+							$handler = new StreamHandler('./data/log/system.log');
+							$handler->setFormatter( new JsonFormatter() );
+							$log->pushHandler($handler);
+
+							$log->pushHandler(new SlackHandler(
+								"xoxp-3745519896-3745519908-3921078470-26445a",
+								"#stjornvisi",
+								"Angry Hamster",
+								true,
+								null,
+								Logger::CRITICAL
+							));
+						}
+
+						return $log;
+					},
+				'ServiceEventManager' => function($sm){
+
+						$logger = $sm->get('Logger');
+						$manager = new EventManager();
+
+						$manager->attach( new ErrorEventListener($logger) );
+						$manager->attach( new ServiceEventListener($logger) );
+						$activityListener = new ActivityListener($logger);
+						$activityListener->setQueueConnectionFactory(
+							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
+						);
+						$manager->attach( $activityListener );
+						return $manager;
+				},
+				'Stjornvisi\Service\Map' => function($sm){
+						return new JaMap( new Client() );
+				},
+				'Stjornvisi\Service\Email' => function($sm){
 					$config = $sm->get('config');
-					return array(
-						'dns' => $config['db']['dns'],
-						'user' => $config['db']['user'],
-						'password' => $config['db']['password'],
-						'options' => array(
+					$obj = new Email();
+					$obj->setDataSource(new PDO(
+						$config['tracker']['dns'],
+						$config['tracker']['user'],
+						$config['tracker']['password'],
+						array(
 							PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
 							PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 							PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-							//PDO::ATTR_EMULATE_PREPARES => false,
 						)
-					);
+					));
+					return $obj;
+
 				},
-                'PDO' => function($sm){
-					$config = $sm->get('PDO\Config');
-					return new \Stjornvisi\Lib\PDO(
-						$config['dns'],
-						$config['user'],
-						$config['password'],
-						$config['options']
-					);
-                 },
-				'Imagine\Image\Imagine' => function(){
-						return new Imagine\Gd\Imagine();
-				},
-                'Stjornvisi\Service\User' => function($sm){
-                        $obj = new User( $sm->get('PDO') );
-                        $obj->setEventManager( $sm->get('ServiceEventManager') );
-                        return $obj;
-                },
-                'Stjornvisi\Service\Company' => function($sm){
-                        $obj = new Company( $sm->get('PDO') );
-                        $obj->setEventManager( $sm->get('ServiceEventManager') );
-                        return $obj;
-                },
-                'Stjornvisi\Service\Event' => function($sm){
-                        $obj = new Event( $sm->get('PDO') );
-                        $obj->setEventManager( $sm->get('ServiceEventManager') );
-                        return $obj;
-                },
-                'Stjornvisi\Service\Group' => function($sm){
-                        $obj = new Group( $sm->get('PDO') );
-                        $obj->setEventManager( $sm->get('ServiceEventManager') );
-                        return $obj;
-                },
-                'Stjornvisi\Service\News' => function($sm){
-                        $obj = new News( $sm->get('PDO') );
-                        $obj->setEventManager( $sm->get('ServiceEventManager') );
-                        return $obj;
-                },
-				'Stjornvisi\Service\Board' => function($sm){
-						$obj = new Board( $sm->get('PDO') );
-						$obj->setEventManager( $sm->get('ServiceEventManager') );
-						return $obj;
-				},
-                'Stjornvisi\Service\Article' => function($sm){
-                        $obj = new Article( $sm->get('PDO') );
-                        $obj->setEventManager( $sm->get('ServiceEventManager') );
-                        return $obj;
-                },
-				'Stjornvisi\Service\Email' => function($sm){
+				'PDO\Config' => function( $sm ){
 						$config = $sm->get('config');
-						$obj = new Email(
-							new \Stjornvisi\Lib\PDO(
-
-								$config['tracker']['dns'],
-								$config['tracker']['user'],
-								$config['tracker']['password'],
-								array(
-									PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-									PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-									PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-								)
-
+						return array(
+							'dns' => $config['db']['dns'],
+							'user' => $config['db']['user'],
+							'password' => $config['db']['password'],
+							'options' => array(
+								PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+								PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+								PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
 							)
 						);
-						$obj->setEventManager( $sm->get('ServiceEventManager') );
-						return $obj;
 					},
-				'Stjornvisi\Service\Page' => function($sm){
-						$obj = new Page( $sm->get('PDO') );
-						$obj->setEventManager( $sm->get('ServiceEventManager') );
-						return $obj;
-				},
-				'Stjornvisi\Notify\Submission' => function($sm){
-						$obj = new SubmissionNotify(
-							$sm->get('Stjornvisi\Service\User'),
-							$sm->get('Stjornvisi\Service\Group')
+				'PDO' => function($sm){
+						$config = $sm->get('PDO\Config');
+						return new PDO(
+							$config['dns'],
+							$config['user'],
+							$config['password'],
+							$config['options']
 						);
-						return $obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
-							->setLogger( $sm->get('Logger') );
-				},
-				'Stjornvisi\Notify\Event' => function($sm){
-						$obj = new EventNotify(
-							$sm->get('Stjornvisi\Service\User'),
-							$sm->get('Stjornvisi\Service\Event')
-						);
-						return $obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
-							->setLogger( $sm->get('Logger') );
-				},
-				'Stjornvisi\Notify\Password' => function($sm){
-						$obj = new PasswordNotify();
-						return $obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
-							->setLogger( $sm->get('Logger') );
-				},
-				'Stjornvisi\Notify\Group' => function($sm){
-						$obj = new GroupNotify(
-							$sm->get('Stjornvisi\Service\User'),
-							$sm->get('Stjornvisi\Service\Group')
-						);
-						return $obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
-							->setLogger( $sm->get('Logger') );
-				},
-				'Stjornvisi\Notify\All' => function($sm){
-						$obj = new AllNotify(
-							$sm->get('Stjornvisi\Service\User')
-						);
-						return $obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
-							->setLogger( $sm->get('Logger') );
-				},
-				'Stjornvisi\Notify\Attend' => function($sm){
-						$obj = new AttendNotify(
-							$sm->get('Stjornvisi\Service\User'),
-							$sm->get('Stjornvisi\Service\Event')
-						);
-						return $obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
-							->setLogger( $sm->get('Logger') );
-				},
-				'Stjornvisi\Notify\UserValidate' => function($sm){
-						$obj = new \Stjornvisi\Notify\UserValidate(
-							$sm->get('Stjornvisi\Service\User')
-						);
-						return $obj->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory'))
-							->setLogger( $sm->get('Logger') );
-				},
+					},
 				'MailTransport' => function($sm){
 
-					$evn = getenv('APPLICATION_ENV') ?: 'production';
+						$evn = getenv('APPLICATION_ENV') ?: 'production';
 
-					if( $evn == 'development' ){
-						$transport = new FileTransport();
-						$transport->setOptions(new FileOptions(array(
-							'path'      => './data/',
-							'callback'  => function (FileTransport $transport) {
-									return 'Message_' . microtime(true) . '.eml';
-								},
-						)));
-						return $transport;
-					}else{
-						$transport = new SmtpTransport();
-						//$transport->setOptions(new SmtpOptions(array(
-						//	'name'              => 'localhost.localdomain',
-						//	'host'              => '127.0.0.1',
-						//)));
-						$protocol = new \Zend\Mail\Protocol\Smtp();
-						$transport->setConnection( $protocol );
-						return $transport;
-					}
-				},
+						if( $evn == 'development' ){
+							$transport = new FileTransport();
+							$transport->setOptions(new FileOptions(array(
+								'path'      => './data/',
+								'callback'  => function (FileTransport $transport) {
+										return 'Message_' . microtime(true) . '.eml';
+									},
+							)));
+							return $transport;
+						}else{
+							$transport = new SmtpTransport();
+							$protocol = new \Zend\Mail\Protocol\Smtp();
+							$transport->setConnection( $protocol );
+							return $transport;
+						}
+					},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
-					$config = $sm->get('config');
-					$queue = new QueueConnectionFactory();
-					$queue->setConfig($config['queue']);
-					return $queue;
-				},
+						$config = $sm->get('config');
+						$queue = new QueueConnectionFactory();
+						$queue->setConfig($config['queue']);
+						return $queue;
+					},
 
 				'Stjornvisi\Form\NewUserCompanySelect' => function($sm){
-					return new NewUserCompanySelect(
-						$sm->get('Stjornvisi\Service\Company')
-					);
-				},
+						return new NewUserCompanySelect(
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
 				'Stjornvisi\Form\NewUserCompany' => function($sm){
-					return new NewUserCompany(
-						$sm->get('Stjornvisi\Service\Values'),
-						$sm->get('Stjornvisi\Service\Company')
-					);
-				},
+						return new NewUserCompany(
+							$sm->get('Stjornvisi\Service\Values'),
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
 				'Stjornvisi\Form\NewUserUniversitySelect' => function($sm){
-					return new NewUserUniversitySelect(
-						$sm->get('Stjornvisi\Service\Company')
-					);
-				},
+						return new NewUserUniversitySelect(
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
 				'Stjornvisi\Form\NewUserIndividual' => function($sm){
-					return new NewUserIndividual(
-						$sm->get('Stjornvisi\Service\Values'),
-						$sm->get('Stjornvisi\Service\Company')
-					);
-				},
+						return new NewUserIndividual(
+							$sm->get('Stjornvisi\Service\Values'),
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
 				'Stjornvisi\Form\NewUserCredentials' => function($sm){
-					return new NewUserCredentials(
-						$sm->get('Stjornvisi\Service\Values'),
-						$sm->get('Stjornvisi\Service\User')
-					);
-				},
+						return new NewUserCredentials(
+							$sm->get('Stjornvisi\Service\Values'),
+							$sm->get('Stjornvisi\Service\User')
+						);
+					},
 				'Stjornvisi\Form\Company' => function($sm){
-					return new CompanyForm(
-						$sm->get('Stjornvisi\Service\Values'),
-						$sm->get('Stjornvisi\Service\Company')
-					);
-				},
+						return new CompanyForm(
+							$sm->get('Stjornvisi\Service\Values'),
+							$sm->get('Stjornvisi\Service\Company')
+						);
+					},
 
-				'Stjornvisi\Service\Skeleton' => function($sm){
-					return new Skeleton();
-				},
-				'Stjornvisi\Service\Conference' => function($sm){
-					$obj = new Conference( $sm->get('PDO') );
-					$obj->setEventManager( $sm->get('ServiceEventManager') );
-					return $obj;
-				},
 
-            )
-        );
+			),
+			'shared' => array(
+				'Stjornvisi\Service\Email' => false
+			),
+		);
     }
 
 	/**
@@ -526,15 +478,16 @@ class Module{
 				'imgelement'     => 'Stjornvisi\Form\View\Helper\ImgElement',
 				'fileelement'     => 'Stjornvisi\Form\View\Helper\FileElement',
 			),
-			'factories' => array(
+			'factories' => [
 				'subMenu' => function($sm){
+					/** @var $sm \Zend\View\HelperPluginManager */
 					return new SubMenu(
-						$sm->getServiceLocator()->get('Stjornvisi\Service\Group'),
-						$sm->getServiceLocator()->get('Stjornvisi\Service\User'),
+						$sm->getServiceLocator()->get('GroupService'),
+						$sm->getServiceLocator()->get('UserService'),
 						new AuthenticationService()
 					);
 				}
-			),
+			],
 		);
 	}
 

@@ -4,10 +4,16 @@ namespace Stjornvisi\Service;
 
 use DateTime;
 use PDOException;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class Company extends AbstractService {
+class Company extends AbstractService implements DataSourceAwareInterface {
 
 	const NAME = 'company';
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
 
     /**
      * Get one company.
@@ -463,4 +469,8 @@ class Company extends AbstractService {
 		}
 
     }
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
+	}
 }

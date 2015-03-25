@@ -9,8 +9,14 @@
 namespace Stjornvisi\Service;
 
 use \PDOException;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class Page extends AbstractService {
+class Page extends AbstractService implements DataSourceAwareInterface {
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
 
 	/**
 	 * Get one page.
@@ -95,5 +101,9 @@ class Page extends AbstractService {
 			));
 			throw new Exception("Can't update page item. page:[{$id}]",0,$e);
 		}
+	}
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
 	}
 } 

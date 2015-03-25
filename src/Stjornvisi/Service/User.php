@@ -4,11 +4,17 @@ namespace Stjornvisi\Service;
 
 use \DateTime;
 use \PDOException;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class User extends AbstractService{
+class User extends AbstractService implements DataSourceAwareInterface {
 
 	const REGISTER = 'user.register';
 	const NAME = 	'user.create';
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
 
 	/**
 	 * Get one user.
@@ -1075,5 +1081,10 @@ class User extends AbstractService{
 			));
 			throw new Exception("Can't update user[$id]. " . $e->getMessage() ,0,$e);
 		}
+	}
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
+		return $this;
 	}
 }

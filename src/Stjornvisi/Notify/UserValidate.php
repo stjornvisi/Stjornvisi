@@ -17,6 +17,7 @@ use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
+use Zend\EventManager\EventManagerInterface;
 
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -25,7 +26,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
+class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
 
 	/**
 	 * @var  \Psr\Log\LoggerInterface
@@ -51,6 +52,13 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 	 * @var array
 	 */
 	private $config;
+
+	private $dataStore;
+
+	/**
+	 * @var \Zend\EventManager\EventManager
+	 */
+	protected $events;
 
 	/**
 	 * @param User $user
@@ -94,7 +102,15 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 	 */
 	public function send(){
 
-		$this->user->validateConnection();
+		$pdo = new \PDO(
+			$this->dataStore['dns'],
+			$this->dataStore['user'],
+			$this->dataStore['password'],
+			$this->dataStore['options']
+		);
+		$this->user = new User();
+		$this->user->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
 
 		//USER
 		//	get the user.
@@ -181,6 +197,9 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 			if( $connection ){
 				$connection->close();
 			}
+
+			$pdo = null;
+			$this->user = null;
 		}
 
 		return $this;
@@ -196,4 +215,35 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface {
 		return $this;
 	}
 
+	public function setDateStore($config){
+		$this->dataStore = $config;
+		return $this;
+	}
+
+	/**
+	 * Set EventManager
+	 *
+	 * @param EventManagerInterface $events
+	 * @return $this|void
+	 */
+	public function setEventManager(EventManagerInterface $events){
+		$events->setIdentifiers(array(
+			__CLASS__,
+			get_called_class(),
+		));
+		$this->events = $events;
+		return $this;
+	}
+
+	/**
+	 * Get event manager
+	 *
+	 * @return EventManagerInterface
+	 */
+	public function getEventManager(){
+		if (null === $this->events) {
+			$this->setEventManager(new EventManager());
+		}
+		return $this->events;
+	}
 }

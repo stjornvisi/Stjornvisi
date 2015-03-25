@@ -6,11 +6,17 @@ use PDOException;
 use \InvalidArgumentException;
 use \DateTime;
 use Stjornvisi\Lib\Time;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class Event extends AbstractService {
+class Event extends AbstractService implements DataSourceAwareInterface {
 
 	const NAME = "event";
 	const GALLERY_NAME = "gallery";
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
 
     /**
      * Get on event.
@@ -1674,5 +1680,10 @@ class Event extends AbstractService {
 			));
 			throw new Exception("Can't read registration by day of month",0,$e);
 		}
+	}
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
+		return $this;
 	}
 }

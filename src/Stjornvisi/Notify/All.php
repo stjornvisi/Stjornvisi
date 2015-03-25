@@ -8,9 +8,11 @@
 
 namespace Stjornvisi\Notify;
 
-use Stjornvisi\Service\User as UserDAO;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
+use Stjornvisi\Lib\QueueConnectionAwareInterface;
 
+use Stjornvisi\Service\User;
+use Zend\EventManager\EventManagerInterface;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
@@ -26,7 +28,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class All implements NotifyInterface {
+class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
 
 	/**
 	 * @var \stdClass
@@ -53,14 +55,12 @@ class All implements NotifyInterface {
 	 */
 	private $config;
 
+	private $dataStore;
+
 	/**
-	 * Create handler.
-	 *
-	 * @param UserDAO $user
+	 * @var \Zend\EventManager\EventManager
 	 */
-	public function __construct( UserDAO $user ){
-		$this->userDAO = $user;
-	}
+	protected $events;
 
 	/**
 	 * The the data to be passed to the mail process.
@@ -98,7 +98,16 @@ class All implements NotifyInterface {
 	 */
 	public function send(){
 
-		$this->userDAO->validateConnection();
+		$pdo = new \PDO(
+			$this->dataStore['dns'],
+			$this->dataStore['user'],
+			$this->dataStore['password'],
+			$this->dataStore['options']
+		);
+
+		$this->userDAO = new User();
+		$this->userDAO->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
 
 		$emailId = md5( time() + rand(0,1000) );
 
@@ -213,6 +222,9 @@ class All implements NotifyInterface {
 			if( $connection ){
 				$connection->close();
 			}
+
+			$pdo = null;
+			$this->userDAO = null;
 		}
 
 		return $this;
@@ -230,4 +242,34 @@ class All implements NotifyInterface {
 		return $this;
 	}
 
+	public function setDateStore($config){
+		$this->dataStore = $config;
+	}
+
+	/**
+	 * Set EventManager
+	 *
+	 * @param EventManagerInterface $events
+	 * @return $this|void
+	 */
+	public function setEventManager(EventManagerInterface $events){
+		$events->setIdentifiers(array(
+			__CLASS__,
+			get_called_class(),
+		));
+		$this->events = $events;
+		return $this;
+	}
+
+	/**
+	 * Get event manager
+	 *
+	 * @return EventManagerInterface
+	 */
+	public function getEventManager(){
+		if (null === $this->events) {
+			$this->setEventManager(new EventManager());
+		}
+		return $this->events;
+	}
 }

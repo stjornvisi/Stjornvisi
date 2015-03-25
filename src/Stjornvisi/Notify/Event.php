@@ -8,17 +8,16 @@
 
 namespace Stjornvisi\Notify;
 
-use Stjornvisi\Service\User as UserService;
-use Stjornvisi\Service\Event as EventService;
-
 use Psr\Log\LoggerInterface;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
+use Stjornvisi\Service\User;
 
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
+use Zend\EventManager\EventManagerInterface;
 
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -28,7 +27,7 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class Event implements NotifyInterface, QueueConnectionAwareInterface {
+class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
 
 	/**
 	 * @var \stdClass
@@ -60,17 +59,12 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 	 */
 	private $config;
 
+	private $dataStore;
+
 	/**
-	 * Create an instance of this handler. It requires
-	 * two services.
-	 *
-	 * @param UserService $userService
-	 * @param EventService $eventService
+	 * @var \Zend\EventManager\EventManager
 	 */
-	public function __construct( UserService $userService, EventService $eventService ){
-		$this->user = $userService;
-		$this->event = $eventService;
-	}
+	protected $events;
 
 	/**
 	 * Set the data that is coming from the
@@ -103,8 +97,19 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 	 */
 	public function send(){
 
-		$this->user->validateConnection();
-		$this->event->validateConnection();
+		$pdo = new \PDO(
+			$this->dataStore['dns'],
+			$this->dataStore['user'],
+			$this->dataStore['password'],
+			$this->dataStore['options']
+		);
+
+		$this->user = new User();
+		$this->user->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
+		$this->event = new \Stjornvisi\Service\Event();
+		$this->event->setDataSource( $pdo )
+			->setEventManager( $this->getEventManager() );
 
 		$emailId = md5( time() + rand(0,1000) );
 
@@ -227,6 +232,11 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 			if($connection){
 				$connection->close();
 			}
+
+			$pdo = null;
+
+			$this->user = null;
+			$this->event = null;
 		}
 		return $this;
 	}
@@ -242,4 +252,35 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface {
 		return $this;
 	}
 
+	public function setDateStore($config){
+		$this->dataStore = $config;
+		return $this;
+	}
+
+	/**
+	 * Set EventManager
+	 *
+	 * @param EventManagerInterface $events
+	 * @return $this|void
+	 */
+	public function setEventManager(EventManagerInterface $events){
+		$events->setIdentifiers(array(
+			__CLASS__,
+			get_called_class(),
+		));
+		$this->events = $events;
+		return $this;
+	}
+
+	/**
+	 * Get event manager
+	 *
+	 * @return EventManagerInterface
+	 */
+	public function getEventManager(){
+		if (null === $this->events) {
+			$this->setEventManager(new EventManager());
+		}
+		return $this->events;
+	}
 } 

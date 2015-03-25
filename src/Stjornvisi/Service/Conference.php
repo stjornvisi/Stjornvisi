@@ -6,11 +6,21 @@
  * Time: 19:03
  */
 namespace Stjornvisi\Service;
+
 use \PDOException;
 use \DateTime;
 use Stjornvisi\Lib\Time;
-class Conference extends AbstractService {
+use Stjornvisi\Lib\DataSourceAwareInterface;
+
+class Conference extends AbstractService implements DataSourceAwareInterface {
+
 	const NAME = 'conference';
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
+
 	/**
 	 * Get one conference.
 	 *
@@ -393,5 +403,9 @@ class Conference extends AbstractService {
 			throw new Exception("Can't register user to event. ".
 				"conference:[{$conference_id}], user:[{$user_id}], type:[{$type}]",0,$e);
 		}
+	}
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
 	}
 } 

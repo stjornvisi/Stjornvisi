@@ -9,10 +9,11 @@
 namespace Stjornvisi\Auth;
 
 use \PDO;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 
-class Adapter implements AdapterInterface {
+class Adapter implements AdapterInterface, DataSourceAwareInterface {
     /**
      * @var \PDO
      */
@@ -27,13 +28,6 @@ class Adapter implements AdapterInterface {
      * @var string
      */
     private $password;
-
-    /**
-     * @param PDO $pdo
-     */
-    public function __construct( PDO $pdo ){
-        $this->pdo = $pdo;
-    }
 
     /**
      * Performs an authentication attempt
@@ -75,4 +69,8 @@ class Adapter implements AdapterInterface {
         $this->username = $username;
         $this->password = $password;
     }
-} 
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
+	}
+}

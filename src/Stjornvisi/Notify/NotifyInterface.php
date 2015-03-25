@@ -8,9 +8,9 @@
 
 namespace Stjornvisi\Notify;
 
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
 
-interface NotifyInterface {
+interface NotifyInterface extends LoggerAwareInterface {
 
 	/**
 	 * Set the data that is coming from the
@@ -28,13 +28,5 @@ interface NotifyInterface {
 	 * @return NotifyInterface
 	 */
 	public function send();
-
-	/**
-	 * Set logger instance
-	 *
-	 * @param \Psr\Log\LoggerInterface
-	 * @return NotifyInterface
-	 */
-	public function setLogger(LoggerInterface $logger);
 
 }

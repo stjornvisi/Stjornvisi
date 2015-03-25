@@ -9,7 +9,9 @@
 namespace Stjornvisi\Controller;
 
 
+use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Mail\Attacher;
+use Stjornvisi\Notify\Null;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ProgressBar\Adapter\Console;
@@ -586,6 +588,8 @@ class ConsoleController extends AbstractActionController {
 				//	and set up a default handler that does nothing
 				$message = json_decode( $msg->body );
 
+				$handler = null;
+
 				try{
 					$handler = $sm->get($message->action);
 					$logger->info("Notify message [{$message->action}] obtained");
@@ -603,6 +607,8 @@ class ConsoleController extends AbstractActionController {
 						$logger->critical($e->getMessage(),$e->getTrace());
 						$e = $e->getPrevious();
 					}
+				}finally{
+					$handler = null;
 				}
 
 			};// end of - MAGIC
@@ -618,25 +624,25 @@ class ConsoleController extends AbstractActionController {
 			$connection->close();
 
 		}catch (\PhpAmqpLib\Exception\AMQPOutOfBoundsException $e){
-			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			$logger->alert( "Can't start NotifyQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPProtocolException $e){
-			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			$logger->alert( "Can't start NotifyQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPRuntimeException $e){
-			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			$logger->alert( "Can't start NotifyQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPConnectionException $e){
-			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			$logger->alert( "Can't start NotifyQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPChannelException $e){
-			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			$logger->alert( "Can't start NotifyQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPTimeoutException $e){
-			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			$logger->alert( "Can't start NotifyQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\PhpAmqpLib\Exception\AMQPException $e){
-			$logger->alert( "Can't start MailQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
+			$logger->alert( "Can't start NotifyQueue: ".get_class($e).": {$e->getMessage()}", $e->getTrace() );
 			exit(1);
 		}catch (\Exception $e){
 			while($e){
@@ -669,7 +675,6 @@ class ConsoleController extends AbstractActionController {
 
 		$sm = $this->getServiceLocator();
 		$logger = $sm->get('Logger'); /** @var $logger \Zend\Log\Logger */
-		$emailService = $sm->get('Stjornvisi\Service\Email'); /** @var $emailService \Stjornvisi\Service\Email */
 
 		try{
 			$connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
@@ -684,7 +689,7 @@ class ConsoleController extends AbstractActionController {
 			//THE MAGIC
 			//	here is where everything happens. the rest of the code
 			//	is just connect and deconnect to RabbitMQ
-			$callback = function($msg) use ($logger, $sm, $classname, $emailService){
+			$callback = function($msg) use ($logger, $sm, $classname){
 
 				//JSON VALID
 				//	fist make sure that the JSON is valid
@@ -763,7 +768,9 @@ class ConsoleController extends AbstractActionController {
 								}else{
 
 									try{
-										$emailService->validateConnection()->create(array(
+										$emailService = $sm->get('Stjornvisi\Service\Email');
+										/** @var $emailService \Stjornvisi\Service\Email */
+										$emailService->create(array(
 											'subject' => $messageObject->subject,
 											'body' => $messageObject->body,
 											'hash' => $messageObject->id,
@@ -772,8 +779,12 @@ class ConsoleController extends AbstractActionController {
 											'entity_id' => $messageObject->entity_id,
 											'params' => $messageObject->parameters,
 										));
+										$emailService = null;
 									}catch (\Exception $e){
-										$logger->critical( $e->getMessage(),$e->getTrace() );
+										while($e){
+											$logger->critical( $e->getMessage() ,$e->getTrace() );
+											$e = $e->getPrevious();
+										}
 									}
 
 

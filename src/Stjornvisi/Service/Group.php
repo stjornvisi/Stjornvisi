@@ -5,10 +5,17 @@ namespace Stjornvisi\Service;
 use \PDOException;
 use \DateTime;
 use Stjornvisi\Lib\Time;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class Group extends AbstractService {
+class Group extends AbstractService implements DataSourceAwareInterface {
 
 	const NAME = 'group';
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
+
     /**
      * Get one group by ID.
      *
@@ -649,5 +656,10 @@ class Group extends AbstractService {
 		}catch (PDOException $e){
 
 		}
+	}
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
+		return $this;
 	}
 }

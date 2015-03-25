@@ -3,8 +3,14 @@
 namespace Stjornvisi\Service;
 
 use \PDOException;
+use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class Board extends AbstractService {
+class Board extends AbstractService implements DataSourceAwareInterface {
+
+	/**
+	 * @var \PDO
+	 */
+	private $pdo;
 
 	/**
 	 * Get board members by period.
@@ -329,5 +335,9 @@ class Board extends AbstractService {
 			));
 			throw new Exception("Can't get member connection. connection:[{$id}]",0,$e);
 		}
+	}
+
+	public function setDataSource(\PDO $pdo){
+		$this->pdo = $pdo;
 	}
 }
