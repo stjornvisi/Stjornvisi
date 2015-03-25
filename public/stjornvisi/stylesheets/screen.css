@@ -2074,6 +2074,7 @@ nav[role=navigation] .categories a.categories__config:before {
   /* line 509, ../sass/components/_layout.scss */
   nav[role=navigation] {
     transform: translate3d(-100%, 0, 0);
+    -webkit-transform: translate3d(-100%, 0, 0);
     		/*
     			display: none;
     			position: fixed;
@@ -2107,29 +2108,29 @@ nav[role=navigation] .categories a.categories__config:before {
 /**
  *
  */
-/* line 549, ../sass/components/_layout.scss */
+/* line 551, ../sass/components/_layout.scss */
 body.state-login main[role=main],
 body.state-login footer[role=footer] {
   margin-left: 80px;
 }
 @media (max-width: 480px) {
-  /* line 554, ../sass/components/_layout.scss */
+  /* line 556, ../sass/components/_layout.scss */
   body.state-login main[role=main],
   body.state-login footer[role=footer] {
     margin-left: 0;
   }
 }
-/* line 567, ../sass/components/_layout.scss */
+/* line 569, ../sass/components/_layout.scss */
 body.state-login.state-open {
   overflow: hidden;
 }
-/* line 574, ../sass/components/_layout.scss */
+/* line 576, ../sass/components/_layout.scss */
 body.state-login.state-open nav[role=navigation] {
   transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
 }
 @media (max-width: 480px) {
-  /* line 580, ../sass/components/_layout.scss */
+  /* line 582, ../sass/components/_layout.scss */
   body.state-login.state-open nav[role=navigation] {
     transform: translate3d(0%, 0, 0);
   }
