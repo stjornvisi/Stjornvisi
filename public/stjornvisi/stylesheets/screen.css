@@ -964,102 +964,102 @@ input[type="button"].btn-block {
 }
 
 /* line 2, ../sass/helpers/_extend.scss */
-.block-element .block-element__body, stjornvisi-rich::shadow .stjornvisi-rich__preview, .landing-page .landing-page__element .landing-page__element__section, .page-group .page-group__description, .page-pages, .style-guide {
+.block-element .block-element__body, stjornvisi-rich::shadow .stjornvisi-rich__preview, stjornvisi-rich .stjornvisi-rich__preview, .stjornvisi-rich__preview, .landing-page .landing-page__element .landing-page__element__section, .page-group .page-group__description, .page-pages, .style-guide {
   *zoom: 1;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.1/stylesheets/compass/utilities/general/_clearfix.scss */
-.block-element .block-element__body:after, stjornvisi-rich::shadow .stjornvisi-rich__preview:after, .landing-page .landing-page__element .landing-page__element__section:after, .page-group .page-group__description:after, .page-pages:after, .style-guide:after {
+.block-element .block-element__body:after, stjornvisi-rich::shadow .stjornvisi-rich__preview:after, .stjornvisi-rich__preview:after, .landing-page .landing-page__element .landing-page__element__section:after, .page-group .page-group__description:after, .page-pages:after, .style-guide:after {
   content: "";
   display: table;
   clear: both;
 }
 /* line 5, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p {
+.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p {
   text-align: left;
 }
 /* line 8, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p, .block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol {
+.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p, .block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
 }
 /* line 13, ../sass/helpers/_extend.scss */
-.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
+.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
   clear: both;
 }
 /* line 17, ../sass/helpers/_extend.scss */
-.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote {
+.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote {
   font-style: italic;
   border-left: 4px solid #4a85a1;
   padding-left: 1.5em;
 }
 /* line 23, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol {
+.block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol {
   list-style: none;
   padding: 0;
   counter-reset: section;
 }
 /* line 27, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ol li:before, stjornvisi-rich::shadow .stjornvisi-rich__preview ol li:before, .landing-page .landing-page__element .landing-page__element__section ol li:before, .page-group .page-group__description ol li:before, .page-pages ol li:before, .style-guide ol li:before {
+.block-element .block-element__body ol li:before, .stjornvisi-rich__preview ol li:before, .landing-page .landing-page__element .landing-page__element__section ol li:before, .page-group .page-group__description ol li:before, .page-pages ol li:before, .style-guide ol li:before {
   counter-increment: section;
   content: counters(section,".") ".";
   color: #4a85a1;
   padding-right: 0.75em;
 }
 /* line 36, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul {
+.block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul {
   list-style: none;
   padding: 0;
 }
 /* line 39, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ul li:before, stjornvisi-rich::shadow .stjornvisi-rich__preview ul li:before, .landing-page .landing-page__element .landing-page__element__section ul li:before, .page-group .page-group__description ul li:before, .page-pages ul li:before, .style-guide ul li:before {
+.block-element .block-element__body ul li:before, .stjornvisi-rich__preview ul li:before, .landing-page .landing-page__element .landing-page__element__section ul li:before, .page-group .page-group__description ul li:before, .page-pages ul li:before, .style-guide ul li:before {
   content: "\2022";
   color: #4a85a1;
   padding-right: 0.75em;
 }
 /* line 47, ../sass/helpers/_extend.scss */
-.block-element .block-element__body a, stjornvisi-rich::shadow .stjornvisi-rich__preview a, .landing-page .landing-page__element .landing-page__element__section a, .page-group .page-group__description a, .page-pages a, .style-guide a {
+.block-element .block-element__body a, stjornvisi-rich::shadow .stjornvisi-rich__preview a, .stjornvisi-rich__preview a, .landing-page .landing-page__element .landing-page__element__section a, .page-group .page-group__description a, .page-pages a, .style-guide a {
   color: #4a85a1;
   word-wrap: break-word;
 }
 /* line 52, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1 {
+.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1 {
   font-size: 1.125em;
   line-height: 1.33333em;
   margin: 1.33333em 0;
 }
 /* line 56, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2 {
+.block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2 {
   font-size: 1em;
   line-height: 1.5em;
   margin: 1.5em 0;
 }
 /* line 60, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
+.block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
   font-size: 0.875em;
   line-height: 1.71429em;
   margin: 1.71429em 0;
 }
 /* line 65, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
+.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4 {
   font-family: "Bitter", serif;
   font-weight: 700;
 }
 /* line 70, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1 + p, stjornvisi-rich::shadow .stjornvisi-rich__preview h1 + p, .landing-page .landing-page__element .landing-page__element__section h1 + p, .page-group .page-group__description h1 + p, .page-pages h1 + p, .style-guide h1 + p,
+.block-element .block-element__body h1 + p, .stjornvisi-rich__preview h1 + p, .landing-page .landing-page__element .landing-page__element__section h1 + p, .page-group .page-group__description h1 + p, .page-pages h1 + p, .style-guide h1 + p,
 .block-element .block-element__body h2 + p,
-stjornvisi-rich::shadow .stjornvisi-rich__preview h2 + p,
+.stjornvisi-rich__preview h2 + p,
 .landing-page .landing-page__element .landing-page__element__section h2 + p,
 .page-group .page-group__description h2 + p,
 .page-pages h2 + p,
 .style-guide h2 + p,
 .block-element .block-element__body h3 + p,
-stjornvisi-rich::shadow .stjornvisi-rich__preview h3 + p,
+.stjornvisi-rich__preview h3 + p,
 .landing-page .landing-page__element .landing-page__element__section h3 + p,
 .page-group .page-group__description h3 + p,
 .page-pages h3 + p,
 .style-guide h3 + p,
 .block-element .block-element__body h4 + p,
-stjornvisi-rich::shadow .stjornvisi-rich__preview h4 + p,
+.stjornvisi-rich__preview h4 + p,
 .landing-page .landing-page__element .landing-page__element__section h4 + p,
 .page-group .page-group__description h4 + p,
 .page-pages h4 + p,
@@ -1067,9 +1067,9 @@ stjornvisi-rich::shadow .stjornvisi-rich__preview h4 + p,
   margin-top: -1.125em;
 }
 /* line 77, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p + ul, stjornvisi-rich::shadow .stjornvisi-rich__preview p + ul, .landing-page .landing-page__element .landing-page__element__section p + ul, .page-group .page-group__description p + ul, .page-pages p + ul, .style-guide p + ul,
+.block-element .block-element__body p + ul, .stjornvisi-rich__preview p + ul, .landing-page .landing-page__element .landing-page__element__section p + ul, .page-group .page-group__description p + ul, .page-pages p + ul, .style-guide p + ul,
 .block-element .block-element__body p + ol,
-stjornvisi-rich::shadow .stjornvisi-rich__preview p + ol,
+.stjornvisi-rich__preview p + ol,
 .landing-page .landing-page__element .landing-page__element__section p + ol,
 .page-group .page-group__description p + ol,
 .page-pages p + ol,
@@ -1078,45 +1078,45 @@ stjornvisi-rich::shadow .stjornvisi-rich__preview p + ol,
   margin-bottom: -0.75em;
 }
 /* line 83, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1:first-child, stjornvisi-rich::shadow .stjornvisi-rich__preview h1:first-child, .landing-page .landing-page__element .landing-page__element__section h1:first-child, .page-group .page-group__description h1:first-child, .page-pages h1:first-child, .style-guide h1:first-child,
+.block-element .block-element__body h1:first-child, .stjornvisi-rich__preview h1:first-child, .landing-page .landing-page__element .landing-page__element__section h1:first-child, .page-group .page-group__description h1:first-child, .page-pages h1:first-child, .style-guide h1:first-child,
 .block-element .block-element__body h2:first-child,
-stjornvisi-rich::shadow .stjornvisi-rich__preview h2:first-child,
+.stjornvisi-rich__preview h2:first-child,
 .landing-page .landing-page__element .landing-page__element__section h2:first-child,
 .page-group .page-group__description h2:first-child,
 .page-pages h2:first-child,
 .style-guide h2:first-child,
 .block-element .block-element__body h3:first-child,
-stjornvisi-rich::shadow .stjornvisi-rich__preview h3:first-child,
+.stjornvisi-rich__preview h3:first-child,
 .landing-page .landing-page__element .landing-page__element__section h3:first-child,
 .page-group .page-group__description h3:first-child,
 .page-pages h3:first-child,
 .style-guide h3:first-child,
 .block-element .block-element__body h4:first-child,
-stjornvisi-rich::shadow .stjornvisi-rich__preview h4:first-child,
+.stjornvisi-rich__preview h4:first-child,
 .landing-page .landing-page__element .landing-page__element__section h4:first-child,
 .page-group .page-group__description h4:first-child,
 .page-pages h4:first-child,
 .style-guide h4:first-child,
 .block-element .block-element__body p:first-child,
-stjornvisi-rich::shadow .stjornvisi-rich__preview p:first-child,
+.stjornvisi-rich__preview p:first-child,
 .landing-page .landing-page__element .landing-page__element__section p:first-child,
 .page-group .page-group__description p:first-child,
 .page-pages p:first-child,
 .style-guide p:first-child,
 .block-element .block-element__body ol:first-child,
-stjornvisi-rich::shadow .stjornvisi-rich__preview ol:first-child,
+.stjornvisi-rich__preview ol:first-child,
 .landing-page .landing-page__element .landing-page__element__section ol:first-child,
 .page-group .page-group__description ol:first-child,
 .page-pages ol:first-child,
 .style-guide ol:first-child,
 .block-element .block-element__body ul:first-child,
-stjornvisi-rich::shadow .stjornvisi-rich__preview ul:first-child,
+.stjornvisi-rich__preview ul:first-child,
 .landing-page .landing-page__element .landing-page__element__section ul:first-child,
 .page-group .page-group__description ul:first-child,
 .page-pages ul:first-child,
 .style-guide ul:first-child,
 .block-element .block-element__body blockquote:first-child,
-stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote:first-child,
+.stjornvisi-rich__preview blockquote:first-child,
 .landing-page .landing-page__element .landing-page__element__section blockquote:first-child,
 .page-group .page-group__description blockquote:first-child,
 .page-pages blockquote:first-child,
@@ -1124,46 +1124,46 @@ stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote:first-child,
   margin-top: 0;
 }
 /* line 94, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img[alt*=left], stjornvisi-rich::shadow .stjornvisi-rich__preview img[alt*=left], .landing-page .landing-page__element .landing-page__element__section img[alt*=left], .page-group .page-group__description img[alt*=left], .page-pages img[alt*=left], .style-guide img[alt*=left] {
+.block-element .block-element__body img[alt*=left], .stjornvisi-rich__preview img[alt*=left], .landing-page .landing-page__element .landing-page__element__section img[alt*=left], .page-group .page-group__description img[alt*=left], .page-pages img[alt*=left], .style-guide img[alt*=left] {
   float: left;
   margin: 15px 15px 15px 0;
 }
 /* line 98, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img[alt*=right], stjornvisi-rich::shadow .stjornvisi-rich__preview img[alt*=right], .landing-page .landing-page__element .landing-page__element__section img[alt*=right], .page-group .page-group__description img[alt*=right], .page-pages img[alt*=right], .style-guide img[alt*=right] {
+.block-element .block-element__body img[alt*=right], .stjornvisi-rich__preview img[alt*=right], .landing-page .landing-page__element .landing-page__element__section img[alt*=right], .page-group .page-group__description img[alt*=right], .page-pages img[alt*=right], .style-guide img[alt*=right] {
   float: left;
   margin: 15px 0 15px 15px;
 }
 /* line 102, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img, stjornvisi-rich::shadow .stjornvisi-rich__preview img, .landing-page .landing-page__element .landing-page__element__section img, .page-group .page-group__description img, .page-pages img, .style-guide img {
+.block-element .block-element__body img, stjornvisi-rich::shadow .stjornvisi-rich__preview img, .stjornvisi-rich__preview img, .landing-page .landing-page__element .landing-page__element__section img, .page-group .page-group__description img, .page-pages img, .style-guide img {
   float: left;
   margin: 0 0.75em 0.75em 0;
 }
 /* line 108, ../sass/helpers/_extend.scss */
-.block-element .block-element__body em, stjornvisi-rich::shadow .stjornvisi-rich__preview em, .landing-page .landing-page__element .landing-page__element__section em, .page-group .page-group__description em, .page-pages em, .style-guide em, .block-element .block-element__body i, stjornvisi-rich::shadow .stjornvisi-rich__preview i, .landing-page .landing-page__element .landing-page__element__section i, .page-group .page-group__description i, .page-pages i, .style-guide i {
+.block-element .block-element__body em, stjornvisi-rich::shadow .stjornvisi-rich__preview em, .stjornvisi-rich__preview em, .landing-page .landing-page__element .landing-page__element__section em, .page-group .page-group__description em, .page-pages em, .style-guide em, .block-element .block-element__body i, stjornvisi-rich::shadow .stjornvisi-rich__preview i, .stjornvisi-rich__preview i, .landing-page .landing-page__element .landing-page__element__section i, .page-group .page-group__description i, .page-pages i, .style-guide i {
   font-style: italic;
 }
 /* line 111, ../sass/helpers/_extend.scss */
-.block-element .block-element__body strong, stjornvisi-rich::shadow .stjornvisi-rich__preview strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .style-guide strong, .block-element .block-element__body b, stjornvisi-rich::shadow .stjornvisi-rich__preview b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b, .style-guide b {
+.block-element .block-element__body strong, stjornvisi-rich::shadow .stjornvisi-rich__preview strong, .stjornvisi-rich__preview strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .style-guide strong, .block-element .block-element__body b, stjornvisi-rich::shadow .stjornvisi-rich__preview b, .stjornvisi-rich__preview b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b, .style-guide b {
   font-weight: 700;
 }
 /* line 116, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table, stjornvisi-rich::shadow .stjornvisi-rich__preview table, .landing-page .landing-page__element .landing-page__element__section table, .page-group .page-group__description table, .page-pages table, .style-guide table {
+.block-element .block-element__body table, stjornvisi-rich::shadow .stjornvisi-rich__preview table, .stjornvisi-rich__preview table, .landing-page .landing-page__element .landing-page__element__section table, .page-group .page-group__description table, .page-pages table, .style-guide table {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
   font-family: "Open Sans", sans-serif;
   border-collapse: collapse;
 }
 /* line 122, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table td, stjornvisi-rich::shadow .stjornvisi-rich__preview table td, .landing-page .landing-page__element .landing-page__element__section table td, .page-group .page-group__description table td, .page-pages table td, .style-guide table td, .block-element .block-element__body table th, stjornvisi-rich::shadow .stjornvisi-rich__preview table th, .landing-page .landing-page__element .landing-page__element__section table th, .page-group .page-group__description table th, .page-pages table th, .style-guide table th {
+.block-element .block-element__body table td, .stjornvisi-rich__preview table td, .landing-page .landing-page__element .landing-page__element__section table td, .page-group .page-group__description table td, .page-pages table td, .style-guide table td, .block-element .block-element__body table th, .stjornvisi-rich__preview table th, .landing-page .landing-page__element .landing-page__element__section table th, .page-group .page-group__description table th, .page-pages table th, .style-guide table th {
   padding: 0.375em 0.75em;
 }
 /* line 125, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table thead, stjornvisi-rich::shadow .stjornvisi-rich__preview table thead, .landing-page .landing-page__element .landing-page__element__section table thead, .page-group .page-group__description table thead, .page-pages table thead, .style-guide table thead {
+.block-element .block-element__body table thead, .stjornvisi-rich__preview table thead, .landing-page .landing-page__element .landing-page__element__section table thead, .page-group .page-group__description table thead, .page-pages table thead, .style-guide table thead {
   border-bottom: 2px solid lightgray;
   color: #4a85a1;
 }
 /* line 131, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table tbody tr:nth-child(even), stjornvisi-rich::shadow .stjornvisi-rich__preview table tbody tr:nth-child(even), .landing-page .landing-page__element .landing-page__element__section table tbody tr:nth-child(even), .page-group .page-group__description table tbody tr:nth-child(even), .page-pages table tbody tr:nth-child(even), .style-guide table tbody tr:nth-child(even) {
+.block-element .block-element__body table tbody tr:nth-child(even), .stjornvisi-rich__preview table tbody tr:nth-child(even), .landing-page .landing-page__element .landing-page__element__section table tbody tr:nth-child(even), .page-group .page-group__description table tbody tr:nth-child(even), .page-pages table tbody tr:nth-child(even), .style-guide table tbody tr:nth-child(even) {
   background-color: #fbfbfb;
 }
 
@@ -3399,11 +3399,11 @@ stjonvisi-control::content * {
 /**
  *
  */
-/* line 143, ../sass/components/_web-components.scss */
+/* line 142, ../sass/components/_web-components.scss */
 stjornvisi-rich::shadow .stjornvisi-rich__wrapper {
   position: relative;
 }
-/* line 148, ../sass/components/_web-components.scss */
+/* line 145, ../sass/components/_web-components.scss */
 stjornvisi-rich::shadow .stjornvisi-rich__preview {
   padding: 30px;
   position: absolute;
@@ -3419,23 +3419,23 @@ stjornvisi-rich::shadow .stjornvisi-rich__preview {
   display: none;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
-/* line 166, ../sass/components/_web-components.scss */
+/* line 163, ../sass/components/_web-components.scss */
 stjornvisi-rich::shadow .stjornvisi-rich__controls {
   display: inline-block;
   margin-left: 1.5em;
 }
-/* line 169, ../sass/components/_web-components.scss */
+/* line 166, ../sass/components/_web-components.scss */
 stjornvisi-rich::shadow .stjornvisi-rich__controls a {
   padding: 0 0.75em 0 0;
   color: #4a85a1;
   text-decoration: none;
 }
-/* line 174, ../sass/components/_web-components.scss */
+/* line 171, ../sass/components/_web-components.scss */
 stjornvisi-rich::shadow .stjornvisi-rich__controls a:before {
   padding-right: 0.75em;
   content: "|";
 }
-/* line 179, ../sass/components/_web-components.scss */
+/* line 176, ../sass/components/_web-components.scss */
 stjornvisi-rich::shadow .stjornvisi-rich__help {
   display: none;
   position: absolute;
@@ -3444,6 +3444,46 @@ stjornvisi-rich::shadow .stjornvisi-rich__help {
   bottom: 0;
   left: 0;
   z-index: 2;
+}
+/* line 189, ../sass/components/_web-components.scss */
+stjornvisi-rich .stjornvisi-rich__wrapper {
+  position: relative;
+}
+/* line 192, ../sass/components/_web-components.scss */
+stjornvisi-rich .stjornvisi-rich__help {
+  display: none;
+}
+/* line 195, ../sass/components/_web-components.scss */
+stjornvisi-rich .stjornvisi-rich__preview {
+  padding: 30px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  z-index: 1;
+  background-color: white;
+  overflow: scroll;
+  display: none;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+/* line 211, ../sass/components/_web-components.scss */
+stjornvisi-rich .stjornvisi-rich__controls {
+  display: inline-block;
+  margin-left: 1.5em;
+}
+/* line 214, ../sass/components/_web-components.scss */
+stjornvisi-rich .stjornvisi-rich__controls a {
+  padding: 0 0.75em 0 0;
+  color: #4a85a1;
+  text-decoration: none;
+}
+/* line 219, ../sass/components/_web-components.scss */
+stjornvisi-rich .stjornvisi-rich__controls a:before {
+  padding-right: 0.75em;
+  content: "|";
 }
 
 /* line 2, ../sass/components/_company.scss */

@@ -139,11 +139,8 @@
 	 */
 	stjornvisi-rich{
 		&::shadow{
-
 			.stjornvisi-rich__wrapper{
 				position: relative;
-
-
 			}
 			.stjornvisi-rich__preview{
 				@extend %rich-text;
@@ -186,4 +183,48 @@
 				z-index: 2;
 			}
 		}
+
+
+		// - - - - - - - - - - - - - - - - - - - - - -
+		.stjornvisi-rich__wrapper{
+			position: relative;
+		}
+		.stjornvisi-rich__help{
+			display: none;
+		}
+		.stjornvisi-rich__preview{
+			@extend %rich-text;
+			padding:$gutter;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			border:1px solid $color-gray-light;
+			border-radius: 4px;
+			z-index: 1;
+			background-color: $color-white;
+			overflow: scroll;
+			display: none;
+			box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+		}
+		.stjornvisi-rich__controls{
+			display: inline-block;
+			margin-left: rhythm(1,$font-size-base);
+			a{
+				padding: 0 rhythm(1/2,$font-size-base) 0 0;
+				color: $color-green-sea;
+				text-decoration: none;
+			}
+			a:before{
+				padding-right: rhythm(1/2,$font-size-base);
+				content: "|";
+			}
+		}
+		//- - - - - - - - - - -
+	}
+
+
+	.stjornvisi-rich__preview{
+		@extend %rich-text;
 	}
