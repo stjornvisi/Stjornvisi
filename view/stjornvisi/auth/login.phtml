@@ -1,3 +1,6 @@
+<?php if( !$this->form ):?>
+
+<?php else:?>
 <?php $this->form->setAttribute('class','form-horizontal'); ?>
 
 <div class="layout layout--three-columns page-login">
@@ -58,11 +61,4 @@
 	</section>
 	<aside class="layout__aside"></aside>
 </div>
-
-
-
-<?php print_r($this->form->getMessages(),true)?>
-
-<!--a href="#" class="btn brn-default">facebbok</a>
-<a href="#" class="btn brn-default">linkedIn</a>
-<a href="#" class="btn brn-default">g+</a-->
+<?php endif;?>

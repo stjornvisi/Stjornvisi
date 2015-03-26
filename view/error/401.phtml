@@ -5,6 +5,9 @@
  * Date: 10/11/14
  * Time: 17:18
  */
+
+$auth = new \Zend\Authentication\AuthenticationService();
+
 ?>
 <div class="layout layout--three-columns page-error page-401">
 	<section class="layout__section">
@@ -22,7 +25,7 @@
 	</aside>
 </div>
 
-
+<?php if( !$auth->hasIdentity() ):?>
 <div class="layout layout--no-head layout--three-columns page-login">
 	<section class="layout__section">
 		<div class="layout__data page-login__service">
@@ -47,3 +50,4 @@
 	</section>
 	<aside class="layout__aside"></aside>
 </div>
+<?php endif;?>

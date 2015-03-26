@@ -348,7 +348,7 @@ class AuthController extends AbstractActionController{
         //IS LOGGED IN
         //  user is logged in
         if( $auth->hasIdentity() ){
-
+			return $this->redirect()->toRoute('notandi/index',array('id'=> $auth->getIdentity()->id));
         //NOT LOGGED IN
         //  user is not logged in
         }else{
