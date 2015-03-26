@@ -1,11 +1,4 @@
 <?php
-/**
- * Stjornvisi (http://stjornvisi.is)
- *
- * @link      https://github.com/fizk/Stjornvisi for the canonical source repository
- * @copyright Copyright (c) 2010-2014 IsProject. (http://isproject.is)
- * @license   http://opensource.org/licenses/MIT The MIT License (MIT)
- */
 
 namespace Stjornvisi\Controller;
 
@@ -17,7 +10,10 @@ use Stjornvisi\Form\Article as ArticleForm;
 use Stjornvisi\Form\Author as AuthorForm;
 
 /**
- * Class ArticleController
+ * Class ArticleController.
+ *
+ * Handle all request to Articles.
+ *
  * @package Stjornvisi\Controller
  */
 class ArticleController extends AbstractActionController{

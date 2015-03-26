@@ -1,15 +1,6 @@
 <?php
 namespace Stjornvisi\Controller;
 
-/**
-* Handles groups
-*
-* @category Stjornvisi
-* @package Controller
-* @author einarvalur
-*
-*/
-
 use \DateTime;
 use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -22,9 +13,12 @@ use Stjornvisi\Form\Gallery as GalleryForm;
 use Stjornvisi\Form\Resource as ResourceForm;
 use Stjornvisi\Lib\Csv;
 
-
+/**
+ * Class EventController.
+ *
+ * @package Stjornvisi\Controller
+ */
 class EventController extends AbstractActionController{
-
 
 	/**
 	 * Display one event.
@@ -145,6 +139,8 @@ class EventController extends AbstractActionController{
 	/**
 	 * List events in a given period
 	 * ...both in a table and in a list.
+	 *
+	 * @return ViewModel
 	 */
 	public function listAction(){
 
@@ -424,7 +420,7 @@ class EventController extends AbstractActionController{
 	/**
 	 * Export attendees list as csv.
 	 *
-	 * @return \Zend\Stdlib\ResponseInterface
+	 * @return array|CsvModel|ViewModel
 	 */
 	public function exportAttendeesAction(){
 		$sm = $this->getServiceLocator();
@@ -529,7 +525,8 @@ class EventController extends AbstractActionController{
 	}
 
 	/**
-	 * Send mail to members of group(s) of events
+	 * Send mail to members of group(s) of events.
+	 *
 	 * @return ViewModel
 	 */
 	public function sendMailAction(){
@@ -614,7 +611,6 @@ class EventController extends AbstractActionController{
 		}
 
 	}
-
 
 	/**
 	 * Get list of even't images.

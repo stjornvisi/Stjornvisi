@@ -10,6 +10,11 @@ use Zend\Http\Response as HttpResponse;
 use Stjornvisi\Form\BoardMember as BoardMemberForm;
 use Stjornvisi\Form\ConnectBoardMemberToBoard as ConnectBoardMemberToBoardForm;
 
+/**
+ *
+ * Class BoardmemberController
+ * @package Stjornvisi\Controller
+ */
 class BoardmemberController extends AbstractActionController{
 
 	/**

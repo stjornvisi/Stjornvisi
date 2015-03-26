@@ -19,9 +19,12 @@ use \DateInterval;
 
 use Stjornvisi\Form\Login;
 
-
+/**
+ * Class IndexController.
+ *
+ * @package Stjornvisi\Controller
+ */
 class IndexController extends AbstractActionController{
-
 
     /**
      * This is the landing page or the home page.
@@ -66,40 +69,34 @@ class IndexController extends AbstractActionController{
 
     }
 
-
-    public function sitemapRobotAction(){
-        $this->getHelper('layout')->disableLayout();
-    }
+    /**
+     * @todo do we need this?
+     */
+    public function radstefnaAction(){}
 
     /**
      * @todo do we need this?
      */
-    public function radstefnaAction(){
-
-    }
+    public function semposiumThanksAction(){}
 
     /**
      * @todo do we need this?
      */
-    public function semposiumThanksAction(){
+    public function semposiumAttendanceAction(){}
 
-    }
-
-    /**
-     * @todo do we need this?
-     */
-    public function semposiumAttendanceAction(){
-        //$semposiumDAO = new Application_Model_Semposium();
-        //$this->view->attendance = $semposiumDAO->fetchAll(null, "name");
-    }
-
+	/**
+	 * @todo do we need this?
+	 * @return ViewModel
+	 */
 	public function stjornvisiOverviewAction(){
 		return new ViewModel(array(
 			'identity' => null,
 		));
 	}
 
-	public function styleGuideAction(){
-
-	}
+	/**
+	 * This just return an (almost) static page
+	 * with the style-guide
+	 */
+	public function styleGuideAction(){}
 }

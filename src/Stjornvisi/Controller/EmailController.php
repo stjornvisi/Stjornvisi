@@ -17,7 +17,8 @@ use Zend\Http\Response as HttpResponse;
 
 
 /**
- * Class ArticleController
+ * Class ArticleController.
+ *
  * @package Stjornvisi\Controller
  */
 class EmailController extends AbstractActionController{
@@ -27,20 +28,14 @@ class EmailController extends AbstractActionController{
      *
      * @return array|ViewModel
      */
-    public function indexAction(){
-
-
-	}
+    public function indexAction(){}
 
 	/**
 	 * Get one article.
 	 *
 	 * @return array|ViewModel
 	 */
-	public function listAction(){
-
-
-	}
+	public function listAction(){}
 
 	/**
 	 * Send mail
@@ -48,7 +43,6 @@ class EmailController extends AbstractActionController{
 	 * @return array|ViewModel
 	 */
 	public function sendAction(){
-
 
 		$sm = $this->getServiceLocator();
 		$userService = $sm->get('Stjornvisi\Service\User');

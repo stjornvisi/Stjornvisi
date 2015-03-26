@@ -84,8 +84,8 @@ class Page extends Form implements InputFilterProviderInterface{
 				'required' => false,
 				'allow_empty' => true,
 				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
+					//array('name' => 'StripTags'),
+					//array('name' => 'StringTrim'),
 				),
 			),
 		);

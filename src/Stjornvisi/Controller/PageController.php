@@ -13,8 +13,18 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+/**
+ * Class PageController.
+ *
+ * @package Stjornvisi\Controller
+ */
 class PageController extends AbstractActionController {
 
+	/**
+	 * Display one static page.
+	 *
+	 * @return array|ViewModel
+	 */
 	public function indexAction(){
 		$sm = $this->getServiceLocator();
 		$pageService = $sm->get('Stjornvisi\Service\Page');
@@ -41,6 +51,11 @@ class PageController extends AbstractActionController {
 
 	}
 
+	/**
+	 * Update one static page.
+	 *
+	 * @return array|\Zend\Http\Response|ViewModel
+	 */
 	public function updateAction(){
 		$sm = $this->getServiceLocator();
 		$pageService = $sm->get('Stjornvisi\Service\Page');

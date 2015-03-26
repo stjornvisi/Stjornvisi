@@ -10,7 +10,8 @@ use Zend\Authentication\AuthenticationService;
 use Stjornvisi\Form\Company as CompanyForm;
 
 /**
- * Class CompanyController
+ * Class CompanyController.
+ *
  * @package Stjornvisi\Controller
  *
  */
@@ -327,7 +328,11 @@ class CompanyController extends AbstractActionController{
         }
 	}
 
-
+	/**
+	 * Export all companies as a CSV list file.
+	 *
+	 * @return CsvModel
+	 */
 	public function exportAction(){
 
 		$sm = $this->getServiceLocator();

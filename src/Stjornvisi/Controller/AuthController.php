@@ -24,8 +24,17 @@ use OAuth\OAuth2\Service\Linkedin;
 use OAuth\Common\Storage\Session;
 use OAuth\Common\Consumer\Credentials;
 
+/**
+ * Login / Logout. Create Users and connect the via oAuth etc...
+ *
+ * Class AuthController
+ * @package Stjornvisi\Controller
+ */
 class AuthController extends AbstractActionController{
 
+	/**
+	 * @var string Facebook callback URL
+	 */
 	const LOGIN_CALLBACK_FACEBOOK = '/innskra/callback-login-facebook';
 
 	/**
@@ -229,6 +238,7 @@ class AuthController extends AbstractActionController{
 
 	/**
 	 * Last installment of creating user in the system.
+	 *
 	 * @return ViewModel
 	 */
 	public function createUserLoginAction(){
@@ -260,7 +270,8 @@ class AuthController extends AbstractActionController{
 	}
 
 	/**
-	 * Create user
+	 * Create user.
+	 *
 	 * @return ViewModel
 	 * @throws \Exception
 	 */
@@ -324,10 +335,11 @@ class AuthController extends AbstractActionController{
 		}
 
 	}
+
 	/**
-	 * Login user
-	 * @todo count frequency
+	 * Login user.
 	 *
+	 * @return \Zend\Http\Response|ViewModel
 	 */
 	public function loginAction(){
 
@@ -396,8 +408,9 @@ class AuthController extends AbstractActionController{
 	}
 
 	/**
-	 * Logout and destroy session
+	 * Logout and destroy session.
 	 *
+	 * @return \Zend\Http\Response
 	 */
 	public function logoutAction(){
         $auth = new AuthenticationService();
@@ -405,6 +418,11 @@ class AuthController extends AbstractActionController{
         return $this->redirect()->toRoute('home');
 	}
 
+	/**
+	 * Callback for Linkedin.
+	 *
+	 * @deprecated
+	 */
 	public function callbackLoginLinkedinAction(){
 		$uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
 		$currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
@@ -455,8 +473,8 @@ class AuthController extends AbstractActionController{
 	 * is logged in. If this does not work, the user is asked it this is his first time logging
 	 * in via Facebook and if he/she is sure that he/she has an account.
 	 *
-	 * @return \Zend\Http\Response
-	 * @todo count frequency
+	 * @return \Zend\Http\Response|ViewModel
+	 * @throws \Exception
 	 */
 	public function callbackLoginFacebookAction(){
 
@@ -710,7 +728,8 @@ class AuthController extends AbstractActionController{
 	}
 
 	/**
-	 * Create a random password
+	 * Create a random password.
+	 *
 	 * @param int $length
 	 * @return string
 	 */

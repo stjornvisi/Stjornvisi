@@ -740,7 +740,7 @@ class GroupController extends AbstractActionController{
      * RSS feed for all events
      *
      * Get all events from two months back in time
-     * @todo Re-thing the date range
+     * @todo Re-think the date range
      */
     public function rssEventsAction(){
 
@@ -799,13 +799,14 @@ class GroupController extends AbstractActionController{
         }
     }
 
-    /**
-     * RSS feed for all news
-     *
-     * Get all news from two months back in time
-     * @todo 404
-     */
-    public function rssNewsAction(){
+	/**
+	 * RSS feed for all news
+	 *
+	 * Get all news from two months back in time
+	 *
+	 * @return array|FeedModel
+	 */
+	public function rssNewsAction(){
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
 
@@ -859,11 +860,12 @@ class GroupController extends AbstractActionController{
         }
     }
 
-    /**
-     * Send mail to all leaders og all persons in group
-     * @todo refactor
-     */
-    public function sendMailAction(){
+	/**
+	 * Send mail to all leaders og all persons in group
+	 *
+	 * @return array|ViewModel
+	 */
+	public function sendMailAction(){
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $userService = $sm->get('Stjornvisi\Service\User');

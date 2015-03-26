@@ -727,7 +727,7 @@ class ConsoleController extends AbstractActionController {
 						//	multy-part mime object with embedded attachments.
 						$trackerId = ($messageObject->user_id)
 							? $messageObject->user_id
-							: '';
+							: ''; //TODO why do I need this?
 						$attacher = new Attacher($message);
 						$message = $attacher->parse( "http://tracker.stjornvisi.is/spacer.gif?id={$trackerId}" );
 

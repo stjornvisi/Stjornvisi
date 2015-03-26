@@ -11,6 +11,13 @@ use Imagine\Filter\Transformation;
 use Imagine\Filter\Basic\Resize;
 use Stjornvisi\Lib\Imagine\Square;
 
+/**
+ * Class MediaController.
+ *
+ * Handle upload of files and images.
+ *
+ * @package Stjornvisi\Controller
+ */
 class MediaController extends AbstractActionController{
 
 	/**

@@ -1,21 +1,17 @@
 <?php
 namespace Stjornvisi\Controller;
 
-/**
- * Handles groups
- *
- * @category Stjornvisi
- * @package Controller
- * @author einarvalur
- *
- */
-
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ArrayObject;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Stjornvisi\Form\News as NewsForm;
 
+/**
+ * Class NewsController.
+ *
+ * @package Stjornvisi\Controller
+ */
 class NewsController extends AbstractActionController{
 
 	/**

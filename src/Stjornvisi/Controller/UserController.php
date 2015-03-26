@@ -12,12 +12,11 @@ use Zend\Authentication\AuthenticationService;
 use Stjornvisi\Form\User as UserForm;
 use Stjornvisi\Form\UserGroups;
 use Stjornvisi\Form\Password as PasswordForm;
+
 /**
- * Company
+ * Class UserController.
  *
- * @category Stjornvisi
- * @package Controller
- * @author einar
+ * @package Stjornvisi\Controller
  */
 class UserController extends AbstractActionController{
 
@@ -60,6 +59,12 @@ class UserController extends AbstractActionController{
 		}
 	}
 
+	/**
+	 * Get all attendance by user in a JSON format.
+	 *
+	 * @todo is this used anywere?
+	 * @return JsonModel
+	 */
 	public function attendanceAction(){
 
 		$sm = $this->getServiceLocator();
@@ -448,6 +453,7 @@ class UserController extends AbstractActionController{
 	}
 
 	/**
+	 * Delete user.
 	 *
 	 * @todo implement
 	 */
