@@ -40,21 +40,13 @@
 			}
 		}
 
-		.page-group__members-head{
-			float: left;
-			width: 33.33%;
-			> ul{
-				padding-right: $gutter;
-			}
-		}
 		.page-group__members-member{
-			float: left;
-			width: 66.66%;
 			@include pie-clearfix;
+			margin-bottom: $gutter;
 			> ul {
 				padding-right: $gutter;
 				float: left;
-				width: 50%;
+				width: 33.33%;
 			}
 
 		}
@@ -126,11 +118,26 @@
 			h3{
 				font-family: $font-family-open;
 			}
+			.page-group__members-item--title{
+				@include adjust-font-size-to($font-size-base,1,$font-size-base);
+				@include margin-leader(1/3,$font-size-base);
+				@include margin-trailer(1/3,$font-size-base);
+			}
+			.page-group__members-item--email{
+				display: block;
+				font-family: $font-family-open;
+				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			}
 			span {
 				display: block;
 				color: $color-green-sea;
 				font-family: $font-family-open;
 				@include adjust-font-size-to($font-size-small,1,$font-size-base);
+			}
+			&.page-group__members-item--em{
+				h3{
+					font-weight: $font-weight-bold;
+				}
 			}
 
 		}

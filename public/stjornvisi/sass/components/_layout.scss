@@ -68,15 +68,15 @@
 		}
 		.main__brand{
 			display: table-cell;
-			background-image: url("images/header-logo-01.png");
-			background-repeat: no-repeat;
-			background-position: right 0;
 			background-color: $color-blue;
 			width: 272px;
-			//height: $select-size;
 			font: 0/0 a;
-			a{
-				display: none;
+			vertical-align: top;
+			.main__logo{
+				background-image: url("images/header-logo-01.png");
+				background-repeat: no-repeat;
+				background-position: right 0;
+				display: block;
 				width: 272px;
 				height: $select-size;
 			}
@@ -119,11 +119,19 @@
 		 */
 		@include breakpoint($desktop){
 			.main__brand{
-				background-image: url("images/header-logo.svg");
-				background-position: center 7px;
 				width: 140px;
 				a{
 					display: block;
+				}
+
+
+				.main__logo{
+					background-image: url("images/header-logo.svg");
+					background-position: center 7px;
+					background-repeat: no-repeat;
+					display: block;
+					width: 140px;
+					height: $select-size;
 				}
 			}
 

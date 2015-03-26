@@ -90,8 +90,7 @@ class GroupController extends AbstractActionController{
                 'news' => $newsService->getRangeByGroup( $group->id, $from, $to ),
                 'events' => $eventService->getRangeByGroup(
 						$group->id, $from, $to, ($auth->hasIdentity())?$auth->getIdentity()->id:null ),
-                'chairmen' => $userService->getByGroup( $group->id,2 ),
-                'managers' => $userService->getByGroup( $group->id,1 ),
+                'managers' => $userService->getByGroup( $group->id,array(1,2) ),
                 'users' => $userService->getByGroup( $group->id, 0 ),
                 'access' => $userService->getTypeByGroup(
 						$auth->hasIdentity()?$auth->getIdentity()->id:null,
