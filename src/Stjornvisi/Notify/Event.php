@@ -130,9 +130,13 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
 			$users = array( $this->user->get( $this->params->data->user_id ));
 		//REAL
 		//	this is the real thing.
+		//	If $groupIds is NULL/empty, this this is a Stjornvisi Event and then
+		//	we just fetch all valid users in the system.
 		}else{
 			$users = ( $this->params->data->recipients == 'allir' )
-				? $this->user->getUserMessageByGroup( $groupIds )
+				? (empty($groupIds))
+					? $this->user->fetchAll(true)
+					: $this->user->getUserMessageByGroup( $groupIds )
 				: $this->user->getUserMessageByEvent($event->id) ;
 		}
 
