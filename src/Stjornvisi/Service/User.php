@@ -149,6 +149,48 @@ class User extends AbstractService implements DataSourceAwareInterface {
 
 	}
 
+	/**
+	 * Get all members in relation to groups.
+	 *
+	 * This method gets all members based on how their relation
+	 * is to the group. The arguments passed is an array/filter.
+	 *
+	 * To get all leaders, pass [1], to get leaders and chairmen
+	 * pass [1,2]
+	 *
+	 * @param array $type
+	 * @return array
+	 * @throws Exception
+	 */
+	public function fetchGroupMembers(array $type)
+	{
+		try{
+			$statement = $this->pdo->prepare("
+				SELECT U.*, G.name_short AS group_name, G.id AS group_id, GhU.type,
+				 ChU.company_id, ChU.key_user, C.name as company_name
+				FROM `User` U
+				JOIN `Group_has_User` GhU ON (GhU.user_id = U.id)
+				JOIN `Group` G ON (G.id = GhU.group_id)
+				LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
+				LEFT JOIN Company C ON (C.id = ChU.company_id )
+				WHERE GhU.`type` IN (". implode(',', array_map(function($i) { return (int)$i; }, $type)) .")
+				ORDER BY U.name
+			");
+
+			$statement->execute();
+
+			return $statement->fetchAll();
+
+		}catch (PDOException $e){
+			$this->getEventManager()->trigger('error', $this, array(
+				'exception' => $e->getTraceAsString(),
+				'sql' => array(
+					isset($statement)?$statement->queryString:null
+				)
+			));
+			throw new Exception("Can't get leaders", 0, $e);
+		}
+	}
 
 	/**
 	 * Get all users.

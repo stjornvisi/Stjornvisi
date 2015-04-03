@@ -834,7 +834,10 @@ return array(
 					'export' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(
-							'route' => '/notendalisti',
+							'route' => '/notendalisti[/:type]',
+							'constraints' => array(
+								'type' => 'allir|formenn|stjornendur',
+							),
 							'defaults' => array(
 								'controller' => 'Stjornvisi\Controller\User',
 								'action' => 'export'

@@ -175,6 +175,27 @@ class SubMenu extends AbstractHelper {
 								'pages' => array(
 									array(
 										'label' => 'Allir',
+										'id' => '',
+										'uri' => $view->url('notandi/export',array('type'=>'allir')),
+										'class' => 'icon-list',
+										'title' => 'Allir notendur'
+									),
+									array(
+										'label' => 'Formenn',
+										'id' => '',
+										'uri' => $view->url('notandi/export',array('type'=>'formenn')),
+										'class' => 'icon-list',
+										'title' => 'Allir formenn'
+									),
+									array(
+										'label' => 'Stjórnendur',
+										'id' => '',
+										'uri' => $view->url('notandi/export',array('type'=>'stjornendur')),
+										'class' => 'icon-list',
+										'title' => 'Allir stjórnendur'
+									),
+									array(
+										'label' => 'Allir',
 										'id' => 'mail-all',
 										'uri' => $view->url('email/send',array('type'=>'allir')),
 										'class' => 'icon-mail',
