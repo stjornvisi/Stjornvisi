@@ -1338,15 +1338,64 @@ return array(
 				),
 			),
 			'anaegjuvogin' => array(
-				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
-					'route' => '/anaegjuvogin[/:id]',
-					'constraints' => array(
-						'id' => '[a-zA-Z0-9_-]*',
-					),
+					'route' => '/anaegjuvogin',
 					'defaults' => array(
-						'controller' => 'Stjornvisi\Controller\Page',
-						'action' => 'index'
+						'controller' => 'Stjornvisi\Controller\Anaegjuvogin',
+						'action' => 'list'
+					),
+				),
+				'may_terminate' => true,
+				'child_routes' => array(
+					'index' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:year',
+							'constraints' => array(
+								'year' => '[0-9]{4}'
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Anaegjuvogin',
+								'action' => 'index'
+							),
+						)
+					),
+					'update' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/uppfaera',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Anaegjuvogin',
+								'action' => 'update'
+							),
+						)
+					),
+					'create' => array(
+						'type' => 'Zend\Mvc\Router\Http\Literal',
+						'options' => array(
+							'route' => '/stofna',
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Anaegjuvogin',
+								'action' => 'create'
+							),
+						)
+					),
+					'delete' => array(
+						'type' => 'Zend\Mvc\Router\Http\Segment',
+						'options' => array(
+							'route' => '/:id/delete',
+							'constraints' => array(
+								'id' => '[0-9]*',
+							),
+							'defaults' => array(
+								'controller' => 'Stjornvisi\Controller\Anaegjuvogin',
+								'action' => 'delete'
+							),
+						)
 					),
 				),
 
@@ -1719,6 +1768,7 @@ return array(
 			'Stjornvisi\Controller\Skeleton' => 'Stjornvisi\Controller\SkeletonController',
 			'Stjornvisi\Controller\Conference' => 'Stjornvisi\Controller\ConferenceController',
 			'Stjornvisi\Controller\Email' => 'Stjornvisi\Controller\EmailController',
+			'Stjornvisi\Controller\Anaegjuvogin' => 'Stjornvisi\Controller\AnaegjuvoginController',
         ),
     ),
     'view_helpers' => array(

@@ -291,6 +291,7 @@ class Module{
 				'Stjornvisi\Service\Values' 	=> 'Stjornvisi\Service\Values',
 				'Stjornvisi\Service\Conference' => 'Stjornvisi\Service\Conference',
 				'Stjornvisi\Service\Skeleton' 	=> 'Stjornvisi\Service\Skeleton',
+				'Stjornvisi\Service\Anaegjuvogin' 	=> 'Stjornvisi\Service\Anaegjuvogin',
 
 				'Stjornvisi\Notify\Submission' 	=> 'Stjornvisi\Notify\Submission',
 				'Stjornvisi\Notify\Event'		=> 'Stjornvisi\Notify\Event',

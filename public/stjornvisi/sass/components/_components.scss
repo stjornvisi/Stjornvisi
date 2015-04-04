@@ -307,6 +307,18 @@
 			padding-top: 0;
 		}
 	}
+
+	.block-list__link_item {
+		&:before {
+			content: "\2022";
+			color: $color-green-sea;
+			padding-right: rhythm(1/4,$font-size-base);
+		}
+		a {
+			font-family: $font-family-open;
+			font-weight: $font-weight-bold;
+		}
+	}
 }
 
 /**
