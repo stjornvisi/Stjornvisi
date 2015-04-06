@@ -11,18 +11,16 @@ namespace Stjornvisi\Mail;
 
 use Zend\Mail\Message;
 
-class AttacherTest extends \PHPUnit_Framework_TestCase {
+class AttacherTest extends \PHPUnit_Framework_TestCase
+{
 
-	public function testTrue(){
-
-
-
+	public function testTrue()
+	{
 		$message = new Message();
-		$message->setSubject('HUndur')
-			->setBody( file_get_contents(__DIR__ . '/mail.test.01.txt') )
-			->addFrom('ble@bla.is','ble')
-			->addTo('hundur@vei.is','hundur');
-
+		$message->setSubject('Hundur')
+			->setBody(file_get_contents(__DIR__ . '/mail.test.01.txt'))
+			->addFrom('ble@bla.is', 'ble')
+			->addTo('hundur@vei.is', 'hundur');
 
 		$attacher = new Attacher($message);
 		$result = $attacher->parse();

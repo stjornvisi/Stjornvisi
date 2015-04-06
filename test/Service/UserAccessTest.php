@@ -8,45 +8,48 @@
 
 namespace Stjornvisi\Service;
 
-require_once __DIR__.'/../ArrayDataSet.php';
-require_once __DIR__.'/../PDOMock.php';
-
 use \PDO;
 use Stjornvisi\ArrayDataSet;
 use PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\PDOMock;
 use Stjornvisi\Bootstrap;
 
-class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
+class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
+{
 	static private $pdo = null;
+
 	private $conn = null;
+
 	private $config;
+
 	/**
 	 * Get type of user, i.e. if he
 	 * is admin or not.
 	 */
-	public function testGetType(){
-		$service = new User( self::$pdo );
+	public function testGetType()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
 
 		$result = $service->getType(1);
-		$this->assertInstanceOf('\stdClass',$result,'User exists|Result type is stdClass');
-		$this->assertEquals(1,$result->is_admin,'User exists|User is admin');
-		$this->assertEquals(0,$result->type,'User exists|Type property is ambiguous, but SHOULD be 0');
+		$this->assertInstanceOf('\stdClass', $result, 'User exists|Result type is stdClass');
+		$this->assertEquals(1, $result->is_admin, 'User exists|User is admin');
+		$this->assertEquals(0, $result->type, 'User exists|Type property is ambiguous, but SHOULD be 0');
 
 		$result = $service->getType(2);
-		$this->assertInstanceOf('\stdClass',$result,'User exists|Result type is stdClass');
-		$this->assertEquals(0,$result->is_admin,'User exists|User is not admin');
-		$this->assertEquals(0,$result->type,'User exists|Type property is ambiguous, but SHOULD be 0');
+		$this->assertInstanceOf('\stdClass', $result, 'User exists|Result type is stdClass');
+		$this->assertEquals(0, $result->is_admin, 'User exists|User is not admin');
+		$this->assertEquals(0, $result->type, 'User exists|Type property is ambiguous, but SHOULD be 0');
 
 		$result = $service->getType(20);
-		$this->assertInstanceOf('\stdClass',$result,'User not exists|Result type is stdClass');
-		$this->assertEquals(0,$result->is_admin,'User not exists|User is not admin');
-		$this->assertEquals(0,$result->type,'User not exists|Type property is ambiguous, but SHOULD be 0');
+		$this->assertInstanceOf('\stdClass', $result, 'User not exists|Result type is stdClass');
+		$this->assertEquals(0, $result->is_admin, 'User not exists|User is not admin');
+		$this->assertEquals(0, $result->type, 'User not exists|Type property is ambiguous, but SHOULD be 0');
 
 		$result = $service->getType(null);
-		$this->assertInstanceOf('\stdClass',$result,'User null|Result type is stdClass');
-		$this->assertEquals(0,$result->is_admin,'User null|User is not admin');
-		$this->assertEquals(0,$result->type,'User null|Type property is ambiguous, but SHOULD be 0');
+		$this->assertInstanceOf('\stdClass', $result, 'User null|Result type is stdClass');
+		$this->assertEquals(0, $result->is_admin, 'User null|User is not admin');
+		$this->assertEquals(0, $result->type, 'User null|Type property is ambiguous, but SHOULD be 0');
 	}
 
 	/**
@@ -54,8 +57,11 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	 * storage connection
 	 * @expectedException Exception
 	 */
-	public function testGetTypeException(){
-		$service = new User( new PDOMock() );
+	public function testGetTypeException()
+	{
+		$service = new User();
+		$service->setDataSource(new PDOMock());
+
 		$service->getType(1);
 	}
 
@@ -63,13 +69,16 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	 * Test if 'not' logged in user has access
 	 * in relation to groups, which he never has.
 	 */
-	public function testGetTypeByGroupAnonymousUser(){
-		$service = new User( self::$pdo );
-		$result = $service->getTypeByGroup(null,array());
+	public function testGetTypeByGroupAnonymousUser()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
+
+		$result = $service->getTypeByGroup(null, []);
 		$this->assertFalse($result->is_admin);
 		$this->assertNull($result->type);
 
-		$result = $service->getTypeByGroup(null,array(1,2,3));
+		$result = $service->getTypeByGroup(null, [1,2,3]);
 		$this->assertFalse($result->is_admin);
 		$this->assertNull($result->type);
 	}
@@ -81,10 +90,13 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	 * method will not access storage and will not
 	 * throw an exception
 	 */
-	public function testGetTypeByGroupAnonymousUserException(){
-		$service = new User( new PDOMock() );
-		$result = $service->getTypeByGroup(null,array());
-		$this->assertInstanceOf('\stdClass',$result);
+	public function testGetTypeByGroupAnonymousUserException()
+	{
+		$service = new User();
+		$service->setDataSource(new PDOMock());
+
+		$result = $service->getTypeByGroup(null, []);
+		$this->assertInstanceOf('\stdClass', $result);
 	}
 
 	/**
@@ -94,116 +106,130 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	 * user can never have access to group that checking
 	 * against :)
 	 */
-	public function testGetTypeByGroupWithEmptyGroupArray(){
-		$service = new User( self::$pdo );
+	public function testGetTypeByGroupWithEmptyGroupArray()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
 
-		$result = $service->getTypeByGroup(1,array());
-		$this->assertEquals(1,$result->is_admin,'User is admin');
-		$this->assertNull($result->type,'User is admin');
+		$result = $service->getTypeByGroup(1, []);
+		$this->assertEquals(1, $result->is_admin, 'User is admin');
+		$this->assertNull($result->type, 'User is admin');
 
-		$result = $service->getTypeByGroup(2,array());
-		$this->assertEquals(0,$result->is_admin,'User is not admin');
-		$this->assertNull($result->type,'User is not admin');
+		$result = $service->getTypeByGroup(2, []);
+		$this->assertEquals(0, $result->is_admin, 'User is not admin');
+		$this->assertNull($result->type, 'User is not admin');
 
-		$result = $service->getTypeByGroup(200,array());
-		$this->assertEquals(0,$result->is_admin,'User does not exists');
-		$this->assertNull($result->type,'User does not exists');
+		$result = $service->getTypeByGroup(200, []);
+		$this->assertEquals(0, $result->is_admin, 'User does not exists');
+		$this->assertNull($result->type, 'User does not exists');
 	}
 
 	/**
 	 * Get type of user in relation to groups.
 	 */
-	public function testGetTypeByGroup(){
-		$service = new User( self::$pdo );
-		$result = $service->getTypeByGroup(1,array(1));
-		$this->assertEquals(1,$result->is_admin);
-		$this->assertEquals(0,$result->type,'User has no access to group');
+	public function testGetTypeByGroup()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
 
-		$result = $service->getTypeByGroup(2,array(1));
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(1,$result->type,'User is manager of group');
+		$result = $service->getTypeByGroup(1, [1]);
+		$this->assertEquals(1, $result->is_admin);
+		$this->assertEquals(0, $result->type, 'User has no access to group');
 
-		$result = $service->getTypeByGroup(2,array(2));
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(2,$result->type,'User is chairman of group');
+		$result = $service->getTypeByGroup(2, [1]);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(1, $result->type, 'User is manager of group');
 
-		$result = $service->getTypeByGroup(2,array(1,2));
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(2,$result->type,'User is manager of 1, but chairman of 2');
+		$result = $service->getTypeByGroup(2, [2]);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(2, $result->type, 'User is chairman of group');
 
-		$result = $service->getTypeByGroup(2,array(2,1,2));
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(2,$result->type,'User is manager of 1, but chairman of 2 (reverse)');
+		$result = $service->getTypeByGroup(2, [1,2]);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(2, $result->type, 'User is manager of 1, but chairman of 2');
 
-		$result = $service->getTypeByGroup(2,array(3,4));
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertNull($result->type,'User has no access to 3 and 4');
+		$result = $service->getTypeByGroup(2, [2,1,2]);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(2, $result->type, 'User is manager of 1, but chairman of 2 (reverse)');
 
-		$result = $service->getTypeByGroup(2,array(4,3,4));
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertNull($result->type,'User has no access to 3 and 4 (reverse)');
+		$result = $service->getTypeByGroup(2, [3,4]);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertNull($result->type, 'User has no access to 3 and 4');
 
-		$result = $service->getTypeByGroup(2,array(4,3,null));
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertNull($result->type,'User has no access to 3 and 4 (reverse with null)');
+		$result = $service->getTypeByGroup(2, [4,3,4]);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertNull($result->type, 'User has no access to 3 and 4 (reverse)');
 
-		$result = $service->getTypeByGroup(2,4);
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertNull($result->type,'User has no access to 4');
+		$result = $service->getTypeByGroup(2, [4,3,null]);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertNull($result->type, 'User has no access to 3 and 4 (reverse with null)');
 
-		$result = $service->getTypeByGroup(2,1);
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(1,$result->type,'User has access to 1');
+		$result = $service->getTypeByGroup(2, 4);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertNull($result->type, 'User has no access to 4');
 
-		$result = $service->getTypeByGroup(2,2);
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(2,$result->type,'User has access to 2');
+		$result = $service->getTypeByGroup(2, 1);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(1, $result->type, 'User has access to 1');
+
+		$result = $service->getTypeByGroup(2, 2);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(2, $result->type, 'User has access to 2');
 	}
 
 	/**
 	 * @expectedException Exception
 	 */
-	public function testGetTypeByGroupException(){
-		$service = new User( new PDOMock() );
-		$service->getTypeByGroup(1,array(1,2));
+	public function testGetTypeByGroupException()
+	{
+		$service = new User();
+		$service->setDataSource(new PDOMock());
+
+		$service->getTypeByGroup(1, [1,2]);
 	}
 
 	/**
 	 * Test if anonymous user has access to company
 	 */
-	public function testGetTypeByCompanyAnonymousUser(){
-		$service = new User( self::$pdo );
-		$result = $service->getTypeByCompany(null,1);
-		$this->assertEquals(0,$result->is_admin);
+	public function testGetTypeByCompanyAnonymousUser()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
+
+		$result = $service->getTypeByCompany(null, 1);
+		$this->assertEquals(0, $result->is_admin);
 		$this->assertNull($result->type);
 
-		$result = $service->getTypeByCompany(null,null);
-		$this->assertEquals(0,$result->is_admin);
+		$result = $service->getTypeByCompany(null, null);
+		$this->assertEquals(0, $result->is_admin);
 		$this->assertNull($result->type);
 	}
 
 	/**
 	 * Test user access to company.
 	 */
-	public function testGetTypeByCompany(){
-		$service = new User( self::$pdo );
-		$result = $service->getTypeByCompany(1,1);
-		$this->assertEquals(0,$result->type,'User in company, not key_user');
+	public function testGetTypeByCompany()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
 
-		$result = $service->getTypeByCompany(2,1);
-		$this->assertEquals(1,$result->type,'User in company, key_user');
+		$result = $service->getTypeByCompany(1, 1);
+		$this->assertEquals(0, $result->type, 'User in company, not key_user');
 
-		$result = $service->getTypeByCompany(1,2);
-		$this->assertNull($result->type,'User not in company');
+		$result = $service->getTypeByCompany(2, 1);
+		$this->assertEquals(1, $result->type, 'User in company, key_user');
 
-		$result = $service->getTypeByCompany(100,2);
-		$this->assertNull($result->type,'User does not exists');
+		$result = $service->getTypeByCompany(1, 2);
+		$this->assertNull($result->type, 'User not in company');
 
-		$result = $service->getTypeByCompany(1,200);
-		$this->assertNull($result->type,'Company does not exists');
+		$result = $service->getTypeByCompany(100, 2);
+		$this->assertNull($result->type, 'User does not exists');
 
-		$result = $service->getTypeByCompany(100,200);
-		$this->assertNull($result->type,'Company and user does not exists');
+		$result = $service->getTypeByCompany(1, 200);
+		$this->assertNull($result->type, 'Company does not exists');
+
+		$result = $service->getTypeByCompany(100, 200);
+		$this->assertNull($result->type, 'Company and user does not exists');
 	}
 
 	/**
@@ -211,27 +237,32 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	 * when there is no connection to storage.
 	 * @expectedException Exception
 	 */
-	public function testGetTypeByCompanyException(){
-		$service = new User( new PDOMock() );
-		$service->getTypeByCompany(1,1);
+	public function testGetTypeByCompanyException()
+	{
+		$service = new User();
+		$service->setDataSource(new PDOMock());
+		$service->getTypeByCompany(1, 1);
 	}
 
 	/**
 	 * Test for user has access to user.
 	 */
-	public function testGetTypeByUser(){
-		$service = new User( self::$pdo );
-		$result = $service->getTypeByUser(null,null);
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(0,$result->type);
+	public function testGetTypeByUser()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
 
-		$result = $service->getTypeByUser(2,1);
-		$this->assertEquals(1,$result->is_admin);
-		$this->assertEquals(0,$result->type);
+		$result = $service->getTypeByUser(null, null);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(0, $result->type);
 
-		$result = $service->getTypeByUser(2,2);
-		$this->assertEquals(0,$result->is_admin);
-		$this->assertEquals(1,$result->type);
+		$result = $service->getTypeByUser(2, 1);
+		$this->assertEquals(1, $result->is_admin);
+		$this->assertEquals(0, $result->type);
+
+		$result = $service->getTypeByUser(2, 2);
+		$this->assertEquals(0, $result->is_admin);
+		$this->assertEquals(1, $result->type);
 	}
 
 	/**
@@ -239,18 +270,23 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	 * when there is no connection to storage.
 	 * @expectedException Exception
 	 */
-	public function testGetTypeByUserException(){
-		$service = new User( new PDOMock() );
-		$service->getTypeByUser(2,1);
+	public function testGetTypeByUserException()
+	{
+		$service = new User();
+		$service->setDataSource(new PDOMock());
+		$service->getTypeByUser(2, 1);
 	}
 
 	/**
 	 * Change type of user.
 	 */
-	public function testSetType(){
-		$service = new User( self::$pdo );
-		$result = $service->setType(2,1);
-		$this->assertEquals(1,$result);
+	public function testSetType()
+	{
+		$service = new User();
+		$service->setDataSource(self::$pdo);
+
+		$result = $service->setType(2, 1);
+		$this->assertEquals(1, $result);
 	}
 
 	/**
@@ -259,29 +295,19 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	 * storage.
 	 * @expectedException Exception
 	 */
-	public function testSetTypeException(){
-		$service = new User( new PDOMock() );
-		$service->setType(2,1);
+	public function testSetTypeException()
+	{
+		$service = new User();
+		$service->setDataSource(new PDOMock());
+
+		$service->setType(2, 1);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	/**
 	 *
 	 */
-	protected function setUp() {
+	protected function setUp()
+	{
 		$serviceManager = Bootstrap::getServiceManager();
 		$this->config = $serviceManager->get('Config');
 		$conn=$this->getConnection();
@@ -293,30 +319,31 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 	/**
 	 * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
 	 */
-	public function getConnection(){
-
-		if( $this->conn === null ){
-			if (self::$pdo == null){
+	public function getConnection()
+	{
+		if ($this->conn === null) {
+			if (self::$pdo == null) {
 				self::$pdo = new PDO(
 					$GLOBALS['DB_DSN'],
 					$GLOBALS['DB_USER'],
 					$GLOBALS['DB_PASSWD'],
-					array(
+					[
 						PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
 						PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 						PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-					));
+					]
+				);
 			}
 			$this->conn = $this->createDefaultDBConnection(self::$pdo);
 		}
-
 		return $this->conn;
 	}
 
 	/**
 	 * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
 	 */
-	public function getDataSet(){
+	public function getDataSet()
+	{
 		return new ArrayDataSet([
 			'User' => [
 				['id'=>1, 'name'=>'n1', 'passwd'=>'p1', 'email'=>'one@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>1],
@@ -350,4 +377,4 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase {
 			],
 		]);
 	}
-} 
+}

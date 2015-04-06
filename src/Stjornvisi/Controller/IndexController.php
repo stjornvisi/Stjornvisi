@@ -24,17 +24,17 @@ use Stjornvisi\Form\Login;
  *
  * @package Stjornvisi\Controller
  */
-class IndexController extends AbstractActionController{
-
+class IndexController extends AbstractActionController
+{
     /**
      * This is the landing page or the home page.
      *
      * It will display a <em>welcome</em> and a <em>sales pitch</em>
      * if the use is not logged in, else it will be the user's personal
      * profile.
-     *
      */
-    public function indexAction(){
+    public function indexAction()
+    {
 
         //SERVICES
         //  load all services
@@ -44,27 +44,31 @@ class IndexController extends AbstractActionController{
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $companyService = $sm->get('Stjornvisi\Service\Company');
 
-		//AUTH
-		//	authenticate user
+        //AUTH
+        //	authenticate user
         $auth = new AuthenticationService();
-        if( $auth->hasIdentity() ){
-            return new ViewModel(array(
-                'groups' => $groupService->getByUser( $auth->getIdentity()->id ),
-                'news' => $newsService->getByUser( $auth->getIdentity()->id ),
-                'events' => $eventService->getByUser( $auth->getIdentity()->id ),
-				'gallery' => $eventService->fetchGallery(16),
-                'media' => $eventService->getMediaByUser( $auth->getIdentity()->id ),
-                'is_connected' => $companyService->getByUser( $auth->getIdentity()->id ),
+        if ($auth->hasIdentity() ) {
+            return new ViewModel(
+                [
+                'groups' => $groupService->getByUser($auth->getIdentity()->id),
+                'news' => $newsService->getByUser($auth->getIdentity()->id),
+                'events' => $eventService->getByUser($auth->getIdentity()->id),
+                'gallery' => $eventService->fetchGallery(16),
+                'media' => $eventService->getMediaByUser($auth->getIdentity()->id),
+                'is_connected' => $companyService->getByUser($auth->getIdentity()->id),
                 'identity' => $auth->getIdentity()
-            ));
-        }else{
-            return new ViewModel(array(
+                ]
+            );
+        } else {
+            return new ViewModel(
+                [
                 'identity' => null,
-				'groups' => $groupService->fetchAll(),
-				'event' => $eventService->getNext(),
-				'news' => $newsService->getNext(),
-                'gallery' => $eventService->fetchGallery(12,true),
-            ));
+                'groups' => $groupService->fetchAll(),
+                'event' => $eventService->getNext(),
+                'news' => $newsService->getNext(),
+                'gallery' => $eventService->fetchGallery(12, true),
+                ]
+            );
         }
 
     }
@@ -72,31 +76,38 @@ class IndexController extends AbstractActionController{
     /**
      * @todo do we need this?
      */
-    public function radstefnaAction(){}
+    public function radstefnaAction()
+    {
+    }
 
     /**
      * @todo do we need this?
      */
-    public function semposiumThanksAction(){}
+    public function semposiumThanksAction()
+    {
+    }
 
     /**
      * @todo do we need this?
      */
-    public function semposiumAttendanceAction(){}
+    public function semposiumAttendanceAction()
+    {
+    }
 
-	/**
-	 * @todo do we need this?
-	 * @return ViewModel
-	 */
-	public function stjornvisiOverviewAction(){
-		return new ViewModel(array(
-			'identity' => null,
-		));
-	}
+    /**
+     * @todo do we need this?
+     * @return ViewModel
+     */
+    public function stjornvisiOverviewAction()
+    {
+        return new ViewModel(['identity' => null]);
+    }
 
-	/**
-	 * This just return an (almost) static page
-	 * with the style-guide
-	 */
-	public function styleGuideAction(){}
+    /**
+     * This just return an (almost) static page
+     * with the style-guide
+     */
+    public function styleGuideAction()
+    {
+    }
 }

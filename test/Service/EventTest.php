@@ -8,9 +8,6 @@
 
 namespace Stjornvisi\Service;
 
-require_once __DIR__.'/../ArrayDataSet.php';
-require_once __DIR__.'/../PDOMock.php';
-
 use Stjornvisi\PDOMock;
 use Stjornvisi\Service\Event;
 use \PDO;
@@ -19,21 +16,25 @@ use Stjornvisi\ArrayDataSet;
 use Stjornvisi\Bootstrap;
 
 
-class EventTest extends PHPUnit_Extensions_Database_TestCase{
+class EventTest extends PHPUnit_Extensions_Database_TestCase
+{
     static private $pdo = null;
+
     private $conn = null;
+
 	private $config;
 
+	public function testGet()
+	{
+		$service = new Event();
+		$service->setDataSource(self::$pdo);
 
-	public function testGet(){
-		$eventDAO = new Event( self::$pdo );
+		$this->assertInstanceOf('stdClass', $service->get(1));
+		$this->assertInstanceOf('stdClass', $service->get(2));
 
-		$this->assertInstanceOf('stdClass', $eventDAO->get( 1 ));
-		$this->assertInstanceOf('stdClass', $eventDAO->get( 2 ));
+		$this->assertInstanceOf('stdClass', $service->get(1, 1));
 
-		$this->assertInstanceOf('stdClass', $eventDAO->get( 1, 1 ));
-
-		$this->assertFalse( $eventDAO->get(1000) );
+		$this->assertFalse($service->get(1000));
 	}
 
 
@@ -216,7 +217,8 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
     /**
      *
      */
-    protected function setUp() {
+    protected function setUp()
+	{
 		$serviceManager = Bootstrap::getServiceManager();
 		$this->config = $serviceManager->get('Config');
         $conn=$this->getConnection();
@@ -228,34 +230,35 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
     /**
      * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
-    public function getConnection(){
-
-        if( $this->conn === null ){
-            if (self::$pdo == null){
+    public function getConnection()
+	{
+        if ($this->conn === null) {
+            if (self::$pdo == null) {
                 self::$pdo = new PDO(
 					$GLOBALS['DB_DSN'],
 					$GLOBALS['DB_USER'],
 					$GLOBALS['DB_PASSWD'],
-                    array(
+                    [
                         PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ));
+                    ]
+				);
             }
             $this->conn = $this->createDefaultDBConnection(self::$pdo);
         }
-
         return $this->conn;
     }
 
     /**
      * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
      */
-    public function getDataSet(){
+    public function getDataSet()
+	{
         return new ArrayDataSet([
 			'User' => [
-				['id'=>1, 'name'=>'n1', 'passwd'=>md5(rand(0,9)), 'email'=>'e@mail.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-				['id'=>2, 'name'=>'n1', 'passwd'=>md5(rand(0,9)), 'email'=>'e@mail2.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
+				['id'=>1, 'name'=>'n1', 'passwd'=>md5(rand(0, 9)), 'email'=>'e@mail.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
+				['id'=>2, 'name'=>'n1', 'passwd'=>md5(rand(0, 9)), 'email'=>'e@mail2.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
 			],
 			'Group' => [
 				[ 'id'=>1, 'name'=>'name1', 'name_short'=>'n1', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n1' ],
@@ -264,15 +267,15 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
 				[ 'id'=>4, 'name'=>'name4', 'name_short'=>'n4', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n4' ],
 			],
 			'Event' => [
-				['id'=>1, 'subject'=>'01', 'body'=>'01',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('-4 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>2, 'subject'=>'02', 'body'=>'02',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('-3 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>3, 'subject'=>'03', 'body'=>'03',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('-2 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>4, 'subject'=>'04', 'body'=>'04',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('-1 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>5, 'subject'=>'05', 'body'=>'05',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d'),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>6, 'subject'=>'06', 'body'=>'06',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('+1 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>7, 'subject'=>'07', 'body'=>'07',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('+2 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>8, 'subject'=>'08', 'body'=>'08',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('+3 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-				['id'=>9, 'subject'=>'09', 'body'=>'09',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d',strtotime('+4 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>1, 'subject'=>'01', 'body'=>'01', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-4 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>2, 'subject'=>'02', 'body'=>'02', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-3 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>3, 'subject'=>'03', 'body'=>'03', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-2 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>4, 'subject'=>'04', 'body'=>'04', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-1 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>5, 'subject'=>'05', 'body'=>'05', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d'),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>6, 'subject'=>'06', 'body'=>'06', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+1 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>7, 'subject'=>'07', 'body'=>'07', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+2 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>8, 'subject'=>'08', 'body'=>'08', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+3 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+				['id'=>9, 'subject'=>'09', 'body'=>'09', 'location'=>'01', 'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+4 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
 			],
 			'Group_has_Event' => [
 				['event_id'=>2, 'group_id'=>1,'primary'=>0],
@@ -307,4 +310,4 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase{
 
 		]);
     }
-} 
+}

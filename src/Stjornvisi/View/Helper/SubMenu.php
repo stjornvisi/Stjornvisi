@@ -27,16 +27,17 @@ class SubMenu extends AbstractHelper {
 		$this->authService = $authService;
 	}
 
-	public function __invoke(){
+	public function __invoke()
+	{
 
 		$view = $this->getView();
 		/** @var $view \Zend\View\Renderer\PhpRenderer */
 
-		if( !self::$navigation ){
+		if (!self::$navigation) {
 
 			$array = array();
 			$userGroups = $this->groupService->getByUser($this->authService->getIdentity()->id);
-			if( empty($userGroups) ){
+			if (empty($userGroups)) {
 				$array = array(
 					array(
 						'label' => 'Faghópar',
@@ -51,7 +52,7 @@ class SubMenu extends AbstractHelper {
 						)
 					),
 				);
-			}else{
+			} else {
 				$array = array(
 					array(
 						'label' => 'Faghópar',
@@ -62,7 +63,7 @@ class SubMenu extends AbstractHelper {
 							return array(
 								'label' => $i->name_short,
 								'id' => $i->id,
-								'uri' => $view->url('hopur/index',array('id'=>$i->url)),
+								'uri' => $view->url('hopur/index', array('id'=>$i->url)),
 								//'class' => 'icon-horn',
 								'params' => array(
 									'id' => $i->url,
@@ -76,8 +77,7 @@ class SubMenu extends AbstractHelper {
 			}
 
 
-
-			if( $this->authService->hasIdentity() ){
+			if ($this->authService->hasIdentity()) {
 
 				$array[] = array(
 					'label' => $this->authService->getIdentity()->name,
@@ -86,7 +86,7 @@ class SubMenu extends AbstractHelper {
 					'pages' => array(
 						array(
 							'label' => 'Notendastillingar',
-							'uri' => $view->url('notandi/update',array('id'=>$this->authService->getIdentity()->id))//"/notandi/{$this->authService->getIdentity()->id}/uppfaera"
+							'uri' => $view->url('notandi/update', array('id'=>$this->authService->getIdentity()->id))
 						),
 						array(
 							'label' => 'Hópastillingar',
@@ -94,7 +94,7 @@ class SubMenu extends AbstractHelper {
 						),
 						array(
 							'label' => 'Lykilorð',
-							'uri' => $view->url('notandi/change-password',array('id'=>$this->authService->getIdentity()->id))
+							'uri' => $view->url('notandi/change-password', array('id'=>$this->authService->getIdentity()->id))
 						),
 						array(
 							'label' => 'Útskrá',
@@ -104,8 +104,8 @@ class SubMenu extends AbstractHelper {
 					),
 				);
 
-				$type = $this->userService->getType( $this->authService->getIdentity()->id );
-				if( $type->is_admin ){
+				$type = $this->userService->getType($this->authService->getIdentity()->id);
+				if ($type->is_admin) {
 					$array[] = array(
 						'label' => 'Admin',
 						'id' => 'admin-link',
@@ -176,35 +176,35 @@ class SubMenu extends AbstractHelper {
 									array(
 										'label' => 'Allir',
 										'id' => '',
-										'uri' => $view->url('notandi/export',array('type'=>'allir')),
+										'uri' => $view->url('notandi/export', array('type'=>'allir')),
 										'class' => 'icon-list',
 										'title' => 'Allir notendur'
 									),
 									array(
 										'label' => 'Formenn',
 										'id' => '',
-										'uri' => $view->url('notandi/export',array('type'=>'formenn')),
+										'uri' => $view->url('notandi/export', array('type'=>'formenn')),
 										'class' => 'icon-list',
 										'title' => 'Allir formenn'
 									),
 									array(
 										'label' => 'Stjórnendur',
 										'id' => '',
-										'uri' => $view->url('notandi/export',array('type'=>'stjornendur')),
+										'uri' => $view->url('notandi/export', array('type'=>'stjornendur')),
 										'class' => 'icon-list',
 										'title' => 'Allir stjórnendur'
 									),
 									array(
 										'label' => 'Allir',
 										'id' => 'mail-all',
-										'uri' => $view->url('email/send',array('type'=>'allir')),
+										'uri' => $view->url('email/send', array('type'=>'allir')),
 										'class' => 'icon-mail',
 										'title' => 'Senda póst á alla'
 									),
 									array(
 										'label' => 'Stjórnendur',
 										'id' => 'mail-all',
-										'uri' => $view->url('email/send',array('type'=>'formenn')),
+										'uri' => $view->url('email/send', array('type'=>'formenn')),
 										'class' => 'icon-mail',
 										'title' => 'Senda póst á stjórnendur faghópa'
 									),

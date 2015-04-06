@@ -8,26 +8,22 @@
 
 namespace Stjornvisi\Validator;
 
-
-class KennitalaTest extends \PHPUnit_Framework_TestCase {
-
-
-
-	public function dataProvider(){
-		return array(
-			array( '1104784969', true ),
-			array( '1007092870', true ),
-			//array( '1234567890', false )
-
-		);
+class KennitalaTest extends \PHPUnit_Framework_TestCase
+{
+	public function dataProvider()
+	{
+		return [
+			[ '1104784969', true ],
+			[ '1007092870', true ],
+		];
 	}
 
 	/**
 	 * @dataProvider dataProvider
 	 */
-	public function testSsnValidation( $number, $boolean ){
+	public function testSsnValidation($number, $boolean)
+	{
 		$validator = new Kennitala();
-		$this->assertEquals( $boolean, $validator->isValid($number) );
-
+		$this->assertEquals($boolean, $validator->isValid($number));
 	}
-} 
+}

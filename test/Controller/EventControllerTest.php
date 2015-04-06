@@ -8,9 +8,6 @@
 
 namespace Stjornvisi\Controller;
 
-require_once __DIR__.'/../ArrayDataSet.php';
-require_once __DIR__.'/../PDOMock.php';
-
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
@@ -39,10 +36,6 @@ class EventControllerTest extends PHPUnit_Extensions_Database_TestCase{
 	protected $routeMatch;
 	protected $event;
 	private $config;
-
-	public function testTrue(){
-		$this->assertTrue(true);
-	}
 
 	public function testCreateGlobalEventUserIsNotLoggedIn(){
 		$this->routeMatch->setParam('action', 'create');

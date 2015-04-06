@@ -8,8 +8,8 @@
 
 namespace Stjornvisi\Lib;
 
-
-class JsonFormatter extends \Monolog\Formatter\JsonFormatter {
+class JsonFormatter extends \Monolog\Formatter\JsonFormatter
+{
 	/**
 	 * {@inheritdoc}
 	 */
@@ -17,4 +17,4 @@ class JsonFormatter extends \Monolog\Formatter\JsonFormatter {
 	{
 		return json_encode($record) .",". ($this->appendNewline ? "\n" : '');
 	}
-} 
+}

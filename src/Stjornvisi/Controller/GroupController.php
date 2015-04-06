@@ -2,7 +2,6 @@
 
 namespace Stjornvisi\Controller;
 
-
 use Stjornvisi\View\Model\CsvModel;
 use Stjornvisi\View\Model\IcalModel;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -22,48 +21,48 @@ use Zend\Http\Response as HttpResponse;
  * Class GroupController
  *
  * @package Stjornvisi\Controller
- * @author einarvalur
+ * @author  einarvalur
  */
-class GroupController extends AbstractActionController{
-
-	/**
-	 * Display one group by url-name.
+class GroupController extends AbstractActionController
+{
+    /**
+     * Display one group by url-name.
      *
      * @return \Zend\Http\Response|ViewModel
-	 */
-	public function indexAction(){
-
+     */
+    public function indexAction()
+    {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $newsService = $sm->get('Stjornvisi\Service\News');
         $eventService = $sm->get('Stjornvisi\Service\Event');
         $userService = $sm->get('Stjornvisi\Service\User');
 
-		$auth = new AuthenticationService();
+        $auth = new AuthenticationService();
         //GROUP
         //  group found
-        if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
 
             $yearRange = range(
                 $groupService->getFirstYear($group->id),
                 ((int)date('n')>=9)?(int)date('Y')+1:(int)date('Y')
             );
-            $yearRangeArray = array();
-            for($i=0;$i<count($yearRange)-1;$i++){
-                $yearRangeArray[] = array_slice($yearRange,$i,2);
+            $yearRangeArray = [];
+            for ($i=0;$i<count($yearRange)-1;$i++) {
+                $yearRangeArray[] = array_slice($yearRange, $i, 2);
             }
-			$yearRangeArray = array_reverse($yearRangeArray);
+            $yearRangeArray = array_reverse($yearRangeArray);
             $from = null;
             $to = null;
             //CLIENT DEFINED RANGE
             //  user wants to select the range
-            if( $this->params()->fromRoute('range', '') != '' ){
-                $rangeArray = explode('-',$this->params()->fromRoute('range', ''));
+            if ($this->params()->fromRoute('range', '') != '') {
+                $rangeArray = explode('-', $this->params()->fromRoute('range', ''));
                 $from = new \DateTime($rangeArray[0].'-09-01 00:00:00');
                 $to = new \DateTime($rangeArray[1].'-08-31 23:59:00');
-            //DEFAULT RANGE
-            //  use the current stjornvisi calendar
-            }else{
+                //DEFAULT RANGE
+                //  use the current stjornvisi calendar
+            } else {
                 //GET CURRENT MONTH INT
                 $monthInt = (int)date('n');
                 $yearInt = (int)date('Y');
@@ -71,116 +70,114 @@ class GroupController extends AbstractActionController{
                 //IN THE 2nd HALF
                 //  user is in the second half of the
                 //  stjornvisi calendar
-                if( $monthInt >= 9 ){
+                if ($monthInt >= 9) {
                     $from = new \DateTime($yearInt.'-09-01 00:00:00');
                     $to = new \DateTime(($yearInt+1).'-08-31 23:59:00');
-                //IN THE 1st HALF
-                //  user is in the first half of the
-                //  stjornvisi calendar
-                }else{
+                    //IN THE 1st HALF
+                    //  user is in the first half of the
+                    //  stjornvisi calendar
+                } else {
                     $from = new \DateTime(($yearInt-1).'-09-01 00:00:00');
                     $to = new \DateTime(($yearInt).'-08-31 23:59:00');
                 }
             }
 
-
-            return new ViewModel(array(
-                'range' => (object)array('from'=>$from, 'to'=>$to, 'range'=>$yearRangeArray),
+            return new ViewModel(
+                [
+                'range' => (object)['from'=>$from, 'to'=>$to, 'range'=>$yearRangeArray],
                 'group' => $group,
-                'news' => $newsService->getRangeByGroup( $group->id, $from, $to ),
+                'news' => $newsService->getRangeByGroup($group->id, $from, $to),
                 'events' => $eventService->getRangeByGroup(
-						$group->id, $from, $to, ($auth->hasIdentity())?$auth->getIdentity()->id:null ),
-                'managers' => $userService->getByGroup( $group->id,array(1,2) ),
-                'users' => $userService->getByGroup( $group->id, 0 ),
+                    $group->id, $from, $to, ($auth->hasIdentity())?$auth->getIdentity()->id:null 
+                ),
+                'managers' => $userService->getByGroup($group->id, [1,2]),
+                'users' => $userService->getByGroup($group->id, 0),
                 'access' => $userService->getTypeByGroup(
-						$auth->hasIdentity()?$auth->getIdentity()->id:null,
-						$group->id
-					),
-				'logged_in' => $auth->hasIdentity()
-            ));
+                    $auth->hasIdentity()?$auth->getIdentity()->id:null,
+                    $group->id
+                ),
+                'logged_in' => $auth->hasIdentity()
+                ]
+            );
 
-        //NO GROUP
-        //  this group ID not found
-        }else{
-			return $this->notFoundAction();
+            //NO GROUP
+            //  this group ID not found
+        } else {
+            return $this->notFoundAction();
         }
 
-	}
+    }
 
     /**
      * Create new Group.
      *
      * @return \Zend\Http\Response|ViewModel
      */
-    public function createAction(){
-
+    public function createAction()
+    {
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
 
         $auth = new AuthenticationService();
 
         $access = $userService->getTypeByGroup(
-            ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+            ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
             0
         );
 
         //ACCESS GRANTED
         //  user is admin
-        if( $access->is_admin ){
+        if ($access->is_admin) {
 
             $form = new GroupForm();
-			$form->setAttribute('action', $this->url()->fromRoute('hopur/create'));
+            $form->setAttribute('action', $this->url()->fromRoute('hopur/create'));
 
             //POST
             //  http post request
-            if( $this->request->isPost() ){
-                $form->setData( $this->request->getPost() );
+            if ($this->request->isPost()) {
+                $form->setData($this->request->getPost());
 
                 //VALID
                 //  valid form
-                if( $form->isValid() ){
+                if ($form->isValid()) {
                     $sm = $this->getServiceLocator();
                     $groupService = $sm->get('Stjornvisi\Service\Group');
-					/** @var  $groupService \Stjornvisi\Service\Group */
+                    /** @var  $groupService \Stjornvisi\Service\Group */
 
                     //CREATE
                     //  create record and get ID back
-                    $id = $groupService->create( $form->getData() );
-					$group = $groupService->get($id);
-                    return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
-                //INVALID
-                //  invalid form
-                }else{
-					$this->getResponse()->setStatusCode(400);
-                    return new ViewModel(array(
-                        'form' => $form
-                    ));
+                    $id = $groupService->create($form->getData());
+                    $group = $groupService->get($id);
+                    return $this->redirect()->toRoute('hopur/index', ['id'=>$group->url]);
+                    //INVALID
+                    //  invalid form
+                } else {
+                    $this->getResponse()->setStatusCode(400);
+                    return new ViewModel(['form' => $form]);
                 }
 
-            //QUERY
-            //  http get request
-            }else{
-                return new ViewModel(array(
-                    'form' => $form
-                ));
+                //QUERY
+                //  http get request
+            } else {
+                return new ViewModel(['form' => $form]);
             }
-        //ACCESS DENIED
-        //  user not admin
-        }else{
-			$this->getResponse()->setStatusCode(401);
-			$model = new ViewModel();
-			$model->setTemplate('error/401');
-			return $model;
+            //ACCESS DENIED
+            //  user not admin
+        } else {
+            $this->getResponse()->setStatusCode(401);
+            $model = new ViewModel();
+            $model->setTemplate('error/401');
+            return $model;
         }
-	}
+    }
 
     /**
      * Update Group.
      *
      * @return \Zend\Http\Response|ViewModel
      */
-    public function updateAction(){
-
+    public function updateAction()
+    {
         //SERVICE
         //  get group service
         $sm = $this->getServiceLocator();
@@ -189,26 +186,25 @@ class GroupController extends AbstractActionController{
 
         //ITEM FOUND
         //  item is in storage
-        if( ($group = $groupService->get($this->params()->fromRoute('id', 0))) != null ){
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != null) {
 
             //ACCESS CONTROL
             //  if user is admin or manager
             $auth = new AuthenticationService();
             $access = $userService->getTypeByGroup(
-                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
                 $group->id
             );
-            if( $access->is_admin || $access->type >= 1 ){
+            if ($access->is_admin || $access->type >= 1) {
 
                 //POST
                 //  http post query
-                if($this->request->isPost()){
-					$form = new GroupForm();
-					$form->setAttribute('action',$this->url()->fromRoute('hopur/update',array('id'=>$group->url)) );
-                    $form->setData($this->request->getPost() );
+                if ($this->request->isPost()) {
+                    $form = new GroupForm();
+                    $form->setAttribute('action', $this->url()->fromRoute('hopur/update', ['id'=>$group->url]));
+                    $form->setData($this->request->getPost());
 
-
-                    if( $form->isValid() ){
+                    if ($form->isValid()) {
                         //DATA
                         //  extract data from form and do some
                         //  small alterations on it. (add one field 'url'
@@ -217,77 +213,73 @@ class GroupController extends AbstractActionController{
 
                         //CREATE
                         //  create record and get ID back
-                        $groupService->update( (int)$group->id, $data );
-						$group = $groupService->get($group->id);
+                        $groupService->update((int)$group->id, $data);
+                        $group = $groupService->get($group->id);
 
-                        return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
+                        return $this->redirect()->toRoute('hopur/index', ['id'=>$group->url]);
 
-                    }else{
-						$this->getResponse()->setStatusCode(400);
-                        return new ViewModel(array(
-                            'form' => $form
-                        ));
+                    } else {
+                        $this->getResponse()->setStatusCode(400);
+                        return new ViewModel(['form' => $form]);
                     }
 
-                //QUERY
-                //  http get request
-                }else{
+                    //QUERY
+                    //  http get request
+                } else {
                     $form = new GroupForm();
-                    $form->bind( new \ArrayObject((array)$group) );
-                    $form->setAttribute('action', $this->url()->fromRoute('hopur/update',array('id'=>$group->url)) );
-                    return new ViewModel(array(
-                        'form' => $form
-                    ));
+                    $form->bind(new \ArrayObject((array)$group));
+                    $form->setAttribute('action', $this->url()->fromRoute('hopur/update', ['id'=>$group->url]));
+                    return new ViewModel(['form' => $form]);
                 }
-            //ACCESS DENIED
-            //  user is not admin or manager
-            }else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
+                //ACCESS DENIED
+                //  user is not admin or manager
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
             }
 
-        //ITEM NOT FOUND
-        //  404
-        }else{
-			return $this->notFoundAction();
+            //ITEM NOT FOUND
+            //  404
+        } else {
+            return $this->notFoundAction();
         }
     }
 
     /**
      * Delete Group.
-     *
      */
-    public function deleteAction(){
+    public function deleteAction()
+    {
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $groupService = $sm->get('Stjornvisi\Service\Group');
 
         //GROUP FOUND
         //  item found in storage
-        if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != null ){
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != null) {
             $auth = new AuthenticationService();
             $access = $userService->getTypeByGroup(
-                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
                 0
             );
             //ACCESS GRANTED
             //  user is manager or admin
-            if($access->is_admin || $access->type >= 1){
+            if ($access->is_admin || $access->type >= 1) {
                 $groupService->delete($group->id);
-			//ACCESS DENIED
-			//  user doesn't have access
-            }else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
+                //ACCESS DENIED
+                //  user doesn't have access
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
             }
-		//GROUP NOT FOUND
-		//  no group with this url
-        }else{
-			return $this->notFoundAction();
+            //GROUP NOT FOUND
+            //  no group with this url
+        } else {
+            return $this->notFoundAction();
         }
     }
 
@@ -296,93 +288,94 @@ class GroupController extends AbstractActionController{
      *
      * @return ViewModel
      */
-    public function listAction(){
+    public function listAction()
+    {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
-        return new ViewModel(array(
-            'groups_all' => $groupService->fetchAllExtended(1),
-        ));
+        return new ViewModel(['groups_all' => $groupService->fetchAllExtended(1)]);
     }
 
     /**
      * User is requesting to join/leave a group.
-     *
      */
-    public function registerAction(){
-
+    public function registerAction()
+    {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
 
         $auth = new AuthenticationService();
         //IS LOGGED IN
         //  user is logged in, we have his/her ID
-        if( $auth->hasIdentity() ){
+        if ($auth->hasIdentity()) {
             //GROUP FOUND
             //  user can register/unregister
-            if( ( $group = $groupService->get($this->params()->fromRoute('id', 0)) ) != null ){
+            if (( $group = $groupService->get($this->params()->fromRoute('id', 0)) ) != null) {
                 $groupService->registerUser(
                     $group->id,
                     $auth->getIdentity()->id,
                     (bool)$this->params()->fromRoute('type', 0)
                 );
 
-				//NOTIFY
-				//	notify user
-				$this->getEventManager()->trigger('notify',$this,array(
-					'action' => 'Stjornvisi\Notify\Submission',
-					'data' => (object)array(
-						'recipient' => $auth->getIdentity()->id,
-						'group_id' => $group->id,
-						'register' => (bool)$this->params()->fromRoute('type', 0)
-					),
-				));
-                return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
-            //GROUP NOT FOUND
-            //	resource not found
-            }else{
-				return $this->notFoundAction();
+                //NOTIFY
+                //	notify user
+                $this->getEventManager()->trigger(
+                    'notify', $this, [
+                    'action' => 'Stjornvisi\Notify\Submission',
+                    'data' => (object)[
+                    'recipient' => $auth->getIdentity()->id,
+                    'group_id' => $group->id,
+                    'register' => (bool)$this->params()->fromRoute('type', 0)
+                    ],
+                    ]
+                );
+                return $this->redirect()->toRoute('hopur/index', ['id'=>$group->url]);
+                //GROUP NOT FOUND
+                //	resource not found
+            } else {
+                return $this->notFoundAction();
             }
-        //IS NOT LOGGED IN
-        //  user is not logged in
-        }else{
-			$this->getResponse()->setStatusCode(401);
-			$model = new ViewModel();
-			$model->setTemplate('error/401');
-			return $model;
+            //IS NOT LOGGED IN
+            //  user is not logged in
+        } else {
+            $this->getResponse()->setStatusCode(401);
+            $model = new ViewModel();
+            $model->setTemplate('error/401');
+            return $model;
         }
 
     }
 
-	/**
-	 * Register or unregister to email
-	 * notifications from a group.
-	 *
-	 * @return array|ViewModel
-	 */
-	public function registerMailAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
-		/** @var $groupService \Stjornvisi\Service\Group */
+    /**
+     * Register or unregister to email
+     * notifications from a group.
+     *
+     * @return array|ViewModel
+     */
+    public function registerMailAction()
+    {
+        $sm = $this->getServiceLocator();
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+        /** @var $groupService \Stjornvisi\Service\Group */
 
-		$auth = new AuthenticationService();
+        $auth = new AuthenticationService();
 
-		if( $auth->hasIdentity() ){
-			if( ($group = $groupService->get( $this->params()->fromRoute('id',0) )) != false ){
-				$groupService->registerMailUser(
-					$group->id,
-					$auth->getIdentity()->id,
-					(bool)( (int)$this->params()->fromRoute('type',0) )
-				);
-			}else{
-				return $this->notFoundAction();
-			}
-		}else{
-			$this->getResponse()->setStatusCode(401);
-			$model = new ViewModel();
-			$model->setTemplate('error/401');
-			return $model;
-		}
-	}
+        if ($auth->hasIdentity()) {
+            if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
+                $groupService->registerMailUser(
+                    $group->id,
+                    $auth->getIdentity()->id,
+                    (bool)( (int)$this->params()->fromRoute('type', 0) )
+                );
+            } else {
+                return $this->notFoundAction();
+            }
+        } else {
+            $this->getResponse()->setStatusCode(401);
+            $model = new ViewModel();
+            $model->setTemplate('error/401');
+            return $model;
+        }
+    }
 
     /**
      * Set the status of a user in a group:
@@ -392,7 +385,8 @@ class GroupController extends AbstractActionController{
      *
      * @return \Zend\Http\Response
      */
-    public function userStatusAction(){
+    public function userStatusAction()
+    {
 
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
@@ -400,384 +394,408 @@ class GroupController extends AbstractActionController{
 
         //GROUP FOUND
         //  item found in storage
-        if( ( $group = $groupService->get($this->params()->fromRoute('id', 0)) ) != null ){
+        if (( $group = $groupService->get($this->params()->fromRoute('id', 0)) ) != null) {
             $auth = new AuthenticationService();
             $access = $userService->getTypeByGroup(
-                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
                 $group->id
             );
             //ACCESS GRANTED
             //  user has access
-            if( $access->is_admin || $access->type >= 1 ){
+            if ($access->is_admin || $access->type >= 1 ) {
                 $groupService->userStatus(
                     $group->id,
                     $this->params()->fromRoute('user_id', 0),
                     $this->params()->fromRoute('type', 0)
                 );
-                return $this->redirect()->toRoute('hopur/index',array('id'=>$group->url));
-            //ACCESS DENIED
-            //	access denied
-            }else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
+                return $this->redirect()->toRoute('hopur/index', ['id'=>$group->url]);
+                //ACCESS DENIED
+                //	access denied
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
             }
 
-        //GROUP NOT FOUND
-        //  item not found in storage
-        }else{
-			return $this->notFoundAction();
+            //GROUP NOT FOUND
+            //  item not found in storage
+        } else {
+            return $this->notFoundAction();
         }
 
-	}
+    }
 
-	/**
-	 * Export members list in CSV
-	 *
-	 * @return array|CsvModel|ViewModel
-	 */
-	public function exportMembersAction(){
+    /**
+     * Export members list in CSV
+     *
+     * @return array|CsvModel|ViewModel
+     */
+    public function exportMembersAction()
+    {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $userService = $sm->get('Stjornvisi\Service\User');
 
         //GROUP
         //  group found
-        if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
             $auth = new AuthenticationService();
             $access = $userService->getTypeByGroup(
-                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
                 $group->id
             );
             //ACCESS GRANTED
             //  user has access
-            if( $access->is_admin || $access->type >= 1 ){
+            if ($access->is_admin || $access->type >= 1) {
 
-				$csv = new Csv();
-				$csv->setHeader(array(
-					'Nafn',
-					'Netfang',
-					'Titill',
-					'Dags.',
-					'Hlutverk'
-				));
-				$csv->setName('medlimalisti'.date('Y-m-d-H:i').'.csv');
-				$resultset = $userService->getByGroup( $group->id  );
-				foreach( $resultset as $result ){
-					$type = '';
-					switch($result->type){
-						case 0:
-							$type = 'Meðlimur';
-							break;
-						case 1:
-							$type = 'Stjórnandi';
-							break;
-						case 2:
-							$type = 'Formaður';
-							break;
-						default:
-							$type = 'Meðlimur';
-							break;
-					}
-					$csv->add(array(
-						'name' => $result->name,
-						'email' => $result->email,
-						'title' => $result->title,
-						'created_date' => $result->created_date->format('Y-m-d'),
-						'type' => $type
-					));
-				}
+                $csv = new Csv();
+                $csv->setHeader(
+                    [
+                    'Nafn',
+                    'Netfang',
+                    'Titill',
+                    'Dags.',
+                    'Hlutverk'
+                    ]
+                );
+                $csv->setName('medlimalisti'.date('Y-m-d-H:i').'.csv');
+                $resultset = $userService->getByGroup($group->id);
+                foreach ( $resultset as $result ) {
+                    $type = '';
+                    switch($result->type){
+                    case 0:
+                        $type = 'Meðlimur';
+                        break;
+                    case 1:
+                        $type = 'Stjórnandi';
+                        break;
+                    case 2:
+                        $type = 'Formaður';
+                        break;
+                    default:
+                        $type = 'Meðlimur';
+                        break;
+                    }
+                    $csv->add(
+                        [
+                        'name' => $result->name,
+                        'email' => $result->email,
+                        'title' => $result->title,
+                        'created_date' => $result->created_date->format('Y-m-d'),
+                        'type' => $type
+                        ]
+                    );
+                }
 
-				$model = new CsvModel();
-				$model->setData( $csv );
+                $model = new CsvModel();
+                $model->setData($csv);
 
-				return $model;
+                return $model;
 
-            //ACCESS DENIED
-            //  user has no access
-            }else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
+                //ACCESS DENIED
+                //  user has no access
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
             }
-        //NO GROUP
-        //  group not found
-        //TODO 404
+            //NO GROUP
+            //  group not found
+            //TODO 404
         }else{
-			return $this->notFoundAction();
+            return $this->notFoundAction();
         }
-	}
-	/**
-	 * Export chair and board list in CSV
-	 *
-	 * @return array|CsvModel|ViewModel
-	 */
-	public function exportBoardAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
-		$userService = $sm->get('Stjornvisi\Service\User');
+    }
+    /**
+     * Export chair and board list in CSV
+     *
+     * @return array|CsvModel|ViewModel
+     */
+    public function exportBoardAction()
+    {
+        $sm = $this->getServiceLocator();
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+        $userService = $sm->get('Stjornvisi\Service\User');
 
-		//GROUP
-		//  group found
-		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
-			$auth = new AuthenticationService();
-			$access = $userService->getTypeByGroup(
-				( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
-				$group->id
-			);
-			//ACCESS GRANTED
-			//  user has access
-			if( $access->is_admin || $access->type >= 1 ){
+        //GROUP
+        //  group found
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
+            $auth = new AuthenticationService();
+            $access = $userService->getTypeByGroup(
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
+                $group->id
+            );
+            //ACCESS GRANTED
+            //  user has access
+            if ($access->is_admin || $access->type >= 1) {
 
-				$csv = new Csv();
-				$csv->setHeader(array(
-					'Nafn',
-					'Netfang',
-					'Titill',
-					'Dags.',
-					'Hlutverk'
-				));
-				$csv->setName('stjornendalisti-'.date('Y-m-d-H:i').'.csv');
-				$resultset = $userService->getByGroup( $group->id, array(1,2)  );
-				foreach( $resultset as $result ){
-					$type = '';
-					switch($result->type){
-						case 0:
-							$type = 'Meðlimur';
-							break;
-						case 1:
-							$type = 'Stjórnandi';
-							break;
-						case 2:
-							$type = 'Formaður';
-							break;
-						default:
-							$type = 'Meðlimur';
-							break;
-					}
-					$csv->add(array(
-						'name' => $result->name,
-						'email' => $result->email,
-						'title' => $result->title,
-						'created_date' => $result->created_date->format('Y-m-d'),
-						'type' => $type
-					));
-				}
+                $csv = new Csv();
+                $csv->setHeader(
+                    [
+                    'Nafn',
+                    'Netfang',
+                    'Titill',
+                    'Dags.',
+                    'Hlutverk'
+                    ]
+                );
+                $csv->setName('stjornendalisti-'.date('Y-m-d-H:i').'.csv');
+                $resultset = $userService->getByGroup($group->id, [1,2]);
+                foreach ( $resultset as $result ){
+                    $type = '';
+                    switch($result->type){
+                    case 0:
+                        $type = 'Meðlimur';
+                        break;
+                    case 1:
+                        $type = 'Stjórnandi';
+                        break;
+                    case 2:
+                        $type = 'Formaður';
+                        break;
+                    default:
+                        $type = 'Meðlimur';
+                        break;
+                    }
+                    $csv->add(
+                        [
+                        'name' => $result->name,
+                        'email' => $result->email,
+                        'title' => $result->title,
+                        'created_date' => $result->created_date->format('Y-m-d'),
+                        'type' => $type
+                        ]
+                    );
+                }
 
-				$model = new CsvModel();
-				$model->setData( $csv );
+                $model = new CsvModel();
+                $model->setData($csv);
 
-				return $model;
+                return $model;
 
-				//ACCESS DENIED
-				//  user has no access
-			}else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
-			}
-			//NO GROUP
-			//  group not found
-			//TODO 404
-		}else{
-			return $this->notFoundAction();
-		}
-	}
+                //ACCESS DENIED
+                //  user has no access
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
+            }
+            //NO GROUP
+            //  group not found
+            //TODO 404
+        } else {
+            return $this->notFoundAction();
+        }
+    }
 
-	/**
-	 * Export chair and board list in CSV
-	 *
-	 * @return array|CsvModel|ViewModel
-	 */
-	public function exportChairAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
-		$userService = $sm->get('Stjornvisi\Service\User');
+    /**
+     * Export chair and board list in CSV
+     *
+     * @return array|CsvModel|ViewModel
+     */
+    public function exportChairAction()
+    {
+        $sm = $this->getServiceLocator();
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+        $userService = $sm->get('Stjornvisi\Service\User');
 
-		//GROUP
-		//  group found
-		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
-			$auth = new AuthenticationService();
-			$access = $userService->getTypeByGroup(
-				( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
-				$group->id
-			);
-			//ACCESS GRANTED
-			//  user has access
-			if( $access->is_admin || $access->type >= 1 ){
+        //GROUP
+        //  group found
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
+            $auth = new AuthenticationService();
+            $access = $userService->getTypeByGroup(
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
+                $group->id
+            );
+            //ACCESS GRANTED
+            //  user has access
+            if ($access->is_admin || $access->type >= 1 ) {
 
-				$csv = new Csv();
-				$csv->setHeader(array(
-					'Nafn',
-					'Netfang',
-					'Titill',
-					'Dags.',
-					'Hlutverk'
-				));
-				$csv->setName('formannalisti-'.date('Y-m-d-H:i').'.csv');
-				$resultset = $userService->getByGroup( $group->id, 2  );
-				foreach( $resultset as $result ){
-					$type = '';
-					switch($result->type){
-						case 0:
-							$type = 'Meðlimur';
-							break;
-						case 1:
-							$type = 'Stjórnandi';
-							break;
-						case 2:
-							$type = 'Formaður';
-							break;
-						default:
-							$type = 'Meðlimur';
-							break;
-					}
-					$csv->add(array(
-						'name' => $result->name,
-						'email' => $result->email,
-						'title' => $result->title,
-						'created_date' => $result->created_date->format('Y-m-d'),
-						'type' => $type
-					));
-				}
+                $csv = new Csv();
+                $csv->setHeader(
+                    [
+                    'Nafn',
+                    'Netfang',
+                    'Titill',
+                    'Dags.',
+                    'Hlutverk'
+                    ]
+                );
+                $csv->setName('formannalisti-'.date('Y-m-d-H:i').'.csv');
+                $resultset = $userService->getByGroup($group->id, 2);
+                foreach ( $resultset as $result ){
+                    $type = '';
+                    switch($result->type){
+                    case 0:
+                        $type = 'Meðlimur';
+                        break;
+                    case 1:
+                        $type = 'Stjórnandi';
+                        break;
+                    case 2:
+                        $type = 'Formaður';
+                        break;
+                    default:
+                        $type = 'Meðlimur';
+                        break;
+                    }
+                    $csv->add(
+                        [
+                        'name' => $result->name,
+                        'email' => $result->email,
+                        'title' => $result->title,
+                        'created_date' => $result->created_date->format('Y-m-d'),
+                        'type' => $type
+                        ]
+                    );
+                }
 
-				$model = new CsvModel();
-				$model->setData( $csv );
+                $model = new CsvModel();
+                $model->setData($csv);
 
-				return $model;
+                return $model;
 
-				//ACCESS DENIED
-				//  user has no access
-			}else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
-			}
-			//NO GROUP
-			//  group not found
-			//TODO 404
-		}else{
-			return $this->notFoundAction();
-		}
-	}
-	/**
-	 * Export events list in CSV
-	 *
-	 * @return array|CsvModel|ViewModel
-	 */
-	public function exportEventsAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
-		$userService = $sm->get('Stjornvisi\Service\User');
-		$eventService = $sm->get('Stjornvisi\Service\Event');
-		/** @var $eventService \Stjornvisi\Service\Event */
+                //ACCESS DENIED
+                //  user has no access
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
+            }
+            //NO GROUP
+            //  group not found
+            //TODO 404
+        } else {
+            return $this->notFoundAction();
+        }
+    }
+    /**
+     * Export events list in CSV
+     *
+     * @return array|CsvModel|ViewModel
+     */
+    public function exportEventsAction()
+    {
+        $sm = $this->getServiceLocator();
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+        $userService = $sm->get('Stjornvisi\Service\User');
+        $eventService = $sm->get('Stjornvisi\Service\Event');
+        /** @var $eventService \Stjornvisi\Service\Event */
 
+        //GROUP
+        //  group found
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
+            $auth = new AuthenticationService();
+            $access = $userService->getTypeByGroup(
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
+                $group->id
+            );
+            //ACCESS GRANTED
+            //  user has access
+            if ($access->is_admin || $access->type >= 1) {
 
+                $server = isset( $_SERVER['HTTP_HOST'] )
+                ? "http://".$_SERVER['HTTP_HOST']
+                : 'http://0.0.0.0' ;
 
-		//GROUP
-		//  group found
-		if( ($group = $groupService->get( $this->params()->fromRoute('id', 0) )) != false ){
-			$auth = new AuthenticationService();
-			$access = $userService->getTypeByGroup(
-				( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
-				$group->id
-			);
-			//ACCESS GRANTED
-			//  user has access
-			if( $access->is_admin || $access->type >= 1 ){
+                $csv = new Csv();
+                $csv->setHeader(
+                    [
+                    'Nafn',
+                    'Hópar',
+                    'Dags.',
+                    'Slóð',
+                    ]
+                );
+                $csv->setName('vidburdalistilisti'.date('Y-m-d-H:i').'.csv');
+                $events = $eventService->getByGroup($group->id);
+                foreach ( $events as $result ) {
+                    $csv->add(
+                        [
+                        'name' => $result->subject,
+                        'groups' => implode(
+                            ', ', array_map(
+                                function ($item) {
+                                    return $item->name_short;
+                                }, $result->groups
+                            )
+                        ),
+                        'date' => $result->event_date->format('Y-m-d'),
+                        'url' => $server.$this->url()->fromRoute('vidburdir/index', ['id'=>$result->id])
+                        ]
+                    );
+                }
 
-				$server = isset( $_SERVER['HTTP_HOST'] )
-					? "http://".$_SERVER['HTTP_HOST']
-					: 'http://0.0.0.0' ;
+                $model = new CsvModel();
+                $model->setData($csv);
 
-				$csv = new Csv();
-				$csv->setHeader(array(
-					'Nafn',
-					'Hópar',
-					'Dags.',
-					'Slóð',
-				));
-				$csv->setName('vidburdalistilisti'.date('Y-m-d-H:i').'.csv');
-				$events = $eventService->getByGroup( $group->id );
-				foreach( $events as $result ){
+                return $model;
 
-					$csv->add(array(
-						'name' => $result->subject,
-						'groups' => implode(', ',array_map(function($item){
-							return $item->name_short;
-						},$result->groups)),
-						'date' => $result->event_date->format('Y-m-d'),
-						'url' => $server.$this->url()->fromRoute('vidburdir/index',array('id'=>$result->id))
-					));
-				}
-
-				$model = new CsvModel();
-				$model->setData( $csv );
-
-				return $model;
-
-				//ACCESS DENIED
-				//  user has no access
-			}else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
-			}
-			//NO GROUP
-			//  group not found
-			//TODO 404
-		}else{
-			return $this->notFoundAction();
-		}
-	}
+                //ACCESS DENIED
+                //  user has no access
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
+            }
+            //NO GROUP
+            //  group not found
+            //TODO 404
+        } else {
+            return $this->notFoundAction();
+        }
+    }
 
     /**
      * RSS feed for all events
      *
      * Get all events from two months back in time
+     *
      * @todo Re-think the date range
      */
-    public function rssEventsAction(){
-
+    public function rssEventsAction()
+    {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
 
         //ITEM FOUND
         //  item is in storage
-        if( ($group = $groupService->get($this->params()->fromRoute('name', 0))) != null ){
-			$server = isset($_SERVER['HTTP_HOST'])
-				? $_SERVER['HTTP_HOST']
-				: '0.0.0.0';
+        if (($group = $groupService->get($this->params()->fromRoute('name', 0))) != null) {
+            $server = isset($_SERVER['HTTP_HOST'])
+            ? $_SERVER['HTTP_HOST']
+            : '0.0.0.0';
             $eventService = $sm->get('Stjornvisi\Service\Event');
             $from = new DateTime();
-            $from->sub( new DateInterval('P2M') );
+            $from->sub(new DateInterval('P2M'));
             $to = new DateTime();
-            $to->add( new DateInterval('P2M') );
+            $to->add(new DateInterval('P2M'));
 
             $feed = new Feed();
             $feed->setTitle("Viðburðir {$group->name}");
             $feed->setFeedLink("http://{$server}", 'atom');
-            $feed->addAuthor(array(
+            $feed->addAuthor(
+                [
                 'name'  => 'Stjórnvísi',
                 'email' => 'stjornvisi@stjornvisi.is',
                 'uri'   => "http://{$server}",
-            ));
+                ]
+            );
             $feed->setDescription('Viðburðir');
             $feed->setLink("http://{$_SERVER['HTTP_HOST']}");
             $feed->setDateModified(new DateTime());
 
-            $data = array();
+            $data = [];
 
-            foreach($eventService->getRangeByGroup($group->id, $from, $to ) as $row){
+            foreach ($eventService->getRangeByGroup($group->id, $from, $to) as $row) {
                 //create entry...
                 $entry = $feed->createEntry();
                 $entry->setTitle($row->subject);
-                $entry->setLink( "http://{$_SERVER['HTTP_HOST']}/vidburdir/{$row->id}" );
+                $entry->setLink("http://{$_SERVER['HTTP_HOST']}/vidburdir/{$row->id}");
                 $entry->setDescription($row->body.'.');
 
                 $entry->setDateModified($row->event_date);
@@ -792,53 +810,56 @@ class GroupController extends AbstractActionController{
             $feedmodel->setFeed($feed);
 
             return $feedmodel;
-        //ITEM NOT FOUND
-        //  item wasn't found
-        }else{
-			return $this->notFoundAction();
+            //ITEM NOT FOUND
+            //  item wasn't found
+        } else {
+            return $this->notFoundAction();
         }
     }
 
-	/**
-	 * RSS feed for all news
-	 *
-	 * Get all news from two months back in time
-	 *
-	 * @return array|FeedModel
-	 */
-	public function rssNewsAction(){
+    /**
+     * RSS feed for all news
+     *
+     * Get all news from two months back in time
+     *
+     * @return array|FeedModel
+     */
+    public function rssNewsAction()
+    {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
 
         //ITEM FOUND
         //  item is in storage
-        if( ($group = $groupService->get($this->params()->fromRoute('name', 0))) != null ){
+        if (($group = $groupService->get($this->params()->fromRoute('name', 0))) != null) {
             $sm = $this->getServiceLocator();
             $newsService = $sm->get('Stjornvisi\Service\News');
             $from = new DateTime();
-            $from->sub( new DateInterval('P2M') );
+            $from->sub(new DateInterval('P2M'));
             $to = new DateTime();
-            $to->add( new DateInterval('P2M') );
+            $to->add(new DateInterval('P2M'));
 
             $feed = new Feed();
             $feed->setTitle('Feed Example');
             $feed->setFeedLink('http://ourdomain.com/rss', 'atom');
-            $feed->addAuthor(array(
+            $feed->addAuthor(
+                [
                 'name'  => 'Stjórnvísi',
                 'email' => 'stjornvisi@stjornvisi.is',
                 'uri'   => 'http://stjornvisi.is',
-            ));
+                ]
+            );
             $feed->setDescription('Fréttir');
             $feed->setLink('http://ourdomain.com');
             $feed->setDateModified(new DateTime());
 
-            $data = array();
+            $data = [];
 
-            foreach($newsService->getRangeByGroup($group->id, $from, $to ) as $row){
+            foreach ($newsService->getRangeByGroup($group->id, $from, $to) as $row) {
                 //create entry...
                 $entry = $feed->createEntry();
                 $entry->setTitle($row->title);
-                $entry->setLink( 'http://stjornvisi.is/' );
+                $entry->setLink('http://stjornvisi.is/');
                 $entry->setDescription($row->body.'.');
 
                 $entry->setDateModified($row->created_date);
@@ -853,198 +874,208 @@ class GroupController extends AbstractActionController{
             $feedmodel->setFeed($feed);
 
             return $feedmodel;
-        //ITEM NOT FOUND
-        //
-        }else{
-			return $this->notFoundAction();
+            //ITEM NOT FOUND
+            //
+        } else {
+            return $this->notFoundAction();
         }
     }
 
-	/**
-	 * Send mail to all leaders og all persons in group
-	 *
-	 * @return array|ViewModel
-	 */
-	public function sendMailAction(){
+    /**
+     * Send mail to all leaders og all persons in group
+     *
+     * @return array|ViewModel
+     */
+    public function sendMailAction()
+    {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $userService = $sm->get('Stjornvisi\Service\User');
 
         //ITEM FOUND
         //  item is in storage
-        if( ($group = $groupService->get($this->params()->fromRoute('id', 0))) != null ){
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != null) {
 
             //AUTHENTICATION
             //  get authentication service
             $auth = new AuthenticationService();
             $access = $userService->getTypeByGroup(
-                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null ,
+                ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
                 $group->id
             );
 
             //ACCESS
             //  user has access
-            if( $access->is_admin || $access->type >= 1 ){
+            if ($access->is_admin || $access->type >= 1) {
 
                 //POST
                 //  post request
-                if($this->request->isPost()){
+                if ($this->request->isPost()) {
 
-					$post = $this->getRequest()->getPost(); /** @var $post \ArrayObject */
-
+                    $post = $this->getRequest()->getPost();
+					/** @var $post \ArrayObject */
 
                     $form = new GroupEmail();
-                    $form->setData($post );
+                    $form->setData($post);
                     $form->setAttribute(
                         'action',
-						$this->url()->fromRoute('hopur/send-mail',array(
-							'id'=>$group->url,
-							'type'=> $this->params()->fromRoute('type', 'allir')
-							)
-						)
+                        $this->url()->fromRoute(
+                            'hopur/send-mail', [
+                            'id'=>$group->url,
+                            'type'=> $this->params()->fromRoute('type', 'allir')
+                            ]
+                        )
                     );
 
-					//VALID
-					//	form is valid
-					if( $form->isValid() ){
+                    //VALID
+                    //	form is valid
+                    if ($form->isValid()) {
 
-						//TEST
-						//	send out test e-mail
-						if( $post->offsetGet('test') ){
+                        //TEST
+                        //	send out test e-mail
+                        if ($post->offsetGet('test')) {
 
-							$this->getEventManager()->trigger('notify',$this,array(
-								'action' => 'Stjornvisi\Notify\Group',
-								'data' => (object)array(
-										'group_id' => $group->id,
-										'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
-										'test' => true,
-										'subject' => $form->get('subject')->getValue(),
-										'body' => $form->get('body')->getValue(),
-										'sender_id' => (int)$auth->getIdentity()->id
-									),
-							));
-							return new ViewModel(array(
-								'form' => $form,
-								'msg' => "Prufupóstur hefur verið sendur á {$auth->getIdentity()->email}",
-							));
+                            $this->getEventManager()->trigger(
+                                'notify', $this, [
+                                'action' => 'Stjornvisi\Notify\Group',
+                                'data' => (object)[
+                                'group_id' => $group->id,
+                                'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+                                'test' => true,
+                                'subject' => $form->get('subject')->getValue(),
+                                'body' => $form->get('body')->getValue(),
+                                'sender_id' => (int)$auth->getIdentity()->id
+                                ],
+                                ]
+                            );
+                            return new ViewModel(
+                                [
+                                'form' => $form,
+                                'msg' => "Prufupóstur hefur verið sendur á {$auth->getIdentity()->email}",
+                                ]
+                            );
 
-						//SEND
-						//	send out full e-mail
-						}else{
-							$this->getEventManager()->trigger('notify',$this,array(
-								'action' => 'Stjornvisi\Notify\Group',
-								'data' => (object)array(
-										'group_id' => $group->id,
-										'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
-										'test' => false,
-										'subject' => $form->get('subject')->getValue(),
-										'body' => $form->get('body')->getValue(),
-										'sender_id' => (int)$auth->getIdentity()->id
-									),
-							));
+                            //SEND
+                            //	send out full e-mail
+                        } else {
+                            $this->getEventManager()->trigger(
+                                'notify', $this, [
+                                'action' => 'Stjornvisi\Notify\Group',
+                                'data' => (object)[
+                                'group_id' => $group->id,
+                                'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+                                'test' => false,
+                                'subject' => $form->get('subject')->getValue(),
+                                'body' => $form->get('body')->getValue(),
+                                'sender_id' => (int)$auth->getIdentity()->id
+                                ],
+                                ]
+                            );
 
-							return new ViewModel(array(
-								'form' => null,
-								'msg' => 'Póstur sendur',
-							));
-						}
+                            return new ViewModel(
+                                [
+                                'form' => null,
+                                'msg' => 'Póstur sendur',
+                                ]
+                            );
+                        }
 
-					//INVALID
-					// the form is invalid
-					}else{
-						return new ViewModel(array(
-							'form' => $form,
-							'msg' => '',
-						));
-					}
+                        //INVALID
+                        // the form is invalid
+                    } else {
+                        return new ViewModel(['form' => $form, 'msg' => '']);
+                    }
 
-                //QUERY
-                //  get request
-                }else{
+                    //QUERY
+                    //  get request
+                } else {
                     $from = new GroupEmail();
-                    $from->setAttribute('action',$this->url()->fromRoute('hopur/send-mail',array(
-							'id'=>$group->url,
-							'type'=> $this->params()->fromRoute('type', 'allir')
-						)
-					));
-                    return new ViewModel(array(
-                        'form' => $from
-                    ));
+                    $from->setAttribute(
+                        'action', $this->url()->fromRoute(
+                            'hopur/send-mail', [
+                            'id'=>$group->url,
+                            'type'=> $this->params()->fromRoute('type', 'allir')
+                            ]
+                        )
+                    );
+                    return new ViewModel(['form' => $from]);
                 }
-            //NO ACCESS
-            }else{
-				$this->getResponse()->setStatusCode(401);
-				$model = new ViewModel();
-				$model->setTemplate('error/401');
-				return $model;
+                //NO ACCESS
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
             }
 
-        //ITEM NOT FOUND
-        //
-        }else{
-			return $this->notFoundAction();
+            //ITEM NOT FOUND
+            //
+        } else {
+            return $this->notFoundAction();
         }
 
     }
 
-	/**
-	 * Get statistics for al groups.
-	 *
-	 * @return JsonModel
-	 * @todo not fully implemented
-	 */
-	public function eventStatisticsAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
+    /**
+     * Get statistics for al groups.
+     *
+     * @return JsonModel
+     * @todo   not fully implemented
+     */
+    public function eventStatisticsAction()
+    {
+        $sm = $this->getServiceLocator();
+        $groupService = $sm->get('Stjornvisi\Service\Group');
 
-		return new JsonModel(
-			$groupService->fetchEventStatistics()
-		);
-	}
+        return new JsonModel(
+            $groupService->fetchEventStatistics()
+        );
+    }
 
-	/**
-	 * @return JsonModel
-	 * @todo not fully implemented
-	 */
-	public function memberStatisticsAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
+    /**
+     * @return JsonModel
+     * @todo not fully implemented
+     */
+    public function memberStatisticsAction()
+    {
+        $sm = $this->getServiceLocator();
+        $groupService = $sm->get('Stjornvisi\Service\Group');
 
-		return new JsonModel(
-			$groupService->fetchMemberStatistics()
-		);
-	}
+        return new JsonModel(
+            $groupService->fetchMemberStatistics()
+        );
+    }
 
-	/**
-	 * @return JsonModel
-	 * @todo not fully implemented
-	 */
-	public function statisticsAction(){
+    /**
+     * @return JsonModel
+     * @todo not fully implemented
+     */
+    public function statisticsAction()
+    {
 
-	}
+    }
 
-	/**
-	 * Generate iCal document one year back in tme from
-	 * currenr date.
-	 *
-	 * @return IcalModel
-	 */
-	public function calendarAction(){
-		$sm = $this->getServiceLocator();
-		$groupService = $sm->get('Stjornvisi\Service\Group');
-		$eventService = $sm->get('Stjornvisi\Service\Event');
-		/** @var $eventService \Stjornvisi\Service\Event */
+    /**
+     * Generate iCal document one year back in tme from
+     * currenr date.
+     *
+     * @return IcalModel
+     */
+    public function calendarAction()
+    {
+        $sm = $this->getServiceLocator();
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+        $eventService = $sm->get('Stjornvisi\Service\Event');
+        /** @var $eventService \Stjornvisi\Service\Event */
 
-		if( ( $group = $groupService->get($this->params()->fromRoute('id',0) )) != null ){
-			$date = new DateTime();
-			$date->sub( new DateInterval('P12M') );
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != null) {
+            $date = new DateTime();
+            $date->sub(new DateInterval('P12M'));
 
-			return new IcalModel(array(
-				'events' =>$eventService->getRangeByGroup( $group->id, $date )
-			));
-		}else{
-			return $this->notFoundAction();
-		}
+            return new IcalModel(['events' =>$eventService->getRangeByGroup($group->id, $date)]);
+        } else {
+            return $this->notFoundAction();
+        }
 
-	}
+    }
 }

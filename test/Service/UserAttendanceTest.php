@@ -8,28 +8,32 @@
 
 namespace Stjornvisi\Service;
 
-require_once __DIR__.'/../ArrayDataSet.php';
-
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
 use Stjornvisi\Bootstrap;
 
 
-class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase {
+class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase
+{
     static private $pdo = null;
+
     private $conn = null;
+
 	private $config;
 
-    public function testTrue(){
-        $service = new User( self::$pdo );
+    public function testTrue()
+	{
+        $service = new User();
+		$service->setDataSource(self::$pdo);
         $service->attendance(1);
     }
 
     /**
      *
      */
-    protected function setUp() {
+    protected function setUp()
+	{
 		$serviceManager = Bootstrap::getServiceManager();
 		$this->config = $serviceManager->get('Config');
         $conn=$this->getConnection();
@@ -41,30 +45,32 @@ class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase {
     /**
      * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
      */
-    public function getConnection(){
+    public function getConnection()
+	{
 
-        if( $this->conn === null ){
-            if (self::$pdo == null){
+        if ($this->conn === null) {
+            if (self::$pdo == null) {
                 self::$pdo = new PDO(
 					$GLOBALS['DB_DSN'],
 					$GLOBALS['DB_USER'],
 					$GLOBALS['DB_PASSWD'],
-                    array(
+                    [
                         PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ));
+                    ]
+				);
             }
             $this->conn = $this->createDefaultDBConnection(self::$pdo);
         }
-
         return $this->conn;
     }
 
     /**
      * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
      */
-    public function getDataSet(){
+    public function getDataSet()
+	{
         return new ArrayDataSet([
             'Group' => [
                 [ 'id'=>1, 'name'=>'name1', 'name_short'=>'n1', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n1' ],
@@ -100,4 +106,4 @@ class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase {
             ],
         ]);
     }
-} 
+}

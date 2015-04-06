@@ -9,11 +9,11 @@
 
 namespace Stjornvisi;
 
+use \PDO;
 use Imagine;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\SlackHandler;
 use Psr\Log\LoggerAwareInterface;
-use Stjornvisi\Lib\PDO;
 
 
 use Stjornvisi\Event\ActivityListener;
@@ -59,7 +59,6 @@ use Zend\EventManager\EventInterface;
 
 use Stjornvisi\Lib\Facebook;
 
-use PhpAmqpLib\Message\AMQPMessage;
 
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
@@ -69,8 +68,8 @@ use Zend\Mail\Transport\FileOptions;
 
 use Zend\Http\Response as HttpResponse;
 
-class Module{
-
+class Module
+{
 	/**
 	 * Run for every request to the system.
 	 *
@@ -80,60 +79,9 @@ class Module{
 	 *
 	 * @param MvcEvent $e
 	 */
-	public function onBootstrap(MvcEvent $e){
-
+	public function onBootstrap(MvcEvent $e)
+	{
 		$logger = $e->getApplication()->getServiceManager()->get('Logger');
-
-		//SHUT DOWN
-		//	register shutdown function that will log a critical message
-		//
-		register_shutdown_function(function () use ($logger){
-			if ($e = error_get_last()) {
-				$logger->critical("register_shutdown_function: ".$e['message'] . " in " . $e['file'] . ' line ' . $e['line']);
-				echo "Smá vandræði";
-			}
-		});
-
-		//EVENT MANAGER
-		//	get event manager and attache event handlers to it. These
-		//	event are something required for the MVC to work. And
-		//	error events in the MVC application; ie. if something
-		//	goes wrong in Dispatch or Rendering, these events will be called,
-		//	they will  log a critical message
-		$eventManager        = $e->getApplication()->getEventManager();
-
-		$moduleRouteListener = new ModuleRouteListener();
-		$moduleRouteListener->attach($eventManager);
-
-		//EVENT_DISPATCH_ERROR
-		//
-		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, function(MvcEvent $e) use ($logger) {
-
-
-			$exception = $e->getParam('exception');
-			while( $exception ){
-				$logger->critical('EVENT_DISPATCH_ERROR: '.$exception->getMessage(),$exception->getTrace());
-				$exception = $exception->getPrevious();
-			}
-			if( ( $e->isError() ) == true && $e->getError() == Application::ERROR_EXCEPTION ){
-				$logger->critical('EVENT_DISPATCH_ERROR: '.$e->getError());
-			}
-		} );
-		//EVENT_RENDER_ERROR
-		//
-		$eventManager->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER_ERROR, function(MvcEvent $e) use ($logger) {
-			$exception = $e->getParam('exception');
-			/** @var $exception \Zend\Mvc\Router\Exception\InvalidArgumentException */
-
-			$request = $e->getRequest();
-			/** @var  $request \Zend\Http\PhpEnvironment\Request */
-
-			while( $exception ){
-				$logger->critical('EVENT_RENDER_ERROR: '.$exception->getMessage(). " in path [{$request->getUriString()}]", $exception->getTrace());
-				$exception = $exception->getPrevious();
-			}
-
-		} );
 
 		//CONFIG
 		//	get config values from the application
@@ -149,55 +97,40 @@ class Module{
 		$sessionManager = new SessionManager($sessionConfig);
 		$sessionManager->start();
 
-		//AUTH
-		//	select correct layout based on the user
-		//	and if he is on the landing page and if he
-		//	is logged in
-		$auth = new AuthenticationService();
-		$eventManager->attach('render',function($e) use ($auth){
-			/** @var $e \Zend\Mvc\MvcEvent  */
-			if( !$auth->hasIdentity() ){
-				$router = $e->getRouteMatch();
-				if( method_exists($router,'getMatchedRouteName') && $router->getMatchedRouteName() == 'home' ){
-					$e->getViewModel()->setTemplate('layout/landing');
-				}else{
-					$e->getViewModel()->setTemplate('layout/anonymous');
-				}
-			}
-		});
-
-		//QUEUE CONNECTION FACTORY
-		//	we are gonna send messages to the notify-queue
-		//	so we need an instance of it
-		$connectionFactory = $e->getApplication()
-			->getServiceManager()
-			->get('Stjornvisi\Lib\QueueConnectionFactory');
-
-		//NOTIFY VIA SHARED EVENTS
-		//	listen for the 'notify' event, usually coming from the
-		//	controllers. This indicates that the application want to
-		//	notify a user using external service like e-mail or maybe facebook.
-		$sem = $eventManager->getSharedManager();
-		$sem->attach(__NAMESPACE__,'notify',function($event) use ($logger,$connectionFactory){
-
-			try{
-				$connection = $connectionFactory->createConnection();
-				$channel = $connection->channel();
-
-				$channel->queue_declare('notify_queue', false, true, false, false);
-				$msg = new AMQPMessage( json_encode($event->getParams()),
-					array('delivery_mode' => 2) # make message persistent
+		//SHUT DOWN
+		//	register shutdown function that will log a critical message
+		//
+		register_shutdown_function(function () use ($logger) {
+			if ($e = error_get_last()) {
+				$logger->critical(
+					"register_shutdown_function: ".
+					$e['message'] . " in " . $e['file'] . ' line ' . $e['line']
 				);
-
-				$channel->basic_publish($msg, '', 'notify_queue');
-
-				$channel->close();
-				$connection->close();
-			}catch (\Exception $e){
-				$logger->critical("Notify Service Event says: {$e->getMessage()}",$e->getTrace());
+				echo "Smá vandræði";
 			}
 		});
 
+		//EVENT MANAGER
+		//	get event manager and attache event handlers to it. These
+		//	event are something required for the MVC to work. And
+		//	error events in the MVC application; ie. if something
+		//	goes wrong in Dispatch or Rendering, these events will be called,
+		//	they will  log a critical message
+		$eventManager        = $e->getApplication()->getEventManager();
+		/** @var  $eventManager \Zend\EventManager\Event */
+
+		$moduleRouteListener = new ModuleRouteListener();
+		$moduleRouteListener->attach($eventManager);
+
+		$eventManager->attach($e->getApplication()->getServiceManager()->get('Stjornvisi\Event\SystemExceptionListener'));
+		$eventManager->attach($e->getApplication()->getServiceManager()->get('Stjornvisi\Event\PersistenceLoginListener'));
+		$eventManager->attach($e->getApplication()->getServiceManager()->get('Stjornvisi\Event\LayoutSelectListener'));
+
+		$eventManager->getSharedManager()->attach(
+			__NAMESPACE__,
+			'notify',
+			$e->getApplication()->getServiceManager()->get('Stjornvisi\Event\NotifyListener')
+		);
     }
 
 	/**
@@ -205,7 +138,8 @@ class Module{
 	 *
 	 * @return mixed
 	 */
-	public function getConfig(){
+	public function getConfig()
+	{
         return include __DIR__ . '/config/module.config.php';
     }
 
@@ -214,7 +148,8 @@ class Module{
 	 *
 	 * @return array
 	 */
-	public function getAutoloaderConfig(){
+	public function getAutoloaderConfig()
+	{
         return array(
 			'Zend\Loader\ClassMapAutoloader' => array(
 				__DIR__ . '/vendor/composer/autoload_classmap.php',
@@ -232,39 +167,38 @@ class Module{
 	 *
 	 * @return array
 	 */
-	public function getServiceConfig(){
+	public function getServiceConfig()
+	{
 		return array(
 			'initializers' => array(
-				'DataSourceAwareInterface' => function($instance, $sm){
-					if( $instance instanceof \Stjornvisi\Lib\DataSourceAwareInterface ){
-						$instance->setDataSource( $sm->get('PDO') );
+				'DataSourceAwareInterface' => function ($instance, $sm) {
+					if ($instance instanceof Lib\DataSourceAwareInterface) {
+						$instance->setDataSource($sm->get('PDO'));
 					}
 				},
-				'QueueConnectionAwareInterface' => function($instance, $sm){
-					if( $instance instanceof QueueConnectionAwareInterface ){
-						$instance->setQueueConnectionFactory(
-							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
-						);
+				'QueueConnectionAwareInterface' => function ($instance, $sm) {
+					if ($instance instanceof QueueConnectionAwareInterface) {
+						$instance->setQueueConnectionFactory($sm->get('Stjornvisi\Lib\QueueConnectionFactory'));
 					}
 				},
-				'LoggerAwareInterface' => function($instance, $sm){
-					if( $instance instanceof LoggerAwareInterface ){
-						$instance->setLogger( $sm->get('Logger') );
+				'LoggerAwareInterface' => function ($instance, $sm) {
+					if ($instance instanceof LoggerAwareInterface) {
+						$instance->setLogger($sm->get('Logger'));
 					}
 				},
-				'DataStoreInterface' => function($instance, $sm){
-					if( $instance instanceof DataStoreInterface ){
-						$instance->setDateStore( $sm->get('PDO\Config') );
+				'DataStoreInterface' => function ($instance, $sm) {
+					if ($instance instanceof DataStoreInterface) {
+						$instance->setDateStore($sm->get('PDO\Config'));
 					}
 				},
-				'NotifyEventManagerAwareInterface' => function($instance, $sm){
-					if( $instance instanceof NotifyEventManagerAwareInterface ){
-						$instance->setEventManager( $sm->get('ServiceEventManager') );
+				'NotifyEventManagerAwareInterface' => function ($instance, $sm) {
+					if ($instance instanceof NotifyEventManagerAwareInterface) {
+						$instance->setEventManager($sm->get('ServiceEventManager'));
 					}
 				},
-				'ServiceEventManagerAwareInterface' => function($instance, $sm){
-					if( $instance instanceof ServiceEventManagerAwareInterface ){
-						$instance->setEventManager( $sm->get('ServiceEventManager') );
+				'ServiceEventManagerAwareInterface' => function ($instance, $sm) {
+					if ($instance instanceof ServiceEventManagerAwareInterface) {
+						$instance->setEventManager($sm->get('ServiceEventManager'));
 					}
 					/**
 					if ($instance instanceof EventManagerAwareInterface) {
@@ -279,7 +213,7 @@ class Module{
 					 */
 				},
 			),
-			'invokables' => array(
+			'invokables' => [
 				'Stjornvisi\Service\User' 		=> 'Stjornvisi\Service\User',
 				'Stjornvisi\Service\Company' 	=> 'Stjornvisi\Service\Company',
 				'Stjornvisi\Service\Event' 		=> 'Stjornvisi\Service\Event',
@@ -301,64 +235,68 @@ class Module{
 				'Stjornvisi\Notify\Attend' 		=> 'Stjornvisi\Notify\Attend',
 				'Stjornvisi\Notify\UserValidate' => 'Stjornvisi\Notify\UserValidate',
 
+				'Stjornvisi\Event\SystemExceptionListener' => 'Stjornvisi\Event\SystemExceptionListener',
+				'Stjornvisi\Event\PersistenceLoginListener' => 'Stjornvisi\Event\PersistenceLoginListener',
+				'Stjornvisi\Event\LayoutSelectListener' => 'Stjornvisi\Event\LayoutSelectListener',
+				'Stjornvisi\Event\NotifyListener' => 'Stjornvisi\Event\NotifyListener',
+
+
 				'Imagine\Image\Imagine'			=> 'Imagine\Gd\Imagine',
 
 				'Stjornvisi\Auth\Adapter'		=> 'Stjornvisi\Auth\Adapter',
 				'Stjornvisi\Auth\Facebook'		=> 'Stjornvisi\Auth\Facebook',
-
-			),
+			],
 			'aliases' => array(
 				'UserService' => 'Stjornvisi\Service\User',
 				'GroupService' => 'Stjornvisi\Service\Group'
 			),
 			'factories' => array(
-				'Logger' => function($sm){
-						$log = new Logger('stjornvisi');
-						$log->pushHandler(new StreamHandler('php://stdout'));
+				'Logger' => function ($sm) {
+					$log = new Logger('stjornvisi');
+					$log->pushHandler(new StreamHandler('php://stdout'));
 
-						$evn = getenv('APPLICATION_ENV') ?: 'production';
-						if( $evn == 'development' ){
+					$evn = getenv('APPLICATION_ENV') ?: 'production';
+					if ($evn == 'development') {
+						//...
+					} else {
+						$handler = new StreamHandler('./data/log/error.json', Logger::ERROR);
+						$handler->setFormatter(new \Stjornvisi\Lib\JsonFormatter());
+						$log->pushHandler($handler);
 
-						}else{
+						$handler = new StreamHandler('./data/log/system.log');
+						$handler->setFormatter(new JsonFormatter());
+						$log->pushHandler($handler);
 
-							$handler = new StreamHandler('./data/log/error.json', Logger::ERROR);
-							$handler->setFormatter( new \Stjornvisi\Lib\JsonFormatter() );
-							$log->pushHandler($handler);
-
-							$handler = new StreamHandler('./data/log/system.log');
-							$handler->setFormatter( new JsonFormatter() );
-							$log->pushHandler($handler);
-
-							$log->pushHandler(new SlackHandler(
-								"xoxp-3745519896-3745519908-3921078470-26445a",
-								"#stjornvisi",
-								"Angry Hamster",
-								true,
-								null,
-								Logger::CRITICAL
-							));
-						}
-
-						return $log;
-					},
-				'ServiceEventManager' => function($sm){
+						$log->pushHandler(new SlackHandler(
+							"xoxp-3745519896-3745519908-3921078470-26445a",
+							"#stjornvisi",
+							"Angry Hamster",
+							true,
+							null,
+							Logger::CRITICAL
+						));
+					}
+					return $log;
+				},
+				'ServiceEventManager' => function ($sm) {
 
 						$logger = $sm->get('Logger');
 						$manager = new EventManager();
 
-						$manager->attach( new ErrorEventListener($logger) );
-						$manager->attach( new ServiceEventListener($logger) );
+						$manager->attach(new ErrorEventListener($logger));
+						$manager->attach(new ServiceEventListener($logger));
 						$activityListener = new ActivityListener($logger);
 						$activityListener->setQueueConnectionFactory(
 							$sm->get('Stjornvisi\Lib\QueueConnectionFactory')
 						);
-						$manager->attach( $activityListener );
+						$manager->attach($activityListener);
+
 						return $manager;
 				},
-				'Stjornvisi\Service\Map' => function($sm){
-						return new JaMap( new Client() );
+				'Stjornvisi\Service\Map' => function ($sm) {
+						return new JaMap(new Client());
 				},
-				'Stjornvisi\Service\Email' => function($sm){
+				'Stjornvisi\Service\Email' => function ($sm) {
 					$config = $sm->get('config');
 					$obj = new Email();
 					$obj->setDataSource(new PDO(
@@ -374,91 +312,87 @@ class Module{
 					return $obj;
 
 				},
-				'PDO\Config' => function( $sm ){
-						$config = $sm->get('config');
-						return array(
-							'dns' => $config['db']['dns'],
-							'user' => $config['db']['user'],
-							'password' => $config['db']['password'],
-							'options' => array(
-								PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-								PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-								PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-							)
-						);
-					},
-				'PDO' => function($sm){
-						$config = $sm->get('PDO\Config');
-						return new PDO(
-							$config['dns'],
-							$config['user'],
-							$config['password'],
-							$config['options']
-						);
-					},
-				'MailTransport' => function($sm){
+				'PDO\Config' => function ($sm) {
+					$config = $sm->get('config');
+					return array(
+						'dns' => $config['db']['dns'],
+						'user' => $config['db']['user'],
+						'password' => $config['db']['password'],
+						'options' => array(
+							PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+							PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+							PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+						)
+					);
+				},
+				'PDO' => function ($sm) {
+					$config = $sm->get('PDO\Config');
+					return new PDO(
+						$config['dns'],
+						$config['user'],
+						$config['password'],
+						$config['options']
+					);
+				},
+				'MailTransport' => function ($sm) {
+					$evn = getenv('APPLICATION_ENV') ?: 'production';
 
-						$evn = getenv('APPLICATION_ENV') ?: 'production';
-
-						if( $evn == 'development' ){
-							$transport = new FileTransport();
-							$transport->setOptions(new FileOptions(array(
-								'path'      => './data/',
-								'callback'  => function (FileTransport $transport) {
-										return 'Message_' . microtime(true) . '.eml';
-									},
-							)));
-							return $transport;
-						}else{
-							$transport = new SmtpTransport();
-							$protocol = new \Zend\Mail\Protocol\Smtp();
-							$transport->setConnection( $protocol );
-							return $transport;
-						}
-					},
-				'Stjornvisi\Lib\QueueConnectionFactory' => function($sm){
-						$config = $sm->get('config');
-						$queue = new QueueConnectionFactory();
-						$queue->setConfig($config['queue']);
-						return $queue;
-					},
-
-				'Stjornvisi\Form\NewUserCompanySelect' => function($sm){
-						return new NewUserCompanySelect(
-							$sm->get('Stjornvisi\Service\Company')
-						);
-					},
-				'Stjornvisi\Form\NewUserCompany' => function($sm){
-						return new NewUserCompany(
-							$sm->get('Stjornvisi\Service\Values'),
-							$sm->get('Stjornvisi\Service\Company')
-						);
-					},
-				'Stjornvisi\Form\NewUserUniversitySelect' => function($sm){
-						return new NewUserUniversitySelect(
-							$sm->get('Stjornvisi\Service\Company')
-						);
-					},
-				'Stjornvisi\Form\NewUserIndividual' => function($sm){
-						return new NewUserIndividual(
-							$sm->get('Stjornvisi\Service\Values'),
-							$sm->get('Stjornvisi\Service\Company')
-						);
-					},
-				'Stjornvisi\Form\NewUserCredentials' => function($sm){
-						return new NewUserCredentials(
-							$sm->get('Stjornvisi\Service\Values'),
-							$sm->get('Stjornvisi\Service\User')
-						);
-					},
-				'Stjornvisi\Form\Company' => function($sm){
-						return new CompanyForm(
-							$sm->get('Stjornvisi\Service\Values'),
-							$sm->get('Stjornvisi\Service\Company')
-						);
-					},
-
-
+					if ($evn == 'development') {
+						$transport = new FileTransport();
+						$transport->setOptions(new FileOptions(array(
+							'path'      => './data/',
+							'callback'  => function (FileTransport $transport) {
+									return 'Message_' . microtime(true) . '.eml';
+								},
+						)));
+						return $transport;
+					} else {
+						$transport = new SmtpTransport();
+						$protocol = new \Zend\Mail\Protocol\Smtp();
+						$transport->setConnection($protocol);
+						return $transport;
+					}
+				},
+				'Stjornvisi\Lib\QueueConnectionFactory' => function ($sm) {
+					$config = $sm->get('config');
+					$queue = new QueueConnectionFactory();
+					$queue->setConfig($config['queue']);
+					return $queue;
+				},
+				'Stjornvisi\Form\NewUserCompanySelect' => function ($sm) {
+					return new NewUserCompanySelect(
+						$sm->get('Stjornvisi\Service\Company')
+					);
+				},
+				'Stjornvisi\Form\NewUserCompany' => function ($sm) {
+					return new NewUserCompany(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\Company')
+					);
+				},
+				'Stjornvisi\Form\NewUserUniversitySelect' => function ($sm) {
+					return new NewUserUniversitySelect(
+						$sm->get('Stjornvisi\Service\Company')
+					);
+				},
+				'Stjornvisi\Form\NewUserIndividual' => function ($sm) {
+					return new NewUserIndividual(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\Company')
+					);
+				},
+				'Stjornvisi\Form\NewUserCredentials' => function ($sm) {
+					return new NewUserCredentials(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\User')
+					);
+				},
+				'Stjornvisi\Form\Company' => function ($sm) {
+					return new CompanyForm(
+						$sm->get('Stjornvisi\Service\Values'),
+						$sm->get('Stjornvisi\Service\Company')
+					);
+				},
 			),
 			'shared' => array(
 				'Stjornvisi\Service\Email' => false
@@ -471,16 +405,17 @@ class Module{
 	 *
 	 * @return array
 	 */
-	public function getViewHelperConfig(){
-		return array(
-			'invokables' => array(
+	public function getViewHelperConfig()
+	{
+		return [
+			'invokables' => [
 				'formelement' => 'Stjornvisi\Form\View\Helper\FormElement',
 				'richelement'     => 'Stjornvisi\Form\View\Helper\RichElement',
 				'imgelement'     => 'Stjornvisi\Form\View\Helper\ImgElement',
 				'fileelement'     => 'Stjornvisi\Form\View\Helper\FileElement',
-			),
+			],
 			'factories' => [
-				'subMenu' => function($sm){
+				'subMenu' => function ($sm) {
 					/** @var $sm \Zend\View\HelperPluginManager */
 					return new SubMenu(
 						$sm->getServiceLocator()->get('GroupService'),
@@ -489,7 +424,6 @@ class Module{
 					);
 				}
 			],
-		);
+		];
 	}
-
 }

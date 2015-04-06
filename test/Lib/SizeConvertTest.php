@@ -10,10 +10,10 @@ namespace Stjornvisi\Lib;
 
 use PHPUnit_Framework_TestCase;
 
-class SizeConvertTest extends PHPUnit_Framework_TestCase {
-
-
-	public function  dataProvider(){
+class SizeConvertTest extends PHPUnit_Framework_TestCase
+{
+	public function dataProvider()
+	{
 		return [
 			['2',	2],
 			['102',	102],
@@ -37,16 +37,14 @@ class SizeConvertTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 *
 	 * @dataProvider dataProvider
+	 * @param $in
+	 * @param $out
 	 */
-	public function testConvert( $in, $out ){
-
-
-
-
+	public function testConvert($in, $out)
+	{
 		$sut = new SizeConvert();
-
-		$this->assertEquals( $out, $sut->convert( $in ) );
-
+		$this->assertEquals($out, $sut->convert($in));
 	}
-} 
+}

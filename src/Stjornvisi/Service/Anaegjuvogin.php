@@ -74,7 +74,7 @@ class Anaegjuvogin extends AbstractService implements DataSourceAwareInterface
 					isset($statement) ? $statement->queryString : null,
 				]
 			]);
-			throw new Exception("Can't get Anaegjuvogin. [$year]", 0, $e);
+			throw new Exception("Can't get Anaegjuvogin by year:[$year]", 0, $e);
 		}
 	}
 
@@ -201,6 +201,7 @@ class Anaegjuvogin extends AbstractService implements DataSourceAwareInterface
 	{
 		try {
 			unset($data['submit']);
+			$data['created'] = date('Y-m-d H:i:s');
 			$statement = $this->pdo->prepare(
 				$this->insertString('Anaegjuvogin', $data)
 			);

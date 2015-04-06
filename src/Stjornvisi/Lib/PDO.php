@@ -10,6 +10,11 @@ namespace Stjornvisi\Lib;
 
 use \PDO as OriginalPDO;
 
+/**
+ * Class PDO
+ * @package Stjornvisi\Lib
+ * @deprecated
+ */
 class PDO extends OriginalPDO {
 
 	protected $dsn;

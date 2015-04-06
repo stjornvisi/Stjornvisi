@@ -8,9 +8,19 @@
 
 namespace Stjornvisi\Lib;
 
-
-class Csv implements \Iterator, \Countable {
-
+/**
+ * Class representing CSV data-structure.
+ * It has a field for header ans well as data,
+ * It even has a filed for a name of the collection.
+ *
+ * It implements Iterator and Countable, so it can be
+ * used in any foreach() loop.
+ *
+ * Class Csv
+ * @package Stjornvisi\Lib
+ */
+class Csv implements \Iterator, \Countable
+{
 	/**
 	 * @var array
 	 */
@@ -37,7 +47,8 @@ class Csv implements \Iterator, \Countable {
 	 * @param array $header
 	 * @return Csv
 	 */
-	public function setHeader( array $header ){
+	public function setHeader(array $header)
+	{
 		$this->header = $header;
 		return $this;
 	}
@@ -47,7 +58,8 @@ class Csv implements \Iterator, \Countable {
 	 *
 	 * @return string
 	 */
-	public function getHeader(){
+	public function getHeader()
+	{
 		return $this->header;
 	}
 
@@ -57,7 +69,8 @@ class Csv implements \Iterator, \Countable {
 	 *
 	 * @return Csv
 	 */
-	public function setName( $name ){
+	public function setName($name)
+	{
 		$this->name = $name;
 		return $this;
 	}
@@ -67,7 +80,8 @@ class Csv implements \Iterator, \Countable {
 	 *
 	 * @return string
 	 */
-	public function getName(){
+	public function getName()
+	{
 		return $this->name;
 	}
 
@@ -78,7 +92,8 @@ class Csv implements \Iterator, \Countable {
 	 *
 	 * @return Csv
 	 */
-	public function add( $data ){
+	public function add($data)
+	{
 		$this->records[] = $data;
 		return $this;
 	}
@@ -91,7 +106,8 @@ class Csv implements \Iterator, \Countable {
 	 * @link http://php.net/manual/en/iterator.current.php
 	 * @return mixed Can return any type.
 	 */
-	public function current(){
+	public function current()
+	{
 		return $this->records[$this->counter];
 	}
 
@@ -102,7 +118,8 @@ class Csv implements \Iterator, \Countable {
 	 * @link http://php.net/manual/en/iterator.next.php
 	 * @return void Any returned value is ignored.
 	 */
-	public function next(){
+	public function next()
+	{
 		$this->counter++;
 	}
 
@@ -113,7 +130,8 @@ class Csv implements \Iterator, \Countable {
 	 * @link http://php.net/manual/en/iterator.key.php
 	 * @return mixed scalar on success, or null on failure.
 	 */
-	public function key(){
+	public function key()
+	{
 		return $this->counter;
 	}
 
@@ -125,7 +143,8 @@ class Csv implements \Iterator, \Countable {
 	 * @return boolean The return value will be casted to boolean and then evaluated.
 	 * Returns true on success or false on failure.
 	 */
-	public function valid(){
+	public function valid()
+	{
 		return $this->counter < count($this->records);
 	}
 
@@ -136,7 +155,8 @@ class Csv implements \Iterator, \Countable {
 	 * @link http://php.net/manual/en/iterator.rewind.php
 	 * @return void Any returned value is ignored.
 	 */
-	public function rewind(){
+	public function rewind()
+	{
 		$this->counter = 0;
 	}
 
@@ -150,7 +170,8 @@ class Csv implements \Iterator, \Countable {
 	 * <p>
 	 * The return value is cast to an integer.
 	 */
-	public function count(){
+	public function count()
+	{
 		return count($this->records);
 	}
 }

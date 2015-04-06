@@ -8,26 +8,26 @@
 
 namespace Stjornvisi\Filter;
 
-
-class SsnTest extends \PHPUnit_Framework_TestCase {
-
-
-	public function dataProvider(){
-		return array(
-			array('1234','1234'),
-			array('1234T','1234'),
-			array('110478-4960','1104784960'),
-			array('Einar2Valur','2'),
-			array('Einar 2 Valur','2'),
-		);
+class SsnTest extends \PHPUnit_Framework_TestCase
+{
+	public function dataProvider()
+	{
+		return [
+			['1234','1234'],
+			['1234T','1234'],
+			['110478-4960','1104784960'],
+			['Einar2Valur','2'],
+			['Einar 2 Valur','2'],
+		];
 	}
 	/**
 	 * @param $value
 	 * @param $result
 	 * @dataProvider dataProvider
 	 */
-	public function testInput( $value, $result ){
+	public function testInput($value, $result)
+	{
 		$filter = new Ssn();
-		$this->assertEquals( $result, $filter->filter( $value ) );
+		$this->assertEquals($result, $filter->filter($value));
 	}
-} 
+}

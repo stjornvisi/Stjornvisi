@@ -6,7 +6,8 @@ use \PDOException;
 use \DateTime;
 use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class Article extends AbstractService implements DataSourceAwareInterface {
+class Article extends AbstractService implements DataSourceAwareInterface
+{
 
 	const NAME = 'article';
 
@@ -22,12 +23,13 @@ class Article extends AbstractService implements DataSourceAwareInterface {
      * @return \stdClass|bool
      * @throws Exception
      */
-    public function get( $id ){
-        try{
+    public function get($id)
+	{
+        try {
             $statement = $this->pdo->prepare("SELECT * FROM `Article` WHERE id = :id");
             $statement->execute(array( 'id' => $id ));
             $article = $statement->fetchObject();
-            if( $article ){
+            if ($article) {
                 $article->created = new DateTime($article->created);
                 $article->published = new DateTime($article->published);
                 $authorStatement = $this->pdo->prepare("
@@ -40,7 +42,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
             }
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return $article;
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),
                 'sql' => array(
@@ -48,7 +50,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
                     isset($authorStatement)?$authorStatement->queryString:null,
                 )
             ));
-            throw new Exception("Can't fetch article. article:[{$id}]",0,$e);
+            throw new Exception("Can't fetch article. article:[{$id}]", 0, $e);
         }
     }
 
@@ -58,8 +60,9 @@ class Article extends AbstractService implements DataSourceAwareInterface {
      * @return array
      * @throws Exception
      */
-    public function fetchAll(){
-        try{
+    public function fetchAll()
+	{
+        try {
             $statement = $this->pdo->prepare("
                 SELECT * FROM `Article` A
                 ORDER BY A.published DESC;
@@ -74,14 +77,14 @@ class Article extends AbstractService implements DataSourceAwareInterface {
             ");
 
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-            return array_map(function($i) use ($authorStatement){
+            return array_map(function ($i) use ($authorStatement) {
                 $authorStatement->execute(array('article_id'=>$i->id));
                 $i->created = new DateTime($i->created);
                 $i->published = new DateTime($i->published);
                 $i->authors = $authorStatement->fetchAll();
                 return $i;
-            },$articles);
-        }catch (PDOException $e){
+            }, $articles);
+        } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),
                 'sql' => array(
@@ -89,7 +92,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
                     isset($authorStatement)?$authorStatement->queryString:null,
                 )
             ));
-            throw new Exception("Can't fetch all articles.",0,$e);
+            throw new Exception("Can't fetch all articles.", 0, $e);
         }
     }
 
@@ -111,8 +114,9 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return string
 	 * @throws Exception
 	 */
-	public function create( array $data ){
-		try{
+	public function create( array $data )
+	{
+		try {
 			unset($data['submit']);
 			$authors = isset($data['authors'])
 				? $data['authors']
@@ -121,7 +125,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 			$data['created'] = date('Y-m-d H:i:s');
 			$data['published'] = date('Y-m-d H:i:s');
 
-			$insertString = $this->insertString('Article',$data);
+			$insertString = $this->insertString('Article', $data);
 			$insertStatement = $this->pdo->prepare($insertString);
 			$insertStatement->execute($data);
 			$id = (int)$this->pdo->lastInsertId();
@@ -130,7 +134,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 				INSERT INTO Author_has_Article (`author_id`,`article_id`)
 				VALUES (:author_id,:article_id)");
 
-			foreach($authors as $author){
+			foreach ($authors as $author) {
 				$connectStatement->execute(array(
 					'author_id' => $author,
 					'article_id' => $id,
@@ -145,7 +149,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 			));
 			return $id;
 
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
@@ -153,7 +157,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 					isset($connectStatement)?$connectStatement->queryString:null,
 				)
 			));
-			throw new Exception("Can't create article.",0,$e);
+			throw new Exception("Can't create article.", 0, $e);
 		}
 	}
 
@@ -175,8 +179,9 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return int affected row count
 	 * @throws Exception
 	 */
-	public function update( $id, array $data ){
-		try{
+	public function update( $id, array $data )
+	{
+		try {
 			unset($data['submit']);
 			$authors = isset($data['authors'])
 				? $data['authors']
@@ -193,14 +198,14 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 				INSERT INTO Author_has_Article (`author_id`,`article_id`)
 				VALUES (:author_id,:article_id)");
 
-			foreach($authors as $author){
+			foreach ($authors as $author) {
 				$connectStatement->execute(array(
 					'author_id' => $author,
 					'article_id' => $id,
 				));
 			}
 
-			$updateString = $this->updateString('Article',$data,"id={$id}");
+			$updateString = $this->updateString('Article', $data, "id={$id}");
 			$statement = $this->pdo->prepare($updateString);
 			$statement->execute($data);
 
@@ -213,7 +218,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 			));
 			return (int)$statement->rowCount();
 
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
@@ -222,7 +227,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't update article. article:[{$id}]",0,$e);
+			throw new Exception("Can't update article. article:[{$id}]", 0, $e);
 		}
 	}
 
@@ -234,8 +239,9 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return int affected row count
 	 * @throws Exception
 	 */
-	public function delete( $id ){
-		try{
+	public function delete( $id )
+	{
+		try {
 			$statement = $this->pdo->prepare("DELETE FROM Article WHERE id = :id");
 			$statement->execute(array('id' => $id));
 			$this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
@@ -245,7 +251,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 				'name' => Article::NAME,
 			));
 			return (int)$statement->rowCount();
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
@@ -253,7 +259,7 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 					isset($connectStatement)?$connectStatement->queryString:null,
 				)
 			));
-			throw new Exception("Can't delete article. article:[{$id}]",0,$e);
+			throw new Exception("Can't delete article. article:[{$id}]", 0, $e);
 		}
 	}
 
@@ -263,8 +269,9 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return array
 	 * @throws Exception
 	 */
-	public function fetchAllAuthors(){
-		try{
+	public function fetchAllAuthors()
+	{
+		try {
 			$statement = $this->pdo->prepare("
 				SELECT * FROM Author A
 				ORDER BY A.name;
@@ -273,14 +280,14 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
 			return $statement->fetchAll();
 
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't fetch all article authors.",0,$e);
+			throw new Exception("Can't fetch all article authors.", 0, $e);
 		}
 	}
 
@@ -292,8 +299,9 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public function getAuthor( $id ){
-		try{
+	public function getAuthor($id)
+	{
+		try {
 			$statement = $this->pdo->prepare("
 				SELECT * FROM `Author`
 				WHERE id = :id
@@ -301,14 +309,14 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 			$statement->execute(array('id' => $id));
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
 			return $statement->fetchObject();
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't fetch article author. author[{$id}]",0,$e);
+			throw new Exception("Can't fetch article author. author[{$id}]", 0, $e);
 		}
 	}
 
@@ -320,22 +328,23 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return int new ID
 	 * @throws Exception
 	 */
-	public function createAuthor( $data ){
-		try{
+	public function createAuthor($data)
+	{
+		try {
 			unset($data['submit']);
-			$insertString = $this->insertString('Author',$data);
+			$insertString = $this->insertString('Author', $data);
 			$statement = $this->pdo->prepare($insertString);
 			$statement->execute($data);
 			$this->getEventManager()->trigger('create', $this, array(__FUNCTION__));
 			return $this->pdo->lastInsertId();
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't create article author.",0,$e);
+			throw new Exception("Can't create article author.", 0, $e);
 		}
 	}
 
@@ -348,22 +357,23 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return int affected rows
 	 * @throws Exception
 	 */
-	public function updateAuthor( $id, $data ){
-		try{
+	public function updateAuthor($id, $data)
+	{
+		try {
 			unset($data['submit']);
-			$updateString = $this->updateString('Author',$data,"id={$id}");
+			$updateString = $this->updateString('Author', $data, "id={$id}");
 			$statement = $this->pdo->prepare($updateString);
 			$statement->execute($data);
 			$this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
 			return (int)$statement->rowCount();
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't update article author. author[{$id}]",0,$e);
+			throw new Exception("Can't update article author. author[{$id}]", 0, $e);
 		}
 	}
 
@@ -375,8 +385,9 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 	 * @return int affected rows
 	 * @throws Exception
 	 */
-	public function deleteAuthor( $id ){
-		try{
+	public function deleteAuthor($id)
+	{
+		try {
 			$statement = $this->pdo->prepare("
 				DELETE FROM `Author`
 				WHERE id = :id
@@ -384,18 +395,23 @@ class Article extends AbstractService implements DataSourceAwareInterface {
 			$statement->execute(array('id'=>$id));
 			$this->getEventManager()->trigger('delete', $this, array(__FUNCTION__));
 			return (int)$statement->rowCount();
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
 					isset($statement)?$statement->queryString:null,
 				)
 			));
-			throw new Exception("Can't update article author. author[{$id}]",0,$e);
+			throw new Exception("Can't update article author. author[{$id}]", 0, $e);
 		}
 	}
 
-	public function setDataSource(\PDO $pdo){
+	/**
+	 * @param \PDO $pdo
+	 * @return mixed
+	 */
+	public function setDataSource(\PDO $pdo)
+	{
 		$this->pdo = $pdo;
 	}
 }

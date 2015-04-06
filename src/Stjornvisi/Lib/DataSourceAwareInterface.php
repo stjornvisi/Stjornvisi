@@ -8,20 +8,19 @@
 
 namespace Stjornvisi\Lib;
 
-
 /**
  * Interface to allow object to connect to database.
  *
  * Interface DataSourceAwareInterface
  * @package Stjornvisi\Lib
  */
-interface DataSourceAwareInterface {
-
+interface DataSourceAwareInterface
+{
 	/**
 	 * Set a configured PDO object.
 	 *
 	 * @param \PDO $pdo
 	 * @return mixed
 	 */
-	public function setDataSource( \PDO $pdo );
-} 
+	public function setDataSource(\PDO $pdo);
+}

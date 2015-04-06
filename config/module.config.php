@@ -1293,17 +1293,6 @@ return array(
                     ),
                 ),
 			),
-			'skeletonlist' => array(
-				'type' => 'Zend\Mvc\Router\Http\Literal',
-				'options' => array(
-					'route' => '/skeletonlist',
-					'defaults' => array(
-						'controller' => 'Stjornvisi\Controller\Skeleton',
-						'action' => 'index'
-					),
-				),
-				'may_terminate' => true,
-			),
 			'skrar' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -1765,7 +1754,6 @@ return array(
 			'Stjornvisi\Controller\Page' => 'Stjornvisi\Controller\PageController',
 			'Stjornvisi\Controller\Search' => 'Stjornvisi\Controller\SearchController',
 			'Stjornvisi\Controller\Console' => 'Stjornvisi\Controller\ConsoleController',
-			'Stjornvisi\Controller\Skeleton' => 'Stjornvisi\Controller\SkeletonController',
 			'Stjornvisi\Controller\Conference' => 'Stjornvisi\Controller\ConferenceController',
 			'Stjornvisi\Controller\Email' => 'Stjornvisi\Controller\EmailController',
 			'Stjornvisi\Controller\Anaegjuvogin' => 'Stjornvisi\Controller\AnaegjuvoginController',

@@ -65,6 +65,27 @@ class User extends AbstractService implements DataSourceAwareInterface {
 
 	}
 
+	public function createHash($id)
+	{
+		try {
+			$statement = $this->pdo->prepare("
+				SELECT MD5( CONCAT(U.id,U.email) ) AS hash
+				FROM `User` U WHERE id = :id;
+			");
+			$statement->execute(['id'=>$id]);
+			return $statement->fetchColumn(0);
+
+		} catch (PDOException $e) {
+			$this->getEventManager()->trigger('error', $this, [
+				'exception' => $e->getTraceAsString(),
+				'sql' => [
+					isset($statement)?$statement->queryString:null,
+				]
+			]);
+			throw new Exception("Can't get hash of a user. user:[{$id}]", 0, $e);
+		}
+	}
+
 	public function getByHash( $hash ){
 		try{
 
