@@ -431,6 +431,9 @@ class AuthController extends AbstractActionController
     public function logoutAction()
     {
         $auth = new AuthenticationService();
+		$this->getResponse()
+			->getHeaders()
+			->addHeader(new SetCookie('backpfeifengesicht', '', strtotime('-1 Year', time()), '/'));
         $auth->clearIdentity();
 
         return $this->redirect()->toRoute('home');
@@ -519,7 +522,7 @@ class AuthController extends AbstractActionController
 
         //ERROR
         $error = $this->params()->fromQuery('error');
-        if ($error == 'access_denied' ) {
+        if ($error == 'access_denied') {
             return new ViewModel(['error' => 'access_denied']);
         }
 
@@ -545,14 +548,16 @@ class AuthController extends AbstractActionController
             //	get user object/properties from facebook graph
             $session = $helper->getSessionFromRedirect();
 
-            if (!$session ) {
+            if (!$session) {
                 throw new \Exception(
                     "Facebook session was NULL, key[{$key}], url[{$helper->getReRequestUrl()}]"
                 );
             }
 
             $me = (new FacebookRequest(
-                $session, 'GET', '/me'
+                $session,
+				'GET',
+				'/me'
             ))->execute()->getGraphObject(GraphUser::className())->asArray();
 
 
@@ -567,7 +572,7 @@ class AuthController extends AbstractActionController
                 $sm = $this->getServiceLocator();
                 $userService = $sm->get('Stjornvisi\Service\User');
                 /** @var $userService \Stjornvisi\Service\User */
-                if (($user = $userService->getByHash($key)) != null ) {
+                if (($user = $userService->getByHash($key)) != null) {
                     $userService->setOauth($user->id, $me['id'], 'facebook', $me['gender']);
                     //USER NOT FOUND
                     //	can't find the user based on hash
@@ -586,7 +591,7 @@ class AuthController extends AbstractActionController
 
             //VALID
             //	user has logged in before via Facebook
-            if ($result->isValid() ) {
+            if ($result->isValid()) {
                 $sessionManager = new SessionManager();
                 $sessionManager->rememberMe(21600000); //250 days
                 return $this->redirect()->toRoute('home');
@@ -600,7 +605,7 @@ class AuthController extends AbstractActionController
 		//CAN'T LOGIN USER
 		//	Facebook login library issues exception.
 		//	Facebook returns an error
-        } catch(FacebookRequestException $ex) {
+        } catch (FacebookRequestException $ex) {
             // When Facebook returns an error
             return new ViewModel(['error' => $ex->getMessage()]);
 		//ERROR
@@ -634,8 +639,7 @@ class AuthController extends AbstractActionController
         ? "http://".$_SERVER['HTTP_HOST']
         : 'http://0.0.0.0' ;
 
-        if ($this->request->isPost() ) {
-
+        if ($this->request->isPost()) {
             $post = $this->request->getPost()->getArrayCopy();
             $sm = $this->getServiceLocator();
             $userService = $sm->get('Stjornvisi\Service\User');
@@ -643,7 +647,6 @@ class AuthController extends AbstractActionController
 
             $user = $userService->get($post['email']);
             if ($user) {
-
                 //FACEBOOK CONFIG
                 //	get config and use it to configure facebook session
                 //	and login functionality
@@ -661,14 +664,16 @@ class AuthController extends AbstractActionController
                 //NOTIFY
                 //	notify user
                 $this->getEventManager()->trigger(
-                    'notify', $this, array(
-                    'action' => 'Stjornvisi\Notify\UserValidate',
-                    'data' => (object)[
+                    'notify',
+					$this,
+					[
+                    	'action' => 'Stjornvisi\Notify\UserValidate',
+                    	'data' => (object)[
                             'user_id' => $user->id,
                             'url' => $server,
                             'facebook' => $facebooklogin
                         ],
-                    )
+                    ]
                 );
 
                 return new ViewModel(
@@ -700,9 +705,9 @@ class AuthController extends AbstractActionController
         $userService = $sm->get('Stjornvisi\Service\User');
         $form = new LostPasswordForm();
         $form->setAttribute('action', $this->url()->fromRoute('access/lost-password'));
-        if ($this->request->isPost() ) {
+        if ($this->request->isPost()) {
             $form->setData($this->request->getPost());
-            if ($form->isValid() ) {
+            if ($form->isValid()) {
                 $user = $userService->get($form->get('email')->getValue());
                 if ($user) {
                     $password = $this->_createPassword(20);
@@ -729,7 +734,6 @@ class AuthController extends AbstractActionController
         } else {
             return new ViewModel(['form' => $form, 'message' => null]);
         }
-
     }
 
     /**
@@ -738,11 +742,10 @@ class AuthController extends AbstractActionController
      * @param  int $length
      * @return string
      */
-    private function _createPassword($length) 
+    private function _createPassword($length)
     {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_-=+;:?";
         $password = substr(str_shuffle($chars), 0, $length);
         return $password;
     }
-
 }
