@@ -8,11 +8,11 @@
 
 namespace Stjornvisi\Event;
 
-
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
+use Zend\Mvc\Application;
 use Zend\Mvc\MvcEvent;
 
 class SystemExceptionListener extends AbstractListenerAggregate implements LoggerAwareInterface
