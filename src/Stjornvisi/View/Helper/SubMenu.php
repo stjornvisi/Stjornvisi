@@ -30,6 +30,12 @@ class SubMenu extends AbstractHelper {
 	public function __invoke()
 	{
 
+        //DIRTY HACK
+        //  todo remove someday when persistanceLoginListener actually workd
+        if (!$this->authService->hasIdentity()) {
+           return '';
+        }
+
 		$view = $this->getView();
 		/** @var $view \Zend\View\Renderer\PhpRenderer */
 
