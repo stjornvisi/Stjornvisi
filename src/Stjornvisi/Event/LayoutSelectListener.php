@@ -42,7 +42,7 @@ class LayoutSelectListener extends AbstractListenerAggregate
      */
     public function attach(EventManagerInterface $events)
 	{
-        $this->listeners[] = $events->attach([MvcEvent::EVENT_DISPATCH], [$this, 'dispatch']);
+        $this->listeners[] = $events->attach([MvcEvent::EVENT_DISPATCH], [$this, 'dispatch'], -100);
     }
 
 	public function dispatch(MvcEvent $event)
