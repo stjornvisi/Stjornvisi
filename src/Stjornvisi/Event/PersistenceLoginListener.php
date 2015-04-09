@@ -64,7 +64,7 @@ class PersistenceLoginListener extends AbstractListenerAggregate implements Logg
 			/** @var $cookies \Zend\Http\Header\Cookie */
 			$userService = $this->getServiceLocator()->get('Stjornvisi\Service\User');
 			/** @var $user \Stjornvisi\Service\User */
-			if ($cookies->offsetExists('backpfeifengesicht')) {
+			if ($cookies && $cookies->offsetExists('backpfeifengesicht')) {
 				if (($user = $userService->getByHash($cookies->offsetGet('backpfeifengesicht')))!=false) {
 					$authAdapter = $this->getServiceLocator()->get('Stjornvisi\Auth\Adapter');
 					$authAdapter->setIdentifier($user->id);
