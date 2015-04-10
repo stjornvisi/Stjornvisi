@@ -1,9 +1,17 @@
 build_settings:
     mysql:
-        host: "localhost2"
-        user: "root2"
-        pass: "hundurhundur"
+        host: "localhost"
+        user: "root"
+        pass: ""
 
 setup:
+    mysql:
+        - "CREATE DATABASE my_app_test;"
+        import-from-file:
+          import:
+            database: "stjornvisi_test"
+            file: "/assets/db/stjornvisi_empty.sql"
 
 complete:
+    mysql:
+        - "DROP DATABASE my_app_test;"
