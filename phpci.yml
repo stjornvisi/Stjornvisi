@@ -1,5 +1,5 @@
 build_settings:
     mysql:
-        host: "localhost"
+        host: "localhost2"
         user: "root2"
         pass: ""
