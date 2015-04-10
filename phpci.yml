@@ -5,13 +5,9 @@ build_settings:
         pass: ""
 
 setup:
-    mysql:
-        - "CREATE DATABASE my_app_test;"
-        import-from-file:
-          import:
-            database: "stjornvisi_test"
-            file: "/assets/db/stjornvisi_empty.sql"
+
+test:
+    php_code_sniffer:
+        standard: "PSR2"
 
 complete:
-    mysql:
-        - "DROP DATABASE my_app_test;"
