@@ -5,9 +5,5 @@ build_settings:
         pass: ""
 
 setup:
-
-test:
-    php_code_sniffer:
-        standard: "PSR2"
-
-complete:
+    mysql:
+        - "CREATE DATABASE stjornvisi_test;"
