@@ -8,3 +8,7 @@ setup:
     mysql:
         - "DROP DATABASE IF EXISTS stjornvisi_test;"
         - "CREATE DATABASE stjornvisi_test;"
+        import-from-file:                   # This key name doesn´t matter
+            import:
+                database: "stjornvisi_test"             # Database name
+                file: "assets/db/stjornvisi-empty.sql"      # Relative path in build folder
