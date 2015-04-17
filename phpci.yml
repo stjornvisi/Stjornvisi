@@ -6,4 +6,5 @@ build_settings:
 
 setup:
     mysql:
+        - "DROP DATABASE IF EXISTS stjornvisi_test;"
         - "CREATE DATABASE stjornvisi_test;"
