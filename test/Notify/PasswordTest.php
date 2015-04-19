@@ -8,9 +8,6 @@
 
 namespace Stjornvisi\Notify;
 
-use Stjornvisi\Service\User as UserDAO;
-use Stjornvisi\Service\Group as GroupDAO;
-use Stjornvisi\Lib\QueueConnectionFactory;
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
@@ -19,10 +16,10 @@ use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use Stjornvisi\Bootstrap;
 
-class GroupTest extends \PHPUnit_Extensions_Database_TestCase
+class PasswordTest extends \PHPUnit_Extensions_Database_TestCase
 {
-	static private $pdo = null;
 
+	static private $pdo = null;
 	private $conn = null;
 
     public function testOk()
@@ -42,22 +39,17 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $notifier = new Password();
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
+                'recipients' => (object)['name'=>'hundur','email'=>'hundur@hundur.com'],
+                'password' => '1234567890'
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\Password', $notifier->send());
     }
 
     /**
@@ -73,61 +65,17 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $notifier = new Password();
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
+                'recipients' => (object)['name'=>'hundur','email'=>'hundur@hundur.com'],
+                'password' => '1234567890'
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
-    }
-
-    /**
-     * @expectedException \Stjornvisi\Notify\NotifyException
-     * @expectedExceptionMessage Group [100] not found
-     */
-    public function testGroupNotFound()
-    {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
-        $notifier->setData((object)[
-            'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 100,
-                'body' => 'nothing',
-                'subject' => '',
-            ]
-        ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
-
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\Password', $notifier->send());
     }
 
     /**
@@ -226,23 +174,4 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 		]);
 	}
 
-    /**
-     * Provide some connection values for the
-     * database.
-     *
-     * @return array
-     */
-    public function getDatabaseConnectionValues()
-    {
-        return [
-            'dns' => $GLOBALS['DB_DSN'],
-            'user' => $GLOBALS['DB_USER'],
-            'password' => $GLOBALS['DB_PASSWD'],
-            'options' => [
-                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-            ]
-        ];
-    }
 }

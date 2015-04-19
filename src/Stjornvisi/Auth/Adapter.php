@@ -81,6 +81,16 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
         }
     }
 
+    /**
+     * You can authenticate based on username/password
+     * or by using the user's ID. If this value is set
+     * then the user's ID will be used to identify.
+     *
+     * So use this method or self::setCredentials, but
+     * not both.
+     *
+     * @param $id
+     */
 	public function setIdentifier($id)
 	{
 		$this->id = $id;
@@ -88,6 +98,14 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
 
     /**
      * Set username and password
+     *
+     * You can authenticate based on username/password
+     * or by using the user's ID. If this value is set
+     * then the user's username/password will be used to
+     * identify.
+     *
+     * So use this method or self::setIdentifier, but
+     * not both.
      *
      * @param $username
      * @param $password
@@ -98,6 +116,12 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
         $this->password = $password;
     }
 
+    /**
+     * Set a configured PDO object.
+     *
+     * @param \PDO $pdo
+     * @return mixed
+     */
 	public function setDataSource(\PDO $pdo)
 	{
 		$this->pdo = $pdo;

@@ -11,11 +11,12 @@ namespace Stjornvisi\Auth;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result;
 
-class TestAdapter implements AdapterInterface {
-
+class TestAdapter implements AdapterInterface
+{
 	private $user;
 
-	public function __construct( $user ){
+	public function __construct($user)
+    {
 		$this->user = $user;
 	}
 
@@ -25,7 +26,8 @@ class TestAdapter implements AdapterInterface {
 	 * @return \Zend\Authentication\Result
 	 * @throws \Zend\Authentication\Adapter\Exception\ExceptionInterface If authentication cannot be performed
 	 */
-	public function authenticate(){
-		return new Result( Result::SUCCESS, $this->user );
+	public function authenticate()
+    {
+		return new Result(Result::SUCCESS, $this->user);
 	}
-} 
+}

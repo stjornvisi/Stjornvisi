@@ -8,9 +8,6 @@
 
 namespace Stjornvisi\Notify;
 
-use Stjornvisi\Service\User as UserDAO;
-use Stjornvisi\Service\Group as GroupDAO;
-use Stjornvisi\Lib\QueueConnectionFactory;
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
@@ -19,7 +16,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use Stjornvisi\Bootstrap;
 
-class GroupTest extends \PHPUnit_Extensions_Database_TestCase
+class UserValidateTest extends \PHPUnit_Extensions_Database_TestCase
 {
 	static private $pdo = null;
 
@@ -27,6 +24,7 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
     public function testOk()
     {
+
         $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
             ->shouldReceive('createConnection')
             ->andReturn(
@@ -42,22 +40,18 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new UserValidate();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
+                'user_id' => 1,
+                'facebook' => 'akdjfghseiurg'
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\UserValidate', $notifier->send());
     }
 
     /**
@@ -73,29 +67,25 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new UserValidate();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
+                'user_id' => 1,
+                'facebook' => 'akdjfghseiurg'
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\UserValidate', $notifier->send());
     }
 
     /**
      * @expectedException \Stjornvisi\Notify\NotifyException
-     * @expectedExceptionMessage Group [100] not found
+     * @expectedExceptionMessage User [100] not found
      */
-    public function testGroupNotFound()
+    public function testUserNotFound()
     {
         $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
             ->shouldReceive('createConnection')
@@ -103,31 +93,34 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
                 \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
                     ->shouldReceive([
                         'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
+                            ->shouldReceive(['queue_declare', 'basic_publish', 'close'])
                             ->getMock(),
                         'close' => ''
                     ])
                     ->getMock()
             )->getMock();
 
+
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new UserValidate();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
                 'sender_id' => 1,
-                'group_id' => 100,
+                'test' => true,
+                'recipient' => 1,
                 'body' => 'nothing',
                 'subject' => '',
+                'group_id' => 1,
+                'user_id' => 100,
+                'facebook' => 'akdjfghseiurg'
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\UserValidate', $notifier->send());
     }
 
     /**

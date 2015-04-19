@@ -8,11 +8,13 @@
 
 namespace Stjornvisi\Notify;
 
+use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\User;
 use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
+use Zend\EventManager\EventManager;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
@@ -25,8 +27,8 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
-
+class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
+{
 	/**
 	 * @var  \Psr\Log\LoggerInterface
 	 */
@@ -42,16 +44,9 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 	 */
 	private $queueFactory;
 
-	/**
-	 * @var \Stjornvisi\Service\User
-	 */
-	private $user;
-
-	/**
-	 * @var array
-	 */
-	private $config;
-
+    /**
+     * @var array
+     */
 	private $dataStore;
 
 	/**
@@ -65,49 +60,39 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 	 * @param LoggerInterface $logger
 	 * @return $this|NotifyInterface
 	 */
-	public function setLogger(LoggerInterface $logger){
+	public function setLogger(LoggerInterface $logger)
+    {
 		$this->logger = $logger;
 		return $this;
 	}
 
-	/**
-	 * Set the data that is coming from the
-	 * producer.
-	 *
-	 * @param $data {
-	 *	@user_id: int
-	 *	@url: string
-	 *	@facebook: string
-	 * }
-	 * @return $this|NotifyInterface
-	 */
-	public function setData( $data ){
+    /**
+     * @param \stdClass $data
+     * @return $this
+     * @throws NotifyException
+     */
+	public function setData($data)
+    {
+        if (property_exists($data, 'facebook')) {
+            throw new NotifyException('Missing data:facebook');
+        }
+
+        if (property_exists($data, 'user_id')) {
+            throw new NotifyException('Missing data:user_id');
+        }
 		$this->params = $data->data;
 		return $this;
 	}
 
-	/**
-	 * Send notification to what ever media or outlet
-	 * required by the implementer.
-	 *
-	 * @return $this|NotifyInterface
-	 */
-	public function send(){
-
-		$this->logger->debug("User validate");
-		$pdo = new \PDO(
-			$this->dataStore['dns'],
-			$this->dataStore['user'],
-			$this->dataStore['password'],
-			$this->dataStore['options']
-		);
-		$this->user = new User();
-		$this->user->setDataSource( $pdo )
-			->setEventManager( $this->getEventManager() );
-
+    /**
+     * @return $this
+     * @throws NotifyException
+     */
+	public function send()
+    {
 		//USER
 		//	get the user.
-		$user = $this->user->get( $this->params->user_id );
+		$user = $this->getUser($this->params->user_id);
 
 		$this->logger->debug("User validate [{$user->email}]");
 
@@ -123,10 +108,10 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 		$layout->setTemplate('layout');
 		$layout->addChild($child, 'content');
 
-		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer = new PhpRenderer();
 		$phpRenderer->setCanRenderTrees(true);
 
-		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver = new Resolver\TemplateMapResolver();
 		$resolver->setMap(array(
 			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
 			'script' => __DIR__ . '/../../../view/email/user-validate.phtml',
@@ -137,63 +122,44 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 		//	now we want to send this to the user/quest via e-mail
 		//	so we try to connect to Queue and send a message
 		//	to mail_queue
-		try{
+		try {
 			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
 
 			foreach ($layout as $child) {
-				if ($child->terminate()) {
-					continue;
-				}
 				$child->setOption('has_parent', true);
 				$result  = $phpRenderer->render($child);
 				$child->setOption('has_parent', null);
 				$capture = $child->captureTo();
 				if (!empty($capture)) {
-					if ($child->isAppend()) {
-						$oldResult=$model->{$capture};
-						$layout->setVariable($capture, $oldResult . $result);
-					} else {
-						$layout->setVariable($capture, $result);
-					}
+					$layout->setVariable($capture, $result);
 				}
 			}
 
-			$result = array(
-				'recipient' => array('name'=>$user->name, 'address'=>$user->email),
-				'subject' => "Stjórnvísi, staðfesting á aðgangi",
-				'body' => $phpRenderer->render($layout),
-				'user_id' => null,
-				'type' => '',
-				'entity_id' => null,
-				'parameters' => '',
-				'test' => true
-			);
-			$this->logger->debug("Confirm user validate [{$user->email}]");
-			$msg = new AMQPMessage( json_encode($result),
-				array('delivery_mode' => 2) # make message persistent
-			);
+            $result = new Mail();
+            $result->name = $user->name;
+            $result->email = $user->email;
+            $result->subject = "Stjórnvísi, staðfesting á aðgangi";
+            $result->body = $phpRenderer->render($layout);
+            $result->test = true;
+
+			$msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
 			$this->logger->info("User validate email to [{$user->email}]");
 
 			$channel->basic_publish($msg, '', 'mail_queue');
 
+        } catch (\Exception $e) {
+            throw new NotifyException($e->getMessage(), 0, $e);
+        } finally {
+            if (isset($channel) && $channel) {
+                $channel->close();
+            }
+            if(isset($connection) && $connection){
+                $connection->close();
+            }
 
-		}catch (\Exception $e){
-			$this->logger->critical(
-				get_class($this) . ":send says: {$e->getMessage()}",
-				$e->getTrace()
-			);
-		}finally{
-			if( $channel ){
-				$channel->close();
-			}
-			if( $connection ){
-				$connection->close();
-			}
-
-			$pdo = null;
-			$this->user = null;
+            $user = null;
 		}
 
 		return $this;
@@ -204,12 +170,18 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 	 * @param QueueConnectionFactoryInterface $factory
 	 * @return $this|NotifyInterface
 	 */
-	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
+	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    {
 		$this->queueFactory = $factory;
 		return $this;
 	}
 
-	public function setDateStore($config){
+    /**
+     * @param $config
+     * @return $this
+     */
+	public function setDateStore($config)
+    {
 		$this->dataStore = $config;
 		return $this;
 	}
@@ -220,7 +192,8 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 	 * @param EventManagerInterface $events
 	 * @return $this|void
 	 */
-	public function setEventManager(EventManagerInterface $events){
+	public function setEventManager(EventManagerInterface $events)
+    {
 		$events->setIdentifiers(array(
 			__CLASS__,
 			get_called_class(),
@@ -234,10 +207,37 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 	 *
 	 * @return EventManagerInterface
 	 */
-	public function getEventManager(){
+	public function getEventManager()
+    {
 		if (null === $this->events) {
 			$this->setEventManager(new EventManager());
 		}
 		return $this->events;
 	}
+
+    /**
+     * @param int $id
+     * @return \Stjornvisi\Service\User
+     * @throws NotifyException
+     * @throws \Stjornvisi\Service\Exception
+     */
+    public function getUser($id)
+    {
+        $pdo = new \PDO(
+            $this->dataStore['dns'],
+            $this->dataStore['user'],
+            $this->dataStore['password'],
+            $this->dataStore['options']
+        );
+        $userService = new User();
+        $userService->setDataSource($pdo)
+            ->setEventManager($this->getEventManager());
+
+        if (($user = $userService->get($id)) != false) {
+            return $user;
+        } else {
+            throw new NotifyException("User [{$id}] not found");
+        }
+
+    }
 }

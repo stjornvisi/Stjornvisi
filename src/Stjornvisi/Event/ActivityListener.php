@@ -8,7 +8,7 @@
 
 namespace Stjornvisi\Event;
 
-
+use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\News;
@@ -28,8 +28,8 @@ use PhpAmqpLib\Message\AMQPMessage;
  * @package Stjornvisi\Event
  * @todo major refactoring
  */
-class ActivityListener extends AbstractListenerAggregate implements QueueConnectionAwareInterface {
-
+class ActivityListener extends AbstractListenerAggregate implements QueueConnectionAwareInterface
+{
 	/** @var  \Psr\Log\LoggerInterface; */
 	private $logger;
 
@@ -41,7 +41,8 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct( LoggerInterface $logger ){
+	public function __construct(LoggerInterface $logger)
+    {
 		$this->logger = $logger;
 	}
 
@@ -55,7 +56,8 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
      *
      * @return void
      */
-    public function attach(EventManagerInterface $events){
+    public function attach(EventManagerInterface $events)
+    {
         $this->listeners[] = $events->attach(
 			array('create','update','delete'),
 			array($this, 'log')
@@ -68,15 +70,19 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 	 * @param EventInterface $event
 	 * @todo this requires a major rewrite
 	 */
-	public function log(EventInterface $event){
+	public function log(EventInterface $event)
+    {
 		$target = $event->getTarget();
-		$recipient = array('name'=>'Stjónvísi', 'address'=>'stjornvisi@stjornvisi.is');
+		$recipient = [
+            (object)['name'=>'Stjónvísi', 'address'=>'stjornvisi@stjornvisi.is'],
+            (object)['name'=>'Einar Valur', 'address'=>'fizk78@gmail.com'],
+        ];
 		$params = $event->getParams();
 		$method = isset($params[0])?$params[0]:'';
 
-		if( $target instanceof Event && isset($params['data']) ){
+		if ($target instanceof Event && isset($params['data'])) {
 			$data = $params['data'];
-			switch( $method ){
+			switch ($method) {
 				case 'create':
 					$this->send(
 						$recipient,
@@ -101,9 +107,9 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 				default:
 					break;
 			}
-		}else if( $target instanceof News && isset($params['data'])  ){
+		} else if ($target instanceof News && isset($params['data'])) {
 			$data = $params['data'];
-			switch( $method ){
+			switch ($method) {
 				case 'create':
 					$this->send(
 						$recipient,
@@ -128,9 +134,9 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 				default:
 					break;
 			}
-		}else if( $target instanceof Company && isset($params['data'])  ){
+		} else if ($target instanceof Company && isset($params['data'])) {
 			$data = $params['data'];
-			switch( $method ){
+			switch ($method) {
 				case 'create':
 					$this->send(
 						$recipient,
@@ -155,9 +161,9 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 				default:
 					break;
 			}
-		}elseif ( $target instanceof User && isset($params['data'])  ){
+		} elseif ($target instanceof User && isset($params['data'])) {
 			$data = $params['data'];
-			switch( $method ){
+			switch ($method) {
 				case 'create':
 					$this->send(
 						$recipient,
@@ -172,36 +178,44 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 
 	}
 
-	private function send( $recipient, $subject, $body ){
+	private function send($recipients, $subject, $body)
+    {
 		$channel = false;
 		$connection = false;
-		try{
+		try {
 			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
-			$msg = new AMQPMessage( json_encode(array(
-					'recipient' => $recipient,
-					'subject' => $subject,
-					'body' => $body
-				)),
-				array('delivery_mode' => 2) # make message persistent
-			);
 
-			$channel->basic_publish($msg, '', 'mail_queue');
+            foreach ($recipients as $recipient) {
+                $message = new Mail();
+                $message->name = $recipient->name;
+                $message->email = $recipient->address;
+                $message->subject = $subject;
+                $message->body = $body;
+
+                $msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
+
+                $channel->basic_publish($msg, '', 'mail_queue');
+            }
 
 
-		}catch (\Exception $e){
-			$this->logger->critical(
-				get_class($this) . ":send says: {$e->getMessage()}",
-				$e->getTrace()
-			);
-		}finally{
-			if( $channel ){
-				$channel->close();
-			}
-			if( $connection ){
-				$connection->close();
-			}
+		} catch (\Exception $e) {
+            while ($e) {
+                $this->logger->critical(
+                    get_class($this) . ":send says: {$e->getMessage()}",
+                    $e->getTrace()
+                );
+                $e = $e->getPrevious();
+            }
+
+		} finally {
+            if (isset($channel) && $channel) {
+                $channel->close();
+            }
+            if(isset($connection) && $connection){
+                $connection->close();
+            }
 		}
 	}
 
@@ -210,7 +224,8 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 	 * @param QueueConnectionFactoryInterface $factory
 	 * @return mixed
 	 */
-	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
+	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    {
 		$this->queueFactory = $factory;
 	}
 }

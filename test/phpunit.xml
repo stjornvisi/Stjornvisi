@@ -9,6 +9,8 @@
             <directory>./Lib</directory>
             <directory>./Mail</directory>
             <directory>./Validator</directory>
+            <directory>./Notify</directory>
+            <directory>./Event</directory>
         </testsuite>
     </testsuites>
 

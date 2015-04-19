@@ -8,9 +8,6 @@
 
 namespace Stjornvisi\Notify;
 
-use Stjornvisi\Service\User as UserDAO;
-use Stjornvisi\Service\Group as GroupDAO;
-use Stjornvisi\Lib\QueueConnectionFactory;
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
@@ -19,7 +16,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use Stjornvisi\Bootstrap;
 
-class GroupTest extends \PHPUnit_Extensions_Database_TestCase
+class SubmissionTest extends \PHPUnit_Extensions_Database_TestCase
 {
 	static private $pdo = null;
 
@@ -42,22 +39,19 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new Submission();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
+                'recipient' => 1,
                 'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
+                'register' => true
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
     }
 
     /**
@@ -73,61 +67,75 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new Submission();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
+                'recipient' => 1,
                 'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
+                'register' => true
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
     }
 
     /**
+     *
+     * @expectedExceptionMessage User [100] not found
      * @expectedException \Stjornvisi\Notify\NotifyException
+     */
+    public function testUserNotFound()
+    {
+        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
+            ->shouldReceive('createConnection')->andThrow('\PhpAmqpLib\Exception\AMQPRuntimeException')
+            ->getMock();
+
+        $logger = new Logger('test');
+        $logger->pushHandler(new NullHandler());
+        $notifier = new Submission();
+        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $notifier->setData((object)[
+            'data' => (object)[
+                'recipient' => 100,
+                'group_id' => 1,
+                'register' => true
+            ]
+        ]);
+        $notifier->setLogger($logger);
+        $notifier->setQueueConnectionFactory($mock);
+
+        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
+    }
+
+    /**
+     *
      * @expectedExceptionMessage Group [100] not found
+     * @expectedException \Stjornvisi\Notify\NotifyException
      */
     public function testGroupNotFound()
     {
         $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
+            ->shouldReceive('createConnection')->andThrow('\PhpAmqpLib\Exception\AMQPRuntimeException')
+            ->getMock();
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new Submission();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
         $notifier->setData((object)[
             'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
+                'recipient' => 1,
                 'group_id' => 100,
-                'body' => 'nothing',
-                'subject' => '',
+                'register' => true
             ]
         ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
     }
 
     /**

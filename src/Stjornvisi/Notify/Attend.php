@@ -9,16 +9,18 @@
 namespace Stjornvisi\Notify;
 
 use Psr\Log\LoggerInterface;
+
+use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\User;
+use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
+use Zend\EventManager\EventManager;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
 use Zend\EventManager\EventManagerInterface;
-
-use Stjornvisi\Lib\QueueConnectionAwareInterface;
-use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -28,55 +30,52 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Stjornvisi\Notify
  */
-class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface {
-
-	/**
-	 * @var \stdClass
-	 */
-	private $params;
-
+class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
+{
+    private $params;
 	/**
 	 * @var  \Psr\Log\LoggerInterface;
 	 */
 	private $logger;
 
 	/**
-	 * @var \Stjornvisi\Service\User
-	 */
-	private $user;
-
-	/**
-	 * @var \Stjornvisi\Service\Event
-	 */
-	private $event;
-
-	/**
 	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
 	 */
 	private $queueFactory;
 
-	/**
-	 * @var array
-	 */
-	private $config;
-
+    /**
+     * @var array
+     */
 	private $dataStore;
-
 
 	/**
 	 * @var \Zend\EventManager\EventManager
 	 */
 	protected $events;
 
-	/**
-	 * Set the data that is coming from the
-	 * producer.
-	 *
-	 * @param $data
-	 * @return $this|NotifyInterface
-	 */
-	public function setData( $data ){
-		$this->params = $data;
+    /**
+     * @var \PDO
+     */
+    protected $pdo;
+
+    /**
+     * @param \stdClass $data
+     * @return $this
+     * @throws NotifyException
+     */
+	public function setData($data)
+    {
+		$this->params = $data->data;
+
+        if (!property_exists($this->params, 'event_id')) {
+            throw new NotifyException('Missing data:event_id');
+        }
+        if (!property_exists($this->params, 'recipients')) {
+            throw new NotifyException('Missing data:recipients');
+        }
+        if (!property_exists($this->params, 'type')) {
+            throw new NotifyException('Missing data:type');
+        }
 		return $this;
 	}
 
@@ -86,54 +85,22 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 	 * @param LoggerInterface $logger
 	 * @return $this|NotifyInterface
 	 */
-	public function setLogger(LoggerInterface $logger){
+	public function setLogger(LoggerInterface $logger)
+    {
 		$this->logger = $logger;
 		return $this;
 	}
 
-	/**
-	 * Send notification to what ever media or outlet
-	 * required by the implementer.
-	 *
-	 * @return $this|NotifyInterface
-	 */
-	public function send(){
-
-		$pdo = new \PDO(
-			$this->dataStore['dns'],
-			$this->dataStore['user'],
-			$this->dataStore['password'],
-			$this->dataStore['options']
-		);
-
-		$this->user = new User();
-		$this->user->setDataSource( $pdo )
-			->setEventManager( $this->getEventManager() );
-		$this->event = new Event();
-		$this->event->setDataSource( $pdo )
-			->setEventManager( $this->getEventManager() );
-
-		if( !isset($this->params->data->recipients) ){
-			return true;
-		}
-
-		//USER
-		//	user can be in the system or he can be
-		//	a guest, we have to prepare for both.
-		if( is_numeric($this->params->data->recipients) ){
-			$userObject = $this->user->get($this->params->data->recipients);
-		}else{
-			$userObject = (object)array(
-				'name' => $this->params->data->recipients->name,
-				'email' => $this->params->data->recipients->email
-			);
-		}
-
-		//EVENT
-		//	now we need the event that the user/guest
-		//	is registering to.
-		$eventObject = $this->event->get( $this->params->data->event_id );
-
+    /**
+     * @return $this
+     * @throws NotifyException
+     */
+	public function send()
+    {
+        //DATA-OBJECTS
+        //  get data-objects from persistence layer.
+        $eventObject = $this->getEvent($this->params->event_id);
+        $userObject = $this->getUser($this->params->recipients);
 
 		//VIEW
 		//	create and configure view
@@ -141,16 +108,16 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 			'user' => $userObject,
 			'event' => $eventObject
 		));
-		$child->setTemplate(($this->params->data->type)?'attend':'unattend');
+		$child->setTemplate(($this->params->type)?'attend':'unattend');
 
 		$layout = new ViewModel();
 		$layout->setTemplate('layout');
 		$layout->addChild($child, 'content');
 
-		$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+		$phpRenderer = new PhpRenderer();
 		$phpRenderer->setCanRenderTrees(true);
 
-		$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+		$resolver = new Resolver\TemplateMapResolver();
 		$resolver->setMap(array(
 			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
 			'attend' => __DIR__ . '/../../../view/email/attending.phtml',
@@ -158,79 +125,57 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 		));
 		$phpRenderer->setResolver($resolver);
 		foreach ($layout as $child) {
-			if ($child->terminate()) {
-				continue;
-			}
 			$child->setOption('has_parent', true);
 			$result  = $phpRenderer->render($child);
 			$child->setOption('has_parent', null);
 			$capture = $child->captureTo();
 			if (!empty($capture)) {
-				if ($child->isAppend()) {
-					$oldResult=$model->{$capture};
-					$layout->setVariable($capture, $oldResult . $result);
-				} else {
-					$layout->setVariable($capture, $result);
-				}
+				$layout->setVariable($capture, $result);
 			}
 		}
 
-
-		//ATTEND / UN-ATTEND
-		//	check if the user is registering
-		//	or un-registering and render template to
-		//	accommodate.
-
-		$result = array(
-			'recipient' => array('name'=>$userObject->name, 'address'=>$userObject->email),
-			'subject' => ($this->params->data->type)
-					? "Þú hefur skráð þig á viðburðinn: {$eventObject->subject}"
-					: "Þú hefur afskráð þig á viðburðinn: {$eventObject->subject}",
-			'body' => $phpRenderer->render($layout),
-			'id' => '',
-			'user_id' => 0,
-			'type' => '',
-			'parameters' => '',
-			'test' => true
-		);
-
+        //MESSAGE
+        //  create and configure message.
+        $message = new Mail();
+        $message->body = $phpRenderer->render($layout);
+        $message->email = $userObject->email;
+        $message->name = $userObject->name;
+        $message->subject = ($this->params->type)
+            ? "Þú hefur skráð þig á viðburðinn: {$eventObject->subject}"
+            : "Þú hefur afskráð þig af viðburðinum: {$eventObject->subject}";
 
 		//MAIL
 		//	now we want to send this to the user/quest via e-mail
 		//	so we try to connect to Queue and send a message
 		//	to mail_queue
-		try{
+		try {
 			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
-			$msg = new AMQPMessage( json_encode($result),
-				array('delivery_mode' => 2) # make message persistent
-			);
-			$this->logger->info( get_class($this) .":send".
-				" {$result['recipient']['address']} is " . ( ($this->params->data->type)?'':'not ' ) .
-				"attending {$eventObject->subject}");
+			$msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
+
+            $this->logger->info(
+                "{$userObject->email} is ".
+                ($this->params->type?'':'not ').
+                "attending {$eventObject->subject}"
+            );
+
 			$channel->basic_publish($msg, '', 'mail_queue');
 
-
-		}catch (\Exception $e){
-			$this->logger->critical(
-				get_class($this) . ":send says: {$e->getMessage()}",
-				$e->getTrace()
-			);
-		}finally{
-			if( $channel ){
+        } catch (\Exception $e) {
+            throw new NotifyException($e->getMessage(), 0, $e);
+        } finally {
+			if (isset($channel) && $channel) {
 				$channel->close();
 			}
-			if( $connection ){
+			if (isset($connection) && $connection) {
 				$connection->close();
 			}
 
-			$pdo = null;
-
-			$this->user = null;
-			$this->event = null;
+            $eventObject = null;
+            $userObject = null;
+            $this->closeDataSourceDriver();
 		}
-
 		return $this;
 	}
 
@@ -239,13 +184,18 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 	 * @param QueueConnectionFactoryInterface $factory
 	 * @return Attend
 	 */
-	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
+	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    {
 		$this->queueFactory = $factory;
 		return $this;
 	}
 
-
-	public function setDateStore($config){
+    /**
+     * @param $config
+     * @return $this
+     */
+	public function setDateStore($config)
+    {
 		$this->dataStore = $config;
 		return $this;
 	}
@@ -256,7 +206,8 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 	 * @param EventManagerInterface $events
 	 * @return $this|void
 	 */
-	public function setEventManager(EventManagerInterface $events){
+	public function setEventManager(EventManagerInterface $events)
+    {
 		$events->setIdentifiers(array(
 			__CLASS__,
 			get_called_class(),
@@ -270,10 +221,96 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 	 *
 	 * @return EventManagerInterface
 	 */
-	public function getEventManager(){
+	public function getEventManager()
+    {
 		if (null === $this->events) {
 			$this->setEventManager(new EventManager());
 		}
 		return $this->events;
 	}
+
+    /**
+     * Get the recipient.
+     *
+     * @param $recipient
+     * @return bool|null|object|\stdClass
+     * @throws NotifyException
+     * @throws \Stjornvisi\Service\Exception
+     */
+    private function getUser($recipient)
+    {
+        if (!$recipient) {
+            throw new NotifyException('No recipient provided');
+        }
+
+        $user = new User();
+        $user->setDataSource($this->getDataSourceDriver())
+            ->setEventManager($this->getEventManager());
+
+        $userObject = null;
+
+        //USER
+        //	user can be in the system or he can be
+        //	a guest, we have to prepare for both.
+        if (is_numeric($recipient)) {
+            $userObject = $user->get($recipient);
+            if (!$userObject) {
+                throw new NotifyException("User [{$recipient}] not found");
+            }
+        } else {
+            $userObject = (object)array(
+                'name' => $recipient->name,
+                'email' => $recipient->email
+            );
+        }
+
+        return $userObject;
+    }
+
+    /**
+     * @param $event_id
+     * @return bool|\stdClass|Event
+     * @throws NotifyException
+     * @throws \Stjornvisi\Service\Exception
+     */
+    private function getEvent($event_id)
+    {
+        $event = new Event();
+        $event->setDataSource($this->getDataSourceDriver())
+            ->setEventManager($this->getEventManager());
+        if (($event = $event->get($event_id)) != false) {
+            return $event;
+        } else {
+            throw new NotifyException("Event [{$event_id}] not found");
+        }
+
+    }
+
+    /**
+     * @return \PDO
+     */
+    protected function getDataSourceDriver()
+    {
+        if ($this->pdo === null) {
+            $this->pdo = new \PDO(
+                $this->dataStore['dns'],
+                $this->dataStore['user'],
+                $this->dataStore['password'],
+                $this->dataStore['options']
+            );
+        }
+        return $this->pdo;
+    }
+
+    /**
+     * Close connection, or simply set the
+     * instance to NULL.
+     *
+     * @return $this
+     */
+    protected function closeDataSourceDriver()
+    {
+        $this->pdo = null;
+        return $this;
+    }
 }

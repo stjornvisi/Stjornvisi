@@ -13,6 +13,7 @@ use \PDO;
 use Imagine;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\SlackHandler;
+use PhpAmqpLib\Connection\AMQPConnection;
 use Psr\Log\LoggerAwareInterface;
 
 
@@ -234,6 +235,7 @@ class Module
 				'Stjornvisi\Notify\All'			=> 'Stjornvisi\Notify\All',
 				'Stjornvisi\Notify\Attend' 		=> 'Stjornvisi\Notify\Attend',
 				'Stjornvisi\Notify\UserValidate' => 'Stjornvisi\Notify\UserValidate',
+                'Stjornvisi\Notify\Digest'      => 'Stjornvisi\Notify\Digest',
 
 				'Stjornvisi\Event\SystemExceptionListener' => 'Stjornvisi\Event\SystemExceptionListener',
 				'Stjornvisi\Event\PersistenceLoginListener' => 'Stjornvisi\Event\PersistenceLoginListener',
@@ -339,18 +341,20 @@ class Module
 
 					if ($evn == 'development') {
 						$transport = new FileTransport();
-						$transport->setOptions(new FileOptions(array(
+						$transport->setOptions(new FileOptions([
 							'path'      => './data/',
 							'callback'  => function (FileTransport $transport) {
 									return 'Message_' . microtime(true) . '.eml';
-								},
-						)));
+                                    },
+                                ]
+                            )
+                        );
 						return $transport;
 					} else {
 						$transport = new SmtpTransport();
-						$protocol = new \Zend\Mail\Protocol\Smtp();
-						$transport->setConnection($protocol);
-						return $transport;
+                        $protocol = new \Zend\Mail\Protocol\Smtp();
+                        $transport->setConnection($protocol);
+                        return $transport;
 					}
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function ($sm) {
@@ -393,9 +397,19 @@ class Module
 						$sm->get('Stjornvisi\Service\Company')
 					);
 				},
+                'Stjornvisi\Queue' => function () {
+                    $con = new AMQPConnection(
+                        'localhost',
+                        5672,
+                        'guest',
+                        'guest'
+                    );
+                    return $con;
+                }
 			),
 			'shared' => array(
-				'Stjornvisi\Service\Email' => false
+				'Stjornvisi\Service\Email' => false,
+                'Stjornvisi\Queue' => false,
 			),
 		);
     }

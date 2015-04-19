@@ -10,8 +10,11 @@ namespace Stjornvisi\Notify;
 
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
-
 use Stjornvisi\Service\User;
+use Stjornvisi\View\Helper\Paragrapher;
+use Stjornvisi\Notify\Message\Mail as MailMessage;
+
+use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
@@ -21,15 +24,18 @@ use Psr\Log\LoggerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
- * Handler for sending e-mail to everyone
+ * Handler to notify everyone in the system. There is no way for a user
+ * not to get message from this handler.
+ *
+ * Currently this handler only sends out e-mail messages.
  *
  * This will transcend all Group config. Only
  * Admin can do this.
  *
  * @package Stjornvisi\Notify
  */
-class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface{
-
+class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
+{
 	/**
 	 * @var \stdClass
 	 */
@@ -41,20 +47,13 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 	private $logger;
 
 	/**
-	 * @var \Stjornvisi\Service\User
-	 */
-	private $userDAO;
-
-	/**
 	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
 	 */
 	private $queueFactory;
 
-	/**
-	 * @var array
-	 */
-	private $config;
-
+    /**
+     * @var array
+     */
 	private $dataStore;
 
 	/**
@@ -62,21 +61,36 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 	 */
 	protected $events;
 
-	/**
-	 * The the data to be passed to the mail process.
-	 *
-	 * @param $data {
-	 * 	@group_id: int
-	 *  @recipients: allir|formenn
-	 * 	@test: bool
-	 *  @subject: string
-	 * 	@body: string
-	 * 	@sender_id: int
-	 * }
-	 * @return $this|NotifyInterface
-	 */
-	public function setData( $data ){
+    /**
+     * @var \PDO
+     */
+    protected $pdo;
+
+    /**
+     * The data to be passed to the mail process.
+     *
+     * @param $data
+     * @return $this
+     * @throws NotifyException
+     */
+	public function setData($data)
+    {
 		$this->params = $data->data;
+        if (!property_exists($this->params, 'subject')) {
+            throw new NotifyException('Missing data:subject');
+        }
+        if (!property_exists($this->params, 'recipients')) {
+            throw new NotifyException('Missing data:recipients');
+        }
+        if (!property_exists($this->params, 'sender_id')) {
+            throw new NotifyException('Missing data:sender_id');
+        }
+        if (!property_exists($this->params, 'test')) {
+            throw new NotifyException('Missing data:test');
+        }
+        if (!property_exists($this->params, 'body')) {
+            throw new NotifyException('Missing data:body');
+        }
 		return $this;
 	}
 
@@ -86,7 +100,8 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 	 * @param LoggerInterface $logger
 	 * @return $this|NotifyInterface
 	 */
-	public function setLogger(LoggerInterface $logger){
+	public function setLogger(LoggerInterface $logger)
+    {
 		$this->logger = $logger;
 		return $this;
 	}
@@ -95,53 +110,31 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 	 * Run the handler.
 	 *
 	 * @return $this|NotifyInterface
+     * @throws NotifyException
 	 */
-	public function send(){
+	public function send()
+    {
+        $emailId = $this->getHash();
+		$users = $this->getUsers($this->params->sender_id, $this->params->recipients, $this->params->test);
 
-		$pdo = new \PDO(
-			$this->dataStore['dns'],
-			$this->dataStore['user'],
-			$this->dataStore['password'],
-			$this->dataStore['options']
-		);
-
-		$this->userDAO = new User();
-		$this->userDAO->setDataSource( $pdo )
-			->setEventManager( $this->getEventManager() );
-
-		$emailId = md5( time() + rand(0,1000) );
-
-		//TEST OR REAL
-		//	if test, send ony to sender, else to all
-		$users = ($this->params->test)
-			? array( $this->userDAO->get( $this->params->sender_id ) )
-			:  (($this->params->recipients == 'allir')
-				? $this->userDAO->fetchAll(true)
-				:  $this->userDAO->fetchAllLeaders(true)) ;
-
-		$this->logger->info(
-			get_class($this) . " sending email to [{$this->params->recipients}] in" .
-			( $this->params->test ? ' ' : 'non-' ) . "test mode");
+        $this->logger->info("Notify All ({$this->params->recipients})");
 
 		//MAIL
 		//	now we want to send this to the user/quest via e-mail
 		//	so we try to connect to Queue and send a message
 		//	to mail_queue
-		try{
-
+		try {
 			//QUEUE
 			//	create and configure queue
 			$connection = $this->queueFactory->createConnection();
 			$channel = $connection->channel();
 			$channel->queue_declare('mail_queue', false, true, false, false);
 
-			$paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
-
 			//VIEW
 			//	create and configure view
 			$child = new ViewModel(array(
 				'user' => null,
-				'body' => $paragrapher->__invoke($this->params->body)
+				'body' =>  call_user_func(new Paragrapher(), $this->params->body)
 			));
 			$child->setTemplate('script');
 
@@ -149,86 +142,64 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 			$layout->setTemplate('layout');
 			$layout->addChild($child, 'content');
 
-			$phpRenderer = new \Zend\View\Renderer\PhpRenderer();
+			$phpRenderer = new PhpRenderer();
 			$phpRenderer->setCanRenderTrees(true);
 
-			$resolver = new \Zend\View\Resolver\TemplateMapResolver();
+			$resolver = new Resolver\TemplateMapResolver();
 			$resolver->setMap(array(
 				'layout' => __DIR__ . '/../../../view/layout/email.phtml',
 				'script' => __DIR__ . '/../../../view/email/letter.phtml',
 			));
 			$phpRenderer->setResolver($resolver);
 
-
-
 			//FOR EVERY USER
 			//	for every user, render mail-template
 			//	and send to mail-queue
-			foreach($users as $user){
-
-				$child->setVariable('user',$user);
+			foreach ($users as $user) {
+				$child->setVariable('user', $user);
 				foreach ($layout as $child) {
-					if ($child->terminate()) {
-						continue;
-					}
 					$child->setOption('has_parent', true);
 					$result  = $phpRenderer->render($child);
 					$child->setOption('has_parent', null);
 					$capture = $child->captureTo();
 					if (!empty($capture)) {
-						if ($child->isAppend()) {
-							$oldResult=$model->{$capture};
-							$layout->setVariable($capture, $oldResult . $result);
-						} else {
-							$layout->setVariable($capture, $result);
-						}
+                        $layout->setVariable($capture, $result);
 					}
 				}
 
-				$result = array(
-					'recipient' => array('name'=>$user->name, 'address'=>$user->email),
-					'subject' => $this->params->subject,
-					'body' => $phpRenderer->render($layout),
-					'id' => $emailId,
-					'user_id' => md5( (string)$emailId . $user->email  ),
-					'entity_id' => null,
-					'type' => 'All',
-					'parameters' => $this->params->recipients,
-					'test' => $this->params->test
-				);
+                $result = new MailMessage();
+                $result->name = $user->name;
+                $result->email = $user->email;
+                $result->subject = $this->params->subject;
+                $result->body = $phpRenderer->render($layout);
+                $result->id = $emailId;
+                $result->user_id = md5((string)$emailId . $user->email);
+                $result->entity_id = null;
+                $result->type = 'All';
+                $result->parameters = $this->params->recipients;
+                $result->test = $this->params->test;
 
-				$msg = new AMQPMessage( json_encode($result),
-					array('delivery_mode' => 2) # make message persistent
-				);
+				$msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
 
-				$this->logger->info(get_class($this)." sending mail to user:{$user->email}");
+				$this->logger->debug("Notify All via e-mail to user:{$user->email}");
 
 				$channel->basic_publish($msg, '', 'mail_queue');
 			}
 
-		}catch (\Exception $e){
-			while($e){
-				$this->logger->critical(
-					get_class($this) . ":send says: {$e->getMessage()}",
-					$e->getTrace()
-				);
-				$e = $e->getPrevious();
-			}
-
-		}finally{
-			if( $channel ){
+		} catch (\Exception $e) {
+			throw new NotifyException($e->getMessage(), 0, $e);
+		} finally {
+            if (isset($channel) && $channel) {
 				$channel->close();
 			}
-			if( $connection ){
+			if(isset($connection) && $connection){
 				$connection->close();
 			}
 
-			$pdo = null;
-			$this->userDAO = null;
+            $userService = null;
+            $this->closeDataSourceDriver();
 		}
-
 		return $this;
-
 	}
 
 	/**
@@ -237,12 +208,17 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 	 * @param QueueConnectionFactoryInterface $factory
 	 * @return $this|NotifyInterface
 	 */
-	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory ){
+	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    {
 		$this->queueFactory = $factory;
 		return $this;
 	}
 
-	public function setDateStore($config){
+    /**
+     * @param $config
+     */
+	public function setDateStore($config)
+    {
 		$this->dataStore = $config;
 	}
 
@@ -252,7 +228,8 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 	 * @param EventManagerInterface $events
 	 * @return $this|void
 	 */
-	public function setEventManager(EventManagerInterface $events){
+	public function setEventManager(EventManagerInterface $events)
+    {
 		$events->setIdentifiers(array(
 			__CLASS__,
 			get_called_class(),
@@ -266,10 +243,73 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 	 *
 	 * @return EventManagerInterface
 	 */
-	public function getEventManager(){
+	public function getEventManager()
+    {
 		if (null === $this->events) {
 			$this->setEventManager(new EventManager());
 		}
 		return $this->events;
 	}
+
+    /**
+     * Find out who is actually getting this
+     * e-mail.
+     *
+     * @param int $sender
+     * @param string $recipients
+     * @param bool $test
+     * @return array
+     * @throws \Stjornvisi\Service\Exception
+     */
+    private function getUsers($sender, $recipients, $test)
+    {
+        $user = new User();
+        $user->setDataSource($this->getDataSourceDriver())
+            ->setEventManager($this->getEventManager());
+
+        return ($test)
+            ? [$user->get($sender)]
+            :  (($recipients == 'allir')
+                ? $user->fetchAll(true)
+                :  $user->fetchAllLeaders(true)) ;
+    }
+
+    /**
+     * Generate an unique hash for this
+     * action.
+     *
+     * @return string
+     */
+    private function getHash()
+    {
+        return md5(time() + rand(0, 1000));
+    }
+
+    /**
+     * @return \PDO
+     */
+    protected function getDataSourceDriver()
+    {
+        if ($this->pdo === null) {
+            $this->pdo = new \PDO(
+                $this->dataStore['dns'],
+                $this->dataStore['user'],
+                $this->dataStore['password'],
+                $this->dataStore['options']
+            );
+        }
+        return $this->pdo;
+    }
+
+    /**
+     * Close connection, or simply set the
+     * instance to NULL.
+     *
+     * @return $this
+     */
+    protected function closeDataSourceDriver()
+    {
+        $this->pdo = null;
+        return $this;
+    }
 }

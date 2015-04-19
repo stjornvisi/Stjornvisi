@@ -19,12 +19,14 @@
         "monolog/monolog": "~1.12@dev",
         "cangelis/pdf": "2.1.*",
         "samchristy/piechart": "dev-master"
+
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
         "phpunit/dbunit": ">=1.2",
         "phpunit/php-code-coverage": "*",
         "phpunit/phpunit-selenium": ">=1.2",
-        "squizlabs/php_codesniffer": "2.*"
+        "squizlabs/php_codesniffer": "2.*",
+      "mockery/mockery": "0.9.*@dev"
     }
 }

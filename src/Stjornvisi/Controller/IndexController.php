@@ -9,6 +9,7 @@
 
 namespace Stjornvisi\Controller;
 
+use PhpAmqpLib\Message\AMQPMessage;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\FeedModel;
@@ -35,7 +36,6 @@ class IndexController extends AbstractActionController
      */
     public function indexAction()
     {
-
         //SERVICES
         //  load all services
         $sm = $this->getServiceLocator();
@@ -47,7 +47,7 @@ class IndexController extends AbstractActionController
         //AUTH
         //	authenticate user
         $auth = new AuthenticationService();
-        if ($auth->hasIdentity() ) {
+        if ($auth->hasIdentity()) {
             return new ViewModel(
                 [
                 'groups' => $groupService->getByUser($auth->getIdentity()->id),

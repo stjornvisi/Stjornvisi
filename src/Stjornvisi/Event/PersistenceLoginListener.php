@@ -18,6 +18,7 @@ use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\SessionManager;
+use \Zend\Console\Request as ConsoleRequest;
 
 /**
  * Class ActivityListener
@@ -50,6 +51,11 @@ class PersistenceLoginListener extends AbstractListenerAggregate implements Logg
 
 	public function dispatch(MvcEvent $event)
 	{
+        $request = $event->getRequest();
+        if ($request instanceof ConsoleRequest) {
+            return true;
+        }
+
 		$auth = new AuthenticationService();
 		//ALREADY LOGGED IN
 		//	user has auth,
@@ -58,7 +64,6 @@ class PersistenceLoginListener extends AbstractListenerAggregate implements Logg
 		//NOT LOGGED IN
 		//
 		} else {
-			$request = $event->getRequest();
 			/** @var $request \Zend\Http\PhpEnvironment\Request */
 			$cookies = $request->getCookie();
 			/** @var $cookies \Zend\Http\Header\Cookie */

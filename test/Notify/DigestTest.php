@@ -8,9 +8,6 @@
 
 namespace Stjornvisi\Notify;
 
-use Stjornvisi\Service\User as UserDAO;
-use Stjornvisi\Service\Group as GroupDAO;
-use Stjornvisi\Lib\QueueConnectionFactory;
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
@@ -19,7 +16,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 use Stjornvisi\Bootstrap;
 
-class GroupTest extends \PHPUnit_Extensions_Database_TestCase
+class DigestTest extends \PHPUnit_Extensions_Database_TestCase
 {
 	static private $pdo = null;
 
@@ -42,22 +39,12 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new Digest();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
-        $notifier->setData((object)[
-            'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
-            ]
-        ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\Digest', $notifier->send());
     }
 
     /**
@@ -66,68 +53,18 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
      */
     public function testConnectionException()
     {
-
         $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
             ->shouldReceive('createConnection')->andThrow('\PhpAmqpLib\Exception\AMQPRuntimeException')
             ->getMock();
 
         $logger = new Logger('test');
         $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
+        $notifier = new Digest();
         $notifier->setDateStore($this->getDatabaseConnectionValues());
-        $notifier->setData((object)[
-            'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 1,
-                'body' => 'nothing',
-                'subject' => '',
-            ]
-        ]);
         $notifier->setLogger($logger);
         $notifier->setQueueConnectionFactory($mock);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
-    }
-
-    /**
-     * @expectedException \Stjornvisi\Notify\NotifyException
-     * @expectedExceptionMessage Group [100] not found
-     */
-    public function testGroupNotFound()
-    {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
-        $notifier = new Group();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
-        $notifier->setData((object)[
-            'data' => (object)[
-                'recipients' => 'allir',
-                'test' => true,
-                'sender_id' => 1,
-                'group_id' => 100,
-                'body' => 'nothing',
-                'subject' => '',
-            ]
-        ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
-
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf('\Stjornvisi\Notify\Digest', $notifier->send());
     }
 
     /**
@@ -173,8 +110,8 @@ class GroupTest extends \PHPUnit_Extensions_Database_TestCase
     {
 		return new ArrayDataSet([
 			'User' => [
-				['id'=>1, 'name'=>'n1', 'passwd'=>md5(rand(0, 9)), 'email'=>'e@mail.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-				['id'=>2, 'name'=>'n1', 'passwd'=>md5(rand(0, 9)), 'email'=>'e@mail2.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
+				['id'=>1, 'name'=>'n1', 'passwd'=>md5(rand(0, 9)), 'email'=>'e@mail.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0, 'get_message'=>1],
+				['id'=>2, 'name'=>'n1', 'passwd'=>md5(rand(0, 9)), 'email'=>'e@mail2.com', 'title'=>'t1', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0, 'get_message'=>1],
 			],
 			'Group' => [
 				[ 'id'=>1, 'name'=>'name1', 'name_short'=>'n1', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n1' ],

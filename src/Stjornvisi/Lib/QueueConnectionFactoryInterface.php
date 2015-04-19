@@ -8,12 +8,12 @@
 
 namespace Stjornvisi\Lib;
 
-
-interface QueueConnectionFactoryInterface {
+interface QueueConnectionFactoryInterface
+{
 	public function setConfig(array $config);
 
 	/**
 	 * @return \PhpAmqpLib\Connection\AMQPConnection
 	 */
 	public function createConnection();
-} 
+}

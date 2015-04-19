@@ -14,7 +14,7 @@ setlocale(LC_ALL,'is_IS.utf-8');
 	<dt style="font-weight: bold">Viðburður</dt>
 	<dd><a href="http://stjornvisi.is/vidburdir/<?=$this->event->id;?>"><?=$this->event->subject?></a></dd>
 	<dt style="font-weight: bold">Tími</dt>
-	<dd><?=strftime('%e. %B %Y',$this->event->event_date->format('U'))?> | <?=$this->event->event_time->format('H:i')?> - <?=$this->event->event_end->format('H:i')?></dd>
+	<dd><?=strftime('%e. %B %Y',$this->event->event_date->format('U'))?> | <?=$this->event->event_time->format('H:i')?> - <?=($this->event->event_end)?$this->event->event_end->format('H:i'):''?></dd>
 	<dt style="font-weight: bold">Staður</dt>
 	<dd><?=$this->event->address;?></dd>
 	<dd><?=$this->event->location;?></dd>

@@ -594,16 +594,18 @@ class EventController extends AbstractActionController
                     //	valid form
                     if ($form->isValid()) {
                         $this->getEventManager()->trigger(
-                            'notify', $this, [
-                            'action' => 'Stjornvisi\Notify\Event',
-                            'data' => (object)[
-                            'event_id' => $event->id,
-                            'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
-                            'test' => (bool)$this->params()->fromPost('test', false),
-                            'subject' => $form->get('subject')->getValue(),
-                            'body' => $form->get('body')->getValue(),
-                            'user_id' => $authService->getIdentity()->id
-                            ],
+                            'notify',
+                            $this,
+                            [
+                                'action' => 'Stjornvisi\Notify\Event',
+                                'data' => (object)[
+                                    'event_id' => $event->id,
+                                    'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+                                    'test' => (bool)$this->params()->fromPost('test', false),
+                                    'subject' => $form->get('subject')->getValue(),
+                                    'body' => $form->get('body')->getValue(),
+                                    'user_id' => $authService->getIdentity()->id
+                                ],
                             ]
                         );
 
