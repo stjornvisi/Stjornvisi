@@ -25,9 +25,9 @@ class CompanyController extends AbstractActionController
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $companyService = $sm->get('Stjornvisi\Service\Company');
-		/** @var $companyService \Stjornvisi\Service\Company */
+        /** @var $companyService \Stjornvisi\Service\Company */
         $groupService = $sm->get('Stjornvisi\Service\Group');
-		/** @var $groupService \Stjornvisi\Service\Group */
+        /** @var $groupService \Stjornvisi\Service\Group */
 
         //COMPANY FOUND
         //
@@ -41,14 +41,13 @@ class CompanyController extends AbstractActionController
             //ACCESS GRANTED
             //
             if ($access->is_admin || $access->type != null) {
-
                 //CURRENT RANGE
                 $currentFrom = (date('n') < 9)
-					? new \DateTime(((int)date('Y')-1) . "-09-01")
-					: new \DateTime((date('Y')). '-09-01');
+                    ? new \DateTime(((int)date('Y')-1) . "-09-01")
+                    : new \DateTime((date('Y')). '-09-01');
                 $currentTo = (date('n') < 9)
-					? new \DateTime(((int)date('Y')) . "-08-31")
-					: new \DateTime(((int)date('Y')+1) . "-08-31");
+                    ? new \DateTime(((int)date('Y')) . "-08-31")
+                    : new \DateTime(((int)date('Y')+1) . "-08-31");
 
                 $lastFrom = new \DateTime($currentFrom->format('Y-m-d'));
                 $lastFrom->sub(new \DateInterval('P1Y'));
@@ -75,15 +74,15 @@ class CompanyController extends AbstractActionController
                     'access' => $access
                     ]
                 );
-			//ACCESS DENIED
+            //ACCESS DENIED
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
                 return $model;
             }
-		//COMPANY NOT FOUND
-		//  404
+        //COMPANY NOT FOUND
+        //  404
         } else {
             return $this->notFoundAction();
         }
@@ -131,7 +130,6 @@ class CompanyController extends AbstractActionController
         //COMPANY FOUND
         //
         if (($company = $companyService->get($this->params()->fromRoute('id', 0))) != false) {
-
             $authService = new AuthenticationService();
             $access = $userService->getTypeByCompany(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
@@ -157,8 +155,8 @@ class CompanyController extends AbstractActionController
                 return $model;
             }
 
-		//COMPANY NOT FOUND
-		//  404
+        //COMPANY NOT FOUND
+        //  404
         } else {
             return $this->notFoundAction();
         }
@@ -184,15 +182,14 @@ class CompanyController extends AbstractActionController
         //ACCESS GRANTED
         //	only admin can create company
         if ($access->is_admin) {
-
             $form = $sm->get('Stjornvisi\Form\Company');
 
             $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/create'));
             //POST
             //  http post request
-            if ($this->request->isPost() ) {
+            if ($this->request->isPost()) {
                 $form->setData($this->request->getPost());
-                if ($form->isValid() ) {
+                if ($form->isValid()) {
                     $data = $form->getData();
                     unset($data['submit']);
                     $id = $companyService->create($data);
@@ -240,15 +237,14 @@ class CompanyController extends AbstractActionController
             //ACCESS GRANTED
             //
             if ($access->is_admin || $access->type != null) {
-
                 $form = $sm->get('Stjornvisi\Form\Company');
                 $form->setIdentifier($company->id)
                     ->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/update', ['id'=>$company->id]));
                 //POST
                 //  http post request
-                if ($this->request->isPost() ) {
+                if ($this->request->isPost()) {
                     $form->setData($this->request->getPost());
-                    if ($form->isValid() ) {
+                    if ($form->isValid()) {
                         $data = $form->getData();
                         unset($data['submit']);
                         $companyService->update($company->id, $data);
@@ -263,8 +259,8 @@ class CompanyController extends AbstractActionController
                             ]
                         );
                     }
-				//QUERY
-				//  http get request
+                //QUERY
+                //  http get request
                 } else {
                     $form->bind(new ArrayObject($company));
                     return new ViewModel(
@@ -276,15 +272,15 @@ class CompanyController extends AbstractActionController
                     );
                 }
 
-			//ACCESS DENIED
+            //ACCESS DENIED
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
                 return $model;
             }
-		//COMPANY NOT FOUND
-		//  404
+        //COMPANY NOT FOUND
+        //  404
         } else {
             return $this->notFoundAction();
         }
@@ -312,7 +308,7 @@ class CompanyController extends AbstractActionController
 
             //ACCESS GRANTED
             //
-            if ($access->is_admin || $access->type == 1 ) {
+            if ($access->is_admin || $access->type == 1) {
                 $companyService->delete($company->id);
                 return $this->redirect()->toRoute('fyrirtaeki');
                 //ACCESS DENIED

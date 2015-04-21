@@ -77,19 +77,19 @@ class BoardmemberController extends AbstractActionController
                 if ($form->isValid()) {
                     $boardService->createMember($form->getData());
                     return $this->redirect()->toRoute('stjornin');
-				//INVALID
-				//	invalid form
+                //INVALID
+                //	invalid form
                 } else {
                     $this->getResponse()->setStatusCode(400);
                     return new ViewModel(['form' => $form]);
                 }
-			//QUERY
-			//	get request
+            //QUERY
+            //	get request
             } else {
                 return new ViewModel(['form' => $form]);
             }
-		//ACCESS DENIED
-		//	403
+        //ACCESS DENIED
+        //	403
         } else {
             $this->getResponse()->setStatusCode(401);
             $model = new ViewModel();
@@ -121,7 +121,7 @@ class BoardmemberController extends AbstractActionController
         if ($access->is_admin) {
             //FIND
             //
-            if (($member = $boardService->getMember($this->params()->fromRoute('id', 0))) != false ) {
+            if (($member = $boardService->getMember($this->params()->fromRoute('id', 0))) != false) {
                 $form = new BoardMemberForm();
                 $form->setAttribute(
                     'action',
@@ -137,26 +137,26 @@ class BoardmemberController extends AbstractActionController
                     if ($form->isValid()) {
                         $boardService->updateMember($member->id, $form->getData());
                         return $this->redirect()->toRoute('stjornin');
-					//INVALID
-					//	invalid form
+                    //INVALID
+                    //	invalid form
                     } else {
                         $this->getResponse()->setStatusCode(400);
                         return new ViewModel(['form' => $form]);
                     }
-				//QUERY
-				//	get request
+                //QUERY
+                //	get request
                 } else {
                     $form->bind(new \ArrayObject($member));
                     return new ViewModel(['form' => $form]);
                 }
-			//NOT FOUND
-			//
+            //NOT FOUND
+            //
             } else {
                 return $this->notFoundAction();
             }
 
-		//ACCESS DENIED
-		//	403
+        //ACCESS DENIED
+        //	403
         } else {
             $this->getResponse()->setStatusCode(401);
             $model = new ViewModel();
@@ -211,8 +211,8 @@ class BoardmemberController extends AbstractActionController
             } else {
                 return new ViewModel(['form' => $form]);
             }
-		//ACCESS DENIED
-		//
+        //ACCESS DENIED
+        //
         } else {
             $this->getResponse()->setStatusCode(401);
             $model = new ViewModel();
@@ -242,7 +242,6 @@ class BoardmemberController extends AbstractActionController
         //ACCESS ALLOWED
         //
         if ($access->is_admin) {
-
             //FOUND
             //	entry found
             if (($connection = $boardService->getMemberConnection($this->params()->fromRoute('id', 0))) != false) {
@@ -263,27 +262,27 @@ class BoardmemberController extends AbstractActionController
                     if ($form->isValid()) {
                         $boardService->updateMemberConnection($connection->id, $form->getData());
                         return $this->redirect()->toRoute('stjornin');
-					//INVALID
-					//	invalid form
+                    //INVALID
+                    //	invalid form
                     } else {
                         $this->getResponse()->setStatusCode(400);
                         return new ViewModel(['form' => $form]);
                     }
-				//QUERY
-				//	get request
+                //QUERY
+                //	get request
                 } else {
                     $form->bind(new \ArrayObject($connection));
                     return new ViewModel(['form' => $form]);
                 }
 
-			//NOT FOUND
-			//	404
+            //NOT FOUND
+            //	404
             } else {
                 return $this->notFoundAction();
             }
 
-		//ACCESS DENIED
-		//	403
+        //ACCESS DENIED
+        //	403
         } else {
             $this->getResponse()->setStatusCode(401);
             $model = new ViewModel();
@@ -317,8 +316,8 @@ class BoardmemberController extends AbstractActionController
                 $this->params()->fromRoute('id', 0)
             );
             return $this->redirect()->toRoute('stjornin');
-		//ACCESS DENIED
-		//
+        //ACCESS DENIED
+        //
         } else {
             $this->getResponse()->setStatusCode(401);
             $model = new ViewModel();

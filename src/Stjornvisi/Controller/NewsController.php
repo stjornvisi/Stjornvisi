@@ -144,14 +144,12 @@ class NewsController extends AbstractActionController
         //ACCESS GRANTED
         //  access granted
         if ($access->is_admin || $access->type >= 1) {
-
             $form = new NewsForm();
             $form->setAttribute('action', $this->url()->fromRoute('frettir/create', ['id'=>$group->id]));
 
             //POST
             //  http post request
-            if ($this->request->isPost() ) {
-
+            if ($this->request->isPost()) {
                 $form->setData($this->request->getPost());
                 //VALID
                 //  form is valid
@@ -199,8 +197,6 @@ class NewsController extends AbstractActionController
         $authService = new AuthenticationService();
 
         if (($news = $newsService->get($this->params()->fromRoute('id')) ) != false) {
-
-
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity())?$authService->getIdentity()->id:null,
                 $news->group_id
@@ -279,7 +275,6 @@ class NewsController extends AbstractActionController
         $authService = new AuthenticationService();
 
         if (($news = $newsService->get($this->params()->fromRoute('id')) ) != false) {
-
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity())?$authService->getIdentity()->id:null,
                 $news->group_id
@@ -287,7 +282,7 @@ class NewsController extends AbstractActionController
 
             //ACCESS GRANTED
             //  access in granted
-            if ($access->is_admin || $access->type >= 1 ) {
+            if ($access->is_admin || $access->type >= 1) {
                 $newsService->delete($news->id);
                 return $this->redirect()->toRoute('frettir');
                 //ACCESS DENIED

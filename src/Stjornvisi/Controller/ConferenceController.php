@@ -20,7 +20,7 @@ class ConferenceController extends AbstractActionController
     {
         $sm = $this->getServiceLocator();
         $conferenceService = $sm->get('Stjornvisi\Service\Conference');
-		/** @var $conferenceService \Stjornvisi\Service\Conference */
+        /** @var $conferenceService \Stjornvisi\Service\Conference */
         return new ViewModel(['conferences' => $conferenceService->fetchAll() ]);
     }
 
@@ -29,21 +29,22 @@ class ConferenceController extends AbstractActionController
         $sm = $this->getServiceLocator();
         $userService = $sm->get('Stjornvisi\Service\User');
         $conferenceService = $sm->get('Stjornvisi\Service\Conference');
-		/** @var $conferenceService \Stjornvisi\Service\Conference */
+        /** @var $conferenceService \Stjornvisi\Service\Conference */
         $authService = new AuthenticationService();
         //CONFERENCE FOUND
         //  an conference with this ID was found
         if (($conference = $conferenceService->get(
-				$this->params()->fromRoute('id', 0),
-				($authService->hasIdentity())
-					? $authService->getIdentity()->id
-					: null)) != false )
-		{
+            $this->params()->fromRoute('id', 0),
+            ($authService->hasIdentity())
+            ? $authService->getIdentity()->id
+            : null
+        )) != false ) {
             $groupIds = array_map(
-                function ($i) {
+            function ($i) {
                     return $i->id;
-                }, $conference->groups
-            );
+            },
+            $conference->groups
+        );
             //TODO don't use $_POST
             //TODO send registration mail
             if ($this->request->isPost()) {
@@ -54,7 +55,9 @@ class ConferenceController extends AbstractActionController
                     $this->params()->fromPost('name', '')
                 );
                 $this->getEventManager()->trigger(
-                    'notify', $this, array(
+                    'notify',
+                    $this,
+                    array(
                     'action' => 'Stjornvisi\Notify\Attend',
                     'data' => (object)array(
                                 'conference_id' => $conference->id,
@@ -154,30 +157,30 @@ class ConferenceController extends AbstractActionController
         );
         //GLOBAL EVENT
         //  this is a global event, only admin has access
-        if($group_id === false ) {
+        if ($group_id === false) {
             //ACCESS DENIED
-            if(!$access->is_admin) {
+            if (!$access->is_admin) {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
                 return $model;
                 //ACCESS GRANTED
                 //
-            }else{
+            } else {
                 $form->setAttribute('action', $this->url()->fromRoute('radstefna/create'));
             }
             //GROUPS EVENT
             //  this is a group event accessible to admin and group
             //  managers
-        }else{
+        } else {
             //ACCESS GRANTED
             //  user is admin or manager
-            if($access->is_admin || $access->type >= 1) {
+            if ($access->is_admin || $access->type >= 1) {
                 $form->setAttribute('action', $this->url()->fromRoute('radstefna/create', array('id'=>$group_id)));
                 $form->bind(new \ArrayObject(array('groups'=>array($group_id) )));
                 //ACCESS DENIED
                 //  user is not a manager or admin
-            }else{
+            } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
@@ -185,21 +188,21 @@ class ConferenceController extends AbstractActionController
             }
         }
         //POST
-        if($this->request->isPost() ) {
+        if ($this->request->isPost()) {
             $form->setData($this->request->getPost());
-            if($form->isValid() ) {
+            if ($form->isValid()) {
                 $data = (array)$form->getData();
                 unset($data['submit']);
                 $mapService = $sm->get('Stjornvisi\Service\Map');
                 /**
- * @var  $mapService \Stjornvisi\Service\JaMap 
+ * @var  $mapService \Stjornvisi\Service\JaMap
 */
                 $mapResult = $mapService->request(isset($data['address']) ? $data['address']: null);
                 $data['lat'] = $mapResult->lat;
                 $data['lng'] = $mapResult->lng;
                 $id = $conferenceService->create($data);
                 return $this->redirect()->toRoute('radstefna/index', array('id'=>$id));
-            }else{
+            } else {
                 $this->getResponse()->setStatusCode(400);
                 return new ViewModel(
                     array(
@@ -208,7 +211,7 @@ class ConferenceController extends AbstractActionController
                 );
             }
             //QUERY
-        }else{
+        } else {
             return new ViewModel(
                 array(
                 'form' => $form
@@ -231,11 +234,12 @@ class ConferenceController extends AbstractActionController
         $authService = new AuthenticationService();
         //EVENT FOUND
         //  an event with this ID was found
-        if(($conference = $conferenceService->get($this->params()->fromRoute('id', 0))) != false ) {
+        if (($conference = $conferenceService->get($this->params()->fromRoute('id', 0))) != false) {
             $groupIds = array_map(
                 function ($i) {
-                    return $i->id; 
-                }, $conference->groups
+                    return $i->id;
+                },
+                $conference->groups
             );
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
@@ -243,27 +247,27 @@ class ConferenceController extends AbstractActionController
             );
             //ACCESS GRANTED
             //  user has accss
-            if($access->is_admin || $access->type >= 1 ) {
+            if ($access->is_admin || $access->type >= 1) {
                 $form = new ConferenceForm($groupService->fetchAll());
                 $form->setAttribute('action', $this->url()->fromRoute('radstefna/update', array('id'=>$conference->id)));
                 //POST
                 //  http post request
-                if($this->request->isPost() ) {
+                if ($this->request->isPost()) {
                     $form->setData($this->request->getPost());
                     //VALID
                     //  form data is valid
-                    if($form->isValid() ) {
+                    if ($form->isValid()) {
                         $data = $form->getData();
                         unset($data['submit']);
                         $mapService = $sm->get('Stjornvisi\Service\Map');
                         /**
- * @var  $maService \Stjornvisi\Service\JaMap 
+ * @var  $maService \Stjornvisi\Service\JaMap
 */
                         $mapResult = $mapService->request(isset($data['address']) ? $data['address']: null);
                         $data['lat'] = $mapResult->lat;
                         $data['lng'] = $mapResult->lng;
                         $conferenceService->update($conference->id, $data);
-                        if($this->request->isXmlHttpRequest() ) {
+                        if ($this->request->isXmlHttpRequest()) {
                             $view = new ViewModel(
                                 array(
                                 'conference' => $conferenceService->get($conference->id),
@@ -279,12 +283,12 @@ class ConferenceController extends AbstractActionController
                             $view->setTemplate('stjornvisi/conference/partials/index-event');
                             $view->setTerminal(true);
                             return $view;
-                        }else{
+                        } else {
                             return $this->redirect()->toRoute('radstefna/index', array('id'=>$conference->id));
                         }
                         //INVALID
                         //  form data is invalid
-                    }else{
+                    } else {
                         $this->getResponse()->setStatusCode(400);
                         $view = new ViewModel(
                             array(
@@ -296,7 +300,7 @@ class ConferenceController extends AbstractActionController
                     }
                     //QUERY
                     //  http get request
-                }else{
+                } else {
                     $form->bind(new \ArrayObject((array)$conference));
                     $view = new ViewModel(
                         array(
@@ -307,7 +311,7 @@ class ConferenceController extends AbstractActionController
                     return $view;
                 }
                 //ACCESS DENIED
-            }else{
+            } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
@@ -315,7 +319,7 @@ class ConferenceController extends AbstractActionController
             }
             //NOT FOUND
             //	entry not found
-        }else{
+        } else {
             $this->getResponse()->setStatusCode(404);
         }
     }
@@ -332,11 +336,12 @@ class ConferenceController extends AbstractActionController
         $authService = new AuthenticationService();
         //EVENT FOUND
         //  an event with this ID was found
-        if(($conference = $conferenceService->get($this->params()->fromRoute('id', 0))) != false ) {
+        if (($conference = $conferenceService->get($this->params()->fromRoute('id', 0))) != false) {
             $groupIds = array_map(
                 function ($i) {
-                    return $i->id; 
-                }, $conference->groups
+                    return $i->id;
+                },
+                $conference->groups
             );
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
@@ -344,17 +349,17 @@ class ConferenceController extends AbstractActionController
             );
             //ACCESS GRANTED
             //  user can delete
-            if($access->is_admin || $access->type >= 1) {
+            if ($access->is_admin || $access->type >= 1) {
                 $conferenceService->delete($conference->id);
                 return $this->redirect()->toRoute('radstefna');
                 //ACCESS DENIED
                 //  user can't delete
-            }else{
+            } else {
                 var_dump('403');
             }
             //EVENT NOT FOUND
             //
-        }else{
+        } else {
             var_dump('404');
         }
     }
@@ -372,17 +377,19 @@ class ConferenceController extends AbstractActionController
         $authService = new AuthenticationService();
         //EVENT FOUND
         //  event found in storage
-        if(($conference = $conferenceService->get($this->params()->fromRoute('id', 0))) ) {
+        if (($conference = $conferenceService->get($this->params()->fromRoute('id', 0)))) {
             //ACCESS
             //
-            if($authService->hasIdentity()) {
+            if ($authService->hasIdentity()) {
                 $conferenceService->registerUser(
                     $conference->id,
                     $authService->getIdentity()->id,
                     $this->params()->fromRoute('type', 0)
                 );
                 $this->getEventManager()->trigger(
-                    'notify', $this, array(
+                    'notify',
+                    $this,
+                    array(
                     'action' => 'Stjornvisi\Notify\Attend',
                     'data' => (object)array(
                             'recipients' => (int)$authService->getIdentity()->id,
@@ -395,13 +402,13 @@ class ConferenceController extends AbstractActionController
                 return $this->redirect()->toUrl($url);
                 //ACCESS DENIED
                 //
-            }else{
+            } else {
                 var_dump('403');
             }
             //EVENT NOT FOUND
             //  todo 404
-        }else{
+        } else {
             var_dump('404');
         }
     }
-} 
+}

@@ -92,7 +92,7 @@ class UserController extends AbstractActionController
         );
         //ACCESS GRANTED
         //
-        if ($access->is_admin ) {
+        if ($access->is_admin) {
             $userService->setType(
                 $this->params()->fromRoute('id'),
                 $this->params()->fromRoute('type')
@@ -149,8 +149,7 @@ class UserController extends AbstractActionController
     {
         $auth = new AuthenticationService();
         if ($auth->hasIdentity()) {
-
-			$type = $this->params('type','allir');
+            $type = $this->params('type', 'allir');
 
             $server = isset( $_SERVER['HTTP_HOST'] )
             ? "http://".$_SERVER['HTTP_HOST']
@@ -158,72 +157,72 @@ class UserController extends AbstractActionController
 
             $sm = $this->getServiceLocator();
             $userService = $sm->get('Stjornvisi\Service\User');
-			/** @var  $userService \Stjornvisi\Service\User */
+            /** @var  $userService \Stjornvisi\Service\User */
 
-			$csv = new Csv();
+            $csv = new Csv();
 
-			switch ($this->params('type', 'allir')) {
-				case 'formenn':
-					$users = $userService->fetchGroupMembers([2]);
-					break;
-				case 'stjornendur':
-					$users = $userService->fetchGroupMembers([1,2]);
-					break;
-				default;
-					$users = $userService->fetchAll();
-					break;
-			}
+            switch ($this->params('type', 'allir')) {
+                case 'formenn':
+                    $users = $userService->fetchGroupMembers([2]);
+                    break;
+                case 'stjornendur':
+                    $users = $userService->fetchGroupMembers([1,2]);
+                    break;
+                default;
+                    $users = $userService->fetchAll();
+                    break;
+            }
 
-			if ($this->params('type', 'allir') == 'formenn' || $this->params('type', 'allir') == 'stjornendur') {
-				$csv->setHeader([
-					'Nafn',
-					'Titill',
-					'Netfang',
-					'Hópur',
-					'Fyrirtæki',
-					'Staða'
-				])->setName('notendalisti'.date('Y-m-d-h:i').'.csv');
-				foreach ($users as $user) {
-					$csv->add([
-						$user->name,
-						$user->title,
-						$user->email,
-						$user->group_name,
-						$user->company_name,
-						($user->type == 2) ? 'Formaður' : 'Stjórnandi' ,
-					]);
-				}
-			} else {
-				$csv->setHeader(
-					[
-						'Nafn',
-						'Netfang',
-						'Fyrirtæki',
-						'Lykilstarfsmaður fyrirtækis',
-						'Stofna',
-						'Seinast innskráðu(ur)',
-						'Tíðni innskráninga',
-						'Kerfisstjóri',
-						'Slóð'
-					]
-				)->setName('notendalisti'.date('Y-m-d-h:i').'.csv');
+            if ($this->params('type', 'allir') == 'formenn' || $this->params('type', 'allir') == 'stjornendur') {
+                $csv->setHeader([
+                    'Nafn',
+                    'Titill',
+                    'Netfang',
+                    'Hópur',
+                    'Fyrirtæki',
+                    'Staða'
+                ])->setName('notendalisti'.date('Y-m-d-h:i').'.csv');
+                foreach ($users as $user) {
+                    $csv->add([
+                        $user->name,
+                        $user->title,
+                        $user->email,
+                        $user->group_name,
+                        $user->company_name,
+                        ($user->type == 2) ? 'Formaður' : 'Stjórnandi' ,
+                    ]);
+                }
+            } else {
+                $csv->setHeader(
+                    [
+                        'Nafn',
+                        'Netfang',
+                        'Fyrirtæki',
+                        'Lykilstarfsmaður fyrirtækis',
+                        'Stofna',
+                        'Seinast innskráðu(ur)',
+                        'Tíðni innskráninga',
+                        'Kerfisstjóri',
+                        'Slóð'
+                    ]
+                )->setName('notendalisti'.date('Y-m-d-h:i').'.csv');
 
-				foreach ( $users as $user ) {
-					$csv->add(
-						[
-							$user->name,
-							$user->email,
-							$user->company_name,
-							($user->key_user)?'já':'nei',
-							$user->created_date->format('Y-m-d'),
-							$user->modified_date->format('Y-m-d'),
-							$user->frequency,
-							( $user->is_admin )?'já':'nei',
-							$server . $this->url()->fromRoute('notandi/index', ['id'=>$user->id])
-						]
-					);
-				}
-			}
+                foreach ($users as $user) {
+                    $csv->add(
+                        [
+                            $user->name,
+                            $user->email,
+                            $user->company_name,
+                            ($user->key_user)?'já':'nei',
+                            $user->created_date->format('Y-m-d'),
+                            $user->modified_date->format('Y-m-d'),
+                            $user->frequency,
+                            ( $user->is_admin )?'já':'nei',
+                            $server . $this->url()->fromRoute('notandi/index', ['id'=>$user->id])
+                        ]
+                    );
+                }
+            }
 
             $model = new CsvModel();
             $model->setData($csv);
@@ -256,7 +255,6 @@ class UserController extends AbstractActionController
         //USER FOUND
         //  user found
         if (($user = $userService->get($this->params()->fromRoute('id')) ) != false) {
-
             $access = $userService->getTypeByUser(
                 $user->id,
                 ($auth->hasIdentity())?$auth->getIdentity()->id:null
@@ -264,7 +262,7 @@ class UserController extends AbstractActionController
 
             //ACCESS GRANTED
             //
-            if ($access->is_admin || $access->type == 1 ) {
+            if ($access->is_admin || $access->type == 1) {
                 $form = new UserForm($companyService->fetchAll(), $valuesService->getTitles());
                 $form->setAttribute('action', $this->url()->fromRoute('notandi/update', ['id'=>$user->id]));
 
@@ -279,9 +277,7 @@ class UserController extends AbstractActionController
                         $data['company_id'] = $data['company'];
                         unset($data['submit']);
                         unset($data['company']);
-                        $userService->update(
-                            $user->id, $data
-                        );
+                        $userService->update($user->id, $data);
                         return $this->redirect()->toRoute('notandi/index', ['id'=>$user->id]);
                         //INVALID
                         //
@@ -306,8 +302,8 @@ class UserController extends AbstractActionController
             }
 
 
-            //USER NOT FOUND
-            //  404
+        //USER NOT FOUND
+        //  404
         } else {
             return $this->notFoundAction();
         }
@@ -336,7 +332,6 @@ class UserController extends AbstractActionController
             //ACCESS GRANTED
             //  granted
             if ($access->is_admin || $access->type == 1) {
-
                 $form = new PasswordForm();
                 $form->setAttribute('action', '');
                 if ($this->request->isPost()) {
@@ -345,7 +340,6 @@ class UserController extends AbstractActionController
                     //VALID
                     //  valid form
                     if ($form->isValid()) {
-
                         //PASS THE SAME
                         //  both input element contain the same string
                         if ($form->get('password')->getValue() == $form->get('password-again')->getValue()) {
@@ -360,7 +354,7 @@ class UserController extends AbstractActionController
                         //INVALID
                         //  invalid form
                     } else {
-
+                        //
                     }
                 } else {
                     return new ViewModel(['form' => $form]);
@@ -369,7 +363,7 @@ class UserController extends AbstractActionController
                 //ACCESS DENIED
                 //  no access
             } else {
-
+                //
             }
 
             //USER NOT FOUND
@@ -380,14 +374,14 @@ class UserController extends AbstractActionController
 
            /*
         //LOGGED IN
-        //	user is logged in
+        //  user is logged in
         if( Zend_Auth::getInstance()->hasIdentity() ){
         //POST
-        //	post request
+        //  post request
         if($this->_request->isPost()){
 
         //VALID
-        //	valid form
+        //  valid form
         $form = new Application_Form_Password();
         if( $form->isValid($this->_request->getPost()) ){
         $userDAO = new Application_Model_User();
@@ -396,13 +390,13 @@ class UserController extends AbstractActionController
           "id=". Zend_Auth::getInstance()->getIdentity()->id);
 
         //INVALID
-        //	form is invalid
+        //  form is invalid
         }else{
         $this->view->form = $form;
         }
 
         //GET
-        //	query request
+        //  query request
         }else{
         $this->view->form = new Application_Form_Password();
         }
@@ -429,35 +423,35 @@ class UserController extends AbstractActionController
         /** @var $groupService \Stjornvisi\Service\Group */
 
         //FORM AND GROUPS
-        //	get all groups user is connected to and
-        //	feed that into th form
+        //  get all groups user is connected to and
+        //  feed that into th form
         $groups = $groupService->userConnections($auth->getIdentity()->id);
         $form = new UserGroups($groups);
 
         //POST
-        //	request is post
+        //  request is post
         if ($this->getRequest()->isPost()) {
             $form->setData($this->request->getPost());
 
             //VALID
-            //	form is valid, update service
+            //  form is valid, update service
             if ($form->isValid()) {
                 $value = $form->getData();
                 $groupService->notifyUser($value['groups'], $auth->getIdentity()->id);
 
                 return new ViewModel(['message' => true, 'form' => $form]);
                 //INVALID
-                //	form is invalid
+                //  form is invalid
             } else {
                 return new ViewModel(['message' => false, 'form' => $form]);
             }
 
             //QUERY
-            //	request is get
+            //  request is get
         } else {
             //BIND GROUPS
-            //	bind only groups user wants to be notified
-            //	about
+            //  bind only groups user wants to be notified
+            //  about
             $form->bind(new \ArrayObject(['groups'=> $groupService->fetchNotifyUser($auth->getIdentity()->id)]));
 
             return new ViewModel(['message' => false, 'form' => $form]);

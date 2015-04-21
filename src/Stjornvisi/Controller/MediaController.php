@@ -138,8 +138,8 @@ class MediaController extends AbstractActionController
         $adapter->setDestination($folder.'original');
 
         $result = (object)[
-        'media' => [],
-        'length' => $this->getRequest()->getHeaders()->get('Content-Length'),
+            'media' => [],
+            'length' => $this->getRequest()->getHeaders()->get('Content-Length'),
         ];
 
         foreach ($adapter->getFileInfo() as $info) {
@@ -179,6 +179,4 @@ class MediaController extends AbstractActionController
         }
         return new JsonModel(['info' => $result]);
     }
-
 }
-

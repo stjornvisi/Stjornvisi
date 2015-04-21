@@ -35,15 +35,12 @@ class EventController extends AbstractActionController
 
         //EVENT FOUND
         //  an event with this ID was found
-        if (($event = $eventService->get(
-            $this->params()->fromRoute('id', 0),
-            ($authService->hasIdentity())?$authService->getIdentity()->id:null 
-        )) != false ) {
-
+        if (($event = $eventService->get($this->params()->fromRoute('id', 0), ($authService->hasIdentity())?$authService->getIdentity()->id:null)) != false) {
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $access = $userService->getTypeByGroup(
@@ -61,17 +58,19 @@ class EventController extends AbstractActionController
                     $this->params()->fromPost('name', '')
                 );
                 $this->getEventManager()->trigger(
-                    'notify', $this, [
-                    'action' => 'Stjornvisi\Notify\Attend',
-                    'data' => (object)[
-                    'event_id' => $event->id,
-                    'type' => 1,
-                    'recipients' => (object)[
-                    'id' => null,
-                    'name' => $this->params()->fromPost('name', ''),
-                    'email' => $this->params()->fromPost('email', '')
-                    ],
-                    ],
+                    'notify',
+                    $this,
+                    [
+                        'action' => 'Stjornvisi\Notify\Attend',
+                        'data' => (object)[
+                        'event_id' => $event->id,
+                        'type' => 1,
+                        'recipients' => (object)[
+                            'id' => null,
+                            'name' => $this->params()->fromPost('name', ''),
+                            'email' => $this->params()->fromPost('email', '')
+                            ],
+                        ],
                     ]
                 );
 
@@ -105,10 +104,9 @@ class EventController extends AbstractActionController
                     ->addChild($asideView, 'aside');
                 return $mainView;
 
-			//QUERY
-			//	get request
+            //QUERY
+            //	get request
             } else {
-
                 $eventView = new ViewModel(
                     [
                     'event' => $event,
@@ -142,8 +140,8 @@ class EventController extends AbstractActionController
             }
 
 
-		//NOT FOUND
-		//  resource not found
+        //NOT FOUND
+        //  resource not found
         } else {
             return $this->notFoundAction();
         }
@@ -173,12 +171,13 @@ class EventController extends AbstractActionController
         $offset = ($firstDay-1)*-1;
         $empty = true;
         $array = [];
-        for ($i=0;$i<42;$i++) {
+        for ($i=0; $i<42; $i++) {
             $from = strtotime("{$current->format('Y-m')}-01 00:00:00") +(60*60*24*$offset);
             $to = strtotime("{$current->format('Y-m')}-01 23:59:59") +(60*60*24*$offset);
             $date = date('Y-m-d', $from);
             $array[$date] = array_filter(
-                $events, function ($i) use ($date ) {
+                $events,
+                function ($i) use ($date) {
                     if ($i->event_date->format('Y-m-d') == $date) {
                         return true;
                     } else {
@@ -236,9 +235,9 @@ class EventController extends AbstractActionController
             } else {
                 $form->setAttribute('action', $this->url()->fromRoute('vidburdir/create'));
             }
-		//GROUPS EVENT
-		//  this is a group event accessible to admin and group
-		//  managers
+        //GROUPS EVENT
+        //  this is a group event accessible to admin and group
+        //  managers
         } else {
             //ACCESS GRANTED
             //  user is admin or manager
@@ -275,7 +274,7 @@ class EventController extends AbstractActionController
                 $this->getResponse()->setStatusCode(400);
                 return new ViewModel(['form' => $form]);
             }
-		//QUERY
+        //QUERY
         } else {
             return new ViewModel(['form' => $form]);
         }
@@ -300,11 +299,11 @@ class EventController extends AbstractActionController
         //EVENT FOUND
         //  an event with this ID was found
         if (($event = $eventService->get($this->params()->fromRoute('id', 0))) != false) {
-
             $groupIds = array_map(
                 function ($i) {
-                    return $i->id; 
-                }, $event->groups
+                    return $i->id;
+                },
+                $event->groups
             );
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
@@ -313,7 +312,6 @@ class EventController extends AbstractActionController
             //ACCESS GRANTED
             //  user has accss
             if ($access->is_admin || $access->type >= 1) {
-
                 $form = new EventForm($groupService->fetchAll());
                 $form->setAttribute('action', $this->url()->fromRoute('vidburdir/update', ['id'=>$event->id]));
 
@@ -325,7 +323,6 @@ class EventController extends AbstractActionController
                     //VALID
                     //  form data is valid
                     if ($form->isValid()) {
-
                         $data = $form->getData();
                         unset($data['submit']);
                         //$mapService = $sm->get('Stjornvisi\Service\Map');
@@ -355,16 +352,16 @@ class EventController extends AbstractActionController
                             return $this->redirect()->toRoute('vidburdir/index', ['id'=>$event->id]);
                         }
 
-					//INVALID
-					//  form data is invalid
+                    //INVALID
+                    //  form data is invalid
                     } else {
                         $this->getResponse()->setStatusCode(400);
                         $view = new ViewModel(['form' => $form]);
                         $view->setTerminal($this->request->isXmlHttpRequest());
                         return $view;
                     }
-				//QUERY
-				//  http get request
+                //QUERY
+                //  http get request
                 } else {
                     $form->bind(new \ArrayObject((array)$event));
                     $view = new ViewModel(['form' => $form]);
@@ -372,7 +369,7 @@ class EventController extends AbstractActionController
                     return $view;
                 }
 
-			//ACCESS DENIED
+            //ACCESS DENIED
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
@@ -380,8 +377,8 @@ class EventController extends AbstractActionController
                 return $model;
             }
 
-		//NOT FOUND
-		//	entry not found
+        //NOT FOUND
+        //	entry not found
         } else {
             return $this->notFoundAction();
         }
@@ -405,8 +402,9 @@ class EventController extends AbstractActionController
         if (($event = $eventService->get($this->params()->fromRoute('id', 0))) != false) {
             $groupIds = array_map(
                 function ($i) {
-                    return $i->id; 
-                }, $event->groups
+                    return $i->id;
+                },
+                $event->groups
             );
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
@@ -418,16 +416,16 @@ class EventController extends AbstractActionController
             if ($access->is_admin || $access->type >= 1) {
                 $eventService->delete($event->id);
                 return $this->redirect()->toRoute('vidburdir');
-			//ACCESS DENIED
-			//  user can't delete
+            //ACCESS DENIED
+            //  user can't delete
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
                 return $model;
             }
-		//EVENT NOT FOUND
-		//
+        //EVENT NOT FOUND
+        //
         } else {
             return $this->notFoundAction();
         }
@@ -449,11 +447,11 @@ class EventController extends AbstractActionController
         //EVENT FOUND
         //  an event with this ID was found
         if (($event = $eventService->get($this->params()->fromRoute('id', 0))) != false) {
-
             $groupIds = array_map(
                 function ($i) {
-                    return $i->id; 
-                }, $event->groups
+                    return $i->id;
+                },
+                $event->groups
             );
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
@@ -462,7 +460,6 @@ class EventController extends AbstractActionController
             //ACCESS GRANTED
             //  user has access
             if ($access->is_admin || $access->type >= 1) {
-
                 $csv = new Csv();
                 $csv->setHeader(['Nafn','Titill','Netfang','Dags.']);
                 $csv->setName('maertingarlisti'.date('Y-m-d-H:i').'.csv');
@@ -510,7 +507,6 @@ class EventController extends AbstractActionController
         //EVENT FOUND
         //  event found in storage
         if (($event = $eventService->get($this->params()->fromRoute('id', 0)))) {
-
             //ACCESS
             //
             if ($authService->hasIdentity()) {
@@ -520,20 +516,22 @@ class EventController extends AbstractActionController
                     $this->params()->fromRoute('type', 0)
                 );
                 $this->getEventManager()->trigger(
-                    'notify', $this, [
-                    'action' => 'Stjornvisi\Notify\Attend',
-                    'data' => (object)[
-                    'recipients' => (int)$authService->getIdentity()->id,
-                    'event_id' => $event->id,
-                    'type' => $this->params()->fromRoute('type', 0)
-                    ],
+                    'notify',
+                    $this,
+                    [
+                        'action' => 'Stjornvisi\Notify\Attend',
+                        'data' => (object)[
+                            'recipients' => (int)$authService->getIdentity()->id,
+                            'event_id' => $event->id,
+                            'type' => $this->params()->fromRoute('type', 0)
+                        ],
                     ]
                 );
 
                 $url = $this->getRequest()->getHeader('Referer')->getUri();
                 return $this->redirect()->toUrl($url);
-			//ACCESS DENIED
-			//
+            //ACCESS DENIED
+            //
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
@@ -541,8 +539,8 @@ class EventController extends AbstractActionController
                 return $model;
             }
 
-		//EVENT NOT FOUND
-		//  resource not found
+        //EVENT NOT FOUND
+        //  resource not found
         } else {
             return $this->notFoundAction();
         }
@@ -564,11 +562,11 @@ class EventController extends AbstractActionController
         //EVENT FOUND
         //  an event with this ID was found
         if (($event = $eventService->get($this->params()->fromRoute('id', 0))) != false) {
-
             $groupIds = array_map(
                 function ($i) {
-                    return $i->id; 
-                }, $event->groups
+                    return $i->id;
+                },
+                $event->groups
             );
             $access = $userService->getTypeByGroup(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
@@ -579,8 +577,10 @@ class EventController extends AbstractActionController
             if ($access->is_admin || $access->type >= 1) {
                 $form = new Email();
                 $form->setAttribute(
-                    'action', $this->url()->fromRoute(
-                        'vidburdir/send-mail', [
+                    'action',
+                    $this->url()->fromRoute(
+                        'vidburdir/send-mail',
+                        [
                         'id' => $event->id,
                         'type' => $this->params()->fromRoute('type', 'allir')
                         ]
@@ -619,19 +619,19 @@ class EventController extends AbstractActionController
                             ]
                         );
 
-					//INVALID
-					//	invalid form
+                    //INVALID
+                    //	invalid form
                     } else {
                         return new ViewModel(['event' => $event, 'form' => $form, 'msg' => false]);
                     }
 
-				//QUERY
-				//	get request
+                //QUERY
+                //	get request
                 } else {
                     return new ViewModel(['event' => $event, 'form' => $form, 'msg' => false]);
                 }
-			//ACCESS DENIED
-			//	403
+            //ACCESS DENIED
+            //	403
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
@@ -657,11 +657,11 @@ class EventController extends AbstractActionController
         //EVENT FOUND
         //  an event with this ID was found
         if (($event = $eventService->get($this->params()->fromRoute('id', 0))) != false) {
-
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $access = $userService->getTypeByGroup(
@@ -672,7 +672,6 @@ class EventController extends AbstractActionController
             //ACCESS GRANTED
             //
             if ($access->is_admin || $access->type >= 2) {
-
                 return new ViewModel(
                     [
                     'event' => $event,
@@ -710,16 +709,12 @@ class EventController extends AbstractActionController
 
         //EVENT FOUND
         //  an event with this ID was found
-        if (($event = $eventService->get(
-            $this->params()->fromRoute('id', 0),
-            ($authService->hasIdentity())?$authService->getIdentity()->id:null 
-        )        ) != false 
-        ) {
-
+        if (($event = $eventService->get($this->params()->fromRoute('id', 0), ($authService->hasIdentity())?$authService->getIdentity()->id:null)) != false) {
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $authService = new AuthenticationService();
@@ -737,17 +732,16 @@ class EventController extends AbstractActionController
                     $this->url()->fromRoute('vidburdir/gallery-create', ['id'=>$event->id])
                 );
 
-				//POST
-				//	post request
+                //POST
+                //	post request
                 if ($this->request->isPost()) {
-
                     $form->setData($this->request->getPost());
                     //FORM VALID
                     if ($form->isValid()) {
                         $eventService->addGallery($event->id, $form->getData());
                         return $this->redirect()->toRoute('vidburdir/gallery-list', ['id'=>$event->id]);
-					//FORM INVALID
-					//
+                    //FORM INVALID
+                    //
                     } else {
                         $this->getResponse()->setStatusCode(400);
                         return new ViewModel(
@@ -758,8 +752,8 @@ class EventController extends AbstractActionController
                             ]
                         );
                     }
-				//QUERY
-				//	get request
+                //QUERY
+                //	get request
                 } else {
                     return new ViewModel(
                         [
@@ -770,16 +764,16 @@ class EventController extends AbstractActionController
                     );
                 }
 
-			//ACCESS DENIED
-			//	403
+            //ACCESS DENIED
+            //	403
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
                 return $model;
             }
-		//RESOURCE NOT FOUND
-		//
+        //RESOURCE NOT FOUND
+        //
         } else {
             return $this->notFoundAction();
         }
@@ -800,13 +794,13 @@ class EventController extends AbstractActionController
         //ITEM FOUND
         //
         if (($item = $eventService->getGalleryItem($this->params()->fromRoute('id', 0)) ) != false) {
-
             $event = $eventService->get($item->event_id);
 
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $access = $userService->getTypeByGroup(
@@ -831,14 +825,14 @@ class EventController extends AbstractActionController
                         $this->getResponse()->setStatusCode(400);
                         return new ViewModel(['event' => $event, 'form' => $form]);
                     }
-				//QUERY
-				//	get request
+                //QUERY
+                //	get request
                 } else {
                     $form->bind(new \ArrayObject($item));
                     return new ViewModel(['event' => $event, 'form' => $form]);
                 }
-			//ACCESS DENIED
-			//
+            //ACCESS DENIED
+            //
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
@@ -846,8 +840,8 @@ class EventController extends AbstractActionController
                 return $model;
             }
 
-		//NOT FOUND
-		//	404
+        //NOT FOUND
+        //	404
         } else {
             return $this->notFoundAction();
         }
@@ -868,13 +862,13 @@ class EventController extends AbstractActionController
         //ITEM FOUND
         //
         if (($item = $eventService->getGalleryItem($this->params()->fromRoute('id', 0)) ) != false) {
-
             $event = $eventService->get($item->event_id);
 
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $access = $userService->getTypeByGroup(
@@ -887,16 +881,16 @@ class EventController extends AbstractActionController
             if ($access->is_admin || $access->type >= 2) {
                 $eventService->deleteGallery($item->id);
                 return $this->redirect()->toRoute('vidburdir/gallery-list', ['id'=>$event->id]);
-			//ACCESS DENIED
-			//
+            //ACCESS DENIED
+            //
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
                 return $model;
             }
-		//NOT FOUND
-		//	404
+        //NOT FOUND
+        //	404
         } else {
             return $this->notFoundAction();
         }
@@ -919,11 +913,11 @@ class EventController extends AbstractActionController
         //EVENT FOUND
         //  an event with this ID was found
         if (($event = $eventService->get($this->params()->fromRoute('id', 0))) != false) {
-
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $access = $userService->getTypeByGroup(
@@ -934,7 +928,6 @@ class EventController extends AbstractActionController
             //ACCESS GRANTED
             //
             if ($access->is_admin || $access->type >= 2) {
-
                 return new ViewModel(
                     [
                     'event' => $event,
@@ -942,16 +935,16 @@ class EventController extends AbstractActionController
                     ]
                 );
 
-			//ACCESS DENIED
-			//
+            //ACCESS DENIED
+            //
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
                 $model->setTemplate('error/401');
                 return $model;
             }
-		//NOT FOUND
-		//	404
+        //NOT FOUND
+        //	404
         } else {
             return $this->notFoundAction();
         }
@@ -972,16 +965,12 @@ class EventController extends AbstractActionController
 
         //EVENT FOUND
         //  an event with this ID was found
-        if (($event = $eventService->get(
-            $this->params()->fromRoute('id', 0),
-            ($authService->hasIdentity())?$authService->getIdentity()->id:null 
-        )        ) != false 
-        ) {
-
+        if (($event = $eventService->get($this->params()->fromRoute('id', 0), ($authService->hasIdentity())?$authService->getIdentity()->id:null)) != false) {
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $authService = new AuthenticationService();
@@ -996,7 +985,6 @@ class EventController extends AbstractActionController
                 $form = new ResourceForm();
                 $form->setAttribute('action', $this->url()->fromRoute('vidburdir/resource-create', ['id'=>$event->id]));
                 if ($this->request->isPost()) {
-
                     $form->setData($this->request->getPost());
                     //FORM VALID
                     if ($form->isValid()) {
@@ -1054,13 +1042,13 @@ class EventController extends AbstractActionController
         //ITEM FOUND
         //
         if (($item = $eventService->getResourceItem($this->params()->fromRoute('id', 0)) ) != false) {
-
             $event = $eventService->get($item->event_id);
 
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $access = $userService->getTypeByGroup(
@@ -1090,8 +1078,8 @@ class EventController extends AbstractActionController
                             ]
                         );
                     }
-                    //QUERY
-                    //	get request
+                //QUERY
+                //	get request
                 } else {
                     $form->bind(new \ArrayObject($item));
                     return new ViewModel(
@@ -1101,8 +1089,8 @@ class EventController extends AbstractActionController
                         ]
                     );
                 }
-                //ACCESS DENIED
-                //
+             //ACCESS DENIED
+             //
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
@@ -1110,8 +1098,8 @@ class EventController extends AbstractActionController
                 return $model;
             }
 
-            //NOT FOUND
-            //	404
+        //NOT FOUND
+        //	404
         } else {
             return $this->notFoundAction();
         }
@@ -1133,13 +1121,13 @@ class EventController extends AbstractActionController
         //ITEM FOUND
         //
         if (($item = $eventService->getResourceItem($this->params()->fromRoute('id', 0)) ) != false) {
-
             $event = $eventService->get($item->event_id);
 
             $groupIds = array_map(
                 function ($i) {
                     return $i->id;
-                }, $event->groups
+                },
+                $event->groups
             );
 
             $access = $userService->getTypeByGroup(
@@ -1166,7 +1154,6 @@ class EventController extends AbstractActionController
         } else {
             return $this->notFoundAction();
         }
-
     }
 
     /**
@@ -1187,19 +1174,19 @@ class EventController extends AbstractActionController
         ? new DateTime($this->params()->fromRoute('to'))
         : null ;
         $result = [];
-        switch( $type ){
-        case 'klukka':
-            $result = $eventService->getRegistrationByHour($from, $to);
-            break;
-        case 'dagur':
-            $result = $eventService->getRegistrationByDayOfWeek($from, $to);
-            break;
-        case 'manudur':
-            $result = $eventService->getRegistrationByDayOfMonth($from, $to);
-            break;
-        default:
-            $result = [];
-            break;
+        switch($type){
+            case 'klukka':
+                $result = $eventService->getRegistrationByHour($from, $to);
+                break;
+            case 'dagur':
+                $result = $eventService->getRegistrationByDayOfWeek($from, $to);
+                break;
+            case 'manudur':
+                $result = $eventService->getRegistrationByDayOfMonth($from, $to);
+                break;
+            default:
+                $result = [];
+                break;
         }
         return new JsonModel($result);
     }

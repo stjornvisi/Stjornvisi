@@ -65,8 +65,7 @@ class PageController extends AbstractActionController
             $form = new Page();
             if ($this->request->isPost()) {
                 $form->setData($this->request->getPost());
-                if ($form->isValid() ) {
-
+                if ($form->isValid()) {
                     $data = $form->getData();
                     unset($data['submit']);
                     $pageService->update($page->id, $data);
@@ -84,4 +83,4 @@ class PageController extends AbstractActionController
             return $this->notFoundAction();
         }
     }
-} 
+}

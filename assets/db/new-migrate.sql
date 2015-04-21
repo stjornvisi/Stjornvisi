@@ -21,5 +21,5 @@ CREATE TABLE IF NOT EXISTS `Email`(
 -- ALTER TABLE `User` MODIFY COLUMN `get_notify` tinyint(1) NOT NULL DEFAULT 1;
 
 
-update `User` set get_message = 1;
-ALTER TABLE `User` MODIFY COLUMN `get_message` tinyint(1) NOT NULL DEFAULT 1;
+-- update `User` set get_message = 1;
+-- ALTER TABLE `User` MODIFY COLUMN `get_message` tinyint(1) NOT NULL DEFAULT 1;

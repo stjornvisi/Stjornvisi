@@ -150,8 +150,8 @@ class AuthController extends AbstractActionController
                         ]
                     );
                 }
-			//SELECT COMPANY
-			//	company exists, user selects
+            //SELECT COMPANY
+            //	company exists, user selects
             } elseif (isset($post['submit-company-select'])) {
                 $companySelectForm->setData($this->request->getPost());
 
@@ -172,8 +172,8 @@ class AuthController extends AbstractActionController
                         ]
                     );
                 }
-			//CREATE INDIVIDUAL
-			//	create a company that is only for this user.
+            //CREATE INDIVIDUAL
+            //	create a company that is only for this user.
             } elseif (isset($post['submit-individual'])) {
                 $session = new Container('create_user');
                 $individualForm->setData($this->request->getPost());
@@ -206,8 +206,8 @@ class AuthController extends AbstractActionController
                         ]
                     );
                 }
-			//SELECT UNIVERSITY
-			//	user is selecting university
+            //SELECT UNIVERSITY
+            //	user is selecting university
             } elseif (isset($post['submit-university-select'])) {
                 $universitySelectForm->setData($this->getRequest()->getPost());
                 if ($universitySelectForm->isValid()) {
@@ -230,8 +230,8 @@ class AuthController extends AbstractActionController
                 //error
             }
 
-		//QUERY
-		//	get request
+        //QUERY
+        //	get request
         } else {
             return new ViewModel(
                 [
@@ -299,7 +299,7 @@ class AuthController extends AbstractActionController
             'name' => $session->name,
             'passwd' => isset($session->password)
                 ? $session->password
-                : $this->_createPassword(10),
+                : $this->createPassword(10),
             'email' => $session->email,
             'title' => $session->title,
             'company_id' => $session->company,
@@ -388,15 +388,15 @@ class AuthController extends AbstractActionController
                     $result = $auth->authenticate($authAdapter);
                     if ($result->isValid()) {
                         $this->getResponse()->getHeaders()->addHeader(
-							new SetCookie(
-								'backpfeifengesicht',
-								$this->getServiceLocator()
-									->get('Stjornvisi\Service\User')
-									->createHash($auth->getIdentity()->id),
-								time() + 365 * 60 * 60 * 24,
-								'/'
-							)
-						);
+                            new SetCookie(
+                                'backpfeifengesicht',
+                                $this->getServiceLocator()
+                                    ->get('Stjornvisi\Service\User')
+                                    ->createHash($auth->getIdentity()->id),
+                                time() + 365 * 60 * 60 * 24,
+                                '/'
+                            )
+                        );
                         return $this->redirect()->toRoute('home');
                     } else {
                         $form->get('email')->setMessages(["Rangt lykilorð"]);
@@ -431,9 +431,9 @@ class AuthController extends AbstractActionController
     public function logoutAction()
     {
         $auth = new AuthenticationService();
-		$this->getResponse()
-			->getHeaders()
-			->addHeader(new SetCookie('backpfeifengesicht', '', strtotime('-1 Year', time()), '/'));
+        $this->getResponse()
+            ->getHeaders()
+            ->addHeader(new SetCookie('backpfeifengesicht', '', strtotime('-1 Year', time()), '/'));
         $auth->clearIdentity();
 
         return $this->redirect()->toRoute('home');
@@ -464,9 +464,7 @@ class AuthController extends AbstractActionController
         $serviceFactory = new \OAuth\ServiceFactory();
 
         // Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
-        /**
- * @var $linkedinService Linkedin 
-*/
+        /** @var $linkedinService Linkedin */
         $linkedinService = $serviceFactory->createService('linkedin', $credentials, $storage, array('r_basicprofile'));
         if (!empty($_GET['code'])) {
             // retrieve the CSRF state parameter
@@ -556,8 +554,8 @@ class AuthController extends AbstractActionController
 
             $me = (new FacebookRequest(
                 $session,
-				'GET',
-				'/me'
+                'GET',
+                '/me'
             ))->execute()->getGraphObject(GraphUser::className())->asArray();
 
 
@@ -602,15 +600,15 @@ class AuthController extends AbstractActionController
                 return new ViewModel(['error' => 'user_disconnected']);
             }
 
-		//CAN'T LOGIN USER
-		//	Facebook login library issues exception.
-		//	Facebook returns an error
+        //CAN'T LOGIN USER
+        //	Facebook login library issues exception.
+        //	Facebook returns an error
         } catch (FacebookRequestException $ex) {
             // When Facebook returns an error
             return new ViewModel(['error' => $ex->getMessage()]);
-		//ERROR
-		//	There was a more generic error
-		//	When validation fails or other local issues
+        //ERROR
+        //	There was a more generic error
+        //	When validation fails or other local issues
         } /*catch(\Exception $ex) {
         return new ViewModel(array(
         'error' => $ex->getMessage()
@@ -665,10 +663,10 @@ class AuthController extends AbstractActionController
                 //	notify user
                 $this->getEventManager()->trigger(
                     'notify',
-					$this,
-					[
-                    	'action' => 'Stjornvisi\Notify\UserValidate',
-                    	'data' => (object)[
+                    $this,
+                    [
+                        'action' => 'Stjornvisi\Notify\UserValidate',
+                        'data' => (object)[
                             'user_id' => $user->id,
                             'url' => $server,
                             'facebook' => $facebooklogin
@@ -710,7 +708,7 @@ class AuthController extends AbstractActionController
             if ($form->isValid()) {
                 $user = $userService->get($form->get('email')->getValue());
                 if ($user) {
-                    $password = $this->_createPassword(20);
+                    $password = $this->createPassword(20);
                     $userService->setPassword($user->id, $password);
                     $this->getEventManager()->trigger(
                         'notify',
@@ -742,7 +740,7 @@ class AuthController extends AbstractActionController
      * @param  int $length
      * @return string
      */
-    private function _createPassword($length)
+    private function createPassword($length)
     {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_-=+;:?";
         $password = substr(str_shuffle($chars), 0, $length);

@@ -42,13 +42,12 @@ class GroupController extends AbstractActionController
         //GROUP
         //  group found
         if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
-
             $yearRange = range(
                 $groupService->getFirstYear($group->id),
                 ((int)date('n')>=9)?(int)date('Y')+1:(int)date('Y')
             );
             $yearRangeArray = [];
-            for ($i=0;$i<count($yearRange)-1;$i++) {
+            for ($i=0; $i<count($yearRange)-1; $i++) {
                 $yearRangeArray[] = array_slice($yearRange, $i, 2);
             }
             $yearRangeArray = array_reverse($yearRangeArray);
@@ -87,9 +86,7 @@ class GroupController extends AbstractActionController
                 'range' => (object)['from'=>$from, 'to'=>$to, 'range'=>$yearRangeArray],
                 'group' => $group,
                 'news' => $newsService->getRangeByGroup($group->id, $from, $to),
-                'events' => $eventService->getRangeByGroup(
-                    $group->id, $from, $to, ($auth->hasIdentity())?$auth->getIdentity()->id:null 
-                ),
+                'events' => $eventService->getRangeByGroup($group->id, $from, $to, ($auth->hasIdentity())?$auth->getIdentity()->id:null),
                 'managers' => $userService->getByGroup($group->id, [1,2]),
                 'users' => $userService->getByGroup($group->id, 0),
                 'access' => $userService->getTypeByGroup(
@@ -105,7 +102,6 @@ class GroupController extends AbstractActionController
         } else {
             return $this->notFoundAction();
         }
-
     }
 
     /**
@@ -128,7 +124,6 @@ class GroupController extends AbstractActionController
         //ACCESS GRANTED
         //  user is admin
         if ($access->is_admin) {
-
             $form = new GroupForm();
             $form->setAttribute('action', $this->url()->fromRoute('hopur/create'));
 
@@ -187,7 +182,6 @@ class GroupController extends AbstractActionController
         //ITEM FOUND
         //  item is in storage
         if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != null) {
-
             //ACCESS CONTROL
             //  if user is admin or manager
             $auth = new AuthenticationService();
@@ -196,7 +190,6 @@ class GroupController extends AbstractActionController
                 $group->id
             );
             if ($access->is_admin || $access->type >= 1) {
-
                 //POST
                 //  http post query
                 if ($this->request->isPost()) {
@@ -319,13 +312,15 @@ class GroupController extends AbstractActionController
                 //NOTIFY
                 //	notify user
                 $this->getEventManager()->trigger(
-                    'notify', $this, [
-                    'action' => 'Stjornvisi\Notify\Submission',
-                    'data' => (object)[
-                    'recipient' => $auth->getIdentity()->id,
-                    'group_id' => $group->id,
-                    'register' => (bool)$this->params()->fromRoute('type', 0)
-                    ],
+                    'notify',
+                    $this,
+                    [
+                        'action' => 'Stjornvisi\Notify\Submission',
+                        'data' => (object)[
+                            'recipient' => $auth->getIdentity()->id,
+                            'group_id' => $group->id,
+                            'register' => (bool)$this->params()->fromRoute('type', 0)
+                        ],
                     ]
                 );
                 return $this->redirect()->toRoute('hopur/index', ['id'=>$group->url]);
@@ -402,7 +397,7 @@ class GroupController extends AbstractActionController
             );
             //ACCESS GRANTED
             //  user has access
-            if ($access->is_admin || $access->type >= 1 ) {
+            if ($access->is_admin || $access->type >= 1) {
                 $groupService->userStatus(
                     $group->id,
                     $this->params()->fromRoute('user_id', 0),
@@ -448,7 +443,6 @@ class GroupController extends AbstractActionController
             //ACCESS GRANTED
             //  user has access
             if ($access->is_admin || $access->type >= 1) {
-
                 $csv = new Csv();
                 $csv->setHeader(
                     [
@@ -461,21 +455,21 @@ class GroupController extends AbstractActionController
                 );
                 $csv->setName('medlimalisti'.date('Y-m-d-H:i').'.csv');
                 $resultset = $userService->getByGroup($group->id);
-                foreach ( $resultset as $result ) {
+                foreach ($resultset as $result) {
                     $type = '';
                     switch($result->type){
-                    case 0:
-                        $type = 'Meðlimur';
-                        break;
-                    case 1:
-                        $type = 'Stjórnandi';
-                        break;
-                    case 2:
-                        $type = 'Formaður';
-                        break;
-                    default:
-                        $type = 'Meðlimur';
-                        break;
+                        case 0:
+                            $type = 'Meðlimur';
+                            break;
+                        case 1:
+                            $type = 'Stjórnandi';
+                            break;
+                        case 2:
+                            $type = 'Formaður';
+                            break;
+                        default:
+                            $type = 'Meðlimur';
+                            break;
                     }
                     $csv->add(
                         [
@@ -504,7 +498,7 @@ class GroupController extends AbstractActionController
             //NO GROUP
             //  group not found
             //TODO 404
-        }else{
+        } else {
             return $this->notFoundAction();
         }
     }
@@ -530,7 +524,6 @@ class GroupController extends AbstractActionController
             //ACCESS GRANTED
             //  user has access
             if ($access->is_admin || $access->type >= 1) {
-
                 $csv = new Csv();
                 $csv->setHeader(
                     [
@@ -543,21 +536,21 @@ class GroupController extends AbstractActionController
                 );
                 $csv->setName('stjornendalisti-'.date('Y-m-d-H:i').'.csv');
                 $resultset = $userService->getByGroup($group->id, [1,2]);
-                foreach ( $resultset as $result ){
+                foreach ($resultset as $result) {
                     $type = '';
                     switch($result->type){
-                    case 0:
-                        $type = 'Meðlimur';
-                        break;
-                    case 1:
-                        $type = 'Stjórnandi';
-                        break;
-                    case 2:
-                        $type = 'Formaður';
-                        break;
-                    default:
-                        $type = 'Meðlimur';
-                        break;
+                        case 0:
+                            $type = 'Meðlimur';
+                            break;
+                        case 1:
+                            $type = 'Stjórnandi';
+                            break;
+                        case 2:
+                            $type = 'Formaður';
+                            break;
+                        default:
+                            $type = 'Meðlimur';
+                            break;
                     }
                     $csv->add(
                         [
@@ -612,8 +605,7 @@ class GroupController extends AbstractActionController
             );
             //ACCESS GRANTED
             //  user has access
-            if ($access->is_admin || $access->type >= 1 ) {
-
+            if ($access->is_admin || $access->type >= 1) {
                 $csv = new Csv();
                 $csv->setHeader(
                     [
@@ -626,21 +618,21 @@ class GroupController extends AbstractActionController
                 );
                 $csv->setName('formannalisti-'.date('Y-m-d-H:i').'.csv');
                 $resultset = $userService->getByGroup($group->id, 2);
-                foreach ( $resultset as $result ){
+                foreach ($resultset as $result) {
                     $type = '';
                     switch($result->type){
-                    case 0:
-                        $type = 'Meðlimur';
-                        break;
-                    case 1:
-                        $type = 'Stjórnandi';
-                        break;
-                    case 2:
-                        $type = 'Formaður';
-                        break;
-                    default:
-                        $type = 'Meðlimur';
-                        break;
+                        case 0:
+                            $type = 'Meðlimur';
+                            break;
+                        case 1:
+                            $type = 'Stjórnandi';
+                            break;
+                        case 2:
+                            $type = 'Formaður';
+                            break;
+                        default:
+                            $type = 'Meðlimur';
+                            break;
                     }
                     $csv->add(
                         [
@@ -697,7 +689,6 @@ class GroupController extends AbstractActionController
             //ACCESS GRANTED
             //  user has access
             if ($access->is_admin || $access->type >= 1) {
-
                 $server = isset( $_SERVER['HTTP_HOST'] )
                 ? "http://".$_SERVER['HTTP_HOST']
                 : 'http://0.0.0.0' ;
@@ -713,15 +704,17 @@ class GroupController extends AbstractActionController
                 );
                 $csv->setName('vidburdalistilisti'.date('Y-m-d-H:i').'.csv');
                 $events = $eventService->getByGroup($group->id);
-                foreach ( $events as $result ) {
+                foreach ($events as $result) {
                     $csv->add(
                         [
                         'name' => $result->subject,
                         'groups' => implode(
-                            ', ', array_map(
+                            ', ',
+                            array_map(
                                 function ($item) {
                                     return $item->name_short;
-                                }, $result->groups
+                                },
+                                $result->groups
                             )
                         ),
                         'date' => $result->event_date->format('Y-m-d'),
@@ -895,7 +888,6 @@ class GroupController extends AbstractActionController
         //ITEM FOUND
         //  item is in storage
         if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != null) {
-
             //AUTHENTICATION
             //  get authentication service
             $auth = new AuthenticationService();
@@ -907,22 +899,21 @@ class GroupController extends AbstractActionController
             //ACCESS
             //  user has access
             if ($access->is_admin || $access->type >= 1) {
-
                 //POST
                 //  post request
                 if ($this->request->isPost()) {
-
                     $post = $this->getRequest()->getPost();
-					/** @var $post \ArrayObject */
+                    /** @var $post \ArrayObject */
 
                     $form = new GroupEmail();
                     $form->setData($post);
                     $form->setAttribute(
                         'action',
                         $this->url()->fromRoute(
-                            'hopur/send-mail', [
-                            'id'=>$group->url,
-                            'type'=> $this->params()->fromRoute('type', 'allir')
+                            'hopur/send-mail',
+                            [
+                                'id'=>$group->url,
+                                'type'=> $this->params()->fromRoute('type', 'allir')
                             ]
                         )
                     );
@@ -930,22 +921,22 @@ class GroupController extends AbstractActionController
                     //VALID
                     //	form is valid
                     if ($form->isValid()) {
-
                         //TEST
                         //	send out test e-mail
                         if ($post->offsetGet('test')) {
-
                             $this->getEventManager()->trigger(
-                                'notify', $this, [
-                                'action' => 'Stjornvisi\Notify\Group',
-                                'data' => (object)[
-                                'group_id' => $group->id,
-                                'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
-                                'test' => true,
-                                'subject' => $form->get('subject')->getValue(),
-                                'body' => $form->get('body')->getValue(),
-                                'sender_id' => (int)$auth->getIdentity()->id
-                                ],
+                                'notify',
+                                $this,
+                                [
+                                    'action' => 'Stjornvisi\Notify\Group',
+                                    'data' => (object)[
+                                        'group_id' => $group->id,
+                                        'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+                                        'test' => true,
+                                        'subject' => $form->get('subject')->getValue(),
+                                        'body' => $form->get('body')->getValue(),
+                                        'sender_id' => (int)$auth->getIdentity()->id
+                                    ],
                                 ]
                             );
                             return new ViewModel(
@@ -959,16 +950,18 @@ class GroupController extends AbstractActionController
                             //	send out full e-mail
                         } else {
                             $this->getEventManager()->trigger(
-                                'notify', $this, [
-                                'action' => 'Stjornvisi\Notify\Group',
-                                'data' => (object)[
-                                'group_id' => $group->id,
-                                'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
-                                'test' => false,
-                                'subject' => $form->get('subject')->getValue(),
-                                'body' => $form->get('body')->getValue(),
-                                'sender_id' => (int)$auth->getIdentity()->id
-                                ],
+                                'notify',
+                                $this,
+                                [
+                                    'action' => 'Stjornvisi\Notify\Group',
+                                    'data' => (object)[
+                                        'group_id' => $group->id,
+                                        'recipients' => ( $this->params()->fromRoute('type', 'allir') ),
+                                        'test' => false,
+                                        'subject' => $form->get('subject')->getValue(),
+                                        'body' => $form->get('body')->getValue(),
+                                        'sender_id' => (int)$auth->getIdentity()->id
+                                    ],
                                 ]
                             );
 
@@ -991,10 +984,12 @@ class GroupController extends AbstractActionController
                 } else {
                     $from = new GroupEmail();
                     $from->setAttribute(
-                        'action', $this->url()->fromRoute(
-                            'hopur/send-mail', [
-                            'id'=>$group->url,
-                            'type'=> $this->params()->fromRoute('type', 'allir')
+                        'action',
+                        $this->url()->fromRoute(
+                            'hopur/send-mail',
+                            [
+                                'id'=>$group->url,
+                                'type'=> $this->params()->fromRoute('type', 'allir')
                             ]
                         )
                     );
