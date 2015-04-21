@@ -9,7 +9,7 @@
 <div class="layout layout--three-columns">
 	<section class="layout__section">
 		<div class="layout__data">
-			<?php if( $this->user->oauth_key  ):?>
+			<?php if ($this->user->oauth_key):?>
 				<img src="https://graph.facebook.com/<?=$this->user->oauth_key;?>/picture?type=large">
 			<?php endif;?>
 
@@ -26,7 +26,7 @@
 				<!--<dt>Kerfisstjóri</dt>
 				<dd><i class="<?php//=($this->user->is_admin)?'icon-check':'icon-close'?>" title="<?php//=($this->user->is_admin)?'já':'nei'?>"></i></dd>-->
 			</dl>
-
+            <?php if ($this->user->company) :?>
 			<h2 class="layout__headline">Fyrirtæki</h2>
 			<dl class="block-property-value block-property-value--em">
 				<dt>Nafn</dt>
@@ -34,6 +34,7 @@
 				<dt>Lykilstarfsmaður</dt>
 				<dd><i class="<?=($this->user->company->key_user)?'icon-check':'icon-close'?>" title="<?=($this->user->company->key_user)?'já':'nei';?>"></i></dd>
 			</dl>
+            <?php endif;?>
 
 			<h2 class="layout__headline">Hópar</h2>
 			<ul class="block-list block-list--small">
