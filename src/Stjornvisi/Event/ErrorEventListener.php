@@ -14,8 +14,8 @@ use Zend\EventManager\EventManagerInterface;
 use Psr\Log\LoggerInterface;
 use Zend\EventManager\EventInterface;
 
-class ErrorEventListener extends AbstractListenerAggregate {
-
+class ErrorEventListener extends AbstractListenerAggregate
+{
 	/** @var \Psr\Log\LoggerInterface;  */
 	private $logger;
 
@@ -24,7 +24,8 @@ class ErrorEventListener extends AbstractListenerAggregate {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct( LoggerInterface $logger ){
+	public function __construct(LoggerInterface $logger)
+    {
 		$this->logger = $logger;
 	}
 
@@ -38,7 +39,8 @@ class ErrorEventListener extends AbstractListenerAggregate {
      *
      * @return void
      */
-    public function attach(EventManagerInterface $events){
+    public function attach(EventManagerInterface $events)
+    {
         $this->listeners[] = $events->attach(
 			array('error'),
 			array($this, 'log')
@@ -50,7 +52,8 @@ class ErrorEventListener extends AbstractListenerAggregate {
 	 *
 	 * @param EventInterface $event
 	 */
-	public function log(EventInterface $event){
+	public function log(EventInterface $event)
+    {
 		$params = $event->getParams();
 		$method = '?';
 		$exception = isset($params['exception'])?$params['exception']:'';
@@ -59,6 +62,5 @@ class ErrorEventListener extends AbstractListenerAggregate {
 			get_class($event->getTarget())."::{$method} - {$exception}",
 			$sql
 		);
-
 	}
 }

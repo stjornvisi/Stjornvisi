@@ -539,6 +539,7 @@ class AuthController extends AbstractActionController
             : $server.AuthController::LOGIN_CALLBACK_FACEBOOK
         );
 
+
         //LOGIN
         //	try to log in user
         try {

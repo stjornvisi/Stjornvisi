@@ -14,7 +14,8 @@ use Zend\EventManager\EventManagerInterface;
 use Psr\Log\LoggerInterface;
 use Zend\EventManager\EventInterface;
 
-class ServiceEventListener extends AbstractListenerAggregate {
+class ServiceEventListener extends AbstractListenerAggregate
+{
 
 	/** @var \Psr\Log\LoggerInterface;  */
 	private $logger;
@@ -24,7 +25,8 @@ class ServiceEventListener extends AbstractListenerAggregate {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct( LoggerInterface $logger ){
+	public function __construct(LoggerInterface $logger)
+    {
 		$this->logger = $logger;
 	}
 
@@ -38,7 +40,8 @@ class ServiceEventListener extends AbstractListenerAggregate {
      *
      * @return void
      */
-    public function attach(EventManagerInterface $events){
+    public function attach(EventManagerInterface $events)
+    {
         $this->listeners[] = $events->attach(
 			array('create','read','update','delete','index'),
 			array($this, 'log')
@@ -50,7 +53,8 @@ class ServiceEventListener extends AbstractListenerAggregate {
 	 *
 	 * @param EventInterface $event
 	 */
-	public function log(EventInterface $event){
+	public function log(EventInterface $event)
+    {
 		$params = $event->getParams();
 		$method = isset($params[0])?$params[0]:'';
 		$this->logger->debug(

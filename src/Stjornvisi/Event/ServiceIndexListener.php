@@ -17,7 +17,8 @@ use Psr\Log\LoggerInterface;
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class ServiceIndexListener extends AbstractListenerAggregate {
+class ServiceIndexListener extends AbstractListenerAggregate
+{
 
 	/** @var \Psr\Log\LoggerInterface;  */
 	private $logger;
@@ -27,7 +28,8 @@ class ServiceIndexListener extends AbstractListenerAggregate {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct( LoggerInterface $logger ){
+	public function __construct(LoggerInterface $logger)
+    {
 		$this->logger = $logger;
 	}
 
@@ -41,7 +43,8 @@ class ServiceIndexListener extends AbstractListenerAggregate {
 	 *
 	 * @return void
 	 */
-	public function attach(EventManagerInterface $events){
+	public function attach(EventManagerInterface $events)
+    {
 		$this->listeners[] = $events->attach('index', array($this, 'index'));
 	}
 
@@ -50,9 +53,9 @@ class ServiceIndexListener extends AbstractListenerAggregate {
 	 *
 	 * @param EventInterface $event
 	 */
-	public function index(EventInterface $event){
-
-		try{
+	public function index(EventInterface $event)
+    {
+		try {
 			$connection = new AMQPConnection('localhost', 5672, 'guest', 'guest');
 			$channel = $connection->channel();
 
@@ -60,13 +63,13 @@ class ServiceIndexListener extends AbstractListenerAggregate {
 
 			$params = $event->getParams();
 
-			$msg = new AMQPMessage( json_encode($params) );
+			$msg = new AMQPMessage(json_encode($params));
 			$channel->basic_publish($msg, '', 'search-index');
 			$channel->close();
 			$connection->close();
 
-		}catch (\Exception $e){
-			$this->logger->warn( "Queue Service when indexing entries: ".$e->getMessage() );
+		} catch (\Exception $e) {
+			$this->logger->warn("Queue Service when indexing entries: ".$e->getMessage());
 		}
 	}
-} 
+}
