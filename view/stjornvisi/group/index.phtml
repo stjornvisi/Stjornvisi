@@ -6,7 +6,7 @@ $this->headTitle('Hópur');
 $this->headMeta()->setProperty('og:title', $this->group->name);
 $this->headMeta()->setProperty('og:site_name', 'Stjórnvísi');
 $this->headMeta()->setProperty('og:type', 'article');
-$this->headMeta()->setProperty('og:description', mb_substr($this->group->description,0,200));
+$this->headMeta()->setProperty('og:description', mb_substr($this->group->summary,0,200));
 $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->url('hopur/index',array('id'=>$this->group->url)));
 
 ?>
@@ -96,13 +96,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 		</div>
 		<div class="page-group__description page-group__separator">
 			<h2 id="um" class="page-group__subline">Um <?=$this->group->name;?></h2>
-			<h3 class="layout__headline">Markmið</h3>
-			<?=$this->paragrapher($this->group->objective); ?>
-			<h3 class="layout__headline">Hvað er <?=$this->group->name;?></h3>
-			<?=$this->paragrapher($this->group->how_operates); ?>
-			<h3 class="layout__headline">Hvernig starfar hópurinn</h3>
-			<?=$this->paragrapher($this->group->for_whom); ?>
-
+			<?=$this->paragrapher($this->group->body); ?>
 			<div id="fb-root"></div>
 			<script>(function(d, s, id) {
 					var js, fjs = d.getElementsByTagName(s)[0];
@@ -204,7 +198,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
 			</stjonvisi-control>
 		<?php endif;?>
 		<div class="page-group__summary">
-			<?=$this->paragrapher($this->group->description);?>
+			<?=$this->paragrapher($this->group->summary);?>
 		</div>
 
 		<h1 class="layout__headline">Fyrri starfsár</h1>
