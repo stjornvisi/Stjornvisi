@@ -8,8 +8,8 @@
 
 namespace Stjornvisi\Form\Element;
 
-
-class MultiCheckbox extends \Zend\Form\Element\MultiCheckbox {
+class MultiCheckbox extends \Zend\Form\Element\MultiCheckbox
+{
 	/**
 	 * Provide default input rules for this element
 	 *
@@ -29,7 +29,7 @@ class MultiCheckbox extends \Zend\Form\Element\MultiCheckbox {
 				$validator,
 			);
 		}
-
 		return $spec;
 	}
-} 
+}
+

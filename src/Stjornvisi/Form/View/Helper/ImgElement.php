@@ -8,7 +8,6 @@
 
 namespace Stjornvisi\Form\View\Helper;
 
-
 use Stjornvisi\Lib\SizeConvert;
 use Zend\Form\ElementInterface;
 use Zend\Form\Exception;
@@ -47,8 +46,8 @@ class ImgElement extends FormInput
 		//	but it gets overwritten at some point, so the simplest
 		//	thing was to add it here.
 		//	TODO place this i a more generic place
-		$element->setOption('max',$this->getMaxSize())
-			->setOption('url','/skrar/mynd');
+		$element->setOption('max', $this->getMaxSize())
+			->setOption('url', '/skrar/mynd');
 
 
 		//OPTIONS
@@ -62,9 +61,13 @@ class ImgElement extends FormInput
 		unset($options['label_attributes']);
 		unset($options['label_options']);
 
-		$strings = array_map(function($key,$value){
-			return sprintf('%s="%s"', $key, $value);
-		},array_keys($options), $options );
+		$strings = array_map(
+            function ($key, $value) {
+			    return sprintf('%s="%s"', $key, $value);
+		    },
+            array_keys($options),
+            $options
+        );
 
 		return sprintf(
 			'<stjornvisi-img %s><input %s%s</stjornvisi-img>',
@@ -80,8 +83,9 @@ class ImgElement extends FormInput
 	 *
 	 * @return int
 	 */
-	private function getMaxSize(){
+	private function getMaxSize()
+    {
 		$converter = new SizeConvert();
-		return $converter->convert( ini_get('upload_max_filesize') );
+		return $converter->convert(ini_get('upload_max_filesize'));
 	}
 }

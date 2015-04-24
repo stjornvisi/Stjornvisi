@@ -12,47 +12,48 @@ namespace Stjornvisi\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
-class Author extends Form implements InputFilterProviderInterface{
+class Author extends Form implements InputFilterProviderInterface
+{
 
-	public function __construct(){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+	public function __construct()
+    {
+		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
 		$this->setAttribute('method', 'post');
 
-		$this->add(array(
+		$this->add([
 			'name' => 'name',
 			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Nafn...',
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Titill',
-			),
-		));
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'info',
 			'type' => 'Stjornvisi\Form\Element\Rich',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Texti...',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Texti',
-			),
-		));
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'avatar',
 			'type' => 'Stjornvisi\Form\Element\Img',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Mynd...',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Mynd',
-			),
-		));
+			],
+		]);
 
 		$this->add(array(
 			'name' => 'submit',
@@ -73,41 +74,41 @@ class Author extends Form implements InputFilterProviderInterface{
 	 *
 	 * @return array
 	 */
-	public function getInputFilterSpecification(){
-		return array(
-			'name' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+	public function getInputFilterSpecification()
+    {
+		return [
+			'name' => [
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 100,
-						),
-					),
-				),
-			),
-			'info' => array(
+						],
+					],
+				],
+			],
+			'info' => [
 				'required' => false,
 				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'avatar' => array(
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+			],
+			'avatar' => [
 				'required' => false,
 				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-
-		);
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+			],
+		];
 	}
 }

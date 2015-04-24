@@ -10,7 +10,8 @@ namespace Stjornvisi\Form\Element;
 
 use \Zend\Form\Element\Text;
 
-class Avatar extends Text{
+class Avatar extends Text
+{
 	/**
 	 * @var array
 	 */
@@ -19,4 +20,4 @@ class Avatar extends Text{
 		'data-type' => 'avatar',
 		'readonly' => 'readonly'
 	);
-} 
+}

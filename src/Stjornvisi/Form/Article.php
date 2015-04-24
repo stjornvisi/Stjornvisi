@@ -13,93 +13,94 @@ use Zend\InputFilter\InputFilterProviderInterface;
  *
  * @package Stjornvisi\Form
  */
-class Article extends Form implements InputFilterProviderInterface{
-
+class Article extends Form implements InputFilterProviderInterface
+{
 	/**
 	 *
 	 * @param array $authors
 	 * @throws \Zend\Form\Exception\InvalidArgumentException
 	 */
-	public function __construct(array $authors = array()){
+	public function __construct(array $authors = array())
+    {
 
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
 		$this->setAttribute('method', 'post');
 
-		$this->add(array(
+		$this->add([
 			'name' => 'title',
 			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Titill...',
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Titill',
-			),
-		));
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'summary',
 			'type' => 'Stjornvisi\Form\Element\Rich',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Útdráttur...',
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Útdráttur',
-			),
-		));
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'body',
 			'type' => 'Stjornvisi\Form\Element\Rich',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Texti...',
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Texti',
-			),
-		));
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'venue',
 			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Birtist fyrst...',
-			),
+			],
 			'options' => array(
 				'label' => 'Birtist fyrst',
 			),
-		));
+		]);
 
 		$authorsArray = array();
-		foreach($authors as $author){
+		foreach ($authors as $author) {
 			$authorsArray[$author->id] = $author->name;
 		}
-		$this->add(array(
+		$this->add([
 			'name' => 'authors',
 			'type' => 'Zend\Form\Element\Select',
-			'attributes' => array(
+			'attributes' => [
 				'multiple' => 'multiple',
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Höfundar',
 				'value_options' => $authorsArray,
-			),
-		));
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'submit',
 			'type' => 'Zend\Form\Element\Submit',
-			'attributes' => array(
+			'attributes' => [
 				'value' => 'Submit',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Submit',
-			),
-		));
+			],
+		]);
 
 	}
 
@@ -109,12 +110,16 @@ class Article extends Form implements InputFilterProviderInterface{
 	 * @param  array|\Traversable $data
 	 * @return void
 	 */
-	public function populateValues($data){
-		foreach($data as $key=>$row){
-			if( $key == 'authors' && is_array($row) ){
-				$data[$key] = array_map(function($i){
-					return (is_numeric($i)) ? $i : $i->id;
-				},$row);
+	public function populateValues($data)
+    {
+		foreach ($data as $key => $row) {
+			if ($key == 'authors' && is_array($row)) {
+				$data[$key] = array_map(
+                    function ($i) {
+					    return (is_numeric($i)) ? $i : $i->id;
+				    },
+                    $row
+                );
 			}
 		}
 
@@ -128,55 +133,56 @@ class Article extends Form implements InputFilterProviderInterface{
 	 *
 	 * @return array
 	 */
-	public function getInputFilterSpecification(){
-		return array(
+	public function getInputFilterSpecification()
+    {
+		return [
 			'title' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 100,
-						),
-					),
-				),
+						],
+					],
+				],
 			),
-			'summary' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'body' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'venue' => array(
+			'summary' => [
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+			],
+			'body' => [
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+			],
+			'venue' => [
 				'required' => false,
 				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 100,
-						),
-					),
-				),
-			),
-			'authors' => array(),
-		);
+						],
+					],
+				],
+			],
+			'authors' => [],
+		];
 	}
 }

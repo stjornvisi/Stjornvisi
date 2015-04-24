@@ -28,10 +28,10 @@ class FormElement extends BaseFormElement
 		if ($element instanceof Rich) {
 			$helper = $renderer->plugin('richelement');
 			return $helper($element);
-		}else if($element instanceof Img){
+		} elseif ($element instanceof Img) {
 			$helper = $renderer->plugin('imgelement');
 			return $helper($element);
-		}else if($element instanceof File){
+		} elseif ($element instanceof File) {
 			$helper = $renderer->plugin('fileelement');
 			return $helper($element);
 		}

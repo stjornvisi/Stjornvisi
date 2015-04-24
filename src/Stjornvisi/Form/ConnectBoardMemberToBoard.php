@@ -6,93 +6,94 @@ use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class ConnectBoardMemberToBoard extends Form{
+class ConnectBoardMemberToBoard extends Form
+{
+	public function __construct($members = [], $terms = [])
+    {
 
-	public function __construct($members = array(), $terms = array()){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
 		$this->setAttribute('method', 'post');
-		$memberValue = array();
-		foreach($members as $member){
+		$memberValue = [];
+		foreach ($members as $member) {
 			$memberValue[$member->id] = $member->name;
 		}
-		$this->add(array(
+		$this->add([
 			'name' => 'boardmember_id',
 			'type' => 'Zend\Form\Element\Select',
-			'attributes' => array(
+			'attributes' => [
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Meðlimur',
 				'value_options' => $memberValue,
-			),
-		));
+			],
+		]);
 
 
-		$this->add(array(
+		$this->add([
 			'name' => 'term',
 			'type' => 'Zend\Form\Element\Select',
-			'attributes' => array(
+			'attributes' => [
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Tímabil',
 				'value_options' => $terms,
-			),
-		));
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'is_chairman',
 			'type' => 'Zend\Form\Element\Checkbox',
-			'attributes' => array(
+			'attributes' => [
 				'value' => '0',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Formaður stjórnar',
-				'value_options' => array(
+				'value_options' => [
 					'0' => 'Checkbox',
-				),
-			),
-		));
+				],
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'is_reserve',
 			'type' => 'Zend\Form\Element\Checkbox',
-			'attributes' => array(
+			'attributes' => [
 				'value' => '0',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Varamaður í stjórn',
-				'value_options' => array(
+				'value_options' => [
 					'0' => 'Checkbox',
-				),
-			),
-		));
+				],
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'is_manager',
 			'type' => 'Zend\Form\Element\Checkbox',
-			'attributes' => array(
+			'attributes' => [
 				'value' => '0',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Framkvæmdarstjóri',
-				'value_options' => array(
+				'value_options' => [
 					'0' => 'Checkbox',
-				),
-			),
-		));
+				],
+			],
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'submit',
 			'type' => 'Zend\Form\Element\Submit',
-			'attributes' => array(
+			'attributes' => [
 				'value' => 'Submit',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Submit',
-			),
-		));
+			],
+		]);
 	}
 }

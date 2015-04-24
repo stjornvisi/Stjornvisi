@@ -10,6 +10,7 @@ namespace Stjornvisi\Form\Element;
 
 use Zend\Form\Element;
 
-class File extends Element{
+class File extends Element
+{
 
-} 
+}

@@ -12,59 +12,61 @@ use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class  Email extends Form{
-    public function __construct($name = null){
+class Email extends Form
+{
+    public function __construct($name = null)
+    {
 
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 
-        $this->add(array(
+        $this->add([
             'name' => 'subject',
             'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
+            'attributes' => [
                 'placeholder' => 'Efni',
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Efni',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'body',
 			'type' => 'Stjornvisi\Form\Element\Rich',
-            'attributes' => array(
+            'attributes' => [
                 'placeholder' => 'Texti',
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Texti',
 				'bucket' => 'path'
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'send',
             'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
+            'attributes' => [
                 'value' => 'Senda',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Senda'
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'test',
             'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
+            'attributes' => [
                 'value' => 'Prufa',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Prufa'
-            ),
-        ));
+            ],
+        ]);
 
     }
-} 
+}

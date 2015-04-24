@@ -27,7 +27,7 @@ class Anaegjuvogin extends Form implements InputFilterProviderInterface
 
 		$this->setAttribute('method', 'post');
 
-		$this->add(array(
+		$this->add([
 			'name' => 'name',
 			'type' => 'Zend\Form\Element\Text',
 			'attributes' => array(
@@ -37,9 +37,9 @@ class Anaegjuvogin extends Form implements InputFilterProviderInterface
 			'options' => array(
 				'label' => 'Titill',
 			),
-		));
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'year',
 			'type' => 'Zend\Form\Element\Select',
 			'attributes' => array(
@@ -50,9 +50,9 @@ class Anaegjuvogin extends Form implements InputFilterProviderInterface
 				'label' => 'Ár',
 				'value_options' => $this->getYearRange()
 			),
-		));
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'body',
 			'type' => 'Stjornvisi\Form\Element\Rich',
 			'attributes' => array(
@@ -62,9 +62,9 @@ class Anaegjuvogin extends Form implements InputFilterProviderInterface
 			'options' => array(
 				'label' => 'Texti',
 			),
-		));
+		]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'submit',
 			'type' => 'Zend\Form\Element\Submit',
 			'attributes' => array(
@@ -73,7 +73,7 @@ class Anaegjuvogin extends Form implements InputFilterProviderInterface
 			'options' => array(
 				'label' => 'Submit',
 			),
-		));
+		]);
 	}
 
 	/**
@@ -85,38 +85,38 @@ class Anaegjuvogin extends Form implements InputFilterProviderInterface
 	public function getInputFilterSpecification()
 	{
 		return array(
-			'name' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+			'name' => [
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 255,
-						),
-					),
-				),
-			),
+						],
+					],
+				],
+			],
 
-			'body' => array(
-				'filters'  => array(
+			'body' => [
+				'filters'  => [
 					array('name' => 'StringTrim'),
-				),
-			),
+				],
+			],
 
-			'year' => array(
+			'year' => [
 				'required' => true,
 				'allow_empty' => true,
-				'filters' => array(
-					array(
+				'filters' => [
+					[
 						'name' => 'Null'
-					),
-				),
-			),
+					],
+				],
+			],
 		);
 	}
 

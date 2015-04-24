@@ -8,7 +8,6 @@
 
 namespace Stjornvisi\Form\View\Helper;
 
-
 use Stjornvisi\Lib\SizeConvert;
 use Zend\Form\ElementInterface;
 use Zend\Form\Exception;
@@ -35,7 +34,6 @@ class FileElement extends FormInput
 		}
 
 
-
 		$attributes          = $element->getAttributes();
 		$attributes['name']  = $name;
 		$attributes['type']  = $this->getType($element);
@@ -47,8 +45,8 @@ class FileElement extends FormInput
 		//	but it gets overwritten at some point, so the simplest
 		//	thing was to add it here.
 		//	TODO place this i a more generic place
-		$element->setOption('max',$this->getMaxSize())
-			->setOption('url','/skrar/skra');
+		$element->setOption('max', $this->getMaxSize())
+			->setOption('url', '/skrar/skra');
 
 
 		//OPTIONS
@@ -62,9 +60,13 @@ class FileElement extends FormInput
 		unset($options['label_attributes']);
 		unset($options['label_options']);
 
-		$strings = array_map(function($key,$value){
-			return sprintf('%s="%s"', $key, $value);
-		},array_keys($options), $options );
+		$strings = array_map(
+            function ($key, $value) {
+			    return sprintf('%s="%s"', $key, $value);
+		    },
+            array_keys($options),
+            $options
+        );
 
 		return sprintf(
 			'<stjornvisi-file %s><input %s%s</stjornvisi-file>',
@@ -80,8 +82,9 @@ class FileElement extends FormInput
 	 *
 	 * @return int
 	 */
-	private function getMaxSize(){
+	private function getMaxSize()
+    {
 		$converter = new SizeConvert();
-		return $converter->convert( ini_get('upload_max_filesize') );
+		return $converter->convert(ini_get('upload_max_filesize'));
 	}
 }

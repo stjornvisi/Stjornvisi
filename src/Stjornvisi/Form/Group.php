@@ -11,12 +11,11 @@ use Zend\InputFilter\InputFilterProviderInterface;
  * @author einarvalur
  *
  */
-class Group extends Form implements InputFilterProviderInterface{
-
-	public function __construct($action='create', $values=null, $options=array()){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
-
+class Group extends Form implements InputFilterProviderInterface
+{
+    public function __construct($action = 'create', $values = null, $options = array())
+    {
+		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
         $this->setAttribute('method', 'post');
 
         $this->add(array(
@@ -44,10 +43,21 @@ class Group extends Form implements InputFilterProviderInterface{
         ));
 
         $this->add(array(
+            'name' => 'avatar',
+            'type' => 'Stjornvisi\Form\Element\Img',
+            'attributes' => array(
+
+            ),
+            'options' => array(
+                'label' => 'Mynd',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'summary',
             'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
-                'placeholder' => 'Inngangur.  Birtist á yfirlitssíðum.  Má ekki vera mjög langur texti.',
+                'placeholder' => 'Inngangur.  100 - 500 slög',
             ),
             'options' => array(
                 'label' => 'Inngangur',
@@ -58,76 +68,10 @@ class Group extends Form implements InputFilterProviderInterface{
             'name' => 'body',
             'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
-                'placeholder' => 'Lýsing faghópsins.  Birtist á síðu faghópsins sjálfs.  Inngangurinn birtist ekki þar.',
+                'placeholder' => 'Lýsing faghópsins.',
             ),
             'options' => array(
                 'label' => 'Meginmál',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'description',
-            'type' => 'Stjornvisi\Form\Element\Rich',
-            'attributes' => array(
-                'placeholder' => 'Lýsing...',
-            ),
-            'options' => array(
-                'label' => 'Lýsing',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'description',
-			'type' => 'Stjornvisi\Form\Element\Rich',
-            'attributes' => array(
-                'placeholder' => 'Lýsing...',
-            ),
-            'options' => array(
-                'label' => 'Lýsing',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'objective',
-			'type' => 'Stjornvisi\Form\Element\Rich',
-            'attributes' => array(
-                'placeholder' => 'Markmið...',
-            ),
-            'options' => array(
-                'label' => 'Markmið',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'what_is',
-			'type' => 'Stjornvisi\Form\Element\Rich',
-            'attributes' => array(
-                'placeholder' => 'Hvað er...',
-            ),
-            'options' => array(
-                'label' => 'Hvað er',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'how_operates',
-			'type' => 'Stjornvisi\Form\Element\Rich',
-            'attributes' => array(
-                'placeholder' => 'Hvernig starfar...',
-            ),
-            'options' => array(
-                'label' => 'Hvernig starfar',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'for_whom',
-			'type' => 'Stjornvisi\Form\Element\Rich',
-            'attributes' => array(
-                'placeholder' => 'Fyrir hvern...',
-            ),
-            'options' => array(
-                'label' => 'Fyrir hvern',
             ),
         ));
 
@@ -150,7 +94,8 @@ class Group extends Form implements InputFilterProviderInterface{
 	 *
 	 * @return array
 	 */
-	public function getInputFilterSpecification(){
+	public function getInputFilterSpecification()
+    {
 		return array(
 			'name' => array(
 				'filters'  => array(
@@ -191,6 +136,16 @@ class Group extends Form implements InputFilterProviderInterface{
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 100,
+                            'max'      => 500,
+                        ),
+                    ),
+                ),
             ),
             'body' => array(
                 'required' => true,
@@ -200,48 +155,8 @@ class Group extends Form implements InputFilterProviderInterface{
                     array('name' => 'StringTrim'),
                 ),
             ),
-			'description' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'objective' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'what_is' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'how_operates' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'for_whom' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
 		);
 	}
-
 }
+
 

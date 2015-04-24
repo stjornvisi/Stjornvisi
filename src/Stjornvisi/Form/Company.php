@@ -8,7 +8,6 @@
 
 namespace Stjornvisi\Form;
 
-
 use Stjornvisi\Validator\UniqueSSN;
 use Zend\Form\Element;
 use Zend\Form\Form;
@@ -19,113 +18,114 @@ use Stjornvisi\Validator\Kennitala as SsnValidator;
 use Stjornvisi\Service\Values;
 use Stjornvisi\Service\Company as CompanyService;
 
-class Company extends Form implements InputFilterProviderInterface{
-
+class Company extends Form implements InputFilterProviderInterface
+{
 	private $company;
 	private $values;
 
 	private $id = null;
 
-    public function __construct(Values $values, CompanyService $company = null){
+    public function __construct(Values $values, CompanyService $company = null)
+    {
 		$this->company = $company;
 		$this->values = $values;
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 
-        $this->add(array(
+        $this->add([
             'name' => 'name',
             'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
+            'attributes' => [
                 'placeholder' => 'Nafn...',
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Nafn',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'ssn',
             'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
+            'attributes' => [
                 'placeholder' => '000000-0000',
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Kennitala',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'address',
             'type' => 'Zend\Form\Element\Text',
-            'attributes' => array(
+            'attributes' => [
                 'placeholder' => 'Heimilisfang...',
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Heimilisfang',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'zip',
             'type' => 'Zend\Form\Element\Select',
-            'attributes' => array(
+            'attributes' => [
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Póstfang',
                 'value_options' => $values->getPostalCode(),
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'business_type',
             'type' => 'Zend\Form\Element\Select',
-            'attributes' => array(
+            'attributes' => [
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Rekstrarform',
                 'value_options' => $values->getBusinessTypes(),
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'number_of_employees',
             'type' => 'Zend\Form\Element\Select',
-            'attributes' => array(
+            'attributes' => [
                 'required' => 'required',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Starfsmannafjöldi',
                 'value_options' => $values->getCompanySizes(),
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'website',
             'type' => 'Zend\Form\Element\Url',
-            'attributes' => array(
+            'attributes' => [
                 'placeholder' => 'http://',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Heimasíða',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
-            'attributes' => array(
+            'attributes' => [
                 'value' => 'Submit',
-            ),
-            'options' => array(
+            ],
+            'options' => [
                 'label' => 'Submit',
-            ),
-        ));
+            ],
+        ]);
 
     }
 
@@ -143,7 +143,8 @@ class Company extends Form implements InputFilterProviderInterface{
 	 * @param $id
 	 * @return $this
 	 */
-	public function setIdentifier( $id ){
+	public function setIdentifier($id)
+    {
 		$this->id = $id;
 		return $this;
 	}
@@ -154,64 +155,64 @@ class Company extends Form implements InputFilterProviderInterface{
 	 *
 	 * @return array
 	 */
-	public function getInputFilterSpecification(){
-		return array(
-			'name' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+	public function getInputFilterSpecification()
+    {
+		return [
+			'name' => [
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 60,
-						),
-					),
-				),
-			),
-			'ssn' => array(
-				'filters'  => array(
-					array('name' => 'Digits'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					new UniqueSSN( $this->company, $this->id ),
-					array(
+						],
+					],
+				],
+			],
+			'ssn' => [
+				'filters'  => [
+					['name' => 'Digits'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					new UniqueSSN($this->company, $this->id),
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 100,
-						),
-					),
-				),
-			),
-			'address' => array(
+						],
+					],
+				],
+			],
+			'address' => [
 				'required' => false,
 				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 50,
-						),
-					),
-				),
-			),
-			'website' => array(
+						],
+					],
+				],
+			],
+			'website' => [
 				'required' => false,
 				'allow_empty' => true,
-			),
-
-		);
+			],
+		];
 	}
-} 
+}

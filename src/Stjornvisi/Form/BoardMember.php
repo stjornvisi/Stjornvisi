@@ -7,81 +7,82 @@ use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
-class BoardMember extends Form implements InputFilterProviderInterface{
+class BoardMember extends Form implements InputFilterProviderInterface
+{
+	public function __construct($name = null)
+    {
 
-	public function __construct($name = null){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
 		$this->setAttribute('method', 'post');
 
-		$this->add(array(
+		$this->add([
 			'name' => 'name',
 			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Nafn...',
 				'required' => 'required',
-			),
-			'options' => array(
+			],
+			'options' => [
 				'label' => 'Nafn',
-			),
-		));
+            ],
+        ]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'email',
 			'type' => 'Zend\Form\Element\Email',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Netfang...',
 				'required' => 'required',
-			),
-			'options' => array(
+            ],
+			'options' => [
 				'label' => 'Netfng',
-			),
-		));
+            ],
+        ]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'company',
 			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Fyrirtæki...',
-			),
-			'options' => array(
+            ],
+			'options' => [
 				'label' => 'Fyrirtæki',
-			),
-		));
+            ],
+        ]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'avatar',
 			'type' => 'Stjornvisi\Form\Element\Img',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Mynd...',
-			),
-			'options' => array(
+            ],
+			'options' => [
 				'label' => 'Mynd',
-			),
-		));
+            ],
+        ]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'info',
 			'type' => 'Zend\Form\Element\Textarea',
-			'attributes' => array(
+			'attributes' => [
 				'placeholder' => 'Upplýsingar...',
-			),
-			'options' => array(
+            ],
+			'options' => [
 				'label' => 'Upplýsingar',
-			),
-		));
+            ],
+        ]);
 
-		$this->add(array(
+		$this->add([
 			'name' => 'submit',
 			'type' => 'Zend\Form\Element\Submit',
-			'attributes' => array(
+			'attributes' => [
 				'value' => 'Submit',
-			),
-			'options' => array(
+            ],
+			'options' => [
 				'label' => 'Submit',
-			),
-		));
+            ],
+        ]);
 	}
 
 
@@ -91,86 +92,87 @@ class BoardMember extends Form implements InputFilterProviderInterface{
 	 *
 	 * @return array
 	 */
-	public function getInputFilterSpecification(){
-		return array(
-			'name' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+	public function getInputFilterSpecification()
+    {
+		return [
+			'name' => [
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+                ],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 100,
-						),
-					),
-				),
-			),
-			'email' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array('name' => 'EmailAddress'),
-					array(
+                        ],
+                    ],
+                ],
+			],
+			'email' => [
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					['name' => 'EmailAddress'],
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 100,
-						),
-					),
-				),
-			),
-			'company' => array(
+                        ],
+					],
+				],
+			],
+			'company' => [
 				'required' => false,
 				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 100,
-						),
-					),
-				),
-			),
-			'avatar' => array(
+                        ],
+					],
+				],
+			],
+			'avatar' => [
 				'required' => false,
 				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+				'validators' => [
+					[
 						'name'    => 'StringLength',
-						'options' => array(
+						'options' => [
 							'encoding' => 'UTF-8',
 							'min'      => 1,
 							'max'      => 255,
-						),
-					),
-				),
-			),
-			'info' => array(
+                        ],
+					],
+				],
+			],
+			'info' => [
 				'required' => false,
 				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
+				'filters'  => [
+					['name' => 'StripTags'],
+					['name' => 'StringTrim'],
+				],
+			],
 
-		);
+        ];
 	}
 }
