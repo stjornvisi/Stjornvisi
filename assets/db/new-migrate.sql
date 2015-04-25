@@ -18,9 +18,15 @@
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-ALTER TABLE `Group` ADD
-  `avatar` varchar(255) DEFAULT NULL AFTER `name_short`;
-ALTER TABLE `Group` ADD
-  `summary` TEXT DEFAULT NULL AFTER `avatar`;
-ALTER TABLE `Group` ADD
-  `body` TEXT DEFAULT NULL AFTER `summary`;
+ALTER TABLE `Group` ADD `avatar` varchar(255) DEFAULT NULL AFTER `name_short`;
+ALTER TABLE `Group` ADD `summary` TEXT DEFAULT NULL AFTER `avatar`;
+ALTER TABLE `Group` ADD `body` TEXT DEFAULT NULL AFTER `summary`;
+
+update `Group` set summary = description;
+update `Group` set body = CONCAT_WS(' ', objective, what_is, how_operates, for_whom);
+
+ALTER TABLE `Group` DROP COLUMN `description`;
+ALTER TABLE `Group` DROP COLUMN `objective`;
+ALTER TABLE `Group` DROP COLUMN `what_is`;
+ALTER TABLE `Group` DROP COLUMN `how_operates`;
+ALTER TABLE `Group` DROP COLUMN `for_whom`;

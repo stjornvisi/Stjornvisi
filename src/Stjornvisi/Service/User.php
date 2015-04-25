@@ -6,8 +6,8 @@ use \DateTime;
 use \PDOException;
 use Stjornvisi\Lib\DataSourceAwareInterface;
 
-class User extends AbstractService implements DataSourceAwareInterface {
-
+class User extends AbstractService implements DataSourceAwareInterface
+{
 	const REGISTER = 'user.register';
 	const NAME = 	'user.create';
 
@@ -126,45 +126,56 @@ class User extends AbstractService implements DataSourceAwareInterface {
 	 * Get all users.
 	 *
 	 * @param bool $valid
+     * @param string $order
 	 * @return array
 	 * @throws Exception
 	 */
-	public function fetchAll( $valid = false ){
-		try{
-			if( $valid ){
+	public function fetchAll($valid = false, $order = 'name')
+    {
+        $orderMap = [
+            'name' => 'U.`name`',
+            'title' => 'U.`title`',
+            'created_date' => 'U.`created_date` DESC',
+            'company_name' => 'C.`name`, U.`name`',
+        ];
+		try {
+			if ($valid) {
 				$statement = $this->pdo->prepare("
 					SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
 					FROM `User` U
 					LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
 					LEFT JOIN Company C ON (C.id = ChU.company_id )
 					WHERE U.email IS NOT NULL
-					ORDER BY U.name;
+					ORDER BY {$orderMap[$order]};
 				");
-			}else{
+			} else {
 				$statement = $this->pdo->prepare("
 					SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
 					FROM `User` U
 					LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
 					LEFT JOIN Company C ON (C.id = ChU.company_id )
-					ORDER BY U.name;
+					ORDER BY {$orderMap[$order]};
 				");
 			}
 			$statement->execute();
 			$users = $statement->fetchAll();
 			$this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-			return array_map(function($i){
-				$i->created_date = new DateTime($i->created_date);
-				$i->modified_date = new DateTime($i->modified_date);
-				return $i;
-			},$users);
-		}catch (PDOException $e){
+			return array_map(
+                function ($i) {
+				    $i->created_date = new DateTime($i->created_date);
+				    $i->modified_date = new DateTime($i->modified_date);
+				    return $i;
+			    },
+                $users
+            );
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
 					isset($statement)?$statement->queryString:null
 				)
 			));
-			throw new Exception("Can't get all users",0,$e);
+			throw new Exception("Can't get all users", 0, $e);
 		}
 
 

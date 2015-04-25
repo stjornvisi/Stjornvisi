@@ -702,14 +702,24 @@
 		text-align: right;
 		padding-left: rhythm(1,$font-size-base);
 	}
+
 	thead{
+		td.block-table__date{
+			text-align: right;
+			white-space: pre;
+		}
 		td{
 			font-family: $font-family-open;
 			font-weight: $font-weight-bold;
 		}
 	}
 	tfoot{}
-	tbody{}
+	tbody{
+		td.block-table__date{
+			text-align: right;
+			white-space: pre;
+		}
+	}
 
 	&.block-table--data {
 		//@include ellipsis;
@@ -738,6 +748,11 @@
 				//font-family: $font-family-open;
 				//font-weight: $font-weight-bold;
 			}
+		}
+	}
+	&.block-table--air{
+		td{
+			padding: 0 rhythm(1/4,$font-size-base);
 		}
 	}
 }

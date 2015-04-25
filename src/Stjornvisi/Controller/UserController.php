@@ -129,7 +129,19 @@ class UserController extends AbstractActionController
                 null
             );
 
-            return new ViewModel(['users'=> $userService->fetchAll(), 'admin' => $access->is_admin]);
+            $orderMap = [
+                'nafn'   => 'name',
+                'titill' => 'title',
+                'dags'   => 'created_date',
+                'fyrirtaeki'   => 'company_name',
+            ];
+
+            $order = $orderMap[$this->params('order', 'nafn')];
+
+            return new ViewModel([
+                'users'=> $userService->fetchAll(true, $order),
+                'admin' => $access->is_admin
+            ]);
             //ACCESS DENIED
             //
         } else {

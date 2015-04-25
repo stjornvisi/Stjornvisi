@@ -872,6 +872,19 @@ return array(
 							),
 						)
 					),
+                    'order' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/rada/:order',
+                            'constraints' => array(
+                                'order' => 'nafn|titill|dags|fyrirtaeki',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\User',
+                                'action' => 'list'
+                            ),
+                        )
+                    ),
                 ),
             ),
             'greinar' => array(

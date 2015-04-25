@@ -3021,34 +3021,44 @@ a {
   text-align: right;
   padding-left: 1.5em;
 }
-/* line 706, ../sass/components/_components.scss */
+/* line 707, ../sass/components/_components.scss */
+.block-table thead td.block-table__date {
+  text-align: right;
+  white-space: pre;
+}
+/* line 711, ../sass/components/_components.scss */
 .block-table thead td {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
 }
-/* line 716, ../sass/components/_components.scss */
+/* line 718, ../sass/components/_components.scss */
+.block-table tbody td.block-table__date {
+  text-align: right;
+  white-space: pre;
+}
+/* line 726, ../sass/components/_components.scss */
 .block-table.block-table--data caption {
   padding: 1.5em 0;
   text-align: center;
 }
-/* line 720, ../sass/components/_components.scss */
+/* line 730, ../sass/components/_components.scss */
 .block-table.block-table--data thead {
   border-bottom: 2px solid lightgray;
 }
-/* line 724, ../sass/components/_components.scss */
+/* line 734, ../sass/components/_components.scss */
 .block-table.block-table--data tbody tr {
   border-bottom: 1px solid lightgray;
 }
-/* line 730, ../sass/components/_components.scss */
+/* line 740, ../sass/components/_components.scss */
 .block-table.block-table--compact {
   width: 100%;
   font-family: "Open Sans", sans-serif;
 }
-/* line 733, ../sass/components/_components.scss */
+/* line 743, ../sass/components/_components.scss */
 .block-table.block-table--compact tbody {
   color: #4a85a1;
 }
-/* line 735, ../sass/components/_components.scss */
+/* line 745, ../sass/components/_components.scss */
 .block-table.block-table--compact tbody td {
   font-size: 0.75em;
   line-height: 2em;
@@ -3057,6 +3067,10 @@ a {
   -ms-text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   text-overflow: ellipsis;
+}
+/* line 754, ../sass/components/_components.scss */
+.block-table.block-table--air td {
+  padding: 0 0.375em;
 }
 
 /**
@@ -3067,13 +3081,13 @@ a {
  * we need to add space below (actually on top) to
  * make some air between the label and table.
  */
-/* line 753, ../sass/components/_components.scss */
+/* line 768, ../sass/components/_components.scss */
 .layout__headline + .block-table {
   margin-top: 1.5em;
 }
 
 /*table*/
-/* line 757, ../sass/components/_components.scss */
+/* line 772, ../sass/components/_components.scss */
 .block-table + .layout__headline {
   margin-top: 1.5em;
 }
@@ -3084,11 +3098,11 @@ a {
  * calendar month.
  *
  */
-/* line 767, ../sass/components/_components.scss */
+/* line 782, ../sass/components/_components.scss */
 .block-calendar {
   position: relative;
 }
-/* line 769, ../sass/components/_components.scss */
+/* line 784, ../sass/components/_components.scss */
 .block-calendar td {
   position: relative;
   width: 14.28571%;
@@ -3096,36 +3110,36 @@ a {
   padding: 0.5em;
   overflow: hidden;
 }
-/* line 776, ../sass/components/_components.scss */
+/* line 791, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header {
   font-family: "Open Sans", sans-serif;
   color: #4a85a1;
 }
-/* line 780, ../sass/components/_components.scss */
+/* line 795, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header tr {
   border-bottom: 2px solid lightgray;
 }
-/* line 782, ../sass/components/_components.scss */
+/* line 797, ../sass/components/_components.scss */
 .block-calendar .block-calendar__header tr td {
   text-align: center;
 }
-/* line 792, ../sass/components/_components.scss */
+/* line 807, ../sass/components/_components.scss */
 .block-calendar .block-calendar__body tr td {
   border: 1px solid lightgray;
   padding-top: 1.5em;
   padding-bottom: 1.5em;
 }
-/* line 804, ../sass/components/_components.scss */
+/* line 819, ../sass/components/_components.scss */
 .block-calendar .block-calendar__caption {
   position: relative;
 }
-/* line 808, ../sass/components/_components.scss */
+/* line 823, ../sass/components/_components.scss */
 .block-calendar .block-calendar__pagination {
   position: absolute;
   top: -15px;
   right: 15px;
 }
-/* line 814, ../sass/components/_components.scss */
+/* line 829, ../sass/components/_components.scss */
 .block-calendar .block-calendar__headline {
   font-size: 1.5em;
   line-height: 1em;
@@ -3135,7 +3149,7 @@ a {
   text-align: center;
   text-transform: capitalize;
 }
-/* line 824, ../sass/components/_components.scss */
+/* line 839, ../sass/components/_components.scss */
 .block-calendar .block-calendar__date-label {
   position: absolute;
   top: 15px;
@@ -3147,11 +3161,11 @@ a {
   color: #ecf2f5;
   z-index: -1;
 }
-/* line 835, ../sass/components/_components.scss */
+/* line 850, ../sass/components/_components.scss */
 .block-calendar .block-calendar__subject-list > li {
   margin-top: 1.5em;
 }
-/* line 837, ../sass/components/_components.scss */
+/* line 852, ../sass/components/_components.scss */
 .block-calendar .block-calendar__subject-list > li > a {
   display: block;
   font-family: "Open Sans", sans-serif;
@@ -3159,29 +3173,29 @@ a {
   font-size: 0.75em;
   line-height: 1.5em;
 }
-/* line 845, ../sass/components/_components.scss */
+/* line 860, ../sass/components/_components.scss */
 .block-calendar .block-calendar__subject-list > li:first-child {
   margin-top: 0;
 }
-/* line 850, ../sass/components/_components.scss */
+/* line 865, ../sass/components/_components.scss */
 .block-calendar .block-calendar__group-list > li {
   font-family: "Open Sans", sans-serif;
   font-size: 0.75em;
   line-height: 1.5em;
   color: #4a85a1;
 }
-/* line 854, ../sass/components/_components.scss */
+/* line 869, ../sass/components/_components.scss */
 .block-calendar .block-calendar__group-list > li > a {
   color: #4a85a1;
 }
 
-/* line 861, ../sass/components/_components.scss */
+/* line 876, ../sass/components/_components.scss */
 .block-calendar__pagination {
   border: 1px solid lightgray;
   display: inline-block;
   margin-bottom: 30px;
 }
-/* line 866, ../sass/components/_components.scss */
+/* line 881, ../sass/components/_components.scss */
 .block-calendar__pagination a {
   font-family: 'icomoon';
   speak: none;
@@ -3194,17 +3208,17 @@ a {
   padding: 1.5em;
   font-size: 0;
 }
-/* line 879, ../sass/components/_components.scss */
+/* line 894, ../sass/components/_components.scss */
 .block-calendar__pagination a:before {
   font-size: 16px;
   display: inline-block;
   padding: 0.75em 1.5em;
 }
-/* line 884, ../sass/components/_components.scss */
+/* line 899, ../sass/components/_components.scss */
 .block-calendar__pagination .prev:before {
   content: "\f0a4";
 }
-/* line 887, ../sass/components/_components.scss */
+/* line 902, ../sass/components/_components.scss */
 .block-calendar__pagination .next:before {
   content: "\e60e";
   border-left: 1px solid lightgray;
@@ -3218,7 +3232,7 @@ a {
  * horizontal line with the active element
  * emphasized
  */
-/* line 902, ../sass/components/_components.scss */
+/* line 917, ../sass/components/_components.scss */
 .block_pagination {
   *zoom: 1;
 }
@@ -3228,16 +3242,16 @@ a {
   display: table;
   clear: both;
 }
-/* line 904, ../sass/components/_components.scss */
+/* line 919, ../sass/components/_components.scss */
 .block_pagination .block_pagination__item {
   float: left;
 }
-/* line 907, ../sass/components/_components.scss */
+/* line 922, ../sass/components/_components.scss */
 .block_pagination .block_pagination__link {
   display: block;
   padding: 0.375em 0.75em;
 }
-/* line 911, ../sass/components/_components.scss */
+/* line 926, ../sass/components/_components.scss */
 .block_pagination .block_pagination__link:hover,
 .block_pagination .block_pagination__link--active {
   background-color: #4a85a1;
@@ -3247,34 +3261,34 @@ a {
 /**
  * drag over file upload component
  */
-/* line 924, ../sass/components/_components.scss */
+/* line 939, ../sass/components/_components.scss */
 textarea.over, input.over {
   box-shadow: inset 0 10 5px rgba(0, 0, 0, 0.5);
 }
 
-/* line 927, ../sass/components/_components.scss */
+/* line 942, ../sass/components/_components.scss */
 textarea.enter, input.enter {
   background-color: #f0f0f0;
   border-style: dashed;
 }
 
-/* line 931, ../sass/components/_components.scss */
+/* line 946, ../sass/components/_components.scss */
 textarea.prossess, input.prossess {
   background-color: gainsboro;
 }
 
-/* line 937, ../sass/components/_components.scss */
+/* line 952, ../sass/components/_components.scss */
 .separator {
   text-align: center;
   border-bottom: 1px solid lightgray;
 }
-/* line 940, ../sass/components/_components.scss */
+/* line 955, ../sass/components/_components.scss */
 .separator span {
   background-color: white;
   display: inline-block;
 }
 
-/* line 948, ../sass/components/_components.scss */
+/* line 963, ../sass/components/_components.scss */
 .block-supplement.resource-list li {
   overflow: visible;
 }
