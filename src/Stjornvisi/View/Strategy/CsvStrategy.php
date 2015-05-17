@@ -16,7 +16,8 @@ use Zend\View\ViewEvent;
 
 use Zend\View\Renderer\RendererInterface;
 
-class CsvStrategy extends AbstractListenerAggregate {
+class CsvStrategy extends AbstractListenerAggregate
+{
 	protected $renderer;
 	protected $listeners = array();
 

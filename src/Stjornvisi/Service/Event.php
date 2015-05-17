@@ -306,7 +306,6 @@ class Event extends AbstractService implements DataSourceAwareInterface
             if ($data['groups'] != null) {
                 $groups = $data['groups'];
             }
-            unset($data['groups']);
 
             //SANITIZE CAPACITY
             //	capacity has to be integer and bigger that zero

@@ -13,8 +13,8 @@ use Zend\View\Renderer\RendererInterface as Renderer;
 use Zend\View\Renderer\TreeRendererInterface;
 use Zend\View\Resolver\ResolverInterface;
 
-class CsvRenderer implements Renderer, TreeRendererInterface {
-
+class CsvRenderer implements Renderer, TreeRendererInterface
+{
 	/**
 	 * Return the template engine object, if any
 	 *

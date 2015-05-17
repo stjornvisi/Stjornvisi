@@ -6,13 +6,13 @@ use Zend\Form\Element;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
 
-class Event extends Form implements InputFilterProviderInterface{
+class Event extends Form implements InputFilterProviderInterface
+{
+    public function __construct($groups = null)
+    {
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
-    public function __construct($groups = null){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
-
-        $this->setHydrator( new Hydrator() );
+        $this->setHydrator(new Hydrator());
         $this->setAttribute('method', 'post');
 
         $this->add(array(
@@ -21,7 +21,7 @@ class Event extends Form implements InputFilterProviderInterface{
             'attributes' => array(
                 'placeholder' => 'Titill...',
                 'required' => 'required',
-				'tabindex' => 1
+                'tabindex' => 1
             ),
             'options' => array(
                 'label' => 'Titill viðburðar',
@@ -32,8 +32,8 @@ class Event extends Form implements InputFilterProviderInterface{
             'name' => 'body',
             'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
-				'placeholder' => '...',
-				'tabindex' => 2
+                'placeholder' => '...',
+                'tabindex' => 2
             ),
             'options' => array(
                 'label' => 'Meginmál',
@@ -45,36 +45,36 @@ class Event extends Form implements InputFilterProviderInterface{
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Landspítalinn, Hringsalur 1.hæð við Barnaspítal',
-				'tabindex' => 3
+                'tabindex' => 3
             ),
             'options' => array(
                 'label' => 'Staðsetning',
             ),
         ));
 
-		$this->add(array(
-			'name' => 'address',
-			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
-				'placeholder' => 'Ofanleiti 2, 105 Reykjavík',
-				'tabindex' => 4
-			),
-			'options' => array(
-				'label' => 'Heimilisfang: (Götuheiti og húsnúmer, Póstnúmer Bæjarfélag)',
-			),
-		));
+        $this->add(array(
+            'name' => 'address',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Ofanleiti 2, 105 Reykjavík',
+                'tabindex' => 4
+            ),
+            'options' => array(
+                'label' => 'Heimilisfang: (Götuheiti og húsnúmer, Póstnúmer Bæjarfélag)',
+            ),
+        ));
 
-		$this->add(array(
-			'name' => 'capacity',
-			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
-				'placeholder' => '0',
-				'tabindex' => 5
-			),
-			'options' => array(
-				'label' => 'Fjöldatakmörkun, 0 er ótakmarkað',
-			),
-		));
+        $this->add(array(
+            'name' => 'capacity',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => '0',
+                'tabindex' => 5
+            ),
+            'options' => array(
+                'label' => 'Fjöldatakmörkun, 0 er ótakmarkað',
+            ),
+        ));
 
         $this->add(array(
             'name' => 'event_date',
@@ -83,7 +83,7 @@ class Event extends Form implements InputFilterProviderInterface{
                 'placeholder' => 'Type something...',
                 'required' => 'required',
                 'step' => '1',
-				'tabindex' => 6
+                'tabindex' => 6
             ),
             'options' => array(
                 'label' => 'Dagsetning',
@@ -122,7 +122,7 @@ class Event extends Form implements InputFilterProviderInterface{
             'name' => 'avatar',
             'type' => 'Stjornvisi\Form\Element\Img',
             'attributes' => array(
-				'tabindex' => 9
+                'tabindex' => 9
             ),
             'options' => array(
                 'label' => 'Mynd',

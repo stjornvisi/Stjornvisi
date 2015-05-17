@@ -1727,6 +1727,16 @@ return array(
 					),
 				),
 			),
+            'sidareglur' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/sidareglur',
+                    'defaults' => array(
+                        'controller' => 'Stjornvisi\Controller\Page',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(

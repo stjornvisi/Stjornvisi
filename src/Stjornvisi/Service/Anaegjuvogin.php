@@ -12,7 +12,6 @@ use Stjornvisi\Lib\DataSourceAwareInterface;
 
 class Anaegjuvogin extends AbstractService implements DataSourceAwareInterface
 {
-
 	const NAME = 'Anaegjuvogin';
 
 	/**
