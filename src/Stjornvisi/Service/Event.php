@@ -1785,7 +1785,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
 		$event->event_end = ( $event->event_end )
 			? new Time("{$event->event_date} {$event->event_end}")
 			: null ;
-		$event->event_date = new  DateTime($event->event_date);
+		$event->event_date = new  DateTime("{$event->event_date} {$event->event_time->format('H:i:s')}");
 		//$event->lat = ($event->lat)? (float)$event->lat : null;
 		//$event->lng = ($event->lng)? (float)$event->lng : null;
 		$event->capacity = ($event->capacity)?(int)$event->capacity:null;
