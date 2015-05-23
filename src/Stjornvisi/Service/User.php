@@ -196,7 +196,7 @@ class User extends AbstractService implements DataSourceAwareInterface
 	 */
 	public function fetchGroupMembers(array $type)
 	{
-		try{
+		try {
 			$statement = $this->pdo->prepare("
 				SELECT U.*, G.name_short AS group_name, G.id AS group_id, GhU.type,
 				 ChU.company_id, ChU.key_user, C.name as company_name
@@ -213,7 +213,7 @@ class User extends AbstractService implements DataSourceAwareInterface
 
 			return $statement->fetchAll();
 
-		}catch (PDOException $e){
+		} catch (PDOException $e) {
 			$this->getEventManager()->trigger('error', $this, array(
 				'exception' => $e->getTraceAsString(),
 				'sql' => array(
@@ -231,9 +231,10 @@ class User extends AbstractService implements DataSourceAwareInterface
 	 * @return array
 	 * @throws Exception
 	 */
-	public function fetchAllLeaders( $valid = false ){
-		try{
-			if( $valid ){
+	public function fetchAllLeaders( $valid = false )
+    {
+		try {
+			if ($valid) {
 				$statement = $this->pdo->prepare("
 					SELECT U.* FROM `User` U
 					JOIN Group_has_User GhU ON (U.id = GhU.user_id)
@@ -241,7 +242,7 @@ class User extends AbstractService implements DataSourceAwareInterface
 					GROUP BY U.email
 					ORDER BY U.name;
 				");
-			}else{
+			} else {
 				$statement = $this->pdo->prepare("
 					SELECT U.* FROM `User` U
 					JOIN Group_has_User GhU ON (U.id = GhU.user_id)
@@ -1187,4 +1188,32 @@ class User extends AbstractService implements DataSourceAwareInterface
 		$this->pdo = $pdo;
 		return $this;
 	}
+
+    public function delete($id)
+    {
+        try {
+            $statement = $this->pdo->prepare("
+                delete from `User` where id = :id
+            ");
+            $statement->execute([
+                'id' => $id
+            ]);
+
+            $this->getEventManager()->trigger('delete', $this, array(
+                0 => __FUNCTION__,
+                'data' => (object)['id' => $id]
+            ));
+
+            return $statement->columnCount();
+
+        } catch (\PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't delete user[$id]. " . $e->getMessage() ,0,$e);
+        }
+    }
 }

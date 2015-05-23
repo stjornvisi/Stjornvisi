@@ -753,6 +753,19 @@ return array(
                             ),
                         )
                     ),
+                    'delete' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:id/eyda',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\User',
+                                'action' => 'delete'
+                            ),
+                        )
+                    ),
 					'create' => array(
 						'type' => 'Zend\Mvc\Router\Http\Segment',
 						'options' => array(

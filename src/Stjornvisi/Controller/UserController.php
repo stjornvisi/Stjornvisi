@@ -472,10 +472,40 @@ class UserController extends AbstractActionController
 
     /**
      * Delete user.
-     *
-     * @todo implement
      */
     public function deleteAction()
     {
+        $auth = new AuthenticationService();
+
+        if (!$auth->hasIdentity()) {
+            $this->getResponse()->setStatusCode(401);
+            $model = new ViewModel();
+            $model->setTemplate('error/401');
+            return $model;
+        }
+
+        $sm = $this->getServiceLocator();
+        /** @var  $userService \Stjornvisi\Service\User */
+        $userService = $sm->get('Stjornvisi\Service\User');
+
+        if (($user = $userService->get($this->params('id', null))) != false) {
+            $isSameUser = ($user->id == $auth->getIdentity()->id);
+
+            if ($isSameUser || $auth->getIdentity()->is_admin) {
+                $userService->delete($user->id);
+                if ($isSameUser) {
+                    $this->redirect()->toRoute('auth-out');
+                } else {
+                    $this->redirect()->toRoute('notandi');
+                }
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
+            }
+        } else {
+            return $this->notFoundAction();
+        }
     }
 }

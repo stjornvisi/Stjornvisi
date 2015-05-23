@@ -156,7 +156,6 @@ class NewsController extends AbstractActionController
                 if ($form->isValid()) {
                     $data = $form->getData();
                     unset($data['submit']);
-                    $data['user_id'] = $authService->getIdentity()->id;
                     $data['group_id'] = $group->id;
                     $newsId = $newsService->create($data);
                     return $this->redirect()->toRoute('frettir/index', ['id'=>$newsId]);

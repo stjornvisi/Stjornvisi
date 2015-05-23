@@ -103,7 +103,7 @@
 		<?php if( $this->access->is_admin || $this->access->type == 1 ):?>
 			<stjonvisi-control>
 				<a href="<?=$this->url('notandi/update',array('id'=>$this->user->id));?>" class="update"><i class="icon-check"></i> uppfæra</a>
-				<!--a href="<?=$this->url('notandi/delete',array('id'=>$this->user->id));?>" class="update"><i class="icon-close"></i> eyða</a-->
+				<a href="<?=$this->url('notandi/delete',array('id'=>$this->user->id));?>" class="update"><i class="icon-close"></i> eyða</a>
 				<?php if( $this->access->is_admin ):?>
 				<?php if( $this->user->is_admin ):?>
 				<a href="<?=$this->url('notandi/admin',array('id'=>$this->user->id,'type'=>0));?>"><i class="icon-minus"></i> Taka admin réttindi af</a></li>
