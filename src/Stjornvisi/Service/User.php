@@ -389,7 +389,7 @@ class User extends AbstractService implements DataSourceAwareInterface
 
 			if( is_numeric( $type ) ){
 				$statement = $this->pdo->prepare("
-				  SELECT U.*, GhU.type, C.name as company_name, C.id as comapny_id, C.business_type
+				  SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
 				  FROM Group_has_User GhU
 				  JOIN `User` U ON (U.id = GhU.user_id)
 				  JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
@@ -408,7 +408,7 @@ class User extends AbstractService implements DataSourceAwareInterface
 				},$type));
 
 				$statement = $this->pdo->prepare("
-				  SELECT U.*, GhU.type, C.name as company_name, C.id as comapny_id, C.business_type
+				  SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
 				  FROM Group_has_User GhU
 				  JOIN `User` U ON (U.id = GhU.user_id)
 				  JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
@@ -422,7 +422,7 @@ class User extends AbstractService implements DataSourceAwareInterface
 				));
 			}else{
 				$statement = $this->pdo->prepare("
-				  SELECT U.*, GhU.type, C.name as company_name, C.id as comapny_id, C.business_type
+				  SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
 				  FROM Group_has_User GhU
 				  JOIN `User` U ON (U.id = GhU.user_id)
 				  JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
