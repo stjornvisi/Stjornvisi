@@ -1187,121 +1187,75 @@ input[type="button"].btn-block {
 
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-ExtraBold-webfont.eot");
   src: url("fonts/open-sans/OpenSans-ExtraBold-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-ExtraBold-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-ExtraBold-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-ExtraBold-webfont.svg#open_sansextrabold") format("svg");
   font-weight: 900;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.eot");
   src: url("fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.svg#open_sansextrabold_italic") format("svg");
   font-weight: 900;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-Bold-webfont.eot");
   src: url("fonts/open-sans/OpenSans-Bold-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-Bold-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-Bold-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-Bold-webfont.svg#open_sansbold") format("svg");
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-BoldItalic-webfont.eot");
   src: url("fonts/open-sans/OpenSans-BoldItalic-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-BoldItalic-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-BoldItalic-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-BoldItalic-webfont.svg#open_sansbold_italic") format("svg");
   font-weight: 700;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-Semibold-webfont.eot");
   src: url("fonts/open-sans/OpenSans-Semibold-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-Semibold-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-Semibold-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-Semibold-webfont.svg#open_sanssemibold") format("svg");
   font-weight: 300;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-SemiboldItalic-webfont.eot");
   src: url("fonts/open-sans/OpenSans-SemiboldItalic-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-SemiboldItalic-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-SemiboldItalic-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-SemiboldItalic-webfont.svg#open_sanssemibold_italic") format("svg");
   font-weight: 300;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-Regular-webfont.eot");
   src: url("fonts/open-sans/OpenSans-Regular-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-Regular-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-Regular-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-Regular-webfont.svg#open_sansregular") format("svg");
   font-weight: 200;
   font-style: normal;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-Italic-webfont.eot");
   src: url("fonts/open-sans/OpenSans-Italic-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-Italic-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-Italic-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-Italic-webfont.svg#open_sansitalic") format("svg");
   font-weight: 200;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-LightItalic-webfont.eot");
   src: url("fonts/open-sans/OpenSans-LightItalic-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-LightItalic-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-LightItalic-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-LightItalic-webfont.svg#open_sanslight_italic") format("svg");
   font-weight: 100;
   font-style: italic;
 }
 @font-face {
   font-family: 'Open Sans';
-  src: url("fonts/open-sans/OpenSans-Light-webfont.eot");
   src: url("fonts/open-sans/OpenSans-Light-webfont.eot") format("embedded-opentype"), url("fonts/open-sans/OpenSans-Light-webfont.woff") format("woff"), url("fonts/open-sans/OpenSans-Light-webfont.ttf") format("truetype"), url("fonts/open-sans/OpenSans-Light-webfont.svg#open_sanslight") format("svg");
   font-weight: 100;
   font-style: normal;
 }
-/* latin-ext */
 @font-face {
   font-family: 'Bitter';
   font-style: normal;
   font-weight: 400;
-  src: local("Bitter-Regular"), url(fonts/bitter/VyzH0eNzfhxMjuJ3chtK7H-_kf6ByYO6CLYdB4HQE-Y.woff2) format("woff2");
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+  src: local("Bitter-Regular"), url(fonts/bitter/bitter-normal.woff2) format("woff2"), url(fonts/bitter/bitter-normal.woff) format("woff");
 }
-/* latin */
-@font-face {
-  font-family: 'Bitter';
-  font-style: normal;
-  font-weight: 400;
-  src: local("Bitter-Regular"), url(fonts/bitter/HEpP8tJXlWaYHimsnXgfCOvvDin1pK8aKteLpeZ5c0A.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-/* latin-ext */
 @font-face {
   font-family: 'Bitter';
   font-style: normal;
   font-weight: 700;
-  src: local("Bitter-Bold"), url(fonts/bitter/JGVZEP92dXgoQBG1CnQcfIX0hVgzZQUfRDuZrPvH3D8.woff2) format("woff2");
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-  font-family: 'Bitter';
-  font-style: normal;
-  font-weight: 700;
-  src: local("Bitter-Bold"), url(fonts/bitter/evC1haE-MsorTl_A7_uSGZBw1xU1rKptJj_0jans920.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-/* latin-ext */
-@font-face {
-  font-family: 'Bitter';
-  font-style: italic;
-  font-weight: 400;
-  src: local("Bitter-Italic"), url(fonts/bitter/PX9NwOMMeyM1S_WWulmbfhkAz4rYn47Zy2rvigWQf6w.woff2) format("woff2");
-  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
-}
-/* latin */
-@font-face {
-  font-family: 'Bitter';
-  font-style: italic;
-  font-weight: 400;
-  src: local("Bitter-Italic"), url(fonts/bitter/-t3SK6sofTjAH0MNf_tLaHYhjbSpvc47ee6xR_80Hnw.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+  src: local("Bitter-Bold"), url(fonts/bitter/bitter-bold.woff2) format("woff2"), url(fonts/bitter/bitter-bold.woff) format("woff");
 }
 @font-face {
   font-family: 'icomoon';
@@ -1310,7 +1264,7 @@ input[type="button"].btn-block {
   font-weight: normal;
   font-style: normal;
 }
-/* line 195, ../sass/helpers/_fonts.scss */
+/* line 145, ../sass/helpers/_fonts.scss */
 [class^="icon-"], [class*=" icon-"] {
   font-family: 'icomoon';
   speak: none;
@@ -1324,187 +1278,187 @@ input[type="button"].btn-block {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* line 209, ../sass/helpers/_fonts.scss */
+/* line 159, ../sass/helpers/_fonts.scss */
 .icon-stjornvisi:before {
   content: "\e613";
 }
 
-/* line 213, ../sass/helpers/_fonts.scss */
+/* line 163, ../sass/helpers/_fonts.scss */
 .icon-facebook2:before {
   content: "\e612";
 }
 
-/* line 217, ../sass/helpers/_fonts.scss */
+/* line 167, ../sass/helpers/_fonts.scss */
 .icon-check:before {
   content: "\f00c";
 }
 
-/* line 221, ../sass/helpers/_fonts.scss */
+/* line 171, ../sass/helpers/_fonts.scss */
 .icon-close:before {
   content: "\f00d";
 }
 
-/* line 225, ../sass/helpers/_fonts.scss */
+/* line 175, ../sass/helpers/_fonts.scss */
 .icon-file-o:before {
   content: "\f016";
 }
 
-/* line 229, ../sass/helpers/_fonts.scss */
+/* line 179, ../sass/helpers/_fonts.scss */
 .icon-list:before {
   content: "\f03a";
 }
 
-/* line 233, ../sass/helpers/_fonts.scss */
+/* line 183, ../sass/helpers/_fonts.scss */
 .icon-plus:before {
   content: "\f067";
 }
 
-/* line 237, ../sass/helpers/_fonts.scss */
+/* line 187, ../sass/helpers/_fonts.scss */
 .icon-minus:before {
   content: "\f068";
 }
 
-/* line 241, ../sass/helpers/_fonts.scss */
+/* line 191, ../sass/helpers/_fonts.scss */
 .icon-bar-chart:before {
   content: "\f080";
 }
 
-/* line 245, ../sass/helpers/_fonts.scss */
+/* line 195, ../sass/helpers/_fonts.scss */
 .icon-phone:before {
   content: "\f095";
 }
 
-/* line 249, ../sass/helpers/_fonts.scss */
+/* line 199, ../sass/helpers/_fonts.scss */
 .icon-envelope:before {
   content: "\f0e0";
 }
 
-/* line 253, ../sass/helpers/_fonts.scss */
+/* line 203, ../sass/helpers/_fonts.scss */
 .icon-mobile:before {
   content: "\f10b";
 }
 
-/* line 257, ../sass/helpers/_fonts.scss */
+/* line 207, ../sass/helpers/_fonts.scss */
 .icon-file-pdf-o:before {
   content: "\f1c1";
 }
 
-/* line 261, ../sass/helpers/_fonts.scss */
+/* line 211, ../sass/helpers/_fonts.scss */
 .icon-file-word-o:before {
   content: "\f1c2";
 }
 
-/* line 265, ../sass/helpers/_fonts.scss */
+/* line 215, ../sass/helpers/_fonts.scss */
 .icon-file-excel-o:before {
   content: "\f1c3";
 }
 
-/* line 269, ../sass/helpers/_fonts.scss */
+/* line 219, ../sass/helpers/_fonts.scss */
 .icon-file-image-o:before {
   content: "\f1c5";
 }
 
-/* line 273, ../sass/helpers/_fonts.scss */
+/* line 223, ../sass/helpers/_fonts.scss */
 .icon-area-chart:before {
   content: "\f1fe";
 }
 
-/* line 277, ../sass/helpers/_fonts.scss */
+/* line 227, ../sass/helpers/_fonts.scss */
 .icon-pie-chart:before {
   content: "\f200";
 }
 
-/* line 281, ../sass/helpers/_fonts.scss */
+/* line 231, ../sass/helpers/_fonts.scss */
 .icon-calendar-o:before {
   content: "\e60f";
 }
 
-/* line 285, ../sass/helpers/_fonts.scss */
+/* line 235, ../sass/helpers/_fonts.scss */
 .icon-mode-edit:before {
   content: "\e611";
 }
 
-/* line 289, ../sass/helpers/_fonts.scss */
+/* line 239, ../sass/helpers/_fonts.scss */
 .icon-chevron-left:before {
   content: "\f0a4";
 }
 
-/* line 293, ../sass/helpers/_fonts.scss */
+/* line 243, ../sass/helpers/_fonts.scss */
 .icon-rss:before {
   content: "\e610";
 }
 
-/* line 297, ../sass/helpers/_fonts.scss */
+/* line 247, ../sass/helpers/_fonts.scss */
 .icon-chevron-right:before {
   content: "\e60e";
 }
 
-/* line 301, ../sass/helpers/_fonts.scss */
+/* line 251, ../sass/helpers/_fonts.scss */
 .icon-document:before {
   content: "\e60b";
 }
 
-/* line 305, ../sass/helpers/_fonts.scss */
+/* line 255, ../sass/helpers/_fonts.scss */
 .icon-exel:before {
   content: "\e60c";
 }
 
-/* line 309, ../sass/helpers/_fonts.scss */
+/* line 259, ../sass/helpers/_fonts.scss */
 .icon-pdf:before {
   content: "\e60d";
 }
 
-/* line 313, ../sass/helpers/_fonts.scss */
+/* line 263, ../sass/helpers/_fonts.scss */
 .icon-facebook:before {
   content: "\e60a";
 }
 
-/* line 317, ../sass/helpers/_fonts.scss */
+/* line 267, ../sass/helpers/_fonts.scss */
 .icon-burger:before {
   content: "\e600";
 }
 
-/* line 321, ../sass/helpers/_fonts.scss */
+/* line 271, ../sass/helpers/_fonts.scss */
 .icon-cancel:before {
   content: "\e601";
 }
 
-/* line 325, ../sass/helpers/_fonts.scss */
+/* line 275, ../sass/helpers/_fonts.scss */
 .icon-cog:before {
   content: "\e602";
 }
 
-/* line 329, ../sass/helpers/_fonts.scss */
+/* line 279, ../sass/helpers/_fonts.scss */
 .icon-home:before {
   content: "\e603";
 }
 
-/* line 333, ../sass/helpers/_fonts.scss */
+/* line 283, ../sass/helpers/_fonts.scss */
 .icon-horn:before {
   content: "\e604";
 }
 
-/* line 337, ../sass/helpers/_fonts.scss */
+/* line 287, ../sass/helpers/_fonts.scss */
 .icon-mail:before {
   content: "\e605";
 }
 
-/* line 341, ../sass/helpers/_fonts.scss */
+/* line 291, ../sass/helpers/_fonts.scss */
 .icon-no:before {
   content: "\e606";
 }
 
-/* line 345, ../sass/helpers/_fonts.scss */
+/* line 295, ../sass/helpers/_fonts.scss */
 .icon-search:before {
   content: "\e607";
 }
 
-/* line 349, ../sass/helpers/_fonts.scss */
+/* line 299, ../sass/helpers/_fonts.scss */
 .icon-users:before {
   content: "\e608";
 }
 
-/* line 353, ../sass/helpers/_fonts.scss */
+/* line 303, ../sass/helpers/_fonts.scss */
 .icon-yes:before {
   content: "\e609";
 }
