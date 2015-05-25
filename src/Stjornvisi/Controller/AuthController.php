@@ -747,4 +747,36 @@ class AuthController extends AbstractActionController
         $password = substr(str_shuffle($chars), 0, $length);
         return $password;
     }
+
+    /**
+     * Switch user.
+     *
+     * If the system is running in $_ENV = development,
+     * this method can switch the logged in user into what
+     * ever ID passed in.
+     *
+     * For debugging.
+     *
+     * @return array|\Zend\Http\Response
+     */
+    public function switchUserAction()
+    {
+        $env = getenv('APPLICATION_ENV') ?: 'production';
+
+        if ($env != 'development') {
+            return $this->notFoundAction();
+        }
+
+        $auth = new AuthenticationService();
+        $sm = $this->getServiceLocator();
+        /** @var  $authAdapter \Stjornvisi\Auth\Adapter */
+        $authAdapter =  $sm->get('Stjornvisi\Auth\Adapter');
+        $authAdapter->setIdentifier($this->params('id', 0));
+        $result = $auth->authenticate($authAdapter);
+        if ($result->isValid()) {
+            return $this->redirect()->toRoute('home');
+        } else {
+            return $this->notFoundAction();
+        }
+    }
 }

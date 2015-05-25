@@ -1596,6 +1596,16 @@ return array(
 							),
 						)
 					),
+                    'switch' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/switch/:id',
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\Auth',
+                                'action' => 'switch-user'
+                            ),
+                        )
+                    ),
 				),
 			),
 			'auth-out' => array(
