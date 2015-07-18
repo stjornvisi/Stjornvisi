@@ -70,7 +70,7 @@ return array(
                 'options' => array(
                     'route' => '/vidburdir',
 					'defaults' => array(
-						'controller' => 'Stjornvisi\Controller\Event',
+						'controller' => 'Stjornvisi\Controller\Event\Event',
 						'action' => 'list'
 					),
                 ),
@@ -84,7 +84,7 @@ return array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\Event',
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
                                 'action' => 'index'
                             ),
                         )
@@ -97,7 +97,7 @@ return array(
 								'date' => '[0-9]{4}-[0-9]{2}',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
+								'controller' => 'Stjornvisi\Controller\Event\Event',
 								'action' => 'list'
 							),
 						)
@@ -110,7 +110,7 @@ return array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\Event',
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
                                 'action' => 'update'
                             ),
                         )
@@ -123,7 +123,7 @@ return array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\Event',
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
                                 'action' => 'delete'
                             ),
                         )
@@ -136,7 +136,7 @@ return array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\Event',
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
                                 'action' => 'create'
                             ),
                         )
@@ -150,7 +150,7 @@ return array(
                                 'type' => '[01]'
                             ),
                             'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\Event',
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
                                 'action' => 'attend'
                             ),
                         )
@@ -164,7 +164,7 @@ return array(
 								'type' => 'allir|gestir'
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
+								'controller' => 'Stjornvisi\Controller\Event\Event',
 								'action' => 'send-mail'
 							),
 						)
@@ -178,7 +178,7 @@ return array(
 								'type' => 'allir|gestir'
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
+								'controller' => 'Stjornvisi\Controller\Event\Event',
 								'action' => 'export-attendees'
 							),
 						)
@@ -191,7 +191,7 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
+								'controller' => 'Stjornvisi\Controller\Event\Gallery',
 								'action' => 'gallery-list'
 							),
 						)
@@ -204,7 +204,7 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
+								'controller' => 'Stjornvisi\Controller\Event\Gallery',
 								'action' => 'gallery-create'
 							),
 						)
@@ -217,7 +217,7 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
+								'controller' => 'Stjornvisi\Controller\Event\Gallery',
 								'action' => 'gallery-update'
 							),
 						)
@@ -230,7 +230,7 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
+								'controller' => 'Stjornvisi\Controller\Event\Gallery',
 								'action' => 'gallery-delete'
 							),
 						)
@@ -243,8 +243,8 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
-								'action' => 'resource-list'
+								'controller' => 'Stjornvisi\Controller\Event\Resource',
+								'action' => 'list'
 							),
 						)
 					),
@@ -256,8 +256,8 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
-								'action' => 'resource-create'
+								'controller' => 'Stjornvisi\Controller\Event\Resource',
+								'action' => 'create'
 							),
 						)
 					),
@@ -269,8 +269,8 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
-								'action' => 'resource-update'
+								'controller' => 'Stjornvisi\Controller\Event\Resource',
+								'action' => 'update'
 							),
 						)
 					),
@@ -282,8 +282,8 @@ return array(
 								'id' => '[0-9]*',
 							),
 							'defaults' => array(
-								'controller' => 'Stjornvisi\Controller\Event',
-								'action' => 'resource-delete'
+								'controller' => 'Stjornvisi\Controller\Event\Resource',
+								'action' => 'delete'
 							),
 						)
 					),
@@ -1790,7 +1790,10 @@ return array(
             'Stjornvisi\Controller\Index' => 'Stjornvisi\Controller\IndexController',
             'Stjornvisi\Controller\Group' => 'Stjornvisi\Controller\GroupController',
             'Stjornvisi\Controller\Auth' => 'Stjornvisi\Controller\AuthController',
-            'Stjornvisi\Controller\Event' => 'Stjornvisi\Controller\EventController',
+            'Stjornvisi\Controller\Event\Event' => 'Stjornvisi\Controller\Event\EventController',
+			'Stjornvisi\Controller\Event\Resource' => 'Stjornvisi\Controller\Event\ResourceController',
+			'Stjornvisi\Controller\Event\Gallery' => 'Stjornvisi\Controller\Event\GalleryController',
+
             'Stjornvisi\Controller\News' => 'Stjornvisi\Controller\NewsController',
             'Stjornvisi\Controller\Company' => 'Stjornvisi\Controller\CompanyController',
             'Stjornvisi\Controller\User' => 'Stjornvisi\Controller\UserController',

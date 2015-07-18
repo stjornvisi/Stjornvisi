@@ -21,6 +21,7 @@ use Stjornvisi\Event\ActivityListener;
 use Stjornvisi\Event\ErrorEventListener;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactory;
+use Stjornvisi\Lib\QueueConnectionFactoryStub;
 use Stjornvisi\Notify\DataStoreInterface;
 use Stjornvisi\Notify\NotifyEventManagerAwareInterface;
 
@@ -179,6 +180,7 @@ class Module
 				},
 				'QueueConnectionAwareInterface' => function ($instance, $sm) {
 					if ($instance instanceof QueueConnectionAwareInterface) {
+                        $i = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
 						$instance->setQueueConnectionFactory($sm->get('Stjornvisi\Lib\QueueConnectionFactory'));
 					}
 				},
@@ -201,17 +203,6 @@ class Module
 					if ($instance instanceof ServiceEventManagerAwareInterface) {
 						$instance->setEventManager($sm->get('ServiceEventManager'));
 					}
-					/**
-					if ($instance instanceof EventManagerAwareInterface) {
-						$eventManager = $instance->getEventManager();
-
-						if ($eventManager instanceof EventManagerInterface) {
-							$eventManager->setSharedManager($serviceLocator->get('SharedEventManager'));
-						} else {
-							$instance->setEventManager($serviceLocator->get('EventManager'));
-						}
-					}
-					 */
 				},
 			),
 			'invokables' => [
@@ -247,10 +238,13 @@ class Module
 
 				'Stjornvisi\Auth\Adapter'		=> 'Stjornvisi\Auth\Adapter',
 				'Stjornvisi\Auth\Facebook'		=> 'Stjornvisi\Auth\Facebook',
+
+                'AuthenticationService'               => 'Zend\Authentication\AuthenticationService',
 			],
 			'aliases' => array(
 				'UserService' => 'Stjornvisi\Service\User',
-				'GroupService' => 'Stjornvisi\Service\Group'
+				'GroupService' => 'Stjornvisi\Service\Group',
+                'Zend\Authentication\AuthenticationService' => 'AuthenticationService',
 			),
 			'factories' => array(
 				'Logger' => function ($sm) {
@@ -358,6 +352,10 @@ class Module
 					}
 				},
 				'Stjornvisi\Lib\QueueConnectionFactory' => function ($sm) {
+                    $evn = getenv('APPLICATION_ENV') ?: 'production';
+                    if ($evn == 'testing') {
+                        return new QueueConnectionFactoryStub();
+                    }
 					$config = $sm->get('config');
 					$queue = new QueueConnectionFactory();
 					$queue->setConfig($config['queue']);
@@ -432,9 +430,9 @@ class Module
 				'subMenu' => function ($sm) {
 					/** @var $sm \Zend\View\HelperPluginManager */
 					return new SubMenu(
-						$sm->getServiceLocator()->get('GroupService'),
-						$sm->getServiceLocator()->get('UserService'),
-						new AuthenticationService()
+						$sm->getServiceLocator()->get('Stjornvisi\Service\Group'),
+						$sm->getServiceLocator()->get('Stjornvisi\Service\User'),
+                        $sm->getServiceLocator()->get('AuthenticationService')
 					);
 				}
 			],
