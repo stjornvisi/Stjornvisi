@@ -11,7 +11,6 @@ use Stjornvisi\Lib\DataSourceAwareInterface;
 class Event extends AbstractService implements DataSourceAwareInterface
 {
     const NAME = "event";
-
     const GALLERY_NAME = "gallery";
 
     /**
@@ -58,7 +57,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         $i->id = (int)$i->id;
                         return $i;
                     },
-					$groupStatement->fetchAll()
+                    $groupStatement->fetchAll()
                 );
 
                 //ATTENDERS
@@ -85,7 +84,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                              $i->register_time = new DateTime($i->register_time);
                              return $i;
                         },
-						$attendStatement->fetchAll()
+                        $attendStatement->fetchAll()
                     );
                 } else {
                     $event->attenders = [];
@@ -101,7 +100,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     $attendingStatement->execute([
                         'user_id' => $user_id,
                         'event_id' => $id
-					]);
+                    ]);
                     $event->attending = $attendingStatement->fetchColumn();
                     //$event->attending = ($event->attending==null)?null:(bool)$event->attending;
                 } else {
@@ -121,7 +120,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         $i->created = new DateTime($i->created);
                         return $i;
                     },
-					$galleryStatement->fetchAll()
+                    $galleryStatement->fetchAll()
                 );
 
                 //REFERENCE
@@ -137,7 +136,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         $i->created = new DateTime($i->created);
                         return $i;
                     },
-					$referenceStatement->fetchAll()
+                    $referenceStatement->fetchAll()
                 );
             }
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
@@ -147,17 +146,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 "error",
-				$this,
-				[
-                	'exception' => $e->getTraceAsString(),
-                	'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($groupStatement)?$groupStatement->queryString:null,
-						isset($attendingStatement)?$attendingStatement->queryString:null,
-						isset($galleryStatement)?$galleryStatement->queryString:null,
-						isset($referenceStatement)?$referenceStatement->queryString:null,
-						isset($attendStatement)?$attendStatement->queryString:null,
-                	]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($groupStatement)?$groupStatement->queryString:null,
+                        isset($attendingStatement)?$attendingStatement->queryString:null,
+                        isset($galleryStatement)?$galleryStatement->queryString:null,
+                        isset($referenceStatement)?$referenceStatement->queryString:null,
+                        isset($attendStatement)?$attendStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't query for event. event:[{$id}]", 0, $e);
@@ -177,13 +176,13 @@ class Event extends AbstractService implements DataSourceAwareInterface
         try {
             if ($offset != null && $count != null) {
                 $statement = $this->pdo->prepare("
-					SELECT * FROM Event E
-					ORDER BY E.event_date DESC
-					LIMIT {$offset},{$count};");
+                    SELECT * FROM Event E
+                    ORDER BY E.event_date DESC
+                    LIMIT {$offset},{$count};");
             } else {
                 $statement = $this->pdo->prepare("
-					SELECT * FROM Event E
-					ORDER BY E.event_date DESC;");
+                    SELECT * FROM Event E
+                    ORDER BY E.event_date DESC;");
             }
 
             $statement->execute();
@@ -196,17 +195,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     $i->event_date = new DateTime($i->event_date);
                     return $i;
                 },
-				$statement->fetchAll()
+                $statement->fetchAll()
             );
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 "error",
-				$this,
-				[
-                	'exception' => $e->getTraceAsString(),
-                	'sql' => [
-                		isset($statement)?$statement->queryString:null,
-                	]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't get all event entries", 0, $e);
@@ -223,9 +222,9 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				SELECT * FROM Event E
-				WHERE E.event_date >= NOW()
-				ORDER BY E.event_date ASC");
+                SELECT * FROM Event E
+                WHERE E.event_date >= NOW()
+                ORDER BY E.event_date ASC");
             $statement->execute();
             $event = $statement->fetchObject();
             //EVENT FOUND
@@ -273,16 +272,16 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 "error",
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($groupStatement)?$groupStatement->queryString:null,
-						isset($attendingStatement)?$attendingStatement->queryString:null,
-						isset($galleryStatement)?$galleryStatement->queryString:null,
-						isset($referenceStatement)?$referenceStatement->queryString:null,
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($groupStatement)?$groupStatement->queryString:null,
+                        isset($attendingStatement)?$attendingStatement->queryString:null,
+                        isset($galleryStatement)?$galleryStatement->queryString:null,
+                        isset($referenceStatement)?$referenceStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't query for event. event:[{$id}]", 0, $e);
@@ -312,17 +311,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
             //SANITIZE CAPACITY
             //	capacity has to be integer and bigger that zero
             $data['capacity'] = is_numeric($data['capacity'])
-				? (int)$data['capacity']
-				: null ;
+                ? (int)$data['capacity']
+                : null ;
             $data['capacity'] = ($data['capacity'] <= 0)
-				? null
-				: $data['capacity'] ;
+                ? null
+                : $data['capacity'] ;
             $data['lat'] = (empty($data['lat']))
-				? null
-				: $data['lat'];
+                ? null
+                : $data['lat'];
             $data['lng'] = (empty($data['lng']))
-				? null
-				: $data['lng'];
+                ? null
+                : $data['lng'];
 
             //UPDATE
             //  update event entry
@@ -345,40 +344,40 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 VALUES (:event_id,:group_id)");
             foreach ($groups as $group) {
                 $insertStatement->execute([
-					'event_id' => $id,
-					'group_id' => $group
-				]);
+                    'event_id' => $id,
+                    'group_id' => $group
+                ]);
             }
             $data['id'] = $id;
             $this->getEventManager()->trigger(
                 'update',
-				$this,
-				[
-                	0 => __FUNCTION__,
-                	'data' => $data
+                $this,
+                [
+                    0 => __FUNCTION__,
+                    'data' => $data
                 ]
             );
             $this->getEventManager()->trigger(
                 'index',
-				$this,
-				[
-                	0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
-                	'id' => $id,
-                	'name' => Event::NAME,
+                $this,
+                [
+                    0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                    'id' => $id,
+                    'name' => Event::NAME,
                 ]
             );
             return $count;
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($deleteStatement)?$deleteStatement->queryString:null,
-						isset($insertStatement)?$insertStatement->queryString:null,
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($deleteStatement)?$deleteStatement->queryString:null,
+                        isset($insertStatement)?$insertStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't update event. event:[{$id}]", 0, $e);
@@ -400,31 +399,31 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 $statement->execute(['id' => $id]);
                 $this->getEventManager()->trigger(
                     'delete',
-					$this,
-					[
-                    	0 => __FUNCTION__,
-                    	'data' => (array)$event
+                    $this,
+                    [
+                        0 => __FUNCTION__,
+                        'data' => (array)$event
                     ]
                 );
                 $this->getEventManager()->trigger(
                     'index',
-					$this,
-					[
-                    	0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
-                    	'id' => $id,
-                    	'name' => Event::NAME,
+                    $this,
+                    [
+                        0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                        'id' => $id,
+                        'name' => Event::NAME,
                     ]
                 );
                 return (int)$statement->rowCount();
             } catch (PDOException $e) {
                 $this->getEventManager()->trigger(
                     'error',
-					$this,
-					[
+                    $this,
+                    [
                     'exception' => $e->getTraceAsString(),
-                    	[
-                    		isset($statement)?$statement->queryString:null,
-						]
+                        [
+                            isset($statement)?$statement->queryString:null,
+                        ]
                     ]
                 );
                 throw new Exception("Cant delete event. event:[{$id}]", 0, $e);
@@ -456,17 +455,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
             //SANITIZE CAPACITY
             //	capacity has to be integer and bigger that zero
             $data['capacity'] = is_numeric($data['capacity'])
-				? (int)$data['capacity']
-				: null ;
+                ? (int)$data['capacity']
+                : null ;
             $data['capacity'] = ($data['capacity'] <= 0)
-				? null
-				: $data['capacity'] ;
+                ? null
+                : $data['capacity'] ;
             $data['lat'] = (empty($data['lat']))
-				? null
-				: $data['lat'];
+                ? null
+                : $data['lat'];
             $data['lng'] = (empty($data['lng']))
-				? null
-				: $data['lng'];
+                ? null
+                : $data['lng'];
 
             $createString = $this->insertString('Event', $data);
             $createStatement = $this->pdo->prepare($createString);
@@ -479,40 +478,40 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 VALUES(:event_id, :group_id, 0)");
             foreach ($groups as $group) {
                 $connectStatement->execute([
-					'event_id' => $id,
-					'group_id' => $group
-				]);
+                    'event_id' => $id,
+                    'group_id' => $group
+                ]);
             }
             $data['id'] = $id;
             $this->getEventManager()->trigger(
                 'create',
-				$this,
-				[
-                	0 => __FUNCTION__,
-                	'data' => $data
+                $this,
+                [
+                    0 => __FUNCTION__,
+                    'data' => $data
                 ]
             );
 
             $this->getEventManager()->trigger(
                 'index',
-				$this,
-				[
-                	0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
-                	'id' => $id,
-                	'name' => Event::NAME,
+                $this,
+                [
+                    0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                    'id' => $id,
+                    'name' => Event::NAME,
                 ]
             );
             return $id;
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-                	'exception' => $e->getTraceAsString(),
-                	'sql' => [
-                    	isset($createStatement)?$createStatement->queryString:null,
-                    	isset($connectStatement)?$connectStatement->queryString:null,
-                	]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($createStatement)?$createStatement->queryString:null,
+                        isset($connectStatement)?$connectStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't create event. " . $e->getMessage(), 0, $e);
@@ -533,13 +532,13 @@ class Event extends AbstractService implements DataSourceAwareInterface
             //GET EVENTS
             //  get all events
             $statement = $this->pdo->prepare("
-              	SELECT E.*, EhU.attending, EhU.register_time FROM `Event` E
-				LEFT JOIN Group_has_Event GhE ON (E.id = GhE.group_id)
-				LEFT JOIN Event_has_User EhU ON ( EhU.user_id=:id AND E.id = EhU.event_id )
-				WHERE (GhE.group_id IN (SELECT group_id FROM Group_has_User GhU WHERE user_id = :id)
-					OR GhE.group_id IS NULL)
-					AND E.event_date >= DATE(NOW())
-				ORDER BY E.event_date ASC;");
+                SELECT E.*, EhU.attending, EhU.register_time FROM `Event` E
+                LEFT JOIN Group_has_Event GhE ON (E.id = GhE.group_id)
+                LEFT JOIN Event_has_User EhU ON ( EhU.user_id=:id AND E.id = EhU.event_id )
+                WHERE (GhE.group_id IN (SELECT group_id FROM Group_has_User GhU WHERE user_id = :id)
+                    OR GhE.group_id IS NULL)
+                    AND E.event_date >= DATE(NOW())
+                ORDER BY E.event_date ASC;");
             $statement->execute(['id'=>$id]);
             $events = $statement->fetchAll();
 
@@ -570,11 +569,11 @@ class Event extends AbstractService implements DataSourceAwareInterface
             }
 
             $countAttendanceStatement = $this->pdo->prepare("
-				SELECT
-					(SELECT count(*) FROM Event_has_User EhU WHERE event_id = :event_id)
- 					+
-					(SELECT count(*) FROM Event_has_Guest EhG WHERE event_id = :event_id)
-				AS 'total';");
+                SELECT
+                    (SELECT count(*) FROM Event_has_User EhU WHERE event_id = :event_id)
+                    +
+                    (SELECT count(*) FROM Event_has_Guest EhG WHERE event_id = :event_id)
+                AS 'total';");
 
             //CAN USER ATTEND
             array_map(
@@ -599,8 +598,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         $event->can_attend = true;
                         return $event;
                     }
-            	},
-				$events
+                },
+                $events
             );
 
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
@@ -608,13 +607,13 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-                	'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($groupsStatement)?$groupsStatement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($groupsStatement)?$groupsStatement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("", 0, $e);
@@ -635,25 +634,25 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				  SELECT * FROM EventMedia EM
-				  JOIN Group_has_Event GhE ON (GhE.event_id = EM.event_id)
-				  WHERE
-					GhE.group_id IN (SELECT group_id FROM Group_has_User GhU WHERE user_id = :id)
-				  AND
-					EM.created >= DATE_SUB(NOW(), INTERVAL 6 MONTH )
-				  ORDER BY GhE.event_id, EM.created DESC;");
+                  SELECT * FROM EventMedia EM
+                  JOIN Group_has_Event GhE ON (GhE.event_id = EM.event_id)
+                  WHERE
+                    GhE.group_id IN (SELECT group_id FROM Group_has_User GhU WHERE user_id = :id)
+                  AND
+                    EM.created >= DATE_SUB(NOW(), INTERVAL 6 MONTH )
+                  ORDER BY GhE.event_id, EM.created DESC;");
             $statement->execute(['id'=>$id]);
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
             $media = $statement->fetchAll();
             $eventStatement = $this->pdo->prepare("
-				SELECT E.id, E.subject, E.event_date FROM `Event` E WHERE id = :id");
+                SELECT E.id, E.subject, E.event_date FROM `Event` E WHERE id = :id");
 
             $array = [];
             foreach ($media as $item) {
                 if (!isset($array[$item->event_id]->media)) {
                     $array[$item->event_id] = (object)[
-						'media' => [],
-						'event' => [],
+                        'media' => [],
+                        'event' => [],
                     ];
                 }
                 $array[$item->event_id]->media[] = $item;
@@ -670,12 +669,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't read media by user", 0, $e);
@@ -713,7 +712,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
             //  prepare a statement to get all groups
             //  that are connected to event
             $groupsStatement = $this->pdo->prepare("
-				SELECT G.* FROM Group_has_Event GhE
+                SELECT G.* FROM Group_has_Event GhE
                 JOIN `Group` G ON (G.id = GhE.group_id)
                 WHERE GhE.event_id = :id;");
 
@@ -739,13 +738,13 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($groupsStatement)?$groupsStatement->queryString:null,
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($groupsStatement)?$groupsStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't get events in date range", 0, $e);
@@ -768,27 +767,27 @@ class Event extends AbstractService implements DataSourceAwareInterface
         try {
             if ($to == null) {
                 $statement = $this->pdo->prepare("
-					SELECT * FROM Event E
-					JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
-					WHERE E.event_date >= :from
-					AND GhE.group_id = :id
-					ORDER BY E.event_date DESC;");
+                    SELECT * FROM Event E
+                    JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
+                    WHERE E.event_date >= :from
+                    AND GhE.group_id = :id
+                    ORDER BY E.event_date DESC;");
                 $statement->execute([
-					'from' => $from->format('Y-m-d'),
-					'id' => $id
-				]);
+                    'from' => $from->format('Y-m-d'),
+                    'id' => $id
+                ]);
             } else {
                 $statement = $this->pdo->prepare("
-					SELECT * FROM Event E
-					JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
-					WHERE (E.event_date BETWEEN :from AND :to)
-					AND GhE.group_id = :id
-					ORDER BY E.event_date DESC;");
+                    SELECT * FROM Event E
+                    JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
+                    WHERE (E.event_date BETWEEN :from AND :to)
+                    AND GhE.group_id = :id
+                    ORDER BY E.event_date DESC;");
                 $statement->execute([
-					'from' => $from->format('Y-m-d'),
-					'to' => $to->format('Y-m-d'),
-					'id' => $id
-				]);
+                    'from' => $from->format('Y-m-d'),
+                    'to' => $to->format('Y-m-d'),
+                    'id' => $id
+                ]);
             }
             $events = $statement->fetchAll();
 
@@ -821,11 +820,11 @@ class Event extends AbstractService implements DataSourceAwareInterface
             }
 
             $countAttendanceStatement = $this->pdo->prepare("
-				SELECT
-					(SELECT count(*) FROM Event_has_User EhU WHERE event_id = :event_id)
- 					+
-					(SELECT count(*) FROM Event_has_Guest EhG WHERE event_id = :event_id)
-				AS 'total';");
+                SELECT
+                    (SELECT count(*) FROM Event_has_User EhU WHERE event_id = :event_id)
+                    +
+                    (SELECT count(*) FROM Event_has_Guest EhG WHERE event_id = :event_id)
+                AS 'total';");
 
             //CAN USER ATTEND
             array_map(
@@ -857,34 +856,34 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         $event->can_attend = true;
                         return $event;
                     }
-            	},
-				$events
+                },
+                $events
             );
 
             //IS USER ATTENDING EVENT?
             //	now we need to know if the user is attending
             //	the event or not
             $attendanceStatement = $this->pdo->prepare("
-					SELECT attending FROM `Event_has_User`
-					WHERE event_id = :event_id AND user_id = :user_id");
+                    SELECT attending FROM `Event_has_User`
+                    WHERE event_id = :event_id AND user_id = :user_id");
             array_map(
                 function ($event) use ($attendanceStatement, $user) {
                     if ($event->can_attend) {
                         $attendanceStatement->execute([
-							'event_id' => $event->id,
-							'user_id' => (int)$user
-						]);
+                            'event_id' => $event->id,
+                            'user_id' => (int)$user
+                        ]);
                         $attendance = $attendanceStatement->fetchObject();
                         $event->attending = ( $attendance && isset($attendance->attending))
-							? $attendance->attending
-							: null;
+                            ? $attendance->attending
+                            : null;
                         return $event;
                     } else {
                         $event->attending = null;
                         return $event;
                     }
                 },
-				$events
+                $events
             );
 
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
@@ -892,13 +891,13 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($groupsStatement)?$groupsStatement->queryString:null,
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($groupsStatement)?$groupsStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't read events in a group by date range", 0, $e);
@@ -916,15 +915,15 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				select count(*) as total, DATE(U.register_time) as register_time from (
-					(select event_id, register_time from Event_has_User
-					where event_id = :id AND attending = 1)
-					union
-					(select event_id, register_time from Event_has_Guest
-					where event_id = :id)
-				) as U
-				GROUP BY DATE(register_time)
-				ORDER BY register_time;");
+                select count(*) as total, DATE(U.register_time) as register_time from (
+                    (select event_id, register_time from Event_has_User
+                    where event_id = :id AND attending = 1)
+                    union
+                    (select event_id, register_time from Event_has_Guest
+                    where event_id = :id)
+                ) as U
+                GROUP BY DATE(register_time)
+                ORDER BY register_time;");
             $statement->execute(['id' => $id]);
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
 
@@ -945,8 +944,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
 
                 foreach ($dateRange as $date) {
                     $tmp = (object)[
-						'count' => 0,
-						'date' => $date
+                        'count' => 0,
+                        'date' => $date
                     ];
                     //search date in $row
                     foreach ($rows as $item) {
@@ -964,12 +963,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't aggregate attendance data for event:[{$id}]", 0, $e);
@@ -988,10 +987,10 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				SELECT * FROM Event E
-				JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
-				WHERE GhE.group_id = :id
-				ORDER BY E.event_date DESC;");
+                SELECT * FROM Event E
+                JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
+                WHERE GhE.group_id = :id
+                ORDER BY E.event_date DESC;");
             $statement->execute(['id' => $id]);
             $events = $statement->fetchAll();
 
@@ -1025,13 +1024,13 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($groupsStatement)?$groupsStatement->queryString:null,
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($groupsStatement)?$groupsStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't read events in a group", 0, $e);
@@ -1056,8 +1055,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 SELECT E.* FROM Group_has_Event GhE
                 JOIN Event E ON (E.id = GhE.event_id)
                 WHERE (GhE.group_id IN (". implode(',', array_map(function ($i) {
-					return is_numeric($i)?$i:'null';
-				},$id)).
+                    return is_numeric($i)?$i:'null';
+                },$id)).
                 ") OR GhE.group_id IS NULL)
                 AND E.event_date > NOW() AND GhE.event_id != :id
                 ORDER BY E.event_date ASC LIMIT 0,5");
@@ -1069,10 +1068,10 @@ class Event extends AbstractService implements DataSourceAwareInterface
             //	todo maybe this is not a good idea
             if (!$events) {
                 $statement = $this->pdo->prepare("
-                	SELECT E.* FROM Group_has_Event GhE
-                	JOIN Event E ON (E.id = GhE.event_id)
-                	WHERE E.event_date > NOW() AND GhE.event_id != :id
-					ORDER BY E.event_date ASC LIMIT 0,5");
+                    SELECT E.* FROM Group_has_Event GhE
+                    JOIN Event E ON (E.id = GhE.event_id)
+                    WHERE E.event_date > NOW() AND GhE.event_id != :id
+                    ORDER BY E.event_date ASC LIMIT 0,5");
                 $statement->execute(['id' => $exclude]);
                 $events = $statement->fetchAll();
             }
@@ -1082,9 +1081,9 @@ class Event extends AbstractService implements DataSourceAwareInterface
             //  prepare a statement to get all groups
             //  that are connected to event
             $groupsStatement = $this->pdo->prepare("
-				SELECT G.* FROM Group_has_Event GhE
-				LEFT JOIN `Group` G ON (G.id = GhE.group_id)
-				WHERE GhE.event_id = :id;");
+                SELECT G.* FROM Group_has_Event GhE
+                LEFT JOIN `Group` G ON (G.id = GhE.group_id)
+                WHERE GhE.event_id = :id;");
 
             //FOR EVERY EVENT
             //  get all groups that are connected to event
@@ -1107,13 +1106,13 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null,
-						isset($groupsStatement)?$groupsStatement->queryString:null,
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                        isset($groupsStatement)?$groupsStatement->queryString:null,
+                    ]
                 ]
             );
             throw new Exception("Can't get related events of event. event:[{$id}]", 0, $e);
@@ -1155,7 +1154,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         'event_id' => (int)$event_id,
                         'user_id' => (int)$user_id,
                         'attending' => (int)$type
-					]);
+                    ]);
 
                 } catch (PDOException $e) {
                     $updateStatement = $this->pdo->prepare("
@@ -1166,7 +1165,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         'event_id' => $event_id,
                         'user_id' => $user_id,
                         'attending' => $type
-					]);
+                    ]);
                 }
                 //USER EMAIL
                 //  user ID given as email
@@ -1196,15 +1195,15 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => []
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => []
                 ]
             );
             throw new Exception(
-				"Can't register user to event. ". "event:[{$event_id}], user:[{$user_id}], type:[{$type}]", 0, $e
-			);
+                "Can't register user to event. ". "event:[{$event_id}], user:[{$user_id}], type:[{$type}]", 0, $e
+            );
         }
     }
 
@@ -1220,8 +1219,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				SELECT * FROM EventGallery EG
-				WHERE EG.event_id = :id");
+                SELECT * FROM EventGallery EG
+                WHERE EG.event_id = :id");
             $statement->execute(['id'=>$id]);
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
             return array_map(
@@ -1229,17 +1228,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     $i->created = new DateTime($i->created);
                     return $i;
                 },
-				$statement->fetchAll()
+                $statement->fetchAll()
             );
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't get gallery for event. event:[{$id}]", 0, $e);
@@ -1259,17 +1258,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
         try {
             if ($limit) {
                 $statement = $this->pdo->prepare("
-					SELECT GE.*, E.subject FROM EventGallery GE
-					JOIN Event E ON (E.id = GE.event_id)
-					GROUP BY GE.event_id
-					ORDER BY ".(($rand)?'RAND()':'`created` DESC')."
-					LIMIT 0, ".$limit."
-				");
+                    SELECT GE.*, E.subject FROM EventGallery GE
+                    JOIN Event E ON (E.id = GE.event_id)
+                    GROUP BY GE.event_id
+                    ORDER BY ".(($rand)?'RAND()':'`created` DESC')."
+                    LIMIT 0, ".$limit."
+                ");
                 $statement->execute();
             } else {
                 $statement = $this->pdo->prepare("
-					SELECT * FROM EventGallery GE
-					ORDER BY GE.created DESC;");
+                    SELECT * FROM EventGallery GE
+                    ORDER BY GE.created DESC;");
             }
             $statement->execute();
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
@@ -1278,17 +1277,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     $i->created = new DateTime($i->created);
                     return $i;
                 },
-				$statement->fetchAll()
+                $statement->fetchAll()
             );
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't fetch gallery images", 0, $e);
@@ -1307,8 +1306,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				SELECT * FROM EventGallery EG
-				WHERE EG.id = :id;");
+                SELECT * FROM EventGallery EG
+                WHERE EG.id = :id;");
             $statement->execute(['id' => $id]);
             $item = $statement->fetchObject();
             $item->created = new DateTime($item->created);
@@ -1317,12 +1316,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't get gallery item for event. event:[{$id}]", 0, $e);
@@ -1352,23 +1351,23 @@ class Event extends AbstractService implements DataSourceAwareInterface
             $this->getEventManager()->trigger('create', $this, [__FUNCTION__]);
             $this->getEventManager()->trigger(
                 'index',
-				$this,
-				[
-                	0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
-                	'id' => $id,
-                	'name' => Event::GALLERY_NAME,
+                $this,
+                [
+                    0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                    'id' => $id,
+                    'name' => Event::GALLERY_NAME,
                 ]
             );
             return $id;
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't add an gallery image to event. event:[{$id}]", 0, $e);
@@ -1396,12 +1395,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't update gallery image to event. item:[{$id}]", 0, $e);
@@ -1420,20 +1419,20 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				DELETE FROM EventGallery
-				WHERE id = :id;");
+                DELETE FROM EventGallery
+                WHERE id = :id;");
             $statement->execute(['id'=>$id]);
             $this->getEventManager()->trigger('delete', $this, [__FUNCTION__]);
             return $statement->rowCount();
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't delete gallery image to event. item:[{$id}]", 0, $e);
@@ -1452,8 +1451,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				SELECT * FROM EventMedia EG
-				WHERE EG.event_id = :id");
+                SELECT * FROM EventMedia EG
+                WHERE EG.event_id = :id");
             $statement->execute(['id'=>$id]);
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
             return array_map(
@@ -1461,17 +1460,17 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     $i->created = new DateTime($i->created);
                     return $i;
                 },
-				$statement->fetchAll()
+                $statement->fetchAll()
             );
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't get resource for event. event:[{$id}]", 0, $e);
@@ -1489,8 +1488,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				SELECT * FROM EventMedia EG
-				WHERE EG.id = :id;");
+                SELECT * FROM EventMedia EG
+                WHERE EG.id = :id;");
             $statement->execute(['id' => $id]);
             $item = $statement->fetchObject();
             $item->created = new DateTime($item->created);
@@ -1499,12 +1498,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't get gallery item for event. event:[{$id}]", 0, $e);
@@ -1536,12 +1535,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't add an gallery image to event. event:[{$id}]", 0, $e);
@@ -1569,12 +1568,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't update gallery image to event. item:[{$id}]", 0, $e);
@@ -1593,20 +1592,20 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-				DELETE FROM EventMedia
-				WHERE id = :id;");
+                DELETE FROM EventMedia
+                WHERE id = :id;");
             $statement->execute(['id'=>$id]);
             $this->getEventManager()->trigger('delete', $this, [__FUNCTION__]);
             return $statement->rowCount();
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't delete gallery image to event. item:[{$id}]", 0, $e);
@@ -1627,20 +1626,20 @@ class Event extends AbstractService implements DataSourceAwareInterface
         try {
             if ($from && $to) {
                 $statement = $this->pdo->prepare("
-					SELECT count(*) as value, HOUR( E.register_time) as label
-						FROM Event_has_User E
-						WHERE E.register_time BETWEEN :from AND :to
-					GROUP BY label
-					ORDER BY label;");
+                    SELECT count(*) as value, HOUR( E.register_time) as label
+                        FROM Event_has_User E
+                        WHERE E.register_time BETWEEN :from AND :to
+                    GROUP BY label
+                    ORDER BY label;");
                 $statement->execute([
                     'from' => $from->format('Y-m-d'),
                     'to' => $to->format('Y-m-d')]);
             } else {
                 $statement = $this->pdo->prepare("
-					SELECT count(*) as value, HOUR( E.register_time) as label
-						FROM Event_has_User E
-					GROUP BY label
-					ORDER BY label;"
+                    SELECT count(*) as value, HOUR( E.register_time) as label
+                        FROM Event_has_User E
+                    GROUP BY label
+                    ORDER BY label;"
                 );
                 $statement->execute();
             }
@@ -1651,12 +1650,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't read registration by hour", 0, $e);
@@ -1677,21 +1676,21 @@ class Event extends AbstractService implements DataSourceAwareInterface
         try {
             if ($from && $to) {
                 $statement = $this->pdo->prepare("
-					SELECT count(*) as value, DAYOFMONTH( E.register_time) as label
-						FROM Event_has_User E
-						WHERE E.register_time BETWEEN :from AND :to
-					GROUP BY label
-					ORDER BY label;");
+                    SELECT count(*) as value, DAYOFMONTH( E.register_time) as label
+                        FROM Event_has_User E
+                        WHERE E.register_time BETWEEN :from AND :to
+                    GROUP BY label
+                    ORDER BY label;");
                 $statement->execute([
                     'from' => $from->format('Y-m-d'),
                     'to' => $to->format('Y-m-d')
                     ]);
             } else {
                 $statement = $this->pdo->prepare("
-					SELECT count(*) as value, DAYOFMONTH( E.register_time) as label
-						FROM Event_has_User E
-					GROUP BY label
-					ORDER BY label;");
+                    SELECT count(*) as value, DAYOFMONTH( E.register_time) as label
+                        FROM Event_has_User E
+                    GROUP BY label
+                    ORDER BY label;");
                 $statement->execute();
             }
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
@@ -1699,12 +1698,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't read registration by day of month", 0, $e);
@@ -1727,21 +1726,21 @@ class Event extends AbstractService implements DataSourceAwareInterface
         try {
             if ($from && $to) {
                 $statement = $this->pdo->prepare("
-					SELECT count(*) as value, DAYOFWEEK( E.register_time) as label
-						FROM Event_has_User E
-						WHERE E.register_time BETWEEN :from AND :to
-					GROUP BY label
-					ORDER BY label;");
+                    SELECT count(*) as value, DAYOFWEEK( E.register_time) as label
+                        FROM Event_has_User E
+                        WHERE E.register_time BETWEEN :from AND :to
+                    GROUP BY label
+                    ORDER BY label;");
                 $statement->execute([
                     'from' => $from->format('Y-m-d'),
                     'to' => $to->format('Y-m-d')
-				]);
+                ]);
             } else {
                 $statement = $this->pdo->prepare("
-					SELECT count(*) as value, DAYOFWEEK( E.register_time) as label
-						FROM Event_has_User E
-					GROUP BY label
-					ORDER BY label;");
+                    SELECT count(*) as value, DAYOFWEEK( E.register_time) as label
+                        FROM Event_has_User E
+                    GROUP BY label
+                    ORDER BY label;");
                 $statement->execute();
             }
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
@@ -1749,53 +1748,52 @@ class Event extends AbstractService implements DataSourceAwareInterface
         } catch (PDOException $e) {
             $this->getEventManager()->trigger(
                 'error',
-				$this,
-				[
-					'exception' => $e->getTraceAsString(),
-					'sql' => [
-						isset($statement)?$statement->queryString:null
-					]
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null
+                    ]
                 ]
             );
             throw new Exception("Can't read registration by day of month", 0, $e);
         }
     }
 
-	/**
-	 * @param \PDO $pdo
-	 * @return $this
-	 */
+    /**
+     * @param \PDO $pdo
+     * @return $this
+     */
     public function setDataSource(\PDO $pdo)
     {
         $this->pdo = $pdo;
         return $this;
     }
 
-	/**
-	 * Type convert fields.
-	 *
-	 * @param \stdClass $event
-	 * @return \stdClass
-	 */
-	private function formatEvent($event)
-	{
-		//TYPECAST
-		//	typecast ID to int and dates to date
-		//	and time
-		$event->id = (int)$event->id;
-		$event->event_time = new Time("{$event->event_date} {$event->event_time}");
-		$event->event_end = ( $event->event_end )
-			? new Time("{$event->event_date} {$event->event_end}")
-			: null ;
-		$event->event_date = new  DateTime("{$event->event_date} {$event->event_time->format('H:i:s')}");
-		//$event->lat = ($event->lat)? (float)$event->lat : null;
-		//$event->lng = ($event->lng)? (float)$event->lng : null;
-		$event->capacity = ($event->capacity)?(int)$event->capacity:null;
-		$event->avatar = (empty($event->avatar))
-			? null
-			: $event->avatar;
+    /**
+     * Type convert fields.
+     *
+     * @param \stdClass $event
+     * @return \stdClass
+     */
+    private function formatEvent($event)
+    {
+        //TYPECAST
+        //	typecast ID to int and dates to date
+        //	and time
+        $event->id = (int)$event->id;
+        $event->event_time = new Time("{$event->event_date} {$event->event_time}");
+        $event->event_end = ( $event->event_end )
+            ? new Time("{$event->event_date} {$event->event_end}")
+            : null ;
+        $event->event_date = new  DateTime("{$event->event_date} {$event->event_time->format('H:i:s')}");
+        //$event->lat = ($event->lat)? (float)$event->lat : null;
+        //$event->lng = ($event->lng)? (float)$event->lng : null;
+        $event->capacity = ($event->capacity)?(int)$event->capacity:null;
+        $event->avatar = (empty($event->avatar))
+            ? null
+            : $event->avatar;
 
-		return $event;
-	}
-
+        return $event;
+    }
 }

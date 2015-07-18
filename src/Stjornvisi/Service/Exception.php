@@ -2,7 +2,7 @@
 
 namespace Stjornvisi\Service;
 
+class Exception extends \Exception
+{
 
-class Exception extends \Exception {
-
-} 
+}

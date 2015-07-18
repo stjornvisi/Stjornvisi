@@ -4,9 +4,12 @@ namespace Stjornvisi\Service;
 
 use Zend\Http\Client;
 
-class GoogleMap implements MapInterface {
+class GoogleMap implements MapInterface
+{
     private $client;
-    public function __construct(Client $client){
+
+    public function __construct(Client $client)
+    {
         $this->client = $client;
     }
 
@@ -14,11 +17,11 @@ class GoogleMap implements MapInterface {
      * Convert an address to a LAT / LNG numbers
      * @param string $address
      * @return object
-	 * @see https://developers.google.com/maps/documentation/geocoding/#GeocodingResponses
-	 *
+     * @see https://developers.google.com/maps/documentation/geocoding/#GeocodingResponses
+     *
      */
-    public function request( $address ){
-
+    public function request($address)
+    {
         $this->client->setUri("http://maps.googleapis.com/maps/api/geocode/json");
         $this->client->setParameterGet(array(
             'address' => $address,
@@ -27,7 +30,7 @@ class GoogleMap implements MapInterface {
         ));
 
         $response = $this->client->send();
-        if( $response->getStatusCode() == 200 ){
+        if ($response->getStatusCode() == 200) {
             $json = @json_decode($response->getBody());
             return ( isset($json->status) && $json->status === 'OK' )
                 ?(object)array(
@@ -39,11 +42,11 @@ class GoogleMap implements MapInterface {
                     'lng' => null,
                 );
 
-        }else{
+        } else {
             return (object)array(
                 'lat' => null,
                 'lng' => null,
             );
         }
     }
-} 
+}
