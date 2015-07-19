@@ -38,10 +38,10 @@ class GalleryController extends AbstractActionController
             //ACCESS GRANTED
             //
             if ($access->is_admin || $access->type >= 2) {
-                return new ViewModel([
+                return (new ViewModel([
                     'event' => $event,
                     'gallery' => $eventService->getGallery($event->id)
-                ]);
+                ]))->setTemplate('stjornvisi/event/gallery-list');
 
                 //ACCESS DENIED
                 //
@@ -104,11 +104,11 @@ class GalleryController extends AbstractActionController
                     $this->getResponse()->setStatusCode(400);
                 }
             }
-            return new ViewModel([
+            return (new ViewModel([
                 'access' => $access,
                 'event' => $event,
                 'form' => $form
-            ]);
+            ]))->setTemplate('stjornvisi/event/gallery-create');
 
             //ACCESS DENIED
             //	403
@@ -166,7 +166,8 @@ class GalleryController extends AbstractActionController
                     //	get request
                 } else {
                     $form->bind(new \ArrayObject($item));
-                    return new ViewModel(['event' => $event, 'form' => $form]);
+                    return (new ViewModel(['event' => $event, 'form' => $form]))
+                        ->setTemplate('stjornvisi/event/gallery-update');
                 }
                 //ACCESS DENIED
                 //

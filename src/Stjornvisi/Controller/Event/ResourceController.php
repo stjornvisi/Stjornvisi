@@ -96,18 +96,18 @@ class ResourceController extends AbstractActionController
                         //
                     } else {
                         $this->getResponse()->setStatusCode(400);
-                        return new ViewModel([
+                        return (new ViewModel([
                             'access' => $access,
                             'event' => $event,
                             'form' => $form
-                        ]);
+                        ]))->setTemplate('stjornvisi/event/resource-create');
                     }
                 } else {
-                    return new ViewModel([
+                    return (new ViewModel([
                         'access' => $access,
                         'event' => $event,
                         'form' => $form
-                    ]);
+                    ]))->setTemplate('stjornvisi/event/resource-create');
                 }
 
                 //ACCESS DENIED
@@ -164,19 +164,19 @@ class ResourceController extends AbstractActionController
                         return $this->redirect()->toRoute('vidburdir/resource-list', ['id'=>$event->id]);
                     } else {
                         $this->getResponse()->setStatusCode(400);
-                        return new ViewModel([
+                        return (new ViewModel([
                             'event' => $event,
                             'form' => $form
-                        ]);
+                        ]))->setTemplate('stjornvisi/event/resource-create');
                     }
                     //QUERY
                     //	get request
                 } else {
                     $form->bind(new \ArrayObject($item));
-                    return new ViewModel([
+                    return (new ViewModel([
                         'event' => $event,
                         'form' => $form
-                    ]);
+                    ]))->setTemplate('stjornvisi/event/resource-create');
                 }
                 //ACCESS DENIED
                 //
