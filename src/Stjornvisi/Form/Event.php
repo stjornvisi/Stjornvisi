@@ -100,7 +100,7 @@ class Event extends Form implements InputFilterProviderInterface
 				'tabindex' => 7
             ),
             'options' => array(
-                'label' => 'Viðburður hefst',
+                'label' => 'Hefst',
             ),
         ));
 
@@ -114,7 +114,7 @@ class Event extends Form implements InputFilterProviderInterface
 				'tabindex' => 8
             ),
             'options' => array(
-                'label' => 'Viðburði líkur',
+                'label' => 'Líkur',
             ),
         ));
 
