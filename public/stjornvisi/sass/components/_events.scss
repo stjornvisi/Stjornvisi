@@ -1,0 +1,11 @@
+
+
+    form[name=stjornvisi-form-event].form-horizontal {
+        .form-group {
+            padding-left: $gutter/2;
+            padding-right: $gutter/2;
+            margin-left: -($gutter/2);
+            margin-right: -($gutter/2);
+            margin-bottom: $gutter;
+        }
+    }

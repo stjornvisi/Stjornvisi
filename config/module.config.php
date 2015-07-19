@@ -174,8 +174,7 @@ return array(
 						'options' => array(
 							'route' => '/:id/thatttakendalisti',
 							'constraints' => array(
-								'id' => '[0-9]*',
-								'type' => 'allir|gestir'
+								'id' => '[0-9]*'
 							),
 							'defaults' => array(
 								'controller' => 'Stjornvisi\Controller\Event\Event',

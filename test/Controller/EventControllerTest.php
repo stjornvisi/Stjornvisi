@@ -9,6 +9,7 @@
 namespace Stjornvisi\Controller;
 
 use DateTime;
+use Zend\Http\Header\Date;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class EventControllerTest extends AbstractHttpControllerTestCase
@@ -679,6 +680,43 @@ class EventControllerTest extends AbstractHttpControllerTestCase
         $this->assertRedirectTo('/vidburdir');
     }
 
+    public function testExportEventNotFound()
+    {
+        $this->registerAdminSession();
+        $this->registerGroupService();
+        $this->registerEventService(null);
+
+        $this->dispatch('/vidburdir/1/thatttakendalisti', 'GET');
+        $this->assertControllerClass('EventController');
+        $this->assertActionName('not-found');
+        $this->assertResponseStatusCode(404);
+    }
+
+    public function testExportAdminGetsCsv()
+    {
+        $this->registerAdminSession();
+        $this->registerGroupService();
+        $this->registerEventService($this->getEventDatabaseMockData());
+
+        $this->dispatch('/vidburdir/1/thatttakendalisti', 'GET');
+        $this->assertControllerClass('EventController');
+        $this->assertActionName('export-attendees');
+        $this->assertNotResponseHeaderContains('Content-type', 'text/csv');
+        $this->assertResponseStatusCode(200);
+    }
+
+    public function testExportUserHasNoAccess()
+    {
+        $this->registerUserSession();
+        $this->registerGroupService();
+        $this->registerEventService($this->getEventDatabaseMockData());
+
+        $this->dispatch('/vidburdir/1/thatttakendalisti', 'GET');
+        $this->assertControllerClass('EventController');
+        $this->assertActionName('export-attendees');
+        $this->assertResponseStatusCode(401);
+    }
+
     /**
      * Register a session where the user is Admin
      */
@@ -841,7 +879,18 @@ class EventControllerTest extends AbstractHttpControllerTestCase
                     'description' => 'desc'
                 ]
             ],
-            'attenders' => [],
+            'attenders' => [
+                (object) [
+                    'user_id' => rand(0, 100),
+                    'register_time' => new DateTime(),
+                    'name' => 'my-name',
+                    'email' => 'e@mail.com',
+                    'title' => 'my-title',
+                    'company_name' => 'company-name',
+                    'company_id' => rand(0, 100)
+
+                ]
+            ],
             'attending' => true
         ];
 

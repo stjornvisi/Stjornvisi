@@ -65,14 +65,14 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 //	attending this event.
                 if ($event->event_date > new DateTime()) {
                     $attendStatement = $this->pdo->prepare("
-                        SELECT U.id as `user_id`, EhU.register_time, U.name, U.title, C.name as company_name, C.id as company_id
+                        SELECT U.id as `user_id`, EhU.register_time, U.name, U.email, U.title, C.name as company_name, C.id as company_id
                         FROM Event_has_User EhU
                         JOIN `User` U ON (U.id = EhU.user_id)
                         JOIN `Company_has_User` ChU ON (U.id = ChU.user_id)
                         JOIN `Company` C ON (C.id = ChU.company_id)
                         WHERE EhU.event_id = :event_id AND EhU.attending = 1
                     UNION
-                        SELECT null as `user_id`, EhG.register_time, EhG.name, null as `title`, null as`company_name`, null as company_id
+                        SELECT null as `user_id`, EhG.register_time, EhG.name, EhG.email, null as `title`, null as`company_name`, null as company_id
                         FROM Event_has_Guest EhG
                         WHERE EhG.event_id = :event_id;
                     ");

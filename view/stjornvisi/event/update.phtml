@@ -1,99 +1,95 @@
-<?php $this->form->setAttribute('class','form-horizontal');?>
+<?php $this->form->setAttribute('class', 'form-horizontal');?>
+
 <div class="layout layout--three-columns">
 	<section class="layout__section">
-
 		<h1 class="layout__headline layout__headline--center">Uppfæra frétt</h1>
 		<?=$this->form()->openTag($this->form);?>
-
-		<div class="">
-			<div class="">
+		<div class="row">
+			<div class="col-md-6">
 				<div class="form-group <?=empty($this->form->get('subject')->getMessages())?'':'has-error';?>">
 					<?=$this->formLabel($form->get('subject'));?>
-					<?=$this->formElement($form->get('subject')->setAttribute('class','form-control'));?>
+					<?=$this->formElement($form->get('subject')->setAttribute('class', 'form-control'));?>
 					<?=$this->formElementErrors($form->get('subject'));?>
 				</div>
-				<div class="form-group <?=empty($this->form->get('body')->getMessages())?'':'has-error';?>">
-					<?=$this->formLabel($form->get('body'));?>
-					<?=$this->formElement($form->get('body')->setAttribute('class','form-control')->setAttribute('rows','25'));?>
-					<?=$this->formElementErrors($form->get('body'));?>
-				</div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group <?=empty($this->form->get('event_date')->getMessages())?'':'has-error';?>">
+                            <?=$this->formLabel($form->get('event_date'));?>
+                            <?=$this->formElement($form->get('event_date')->setAttribute('class', 'form-control'));?>
+                            <?=$this->formElementErrors($form->get('event_date'));?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group <?=empty($this->form->get('event_time')->getMessages())?'':'has-error';?>">
+                            <?=$this->formLabel($form->get('event_time'));?>
+                            <?=$this->formTime($form->get('event_time')->setAttribute('class', 'form-control'));?>
+                            <?=$this->formElementErrors($form->get('event_time'));?>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group <?=empty($this->form->get('event_end')->getMessages())?'':'has-error';?>">
+                            <?=$this->formLabel($form->get('event_end'));?>
+                            <?=$this->formTime($form->get('event_end')->setAttribute('class', 'form-control'));?>
+                            <?=$this->formElementErrors($form->get('event_end'));?>
+                        </div>
+                    </div>
+                </div>
 				<div class="form-group <?=empty($this->form->get('location')->getMessages())?'':'has-error';?>">
 					<?=$this->formLabel($form->get('location'));?>
-					<?=$this->formElement($form->get('location')->setAttribute('class','form-control'));?>
+					<?=$this->formElement($form->get('location')->setAttribute('class', 'form-control'));?>
 					<?=$this->formElementErrors($form->get('location'));?>
 				</div>
-
 				<div class="form-group <?=empty($this->form->get('address')->getMessages())?'':'has-error';?>">
 					<?=$this->formLabel($form->get('address'));?>
-					<?=$this->formElement($form->get('address')->setAttribute('class','form-control'));?>
+					<?=$this->formElement($form->get('address')->setAttribute('class', 'form-control'));?>
 					<?=$this->formElementErrors($form->get('address'));?>
 				</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group <?=empty($this->form->get('lat')->getMessages())?'':'has-error';?>">
+                            <?=$this->formLabel($form->get('lat'));?>
+                            <?=$this->formElement($form->get('lat')->setAttribute('class', 'form-control'));?>
+                            <?=$this->formElementErrors($form->get('lat'));?>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group <?=empty($this->form->get('lng')->getMessages())?'':'has-error';?>">
+                            <?=$this->formLabel($form->get('lng'));?>
+                            <?=$this->formElement($form->get('lng')->setAttribute('class', 'form-control'));?>
+                            <?=$this->formElementErrors($form->get('lng'));?>
+                        </div>
+                    </div>
+                </div>
 				<div class="form-group <?=empty($this->form->get('capacity')->getMessages())?'':'has-error';?>">
 					<?=$this->formLabel($form->get('capacity'));?>
-					<?=$this->formElement($form->get('capacity')->setAttribute('class','form-control'));?>
+					<?=$this->formElement($form->get('capacity')->setAttribute('class', 'form-control'));?>
 					<?=$this->formElementErrors($form->get('capacity'));?>
 				</div>
+                <div class="form-group">
+                    <?=$this->formLabel($form->get('groups'));?>
+                    <div class="checkbox">
+                        <?=$this->formMultiCheckbox($form->get('groups'));?>
+                        <?=$this->formElementErrors($form->get('groups'));?>
+                    </div>
+                </div>
 			</div>
-			<div class="">
-
-				<div class="row third">
-					<div class="column">
-						<div class="form-group <?=empty($this->form->get('event_date')->getMessages())?'':'has-error';?>">
-							<?=$this->formLabel($form->get('event_date'));?>
-							<?=$this->formElement($form->get('event_date')->setAttribute('class','form-control'));?>
-							<?=$this->formElementErrors($form->get('event_date'));?>
-						</div>
-					</div>
-					<div class="column">
-						<div class="form-group <?=empty($this->form->get('event_time')->getMessages())?'':'has-error';?>">
-							<?=$this->formLabel($form->get('event_time'));?>
-							<?=$this->formTime($form->get('event_time')->setAttribute('class','form-control'));?>
-							<?=$this->formElementErrors($form->get('event_time'));?>
-						</div>
-					</div>
-					<div class="column">
-						<div class="form-group <?=empty($this->form->get('event_end')->getMessages())?'':'has-error';?>">
-							<?=$this->formLabel($form->get('event_end'));?>
-							<?=$this->formTime($form->get('event_end')->setAttribute('class','form-control'));?>
-							<?=$this->formElementErrors($form->get('event_end'));?>
-						</div>
-					</div>
-				</div>
-
-                <p>Hægt er að nota þessa vefslóð til að finna nákvæm hnit á staðsetningu: <a target="_blank" href="http://www.mapcoordinates.net/en">http://www.mapcoordinates.net/en</a></p>
-
-                <div class="form-group <?=empty($this->form->get('lat')->getMessages())?'':'has-error';?>">
-                    <?=$this->formLabel($form->get('lat'));?>
-                    <?=$this->formElement($form->get('lat')->setAttribute('class','form-control'));?>
-                    <?=$this->formElementErrors($form->get('lat'));?>
+			<div class="col-md-6">
+                <div class="form-group <?=empty($this->form->get('body')->getMessages())?'':'has-error';?>">
+                    <?=$this->formLabel($form->get('body'));?>
+                    <?=$this->formElement($form->get('body')->setAttribute('class', 'form-control')->setAttribute('rows', '25'));?>
+                    <?=$this->formElementErrors($form->get('body'));?>
                 </div>
-
-                <div class="form-group <?=empty($this->form->get('lng')->getMessages())?'':'has-error';?>">
-                    <?=$this->formLabel($form->get('lng'));?>
-                    <?=$this->formElement($form->get('lng')->setAttribute('class','form-control'));?>
-                    <?=$this->formElementErrors($form->get('lng'));?>
+                <div class="form-group <?=empty($this->form->get('avatar')->getMessages())?'':'has-error';?>">
+                    <?=$this->formLabel($form->get('avatar'));?>
+                    <?=$this->formElement($form->get('avatar')->setAttribute('class', 'form-control avatar'));?>
+                    <?=$this->formElementErrors($form->get('avatar'));?>
                 </div>
-
-				<div class="form-group <?=empty($this->form->get('avatar')->getMessages())?'':'has-error';?>">
-					<?=$this->formLabel($form->get('avatar'));?>
-					<?=$this->formElement($form->get('avatar')->setAttribute('class','form-control avatar'));?>
-					<?=$this->formElementErrors($form->get('avatar'));?>
-				</div>
-
-
-				<div class="form-group">
-					<?=$this->formLabel($form->get('groups'));?>
-					<div class="checkbox">
-					<?=$this->formMultiCheckbox($form->get('groups'));?>
-					<?=$this->formElementErrors($form->get('groups'));?>
-					</div>
-				</div>
 			</div>
 		</div>
 
 		<div class="">
 			<?=$this->formElement(
-				$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Uppfæra')
+                $form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Uppfæra')
 			);?>
 		</div>
 

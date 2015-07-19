@@ -197,8 +197,8 @@ class EventController extends AbstractActionController
                 //$data['lat'] = $mapResult->lat;
                 //$data['lng'] = $mapResult->lng;
 
-                   $id = $eventService->create($data);
-                   return $this->redirect()->toRoute('vidburdir/index', ['id'=>$id]);
+                $id = $eventService->create($data);
+                return $this->redirect()->toRoute('vidburdir/index', ['id'=>$id]);
             } else {
                 $this->getResponse()->setStatusCode(400);
                 return new ViewModel(['form' => $form]);
@@ -352,8 +352,8 @@ class EventController extends AbstractActionController
                 $csv = new Csv();
                 $csv->setHeader(['Nafn','Titill','Netfang','Dags.']);
                 $csv->setName('maertingarlisti'.date('Y-m-d-H:i').'.csv');
-                $resultSet = $userService->getByEvent($event->id);
-                foreach ($resultSet as $item) {
+
+                foreach ($event->attenders as $item) {
                     $csv->add([
                         'name' => $item->name,
                         'title' => $item->title,

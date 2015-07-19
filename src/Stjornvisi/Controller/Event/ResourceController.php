@@ -240,6 +240,10 @@ class ResourceController extends AbstractActionController
         }
     }
 
+    /**
+     * @param \Traversable $groups
+     * @return array
+     */
     private function extractGroupIds($groups)
     {
         return array_map(
