@@ -303,10 +303,10 @@ class Event extends AbstractService implements DataSourceAwareInterface
     public function update($id, $data)
     {
         try {
-            $groups = [];
-            if ($data['groups'] != null) {
-                $groups = $data['groups'];
-            }
+            $groups = isset($data['groups'])
+                ? $data['groups']
+                : [] ;
+
             unset($data['groups']);
             //SANITIZE CAPACITY
             //	capacity has to be integer and bigger that zero

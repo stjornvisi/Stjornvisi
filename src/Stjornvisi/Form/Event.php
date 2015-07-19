@@ -12,7 +12,8 @@ class Event extends Form implements InputFilterProviderInterface
     {
         parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
-        $this->setHydrator(new Hydrator());
+        $this->setHydrator(new Hydrator\Event());
+        $this->setObject(new \stdClass());
         $this->setAttribute('method', 'post');
 
         $this->add(array(

@@ -187,17 +187,7 @@ class EventController extends AbstractActionController
         if ($this->request->isPost()) {
             $form->setData($this->request->getPost());
             if ($form->isValid()) {
-                $data = (array)$form->getData();
-                unset($data['submit']);
-
-                /** Mapping Service removed, and fields exposed for editing */
-                //$mapService = $sm->get('Stjornvisi\Service\Map');
-                /** @var  $maService \Stjornvisi\Service\JaMap */
-                //$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
-                //$data['lat'] = $mapResult->lat;
-                //$data['lng'] = $mapResult->lng;
-
-                $id = $eventService->create($data);
+                $id = $eventService->create($form->getObject());
                 return $this->redirect()->toRoute('vidburdir/index', ['id'=>$id]);
             } else {
                 $this->getResponse()->setStatusCode(400);
@@ -249,15 +239,7 @@ class EventController extends AbstractActionController
                 //VALID
                 //  form data is valid
                 if ($form->isValid()) {
-                    $data = $form->getData();
-                    unset($data['submit']);
-                    //$mapService = $sm->get('Stjornvisi\Service\Map');
-                    /** @var  $maService \Stjornvisi\Service\JaMap */
-                    //$mapResult = $mapService->request( isset($data['address']) ? $data['address']: null );
-                    //$data['lat'] = $mapResult->lat;
-                    //$data['lng'] = $mapResult->lng;
-
-                    $eventService->update($event->id, $data);
+                    $eventService->update($event->id, $form->getObject());
                     return $this->redirect()->toRoute('vidburdir/index', ['id'=>$event->id]);
 
                 //INVALID
@@ -270,7 +252,7 @@ class EventController extends AbstractActionController
             //QUERY
             //  http get request
             } else {
-                $form->bind(new \ArrayObject((array)$event));
+                $form->bind($event);
                 $view = new ViewModel(['form' => $form]);
                 return $view;
             }
