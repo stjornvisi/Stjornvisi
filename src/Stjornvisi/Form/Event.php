@@ -12,7 +12,8 @@ class Event extends Form implements InputFilterProviderInterface
     {
         parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
-        $this->setHydrator(new Hydrator());
+        $this->setHydrator(new Hydrator\Event());
+        $this->setObject(new \stdClass());
         $this->setAttribute('method', 'post');
 
         $this->add(array(
@@ -100,7 +101,7 @@ class Event extends Form implements InputFilterProviderInterface
 				'tabindex' => 7
             ),
             'options' => array(
-                'label' => 'Viðburður hefst',
+                'label' => 'Hefst',
             ),
         ));
 
@@ -114,7 +115,7 @@ class Event extends Form implements InputFilterProviderInterface
 				'tabindex' => 8
             ),
             'options' => array(
-                'label' => 'Viðburði líkur',
+                'label' => 'Líkur',
             ),
         ));
 

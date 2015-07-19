@@ -13,7 +13,6 @@ use Zend\Form\Element;
 class Rich extends Element
 {
 	protected $attributes = array(
-		'rows' => 25
+		'rows' => 35
 	);
 }
-

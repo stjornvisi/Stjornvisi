@@ -8,9 +8,9 @@
 
 namespace Stjornvisi\Service;
 
-
 use Zend\EventManager\EventManagerAwareInterface;
 
-interface ServiceEventManagerAwareInterface extends EventManagerAwareInterface {
+interface ServiceEventManagerAwareInterface extends EventManagerAwareInterface
+{
 
-} 
+}

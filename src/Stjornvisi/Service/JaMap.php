@@ -3,21 +3,25 @@
 namespace Stjornvisi\Service;
 
 use Zend\Http\Client;
-class JaMap implements  MapInterface{
 
+class JaMap implements MapInterface
+{
     private $client;
-    public function __construct(Client $client){
+
+    public function __construct(Client $client)
+    {
         $this->client = $client;
     }
 
-    public function request( $address ){
+    public function request($address)
+    {
         $this->client->setUri("http://ja.is/kort/leit/");
         $this->client->setParameterGet(array(
             'q' => $address,
         ));
 
         $response = $this->client->send();
-        if( $response->getStatusCode() == 200 ){
+        if ($response->getStatusCode() == 200) {
             $json = json_decode($response->getBody());
             return (isset($json->map->items[0]->coordinates) )
                 ?(object)array(
@@ -27,7 +31,7 @@ class JaMap implements  MapInterface{
                     'lat' => null,
                     'lng' => null,
                 );
-        }else{
+        } else {
             return (object)array(
                 'lat' => null,
                 'lng' => null,

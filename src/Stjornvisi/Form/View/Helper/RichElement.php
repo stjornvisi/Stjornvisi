@@ -8,7 +8,6 @@
 
 namespace Stjornvisi\Form\View\Helper;
 
-
 use Stjornvisi\Lib\SizeConvert;
 use Zend\Form\ElementInterface;
 use Zend\Form\Exception;

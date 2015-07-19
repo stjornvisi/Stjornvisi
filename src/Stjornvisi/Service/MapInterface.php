@@ -2,7 +2,7 @@
 
 namespace Stjornvisi\Service;
 
-
-interface MapInterface {
-    public function request( $address );
-} 
+interface MapInterface
+{
+    public function request($address);
+}

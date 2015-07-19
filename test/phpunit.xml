@@ -20,7 +20,7 @@
             <directory suffix=".php">../src/</directory>
             <exclude>
                 <!--file>../application/Bootstrap.php</file-->
-                <directory suffix=".phtml">../view/</directory>
+                <!--directory suffix=".phtml">../view/</directory-->
                 <directory>./Controller</directory>
             </exclude>
         </whitelist>
@@ -44,6 +44,10 @@
         <var name="DB_USER" value="root" />
         <var name="DB_PASSWD" value="" />
         <var name="DB_DBNAME" value="stjornvisi_test" />
+
+        <env name="APPLICATION_ENV" value="testing"/>
+
+        <server name="HTTP_HOST" value="localhost"/>
     </php>
 
 </phpunit>
