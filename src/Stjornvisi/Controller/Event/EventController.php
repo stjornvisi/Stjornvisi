@@ -106,11 +106,11 @@ class EventController extends AbstractActionController
 
         $firstDay = (int)date('N', strtotime("{$current->format('Y-m')}-01"));
         $offset = ($firstDay-1)*-1;
-        $array = [];
+        $calendar = [];
         for ($i=0; $i<42; $i++) {
             $from = strtotime("{$current->format('Y-m')}-01 00:00:00") +(60*60*24*$offset);
             $date = date('Y-m-d', $from);
-            $array[$date] = array_filter(
+            $calendar[$date] = array_filter(
                 $events,
                 function ($i) use ($date) {
                     return ($i->event_date->format('Y-m-d') == $date);
@@ -124,9 +124,8 @@ class EventController extends AbstractActionController
             'prev' => $prev,
             'current' => $current,
             'next' => $next,
-            'calendar' => $array
+            'calendar' => $calendar
         ]);
-
     }
 
     /**
@@ -211,7 +210,6 @@ class EventController extends AbstractActionController
         $eventService = $sm->get('Stjornvisi\Service\Event');
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $authService = $sm->get('AuthenticationService');
-        //$mapService = $sm->get('Stjornvisi\Service\Map');
 
         $event = $eventService->get($this->params()->fromRoute('id', 0));
 
