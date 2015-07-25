@@ -61,7 +61,7 @@ class Event extends Form implements InputFilterProviderInterface
                 'tabindex' => 4
             ),
             'options' => array(
-                'label' => 'Heimilisfang: (Götuheiti og húsnúmer, Póstnúmer Bæjarfélag)',
+                'label' => 'Heimilisfang:',
             ),
         ));
 
@@ -94,11 +94,11 @@ class Event extends Form implements InputFilterProviderInterface
         $this->add(array(
             'name' => 'event_time',
             //'type' => 'Zend\Form\Element\Time',
-			'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '00:00',
                 'required' => 'required',
-				'tabindex' => 7
+                'tabindex' => 7
             ),
             'options' => array(
                 'label' => 'Hefst',
@@ -108,11 +108,11 @@ class Event extends Form implements InputFilterProviderInterface
         $this->add(array(
             'name' => 'event_end',
             //'type' => 'Zend\Form\Element\Time',
-			'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
-				'placeholder' => '00:00',
+                'placeholder' => '00:00',
                 'required' => 'required',
-				'tabindex' => 8
+                'tabindex' => 8
             ),
             'options' => array(
                 'label' => 'Líkur',
@@ -136,7 +136,7 @@ class Event extends Form implements InputFilterProviderInterface
             'attributes' => array(),
             'options' => array(
                 'label' => 'Í samstarfi við',
-                'value_options' => ($groups)? array_reduce($groups,function($result, $item){
+                'value_options' => ($groups)? array_reduce($groups, function ($result, $item) {
                     $result[$item->id] = $item->name_short;
                     return $result;
                 }):array(0),
@@ -145,7 +145,7 @@ class Event extends Form implements InputFilterProviderInterface
 
         $this->add(array(
             'name' => 'lat',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => '64.1237224',
                 'tabindex' => 10
@@ -157,7 +157,7 @@ class Event extends Form implements InputFilterProviderInterface
 
         $this->add(array(
             'name' => 'lng',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => '-21.9264241',
                 'tabindex' => 10
@@ -192,166 +192,166 @@ class Event extends Form implements InputFilterProviderInterface
         parent::populateValues($data);
     }
 
-	/**
-	 * Should return an array specification compatible with
-	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
-	 *
-	 * @return array
-	 */
-	public function getInputFilterSpecification(){
-		return array(
-			'subject' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'StringLength',
-						'options' => array(
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 100,
-						),
-					),
-				),
-			),
-			'body' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					//array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'location' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'StringLength',
-						'options' => array(
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 45,
-						),
-					),
-				),
-			),
-			'address' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'StringLength',
-						'options' => array(
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 255,
-						),
-					),
-				),
-			),
-			'capacity' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'Int',
-						/*
-						'options' => array(
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 255,
-						),
-						*/
-					),
-				),
-			),
-			'event_date' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'Date',
-					),
-				),
-			),
-			'event_time' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'Date',
-						'options' => array(
-							'format' => 'H:i',
-						),
-					),
-				),
-			),
-			'event_end' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'Date',
-						'options' => array(
-							'format' => 'H:i',
-						),
-					),
-					array(
-						'name' => 'Callback',
-						'options' => array(
-							'messages' => array(
-								\Zend\Validator\Callback::INVALID_VALUE => 'Viðburður getur ekki endað áður en hann byrjar',
-							),
-							'callback' => function( $value, $context=array() ){
-								$from = new \DateTime( $context['event_time'] );
-								$to = new \DateTime( $context['event_end'] );
-								return $to > $from;
-							},
-						)
-					)
-				),
-			),
-			'avatar' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-			),
-			'groups' => array(
-				'required' => false,
-				'allow_empty' => true,
-			),
-			'lat' => array(
-				'required' => false,
-				'allow_empty' => true,
-			),
-			'lng' => array(
-				'required' => false,
-				'allow_empty' => true,
-			),
-		);
-	}
+    /**
+     * Should return an array specification compatible with
+     * {@link Zend\InputFilter\Factory::createInputFilter()}.
+     *
+     * @return array
+     */
+    public function getInputFilterSpecification(){
+        return array(
+            'subject' => array(
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 100,
+                        ),
+                    ),
+                ),
+            ),
+            'body' => array(
+                'required' => false,
+                'allow_empty' => true,
+                'filters'  => array(
+                    //array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            'location' => array(
+                'required' => false,
+                'allow_empty' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 45,
+                        ),
+                    ),
+                ),
+            ),
+            'address' => array(
+                'required' => false,
+                'allow_empty' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 255,
+                        ),
+                    ),
+                ),
+            ),
+            'capacity' => array(
+                'required' => false,
+                'allow_empty' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'Int',
+                        /*
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 255,
+                        ),
+                        */
+                    ),
+                ),
+            ),
+            'event_date' => array(
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'Date',
+                    ),
+                ),
+            ),
+            'event_time' => array(
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'Date',
+                        'options' => array(
+                            'format' => 'H:i',
+                        ),
+                    ),
+                ),
+            ),
+            'event_end' => array(
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'Date',
+                        'options' => array(
+                            'format' => 'H:i',
+                        ),
+                    ),
+                    array(
+                        'name' => 'Callback',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\Callback::INVALID_VALUE => 'Viðburður getur ekki endað áður en hann byrjar',
+                            ),
+                            'callback' => function( $value, $context=array() ){
+                                $from = new \DateTime( $context['event_time'] );
+                                $to = new \DateTime( $context['event_end'] );
+                                return $to > $from;
+                            },
+                        )
+                    )
+                ),
+            ),
+            'avatar' => array(
+                'required' => false,
+                'allow_empty' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+            ),
+            'groups' => array(
+                'required' => false,
+                'allow_empty' => true,
+            ),
+            'lat' => array(
+                'required' => false,
+                'allow_empty' => true,
+            ),
+            'lng' => array(
+                'required' => false,
+                'allow_empty' => true,
+            ),
+        );
+    }
 }

@@ -1,0 +1,114 @@
+<dom-module id="stjornvisi-address">
+    <style>
+        google-map {
+            height: 300px;
+            margin: 15px 0;
+        }
+    </style>
+    <template>
+        <iron-ajax
+                id="locationRequest"
+                url="/location"
+                handle-as="json"
+                on-response="handleResponse">
+        </iron-ajax>
+        <content></content>
+        <google-map zoom="11"
+                    fittomarkers
+                    latitude="64.12"
+                    longitude="-21.89"
+                    mouseEvents="true">
+            <google-map-marker 
+                    draggable="true" 
+                    title="Dragðu mig fyrir nákvæmari staðsetningu"
+                    on-google-map-marker-mouseup="handleMarkerUp"
+                    click-events="true"
+                    mouse-events="true"
+                    latitude="{{latitude}}"
+                    longitude="{{longitude}}">
+            </google-map-marker>
+        </google-map>
+    </template>
+    <script>
+        Polymer({
+            is: 'stjornvisi-address',
+
+            properties: {
+                input: {
+                    type: Object
+                },
+
+                timer: {
+                    type: Function
+                },
+
+                inputLat: {
+                    type: Object
+                },
+
+                inputLng: {
+                    type: Object
+                },
+
+                latitude: {
+                    type: Number,
+                    value: function (value) {
+                        return isNaN(value.latitude)
+                            ? 64.12
+                            : value.latitude;
+                    }
+                },
+
+                longitude: {
+                    type: Number,
+                    value: function (value) {
+                        return isNaN(value.latitude)
+                            ? -21.89
+                            : value.longitude;
+                    }
+                }
+
+            },
+
+            attached: function () {
+                this.input = this.querySelector('input[name=address]');
+                this.input.addEventListener('keyup', function (event) {
+                    clearTimeout(this.timer);
+                    this.timer = setTimeout(this.handleLocationUpdate.bind(this), 500);
+                }.bind(this), false);
+
+                this.inputLat = this.querySelector('input[name=lat]');
+                this.inputLng = this.querySelector('input[name=lng]');
+            },
+
+            handleLocationUpdate: function () {
+                this.$.locationRequest.params = { 'q': this.input.value };
+                this.$.locationRequest.generateRequest();
+            },
+
+            handleResponse: function (event) {
+                var data = event.detail.response;
+                var marker = this.querySelector('google-map-marker');
+                var map = this.querySelector('google-map');
+
+                if (data[0].lat && data[0].lng) {
+
+                    var lat = parseFloat(data[0].lat);
+                    var lng = parseFloat(data[0].lng);
+
+                    this.latitude = lat;
+                    this.longitude = lng;
+
+                    this.inputLat.value = lat;
+                    this.inputLng.value = lng;
+
+                }
+            },
+
+            handleMarkerUp: function (event, message) {
+                this.inputLat.value = message.latLng.A;
+                this.inputLng.value = message.latLng.F;
+            }
+        });
+    </script>
+</dom-module>

@@ -39,6 +39,16 @@ class MediaController extends AbstractActionController
         'length' => $this->getRequest()->getHeaders()->get('Content-Length'),
         ];
 
+        //ERROR
+//        $result->media[] = (object)[
+//            'code' => 501,
+//            'message' => 'Invalid filename',
+//            'name' => null,
+//            'original' => 'Hundur',
+//            'thumb' => null
+//        ];
+//        return new JsonModel(['info' => $result]);
+
         foreach ($adapter->getFileInfo() as $info) {
             $originalFileName = $info['name'];
 

@@ -5589,7 +5589,7 @@ span.attending {
 .page-event {
   /*
   .block-element .block-element__body .block-element__image{
-  	max-width: 100%;
+      max-width: 100%;
   }
   */
 }
@@ -5667,6 +5667,12 @@ span.attending {
 /* line 84, ../sass/pages/_event.scss */
 .page-event .block-element__image {
   max-width: 100%;
+}
+
+/* line 89, ../sass/pages/_event.scss */
+.map_canvas {
+  height: 300px;
+  margin: 15px 0;
 }
 
 /* line 5, ../sass/pages/_user.scss */

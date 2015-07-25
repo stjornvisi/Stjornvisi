@@ -1,172 +1,169 @@
 <?php echo $this->doctype(); ?>
 <html lang="is">
     <head>
-		<meta charset="utf-8">
-		<?php echo $this->headMeta()
-			->appendName('viewport', 'width=device-width, initial-scale=1.0')
-			->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-		?>
-		<meta name="msapplication-TileColor" content="#292468">
-		<meta name="msapplication-TileImage" content="<?=$this->basePath("favicons/mstile-144x144.png");?>">
-		<meta name="theme-color" content="#292468">
+        <meta charset="utf-8">
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+        <meta name="msapplication-TileColor" content="#292468">
+        <meta name="msapplication-TileImage" content="<?=$this->basePath("favicons/mstile-144x144.png");?>">
+        <meta name="theme-color" content="#292468">
 
         <?php echo $this->headTitle('Stjórnvísi ')->setSeparator(' / ')->setAutoEscape(false) ?>
 
-		<link rel="apple-touch-icon" sizes="57x57" href="<?=$this->basePath("favicons/apple-touch-icon-57x57.png");?>">
-		<link rel="apple-touch-icon" sizes="60x60" href="<?=$this->basePath("favicons/apple-touch-icon-60x60.png");?>">
-		<link rel="apple-touch-icon" sizes="72x72" href="<?=$this->basePath("favicons/apple-touch-icon-72x72.png");?>">
-		<link rel="apple-touch-icon" sizes="76x76" href="<?=$this->basePath("favicons/apple-touch-icon-76x76.png");?>">
-		<link rel="apple-touch-icon" sizes="114x114" href="<?=$this->basePath("favicons/apple-touch-icon-114x114.png");?>">
-		<link rel="apple-touch-icon" sizes="120x120" href="<?=$this->basePath("favicons/apple-touch-icon-120x120.png");?>">
-		<link rel="apple-touch-icon" sizes="144x144" href="<?=$this->basePath("favicons/apple-touch-icon-144x144.png");?>">
-		<link rel="apple-touch-icon" sizes="152x152" href="<?=$this->basePath("favicons/apple-touch-icon-152x152.png");?>">
-		<link rel="apple-touch-icon" sizes="180x180" href="<?=$this->basePath("favicons/apple-touch-icon-180x180.png");?>">
-		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-32x32.png");?>" sizes="32x32">
-		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/android-chrome-192x192.png");?>" sizes="192x192">
-		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-96x96.png");?>" sizes="96x96">
-		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>" sizes="16x16">
-		<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>">
+        <link rel="apple-touch-icon" sizes="57x57" href="<?=$this->basePath("favicons/apple-touch-icon-57x57.png");?>">
+        <link rel="apple-touch-icon" sizes="60x60" href="<?=$this->basePath("favicons/apple-touch-icon-60x60.png");?>">
+        <link rel="apple-touch-icon" sizes="72x72" href="<?=$this->basePath("favicons/apple-touch-icon-72x72.png");?>">
+        <link rel="apple-touch-icon" sizes="76x76" href="<?=$this->basePath("favicons/apple-touch-icon-76x76.png");?>">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?=$this->basePath("favicons/apple-touch-icon-114x114.png");?>">
+        <link rel="apple-touch-icon" sizes="120x120" href="<?=$this->basePath("favicons/apple-touch-icon-120x120.png");?>">
+        <link rel="apple-touch-icon" sizes="144x144" href="<?=$this->basePath("favicons/apple-touch-icon-144x144.png");?>">
+        <link rel="apple-touch-icon" sizes="152x152" href="<?=$this->basePath("favicons/apple-touch-icon-152x152.png");?>">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?=$this->basePath("favicons/apple-touch-icon-180x180.png");?>">
+        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-32x32.png");?>" sizes="32x32">
+        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/android-chrome-192x192.png");?>" sizes="192x192">
+        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-96x96.png");?>" sizes="96x96">
+        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>" sizes="16x16">
+        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>">
 
-		<?=$this->headScript()
-			->appendFile(
-				$this->basePath('/vendor/webcomponentsjs/webcomponents.min.js'),
-				'text/javascript'
-			)->appendFile(
-				$this->basePath('/vendor/jquery/dist/jquery.min.js'),
-				'text/javascript'
-			)->appendFile(
-				$this->basePath('/vendor/fluidbox/jquery.fluidbox.min.js'),
-				'text/javascript'
-			)->appendFile(
-				'http://maps.googleapis.com/maps/api/js?sensor=false',
-				'text/javascript'
-			)->appendFile(
-				$this->basePath('/vendor/html5shiv/dist/html5shiv.js'),
-				'text/javascript',
-				array('conditional' => 'IE 9')
-			)->appendFile(
-				$this->basePath('/javascripts/polyfills.js'),
-				'text/javascript',
-				array('conditional' => 'IE 9')
-			)
-		;?>
+        <?=$this->headScript()
+            ->appendFile(
+                $this->basePath('/vendor/webcomponentsjs/webcomponents-lite.js'),
+                'text/javascript'
+            )->appendFile(
+                $this->basePath('/vendor/jquery/dist/jquery.min.js'),
+                'text/javascript'
+            )->appendFile(
+                $this->basePath('/vendor/fluidbox/jquery.fluidbox.min.js'),
+                'text/javascript'
+            )->appendFile(
+                $this->basePath('/vendor/html5shiv/dist/html5shiv.js'),
+                'text/javascript',
+                array('conditional' => 'IE 9')
+            )->appendFile(
+                $this->basePath('/javascripts/polyfills.js'),
+                'text/javascript',
+                array('conditional' => 'IE 9')
+            )
+        ;?>
 
         <?php echo $this->headLink()
-			->appendStylesheet( $this->basePath() . '/stylesheets/screen.css' )
-			->appendStylesheet( $this->basePath() . '/stylesheets/ie.css','screen','IE 9')
-		; ?>
-		<link rel="import" href="<?=$this->basePath('/webcomponents/components.html');?>">
+            ->appendStylesheet($this->basePath() . '/stylesheets/screen.css')
+            ->appendStylesheet($this->basePath() . '/stylesheets/ie.css','screen', 'IE 9')
+        ; ?>
+        <link rel="import" href="<?=$this->basePath('/webcomponents/app.html');?>">
 
 
 
 
     </head>
-	<body class="state-login">
-		<nav role="navigation">
-			<div class="navigation__wrapper">
-				<?=$this->subMenu()?>
-			</div>
+    <body class="state-login">
+        <nav role="navigation">
+            <div class="navigation__wrapper">
+                <?=$this->subMenu()?>
+            </div>
 
-			<ul class="categories">
-				<li><a href="/" class="categories__item categories__home" title="Heim">heim</a></li>
-				<li><a href="#" class="categories__item categories__groups" title="Faghópar">groups</a></li>
-				<!--li><a class="news control" href="" title="Fréttir">news</a></li-->
-				<!--li><a class="events control" href="" title="Viðburðir">events</a></li-->
-				<li><a href="#" class="categories__item categories__users" title="Notendur">user</a></li>
-				<li><a href="#" class="categories__item categories__config" title="Stillingar">config</a></li>
-			</ul>
-		</nav>
+            <ul class="categories">
+                <li><a href="/" class="categories__item categories__home" title="Heim">heim</a></li>
+                <li><a href="#" class="categories__item categories__groups" title="Faghópar">groups</a></li>
+                <!--li><a class="news control" href="" title="Fréttir">news</a></li-->
+                <!--li><a class="events control" href="" title="Viðburðir">events</a></li-->
+                <li><a href="#" class="categories__item categories__users" title="Notendur">user</a></li>
+                <li><a href="#" class="categories__item categories__config" title="Stillingar">config</a></li>
+            </ul>
+        </nav>
 
-		<main role="main">
-			<header class="main__header">
-				<h1 class="main__brand">
-					<a href="#" class="main__home"><i class="icon-home"></i></a>
-					<a href="/" class="main__logo">Stjórnvísi</a>
-					<a href="#" class="main__burger"><i class="icon-burger"></i></a>
-				</h1>
-				<nav class="main__menu">
-					<ul class="main__menu-items">
-						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
-						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
-						<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjórnunarverðlaunin</a></li>
-						<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-					</ul>
-				</nav>
-				<!--form method="get" action="<?=$this->url('leita')?>" class="main__search">
-					<input name="q" type="search" placeholder="Leit..." />
-					<input type="submit" value="leita">
-				</form-->
-			</header>
-			<?php echo $this->content; ?>
-		</main>
+        <main role="main">
+            <header class="main__header">
+                <h1 class="main__brand">
+                    <a href="#" class="main__home"><i class="icon-home"></i></a>
+                    <a href="/" class="main__logo">Stjórnvísi</a>
+                    <a href="#" class="main__burger"><i class="icon-burger"></i></a>
+                </h1>
+                <nav class="main__menu">
+                    <ul class="main__menu-items">
+                        <li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+                        <li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
+                        <li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
+                        <li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjórnunarverðlaunin</a></li>
+                        <li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
+                    </ul>
+                </nav>
+                <!--form method="get" action="<?=$this->url('leita')?>" class="main__search">
+                    <input name="q" type="search" placeholder="Leit..." />
+                    <input type="submit" value="leita">
+                </form-->
+            </header>
+            <?php echo $this->content; ?>
+        </main>
 
-		<footer role="footer">
-			<div class="footer-wrapper">
-				<div class="footer-wrapper__inner">
-					<div class="footer-wrapper__item footer-wrapper__address">
-						<h1 class="footer-wrapper__brand">Stjórnvísi ehf</h1>
-						<p>Innovation House</p>
-						<p>Eiðistorgi 13-15</p>
-						<p>170 Seltjarnarnes</p>
-						<p>Kt: 650686-1609</p>
-						<p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
-						<p><i class="icon-phone"></i> 533-5666</p>
-						<p><i class="icon-mobile"></i> 840-4990</p>
-					</div>
-					<ul class="footer-wrapper__item">
-						<li><a href="<?php echo $this->url('um') ?>">Um Stjórnvísi</a></li>
-						<li><a href="<?php echo $this->url('stjornin') ?>">Stjórnin</a></li>
-						<li><a href="<?php echo $this->url('adild-og-felagsgjold') ?>">Aðild og félagsgjöld</a></li>
-						<li><a href="<?php echo $this->url('log-arsskyrslur-og-arsreikningar') ?>">Lög, ársskýrslur og ársreikningar</a></li>
-						<li><a href="<?php echo $this->url('kennsla') ?>">Handbók vefsins</a></li>
+        <footer role="footer">
+            <div class="footer-wrapper">
+                <div class="footer-wrapper__inner">
+                    <div class="footer-wrapper__item footer-wrapper__address">
+                        <h1 class="footer-wrapper__brand">Stjórnvísi ehf</h1>
+                        <p>Innovation House</p>
+                        <p>Eiðistorgi 13-15</p>
+                        <p>170 Seltjarnarnes</p>
+                        <p>Kt: 650686-1609</p>
+                        <p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
+                        <p><i class="icon-phone"></i> 533-5666</p>
+                        <p><i class="icon-mobile"></i> 840-4990</p>
+                    </div>
+                    <ul class="footer-wrapper__item">
+                        <li><a href="<?php echo $this->url('um') ?>">Um Stjórnvísi</a></li>
+                        <li><a href="<?php echo $this->url('stjornin') ?>">Stjórnin</a></li>
+                        <li><a href="<?php echo $this->url('adild-og-felagsgjold') ?>">Aðild og félagsgjöld</a></li>
+                        <li><a href="<?php echo $this->url('log-arsskyrslur-og-arsreikningar') ?>">Lög, ársskýrslur og ársreikningar</a></li>
+                        <li><a href="<?php echo $this->url('kennsla') ?>">Handbók vefsins</a></li>
 
-					</ul>
-					<ul class="footer-wrapper__item">
-						<li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
-						<li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-						<li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
-						<li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
-						<li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki</a></li>
-						<li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjórnunarverðlaunin</a></li>
-						<li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-					</ul>
-				</div>
-				<div class="footer-wrapper__social">
-					<h1 class="footer-wrapper__icon"><i class="icon-stjornvisi"></i></h1>
-					<ul class="footer-wrapper__social-list">
-						<li>
-							<a href="https://www.facebook.com/Stjornvisi" target="_blank" title="Síða Stjórnvísi á Facebook"><i class="icon-facebook2"></i></a>
-						</li>
-					</ul>
+                    </ul>
+                    <ul class="footer-wrapper__item">
+                        <li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
+                        <li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
+                        <li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
+                        <li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
+                        <li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki</a></li>
+                        <li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjórnunarverðlaunin</a></li>
+                        <li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-wrapper__social">
+                    <h1 class="footer-wrapper__icon"><i class="icon-stjornvisi"></i></h1>
+                    <ul class="footer-wrapper__social-list">
+                        <li>
+                            <a href="https://www.facebook.com/Stjornvisi" target="_blank" title="Síða Stjórnvísi á Facebook"><i class="icon-facebook2"></i></a>
+                        </li>
+                    </ul>
 
-				</div>
-			</div>
-		</footer>
-		<?php echo $this->inlineScript() ?>
-	<script>
-		$(function () {
-			$('a[data-fluidbox]').fluidbox();
-		});
+                </div>
+            </div>
+        </footer>
+        <?php echo $this->inlineScript() ?>
+    <script>
+        $(function () {
+            $('a[data-fluidbox]').fluidbox();
+        });
 
-	</script>
-		<?php $this->headScript()->deleteContainer();?>
-		<?=$this->headScript()->appendFile(
-			$this->basePath('/javascripts/common.js'),
-			'text/javascript'
-		);?>
-		<script type="text/javascript">
+    </script>
+        <?php $this->headScript()->deleteContainer();?>
+        <?=$this->headScript()->appendFile(
+            $this->basePath('/javascripts/common.js'),
+            'text/javascript'
+        );?>
+        <script type="text/javascript">
 
-			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-24585167-1']);
-			_gaq.push(['_trackPageview']);
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-24585167-1']);
+            _gaq.push(['_trackPageview']);
 
-			(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			})();
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
 
-		</script>
-	</body>
+        </script>
+    </body>
 </html>

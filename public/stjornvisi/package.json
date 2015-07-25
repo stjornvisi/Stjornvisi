@@ -11,5 +11,9 @@
   "dependencies": {
     "gulp": "^3.8.11",
     "gulp-csslint": "^0.1.5"
+  },
+  "devDependencies": {
+    "gulp-plumber": "^1.0.1",
+    "gulp-vulcanize": "^6.0.1"
   }
 }

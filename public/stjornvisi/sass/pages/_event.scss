@@ -1,87 +1,92 @@
 
-	.page-event-list{
-		@include breakpoint($phone){
-			.block-calendar{
-				display: none;
-			}
-		}
+    .page-event-list{
+        @include breakpoint($phone){
+            .block-calendar{
+                display: none;
+            }
+        }
 
-	}
-	.page-event{
+    }
+    .page-event{
 
-		@include breakpoint($tablet){
-			&.layout.layout--three-columns{
-				.layout__data,
-				.layout__meta{
-					float: none;
-					width: auto;
-					padding-right: 0;
-					padding-left: 0;
-				}
-			}
-		}
+        @include breakpoint($tablet){
+            &.layout.layout--three-columns{
+                .layout__data,
+                .layout__meta{
+                    float: none;
+                    width: auto;
+                    padding-right: 0;
+                    padding-left: 0;
+                }
+            }
+        }
 
-		form.page-event__register{
-			@include pie-clearfix;
-			p{
-				@include adjust-font-size-to($font-size-sub,1,$font-size-base);
-				font-family: $font-family-open;
-			}
-			label{
-				@include adjust-font-size-to($font-size-sub,1,$font-size-base);
-				font-family: $font-family-open;
-				font-weight: $font-weight-bold;
-				text-transform: uppercase;
-				@include padding-trailer(1/2,$font-size-base);
-			}
+        form.page-event__register{
+            @include pie-clearfix;
+            p{
+                @include adjust-font-size-to($font-size-sub,1,$font-size-base);
+                font-family: $font-family-open;
+            }
+            label{
+                @include adjust-font-size-to($font-size-sub,1,$font-size-base);
+                font-family: $font-family-open;
+                font-weight: $font-weight-bold;
+                text-transform: uppercase;
+                @include padding-trailer(1/2,$font-size-base);
+            }
 
-			.form-group{
-				@include margin-leader(1,$font-size-base);
-				@include margin-trailer(1,$font-size-base);
-				width: 50%;
-				display: block;
-				float: left;
-			}
-			@include breakpoint($phone){
-				label{
-					@include padding-trailer(1/4,$font-size-base);
-				}
-				.form-group{
-					@include margin-leader(1/2,$font-size-base);
-					@include margin-trailer(1/2,$font-size-base);
-					width: 100%;
-				}
+            .form-group{
+                @include margin-leader(1,$font-size-base);
+                @include margin-trailer(1,$font-size-base);
+                width: 50%;
+                display: block;
+                float: left;
+            }
+            @include breakpoint($phone){
+                label{
+                    @include padding-trailer(1/4,$font-size-base);
+                }
+                .form-group{
+                    @include margin-leader(1/2,$font-size-base);
+                    @include margin-trailer(1/2,$font-size-base);
+                    width: 100%;
+                }
 
-			}
-		}
+            }
+        }
 
-		/*
-		.block-element .block-element__body .block-element__image{
-			max-width: 100%;
-		}
-		*/
+        /*
+        .block-element .block-element__body .block-element__image{
+            max-width: 100%;
+        }
+        */
 
-		.page-event-element__attenders{
-			border-top: 1px solid $color-gray-light;
-			padding: $gutter 0;
-			&.page-event-element__attenders--stop{
-				h3{
-					font-family: $font-family-open;
-					font-weight: $font-weight-bold;
-					color: $color-green-sea;
-				}
-			}
-			&.page-event-element__attenders--warn{
-				h3{
-					font-family: $font-family-open;
-					font-weight: $font-weight-bold;
-				}
+        .page-event-element__attenders{
+            border-top: 1px solid $color-gray-light;
+            padding: $gutter 0;
+            &.page-event-element__attenders--stop{
+                h3{
+                    font-family: $font-family-open;
+                    font-weight: $font-weight-bold;
+                    color: $color-green-sea;
+                }
+            }
+            &.page-event-element__attenders--warn{
+                h3{
+                    font-family: $font-family-open;
+                    font-weight: $font-weight-bold;
+                }
 
-			}
-			&.page-event-element__attenders--default{}
-		}
+            }
+            &.page-event-element__attenders--default{}
+        }
 
-		.block-element__image{
-			max-width: 100%;
-		}
-	}
+        .block-element__image{
+            max-width: 100%;
+        }
+    }
+
+    .map_canvas {
+        height: 300px;
+        margin: $gutter/2 0;
+    }

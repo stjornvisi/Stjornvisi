@@ -1759,6 +1759,16 @@ return array(
                     ),
                 ),
             ),
+            'location' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/location',
+                    'defaults' => array(
+                        'controller' => 'Stjornvisi\Controller\Location',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -1805,6 +1815,7 @@ return array(
             'Stjornvisi\Controller\Conference' => 'Stjornvisi\Controller\ConferenceController',
             'Stjornvisi\Controller\Email' => 'Stjornvisi\Controller\EmailController',
             'Stjornvisi\Controller\Anaegjuvogin' => 'Stjornvisi\Controller\AnaegjuvoginController',
+            'Stjornvisi\Controller\Location' => 'Stjornvisi\Controller\LocationController',
         ),
     ),
     'view_helpers' => array(
