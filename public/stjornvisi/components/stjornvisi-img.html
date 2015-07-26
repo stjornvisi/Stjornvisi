@@ -1,0 +1,139 @@
+<link rel="import" href="stjornvisi-upload-behavior.html">
+<dom-module id="stjornvisi-img">
+    <template>
+        <content></content>
+    </template>
+    <script>
+        Polymer({
+            is: 'stjornvisi-img',
+
+            properties: {
+                trigger: {
+                    type: Object
+                },
+
+                url: {
+                    type: String
+                },
+
+                max: {
+                    type: Number
+                },
+
+                accept: {
+                    type: String,
+                    value: "image/*"
+                },
+
+                mime: {
+                    type: Object
+                }
+            },
+
+            behaviors: [StjornvisiBehaviors.UploadBehavior],
+
+            handleTriggerClick: function (event) {
+                event.preventDefault();
+                var fileElement = document.createElement('input');
+                fileElement.type = 'file';
+                fileElement.accept = this.accept;
+                fileElement.addEventListener('change',function(event){
+                    this.upload(
+                            event.target.files[0],
+                            this.handleUploadProgress(fileElement),
+                            this.handleUploadDone(fileElement),
+                            this.handleUploadError(fileElement),
+                            this.url,
+                            this.max,
+                            this.mime
+                    );
+                }.bind(this),false);
+
+                fileElement.click();
+                document.body.appendChild(fileElement);
+            },
+
+            handleTriggerDragEnter: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.trigger.classList.add('enter');
+            },
+
+            handleTriggerDragOver: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.trigger.classList.add('over');
+            },
+
+            handleTriggerDragLeave: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.trigger.classList.remove('enter');
+                this.trigger.classList.remove('over');
+            },
+
+            handleTriggerDrop: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.trigger.classList.remove('enter');
+                this.trigger.classList.remove('over');
+                this.trigger.setAttribute('readonly','readonly');
+                this.upload(
+                        event.dataTransfer.files[0],
+                        this.handleUploadProgress(),
+                        this.handleUploadDone(),
+                        this.handleUploadError(),
+                        this.url,
+                        this.max,
+                        this.mime
+                );
+            },
+
+            handleUploadProgress: function (fileElement) {
+                return function (event, status) {
+                    this.trigger.value = (parseInt(status) + '%');
+                    this.trigger.style.backgroundImage = 'linear-gradient(90deg, ' +
+                            'rgba(215,225,235,1) 0%, rgba(215,225,235,1) '+status+'%, ' +
+                            'rgba(255,255,255,1) 0%, rgba(255,255,255,1) 100%)';
+                }.bind(this);
+            },
+
+            handleUploadDone: function (fileElement) {
+                return function (event, media) {
+                    if (fileElement) {
+                        fileElement.parentNode.removeChild(fileElement);
+                    } else {
+                        this.trigger.removeAttribute('readonly','readonly');
+                    }
+                    this.trigger.style.backgroundImage = ('url('+media.thumb+')');
+                    this.trigger.style.backgroundSize = 'auto 60px';
+                    this.trigger.value = media.name;
+                }.bind(this);
+            },
+
+            handleUploadError: function(fileElement) {
+                return function (event, media) {
+                    if (fileElement) {
+                        fileElement.parentNode.removeChild(fileElement);
+                    } else {
+                        this.trigger.removeAttribute('readonly','readonly');
+                    }
+                    alert(media.message);
+                }.bind(this);
+            },
+
+            attached: function () {
+                this.trigger = this.children[0];
+
+                var value = this.trigger.getAttribute('value');
+                this.trigger.style.backgroundImage = ( 'url(/stjornvisi/images/60/'+value+')' );
+
+                this.trigger.addEventListener('dragenter', this.handleTriggerDragEnter.bind(this));
+                this.trigger.addEventListener('dragover', this.handleTriggerDragOver.bind(this));
+                this.trigger.addEventListener('dragleave', this.handleTriggerDragLeave.bind(this));
+                this.trigger.addEventListener('drop', this.handleTriggerDrop.bind(this));
+                this.trigger.addEventListener('click', this.handleTriggerClick.bind(this));
+            }
+        });
+    </script>
+</dom-module>

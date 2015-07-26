@@ -2089,104 +2089,104 @@ input[type="button"].btn-block {
   }
 }
 /* line 2, ../sass/helpers/_extend.scss */
-.block-element .block-element__body, stjornvisi-rich::shadow .stjornvisi-rich__preview, stjornvisi-rich .stjornvisi-rich__preview, .stjornvisi-rich__preview, .landing-page .landing-page__element .landing-page__element__section, .page-group .page-group__description, .page-pages, .style-guide, .page-anaegjuvogin section.layout__section {
+.block-element .block-element__body, stjornvisi-rich marked-element, .landing-page .landing-page__element .landing-page__element__section, .page-group .page-group__description, .page-pages, .style-guide, .page-anaegjuvogin section.layout__section {
   *zoom: 1;
 }
 /* line 38, ../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/utilities/general/_clearfix.scss */
-.block-element .block-element__body:after, stjornvisi-rich::shadow .stjornvisi-rich__preview:after, .stjornvisi-rich__preview:after, .landing-page .landing-page__element .landing-page__element__section:after, .page-group .page-group__description:after, .page-pages:after, .style-guide:after, .page-anaegjuvogin section.layout__section:after {
+.block-element .block-element__body:after, stjornvisi-rich marked-element:after, .landing-page .landing-page__element .landing-page__element__section:after, .page-group .page-group__description:after, .page-pages:after, .style-guide:after, .page-anaegjuvogin section.layout__section:after {
   content: "";
   display: table;
   clear: both;
 }
 /* line 5, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p, .page-anaegjuvogin section.layout__section p {
+.block-element .block-element__body p, stjornvisi-rich marked-element p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p, .page-anaegjuvogin section.layout__section p {
   text-align: left;
 }
 /* line 8, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p, stjornvisi-rich::shadow .stjornvisi-rich__preview p, .stjornvisi-rich__preview p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p, .page-anaegjuvogin section.layout__section p, .block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .page-anaegjuvogin section.layout__section blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .page-anaegjuvogin section.layout__section ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .page-anaegjuvogin section.layout__section ol {
+.block-element .block-element__body p, stjornvisi-rich marked-element p, .landing-page .landing-page__element .landing-page__element__section p, .page-group .page-group__description p, .page-pages p, .style-guide p, .page-anaegjuvogin section.layout__section p, .block-element .block-element__body blockquote, stjornvisi-rich marked-element blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .page-anaegjuvogin section.layout__section blockquote, .block-element .block-element__body ul, stjornvisi-rich marked-element ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .page-anaegjuvogin section.layout__section ul, .block-element .block-element__body ol, stjornvisi-rich marked-element ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .page-anaegjuvogin section.layout__section ol {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
 }
 /* line 13, ../sass/helpers/_extend.scss */
-.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .page-anaegjuvogin section.layout__section blockquote, .block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .page-anaegjuvogin section.layout__section ul, .block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .page-anaegjuvogin section.layout__section ol, .block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .page-anaegjuvogin section.layout__section h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .page-anaegjuvogin section.layout__section h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .page-anaegjuvogin section.layout__section h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4, .page-anaegjuvogin section.layout__section h4 {
+.block-element .block-element__body blockquote, stjornvisi-rich marked-element blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .page-anaegjuvogin section.layout__section blockquote, .block-element .block-element__body ul, stjornvisi-rich marked-element ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .page-anaegjuvogin section.layout__section ul, .block-element .block-element__body ol, stjornvisi-rich marked-element ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .page-anaegjuvogin section.layout__section ol, .block-element .block-element__body h1, stjornvisi-rich marked-element h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .page-anaegjuvogin section.layout__section h1, .block-element .block-element__body h2, stjornvisi-rich marked-element h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .page-anaegjuvogin section.layout__section h2, .block-element .block-element__body h3, stjornvisi-rich marked-element h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .page-anaegjuvogin section.layout__section h3, .block-element .block-element__body h4, stjornvisi-rich marked-element h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4, .page-anaegjuvogin section.layout__section h4 {
   clear: both;
 }
 /* line 17, ../sass/helpers/_extend.scss */
-.block-element .block-element__body blockquote, stjornvisi-rich::shadow .stjornvisi-rich__preview blockquote, .stjornvisi-rich__preview blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .page-anaegjuvogin section.layout__section blockquote {
+.block-element .block-element__body blockquote, stjornvisi-rich marked-element blockquote, .landing-page .landing-page__element .landing-page__element__section blockquote, .page-group .page-group__description blockquote, .page-pages blockquote, .style-guide blockquote, .page-anaegjuvogin section.layout__section blockquote {
   font-style: italic;
   border-left: 4px solid #4a85a1;
   padding-left: 1.5em;
 }
 /* line 23, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ol, stjornvisi-rich::shadow .stjornvisi-rich__preview ol, .stjornvisi-rich__preview ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .page-anaegjuvogin section.layout__section ol {
+.block-element .block-element__body ol, stjornvisi-rich marked-element ol, .landing-page .landing-page__element .landing-page__element__section ol, .page-group .page-group__description ol, .page-pages ol, .style-guide ol, .page-anaegjuvogin section.layout__section ol {
   list-style: none;
   padding: 0;
   counter-reset: section;
 }
 /* line 27, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ol li:before, .stjornvisi-rich__preview ol li:before, .landing-page .landing-page__element .landing-page__element__section ol li:before, .page-group .page-group__description ol li:before, .page-pages ol li:before, .style-guide ol li:before, .page-anaegjuvogin section.layout__section ol li:before {
+.block-element .block-element__body ol li:before, stjornvisi-rich marked-element ol li:before, .landing-page .landing-page__element .landing-page__element__section ol li:before, .page-group .page-group__description ol li:before, .page-pages ol li:before, .style-guide ol li:before, .page-anaegjuvogin section.layout__section ol li:before {
   counter-increment: section;
   content: counters(section,".") ".";
   color: #4a85a1;
   padding-right: 0.75em;
 }
 /* line 36, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ul, stjornvisi-rich::shadow .stjornvisi-rich__preview ul, .stjornvisi-rich__preview ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .page-anaegjuvogin section.layout__section ul {
+.block-element .block-element__body ul, stjornvisi-rich marked-element ul, .landing-page .landing-page__element .landing-page__element__section ul, .page-group .page-group__description ul, .page-pages ul, .style-guide ul, .page-anaegjuvogin section.layout__section ul {
   list-style: none;
   padding: 0;
 }
 /* line 39, ../sass/helpers/_extend.scss */
-.block-element .block-element__body ul li:before, .stjornvisi-rich__preview ul li:before, .landing-page .landing-page__element .landing-page__element__section ul li:before, .page-group .page-group__description ul li:before, .page-pages ul li:before, .style-guide ul li:before, .page-anaegjuvogin section.layout__section ul li:before {
+.block-element .block-element__body ul li:before, stjornvisi-rich marked-element ul li:before, .landing-page .landing-page__element .landing-page__element__section ul li:before, .page-group .page-group__description ul li:before, .page-pages ul li:before, .style-guide ul li:before, .page-anaegjuvogin section.layout__section ul li:before {
   content: "\2022";
   color: #4a85a1;
   padding-right: 0.75em;
 }
 /* line 47, ../sass/helpers/_extend.scss */
-.block-element .block-element__body a, stjornvisi-rich::shadow .stjornvisi-rich__preview a, .stjornvisi-rich__preview a, .landing-page .landing-page__element .landing-page__element__section a, .page-group .page-group__description a, .page-pages a, .style-guide a, .page-anaegjuvogin section.layout__section a {
+.block-element .block-element__body a, stjornvisi-rich marked-element a, .landing-page .landing-page__element .landing-page__element__section a, .page-group .page-group__description a, .page-pages a, .style-guide a, .page-anaegjuvogin section.layout__section a {
   color: #4a85a1;
   word-wrap: break-word;
 }
 /* line 52, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .page-anaegjuvogin section.layout__section h1 {
+.block-element .block-element__body h1, stjornvisi-rich marked-element h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .page-anaegjuvogin section.layout__section h1 {
   font-size: 1.125em;
   line-height: 1.33333em;
   margin: 1.33333em 0;
 }
 /* line 56, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .page-anaegjuvogin section.layout__section h2 {
+.block-element .block-element__body h2, stjornvisi-rich marked-element h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .page-anaegjuvogin section.layout__section h2 {
   font-size: 1em;
   line-height: 1.5em;
   margin: 1.5em 0;
 }
 /* line 60, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .page-anaegjuvogin section.layout__section h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4, .page-anaegjuvogin section.layout__section h4 {
+.block-element .block-element__body h3, stjornvisi-rich marked-element h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .page-anaegjuvogin section.layout__section h3, .block-element .block-element__body h4, stjornvisi-rich marked-element h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4, .page-anaegjuvogin section.layout__section h4 {
   font-size: 0.875em;
   line-height: 1.71429em;
   margin: 1.71429em 0;
 }
 /* line 65, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1, stjornvisi-rich::shadow .stjornvisi-rich__preview h1, .stjornvisi-rich__preview h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .page-anaegjuvogin section.layout__section h1, .block-element .block-element__body h2, stjornvisi-rich::shadow .stjornvisi-rich__preview h2, .stjornvisi-rich__preview h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .page-anaegjuvogin section.layout__section h2, .block-element .block-element__body h3, stjornvisi-rich::shadow .stjornvisi-rich__preview h3, .stjornvisi-rich__preview h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .page-anaegjuvogin section.layout__section h3, .block-element .block-element__body h4, stjornvisi-rich::shadow .stjornvisi-rich__preview h4, .stjornvisi-rich__preview h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4, .page-anaegjuvogin section.layout__section h4 {
+.block-element .block-element__body h1, stjornvisi-rich marked-element h1, .landing-page .landing-page__element .landing-page__element__section h1, .page-group .page-group__description h1, .page-pages h1, .style-guide h1, .page-anaegjuvogin section.layout__section h1, .block-element .block-element__body h2, stjornvisi-rich marked-element h2, .landing-page .landing-page__element .landing-page__element__section h2, .page-group .page-group__description h2, .page-pages h2, .style-guide h2, .page-anaegjuvogin section.layout__section h2, .block-element .block-element__body h3, stjornvisi-rich marked-element h3, .landing-page .landing-page__element .landing-page__element__section h3, .page-group .page-group__description h3, .page-pages h3, .style-guide h3, .page-anaegjuvogin section.layout__section h3, .block-element .block-element__body h4, stjornvisi-rich marked-element h4, .landing-page .landing-page__element .landing-page__element__section h4, .page-group .page-group__description h4, .page-pages h4, .style-guide h4, .page-anaegjuvogin section.layout__section h4 {
   font-family: "Bitter", serif;
   font-weight: 700;
 }
 /* line 70, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1 + p, .stjornvisi-rich__preview h1 + p, .landing-page .landing-page__element .landing-page__element__section h1 + p, .page-group .page-group__description h1 + p, .page-pages h1 + p, .style-guide h1 + p, .page-anaegjuvogin section.layout__section h1 + p,
+.block-element .block-element__body h1 + p, stjornvisi-rich marked-element h1 + p, .landing-page .landing-page__element .landing-page__element__section h1 + p, .page-group .page-group__description h1 + p, .page-pages h1 + p, .style-guide h1 + p, .page-anaegjuvogin section.layout__section h1 + p,
 .block-element .block-element__body h2 + p,
-.stjornvisi-rich__preview h2 + p,
+stjornvisi-rich marked-element h2 + p,
 .landing-page .landing-page__element .landing-page__element__section h2 + p,
 .page-group .page-group__description h2 + p,
 .page-pages h2 + p,
 .style-guide h2 + p,
 .page-anaegjuvogin section.layout__section h2 + p,
 .block-element .block-element__body h3 + p,
-.stjornvisi-rich__preview h3 + p,
+stjornvisi-rich marked-element h3 + p,
 .landing-page .landing-page__element .landing-page__element__section h3 + p,
 .page-group .page-group__description h3 + p,
 .page-pages h3 + p,
 .style-guide h3 + p,
 .page-anaegjuvogin section.layout__section h3 + p,
 .block-element .block-element__body h4 + p,
-.stjornvisi-rich__preview h4 + p,
+stjornvisi-rich marked-element h4 + p,
 .landing-page .landing-page__element .landing-page__element__section h4 + p,
 .page-group .page-group__description h4 + p,
 .page-pages h4 + p,
@@ -2195,9 +2195,9 @@ input[type="button"].btn-block {
   margin-top: -1.125em;
 }
 /* line 77, ../sass/helpers/_extend.scss */
-.block-element .block-element__body p + ul, .stjornvisi-rich__preview p + ul, .landing-page .landing-page__element .landing-page__element__section p + ul, .page-group .page-group__description p + ul, .page-pages p + ul, .style-guide p + ul, .page-anaegjuvogin section.layout__section p + ul,
+.block-element .block-element__body p + ul, stjornvisi-rich marked-element p + ul, .landing-page .landing-page__element .landing-page__element__section p + ul, .page-group .page-group__description p + ul, .page-pages p + ul, .style-guide p + ul, .page-anaegjuvogin section.layout__section p + ul,
 .block-element .block-element__body p + ol,
-.stjornvisi-rich__preview p + ol,
+stjornvisi-rich marked-element p + ol,
 .landing-page .landing-page__element .landing-page__element__section p + ol,
 .page-group .page-group__description p + ol,
 .page-pages p + ol,
@@ -2207,51 +2207,51 @@ input[type="button"].btn-block {
   margin-bottom: -0.75em;
 }
 /* line 83, ../sass/helpers/_extend.scss */
-.block-element .block-element__body h1:first-child, .stjornvisi-rich__preview h1:first-child, .landing-page .landing-page__element .landing-page__element__section h1:first-child, .page-group .page-group__description h1:first-child, .page-pages h1:first-child, .style-guide h1:first-child, .page-anaegjuvogin section.layout__section h1:first-child,
+.block-element .block-element__body h1:first-child, stjornvisi-rich marked-element h1:first-child, .landing-page .landing-page__element .landing-page__element__section h1:first-child, .page-group .page-group__description h1:first-child, .page-pages h1:first-child, .style-guide h1:first-child, .page-anaegjuvogin section.layout__section h1:first-child,
 .block-element .block-element__body h2:first-child,
-.stjornvisi-rich__preview h2:first-child,
+stjornvisi-rich marked-element h2:first-child,
 .landing-page .landing-page__element .landing-page__element__section h2:first-child,
 .page-group .page-group__description h2:first-child,
 .page-pages h2:first-child,
 .style-guide h2:first-child,
 .page-anaegjuvogin section.layout__section h2:first-child,
 .block-element .block-element__body h3:first-child,
-.stjornvisi-rich__preview h3:first-child,
+stjornvisi-rich marked-element h3:first-child,
 .landing-page .landing-page__element .landing-page__element__section h3:first-child,
 .page-group .page-group__description h3:first-child,
 .page-pages h3:first-child,
 .style-guide h3:first-child,
 .page-anaegjuvogin section.layout__section h3:first-child,
 .block-element .block-element__body h4:first-child,
-.stjornvisi-rich__preview h4:first-child,
+stjornvisi-rich marked-element h4:first-child,
 .landing-page .landing-page__element .landing-page__element__section h4:first-child,
 .page-group .page-group__description h4:first-child,
 .page-pages h4:first-child,
 .style-guide h4:first-child,
 .page-anaegjuvogin section.layout__section h4:first-child,
 .block-element .block-element__body p:first-child,
-.stjornvisi-rich__preview p:first-child,
+stjornvisi-rich marked-element p:first-child,
 .landing-page .landing-page__element .landing-page__element__section p:first-child,
 .page-group .page-group__description p:first-child,
 .page-pages p:first-child,
 .style-guide p:first-child,
 .page-anaegjuvogin section.layout__section p:first-child,
 .block-element .block-element__body ol:first-child,
-.stjornvisi-rich__preview ol:first-child,
+stjornvisi-rich marked-element ol:first-child,
 .landing-page .landing-page__element .landing-page__element__section ol:first-child,
 .page-group .page-group__description ol:first-child,
 .page-pages ol:first-child,
 .style-guide ol:first-child,
 .page-anaegjuvogin section.layout__section ol:first-child,
 .block-element .block-element__body ul:first-child,
-.stjornvisi-rich__preview ul:first-child,
+stjornvisi-rich marked-element ul:first-child,
 .landing-page .landing-page__element .landing-page__element__section ul:first-child,
 .page-group .page-group__description ul:first-child,
 .page-pages ul:first-child,
 .style-guide ul:first-child,
 .page-anaegjuvogin section.layout__section ul:first-child,
 .block-element .block-element__body blockquote:first-child,
-.stjornvisi-rich__preview blockquote:first-child,
+stjornvisi-rich marked-element blockquote:first-child,
 .landing-page .landing-page__element .landing-page__element__section blockquote:first-child,
 .page-group .page-group__description blockquote:first-child,
 .page-pages blockquote:first-child,
@@ -2260,46 +2260,46 @@ input[type="button"].btn-block {
   margin-top: 0;
 }
 /* line 94, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img[alt*=left], .stjornvisi-rich__preview img[alt*=left], .landing-page .landing-page__element .landing-page__element__section img[alt*=left], .page-group .page-group__description img[alt*=left], .page-pages img[alt*=left], .style-guide img[alt*=left], .page-anaegjuvogin section.layout__section img[alt*=left] {
+.block-element .block-element__body img[alt*=left], stjornvisi-rich marked-element img[alt*=left], .landing-page .landing-page__element .landing-page__element__section img[alt*=left], .page-group .page-group__description img[alt*=left], .page-pages img[alt*=left], .style-guide img[alt*=left], .page-anaegjuvogin section.layout__section img[alt*=left] {
   float: left;
   margin: 15px 15px 15px 0;
 }
 /* line 98, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img[alt*=right], .stjornvisi-rich__preview img[alt*=right], .landing-page .landing-page__element .landing-page__element__section img[alt*=right], .page-group .page-group__description img[alt*=right], .page-pages img[alt*=right], .style-guide img[alt*=right], .page-anaegjuvogin section.layout__section img[alt*=right] {
+.block-element .block-element__body img[alt*=right], stjornvisi-rich marked-element img[alt*=right], .landing-page .landing-page__element .landing-page__element__section img[alt*=right], .page-group .page-group__description img[alt*=right], .page-pages img[alt*=right], .style-guide img[alt*=right], .page-anaegjuvogin section.layout__section img[alt*=right] {
   float: left;
   margin: 15px 0 15px 15px;
 }
 /* line 102, ../sass/helpers/_extend.scss */
-.block-element .block-element__body img, stjornvisi-rich::shadow .stjornvisi-rich__preview img, .stjornvisi-rich__preview img, .landing-page .landing-page__element .landing-page__element__section img, .page-group .page-group__description img, .page-pages img, .style-guide img, .page-anaegjuvogin section.layout__section img {
+.block-element .block-element__body img, stjornvisi-rich marked-element img, .landing-page .landing-page__element .landing-page__element__section img, .page-group .page-group__description img, .page-pages img, .style-guide img, .page-anaegjuvogin section.layout__section img {
   float: left;
   margin: 0 0.75em 0.75em 0;
 }
 /* line 108, ../sass/helpers/_extend.scss */
-.block-element .block-element__body em, stjornvisi-rich::shadow .stjornvisi-rich__preview em, .stjornvisi-rich__preview em, .landing-page .landing-page__element .landing-page__element__section em, .page-group .page-group__description em, .page-pages em, .style-guide em, .page-anaegjuvogin section.layout__section em, .block-element .block-element__body i, stjornvisi-rich::shadow .stjornvisi-rich__preview i, .stjornvisi-rich__preview i, .landing-page .landing-page__element .landing-page__element__section i, .page-group .page-group__description i, .page-pages i, .style-guide i, .page-anaegjuvogin section.layout__section i {
+.block-element .block-element__body em, stjornvisi-rich marked-element em, .landing-page .landing-page__element .landing-page__element__section em, .page-group .page-group__description em, .page-pages em, .style-guide em, .page-anaegjuvogin section.layout__section em, .block-element .block-element__body i, stjornvisi-rich marked-element i, .landing-page .landing-page__element .landing-page__element__section i, .page-group .page-group__description i, .page-pages i, .style-guide i, .page-anaegjuvogin section.layout__section i {
   font-style: italic;
 }
 /* line 111, ../sass/helpers/_extend.scss */
-.block-element .block-element__body strong, stjornvisi-rich::shadow .stjornvisi-rich__preview strong, .stjornvisi-rich__preview strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .style-guide strong, .page-anaegjuvogin section.layout__section strong, .block-element .block-element__body b, stjornvisi-rich::shadow .stjornvisi-rich__preview b, .stjornvisi-rich__preview b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b, .style-guide b, .page-anaegjuvogin section.layout__section b {
+.block-element .block-element__body strong, stjornvisi-rich marked-element strong, .landing-page .landing-page__element .landing-page__element__section strong, .page-group .page-group__description strong, .page-pages strong, .style-guide strong, .page-anaegjuvogin section.layout__section strong, .block-element .block-element__body b, stjornvisi-rich marked-element b, .landing-page .landing-page__element .landing-page__element__section b, .page-group .page-group__description b, .page-pages b, .style-guide b, .page-anaegjuvogin section.layout__section b {
   font-weight: 700;
 }
 /* line 116, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table, stjornvisi-rich::shadow .stjornvisi-rich__preview table, .stjornvisi-rich__preview table, .landing-page .landing-page__element .landing-page__element__section table, .page-group .page-group__description table, .page-pages table, .style-guide table, .page-anaegjuvogin section.layout__section table {
+.block-element .block-element__body table, stjornvisi-rich marked-element table, .landing-page .landing-page__element .landing-page__element__section table, .page-group .page-group__description table, .page-pages table, .style-guide table, .page-anaegjuvogin section.layout__section table {
   margin-bottom: 1.5em;
   margin-top: 1.5em;
   font-family: "Open Sans", sans-serif;
   border-collapse: collapse;
 }
 /* line 122, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table td, .stjornvisi-rich__preview table td, .landing-page .landing-page__element .landing-page__element__section table td, .page-group .page-group__description table td, .page-pages table td, .style-guide table td, .page-anaegjuvogin section.layout__section table td, .block-element .block-element__body table th, .stjornvisi-rich__preview table th, .landing-page .landing-page__element .landing-page__element__section table th, .page-group .page-group__description table th, .page-pages table th, .style-guide table th, .page-anaegjuvogin section.layout__section table th {
+.block-element .block-element__body table td, stjornvisi-rich marked-element table td, .landing-page .landing-page__element .landing-page__element__section table td, .page-group .page-group__description table td, .page-pages table td, .style-guide table td, .page-anaegjuvogin section.layout__section table td, .block-element .block-element__body table th, stjornvisi-rich marked-element table th, .landing-page .landing-page__element .landing-page__element__section table th, .page-group .page-group__description table th, .page-pages table th, .style-guide table th, .page-anaegjuvogin section.layout__section table th {
   padding: 0.375em 0.75em;
 }
 /* line 125, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table thead, .stjornvisi-rich__preview table thead, .landing-page .landing-page__element .landing-page__element__section table thead, .page-group .page-group__description table thead, .page-pages table thead, .style-guide table thead, .page-anaegjuvogin section.layout__section table thead {
+.block-element .block-element__body table thead, stjornvisi-rich marked-element table thead, .landing-page .landing-page__element .landing-page__element__section table thead, .page-group .page-group__description table thead, .page-pages table thead, .style-guide table thead, .page-anaegjuvogin section.layout__section table thead {
   border-bottom: 2px solid lightgray;
   color: #4a85a1;
 }
 /* line 131, ../sass/helpers/_extend.scss */
-.block-element .block-element__body table tbody tr:nth-child(even), .stjornvisi-rich__preview table tbody tr:nth-child(even), .landing-page .landing-page__element .landing-page__element__section table tbody tr:nth-child(even), .page-group .page-group__description table tbody tr:nth-child(even), .page-pages table tbody tr:nth-child(even), .style-guide table tbody tr:nth-child(even), .page-anaegjuvogin section.layout__section table tbody tr:nth-child(even) {
+.block-element .block-element__body table tbody tr:nth-child(even), stjornvisi-rich marked-element table tbody tr:nth-child(even), .landing-page .landing-page__element .landing-page__element__section table tbody tr:nth-child(even), .page-group .page-group__description table tbody tr:nth-child(even), .page-pages table tbody tr:nth-child(even), .style-guide table tbody tr:nth-child(even), .page-anaegjuvogin section.layout__section table tbody tr:nth-child(even) {
   background-color: #fbfbfb;
 }
 
@@ -4366,20 +4366,51 @@ textarea.prossess, input.prossess {
 }
 
 /**
- *
+ * This styles the rich-text-editor and its Markup
+ * presentation.
+ * Since this is a Polymer element, this could go
+ * into the element deceleration, maybe that could
+ * be a refactor-sprint sometime.
  */
-/* line 6, ../sass/components/_web-components.scss */
+/* line 12, ../sass/components/_web-components.scss */
+stjornvisi-rich marked-element .marked-element {
+  background-color: white;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+/* line 20, ../sass/components/_web-components.scss */
+stjornvisi-rich nav {
+  display: inline-block;
+  margin-left: 1.5em;
+}
+/* line 23, ../sass/components/_web-components.scss */
+stjornvisi-rich nav a {
+  padding: 0 0.75em 0 0;
+  color: #4a85a1;
+  text-decoration: none;
+}
+/* line 28, ../sass/components/_web-components.scss */
+stjornvisi-rich nav a:before {
+  padding-right: 0.75em;
+  content: "|";
+}
+
+/**
+ * This styles all CRUD controls.
+ * There us a type on the name so this should be
+ * refactored soon.
+ */
+/* line 41, ../sass/components/_web-components.scss */
 stjonvisi-control {
   display: block;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
 }
-/* line 12, ../sass/components/_web-components.scss */
+/* line 43, ../sass/components/_web-components.scss */
 stjonvisi-control > * {
   display: block;
 }
-/* line 16, ../sass/components/_web-components.scss */
+/* line 46, ../sass/components/_web-components.scss */
 stjonvisi-control > a {
   font-size: 0.75em;
   line-height: 2em;
@@ -4387,221 +4418,21 @@ stjonvisi-control > a {
   word-break: keep-all;
   white-space: nowrap;
 }
-/* line 21, ../sass/components/_web-components.scss */
+/* line 51, ../sass/components/_web-components.scss */
 stjonvisi-control > a i {
   color: #80a9bd;
   padding-right: 0.5em;
 }
-/* line 26, ../sass/components/_web-components.scss */
+/* line 56, ../sass/components/_web-components.scss */
 stjonvisi-control a.update i {
   color: #4ca14a;
 }
-/* line 29, ../sass/components/_web-components.scss */
+/* line 59, ../sass/components/_web-components.scss */
 stjonvisi-control a.delete i {
   color: #ff4800;
 }
-/* line 35, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__edit {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background-color: #ff4800;
-  padding: 10px;
-  border-radius: 50%;
-  z-index: 1;
-  position: relative;
-}
-/* line 45, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__edit svg path {
-  fill: white;
-}
-/* line 48, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper {
-  display: none;
-  position: absolute;
-  background-color: white;
-  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
-  z-index: 10;
-  padding: 15px;
-}
-/* line 55, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper > * {
-  display: block;
-  font-size: 0.75em;
-  line-height: 2em;
-  font-family: "Open Sans", sans-serif;
-  word-break: keep-all;
-  white-space: nowrap;
-}
-/* line 62, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper > * i {
-  color: #80a9bd;
-  padding-right: 0.5em;
-}
-/* line 70, ../sass/components/_web-components.scss */
-stjonvisi-control:hover .stjonvisi-control__wrapper {
-  display: block;
-}
 
-/* line 77, ../sass/components/_web-components.scss */
-stjonvisi-control.inline {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-/* line 82, ../sass/components/_web-components.scss */
-stjonvisi-control.active {
-  overflow: visible;
-}
-
-/* line 86, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__edit {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-color: #ff4800;
-  padding: 10px;
-  border-radius: 50%;
-  z-index: 3;
-  position: relative;
-}
-/* line 95, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__edit svg path {
-  fill: white;
-}
-/* line 98, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__wrapper {
-  transform: translate3d(0, -100%, 0);
-  background-color: white;
-  position: absolute;
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.17);
-  z-index: 2;
-  opacity: 0;
-  transition: all .2s;
-  padding: 15px;
-  border-radius: 3px;
-}
-
-/* line 111, ../sass/components/_web-components.scss */
-stjonvisi-control.active::shadow .stjonvisi-control__wrapper {
-  transform: translate3d(0, 0%, 0);
-  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
-  opacity: 1;
-}
-
-/* line 118, ../sass/components/_web-components.scss */
-stjonvisi-control.inline::shadow .stjonvisi-control__edit {
-  width: 12px;
-  height: 12px;
-}
-/* line 122, ../sass/components/_web-components.scss */
-stjonvisi-control.inline::shadow .stjonvisi-control__wrapper {
-  top: 0;
-  transform: translate3d(-100%, 0%, 0);
-}
-
-/* line 127, ../sass/components/_web-components.scss */
-stjonvisi-control.active.inline::shadow {
-  transform: translate3d(0%, 0%, 0);
-}
-
-/* line 131, ../sass/components/_web-components.scss */
-stjonvisi-control::content * {
-  display: block;
-}
-
-/**
- *
- */
-/* line 142, ../sass/components/_web-components.scss */
-stjornvisi-rich::shadow .stjornvisi-rich__wrapper {
-  position: relative;
-}
-/* line 145, ../sass/components/_web-components.scss */
-stjornvisi-rich::shadow .stjornvisi-rich__preview {
-  padding: 30px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border: 1px solid lightgray;
-  border-radius: 4px;
-  z-index: 1;
-  background-color: white;
-  overflow: scroll;
-  display: none;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-}
-/* line 163, ../sass/components/_web-components.scss */
-stjornvisi-rich::shadow .stjornvisi-rich__controls {
-  display: inline-block;
-  margin-left: 1.5em;
-}
-/* line 166, ../sass/components/_web-components.scss */
-stjornvisi-rich::shadow .stjornvisi-rich__controls a {
-  padding: 0 0.75em 0 0;
-  color: #4a85a1;
-  text-decoration: none;
-}
-/* line 171, ../sass/components/_web-components.scss */
-stjornvisi-rich::shadow .stjornvisi-rich__controls a:before {
-  padding-right: 0.75em;
-  content: "|";
-}
-/* line 176, ../sass/components/_web-components.scss */
-stjornvisi-rich::shadow .stjornvisi-rich__help {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-}
-/* line 189, ../sass/components/_web-components.scss */
-stjornvisi-rich .stjornvisi-rich__wrapper {
-  position: relative;
-}
-/* line 192, ../sass/components/_web-components.scss */
-stjornvisi-rich .stjornvisi-rich__help {
-  display: none;
-}
-/* line 195, ../sass/components/_web-components.scss */
-stjornvisi-rich .stjornvisi-rich__preview {
-  padding: 30px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  border: 1px solid lightgray;
-  border-radius: 4px;
-  z-index: 1;
-  background-color: white;
-  overflow: scroll;
-  display: none;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-}
-/* line 211, ../sass/components/_web-components.scss */
-stjornvisi-rich .stjornvisi-rich__controls {
-  display: inline-block;
-  margin-left: 1.5em;
-}
-/* line 214, ../sass/components/_web-components.scss */
-stjornvisi-rich .stjornvisi-rich__controls a {
-  padding: 0 0.75em 0 0;
-  color: #4a85a1;
-  text-decoration: none;
-}
-/* line 219, ../sass/components/_web-components.scss */
-stjornvisi-rich .stjornvisi-rich__controls a:before {
-  padding-right: 0.75em;
-  content: "|";
-}
-
-/* line 4, ../sass/components/_events.scss */
+/* line 3, ../sass/components/_events.scss */
 form[name=stjornvisi-form-event].form-horizontal .form-group {
   padding-left: 15px;
   padding-right: 15px;
@@ -4736,12 +4567,22 @@ input[name=avatar] {
 }
 
 /**
+ * better-dateinput-polyfill (https://github.com/chemerisuk/better-dateinput-polyfill)
+ * will for some readon, hide the text in the input element. This overwrites that.
+ * ...so this is a dirty hack.
+ */
+/* line 42, ../sass/components/_form.scss */
+input[type=date] {
+  color: #282828 !important;
+}
+
+/**
  * ZF2 and Bootstrap differ in how an input error markup
  * is constructed, in stead of overwriting the view-helper
  * to make it compliant with Bootstrap, I'll just overwrite
  * the css
  */
-/* line 45, ../sass/components/_form.scss */
+/* line 54, ../sass/components/_form.scss */
 .form-group.has-error ul li {
   font-family: "Open Sans", sans-serif;
   padding: 0.375em 0;
@@ -4749,12 +4590,12 @@ input[name=avatar] {
   text-align: right;
 }
 
-/* line 54, ../sass/components/_form.scss */
+/* line 63, ../sass/components/_form.scss */
 [required] {
   position: relative;
 }
 
-/* line 57, ../sass/components/_form.scss */
+/* line 66, ../sass/components/_form.scss */
 [required]:before {
   position: absolute;
   display: block;
@@ -4770,7 +4611,7 @@ input[name=avatar] {
  * This overwrites the Twitter-Bootstrap styles
  * for the things that I don't want inhered.
  */
-/* line 72, ../sass/components/_form.scss */
+/* line 81, ../sass/components/_form.scss */
 .btn, .attending {
   font-size: 0.75em;
   line-height: 2em;
@@ -4782,7 +4623,7 @@ input[name=avatar] {
   padding: 0.5em 2em;
 }
 
-/* line 82, ../sass/components/_form.scss */
+/* line 91, ../sass/components/_form.scss */
 .btn-facebook {
   color: white;
   background-color: #355088;
@@ -4815,37 +4656,37 @@ input[name=avatar] {
  * Hey inhered from Twitter-Bootstrap styles but are
  * then extended for the extra functionality.
  */
-/* line 94, ../sass/components/_form.scss */
+/* line 103, ../sass/components/_form.scss */
 .attending.yes {
   color: white;
   background-color: #4ca14a;
 }
-/* line 98, ../sass/components/_form.scss */
+/* line 107, ../sass/components/_form.scss */
 .attending.no {
   color: white;
   background-color: #ff4800;
 }
 
-/* line 104, ../sass/components/_form.scss */
+/* line 113, ../sass/components/_form.scss */
 a.attending.yes {
   color: white;
   background-color: rgba(76, 161, 74, 0.5);
 }
-/* line 107, ../sass/components/_form.scss */
+/* line 116, ../sass/components/_form.scss */
 a.attending.yes:hover {
   background-color: rgba(60, 128, 59, 0.5);
 }
-/* line 111, ../sass/components/_form.scss */
+/* line 120, ../sass/components/_form.scss */
 a.attending.no {
   color: white;
   background-color: rgba(255, 72, 0, 0.5);
 }
-/* line 114, ../sass/components/_form.scss */
+/* line 123, ../sass/components/_form.scss */
 a.attending.no:hover {
   background-color: rgba(204, 57, 0, 0.5);
 }
 
-/* line 119, ../sass/components/_form.scss */
+/* line 128, ../sass/components/_form.scss */
 span.attending {
   cursor: default;
 }
@@ -5585,16 +5426,8 @@ span.attending {
   }
 }
 
-/* line 10, ../sass/pages/_event.scss */
-.page-event {
-  /*
-  .block-element .block-element__body .block-element__image{
-  	max-width: 100%;
-  }
-  */
-}
 @media (max-width: 768px) {
-  /* line 14, ../sass/pages/_event.scss */
+  /* line 12, ../sass/pages/_event.scss */
   .page-event.layout.layout--three-columns .layout__data,
   .page-event.layout.layout--three-columns .layout__meta {
     float: none;
@@ -5603,7 +5436,7 @@ span.attending {
     padding-left: 0;
   }
 }
-/* line 24, ../sass/pages/_event.scss */
+/* line 21, ../sass/pages/_event.scss */
 .page-event form.page-event__register {
   *zoom: 1;
 }
@@ -5613,13 +5446,13 @@ span.attending {
   display: table;
   clear: both;
 }
-/* line 26, ../sass/pages/_event.scss */
+/* line 23, ../sass/pages/_event.scss */
 .page-event form.page-event__register p {
   font-size: 0.875em;
   line-height: 1.71429em;
   font-family: "Open Sans", sans-serif;
 }
-/* line 30, ../sass/pages/_event.scss */
+/* line 27, ../sass/pages/_event.scss */
 .page-event form.page-event__register label {
   font-size: 0.875em;
   line-height: 1.71429em;
@@ -5628,7 +5461,7 @@ span.attending {
   text-transform: uppercase;
   padding-bottom: 0.75em;
 }
-/* line 38, ../sass/pages/_event.scss */
+/* line 34, ../sass/pages/_event.scss */
 .page-event form.page-event__register .form-group {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
@@ -5637,36 +5470,46 @@ span.attending {
   float: left;
 }
 @media (max-width: 480px) {
-  /* line 46, ../sass/pages/_event.scss */
+  /* line 42, ../sass/pages/_event.scss */
   .page-event form.page-event__register label {
     padding-bottom: 0.375em;
   }
-  /* line 49, ../sass/pages/_event.scss */
+  /* line 45, ../sass/pages/_event.scss */
   .page-event form.page-event__register .form-group {
     margin-top: 0.75em;
     margin-bottom: 0.75em;
     width: 100%;
   }
 }
-/* line 64, ../sass/pages/_event.scss */
+/* line 52, ../sass/pages/_event.scss */
 .page-event .page-event-element__attenders {
   border-top: 1px solid lightgray;
   padding: 30px 0;
 }
-/* line 68, ../sass/pages/_event.scss */
+/* line 56, ../sass/pages/_event.scss */
 .page-event .page-event-element__attenders.page-event-element__attenders--stop h3 {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
   color: #4a85a1;
 }
-/* line 75, ../sass/pages/_event.scss */
+/* line 63, ../sass/pages/_event.scss */
 .page-event .page-event-element__attenders.page-event-element__attenders--warn h3 {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
 }
-/* line 84, ../sass/pages/_event.scss */
+/* line 70, ../sass/pages/_event.scss */
 .page-event .block-element__image {
   max-width: 100%;
+}
+
+/**
+ * Google maps have to have some hight.
+ * this fixes that.
+ */
+/* line 79, ../sass/pages/_event.scss */
+.map_canvas {
+  height: 300px;
+  margin: 15px 0;
 }
 
 /* line 5, ../sass/pages/_user.scss */

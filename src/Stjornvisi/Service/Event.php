@@ -63,7 +63,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 //ATTENDERS
                 //	get all user/guests that are
                 //	attending this event.
-                if ($event->event_date > new DateTime()) {
+                if ($event->event_date) {
                     $attendStatement = $this->pdo->prepare("
                         SELECT U.id as `user_id`, EhU.register_time, U.name, U.email, U.title, C.name as company_name, C.id as company_id
                         FROM Event_has_User EhU

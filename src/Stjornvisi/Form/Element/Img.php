@@ -12,11 +12,10 @@ use Zend\Form\Element;
 
 class Img extends Element
 {
-	/**
-	 * @var array
-	 */
-	protected $attributes = array(
-		'readonly' => 'readonly'
-	);
+    /**
+     * @var array
+     */
+    protected $attributes = array(
+        'readonly' => 'readonly'
+    );
 }
-

@@ -1,0 +1,132 @@
+<dom-module id="stjornvisi-rich">
+    <template>
+            <nav>
+                <a href="#" on-click="handleShowEditor">Ritill</a>
+                <a href="#" on-click="handleShowPreview">Sýnishorn</a>
+                <a href="#" on-click="handleShowTutorial">Hjálp</a>
+            </nav>
+            <iron-pages id="editorPages" selected="0">
+                <div>
+                    <content></content>
+                </div>
+                <marked-element id="markdownPreview"></marked-element>
+                <stjornvisi-markdown-help></stjornvisi-markdown-help>
+            </iron-pages>
+    </template>
+    <script>
+        Polymer({
+            is: 'stjornvisi-rich',
+
+            properties: {
+                textarea: {
+                    type: Object
+                },
+
+                max: {
+                    type: Number
+                },
+
+                url: {
+                    type: String
+                },
+
+                mime: {
+                    type: Object
+                }
+            },
+
+            behaviors: [StjornvisiBehaviors.UploadBehavior],
+
+            handleShowEditor: function (event) {
+                event.preventDefault();
+                this.$.editorPages.selected = 0;
+            },
+
+            handleShowPreview: function (event) {
+                event.preventDefault();
+                this.$.editorPages.selected = 1;
+                this.$.markdownPreview.markdown = this.textarea.value;
+            },
+
+            handleShowTutorial: function (event) {
+                event.preventDefault();
+                this.$.editorPages.selected = 2;
+            },
+
+            handleDragEnter: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.textarea.classList.add('enter');
+            },
+
+            handleDragOver: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.textarea.classList.add('over');
+            },
+
+            handleDragLeave: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                this.textarea.classList.remove('enter');
+                this.textarea.classList.remove('over');
+            },
+
+            handleDrop: function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                this.textarea.classList.remove('enter');
+                this.textarea.classList.remove('over');
+                this.textarea.setAttribute('readonly','readonly');
+
+                var begin = this.textarea.value.substr(0,this.textarea.selectionStart);
+                var middle = this.textarea.value.substr(
+                    this.textarea.selectionStart,
+                    (this.textarea.selectionEnd - this.textarea.selectionStart)
+                );
+                var end = this.textarea.value.substr(this.textarea.selectionEnd);
+
+                this.upload(
+                    event.dataTransfer.files[0],
+                    this.handleUploadProgress(begin, middle, end),
+                    this.handleUploadDone(begin, middle, end),
+                    this.handleUploadError(begin, middle, end),
+                    this.url,
+                    this.max,
+                    this.mime
+                );
+            },
+
+            handleUploadProgress: function (begin, middle, end) {
+                return function (event, status) {
+                    this.textarea.value = (begin) + ('![Alt text]('+status+'%)') + (end);
+                }.bind(this)
+            },
+
+            handleUploadDone: function (begin, middle, end) {
+                return function (event, media) {
+                    this.textarea.value = (begin) + ('!['+middle+']('+media.medium+')') + (end);
+                    this.textarea.removeAttribute('readonly');
+                }
+            },
+
+            handleUploadError: function (begin, middle, end) {
+                return function (event, media) {
+                    this.textarea.value = (begin) + (middle) + (end);
+                    this.textarea.removeAttribute('readonly');
+                    alert(media.message);
+                }
+            },
+
+            attached: function () {
+                this.textarea = this.querySelector('textarea');
+
+                this.textarea.addEventListener("dragenter", this.handleDragEnter.bind(this));
+                this.textarea.addEventListener("dragenter", this.handleDragOver.bind(this));
+                this.textarea.addEventListener("dragleave", this.handleDragLeave.bind(this));
+                this.textarea.addEventListener("drop", this.handleDrop.bind(this));
+            }
+        });
+    </script>
+</dom-module>

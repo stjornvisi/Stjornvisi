@@ -1,0 +1,84 @@
+<script>
+    var StjornvisiBehaviors = StjornvisiBehaviors || {};
+
+    StjornvisiBehaviors.UploadBehavior = {
+
+        /**
+         * Uploads a file via XHR and calls callback functions
+         * passed to it along the way.
+         *
+         * @param {File} file
+         * @param {Function} progress
+         * @param {Function} done
+         * @param {Function} error
+         * @param {String} url
+         * @param {Number} max
+         * @param {String} mime
+         * @returns {boolean}
+         */
+        upload: function(file, progress, done, error, url, max, mime){
+
+            var promise = new Promise(function(resolve, reject) {
+                if (file.size > max) {
+                    reject(new Error('File to big'));
+                }
+
+                if (!file.type.match(mime)) {
+                    reject(new Error('Invalid file type'));
+                }
+
+                //TODO get actual min dimensions
+                if (file.type.match(/image\//)) {
+                    var imageUrl = URL.createObjectURL(file);
+                    var img = new Image;
+                    img.addEventListener('load', function(event) {
+                        if (event.target.height < 960 && event.target.width < 960) {
+                            reject(new Error("Image has to be more than 960x960 "))
+                        } else {
+                            resolve(file, url);
+                        }
+                    }, false);
+
+                    img.src = imageUrl;
+                } else {
+                    resolve(file, url);
+                }
+            });
+
+            promise.then(function() {
+                var formData = new FormData();
+                formData.append('file', file);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('post', url);
+
+                xhr.upload.addEventListener('progress',function(event){
+                    var status = (event.loaded / event.total * 100 );
+                    progress(event, status);
+                }.bind(this),false);
+
+                xhr.addEventListener('error',function(event){
+                    error.call(this, event, {message: 'XHR error'});
+                },false);
+
+                xhr.addEventListener('abort',function(event){
+                    error.call(this, event, {message: 'XHR abort'});
+                },false);
+
+                xhr.addEventListener('load',function(event){
+                    var object = JSON.parse( event.target.responseText );
+                    var media = object.info.media[0];
+                    if( parseInt( media.code/100 ) == 2 ){
+                        done.call(this,event, media);
+                    }else{
+                        error.call(this,event, media);
+                    }
+                }.bind(this),false);
+
+                xhr.send(formData);
+            }, function(e) {
+                error.call(this, {}, e);
+            });
+        }
+    };
+</script>

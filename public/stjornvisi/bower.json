@@ -24,6 +24,11 @@
     "fluidbox": "~1.4.3",
     "d3": "~3.5.5",
     "better-dateinput-polyfill": "~1.5.2",
-    "Chart.js": "~1.0.2"
+    "Chart.js": "~1.0.2",
+    "polymer": "Polymer/polymer#~1.0.7",
+    "marked-element": "PolymerElements/marked-element#~1.0.2",
+    "iron-pages": "PolymerElements/iron-pages#~1.0.3",
+    "iron-ajax": "PolymerElements/iron-ajax#~1.0.3",
+    "google-map": "GoogleWebComponents/google-map#~1.0.3"
   }
 }
