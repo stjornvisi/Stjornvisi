@@ -30,7 +30,8 @@ class LocationController extends AbstractActionController
     public function indexAction()
     {
         /** @var  $mapService \Stjornvisi\Service\MapInterface*/
-        $mapService = $this->getServiceLocator()->get('Stjornvisi\Service\Map');
+        $mapService = $this->getServiceLocator()
+            ->get('Stjornvisi\Service\Map');
 
         $mapResponse = $mapService->request($this->params()->fromQuery('q'));
         return new JsonModel([$mapResponse]);

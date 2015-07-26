@@ -35,19 +35,9 @@ class MediaController extends AbstractActionController
         $adapter->setDestination($folder.'original');
 
         $result = (object)[
-        'media' => array(),
-        'length' => $this->getRequest()->getHeaders()->get('Content-Length'),
+            'media' => [],
+            'length' => $this->getRequest()->getHeaders()->get('Content-Length'),
         ];
-
-        //ERROR
-//        $result->media[] = (object)[
-//            'code' => 501,
-//            'message' => 'Invalid filename',
-//            'name' => null,
-//            'original' => 'Hundur',
-//            'thumb' => null
-//        ];
-//        return new JsonModel(['info' => $result]);
 
         foreach ($adapter->getFileInfo() as $info) {
             $originalFileName = $info['name'];
@@ -66,7 +56,6 @@ class MediaController extends AbstractActionController
                         $folder.'original/'.$originalFileName,
                         $folder.'original/'.$newFileName . '.'.$nameArray[3]
                     );
-
 
                     $imagine = $sm->get('Imagine\Image\Imagine');
 
@@ -101,36 +90,35 @@ class MediaController extends AbstractActionController
                     $transform->apply($image)->save($folder . '100/' . $newFileName. '.'.$nameArray[3]);
 
                     $result->media[] = (object)[
-                    'code' => 200,
-                    'message' => 'Success',
-                    'name' => $newFileName. '.'.$nameArray[3],
-                    'original' => $originalFileName,
-                    'thumb' => $renderer->basePath('/images/60/'.$newFileName. '.'.$nameArray[3]),
-                    'medium' => $renderer->basePath('/images/100/'.$newFileName. '.'.$nameArray[3]),
-                    'big' => $renderer->basePath('/images/300-square/'.$newFileName. '.'.$nameArray[3]),
-                    'path' => $renderer->basePath('/images/original/'.$newFileName. '.'.$nameArray[3])
+                        'code' => 200,
+                        'message' => 'Success',
+                        'name' => $newFileName. '.'.$nameArray[3],
+                        'original' => $originalFileName,
+                        'thumb' => $renderer->basePath('/images/60/'.$newFileName. '.'.$nameArray[3]),
+                        'medium' => $renderer->basePath('/images/100/'.$newFileName. '.'.$nameArray[3]),
+                        'big' => $renderer->basePath('/images/300-square/'.$newFileName. '.'.$nameArray[3]),
+                        'path' => $renderer->basePath('/images/original/'.$newFileName. '.'.$nameArray[3])
                     ];
 
                 } else {
                     $errorArray = $adapter->getErrors();
                     $result->media[] = (object)[
-                    'code' => 501,
-                    'message' => array_pop($errorArray),
-                    'name' => $newFileName. '.'.$nameArray[3],
-                    'original' => $originalFileName,
-                    'thumb' => null
+                        'code' => 501,
+                        'message' => array_pop($errorArray),
+                        'name' => $newFileName. '.'.$nameArray[3],
+                        'original' => $originalFileName,
+                        'thumb' => null
                     ];
                 }
             } else {
                 $result->media[] = (object)[
-                'code' => 501,
-                'message' => 'Invalid filename',
-                'name' => null,
-                'original' => $originalFileName,
-                'thumb' => null
+                    'code' => 501,
+                    'message' => 'Invalid filename',
+                    'name' => null,
+                    'original' => $originalFileName,
+                    'thumb' => null
                 ];
             }
-
         }
         return new JsonModel(['info' => $result]);
     }
@@ -169,23 +157,22 @@ class MediaController extends AbstractActionController
                     $folder.'original/'.$newFileName . '.'.$nameArray['extension']
                 );
 
-                $result->media[] = (object)array(
-                'code' => 200,
-                'message' => 'Success',
-                'name' => $newFileName. '.'.$nameArray['extension'],
-                'original' => $originalFileName,
-                );
+                $result->media[] = (object)[
+                    'code' => 200,
+                    'message' => 'Success',
+                    'name' => $newFileName. '.'.$nameArray['extension'],
+                    'original' => $originalFileName,
+                ];
 
             } else {
                 $errorArray = $adapter->getErrors();
-                $result->media[] = (object)array(
-                'code' => 501,
-                'message' => array_pop($errorArray),
-                'name' => $newFileName. '.'.$nameArray['extension'],
-                'original' => $originalFileName,
-                );
+                $result->media[] = (object)[
+                    'code' => 501,
+                    'message' => array_pop($errorArray),
+                    'name' => $newFileName. '.'.$nameArray['extension'],
+                    'original' => $originalFileName,
+                ];
             }
-
         }
         return new JsonModel(['info' => $result]);
     }

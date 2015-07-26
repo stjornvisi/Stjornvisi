@@ -4365,46 +4365,52 @@ textarea.prossess, input.prossess {
   overflow: visible;
 }
 
-/* line 5, ../sass/components/_web-components.scss */
+/**
+ * This styles the rich-text-editor and its Markup
+ * presentation.
+ * Since this is a Polymer element, this could go
+ * into the element deceleration, maybe that could
+ * be a refactor-sprint sometime.
+ */
+/* line 12, ../sass/components/_web-components.scss */
 stjornvisi-rich marked-element .marked-element {
   background-color: white;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   border-radius: 4px;
   padding: 6px 12px;
 }
-/* line 13, ../sass/components/_web-components.scss */
+/* line 20, ../sass/components/_web-components.scss */
 stjornvisi-rich nav {
   display: inline-block;
   margin-left: 1.5em;
 }
-/* line 16, ../sass/components/_web-components.scss */
+/* line 23, ../sass/components/_web-components.scss */
 stjornvisi-rich nav a {
   padding: 0 0.75em 0 0;
   color: #4a85a1;
   text-decoration: none;
 }
-/* line 21, ../sass/components/_web-components.scss */
+/* line 28, ../sass/components/_web-components.scss */
 stjornvisi-rich nav a:before {
   padding-right: 0.75em;
   content: "|";
 }
 
 /**
- *
+ * This styles all CRUD controls.
+ * There us a type on the name so this should be
+ * refactored soon.
  */
-/* line 33, ../sass/components/_web-components.scss */
+/* line 41, ../sass/components/_web-components.scss */
 stjonvisi-control {
-  display: block;
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-}
-/* line 39, ../sass/components/_web-components.scss */
-stjonvisi-control > * {
   display: block;
 }
 /* line 43, ../sass/components/_web-components.scss */
+stjonvisi-control > * {
+  display: block;
+}
+/* line 46, ../sass/components/_web-components.scss */
 stjonvisi-control > a {
   font-size: 0.75em;
   line-height: 2em;
@@ -4412,131 +4418,21 @@ stjonvisi-control > a {
   word-break: keep-all;
   white-space: nowrap;
 }
-/* line 48, ../sass/components/_web-components.scss */
+/* line 51, ../sass/components/_web-components.scss */
 stjonvisi-control > a i {
   color: #80a9bd;
   padding-right: 0.5em;
 }
-/* line 53, ../sass/components/_web-components.scss */
+/* line 56, ../sass/components/_web-components.scss */
 stjonvisi-control a.update i {
   color: #4ca14a;
 }
-/* line 56, ../sass/components/_web-components.scss */
+/* line 59, ../sass/components/_web-components.scss */
 stjonvisi-control a.delete i {
   color: #ff4800;
 }
-/* line 62, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__edit {
-  display: inline-block;
-  width: 35px;
-  height: 35px;
-  background-color: #ff4800;
-  padding: 10px;
-  border-radius: 50%;
-  z-index: 1;
-  position: relative;
-}
-/* line 72, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__edit svg path {
-  fill: white;
-}
-/* line 75, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper {
-  display: none;
-  position: absolute;
-  background-color: white;
-  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
-  z-index: 10;
-  padding: 15px;
-}
-/* line 82, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper > * {
-  display: block;
-  font-size: 0.75em;
-  line-height: 2em;
-  font-family: "Open Sans", sans-serif;
-  word-break: keep-all;
-  white-space: nowrap;
-}
-/* line 89, ../sass/components/_web-components.scss */
-stjonvisi-control .stjonvisi-control__wrapper > * i {
-  color: #80a9bd;
-  padding-right: 0.5em;
-}
-/* line 97, ../sass/components/_web-components.scss */
-stjonvisi-control:hover .stjonvisi-control__wrapper {
-  display: block;
-}
 
-/* line 104, ../sass/components/_web-components.scss */
-stjonvisi-control.inline {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-/* line 109, ../sass/components/_web-components.scss */
-stjonvisi-control.active {
-  overflow: visible;
-}
-
-/* line 113, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__edit {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-color: #ff4800;
-  padding: 10px;
-  border-radius: 50%;
-  z-index: 3;
-  position: relative;
-}
-/* line 122, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__edit svg path {
-  fill: white;
-}
-/* line 125, ../sass/components/_web-components.scss */
-stjonvisi-control::shadow .stjonvisi-control__wrapper {
-  transform: translate3d(0, -100%, 0);
-  background-color: white;
-  position: absolute;
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.17);
-  z-index: 2;
-  opacity: 0;
-  transition: all .2s;
-  padding: 15px;
-  border-radius: 3px;
-}
-
-/* line 138, ../sass/components/_web-components.scss */
-stjonvisi-control.active::shadow .stjonvisi-control__wrapper {
-  transform: translate3d(0, 0%, 0);
-  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.17);
-  opacity: 1;
-}
-
-/* line 145, ../sass/components/_web-components.scss */
-stjonvisi-control.inline::shadow .stjonvisi-control__edit {
-  width: 12px;
-  height: 12px;
-}
-/* line 149, ../sass/components/_web-components.scss */
-stjonvisi-control.inline::shadow .stjonvisi-control__wrapper {
-  top: 0;
-  transform: translate3d(-100%, 0%, 0);
-}
-
-/* line 154, ../sass/components/_web-components.scss */
-stjonvisi-control.active.inline::shadow {
-  transform: translate3d(0%, 0%, 0);
-}
-
-/* line 158, ../sass/components/_web-components.scss */
-stjonvisi-control::content * {
-  display: block;
-}
-
-/* line 4, ../sass/components/_events.scss */
+/* line 3, ../sass/components/_events.scss */
 form[name=stjornvisi-form-event].form-horizontal .form-group {
   padding-left: 15px;
   padding-right: 15px;
@@ -4670,7 +4566,12 @@ input[name=avatar] {
   display: block;
 }
 
-/* line 37, ../sass/components/_form.scss */
+/**
+ * better-dateinput-polyfill (https://github.com/chemerisuk/better-dateinput-polyfill)
+ * will for some readon, hide the text in the input element. This overwrites that.
+ * ...so this is a dirty hack.
+ */
+/* line 42, ../sass/components/_form.scss */
 input[type=date] {
   color: #282828 !important;
 }
@@ -4681,7 +4582,7 @@ input[type=date] {
  * to make it compliant with Bootstrap, I'll just overwrite
  * the css
  */
-/* line 49, ../sass/components/_form.scss */
+/* line 54, ../sass/components/_form.scss */
 .form-group.has-error ul li {
   font-family: "Open Sans", sans-serif;
   padding: 0.375em 0;
@@ -4689,12 +4590,12 @@ input[type=date] {
   text-align: right;
 }
 
-/* line 58, ../sass/components/_form.scss */
+/* line 63, ../sass/components/_form.scss */
 [required] {
   position: relative;
 }
 
-/* line 61, ../sass/components/_form.scss */
+/* line 66, ../sass/components/_form.scss */
 [required]:before {
   position: absolute;
   display: block;
@@ -4710,7 +4611,7 @@ input[type=date] {
  * This overwrites the Twitter-Bootstrap styles
  * for the things that I don't want inhered.
  */
-/* line 76, ../sass/components/_form.scss */
+/* line 81, ../sass/components/_form.scss */
 .btn, .attending {
   font-size: 0.75em;
   line-height: 2em;
@@ -4722,7 +4623,7 @@ input[type=date] {
   padding: 0.5em 2em;
 }
 
-/* line 86, ../sass/components/_form.scss */
+/* line 91, ../sass/components/_form.scss */
 .btn-facebook {
   color: white;
   background-color: #355088;
@@ -4755,37 +4656,37 @@ input[type=date] {
  * Hey inhered from Twitter-Bootstrap styles but are
  * then extended for the extra functionality.
  */
-/* line 98, ../sass/components/_form.scss */
+/* line 103, ../sass/components/_form.scss */
 .attending.yes {
   color: white;
   background-color: #4ca14a;
 }
-/* line 102, ../sass/components/_form.scss */
+/* line 107, ../sass/components/_form.scss */
 .attending.no {
   color: white;
   background-color: #ff4800;
 }
 
-/* line 108, ../sass/components/_form.scss */
+/* line 113, ../sass/components/_form.scss */
 a.attending.yes {
   color: white;
   background-color: rgba(76, 161, 74, 0.5);
 }
-/* line 111, ../sass/components/_form.scss */
+/* line 116, ../sass/components/_form.scss */
 a.attending.yes:hover {
   background-color: rgba(60, 128, 59, 0.5);
 }
-/* line 115, ../sass/components/_form.scss */
+/* line 120, ../sass/components/_form.scss */
 a.attending.no {
   color: white;
   background-color: rgba(255, 72, 0, 0.5);
 }
-/* line 118, ../sass/components/_form.scss */
+/* line 123, ../sass/components/_form.scss */
 a.attending.no:hover {
   background-color: rgba(204, 57, 0, 0.5);
 }
 
-/* line 123, ../sass/components/_form.scss */
+/* line 128, ../sass/components/_form.scss */
 span.attending {
   cursor: default;
 }
@@ -5525,16 +5426,8 @@ span.attending {
   }
 }
 
-/* line 10, ../sass/pages/_event.scss */
-.page-event {
-  /*
-  .block-element .block-element__body .block-element__image{
-      max-width: 100%;
-  }
-  */
-}
 @media (max-width: 768px) {
-  /* line 14, ../sass/pages/_event.scss */
+  /* line 12, ../sass/pages/_event.scss */
   .page-event.layout.layout--three-columns .layout__data,
   .page-event.layout.layout--three-columns .layout__meta {
     float: none;
@@ -5543,7 +5436,7 @@ span.attending {
     padding-left: 0;
   }
 }
-/* line 24, ../sass/pages/_event.scss */
+/* line 21, ../sass/pages/_event.scss */
 .page-event form.page-event__register {
   *zoom: 1;
 }
@@ -5553,13 +5446,13 @@ span.attending {
   display: table;
   clear: both;
 }
-/* line 26, ../sass/pages/_event.scss */
+/* line 23, ../sass/pages/_event.scss */
 .page-event form.page-event__register p {
   font-size: 0.875em;
   line-height: 1.71429em;
   font-family: "Open Sans", sans-serif;
 }
-/* line 30, ../sass/pages/_event.scss */
+/* line 27, ../sass/pages/_event.scss */
 .page-event form.page-event__register label {
   font-size: 0.875em;
   line-height: 1.71429em;
@@ -5568,7 +5461,7 @@ span.attending {
   text-transform: uppercase;
   padding-bottom: 0.75em;
 }
-/* line 38, ../sass/pages/_event.scss */
+/* line 34, ../sass/pages/_event.scss */
 .page-event form.page-event__register .form-group {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
@@ -5577,39 +5470,43 @@ span.attending {
   float: left;
 }
 @media (max-width: 480px) {
-  /* line 46, ../sass/pages/_event.scss */
+  /* line 42, ../sass/pages/_event.scss */
   .page-event form.page-event__register label {
     padding-bottom: 0.375em;
   }
-  /* line 49, ../sass/pages/_event.scss */
+  /* line 45, ../sass/pages/_event.scss */
   .page-event form.page-event__register .form-group {
     margin-top: 0.75em;
     margin-bottom: 0.75em;
     width: 100%;
   }
 }
-/* line 64, ../sass/pages/_event.scss */
+/* line 52, ../sass/pages/_event.scss */
 .page-event .page-event-element__attenders {
   border-top: 1px solid lightgray;
   padding: 30px 0;
 }
-/* line 68, ../sass/pages/_event.scss */
+/* line 56, ../sass/pages/_event.scss */
 .page-event .page-event-element__attenders.page-event-element__attenders--stop h3 {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
   color: #4a85a1;
 }
-/* line 75, ../sass/pages/_event.scss */
+/* line 63, ../sass/pages/_event.scss */
 .page-event .page-event-element__attenders.page-event-element__attenders--warn h3 {
   font-family: "Open Sans", sans-serif;
   font-weight: 700;
 }
-/* line 84, ../sass/pages/_event.scss */
+/* line 70, ../sass/pages/_event.scss */
 .page-event .block-element__image {
   max-width: 100%;
 }
 
-/* line 89, ../sass/pages/_event.scss */
+/**
+ * Google maps have to have some hight.
+ * this fixes that.
+ */
+/* line 79, ../sass/pages/_event.scss */
 .map_canvas {
   height: 300px;
   margin: 15px 0;

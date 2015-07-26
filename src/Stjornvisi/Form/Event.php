@@ -88,7 +88,6 @@ class Event extends Form implements InputFilterProviderInterface
 
         $this->add(array(
             'name' => 'event_time',
-            //'type' => 'Zend\Form\Element\Time',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '00:00',
@@ -101,7 +100,6 @@ class Event extends Form implements InputFilterProviderInterface
 
         $this->add(array(
             'name' => 'event_end',
-            //'type' => 'Zend\Form\Element\Time',
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '00:00',

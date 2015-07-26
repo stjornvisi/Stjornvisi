@@ -10414,7 +10414,6 @@ Any number of components can use `<google-maps-api>` elements, and the library w
                         this.trigger.removeAttribute('readonly','readonly');
                     }
                     alert(media.message);
-                    this.trigger.value = '';
                 }.bind(this);
             },
 
@@ -10438,7 +10437,7 @@ Any number of components can use `<google-maps-api>` elements, and the library w
             <nav>
                 <a href="#" on-click="handleShowEditor">Ritill</a>
                 <a href="#" on-click="handleShowPreview">Sýnishorn</a>
-                <a href="#" on-click="handleShowTutorial">Hjalp</a>
+                <a href="#" on-click="handleShowTutorial">Hjálp</a>
             </nav>
             <iron-pages id="editorPages" selected="0">
                 <div>
@@ -10517,19 +10516,19 @@ Any number of components can use `<google-maps-api>` elements, and the library w
 
                 var begin = this.textarea.value.substr(0,this.textarea.selectionStart);
                 var middle = this.textarea.value.substr(
-                        this.textarea.selectionStart,
-                        (this.textarea.selectionEnd - this.textarea.selectionStart)
+                    this.textarea.selectionStart,
+                    (this.textarea.selectionEnd - this.textarea.selectionStart)
                 );
                 var end = this.textarea.value.substr(this.textarea.selectionEnd);
 
                 this.upload(
-                        event.dataTransfer.files[0],
-                        this.handleUploadProgress(begin, middle, end),
-                        this.handleUploadDone(begin, middle, end),
-                        this.handleUploadError(begin, middle, end),
-                        this.url,
-                        this.max,
-                        this.mime
+                    event.dataTransfer.files[0],
+                    this.handleUploadProgress(begin, middle, end),
+                    this.handleUploadDone(begin, middle, end),
+                    this.handleUploadError(begin, middle, end),
+                    this.url,
+                    this.max,
+                    this.mime
                 );
             },
 
@@ -10555,7 +10554,6 @@ Any number of components can use `<google-maps-api>` elements, and the library w
             },
 
             attached: function () {
-                //TODO use this until other textareas are in the document.
                 this.textarea = this.querySelector('textarea');
 
                 this.textarea.addEventListener("dragenter", this.handleDragEnter.bind(this));
@@ -10668,7 +10666,6 @@ Any number of components can use `<google-maps-api>` elements, and the library w
 
                     this.inputLat.value = lat;
                     this.inputLng.value = lng;
-
                 }
             },
 

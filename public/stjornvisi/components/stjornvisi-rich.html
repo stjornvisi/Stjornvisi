@@ -3,7 +3,7 @@
             <nav>
                 <a href="#" on-click="handleShowEditor">Ritill</a>
                 <a href="#" on-click="handleShowPreview">Sýnishorn</a>
-                <a href="#" on-click="handleShowTutorial">Hjalp</a>
+                <a href="#" on-click="handleShowTutorial">Hjálp</a>
             </nav>
             <iron-pages id="editorPages" selected="0">
                 <div>
@@ -82,19 +82,19 @@
 
                 var begin = this.textarea.value.substr(0,this.textarea.selectionStart);
                 var middle = this.textarea.value.substr(
-                        this.textarea.selectionStart,
-                        (this.textarea.selectionEnd - this.textarea.selectionStart)
+                    this.textarea.selectionStart,
+                    (this.textarea.selectionEnd - this.textarea.selectionStart)
                 );
                 var end = this.textarea.value.substr(this.textarea.selectionEnd);
 
                 this.upload(
-                        event.dataTransfer.files[0],
-                        this.handleUploadProgress(begin, middle, end),
-                        this.handleUploadDone(begin, middle, end),
-                        this.handleUploadError(begin, middle, end),
-                        this.url,
-                        this.max,
-                        this.mime
+                    event.dataTransfer.files[0],
+                    this.handleUploadProgress(begin, middle, end),
+                    this.handleUploadDone(begin, middle, end),
+                    this.handleUploadError(begin, middle, end),
+                    this.url,
+                    this.max,
+                    this.mime
                 );
             },
 
@@ -120,7 +120,6 @@
             },
 
             attached: function () {
-                //TODO use this until other textareas are in the document.
                 this.textarea = this.querySelector('textarea');
 
                 this.textarea.addEventListener("dragenter", this.handleDragEnter.bind(this));
