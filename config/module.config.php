@@ -1816,11 +1816,14 @@ return array(
             'Stjornvisi\Controller\Email' => 'Stjornvisi\Controller\EmailController',
             'Stjornvisi\Controller\Anaegjuvogin' => 'Stjornvisi\Controller\AnaegjuvoginController',
             'Stjornvisi\Controller\Location' => 'Stjornvisi\Controller\LocationController',
+
+            'Stjornvisi\Controller\Console\Image' => 'Stjornvisi\Controller\Console\ImageController'
         ),
     ),
     'view_helpers' => array(
         'invokables' => array(
             'paragrapher' => 'Stjornvisi\View\Helper\Paragrapher',
+            'image' => 'Stjornvisi\View\Helper\Image',
             'date' => 'Stjornvisi\View\Helper\Date',
             'facebook' => 'Stjornvisi\View\Helper\Facebook',
         ),
@@ -1869,7 +1872,7 @@ return array(
                     'options' => array(
                         'route'    => 'image generate [--ignore|-i]',
                         'defaults' => array(
-                            'controller' => 'Stjornvisi\Controller\Console',
+                            'controller' => 'Stjornvisi\Controller\Console\Image',
                             'action'     => 'image-generate'
                         )
                     )

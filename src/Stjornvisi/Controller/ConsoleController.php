@@ -10,7 +10,6 @@ namespace Stjornvisi\Controller;
 
 use Stjornvisi\Mail\Attacher;
 use Stjornvisi\Notify\Message\Mail as NotifyMailMessage;
-use Stjornvisi\Lib\Imagine\Square;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ProgressBar\Adapter\Console;
@@ -20,13 +19,6 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
 use Zend\Mail\Message;
-use \DirectoryIterator;
-
-use Imagine\Imagick\Imagine;
-use Imagine\Image\Box;
-use Imagine\Image\Point;
-use Imagine\Filter\Transformation;
-use Imagine\Filter\Basic\Resize;
 
 use PhpAmqpLib\Connection\AMQPConnection;
 
@@ -170,114 +162,6 @@ class ConsoleController extends AbstractActionController
             exit(1);
         }
         exit(0);
-    }
-
-    /**
-     * Will create all images.
-     *
-     * <code>
-     *  $ php path/to/index.php image-generate --ignore
-     * </code>
-     * @throws \RuntimeException
-     */
-    public function imageGenerateAction()
-    {
-        $request = $this->getRequest();
-        // Make sure that we are running in a console and the user has not tricked our
-        // application into running this action from a public web server.
-        if (!$request instanceof ConsoleRequest) {
-            throw new \RuntimeException('You can only use this action from a console!');
-        }
-
-        $path = './module/Stjornvisi/public/stjornvisi/images/';
-        $ignore   = $this->getRequest()->getParam('ignore', false);
-        $counter = 0;
-        $index = 0;
-        $report = (object)array('processed'=>0, 'ignored'=>0);
-
-
-
-        //COUNT
-        //  count how many file there are.
-        foreach (new DirectoryIterator($path.'original') as $fileInfo) {
-            if ($fileInfo->isDot() || !preg_match('/\.(jpg|jpeg|png|gif)(?:[\?\#].*)?$/i', $fileInfo->getFilename())) {
-                continue;
-            } else {
-                $counter++;
-            }
-        }
-
-        $adapter = new Console();
-        $progressBar = new ProgressBar($adapter, $index, $counter);
-
-        //FOR EVERY
-        //  for every file in directory...
-        foreach (new DirectoryIterator($path.'original') as $fileInfo) {
-            //IF NOT IMAGE
-            //  if not image - ignore and move on
-            if ($fileInfo->isDot() || !preg_match('/\.(jpg|jpeg|png|gif)(?:[\?\#].*)?$/i', $fileInfo->getFilename())) {
-                continue;
-            }
-
-            //IGNORE
-            //  should the script ignore images that
-            //  have already been converted.
-            if ($ignore) {
-                if (is_file("{$path}60/{$fileInfo->getFilename()}")) {
-                    $progressBar->update($index++);
-                    ++$report->ignored;
-                    continue;
-                }
-            }
-
-            try {
-                //60 SQUARE
-                //  create an cropped image with hard height/width of 60
-                $imagine = new Imagine();
-                $image = $imagine->open($fileInfo->getPathname());
-                $transform = new Transformation();
-                $transform->add(new Square());
-                $transform->add(new Resize(new Box(60, 60)));
-                $transform->apply($image)->save($path .'60/'. $fileInfo->getFilename());
-                $imagine = null;
-
-                //300 SQUARE
-                //  create an cropped image with hard height/width of 300
-                $imagine = new Imagine();
-                $image = $imagine->open($fileInfo->getPathname());
-                $transform = new Transformation();
-                $transform->add(new Square());
-                $transform->add(new Resize(new Box(300, 300)));
-                $transform->apply($image)->save($path .'300-square/'. $fileInfo->getFilename());
-                $imagine = null;
-
-                //300 NORMAL
-                //  create an image that is not cropped and will
-                //  have a width of 300
-                $imagine = new Imagine();
-                $image = $imagine->open($fileInfo->getPathname());
-                $size = $image->getSize()->widen(300);
-                $image->resize($size)
-                    ->save($path .'300/'. $fileInfo->getFilename());
-                $imagine = null;
-
-                $imagine = new Imagine();
-                $image = $imagine->open($fileInfo->getPathname());
-                $transform = new Transformation();
-                $transform->add(new Square());
-                $transform->add(new Resize(new Box(100, 100)));
-                $transform->apply($image)->save($path .'100/'. $fileInfo->getFilename());
-                $imagine = null;
-            } catch (\Exception $e) {
-                echo $e->getMessage().PHP_EOL;
-            }
-
-            ++$report->processed;
-            $progressBar->update($index++);
-
-        }
-        $progressBar->finish();
-
     }
 
     /**

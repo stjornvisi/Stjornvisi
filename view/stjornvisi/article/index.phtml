@@ -8,39 +8,39 @@
 ?>
 
 <div class="layout layout--three-columns">
-	<section class="layout__section">
-		<article class="block-element">
-			<header class="block-element__header">
-				<h1 class="layout__headline"><?=$this->article->title?></h1>
-				<time class="block-element__time" datetime="<?=$this->article->published->format('c')?>"><?=$this->date($this->article->published)?></time>
-				<p>Birtist fyrst <?=$this->article->venue;?></p>
-			</header>
-			<section class="block-element__body">
-				<?=$this->paragrapher($this->article->summary);?>
-				<?=$this->paragrapher($this->article->body);?>
-			</section>
-			<aside class="block-element__aside">
-				<ul class="block-element__author-list">
-					<?php foreach($this->article->authors as $author):?>
-						<li class="block-element__author-item">
-							<h2><?=$author->name?></h2>
-							<?php if($author->avatar):?>
-								<img src="<?=$this->basePath("/images/60/{$author->avatar}")?>" />
-							<?php endif;?>
-							<?=$this->paragrapher($author->info);?>
-						</li>
-					<?php endforeach;?>
-				</ul>
-			</aside>
-			<footer></footer>
-		</article>
-	</section>
-	<aside class="layout__aside">
-		<?php if( $this->access->is_admin ):?>
-			<stjonvisi-control>
-				<a href="<?=$this->url('greinar/update',array('id'=>$this->article->id));?>">uppfæra</a>
-				<a href="<?=$this->url('greinar/delete',array('id'=>$this->article->id));?>">eyða</a>
-			</stjonvisi-control>
-		<?php endif; ?>
-	</aside>
+    <section class="layout__section">
+        <article class="block-element">
+            <header class="block-element__header">
+                <h1 class="layout__headline"><?=$this->article->title?></h1>
+                <time class="block-element__time" datetime="<?=$this->article->published->format('c')?>"><?=$this->date($this->article->published)?></time>
+                <p>Birtist fyrst <?=$this->article->venue;?></p>
+            </header>
+            <section class="block-element__body">
+                <?=$this->paragrapher($this->article->summary);?>
+                <?=$this->paragrapher($this->article->body);?>
+            </section>
+            <aside class="block-element__aside">
+                <ul class="block-element__author-list">
+                    <?php foreach($this->article->authors as $author):?>
+                        <li class="block-element__author-item">
+                            <h2><?=$author->name?></h2>
+                            <?php if($author->avatar):?>
+                                <?=$this->image($author->avatar, \Stjornvisi\Action\ImageGenerator::DIR_SMALL);?>
+                            <?php endif;?>
+                            <?=$this->paragrapher($author->info);?>
+                        </li>
+                    <?php endforeach;?>
+                </ul>
+            </aside>
+            <footer></footer>
+        </article>
+    </section>
+    <aside class="layout__aside">
+        <?php if( $this->access->is_admin ):?>
+            <stjonvisi-control>
+                <a href="<?=$this->url('greinar/update',array('id'=>$this->article->id));?>">uppfæra</a>
+                <a href="<?=$this->url('greinar/delete',array('id'=>$this->article->id));?>">eyða</a>
+            </stjonvisi-control>
+        <?php endif; ?>
+    </aside>
 </div>

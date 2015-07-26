@@ -1,15 +1,11 @@
 <?php
 namespace Stjornvisi\Controller;
 
+use Stjornvisi\Action\ImageGenerator;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\File\Transfer\Adapter\Http;
-use Imagine\Image\Box;
-use Imagine\Image\Point;
-
-use Imagine\Filter\Transformation;
-use Imagine\Filter\Basic\Resize;
-use Stjornvisi\Lib\Imagine\Square;
+use SplFileInfo;
 
 /**
  * Class MediaController.
@@ -28,15 +24,17 @@ class MediaController extends AbstractActionController
      */
     public function imageAction()
     {
-        $sm = $this->getServiceLocator();
-        $renderer = $sm->get('Zend\View\Renderer\RendererInterface');
-        $folder = './public/stjornvisi/images/';
-        $adapter = new Http();
-        $adapter->setDestination($folder.'original');
+        $renderer = $this->getServiceLocator()
+            ->get('Zend\View\Renderer\RendererInterface');
 
-        $result = (object)[
+        $adapter = new Http();
+        $adapter->setDestination(
+            implode(DIRECTORY_SEPARATOR, [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW])
+        );
+
+        $result = [
             'media' => [],
-            'length' => $this->getRequest()->getHeaders()->get('Content-Length'),
+            'length' => (int) $this->getRequest()->getHeaders()->get('Content-Length')->getFieldValue(),
         ];
 
         foreach ($adapter->getFileInfo() as $info) {
@@ -44,83 +42,56 @@ class MediaController extends AbstractActionController
 
             $nameArray = [];
             if (preg_match('/(.*?)(\.)(gif|png|jpe?g)$/i', $originalFileName, $nameArray)) {
-                setlocale(LC_ALL, 'is_IS.UTF8');
-                $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $nameArray[1]);
-                $clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
-                $clean = strtolower(trim($clean, '-'));
-                $clean = preg_replace("/[\/_| -]+/", '-', $clean);
-                $newFileName = $clean.rand(100, 999);
+                $newFileName = $this->cleanFileName($nameArray[1]);
 
                 if ($adapter->receive($originalFileName)) {
                     rename(
-                        $folder.'original/'.$originalFileName,
-                        $folder.'original/'.$newFileName . '.'.$nameArray[3]
+                        implode(DIRECTORY_SEPARATOR, [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW, $originalFileName]),
+                        implode(DIRECTORY_SEPARATOR, [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW, $newFileName . '.' . $nameArray[3]])
                     );
 
-                    $imagine = $sm->get('Imagine\Image\Imagine');
+                    $file = new SplFileInfo(
+                        implode(
+                            DIRECTORY_SEPARATOR,
+                            [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW, $newFileName . '.'.$nameArray[3]]
+                        )
+                    );
 
-                    //60 SQUARE
-                    //	create an cropped image with hard height/width of 60
-                    $image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
-                    $transform = new Transformation();
-                    $transform->add(new Square());
-                    $transform->add(new Resize(new Box(60, 60)));
-                    $transform->apply($image)->save($folder . '60/' . $newFileName. '.'.$nameArray[3]);
+                    $actionResponse = (new ImageGenerator($file))->execute();
 
-                    //300 SQUARE
-                    //	create an cropped image with hard height/width of 300
-                    $image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
-                    $transform = new Transformation();
-                    $transform->add(new Square());
-                    $transform->add(new Resize(new Box(300, 300)));
-                    $transform->apply($image)->save($folder . '300-square/' . $newFileName. '.'.$nameArray[3]);
+                    $actionResponse['thumb']['1x'] = $renderer->basePath($actionResponse['thumb']['1x']);
+                    $actionResponse['thumb']['2x'] = $renderer->basePath($actionResponse['thumb']['2x']);
+                    $actionResponse['medium']['1x'] = $renderer->basePath($actionResponse['medium']['1x']);
+                    $actionResponse['medium']['2x'] = $renderer->basePath($actionResponse['medium']['2x']);
+                    $actionResponse['large']['1x'] = $renderer->basePath($actionResponse['large']['1x']);
+                    $actionResponse['large']['2x'] = $renderer->basePath($actionResponse['large']['2x']);
 
-                    //300 NORMAL
-                    //	create an image that is not cropped and will
-                    //	have a width of 300
-                    $image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
-                    $size = $image->getSize()->widen(300);
-                    $image->resize($size)
-                        ->save($folder . '300/' . $newFileName. '.'.$nameArray[3]);
-
-                    $image = $imagine->open($folder.'original/'.$newFileName . '.'.$nameArray[3]);
-                    $transform = new Transformation();
-                    $transform->add(new Square());
-                    $transform->add(new Resize(new Box(100, 100)));
-                    $transform->apply($image)->save($folder . '100/' . $newFileName. '.'.$nameArray[3]);
-
-                    $result->media[] = (object)[
+                    $result['media'][] = [
                         'code' => 200,
                         'message' => 'Success',
-                        'name' => $newFileName. '.'.$nameArray[3],
-                        'original' => $originalFileName,
-                        'thumb' => $renderer->basePath('/images/60/'.$newFileName. '.'.$nameArray[3]),
-                        'medium' => $renderer->basePath('/images/100/'.$newFileName. '.'.$nameArray[3]),
-                        'big' => $renderer->basePath('/images/300-square/'.$newFileName. '.'.$nameArray[3]),
-                        'path' => $renderer->basePath('/images/original/'.$newFileName. '.'.$nameArray[3])
+                        'file' => $actionResponse,
+                        'type' => 'image'
                     ];
 
                 } else {
                     $errorArray = $adapter->getErrors();
-                    $result->media[] = (object)[
+                    $result['media'][] = [
                         'code' => 501,
                         'message' => array_pop($errorArray),
-                        'name' => $newFileName. '.'.$nameArray[3],
-                        'original' => $originalFileName,
-                        'thumb' => null
+                        'file' => null,
+                        'type' => 'image'
                     ];
                 }
             } else {
-                $result->media[] = (object)[
+                $result['media'][] = [
                     'code' => 501,
-                    'message' => 'Invalid filename',
-                    'name' => null,
-                    'original' => $originalFileName,
-                    'thumb' => null
+                    'message' => 'Invalid file type',
+                    'file' => null,
+                    'type' => 'image'
                 ];
             }
         }
-        return new JsonModel(['info' => $result]);
+        return new JsonModel($result);
     }
 
     /**
@@ -175,5 +146,15 @@ class MediaController extends AbstractActionController
             }
         }
         return new JsonModel(['info' => $result]);
+    }
+
+    private function cleanFileName($name)
+    {
+        setlocale(LC_ALL, 'is_IS.UTF8');
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
+        $clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
+        $clean = strtolower(trim($clean, '-'));
+        $clean = preg_replace("/[\/_| -]+/", '-', $clean);
+        return $clean.rand(100, 999);
     }
 }

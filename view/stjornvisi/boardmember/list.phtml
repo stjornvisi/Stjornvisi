@@ -7,57 +7,57 @@
  */
 ?>
 <div class="layout layout--two-columns">
-	<section class="layout__section">
-		<div class="layout__data">
-			<ul class="block-list boardmember">
-				<?php foreach($this->boards as $period => $board):?>
-					<li class="boardmember__item">
-						<h1 class="boardmember__period"><?=$period?></h1>
-						<ul class="boardmember-list">
-							<?php foreach($board as $item):?>
-								<li class="boardmember-list__item <?= ($item->is_chairman||$item->is_manager)?'boardmember-list__item--large':'';?>">
-									<?php if($item->avatar):?>
-										<img src="<?=$this->basePath("/images/300-square/{$item->avatar}")?>" class="borardmember-list__avatar" />
-									<?php endif;?>
-									<h1 class="borardmember-list__name"><?=$item->name?></h1>
-									<h2 class="borardmember-list__company"><?=$item->company?></h2>
-									<?php if($item->is_chairman):?>
-										<h3 class="borardmember-list__type">Stjórnarformaður</h3>
-									<?php elseif($item->is_manager):?>
-										<h3 class="borardmember-list__type">Framkvæmdarstjóri</h3>
-									<?php else:?>
-										<h3 class="borardmember-list__type">&nbsp;</h3>
-									<?php endif;?>
-									<?php if($this->access->is_admin):?>
-										<stjonvisi-control class="inline">
-											<a href="<?=$this->url('stjornin/update-member',array('id'=>$item->id))?>">Uppfæra einstakling</a>
-											<a href="<?=$this->url('stjornin/update-connect-member',array('id'=>$item->connection_id))?>">Uppfæra skráningu</a>
-											<a href="<?=$this->url('stjornin/delete-connect-member',array('id'=>$item->connection_id))?>">Fjarlægja skráningu</a>
-										</stjonvisi-control>
-									<?php endif;?>
-								</li>
+    <section class="layout__section">
+        <div class="layout__data">
+            <ul class="block-list boardmember">
+                <?php foreach($this->boards as $period => $board):?>
+                    <li class="boardmember__item">
+                        <h1 class="boardmember__period"><?=$period?></h1>
+                        <ul class="boardmember-list">
+                            <?php foreach($board as $item):?>
+                                <li class="boardmember-list__item <?= ($item->is_chairman||$item->is_manager)?'boardmember-list__item--large':'';?>">
+                                    <?php if($item->avatar):?>
+										<?=$this->image($item->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM, ['borardmember-list__avatar']);?>
+                                    <?php endif;?>
+                                    <h1 class="borardmember-list__name"><?=$item->name?></h1>
+                                    <h2 class="borardmember-list__company"><?=$item->company?></h2>
+                                    <?php if($item->is_chairman):?>
+                                        <h3 class="borardmember-list__type">Stjórnarformaður</h3>
+                                    <?php elseif($item->is_manager):?>
+                                        <h3 class="borardmember-list__type">Framkvæmdarstjóri</h3>
+                                    <?php else:?>
+                                        <h3 class="borardmember-list__type">&nbsp;</h3>
+                                    <?php endif;?>
+                                    <?php if($this->access->is_admin):?>
+                                        <stjonvisi-control class="inline">
+                                            <a href="<?=$this->url('stjornin/update-member',array('id'=>$item->id))?>">Uppfæra einstakling</a>
+                                            <a href="<?=$this->url('stjornin/update-connect-member',array('id'=>$item->connection_id))?>">Uppfæra skráningu</a>
+                                            <a href="<?=$this->url('stjornin/delete-connect-member',array('id'=>$item->connection_id))?>">Fjarlægja skráningu</a>
+                                        </stjonvisi-control>
+                                    <?php endif;?>
+                                </li>
 
-							<?php endforeach;?>
-						</ul>
-					</li>
-				<?php endforeach;?>
-			</ul>
-		</div>
-		<div class="layout__meta">
-			<h2 class="layout__headline">Stjórn Stjórnvísi</h2>
-			<p>Stjórnvísi eru grasrótarsamtök</p>
-			<p>Stjórn félagsins er kosin á aðalfundi og skal skipuð formanni og sex virkum félagsmönnum úr faghópastarfinu.
-				Stjórnin tekur ákvarðanir varðandi stjórnun félagsins og daglegan rekstur, þ.m.t. nýjungar í starfseminni og
-				eftirfylgni, í samstarfi við framkvæmdastjóra.</p>
-		</div>
+                            <?php endforeach;?>
+                        </ul>
+                    </li>
+                <?php endforeach;?>
+            </ul>
+        </div>
+        <div class="layout__meta">
+            <h2 class="layout__headline">Stjórn Stjórnvísi</h2>
+            <p>Stjórnvísi eru grasrótarsamtök</p>
+            <p>Stjórn félagsins er kosin á aðalfundi og skal skipuð formanni og sex virkum félagsmönnum úr faghópastarfinu.
+                Stjórnin tekur ákvarðanir varðandi stjórnun félagsins og daglegan rekstur, þ.m.t. nýjungar í starfseminni og
+                eftirfylgni, í samstarfi við framkvæmdastjóra.</p>
+        </div>
 
-	</section>
-	<aside class="layout__aside">
-		<?php if( $this->access->is_admin ):?>
-			<stjonvisi-control>
-				<a href="<?=$this->url('stjornin/create-member');?>">Stofna stjórnarmann</a>
-				<a href="<?=$this->url('stjornin/connect-member');?>">Tengja stórnarmann</a>
-			</stjonvisi-control>
-		<?php endif; ?>
-	</aside>
+    </section>
+    <aside class="layout__aside">
+        <?php if( $this->access->is_admin ):?>
+            <stjonvisi-control>
+                <a href="<?=$this->url('stjornin/create-member');?>">Stofna stjórnarmann</a>
+                <a href="<?=$this->url('stjornin/connect-member');?>">Tengja stórnarmann</a>
+            </stjonvisi-control>
+        <?php endif; ?>
+    </aside>
 </div>

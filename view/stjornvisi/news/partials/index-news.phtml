@@ -2,45 +2,44 @@
 $this->headTitle( $this->news->title );
 $this->headTitle('Fréttir');
 
-
 $this->headMeta()->setProperty('og:title', $this->news->title);
 $this->headMeta()->setProperty('og:site_name', 'Stjórnvísi');
 $this->headMeta()->setProperty('og:type', 'article');
 $this->headMeta()->setProperty('og:description', mb_substr($this->news->body,0,200));
 $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->url('frettir/index',array('id'=>$this->news->id)));
 $this->headMeta()->setProperty('og:image', ($this->news->avatar)
-		? 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/images/original/{$this->news->avatar}")
-		: 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/stylesheets/images/simple-logo.jpg")
+        ? 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/images/original/{$this->news->avatar}")
+        : 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/stylesheets/images/simple-logo.jpg")
 );
 ?>
 <div class="layout_article">
-	<article class="block-element">
-		<header class="block-element__header">
-			<time class="block-element__time" datetime="<?=$this->news->created_date->format('c')?>">
-				<?=$this->date($this->news->created_date,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
-			</time>
-			<h1><?=$this->news->title?></h1>
-			<ul class="block-element__tags">
-				<li>
-				<?php if($this->news->group):?>
-					<a href="<?=$this->url('hopur/index',array('id'=>$this->news->group->url)) ?>"><?=$this->news->group->name_short;?></a>
-				<?php else:?>
-					<span>Stjórnvísisfrétt</span>
-				<?php endif;?>
-				</li>
-			</ul>
-		</header>
-		<section class="block-element__body block-element__body--two-column">
-			<?php if($this->news->avatar):?>
-				<img class="block-element__image" src="<?=$this->basePath("/images/300/{$this->news->avatar}")?>" />
-			<?php endif;?>
-			<?=$this->paragrapher($this->news->body);?>
-		</section>
-		<aside class="block-element__aside">
+    <article class="block-element">
+        <header class="block-element__header">
+            <time class="block-element__time" datetime="<?=$this->news->created_date->format('c')?>">
+                <?=$this->date($this->news->created_date,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+            </time>
+            <h1><?=$this->news->title?></h1>
+            <ul class="block-element__tags">
+                <li>
+                <?php if($this->news->group):?>
+                    <a href="<?=$this->url('hopur/index',array('id'=>$this->news->group->url)) ?>"><?=$this->news->group->name_short;?></a>
+                <?php else:?>
+                    <span>Stjórnvísisfrétt</span>
+                <?php endif;?>
+                </li>
+            </ul>
+        </header>
+        <section class="block-element__body block-element__body--two-column">
+            <?php if($this->news->avatar):?>
+                <?=$this->image($this->news->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM, ['block-element__image']);?>
+            <?php endif;?>
+            <?=$this->paragrapher($this->news->body);?>
+        </section>
+        <aside class="block-element__aside">
 
-		</aside>
-		<footer class="block-element__footer"></footer>
-	</article>
+        </aside>
+        <footer class="block-element__footer"></footer>
+    </article>
 </div>
 
 

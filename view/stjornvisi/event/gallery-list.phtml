@@ -1,33 +1,32 @@
 <?php
-	$this->headTitle( $this->event->subject );
-	$this->headTitle('Myndalisti');
-	$this->headTitle('Viðburður');
+    $this->headTitle( $this->event->subject );
+    $this->headTitle('Myndalisti');
+    $this->headTitle('Viðburður');
 ?>
 
 <div class="layout layout--three-columns">
-	<section class="layout__section">
+    <section class="layout__section">
 
-	<h1 class="layout__headline">
-		Myndir fyrir
-		<a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a>
-	</h1>
+    <h1 class="layout__headline">
+        Myndir fyrir
+        <a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a>
+    </h1>
 
-	<ul class="block-gallery">
-		<?php foreach($this->gallery as $image):?>
-			<li class="block-gallery__item">
-			<img class="block-gallery__image" src="<?=$this->basePath("/images/100/{$image->name}")?>" />
+    <ul class="block-gallery">
+        <?php foreach($this->gallery as $image):?>
+            <li class="block-gallery__item">
+            <?=$this->image($image->name, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM, ['block-gallery__image']);?>
+            <stjonvisi-control class="inline">
+                <a href="<?=$this->url('vidburdir/gallery-update',array('id'=>$image->id))?>">uppfæra</a>
+                <a href="<?=$this->url('vidburdir/gallery-delete',array('id'=>$image->id))?>">eyða</a>
+            </stjonvisi-control>
+        </li>
+        <?php endforeach;?>
 
-			<stjonvisi-control class="inline">
-				<a href="<?=$this->url('vidburdir/gallery-update',array('id'=>$image->id))?>">uppfæra</a>
-				<a href="<?=$this->url('vidburdir/gallery-delete',array('id'=>$image->id))?>">eyða</a>
-			</stjonvisi-control>
-		</li>
-		<?php endforeach;?>
+    </ul>
 
-	</ul>
-
-	</section>
-	<aside class="layout__aside">
-		<a href="<?=$this->url('vidburdir/gallery-create',array('id'=>$this->event->id));?>" class="btn btn-default">Bæta við mynd</a>
-	</aside>
+    </section>
+    <aside class="layout__aside">
+        <a href="<?=$this->url('vidburdir/gallery-create',array('id'=>$this->event->id));?>" class="btn btn-default">Bæta við mynd</a>
+    </aside>
 </div>
