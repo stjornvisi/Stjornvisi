@@ -2,7 +2,6 @@
 
 <div class="layout layout--three-columns">
     <section class="layout__section">
-        <h1 class="layout__headline layout__headline--center">Uppfæra viðburð</h1>
         <?=$this->form()->openTag($this->form);?>
         <div class="row">
             <div class="col-md-6">
@@ -78,9 +77,7 @@
         </div>
 
         <div class="">
-            <?=$this->formElement(
-                $form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Uppfæra')
-            );?>
+            <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Uppfæra'));?>
         </div>
 
         <?= $this->form()->closeTag() ?>

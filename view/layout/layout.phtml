@@ -45,6 +45,13 @@
                 $this->basePath('/javascripts/polyfills.js'),
                 'text/javascript',
                 array('conditional' => 'IE 9')
+            )->appendFile(
+                $this->basePath('/vendor/better-dom/dist/better-dom.js', 'text/javascript')
+            )->appendFile(
+                $this->basePath('/vendor/better-i18n-plugin/dist/better-i18n-plugin.js', 'text/javascript')
+            )
+            ->appendFile(
+                $this->basePath('/vendor/better-dateinput-polyfill/dist/better-dateinput-polyfill.js', 'text/javascript')
             )
         ;?>
 

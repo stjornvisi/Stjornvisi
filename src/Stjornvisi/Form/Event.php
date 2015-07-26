@@ -4,6 +4,7 @@ namespace Stjornvisi\Form;
 
 use Zend\Form\Element;
 use Zend\Form\Form;
+use Zend\Validator\Callback;
 use Zend\InputFilter\InputFilterProviderInterface;
 
 class Event extends Form implements InputFilterProviderInterface
@@ -22,7 +23,6 @@ class Event extends Form implements InputFilterProviderInterface
             'attributes' => array(
                 'placeholder' => 'Titill...',
                 'required' => 'required',
-                'tabindex' => 1
             ),
             'options' => array(
                 'label' => 'Titill viðburðar',
@@ -34,7 +34,6 @@ class Event extends Form implements InputFilterProviderInterface
             'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => '...',
-                'tabindex' => 2
             ),
             'options' => array(
                 'label' => 'Meginmál',
@@ -46,7 +45,6 @@ class Event extends Form implements InputFilterProviderInterface
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Landspítalinn, Hringsalur 1.hæð við Barnaspítal',
-                'tabindex' => 3
             ),
             'options' => array(
                 'label' => 'Staðsetning',
@@ -58,7 +56,6 @@ class Event extends Form implements InputFilterProviderInterface
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => 'Ofanleiti 2, 105 Reykjavík',
-                'tabindex' => 4
             ),
             'options' => array(
                 'label' => 'Heimilisfang:',
@@ -70,7 +67,6 @@ class Event extends Form implements InputFilterProviderInterface
             'type' => 'Zend\Form\Element\Text',
             'attributes' => array(
                 'placeholder' => '0',
-                'tabindex' => 5
             ),
             'options' => array(
                 'label' => 'Fjöldatakmörkun, 0 er ótakmarkað',
@@ -81,10 +77,9 @@ class Event extends Form implements InputFilterProviderInterface
             'name' => 'event_date',
             'type' => 'Zend\Form\Element\Date',
             'attributes' => array(
-                'placeholder' => 'Type something...',
+                'placeholder' => 'YYYY-MM-DD',
                 'required' => 'required',
                 'step' => '1',
-                'tabindex' => 6
             ),
             'options' => array(
                 'label' => 'Dagsetning',
@@ -98,7 +93,6 @@ class Event extends Form implements InputFilterProviderInterface
             'attributes' => array(
                 'placeholder' => '00:00',
                 'required' => 'required',
-                'tabindex' => 7
             ),
             'options' => array(
                 'label' => 'Hefst',
@@ -112,7 +106,6 @@ class Event extends Form implements InputFilterProviderInterface
             'attributes' => array(
                 'placeholder' => '00:00',
                 'required' => 'required',
-                'tabindex' => 8
             ),
             'options' => array(
                 'label' => 'Líkur',
@@ -123,7 +116,6 @@ class Event extends Form implements InputFilterProviderInterface
             'name' => 'avatar',
             'type' => 'Stjornvisi\Form\Element\Img',
             'attributes' => array(
-                'tabindex' => 9
             ),
             'options' => array(
                 'label' => 'Mynd',
@@ -148,7 +140,6 @@ class Event extends Form implements InputFilterProviderInterface
             'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => '64.1237224',
-                'tabindex' => 10
             ),
             'options' => array(
                 'label' => 'Latitude (Breiddargráða)',
@@ -160,7 +151,6 @@ class Event extends Form implements InputFilterProviderInterface
             'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'placeholder' => '-21.9264241',
-                'tabindex' => 10
             ),
             'options' => array(
                 'label' => 'Longitude (Lengdargráða)',
@@ -180,12 +170,13 @@ class Event extends Form implements InputFilterProviderInterface
 
     }
 
-    public function populateValues($data){
-        foreach($data as $key=>$row){
-            if( $key=='groups' ){
-                $data[$key] = array_map(function($i){
+    public function populateValues($data)
+    {
+        foreach ($data as $key => $row) {
+            if ($key=='groups') {
+                $data[$key] = array_map(function ($i) {
                     return (is_numeric($i))?$i:$i->id;
-                },$row);
+                }, $row);
             }
         }
 
@@ -198,7 +189,8 @@ class Event extends Form implements InputFilterProviderInterface
      *
      * @return array
      */
-    public function getInputFilterSpecification(){
+    public function getInputFilterSpecification()
+    {
         return array(
             'subject' => array(
                 'filters'  => array(
@@ -321,11 +313,11 @@ class Event extends Form implements InputFilterProviderInterface
                         'name' => 'Callback',
                         'options' => array(
                             'messages' => array(
-                                \Zend\Validator\Callback::INVALID_VALUE => 'Viðburður getur ekki endað áður en hann byrjar',
+                                Callback::INVALID_VALUE => 'Viðburður getur ekki endað áður en hann byrjar',
                             ),
-                            'callback' => function( $value, $context=array() ){
-                                $from = new \DateTime( $context['event_time'] );
-                                $to = new \DateTime( $context['event_end'] );
+                            'callback' => function ($value, $context = array()) {
+                                $from = new \DateTime($context['event_time']);
+                                $to = new \DateTime($context['event_end']);
                                 return $to > $from;
                             },
                         )

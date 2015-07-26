@@ -1,123 +1,127 @@
 
 
-	/**
-	 * In relation to <stjornvisi-img>
-	 *
-	 * this is to set styles for the element that
-	 * is not in the shadow dom
-	 */
-	input.avatar,
-	input[name=avatar]{
-		text-indent: 70px;
-		background-repeat: no-repeat;
-		cursor: pointer;
-		padding: $gutter 0;
-	}
-	.form-control[readonly]{
-		cursor: pointer;
-	}
-	.form-group.form-group--right{
-		text-align: right;
-	}
+    /**
+     * In relation to <stjornvisi-img>
+     *
+     * this is to set styles for the element that
+     * is not in the shadow dom
+     */
+    input.avatar,
+    input[name=avatar]{
+        text-indent: 70px;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        padding: $gutter 0;
+    }
+    .form-control[readonly]{
+        cursor: pointer;
+    }
+    .form-group.form-group--right{
+        text-align: right;
+    }
 
-	/**
-	 * Twitter-Bootstrap styles were missing how a list
-	 * of checkboxes was displayed, this adds a block
-	 * element statement to the labels.
-	 */
-	.form-group{
-		input[type=checkbox]{}
-		.checkbox{
-			label{
-				display: block;
-			}
-		}
-	}
+    /**
+     * Twitter-Bootstrap styles were missing how a list
+     * of checkboxes was displayed, this adds a block
+     * element statement to the labels.
+     */
+    .form-group{
+        input[type=checkbox]{}
+        .checkbox{
+            label{
+                display: block;
+            }
+        }
+    }
 
-	/**
-	 * ZF2 and Bootstrap differ in how an input error markup
-	 * is constructed, in stead of overwriting the view-helper
-	 * to make it compliant with Bootstrap, I'll just overwrite
-	 * the css
-	 */
-	.form-group.has-error{
-		ul {
-			li{
-				font-family: $font-family-open;
-				padding: rhythm(1/4,$font-size-base) 0;
-				color: $color-red;
-				text-align: right;
-			}
-		}
-	}
+    input[type=date] {
+        color: $color-black !important;
+    }
 
-	[required]{
-		position: relative;
-	}
-	[required]:before{
-		position: absolute;
-		display: block;
-		top: 0;
-		right: 0;
-		content: "*";
-		color: $color-red;
-	}
+    /**
+     * ZF2 and Bootstrap differ in how an input error markup
+     * is constructed, in stead of overwriting the view-helper
+     * to make it compliant with Bootstrap, I'll just overwrite
+     * the css
+     */
+    .form-group.has-error{
+        ul {
+            li{
+                font-family: $font-family-open;
+                padding: rhythm(1/4,$font-size-base) 0;
+                color: $color-red;
+                text-align: right;
+            }
+        }
+    }
 
-	/**
-	 * Buttons.
-	 *
-	 * This overwrites the Twitter-Bootstrap styles
-	 * for the things that I don't want inhered.
-	 */
-	.btn{
-		@include adjust-font-size-to($font-size-small,1,$font-size-base);
-		font-family: $font-family-open;
-		font-weight: $font-weight-bold;
-		text-transform: uppercase;
-		text-shadow: 0 2px 1px rgba(0,0,0,.27);
-		border-radius: 0;
-		padding: rhythm(1/4,$font-size-small) rhythm(1,$font-size-small);
-	}
+    [required]{
+        position: relative;
+    }
+    [required]:before{
+        position: absolute;
+        display: block;
+        top: 0;
+        right: 0;
+        content: "*";
+        color: $color-red;
+    }
 
-	.btn-facebook {
-		@include button-variant($btn-facebook-color, $btn-facebook-bg, $btn-facebook-border);
-	}
+    /**
+     * Buttons.
+     *
+     * This overwrites the Twitter-Bootstrap styles
+     * for the things that I don't want inhered.
+     */
+    .btn{
+        @include adjust-font-size-to($font-size-small,1,$font-size-base);
+        font-family: $font-family-open;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+        text-shadow: 0 2px 1px rgba(0,0,0,.27);
+        border-radius: 0;
+        padding: rhythm(1/4,$font-size-small) rhythm(1,$font-size-small);
+    }
 
-	/**
-	 * Attending buttons.
-	 *
-	 * Hey inhered from Twitter-Bootstrap styles but are
-	 * then extended for the extra functionality.
-	 */
-	.attending{
-		@extend .btn;
-		&.yes{
-			color: $color-white;
-			background-color: $color-green;
-		}
-		&.no{
-			color: $color-white;
-			background-color: $color-red;
-		}
-	}
-	a.attending{
-		&.yes{
-			color: $color-white;
-			background-color: rgba($color-green,.5);
-			&:hover{
-				background-color: rgba( shade( $color-green,20%),.5);
-			}
-		}
-		&.no{
-			color: $color-white;
-			background-color: rgba($color-red,.5);
-			&:hover{
-				background-color: rgba( shade( $color-red,20%),.5);
-			}
-		}
-	}
-	span.attending{
-		cursor: default;
-	}
+    .btn-facebook {
+        @include button-variant($btn-facebook-color, $btn-facebook-bg, $btn-facebook-border);
+    }
+
+    /**
+     * Attending buttons.
+     *
+     * Hey inhered from Twitter-Bootstrap styles but are
+     * then extended for the extra functionality.
+     */
+    .attending{
+        @extend .btn;
+        &.yes{
+            color: $color-white;
+            background-color: $color-green;
+        }
+        &.no{
+            color: $color-white;
+            background-color: $color-red;
+        }
+    }
+    a.attending{
+        &.yes{
+            color: $color-white;
+            background-color: rgba($color-green,.5);
+            &:hover{
+                background-color: rgba( shade( $color-green,20%),.5);
+            }
+        }
+        &.no{
+            color: $color-white;
+            background-color: rgba($color-red,.5);
+            &:hover{
+                background-color: rgba( shade( $color-red,20%),.5);
+            }
+        }
+    }
+    span.attending{
+        cursor: default;
+    }
 
 
