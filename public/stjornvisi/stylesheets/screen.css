@@ -3287,7 +3287,7 @@ a {
 }
 /* line 16, ../sass/components/_components.scss */
 .block-element .block-element__header {
-  padding: 0.75em 0;
+  padding: 0 0 0.75em 0;
 }
 /* line 17, ../sass/components/_components.scss */
 .block-element .block-element__header h1 {
