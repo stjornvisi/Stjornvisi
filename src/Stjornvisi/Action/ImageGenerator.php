@@ -9,6 +9,7 @@
 namespace Stjornvisi\Action;
 
 use SplFileInfo;
+use DirectoryIterator;
 use Imagine\Image\ImageInterface;
 use Imagine\Imagick\Imagine;
 use Imagine\Image\Box;
@@ -16,7 +17,6 @@ use Imagine\Image\Point;
 
 class ImageGenerator implements ActionInterface
 {
-    const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
     const DIR_IMAGES = '/images';
     const DIR_SMALL = 'small';
     const DIR_MEDIUM = 'medium';
@@ -24,12 +24,19 @@ class ImageGenerator implements ActionInterface
     const DIR_ORIGINAL = 'original';
     const DIR_RAW = 'raw';
 
+    const PREFIX_1X = '1x@';
+    const PREFIX_2X = '2x@';
+
     /** @var $file \SplFileInfo */
     private $file;
 
-    public function __construct(SplFileInfo $file)
+    /** @var $targetDirectory \DirectoryIterator */
+    private $targetDirectory;
+
+    public function __construct(SplFileInfo $file, DirectoryIterator $targetDirectory)
     {
         $this->file = $file;
+        $this->targetDirectory = $targetDirectory;
     }
 
     public function execute()
@@ -50,6 +57,7 @@ class ImageGenerator implements ActionInterface
                 $this->generateImagePath($this->file, self::DIR_SMALL, 1),
                 $options
             );
+        $imagine = null;
 
         //300 SQUARE
         //  create an cropped image with hard height/width of 300
@@ -65,6 +73,7 @@ class ImageGenerator implements ActionInterface
                 $this->generateImagePath($this->file, self::DIR_MEDIUM, 1),
                 $options
             );
+        $imagine = null;
 
         //LARGE
         //
@@ -80,6 +89,23 @@ class ImageGenerator implements ActionInterface
                 $this->generateImagePath($this->file, self::DIR_LARGE, 1),
                 $options
             );
+        $imagine = null;
+
+        //ORIGINAL
+        $imagine = new Imagine();
+        $image = $imagine->open($this->file->getPathname());
+        $image->resize($image->getSize()->getWidth() > 3600 ? $image->getSize()->widen(3600) : $image->getSize())
+            ->save(
+                $this->generateImagePath($this->file, self::DIR_ORIGINAL, 2),
+                $options
+            )
+            ->resize($image->getSize()->getWidth() > 2400 ? $image->getSize()->widen(2400) : $image->getSize())
+            ->save(
+                $this->generateImagePath($this->file, self::DIR_ORIGINAL, 1),
+                $options
+            );
+        $imagine = null;
+
 
         return [
             'name' => $this->file->getFilename(),
@@ -95,38 +121,23 @@ class ImageGenerator implements ActionInterface
                 '1x' => $this->generateFilePath($this->file, self::DIR_LARGE, 1),
                 '2x' => $this->generateFilePath($this->file, self::DIR_LARGE, 2),
             ],
+            'original' => [
+                '1x' => $this->generateFilePath($this->file, self::DIR_ORIGINAL, 1),
+                '2x' => $this->generateFilePath($this->file, self::DIR_ORIGINAL, 2),
+            ],
             'raw' => implode('/', [self::DIR_IMAGES, self::DIR_RAW, $this->file->getFilename()]),
         ];
-
-//        //300 NORMAL
-//        //  create an image that is not cropped and will
-//        //  have a width of 300
-//        $imagine = new Imagine();
-//        $image = $imagine->open($this->file->getPathname());
-//        $size = $image->getSize()->widen(300);
-//        $image->resize($size)
-//            ->save(implode(DIRECTORY_SEPARATOR, [self::PATH_IMAGES, self::DIR_MEDIUM, $this->file->getFilename()]));
-//        $imagine = null;
-//
-//        $imagine = new Imagine();
-//        $image = $imagine->open($this->file->getPathname());
-//        $transform = new Transformation();
-//        $transform->add(new Square());
-//        $transform->add(new Resize(new Box(100, 100)));
-//        $transform->apply($image)
-//            ->save(implode(DIRECTORY_SEPARATOR, [self::PATH_IMAGES, self::DIR_LARGE, $this->file->getFilename()]));
-//        $imagine = null;
     }
 
     private function generateImagePath(SplFileInfo $file, $size, $prefix)
     {
-        $prefix = ($prefix == 1) ? '1x@' : '2x@' ;
-        return implode(DIRECTORY_SEPARATOR, [self::PATH_IMAGES, $size, $prefix.$file->getFilename()]);
+        $prefix = ($prefix == 1) ? self::PREFIX_1X : self::PREFIX_2X ;
+        return implode(DIRECTORY_SEPARATOR, [$this->targetDirectory->getPath(), $size, $prefix.$file->getFilename()]);
     }
 
     private function generateFilePath(SplFileInfo $file, $size, $prefix)
     {
-        $prefix = ($prefix == 1) ? '1x@' : '2x@' ;
+        $prefix = ($prefix == 1) ? self::PREFIX_1X : self::PREFIX_2X ;
         return implode('/', [self::DIR_IMAGES, $size, $prefix.$file->getFilename()]);
     }
 }

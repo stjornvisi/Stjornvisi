@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\File\Transfer\Adapter\Http;
 use SplFileInfo;
+use DirectoryIterator;
 
 /**
  * Class MediaController.
@@ -16,6 +17,8 @@ use SplFileInfo;
  */
 class MediaController extends AbstractActionController
 {
+    const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
+
     /**
      * Upload an image and crop it to correct
      * size an all...
@@ -28,9 +31,8 @@ class MediaController extends AbstractActionController
             ->get('Zend\View\Renderer\RendererInterface');
 
         $adapter = new Http();
-        $adapter->setDestination(
-            implode(DIRECTORY_SEPARATOR, [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW])
-        );
+        $adapter->setDestination(implode(DIRECTORY_SEPARATOR, [self::PATH_IMAGES, ImageGenerator::DIR_RAW]));
+        $imageDirectory = new DirectoryIterator(self::PATH_IMAGES);
 
         $result = [
             'media' => [],
@@ -39,25 +41,20 @@ class MediaController extends AbstractActionController
 
         foreach ($adapter->getFileInfo() as $info) {
             $originalFileName = $info['name'];
+            $uploadedFileObject = new SplFileInfo(implode(DIRECTORY_SEPARATOR, [$info['destination'], $info['name']]));
 
-            $nameArray = [];
-            if (preg_match('/(.*?)(\.)(gif|png|jpe?g)$/i', $originalFileName, $nameArray)) {
-                $newFileName = $this->cleanFileName($nameArray[1]);
+            if (preg_match('/^image\/jpe?g|png|gif$/', $info['type'])) {
+                $newFileName = $this->cleanFileName($uploadedFileObject->getFilename());
 
                 if ($adapter->receive($originalFileName)) {
                     rename(
-                        implode(DIRECTORY_SEPARATOR, [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW, $originalFileName]),
-                        implode(DIRECTORY_SEPARATOR, [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW, $newFileName . '.' . $nameArray[3]])
+                        $uploadedFileObject->getPathname(),
+                        implode(DIRECTORY_SEPARATOR, [$uploadedFileObject->getPath(), $newFileName])
                     );
 
-                    $file = new SplFileInfo(
-                        implode(
-                            DIRECTORY_SEPARATOR,
-                            [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW, $newFileName . '.'.$nameArray[3]]
-                        )
-                    );
+                    $fileObject = new SplFileInfo(implode(DIRECTORY_SEPARATOR, [$uploadedFileObject->getPath(), $newFileName]));
 
-                    $actionResponse = (new ImageGenerator($file))->execute();
+                    $actionResponse = (new ImageGenerator($fileObject, $imageDirectory))->execute();
 
                     $actionResponse['thumb']['1x'] = $renderer->basePath($actionResponse['thumb']['1x']);
                     $actionResponse['thumb']['2x'] = $renderer->basePath($actionResponse['thumb']['2x']);
@@ -148,13 +145,14 @@ class MediaController extends AbstractActionController
         return new JsonModel(['info' => $result]);
     }
 
-    private function cleanFileName($name)
+    private function cleanFileName($path)
     {
+        $pathInfo = pathinfo($path);
         setlocale(LC_ALL, 'is_IS.UTF8');
-        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
+        $clean = iconv('UTF-8', 'ASCII//TRANSLIT', $pathInfo['filename']);
         $clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
         $clean = strtolower(trim($clean, '-'));
         $clean = preg_replace("/[\/_| -]+/", '-', $clean);
-        return $clean.rand(100, 999);
+        return $clean. rand(100, 999) . '.' .$pathInfo['extension'];
     }
 }

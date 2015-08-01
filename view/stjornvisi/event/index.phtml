@@ -139,7 +139,7 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
                     <ul class="block-gallery">
                         <?php foreach($this->event->gallery as $img):?>
                             <li class="block-gallery__item">
-                                <a href="<?=$this->basePath(implode('/', [ImageGenerator::DIR_IMAGES, ImageGenerator::DIR_LARGE, '2x@'.$img->name]))?>" data-fluidbox="">
+                                <a href="<?=$this->basePath(implode('/', [ImageGenerator::DIR_IMAGES, ImageGenerator::DIR_ORIGINAL, '2x@'.$img->name]))?>" data-fluidbox="">
                                     <?=$this->image($this->event->avatar, ImageGenerator::DIR_MEDIUM, ['block-gallery__image']);?>
                                 </a>
                             </li>

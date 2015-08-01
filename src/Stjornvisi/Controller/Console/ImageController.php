@@ -19,6 +19,8 @@ use RuntimeException;
 
 class ImageController extends AbstractActionController
 {
+    const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
+
     /**
      * Will create all images.
      *
@@ -33,15 +35,15 @@ class ImageController extends AbstractActionController
             throw new RuntimeException('You can only use this action from a console!');
         }
 
-        $originalFilePath = implode(
+        $rawFilePath = implode(
             DIRECTORY_SEPARATOR,
-            [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_RAW]
+            [self::PATH_IMAGES, ImageGenerator::DIR_RAW]
         );
 
         //COUNT
         //  count how many file there are.
         $counter = 0;
-        foreach (new DirectoryIterator($originalFilePath) as $fileInfo) {
+        foreach (new DirectoryIterator($rawFilePath) as $fileInfo) {
             if ($this->isImage($fileInfo)) {
                 continue;
             }
@@ -50,10 +52,11 @@ class ImageController extends AbstractActionController
 
         $adapter = new Console();
         $progressBar = new ProgressBar($adapter, 0, $counter);
+        $imageDirectory = new DirectoryIterator(self::PATH_IMAGES);
 
         //FOR EVERY
         //  for every file in directory...
-        foreach (new DirectoryIterator($originalFilePath) as $fileInfo) {
+        foreach (new DirectoryIterator($rawFilePath) as $fileInfo) {
             if ($this->isImage($fileInfo)) {
                 continue;
             }
@@ -61,7 +64,7 @@ class ImageController extends AbstractActionController
             if ($this->getRequest()->getParam('ignore', false)) {
                 $smallFilePath = implode(
                     DIRECTORY_SEPARATOR,
-                    [ImageGenerator::PATH_IMAGES, ImageGenerator::DIR_SMALL, $fileInfo->getFilename()]
+                    [self::PATH_IMAGES, ImageGenerator::DIR_SMALL, $fileInfo->getFilename()]
                 );
                 if (is_file($smallFilePath)) {
                     $progressBar->next();
@@ -70,7 +73,7 @@ class ImageController extends AbstractActionController
             }
 
             try {
-                (new ImageGenerator($fileInfo))->execute();
+                (new ImageGenerator($fileInfo, $imageDirectory))->execute();
             } catch (\Exception $e) {
                 echo $e->getMessage().PHP_EOL;
             }
