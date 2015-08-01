@@ -1,43 +1,34 @@
 <?php
-	$this->headTitle( $this->event->subject );
-	$this->headTitle('Myndalisti - Uppfæra');
-	$this->headTitle('Viðburður');
-
+$this->headTitle($this->event->subject);
+$this->headTitle('Myndalisti - Uppfæra');
+$this->headTitle('Viðburður');
+$this->form->setAttribute('class', 'form-horizontal');
 ?>
 
 <div class="layout layout--three-columns">
-	<section class="layout__section">
-		<h1 class="layout__headline">
-			Uppæra mynd fyrir <a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject;?></a>
-		</h1>
-	<?php
-	$this->form->setAttribute('class','form-horizontal');
-	?>
-	<?=$this->form()->openTag($this->form);?>
-
-	<div class="form-group">
-		<?=$this->formLabel($form->get('name'));?>
-		<?=$this->formElement($form->get('name')->setAttribute('class','form-control avatar'));?>
-		<?=$this->formElementErrors($form->get('name'));?>
-	</div>
-
-
-	<div class="form-group">
-		<?=$this->formLabel($form->get('description'));?>
-		<?=$this->formElement($form->get('description')->setAttribute('class','form-control'));?>
-		<?=$this->formElementErrors($form->get('description'));?>
-	</div>
-
-	<div class="form-group">
-		<?=$this->formElement(
-			$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Uppfæra')
-		);?>
-	</div>
-
-	<?= $this->form()->closeTag() ?>
-
-	</section>
-	<aside class="layout__aside">
-
-	</aside>
+    <section class="layout__section">
+        <div class="block-element">
+            <header class="block-element__header">
+                <h1>
+                    <a href="<?=$this->url('vidburdir/index', ['id'=>$this->event->id])?>">Uppæra mynd fyrir  <?=$this->event->subject;?></a>
+                </h1>
+            </header>
+        </div>
+        <?=$this->form()->openTag($this->form);?>
+            <div class="form-group">
+                <?=$this->formLabel($form->get('name'));?>
+                <?=$this->formElement($form->get('name')->setAttribute('class', 'form-control avatar'));?>
+                <?=$this->formElementErrors($form->get('name'));?>
+            </div>
+            <div class="form-group">
+                <?=$this->formLabel($form->get('description'));?>
+                <?=$this->formElement($form->get('description')->setAttribute('class', 'form-control'));?>
+                <?=$this->formElementErrors($form->get('description'));?>
+            </div>
+            <div class="form-group">
+                <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Uppfæra'));?>
+            </div>
+        <?= $this->form()->closeTag() ?>
+    </section>
+    <aside class="layout__aside"></aside>
 </div>

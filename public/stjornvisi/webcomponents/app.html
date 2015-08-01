@@ -10539,9 +10539,10 @@ Any number of components can use `<google-maps-api>` elements, and the library w
 
             handleUploadDone: function (begin, middle, end) {
                 return function (event, media) {
-                    this.textarea.value = (begin) + ('!['+middle+']('+media.medium+')') + (end);
+                    debugger;
+                    this.textarea.value = (begin) + ('!['+middle+']('+media.file.medium['1x']+')') + (end);
                     this.textarea.removeAttribute('readonly');
-                }
+                }.bind(this);
             },
 
             handleUploadError: function (begin, middle, end) {
@@ -10549,7 +10550,7 @@ Any number of components can use `<google-maps-api>` elements, and the library w
                     this.textarea.value = (begin) + (middle) + (end);
                     this.textarea.removeAttribute('readonly');
                     alert(media.message);
-                }
+                }.bind(this);
             },
 
             attached: function () {

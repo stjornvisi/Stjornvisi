@@ -167,7 +167,7 @@ class ResourceController extends AbstractActionController
                         return (new ViewModel([
                             'event' => $event,
                             'form' => $form
-                        ]))->setTemplate('stjornvisi/event/resource-create');
+                        ]))->setTemplate('stjornvisi/event/resource-update');
                     }
                     //QUERY
                     //	get request
@@ -176,7 +176,7 @@ class ResourceController extends AbstractActionController
                     return (new ViewModel([
                         'event' => $event,
                         'form' => $form
-                    ]))->setTemplate('stjornvisi/event/resource-create');
+                    ]))->setTemplate('stjornvisi/event/resource-update');
                 }
                 //ACCESS DENIED
                 //

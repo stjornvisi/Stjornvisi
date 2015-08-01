@@ -4406,11 +4406,20 @@ stjornvisi-rich nav a:before {
 stjonvisi-control {
   display: block;
 }
-/* line 43, ../sass/components/_web-components.scss */
+/* line 44, ../sass/components/_web-components.scss */
+stjonvisi-control.inline > * {
+  display: inline-block;
+}
+/* line 47, ../sass/components/_web-components.scss */
+stjonvisi-control.inline > *:before {
+  content: '';
+  padding: 0;
+}
+/* line 52, ../sass/components/_web-components.scss */
 stjonvisi-control > * {
   display: block;
 }
-/* line 46, ../sass/components/_web-components.scss */
+/* line 55, ../sass/components/_web-components.scss */
 stjonvisi-control > a {
   font-size: 0.75em;
   line-height: 2em;
@@ -4418,16 +4427,16 @@ stjonvisi-control > a {
   word-break: keep-all;
   white-space: nowrap;
 }
-/* line 51, ../sass/components/_web-components.scss */
+/* line 60, ../sass/components/_web-components.scss */
 stjonvisi-control > a i {
   color: #80a9bd;
   padding-right: 0.5em;
 }
-/* line 56, ../sass/components/_web-components.scss */
+/* line 65, ../sass/components/_web-components.scss */
 stjonvisi-control a.update i {
   color: #4ca14a;
 }
-/* line 59, ../sass/components/_web-components.scss */
+/* line 68, ../sass/components/_web-components.scss */
 stjonvisi-control a.delete i {
   color: #ff4800;
 }

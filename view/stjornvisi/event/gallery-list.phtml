@@ -1,34 +1,34 @@
 <?php
-    $this->headTitle( $this->event->subject );
-    $this->headTitle('Myndalisti');
-    $this->headTitle('Viðburður');
+$this->headTitle($this->event->subject);
+$this->headTitle('Myndalisti');
+$this->headTitle('Viðburður');
 
 use Stjornvisi\Properties\FileProperties;
+
 ?>
 
 <div class="layout layout--three-columns">
     <section class="layout__section">
-
-    <h1 class="layout__headline">
-        Myndir fyrir
-        <a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>"><?=$this->event->subject?></a>
-    </h1>
-
-    <ul class="block-gallery">
-        <?php foreach($this->gallery as $image):?>
-            <li class="block-gallery__item">
-            <?=$this->image($image->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
-            <stjonvisi-control class="inline">
-                <a href="<?=$this->url('vidburdir/gallery-update',array('id'=>$image->id))?>">uppfæra</a>
-                <a href="<?=$this->url('vidburdir/gallery-delete',array('id'=>$image->id))?>">eyða</a>
-            </stjonvisi-control>
-        </li>
-        <?php endforeach;?>
-
-    </ul>
-
+        <div class="block-element">
+            <header class="block-element__header">
+                <h1>
+                    <a href="<?=$this->url('vidburdir/index', ['id' => $this->event->id])?>">Myndir fyrir <?=$this->event->subject?></a>
+                </h1>
+            </header>
+        </div>
+        <ul class="block-gallery">
+            <?php foreach ($this->gallery as $image) :?>
+                <li class="block-gallery__item">
+                <?=$this->image($image->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
+                <stjonvisi-control class="inline">
+                    <a href="<?=$this->url('vidburdir/gallery-update', ['id' => $image->id])?>" class="update"><i class="icon-check"></i> uppfæra</a>
+                    <a href="<?=$this->url('vidburdir/gallery-delete', ['id' => $image->id])?>" class="delete"><i class="icon-close"></i> eyða</a>
+                </stjonvisi-control>
+            </li>
+            <?php endforeach;?>
+        </ul>
     </section>
     <aside class="layout__aside">
-        <a href="<?=$this->url('vidburdir/gallery-create',array('id'=>$this->event->id));?>" class="btn btn-default">Bæta við mynd</a>
+        <a href="<?=$this->url('vidburdir/gallery-create', ['id' => $this->event->id]);?>" class="btn btn-default">Bæta við mynd</a>
     </aside>
 </div>
