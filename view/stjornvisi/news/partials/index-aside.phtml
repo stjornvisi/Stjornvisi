@@ -1,3 +1,7 @@
+<?php
+use Stjornvisi\Properties\FileProperties;
+?>
+
 <?php if($this->access->is_admin || $this->access->type >= 1):?>
     <stjonvisi-control>
         <a href="<?=$this->url('frettir/update',array('id'=>$this->news->id));?>" class="update"><i class="icon-check"></i> uppfæra</a>
@@ -13,7 +17,7 @@
             </time>
             <?php if( $news->avatar ): ?>
             <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-item__image">
-                <?=$this->image($news->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
             </a>
             <?php endif;?>
             <h2><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h2>

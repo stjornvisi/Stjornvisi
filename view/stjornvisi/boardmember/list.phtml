@@ -5,6 +5,8 @@
  * Date: 3/5/14
  * Time: 11:20 AM
  */
+
+use Stjornvisi\Properties\FileProperties;
 ?>
 <div class="layout layout--two-columns">
     <section class="layout__section">
@@ -17,7 +19,7 @@
                             <?php foreach($board as $item):?>
                                 <li class="boardmember-list__item <?= ($item->is_chairman||$item->is_manager)?'boardmember-list__item--large':'';?>">
                                     <?php if($item->avatar):?>
-										<?=$this->image($item->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM, ['borardmember-list__avatar']);?>
+										<?=$this->image($item->avatar, FileProperties::DIR_MEDIUM, ['borardmember-list__avatar']);?>
                                     <?php endif;?>
                                     <h1 class="borardmember-list__name"><?=$item->name?></h1>
                                     <h2 class="borardmember-list__company"><?=$item->company?></h2>

@@ -5,6 +5,8 @@
  * Date: 3/4/14
  * Time: 12:18 PM
  */
+
+use Stjornvisi\Properties\FileProperties;
 ?>
 
 <div class="layout layout--three-columns">
@@ -25,7 +27,7 @@
                         <li class="block-element__author-item">
                             <h2><?=$author->name?></h2>
                             <?php if($author->avatar):?>
-                                <?=$this->image($author->avatar, \Stjornvisi\Action\ImageGenerator::DIR_SMALL);?>
+                                <?=$this->image($author->avatar, FileProperties::DIR_SMALL);?>
                             <?php endif;?>
                             <?=$this->paragrapher($author->info);?>
                         </li>

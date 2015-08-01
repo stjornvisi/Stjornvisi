@@ -8,22 +8,20 @@
 
 namespace Stjornvisi\View\Helper;
 
-use Stjornvisi\Action\ImageGenerator;
 use Zend\Form\View\Helper\AbstractHelper;
+use Stjornvisi\Properties\FileProperties;
 
 class Image extends AbstractHelper
 {
-    public function __invoke($name, $size = ImageGenerator::DIR_MEDIUM, array $class = [])
+    public function __invoke($name, $size = FileProperties::DIR_MEDIUM, array $class = [])
     {
-
-
         $srcset = implode(', ', [
-            $this->getView()->basePath(implode('/', [ImageGenerator::DIR_IMAGES, $size, '1x@'.$name]) . ' 1x'),
-            $this->getView()->basePath(implode('/', [ImageGenerator::DIR_IMAGES, $size, '2x@'.$name]) . ' 2x'),
+            $this->getView()->basePath(implode('/', [FileProperties::DIR_IMAGES, $size, '1x@'.$name]) . ' 1x'),
+            $this->getView()->basePath(implode('/', [FileProperties::DIR_IMAGES, $size, '2x@'.$name]) . ' 2x'),
         ]);
 
         $src = $this->getView()->basePath(
-            implode('/', [ImageGenerator::DIR_IMAGES, $size, '1x@'.$name])
+            implode('/', [FileProperties::DIR_IMAGES, $size, '1x@'.$name])
         );
 
         $classes = implode(' ', $class);

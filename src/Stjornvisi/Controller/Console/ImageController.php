@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: einarvalur
@@ -10,6 +9,7 @@
 namespace Stjornvisi\Controller\Console;
 
 use Stjornvisi\Action\ImageGenerator;
+use Stjornvisi\Properties\FileProperties;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\ProgressBar\Adapter\Console;
@@ -37,7 +37,7 @@ class ImageController extends AbstractActionController
 
         $rawFilePath = implode(
             DIRECTORY_SEPARATOR,
-            [self::PATH_IMAGES, ImageGenerator::DIR_RAW]
+            [self::PATH_IMAGES, FileProperties::DIR_RAW]
         );
 
         //COUNT
@@ -64,7 +64,7 @@ class ImageController extends AbstractActionController
             if ($this->getRequest()->getParam('ignore', false)) {
                 $smallFilePath = implode(
                     DIRECTORY_SEPARATOR,
-                    [self::PATH_IMAGES, ImageGenerator::DIR_SMALL, $fileInfo->getFilename()]
+                    [self::PATH_IMAGES, FileProperties::DIR_SMALL, $fileInfo->getFilename()]
                 );
                 if (is_file($smallFilePath)) {
                     $progressBar->next();

@@ -46,7 +46,8 @@ class FileElement extends FormInput
         //	thing was to add it here.
         //	TODO place this i a more generic place
         $element->setOption('max', $this->getMaxSize())
-            ->setOption('url', '/skrar/skra');
+            ->setOption('url', '/skrar/skra')
+        ->setOption('accept', '*/*');
 
 
         //OPTIONS
@@ -69,7 +70,7 @@ class FileElement extends FormInput
         );
 
         return sprintf(
-            '<stjornvisi-file %s><input %s%s</stjornvisi-file>',
+            '<stjornvisi-img %s><input %s%s</stjornvisi-img>',
             implode(' ', $strings),
             $this->createAttributesString($attributes),
             $this->getInlineClosingBracket()

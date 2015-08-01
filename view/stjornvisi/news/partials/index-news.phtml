@@ -11,6 +11,8 @@ $this->headMeta()->setProperty('og:image', ($this->news->avatar)
         ? 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/images/original/{$this->news->avatar}")
         : 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/stylesheets/images/simple-logo.jpg")
 );
+
+use Stjornvisi\Properties\FileProperties;
 ?>
 <div class="layout_article">
     <article class="block-element">
@@ -31,7 +33,7 @@ $this->headMeta()->setProperty('og:image', ($this->news->avatar)
         </header>
         <section class="block-element__body block-element__body--two-column">
             <?php if($this->news->avatar):?>
-                <?=$this->image($this->news->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM, ['block-element__image']);?>
+                <?=$this->image($this->news->avatar, FileProperties::DIR_MEDIUM, ['block-element__image']);?>
             <?php endif;?>
             <?=$this->paragrapher($this->news->body);?>
         </section>

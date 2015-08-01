@@ -1,3 +1,6 @@
+<?php
+use Stjornvisi\Properties\FileProperties;
+?>
 <?php if($this->identity):?>
 
     <div class="layout layout--three-columns page-dashboard">
@@ -17,7 +20,7 @@
                                 <section class="block-element__body">
                                     <?php if($event->avatar):?>
                                         <a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-                                            <?=$this->image($event->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                                            <?=$this->image($event->avatar, FileProperties::DIR_MEDIUM);?>
                                         </a>
                                     <?php endif;?>
                                     <?=$this->paragrapher( mb_substr($event->body,0,350,'utf-8').'&#8230;'  );?>
@@ -71,7 +74,7 @@
                                 <section class="block-element__body">
                                     <?php if($news->avatar):?>
                                         <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
-                                            <?=$this->image($news->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                                            <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
                                         </a>
                                     <?php endif;?>
                                     <?=$this->paragrapher( mb_substr($news->body,0,350,'utf-8').'&#8230;'  );?>
@@ -119,7 +122,7 @@
                 <?php foreach($this->gallery as $img):?>
                 <li class="block-gallery__item">
                     <a href="<?=$this->url('vidburdir/index',array('id'=>$img->event_id))?>">
-                        <?=$this->image($img->name, \Stjornvisi\Action\ImageGenerator::DIR_SMALL, ['block-gallery__image']);?>
+                        <?=$this->image($img->name, FileProperties::DIR_SMALL, ['block-gallery__image']);?>
                     </a>
                 </li>
                 <?php endforeach;?>
@@ -228,7 +231,7 @@
                     <section class="landing-page__element__section">
                         <?php if($this->event->avatar):?>
                             <a href="<?=$this->url('vidburdir/index',array('id'=>$this->event->id))?>">
-                                <?=$this->image($this->event->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                                <?=$this->image($this->event->avatar, FileProperties::DIR_MEDIUM);?>
                             </a>
                         <?php endif;?>
                         <?=$this->paragrapher(mb_substr($this->event->body,0,400,'utf-8'));?>
@@ -263,7 +266,7 @@
                 </header>
                 <section class="landing-page__element__section">
                     <?php if($this->news->avatar):?>
-                        <?=$this->image($this->news->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                        <?=$this->image($this->news->avatar, FileProperties::DIR_MEDIUM);?>
                     <?php endif;?>
                     <?=$this->paragrapher(mb_substr($this->news->body,0,600,'utf-8'));?>
                 </section>
@@ -280,7 +283,7 @@
         <ul>
             <?php foreach($this->gallery as $item):?>
             <li class="landing-page__gallery-item">
-                <?=$this->image($item->name, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                <?=$this->image($item->name, FileProperties::DIR_MEDIUM);?>
             </li>
             <?php endforeach;?>
         </ul>

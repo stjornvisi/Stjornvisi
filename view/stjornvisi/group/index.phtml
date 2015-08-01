@@ -9,6 +9,8 @@ $this->headMeta()->setProperty('og:type', 'article');
 $this->headMeta()->setProperty('og:description', mb_substr($this->group->summary,0,200));
 $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->url('hopur/index',array('id'=>$this->group->url)));
 
+use Stjornvisi\Properties\FileProperties;
+
 ?>
 <div class="layout layout--three-columns-reverse page-group">
     <section class="layout__section">
@@ -40,7 +42,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
                             <section class="block-element__body">
                                 <?php if($event->avatar):?>
                                     <a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>" class="block-element__poster">
-                                        <?=$this->image($event->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                                        <?=$this->image($event->avatar, FileProperties::DIR_MEDIUM);?>
                                     </a>
                                 <?php endif;?>
                                 <?=$this->paragrapher( mb_substr($event->body,0,300,'utf-8'));?>
@@ -80,7 +82,7 @@ $this->headMeta()->setProperty('og:url', 'http://'.$_SERVER['HTTP_HOST'].$this->
                             <section class="block-element__body">
                                 <?php if($news->avatar):?>
                                     <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
-                                        <?=$this->image($news->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                                        <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
                                     </a>
                                 <?php endif;?>
                                 <?=$this->paragrapher( mb_substr($news->body,0,300,'utf-8'));?>

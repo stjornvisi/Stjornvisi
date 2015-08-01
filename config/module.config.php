@@ -1335,7 +1335,7 @@ return array(
                             'route' => '/mynd',
                             'defaults' => array(
                                 'controller' => 'Stjornvisi\Controller\Media',
-                                'action' => 'image'
+                                'action' => 'upload'
                             ),
                         )
                     ),
@@ -1345,7 +1345,7 @@ return array(
                             'route' => '/skra',
                             'defaults' => array(
                                 'controller' => 'Stjornvisi\Controller\Media',
-                                'action' => 'media'
+                                'action' => 'upload'
                             ),
                         )
                     ),

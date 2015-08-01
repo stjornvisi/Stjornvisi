@@ -14,19 +14,10 @@ use Imagine\Image\ImageInterface;
 use Imagine\Imagick\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
+use Stjornvisi\Properties\FileProperties;
 
 class ImageGenerator implements ActionInterface
 {
-    const DIR_IMAGES = '/images';
-    const DIR_SMALL = 'small';
-    const DIR_MEDIUM = 'medium';
-    const DIR_LARGE = 'large';
-    const DIR_ORIGINAL = 'original';
-    const DIR_RAW = 'raw';
-
-    const PREFIX_1X = '1x@';
-    const PREFIX_2X = '2x@';
-
     /** @var $file \SplFileInfo */
     private $file;
 
@@ -49,12 +40,12 @@ class ImageGenerator implements ActionInterface
         $imagine->open($this->file->getPathname())
             ->thumbnail(new Box(120, 120), ImageInterface::THUMBNAIL_OUTBOUND)
             ->save(
-                $this->generateImagePath($this->file, self::DIR_SMALL, 2),
+                $this->generateImagePath($this->file, FileProperties::DIR_SMALL, 2),
                 $options
             )
             ->thumbnail(new Box(60, 60), ImageInterface::THUMBNAIL_OUTBOUND)
             ->save(
-                $this->generateImagePath($this->file, self::DIR_SMALL, 1),
+                $this->generateImagePath($this->file, FileProperties::DIR_SMALL, 1),
                 $options
             );
         $imagine = null;
@@ -65,12 +56,12 @@ class ImageGenerator implements ActionInterface
         $imagine->open($this->file->getPathname())
             ->thumbnail(new Box(600, 600), ImageInterface::THUMBNAIL_OUTBOUND)
             ->save(
-                $this->generateImagePath($this->file, self::DIR_MEDIUM, 2),
+                $this->generateImagePath($this->file, FileProperties::DIR_MEDIUM, 2),
                 $options
             )
             ->thumbnail(new Box(300, 300), ImageInterface::THUMBNAIL_OUTBOUND)
             ->save(
-                $this->generateImagePath($this->file, self::DIR_MEDIUM, 1),
+                $this->generateImagePath($this->file, FileProperties::DIR_MEDIUM, 1),
                 $options
             );
         $imagine = null;
@@ -81,12 +72,12 @@ class ImageGenerator implements ActionInterface
         $image = $imagine->open($this->file->getPathname());
         $image->resize($image->getSize()->widen(1200))
             ->save(
-                $this->generateImagePath($this->file, self::DIR_LARGE, 2),
+                $this->generateImagePath($this->file, FileProperties::DIR_LARGE, 2),
                 $options
             )
             ->resize($image->getSize()->widen(600))
             ->save(
-                $this->generateImagePath($this->file, self::DIR_LARGE, 1),
+                $this->generateImagePath($this->file, FileProperties::DIR_LARGE, 1),
                 $options
             );
         $imagine = null;
@@ -96,48 +87,22 @@ class ImageGenerator implements ActionInterface
         $image = $imagine->open($this->file->getPathname());
         $image->resize($image->getSize()->getWidth() > 3600 ? $image->getSize()->widen(3600) : $image->getSize())
             ->save(
-                $this->generateImagePath($this->file, self::DIR_ORIGINAL, 2),
+                $this->generateImagePath($this->file, FileProperties::DIR_ORIGINAL, 2),
                 $options
             )
             ->resize($image->getSize()->getWidth() > 2400 ? $image->getSize()->widen(2400) : $image->getSize())
             ->save(
-                $this->generateImagePath($this->file, self::DIR_ORIGINAL, 1),
+                $this->generateImagePath($this->file, FileProperties::DIR_ORIGINAL, 1),
                 $options
             );
         $imagine = null;
 
-
-        return [
-            'name' => $this->file->getFilename(),
-            'thumb' => [
-                '1x' => $this->generateFilePath($this->file, self::DIR_SMALL, 1),
-                '2x' => $this->generateFilePath($this->file, self::DIR_SMALL, 2),
-            ],
-            'medium' => [
-                '1x' => $this->generateFilePath($this->file, self::DIR_MEDIUM, 1),
-                '2x' => $this->generateFilePath($this->file, self::DIR_MEDIUM, 2),
-            ],
-            'large' => [
-                '1x' => $this->generateFilePath($this->file, self::DIR_LARGE, 1),
-                '2x' => $this->generateFilePath($this->file, self::DIR_LARGE, 2),
-            ],
-            'original' => [
-                '1x' => $this->generateFilePath($this->file, self::DIR_ORIGINAL, 1),
-                '2x' => $this->generateFilePath($this->file, self::DIR_ORIGINAL, 2),
-            ],
-            'raw' => implode('/', [self::DIR_IMAGES, self::DIR_RAW, $this->file->getFilename()]),
-        ];
+        return new FileProperties($this->file->getFilename());
     }
 
     private function generateImagePath(SplFileInfo $file, $size, $prefix)
     {
-        $prefix = ($prefix == 1) ? self::PREFIX_1X : self::PREFIX_2X ;
+        $prefix = ($prefix == 1) ? FileProperties::PREFIX_1X : FileProperties::PREFIX_2X ;
         return implode(DIRECTORY_SEPARATOR, [$this->targetDirectory->getPath(), $size, $prefix.$file->getFilename()]);
-    }
-
-    private function generateFilePath(SplFileInfo $file, $size, $prefix)
-    {
-        $prefix = ($prefix == 1) ? self::PREFIX_1X : self::PREFIX_2X ;
-        return implode('/', [self::DIR_IMAGES, $size, $prefix.$file->getFilename()]);
     }
 }

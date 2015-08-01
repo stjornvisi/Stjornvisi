@@ -1,3 +1,6 @@
+<?php
+use Stjornvisi\Properties\FileProperties;
+?>
 <div class="layout layout--three-columns page-newslist">
     <section class="layout__section">
 
@@ -23,7 +26,7 @@
                     <section class="block-element__body block-element--two-columns">
                         <?php if($news->avatar):?>
                             <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
-                                <?=$this->image($news->avatar, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM);?>
+                                <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
                             </a>
                         <?php endif;?>
                         <?=$this->paragrapher( mb_substr($news->body,0,1200) );?>

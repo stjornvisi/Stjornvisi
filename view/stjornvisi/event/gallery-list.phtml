@@ -2,6 +2,8 @@
     $this->headTitle( $this->event->subject );
     $this->headTitle('Myndalisti');
     $this->headTitle('Viðburður');
+
+use Stjornvisi\Properties\FileProperties;
 ?>
 
 <div class="layout layout--three-columns">
@@ -15,7 +17,7 @@
     <ul class="block-gallery">
         <?php foreach($this->gallery as $image):?>
             <li class="block-gallery__item">
-            <?=$this->image($image->name, \Stjornvisi\Action\ImageGenerator::DIR_MEDIUM, ['block-gallery__image']);?>
+            <?=$this->image($image->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
             <stjonvisi-control class="inline">
                 <a href="<?=$this->url('vidburdir/gallery-update',array('id'=>$image->id))?>">uppfæra</a>
                 <a href="<?=$this->url('vidburdir/gallery-delete',array('id'=>$image->id))?>">eyða</a>
