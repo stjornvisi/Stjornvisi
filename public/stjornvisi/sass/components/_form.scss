@@ -7,7 +7,9 @@
  * is not in the shadow dom
  */
 input.avatar,
-input[name=avatar]{
+input[name=avatar],
+input.media,
+input[name=media]{
     text-indent: 70px;
     background-repeat: no-repeat;
     cursor: pointer;

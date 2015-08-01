@@ -1,4 +1,6 @@
 <?php
+use Stjornvisi\Properties\FileProperties;
+
 $this->headTitle($this->event->subject);
 $this->headTitle('Viðburður');
 
@@ -129,7 +131,7 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
         <div class="layout__meta">
 
             <?php if( $this->event->avatar):?>
-                <img src="<?=$this->basePath("/images/original/{$this->event->avatar}")?>" class="block-element__image" />
+                <?=$this->image($this->event->avatar, FileProperties::DIR_LARGE, ['block-element__image']);?>
             <?php endif;?>
 
             <?php if( count($this->event->gallery)>0 ):?>
@@ -137,8 +139,8 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
                     <ul class="block-gallery">
                         <?php foreach($this->event->gallery as $img):?>
                             <li class="block-gallery__item">
-                                <a href="<?=$this->basePath("/images/original/{$img->name}")?>" data-fluidbox="">
-                                    <img  class="block-gallery__image" src="<?=$this->basePath("/images/100/{$img->name}")?>" title="<?=$img->description?>" />
+                                <a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_ORIGINAL, '2x@'.$img->name]))?>" data-fluidbox="">
+                                    <?=$this->image($img->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
                                 </a>
                             </li>
                         <?php endforeach;?>
@@ -160,7 +162,7 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
                     <h2 class="layout__headline">Ítarefni</h2>
                     <ul class="block-supplement">
                         <?php foreach($this->event->reference as $ref):?>
-                            <li><a href="<?=$this->basePath("/images/original/{$ref->name}")?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
+                            <li><a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_RAW, $ref->name]))?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
                         <?php endforeach;?>
                     </ul>
                 </div>

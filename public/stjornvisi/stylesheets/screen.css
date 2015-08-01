@@ -3287,7 +3287,7 @@ a {
 }
 /* line 16, ../sass/components/_components.scss */
 .block-element .block-element__header {
-  padding: 0.75em 0;
+  padding: 0 0 0.75em 0;
 }
 /* line 17, ../sass/components/_components.scss */
 .block-element .block-element__header h1 {
@@ -3413,7 +3413,7 @@ a {
 .block-element .block-element__poster {
   display: block;
   float: left;
-  width: 50%;
+  width: 100%;
   max-width: 100%;
   margin: 0 1.5em 0.75em 0;
 }
@@ -4406,11 +4406,20 @@ stjornvisi-rich nav a:before {
 stjonvisi-control {
   display: block;
 }
-/* line 43, ../sass/components/_web-components.scss */
+/* line 44, ../sass/components/_web-components.scss */
+stjonvisi-control.inline > * {
+  display: inline-block;
+}
+/* line 47, ../sass/components/_web-components.scss */
+stjonvisi-control.inline > *:before {
+  content: '';
+  padding: 0;
+}
+/* line 52, ../sass/components/_web-components.scss */
 stjonvisi-control > * {
   display: block;
 }
-/* line 46, ../sass/components/_web-components.scss */
+/* line 55, ../sass/components/_web-components.scss */
 stjonvisi-control > a {
   font-size: 0.75em;
   line-height: 2em;
@@ -4418,16 +4427,16 @@ stjonvisi-control > a {
   word-break: keep-all;
   white-space: nowrap;
 }
-/* line 51, ../sass/components/_web-components.scss */
+/* line 60, ../sass/components/_web-components.scss */
 stjonvisi-control > a i {
   color: #80a9bd;
   padding-right: 0.5em;
 }
-/* line 56, ../sass/components/_web-components.scss */
+/* line 65, ../sass/components/_web-components.scss */
 stjonvisi-control a.update i {
   color: #4ca14a;
 }
-/* line 59, ../sass/components/_web-components.scss */
+/* line 68, ../sass/components/_web-components.scss */
 stjonvisi-control a.delete i {
   color: #ff4800;
 }
@@ -4539,19 +4548,21 @@ form[name=stjornvisi-form-event].form-horizontal .form-group {
  */
 /* line 9, ../sass/components/_form.scss */
 input.avatar,
-input[name=avatar] {
+input[name=avatar],
+input.media,
+input[name=media] {
   text-indent: 70px;
   background-repeat: no-repeat;
   cursor: pointer;
   padding: 30px 0;
 }
 
-/* line 16, ../sass/components/_form.scss */
+/* line 18, ../sass/components/_form.scss */
 .form-control[readonly] {
   cursor: pointer;
 }
 
-/* line 19, ../sass/components/_form.scss */
+/* line 21, ../sass/components/_form.scss */
 .form-group.form-group--right {
   text-align: right;
 }
@@ -4561,7 +4572,7 @@ input[name=avatar] {
  * of checkboxes was displayed, this adds a block
  * element statement to the labels.
  */
-/* line 31, ../sass/components/_form.scss */
+/* line 33, ../sass/components/_form.scss */
 .form-group .checkbox label {
   display: block;
 }
@@ -4571,7 +4582,7 @@ input[name=avatar] {
  * will for some readon, hide the text in the input element. This overwrites that.
  * ...so this is a dirty hack.
  */
-/* line 42, ../sass/components/_form.scss */
+/* line 44, ../sass/components/_form.scss */
 input[type=date] {
   color: #282828 !important;
 }
@@ -4582,7 +4593,7 @@ input[type=date] {
  * to make it compliant with Bootstrap, I'll just overwrite
  * the css
  */
-/* line 54, ../sass/components/_form.scss */
+/* line 56, ../sass/components/_form.scss */
 .form-group.has-error ul li {
   font-family: "Open Sans", sans-serif;
   padding: 0.375em 0;
@@ -4590,12 +4601,12 @@ input[type=date] {
   text-align: right;
 }
 
-/* line 63, ../sass/components/_form.scss */
+/* line 65, ../sass/components/_form.scss */
 [required] {
   position: relative;
 }
 
-/* line 66, ../sass/components/_form.scss */
+/* line 68, ../sass/components/_form.scss */
 [required]:before {
   position: absolute;
   display: block;
@@ -4611,7 +4622,7 @@ input[type=date] {
  * This overwrites the Twitter-Bootstrap styles
  * for the things that I don't want inhered.
  */
-/* line 81, ../sass/components/_form.scss */
+/* line 83, ../sass/components/_form.scss */
 .btn, .attending {
   font-size: 0.75em;
   line-height: 2em;
@@ -4623,7 +4634,7 @@ input[type=date] {
   padding: 0.5em 2em;
 }
 
-/* line 91, ../sass/components/_form.scss */
+/* line 93, ../sass/components/_form.scss */
 .btn-facebook {
   color: white;
   background-color: #355088;
@@ -4656,37 +4667,37 @@ input[type=date] {
  * Hey inhered from Twitter-Bootstrap styles but are
  * then extended for the extra functionality.
  */
-/* line 103, ../sass/components/_form.scss */
+/* line 105, ../sass/components/_form.scss */
 .attending.yes {
   color: white;
   background-color: #4ca14a;
 }
-/* line 107, ../sass/components/_form.scss */
+/* line 109, ../sass/components/_form.scss */
 .attending.no {
   color: white;
   background-color: #ff4800;
 }
 
-/* line 113, ../sass/components/_form.scss */
+/* line 115, ../sass/components/_form.scss */
 a.attending.yes {
   color: white;
   background-color: rgba(76, 161, 74, 0.5);
 }
-/* line 116, ../sass/components/_form.scss */
+/* line 118, ../sass/components/_form.scss */
 a.attending.yes:hover {
   background-color: rgba(60, 128, 59, 0.5);
 }
-/* line 120, ../sass/components/_form.scss */
+/* line 122, ../sass/components/_form.scss */
 a.attending.no {
   color: white;
   background-color: rgba(255, 72, 0, 0.5);
 }
-/* line 123, ../sass/components/_form.scss */
+/* line 125, ../sass/components/_form.scss */
 a.attending.no:hover {
   background-color: rgba(204, 57, 0, 0.5);
 }
 
-/* line 128, ../sass/components/_form.scss */
+/* line 130, ../sass/components/_form.scss */
 span.attending {
   cursor: default;
 }

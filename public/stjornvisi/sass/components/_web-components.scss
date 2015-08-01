@@ -38,8 +38,17 @@ stjornvisi-rich {
  * There us a type on the name so this should be
  * refactored soon.
  */
-stjonvisi-control{
+stjonvisi-control {
     display: block;
+    &.inline {
+        > * {
+            display: inline-block;
+        }
+        > *:before {
+            content: '';
+            padding: 0;
+        }
+    }
     > * {
         display: block;
     }

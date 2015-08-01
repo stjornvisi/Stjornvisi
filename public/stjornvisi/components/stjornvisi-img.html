@@ -105,9 +105,9 @@
                     } else {
                         this.trigger.removeAttribute('readonly','readonly');
                     }
-                    this.trigger.style.backgroundImage = ('url('+media.thumb+')');
+                    this.trigger.style.backgroundImage = ('url('+media.file.thumb['1x']+')');
                     this.trigger.style.backgroundSize = 'auto 60px';
-                    this.trigger.value = media.name;
+                    this.trigger.value = media.file.name;
                 }.bind(this);
             },
 
@@ -126,7 +126,7 @@
                 this.trigger = this.children[0];
 
                 var value = this.trigger.getAttribute('value');
-                this.trigger.style.backgroundImage = ( 'url(/stjornvisi/images/60/'+value+')' );
+                this.trigger.style.backgroundImage = ( 'url(/stjornvisi/images/small/1x@'+value+')' );
 
                 this.trigger.addEventListener('dragenter', this.handleTriggerDragEnter.bind(this));
                 this.trigger.addEventListener('dragover', this.handleTriggerDragOver.bind(this));

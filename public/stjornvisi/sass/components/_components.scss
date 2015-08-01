@@ -25,7 +25,7 @@
 			font-family: Bitter;
 			font-weight: $font-weight-bold;
 		}
-		padding: rhythm(1/2,$font-size-base) 0;
+		padding: 0 0 rhythm(1/2,$font-size-base) 0;
 	}
 
 	.block-element__time{
@@ -130,7 +130,7 @@
 	.block-element__poster{
 		display: block;
 		float: left;
-		width: 50%;
+		width: 100%;
 		max-width: 100%;
 		margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
 		img{
