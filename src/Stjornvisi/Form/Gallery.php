@@ -8,49 +8,49 @@
 
 namespace Stjornvisi\Form;
 
-
 use Zend\Form\Form;
 
-class Gallery extends Form {
-	public function __construct(array $authors = array()){
+class Gallery extends Form
+{
+    public function __construct(array $authors = array())
+    {
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+        $this->setAttribute('method', 'post');
 
-		$this->setAttribute('method', 'post');
+        $this->add(array(
+            'name' => 'name',
+            'type' => 'Stjornvisi\Form\Element\Img',
+            'attributes' => array(
+                'placeholder' => 'Nafn...',
+                'required' => 'required',
+            ),
+            'options' => array(
+                'label' => 'Nafn',
+            ),
+        ));
 
-		$this->add(array(
-			'name' => 'name',
-			'type' => 'Stjornvisi\Form\Element\Img',
-			'attributes' => array(
-				'placeholder' => 'Nafn...',
-				'required' => 'required',
-			),
-			'options' => array(
-				'label' => 'Nafn',
-			),
-		));
+        $this->add(array(
+            'name' => 'description',
+            'type' => 'Zend\Form\Element\Textarea',
+            'attributes' => array(
+                'placeholder' => 'Lýsing...',
+            ),
+            'options' => array(
+                'label' => 'Lýsing',
+            ),
+        ));
 
-		$this->add(array(
-			'name' => 'description',
-			'type' => 'Zend\Form\Element\Textarea',
-			'attributes' => array(
-				'placeholder' => 'Lýsing...',
-			),
-			'options' => array(
-				'label' => 'Lýsing',
-			),
-		));
+        $this->add(array(
+            'name' => 'submit',
+            'type' => 'Zend\Form\Element\Submit',
+            'attributes' => array(
+                'value' => 'Submit',
+            ),
+            'options' => array(
+                'label' => 'Submit',
+            ),
+        ));
 
-		$this->add(array(
-			'name' => 'submit',
-			'type' => 'Zend\Form\Element\Submit',
-			'attributes' => array(
-				'value' => 'Submit',
-			),
-			'options' => array(
-				'label' => 'Submit',
-			),
-		));
-
-	}
-} 
+    }
+}

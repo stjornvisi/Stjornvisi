@@ -25,10 +25,10 @@ use Zend\Mvc\MvcEvent;
  */
 class LayoutSelectListener extends AbstractListenerAggregate
 {
-	/**
-	 * @var LoggerInterface
-	 */
-	protected $logger;
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * Attach one or more listeners
@@ -41,21 +41,20 @@ class LayoutSelectListener extends AbstractListenerAggregate
      * @return void
      */
     public function attach(EventManagerInterface $events)
-	{
+    {
         $this->listeners[] = $events->attach([MvcEvent::EVENT_DISPATCH], [$this, 'dispatch'], -100);
     }
 
-	public function dispatch(MvcEvent $event)
-	{
-		$auth = new AuthenticationService();
-		if (!$auth->hasIdentity()) {
-			$router = $event->getRouteMatch();
-			if (method_exists($router, 'getMatchedRouteName') && $router->getMatchedRouteName() == 'home') {
-				$event->getViewModel()->setTemplate('layout/landing');
-			} else {
-				$event->getViewModel()->setTemplate('layout/anonymous');
-			}
-		}
-	}
-
+    public function dispatch(MvcEvent $event)
+    {
+        $auth = new AuthenticationService();
+        if (!$auth->hasIdentity()) {
+            $router = $event->getRouteMatch();
+            if (method_exists($router, 'getMatchedRouteName') && $router->getMatchedRouteName() == 'home') {
+                $event->getViewModel()->setTemplate('layout/landing');
+            } else {
+                $event->getViewModel()->setTemplate('layout/anonymous');
+            }
+        }
+    }
 }

@@ -7,24 +7,25 @@ use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class NewUserPassword extends Form{
+class NewUserPassword extends Form
+{
     public function __construct($name = null)
     {
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 
-		$this->add(array(
-			'name' => 'name',
-			'type' => 'Zend\Form\Element\Text',
-			'attributes' => array(
-				'placeholder' => 'Notendanafn...',
-				'readonly' => 'readonly'
-			),
-			'options' => array(
-				'label' => 'Notendanafn',
-			),
-		));
+        $this->add(array(
+            'name' => 'name',
+            'type' => 'Zend\Form\Element\Text',
+            'attributes' => array(
+                'placeholder' => 'Notendanafn...',
+                'readonly' => 'readonly'
+            ),
+            'options' => array(
+                'label' => 'Notendanafn',
+            ),
+        ));
 
         $this->add(array(
             'name' => 'password',
@@ -48,14 +49,14 @@ class NewUserPassword extends Form{
             'options' => array(
                 'label' => 'Lykilorð aftur',
             ),
-			'validators' => array(
-				array(
-					'name' => 'Identical',
-					'options' => array(
-						'token' => 'password', // name of first password field
-					),
-				),
-			),
+            'validators' => array(
+                array(
+                    'name' => 'Identical',
+                    'options' => array(
+                        'token' => 'password', // name of first password field
+                    ),
+                ),
+            ),
         ));
 
         $this->add(array(
@@ -70,37 +71,3 @@ class NewUserPassword extends Form{
         ));
     }
 }
-
-/**
- * 
- * @category Stjornvisi
- * @package Form
- * @author einarvalur
- */
-/*
-class Application_Form_Password extends Zend_Form{
-
-	public function init(){
-		$pass1Element = new Zend_Form_Element_Password("pass1");
-		$pass1Element->setRequired(true)
-			->setLabel("Lykilorð");
-		$pass2Element = new Zend_Form_Element_Password("pass2");
-		$pass2Element->setRequired(true)
-			//TODO this doesn't work... why?
-//			->setValidators(array(new Zend_Validate_Identical(array('token'=>'pass1','strict'=>false))))
-			->setLabel("Lykilorð aftur");
-			
-		$submitElement = new Zend_Form_Element_Submit("submit");
-		$submitElement->setLabel("uppfæra");
-		
-		$this->addElements(array(
-			$pass1Element,
-			$pass2Element,
-			$submitElement
-		));
-		
-	}
-
-
-}
-*/

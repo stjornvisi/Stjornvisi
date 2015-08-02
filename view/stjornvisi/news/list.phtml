@@ -11,12 +11,12 @@ use Stjornvisi\Properties\FileProperties;
                     <header class="block-element__header">
                         <time class="block-element__time"><?= $this->date($news->created_date)?></time>
                         <h1>
-                            <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a>
+                            <a href="<?=$this->url('frettir/index', array('id'=>$news->id))?>"><?=$news->title?></a>
                         </h1>
                         <ul class="block-element__tags">
                             <li>
                                 <?php if($news->group):?>
-                                    <a href="<?=$this->url('hopur/index',array('id'=>$news->group->url)) ?>"><?=$news->group->name_short;?></a>
+                                    <a href="<?=$this->url('hopur/index', array('id'=>$news->group->url)) ?>"><?=$news->group->name_short;?></a>
                                 <?php else:?>
                                     <span>Stjórnvísisfrétt</span>
                                 <?php endif;?>
@@ -25,13 +25,13 @@ use Stjornvisi\Properties\FileProperties;
                     </header>
                     <section class="block-element__body block-element--two-columns">
                         <?php if($news->avatar):?>
-                            <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
+                            <a href="<?=$this->url('frettir/index', array('id'=>$news->id))?>" class="block-element__poster">
                                 <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
                             </a>
                         <?php endif;?>
                         <?=$this->paragrapher( mb_substr($news->body,0,1200) );?>
                         <p class="block-element__more">
-                            <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>">meira</a>
+                            <a href="<?=$this->url('frettir/index', array('id'=>$news->id))?>">meira</a>
                         </p>
 
                     </section>
@@ -47,7 +47,7 @@ use Stjornvisi\Properties\FileProperties;
         <ul class="block_pagination">
             <?php foreach(range(0,$this->pages) as $item):?>
             <li class="block_pagination__item">
-                <a href="<?=$this->url('frettir/list',array('no'=>$item+1))?>" class="block_pagination__link <?=($item == $this->no)?'block_pagination__link--active':''?>"><?=$item+1?></a>
+                <a href="<?=$this->url('frettir/list', array('no'=>$item+1))?>" class="block_pagination__link <?=($item == $this->no)?'block_pagination__link--active':''?>"><?=$item+1?></a>
             </li>
             <?php endforeach;?>
         </ul>

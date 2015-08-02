@@ -201,8 +201,8 @@ class User extends AbstractService implements DataSourceAwareInterface
                 LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
                 LEFT JOIN Company C ON (C.id = ChU.company_id )
                 WHERE GhU.`type` IN (". implode(',', array_map(function ($i) {
-                        return (int)$i;
-    }, $type)) .")
+                    return (int)$i;
+                }, $type)) . ")
                 ORDER BY U.name
             ");
             $statement->execute();

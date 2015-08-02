@@ -8,9 +8,9 @@
 
 namespace Stjornvisi\Notify;
 
-
 use Zend\EventManager\EventManagerAwareInterface;
 
-interface NotifyEventManagerAwareInterface extends EventManagerAwareInterface {
+interface NotifyEventManagerAwareInterface extends EventManagerAwareInterface
+{
 
-} 
+}

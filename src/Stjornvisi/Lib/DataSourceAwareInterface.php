@@ -16,11 +16,11 @@ namespace Stjornvisi\Lib;
  */
 interface DataSourceAwareInterface
 {
-	/**
-	 * Set a configured PDO object.
-	 *
-	 * @param \PDO $pdo
-	 * @return mixed
-	 */
-	public function setDataSource(\PDO $pdo);
+    /**
+     * Set a configured PDO object.
+     *
+     * @param \PDO $pdo
+     * @return mixed
+     */
+    public function setDataSource(\PDO $pdo);
 }

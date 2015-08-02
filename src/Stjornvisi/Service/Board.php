@@ -7,7 +7,6 @@ use Stjornvisi\Lib\DataSourceAwareInterface;
 
 class Board extends AbstractService implements DataSourceAwareInterface
 {
-
     /**
      * @var \PDO
      */

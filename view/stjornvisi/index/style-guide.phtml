@@ -10,88 +10,88 @@
 
 <div class="layout style-guide">
 
-	<h1 class="layout__headline">Simple styleguide</h1>
-	<p>First off, stjornvisi uses <abbr title="Block, element, modifier">BEM</abbr>. A simple example can be found
-		<a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/" target="_blank">here</a>
-	</p>
+    <h1 class="layout__headline">Simple styleguide</h1>
+    <p>First off, stjornvisi uses <abbr title="Block, element, modifier">BEM</abbr>. A simple example can be found
+        <a href="http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/" target="_blank">here</a>
+    </p>
 
-	<h2 class="layout__headline">Page structure</h2>
+    <h2 class="layout__headline">Page structure</h2>
 
-	<p>A widget called <code>layout</code> defines the page layout. It follows a simple HTML
-		structure as illustrated here below</p>
-	<pre>
-		&lt;div class="<strong>layout</strong> [layout--three-columns|layout--two-columns|layout--three-columns-reverse]"&gt;
-			&lt;section class="<strong>layout__section</strong>"&gt;
+    <p>A widget called <code>layout</code> defines the page layout. It follows a simple HTML
+        structure as illustrated here below</p>
+    <pre>
+        &lt;div class="<strong>layout</strong> [layout--three-columns|layout--two-columns|layout--three-columns-reverse]"&gt;
+            &lt;section class="<strong>layout__section</strong>"&gt;
 
-			&lt;/section&gt;
-			&lt;aside class="<strong>layout__aside</strong>"&gt;
+            &lt;/section&gt;
+            &lt;aside class="<strong>layout__aside</strong>"&gt;
 
-			&lt;/aside&gt;
-		&lt;/div&gt;
-	</pre>
+            &lt;/aside&gt;
+        &lt;/div&gt;
+    </pre>
 
-	<h3 class="layout__headline">layout</h3>
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396 252" >
-		<rect x="18" y="19" fill="#CCCCCC" width="360" height="216"/>
-		<rect x="35" y="37" fill="#FFFFFF" width="216" height="180"/>
-		<rect x="269" y="37" fill="#FFFFFF" width="90" height="180"/>
-		<text transform="matrix(1 0 0 1 45 54)" font-family="'MyriadPro-Regular'" font-size="12">section</text>
-		<text transform="matrix(1 0 0 1 27 27)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
-		<text transform="matrix(1 0 0 1 279 54)" font-family="'MyriadPro-Regular'" font-size="12">aside</text>
-	</svg>
-	<p>The block is called <code>layout</code>.It hast two layout elements; <code>layout__section</code> and
-		<code>layout__aside</code>. These elements are responsible for setting correct margin and padding
-		for the over-all layout of the page. These elements will also break in tables and mobile devises.</p>
-	<p>The <code>layout__section</code> element usually contains the main content of the page, while
-		<code>layout__aside</code> will contain some related content. </p>
+    <h3 class="layout__headline">layout</h3>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396 252" >
+        <rect x="18" y="19" fill="#CCCCCC" width="360" height="216"/>
+        <rect x="35" y="37" fill="#FFFFFF" width="216" height="180"/>
+        <rect x="269" y="37" fill="#FFFFFF" width="90" height="180"/>
+        <text transform="matrix(1 0 0 1 45 54)" font-family="'MyriadPro-Regular'" font-size="12">section</text>
+        <text transform="matrix(1 0 0 1 27 27)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
+        <text transform="matrix(1 0 0 1 279 54)" font-family="'MyriadPro-Regular'" font-size="12">aside</text>
+    </svg>
+    <p>The block is called <code>layout</code>.It hast two layout elements; <code>layout__section</code> and
+        <code>layout__aside</code>. These elements are responsible for setting correct margin and padding
+        for the over-all layout of the page. These elements will also break in tables and mobile devises.</p>
+    <p>The <code>layout__section</code> element usually contains the main content of the page, while
+        <code>layout__aside</code> will contain some related content. </p>
 
 
-	<h3 class="layout__headline">layout__section</h3>
-	<p>Element <code>layout__section</code> can have additional markup to divide the space even more.</p>
-	<p>This comes in handy when the content is divided into subsection. For example: Event has main body text
-	and the it has image-gallery. This can be divided into two equal columns</p>
+    <h3 class="layout__headline">layout__section</h3>
+    <p>Element <code>layout__section</code> can have additional markup to divide the space even more.</p>
+    <p>This comes in handy when the content is divided into subsection. For example: Event has main body text
+    and the it has image-gallery. This can be divided into two equal columns</p>
 
-	<pre>
-		&lt;div class="layout [<strong>layout--three-columns</strong>|layout--two-columns|layout--three-columns-reverse]"&gt;
-			&lt;section class="layout__section"&gt;
+    <pre>
+        &lt;div class="layout [<strong>layout--three-columns</strong>|layout--two-columns|layout--three-columns-reverse]"&gt;
+            &lt;section class="layout__section"&gt;
 
-				<strong>&lt;div class="layout__data"&gt;&lt;/div&gt;
-				&lt;div class="layout__meta"&gt;&lt;/div&gt;</strong>
+                <strong>&lt;div class="layout__data"&gt;&lt;/div&gt;
+                &lt;div class="layout__meta"&gt;&lt;/div&gt;</strong>
 
-			&lt;/section&gt;
-			&lt;aside class="layout__aside"&gt;
+            &lt;/section&gt;
+            &lt;aside class="layout__aside"&gt;
 
-			&lt;/aside&gt;
-		&lt;/div&gt;
-	</pre>
-	<p>For this to work, you need the <code>layout--three-columns</code> modifier.</p>
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396 252">
-		<rect x="18" y="19" fill="#CCCCCC" width="360" height="216"/>
-		<rect x="35" y="37" fill="#999999" width="216" height="180"/>
-		<rect x="269" y="37" fill="#FFFFFF" width="90" height="180"/>
-		<text transform="matrix(1 0 0 1 45 54)" font-family="'MyriadPro-Regular'" font-size="12">section</text>
-		<text transform="matrix(1 0 0 1 27 27)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
-		<text transform="matrix(1 0 0 1 279 54)" font-family="'MyriadPro-Regular'" font-size="12">aside</text>
-		<rect x="54" y="63" fill="#666666" width="81" height="135"/>
-		<rect x="153" y="63" fill="#666666" width="81" height="135"/>
-		<text transform="matrix(1 0 0 1 63 81)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
-		<text transform="matrix(1 0 0 1 162 81)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
-	</svg>
+            &lt;/aside&gt;
+        &lt;/div&gt;
+    </pre>
+    <p>For this to work, you need the <code>layout--three-columns</code> modifier.</p>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396 252">
+        <rect x="18" y="19" fill="#CCCCCC" width="360" height="216"/>
+        <rect x="35" y="37" fill="#999999" width="216" height="180"/>
+        <rect x="269" y="37" fill="#FFFFFF" width="90" height="180"/>
+        <text transform="matrix(1 0 0 1 45 54)" font-family="'MyriadPro-Regular'" font-size="12">section</text>
+        <text transform="matrix(1 0 0 1 27 27)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
+        <text transform="matrix(1 0 0 1 279 54)" font-family="'MyriadPro-Regular'" font-size="12">aside</text>
+        <rect x="54" y="63" fill="#666666" width="81" height="135"/>
+        <rect x="153" y="63" fill="#666666" width="81" height="135"/>
+        <text transform="matrix(1 0 0 1 63 81)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
+        <text transform="matrix(1 0 0 1 162 81)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
+    </svg>
 
-	<p>You can use the <code>layout--three-columns-reverse</code> modifier to reverse the order</p>
+    <p>You can use the <code>layout--three-columns-reverse</code> modifier to reverse the order</p>
 
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396 252">
-		<rect x="18" y="19" fill="#CCCCCC" width="360" height="216"/>
-		<rect x="36" y="37" fill="#FFFFFF" width="90" height="180"/>
-		<text transform="matrix(1 0 0 1 27 27)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
-		<text transform="matrix(1 0 0 1 46 54)" font-family="'MyriadPro-Regular'" font-size="12">aside</text>
-		<g>
-			<rect x="144" y="36" fill="#999999" width="216" height="180"/>
-			<text transform="matrix(1 0 0 1 154 53)" font-family="'MyriadPro-Regular'" font-size="12">section</text>
-			<rect x="163" y="62" fill="#666666" width="81" height="135"/>
-			<rect x="262" y="62" fill="#666666" width="81" height="135"/>
-			<text transform="matrix(1 0 0 1 172 80)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
-			<text transform="matrix(1 0 0 1 271 80)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
-		</g>
-	</svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396 252">
+        <rect x="18" y="19" fill="#CCCCCC" width="360" height="216"/>
+        <rect x="36" y="37" fill="#FFFFFF" width="90" height="180"/>
+        <text transform="matrix(1 0 0 1 27 27)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
+        <text transform="matrix(1 0 0 1 46 54)" font-family="'MyriadPro-Regular'" font-size="12">aside</text>
+        <g>
+            <rect x="144" y="36" fill="#999999" width="216" height="180"/>
+            <text transform="matrix(1 0 0 1 154 53)" font-family="'MyriadPro-Regular'" font-size="12">section</text>
+            <rect x="163" y="62" fill="#666666" width="81" height="135"/>
+            <rect x="262" y="62" fill="#666666" width="81" height="135"/>
+            <text transform="matrix(1 0 0 1 172 80)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
+            <text transform="matrix(1 0 0 1 271 80)" font-family="'MyriadPro-Regular'" font-size="12">div</text>
+        </g>
+    </svg>
 </div>

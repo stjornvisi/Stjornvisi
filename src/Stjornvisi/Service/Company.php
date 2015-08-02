@@ -234,7 +234,6 @@ class Company extends AbstractService implements DataSourceAwareInterface
             ));
             throw new Exception("Can't fetch all companies", 0, $e);
         }
-
     }
 
     /**

@@ -6,10 +6,11 @@ use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class User extends Form{
-    public function __construct($companies = array(), $titles = array()){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+class User extends Form
+{
+    public function __construct($companies = array(), $titles = array())
+    {
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 
@@ -50,7 +51,7 @@ class User extends Form{
         ));
 
         $companyArray = array();
-        foreach($companies as $company){
+        foreach ($companies as $company) {
             $companyArray[$company->id] = $company->name;
         }
         $this->add(array(
@@ -75,6 +76,5 @@ class User extends Form{
                 'label' => 'Submit',
             ),
         ));
-
     }
 }

@@ -49,7 +49,7 @@ class Facebook implements AdapterInterface, DataSourceAwareInterface
             ->prepare("SELECT * FROM `User` WHERE oauth_key = :oauth_key AND oauth_type = :type");
         $statement->execute(array(
             'oauth_key' => $this->id,
-			'type' => 'facebook'
+            'type' => 'facebook'
         ));
         $result = $statement->fetchAll();
         if (count($result) == 0) {
@@ -68,8 +68,8 @@ class Facebook implements AdapterInterface, DataSourceAwareInterface
         }
     }
 
-	public function setDataSource(\PDO $pdo)
+    public function setDataSource(\PDO $pdo)
     {
-		$this->pdo = $pdo;
-	}
+        $this->pdo = $pdo;
+    }
 }

@@ -7,32 +7,30 @@
  */
 ?>
 <div class="layout layout--three-columns">
-	<section class="layout__section">
+    <section class="layout__section">
 
-		<?php if($this->message):?>
-			<div>
-				Tengingar hafa verið uppfærðar.
-			</div>
-		<?php endif;?>
-		<?php $this->form->setAttribute('class','form-horizontal');?>
-		<?=$this->form()->openTag($this->form);?>
+        <?php if($this->message):?>
+            <div>
+                Tengingar hafa verið uppfærðar.
+            </div>
+        <?php endif;?>
+        <?php $this->form->setAttribute('class', 'form-horizontal');?>
+        <?=$this->form()->openTag($this->form);?>
 
-		<div class="form-group">
-			<?=$this->formLabel($form->get('groups'));?>
-			<div class="checkbox">
-				<?=$this->formMultiCheckbox($form->get('groups'));?>
-				<?=$this->formElementErrors($form->get('groups'));?>
-			</div>
-		</div>
+        <div class="form-group">
+            <?=$this->formLabel($form->get('groups'));?>
+            <div class="checkbox">
+                <?=$this->formMultiCheckbox($form->get('groups'));?>
+                <?=$this->formElementErrors($form->get('groups'));?>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<?=$this->formElement(
-				$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Uppfæra')
-			);?>
-		</div>
+        <div class="form-group">
+            <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Uppfæra'));?>
+        </div>
 
-		<?= $this->form()->closeTag() ?>
+        <?= $this->form()->closeTag() ?>
 
-	</section>
-	<aside class="layout__aside"></aside>
+    </section>
+    <aside class="layout__aside"></aside>
 </div>

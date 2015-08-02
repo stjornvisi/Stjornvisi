@@ -111,7 +111,6 @@ class Group extends AbstractService implements DataSourceAwareInterface
             ));
             throw new Exception("Can't get groups by user. user:[{$id}]", 0, $e);
         }
-
     }
 
     /**
@@ -297,7 +296,6 @@ class Group extends AbstractService implements DataSourceAwareInterface
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
             throw new Exception("Can't fetch only groups user wants to be notified about, user:[{$user_id}]", 0, $e);
         }
-
     }
 
     /**
@@ -335,7 +333,6 @@ class Group extends AbstractService implements DataSourceAwareInterface
             $this->getEventManager()->trigger('update', $this, array(__FUNCTION__));
             throw new Exception("Cant set status of user in a group. group:[{$group_id}], user:[{$user_id}], status:[{$status}]", 0, $e);
         }
-
     }
 
     /**
@@ -577,7 +574,6 @@ class Group extends AbstractService implements DataSourceAwareInterface
             ));
             throw new Exception("Can't update group. group:[{$id}]", 0, $e);
         }
-
     }
 
     /**
@@ -608,7 +604,6 @@ class Group extends AbstractService implements DataSourceAwareInterface
             ));
             throw new Exception("Can't delete group. group[{$id}]", 0, $e);
         }
-
     }
 
     public function fetchEventStatistics(DateTime $from = null, DateTime $to = null)

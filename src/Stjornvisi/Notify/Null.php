@@ -12,30 +12,29 @@ use Psr\Log\LoggerInterface;
 
 class Null implements NotifyInterface
 {
-
-	/**
-	 * @param LoggerInterface $logger
-	 * @return $this|NotifyInterface
-	 */
-	public function setLogger(LoggerInterface $logger)
+    /**
+     * @param LoggerInterface $logger
+     * @return $this|NotifyInterface
+     */
+    public function setLogger(LoggerInterface $logger)
     {
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param $data
-	 * @return $this|NotifyInterface
-	 */
-	public function setData($data)
+    /**
+     * @param $data
+     * @return $this|NotifyInterface
+     */
+    public function setData($data)
     {
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return $this|NotifyInterface
-	 */
-	public function send()
+    /**
+     * @return $this|NotifyInterface
+     */
+    public function send()
     {
-		return $this;
-	}
+        return $this;
+    }
 }

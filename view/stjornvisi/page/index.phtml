@@ -1,14 +1,14 @@
 <div class="layout layout--three-columns page-pages">
-	<section class="layout__section">
-		<div id="editable-static-page-container">
-			<?=$this->paragrapher($this->page->body)?>
-		</div>
-	</section>
-	<aside class="layout__aside">
-		<?php if($this->admin):?>
-		<stjonvisi-control>
-			<a href="<?=$this->url('page/update',array('id'=>$this->page->id))?>">Uppfæra</a>
-		</stjonvisi-control>
-		<?php endif;?>
-	</aside>
+    <section class="layout__section">
+        <div id="editable-static-page-container">
+            <?=$this->paragrapher($this->page->body)?>
+        </div>
+    </section>
+    <aside class="layout__aside">
+        <?php if($this->admin):?>
+        <stjonvisi-control>
+            <a href="<?=$this->url('page/update', array('id'=>$this->page->id))?>">Uppfæra</a>
+        </stjonvisi-control>
+        <?php endif;?>
+    </aside>
 </div>

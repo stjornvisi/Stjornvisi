@@ -12,18 +12,18 @@ use PHPUnit_Framework_TestCase;
 
 class QueueConnectionFactoryTest extends PHPUnit_Framework_TestCase
 {
-	/**
-	 * @expectedException \PhpAmqpLib\Exception\AMQPRuntimeException
-	 */
-	public function testFactoryException()
-	{
-		$factory = new QueueConnectionFactory();
-		$factory->setConfig([
-			'host' => '',
-			'port' => '',
-			'user' => '',
-			'password' => ''
-		]);
-		$factory->createConnection();
-	}
+    /**
+     * @expectedException \PhpAmqpLib\Exception\AMQPRuntimeException
+     */
+    public function testFactoryException()
+    {
+        $factory = new QueueConnectionFactory();
+        $factory->setConfig([
+            'host' => '',
+            'port' => '',
+            'user' => '',
+            'password' => ''
+        ]);
+        $factory->createConnection();
+    }
 }

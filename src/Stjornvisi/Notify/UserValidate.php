@@ -29,49 +29,49 @@ use PhpAmqpLib\Message\AMQPMessage;
  */
 class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
 {
-	/**
-	 * @var  \Psr\Log\LoggerInterface
-	 */
-	private $logger;
+    /**
+     * @var  \Psr\Log\LoggerInterface
+     */
+    private $logger;
 
-	/**
-	 * @var \stdClass
-	 */
-	private $params;
+    /**
+     * @var \stdClass
+     */
+    private $params;
 
-	/**
-	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
-	 */
-	private $queueFactory;
+    /**
+     * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
+     */
+    private $queueFactory;
 
     /**
      * @var array
      */
-	private $dataStore;
+    private $dataStore;
 
-	/**
-	 * @var \Zend\EventManager\EventManager
-	 */
-	protected $events;
+    /**
+     * @var \Zend\EventManager\EventManager
+     */
+    protected $events;
 
-	/**
-	 * Set logger to monitor.
-	 *
-	 * @param LoggerInterface $logger
-	 * @return $this|NotifyInterface
-	 */
-	public function setLogger(LoggerInterface $logger)
+    /**
+     * Set logger to monitor.
+     *
+     * @param LoggerInterface $logger
+     * @return $this|NotifyInterface
+     */
+    public function setLogger(LoggerInterface $logger)
     {
-		$this->logger = $logger;
-		return $this;
-	}
+        $this->logger = $logger;
+        return $this;
+    }
 
     /**
      * @param \stdClass $data
      * @return $this
      * @throws NotifyException
      */
-	public function setData($data)
+    public function setData($data)
     {
         if (property_exists($data, 'facebook')) {
             throw new NotifyException('Missing data:facebook');
@@ -80,62 +80,62 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
         if (property_exists($data, 'user_id')) {
             throw new NotifyException('Missing data:user_id');
         }
-		$this->params = $data->data;
-		return $this;
-	}
+        $this->params = $data->data;
+        return $this;
+    }
 
     /**
      * @return $this
      * @throws NotifyException
      */
-	public function send()
+    public function send()
     {
-		//USER
-		//	get the user.
-		$user = $this->getUser($this->params->user_id);
+        //USER
+        //	get the user.
+        $user = $this->getUser($this->params->user_id);
 
-		$this->logger->debug("User validate [{$user->email}]");
+        $this->logger->debug("User validate [{$user->email}]");
 
-		//VIEW
-		//	create and configure view
-		$child = new ViewModel(array(
-			'user' => $user,
-			'link' => $this->params->facebook
-		));
-		$child->setTemplate('script');
+        //VIEW
+        //	create and configure view
+        $child = new ViewModel(array(
+            'user' => $user,
+            'link' => $this->params->facebook
+        ));
+        $child->setTemplate('script');
 
-		$layout = new ViewModel();
-		$layout->setTemplate('layout');
-		$layout->addChild($child, 'content');
+        $layout = new ViewModel();
+        $layout->setTemplate('layout');
+        $layout->addChild($child, 'content');
 
-		$phpRenderer = new PhpRenderer();
-		$phpRenderer->setCanRenderTrees(true);
+        $phpRenderer = new PhpRenderer();
+        $phpRenderer->setCanRenderTrees(true);
 
-		$resolver = new Resolver\TemplateMapResolver();
-		$resolver->setMap(array(
-			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
-			'script' => __DIR__ . '/../../../view/email/user-validate.phtml',
-		));
-		$phpRenderer->setResolver($resolver);
+        $resolver = new Resolver\TemplateMapResolver();
+        $resolver->setMap(array(
+            'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+            'script' => __DIR__ . '/../../../view/email/user-validate.phtml',
+        ));
+        $phpRenderer->setResolver($resolver);
 
-		//MAIL
-		//	now we want to send this to the user/quest via e-mail
-		//	so we try to connect to Queue and send a message
-		//	to mail_queue
-		try {
-			$connection = $this->queueFactory->createConnection();
-			$channel = $connection->channel();
-			$channel->queue_declare('mail_queue', false, true, false, false);
+        //MAIL
+        //	now we want to send this to the user/quest via e-mail
+        //	so we try to connect to Queue and send a message
+        //	to mail_queue
+        try {
+            $connection = $this->queueFactory->createConnection();
+            $channel = $connection->channel();
+            $channel->queue_declare('mail_queue', false, true, false, false);
 
-			foreach ($layout as $child) {
-				$child->setOption('has_parent', true);
-				$result  = $phpRenderer->render($child);
-				$child->setOption('has_parent', null);
-				$capture = $child->captureTo();
-				if (!empty($capture)) {
-					$layout->setVariable($capture, $result);
-				}
-			}
+            foreach ($layout as $child) {
+                $child->setOption('has_parent', true);
+                $result  = $phpRenderer->render($child);
+                $child->setOption('has_parent', null);
+                $capture = $child->captureTo();
+                if (!empty($capture)) {
+                    $layout->setVariable($capture, $result);
+                }
+            }
 
             $result = new Mail();
             $result->name = $user->name;
@@ -144,10 +144,10 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
             $result->body = $phpRenderer->render($layout);
             $result->test = true;
 
-			$msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
-			$this->logger->info("User validate email to [{$user->email}]");
+            $msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
+            $this->logger->info("User validate email to [{$user->email}]");
 
-			$channel->basic_publish($msg, '', 'mail_queue');
+            $channel->basic_publish($msg, '', 'mail_queue');
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);
@@ -155,65 +155,65 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
             if (isset($channel) && $channel) {
                 $channel->close();
             }
-            if(isset($connection) && $connection){
+            if (isset($connection) && $connection) {
                 $connection->close();
             }
 
             $user = null;
-		}
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set Queue factory
-	 * @param QueueConnectionFactoryInterface $factory
-	 * @return $this|NotifyInterface
-	 */
-	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    /**
+     * Set Queue factory
+     * @param QueueConnectionFactoryInterface $factory
+     * @return $this|NotifyInterface
+     */
+    public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
     {
-		$this->queueFactory = $factory;
-		return $this;
-	}
+        $this->queueFactory = $factory;
+        return $this;
+    }
 
     /**
      * @param $config
      * @return $this
      */
-	public function setDateStore($config)
+    public function setDateStore($config)
     {
-		$this->dataStore = $config;
-		return $this;
-	}
+        $this->dataStore = $config;
+        return $this;
+    }
 
-	/**
-	 * Set EventManager
-	 *
-	 * @param EventManagerInterface $events
-	 * @return $this|void
-	 */
-	public function setEventManager(EventManagerInterface $events)
+    /**
+     * Set EventManager
+     *
+     * @param EventManagerInterface $events
+     * @return $this|void
+     */
+    public function setEventManager(EventManagerInterface $events)
     {
-		$events->setIdentifiers(array(
-			__CLASS__,
-			get_called_class(),
-		));
-		$this->events = $events;
-		return $this;
-	}
+        $events->setIdentifiers(array(
+            __CLASS__,
+            get_called_class(),
+        ));
+        $this->events = $events;
+        return $this;
+    }
 
-	/**
-	 * Get event manager
-	 *
-	 * @return EventManagerInterface
-	 */
-	public function getEventManager()
+    /**
+     * Get event manager
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
     {
-		if (null === $this->events) {
-			$this->setEventManager(new EventManager());
-		}
-		return $this->events;
-	}
+        if (null === $this->events) {
+            $this->setEventManager(new EventManager());
+        }
+        return $this->events;
+    }
 
     /**
      * @param int $id

@@ -20,38 +20,38 @@ $chart->addSlice('Other',            5, '#7D60A0');
 
 ?>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<style>
-			body{
+    <head>
+        <meta charset="utf-8" />
+        <style>
+            body{
 
-			}
-			h1{
-				color: red;
-			}
-		</style>
-	</head>
-	<body>
-		<h1><?=$this->company->name?></h1>
-		<h2>Starfsmenn</h2>
-		<ul>
-			<?php foreach($this->company->members as $member):?>
-			<li>
-				<h3><?=$member->name?></h3>
-				<ul>
-					<?php foreach($member->attendance as $attendance): ?>
-						<li>
-							<p>Er í <?=count($attendance->groups)?> hópum</p>
-							<p><?=$attendance->from;?> - <?=$attendance->to;?></p>
-							<p>Sem héldu <?=$attendance->total?> viðburði</p>
-							<p>viðkomandi mætti á <?=$attendance->attendance?></p>
-							<img src="<?=$chart->output()?>" />
-						</li>
-					<?php endforeach;?>
-				</ul>
+            }
+            h1{
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <h1><?=$this->company->name?></h1>
+        <h2>Starfsmenn</h2>
+        <ul>
+            <?php foreach($this->company->members as $member):?>
+            <li>
+                <h3><?=$member->name?></h3>
+                <ul>
+                    <?php foreach($member->attendance as $attendance): ?>
+                        <li>
+                            <p>Er í <?=count($attendance->groups)?> hópum</p>
+                            <p><?=$attendance->from;?> - <?=$attendance->to;?></p>
+                            <p>Sem héldu <?=$attendance->total?> viðburði</p>
+                            <p>viðkomandi mætti á <?=$attendance->attendance?></p>
+                            <img src="<?=$chart->output()?>" />
+                        </li>
+                    <?php endforeach;?>
+                </ul>
 
-			</li>
-			<?php endforeach;?>
-		</ul>
-	</body>
+            </li>
+            <?php endforeach;?>
+        </ul>
+    </body>
 </html>

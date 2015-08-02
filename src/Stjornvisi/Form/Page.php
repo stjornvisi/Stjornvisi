@@ -3,22 +3,22 @@ namespace Stjornvisi\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
+
 /**
  * Form for <Group>
- * 
+ *
  * @category Stjonvisi
  * @package Form
  * @author einarvalur
  *
  */
-class Page extends Form implements InputFilterProviderInterface{
-
-	public function __construct($action='create', $values=null, $options=array()){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+class Page extends Form implements InputFilterProviderInterface
+{
+    public function __construct($action = 'create', $values = null, $options = array())
+    {
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
-
 
         $this->add(array(
             'name' => 'label',
@@ -34,7 +34,7 @@ class Page extends Form implements InputFilterProviderInterface{
 
         $this->add(array(
             'name' => 'body',
-			'type' => 'Stjornvisi\Form\Element\Rich',
+            'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Lýsing...',
             ),
@@ -53,43 +53,41 @@ class Page extends Form implements InputFilterProviderInterface{
                 'label' => 'Submit',
             ),
         ));
+    }
 
-	}
-
-	/**
-	 * Should return an array specification compatible with
-	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
-	 *
-	 * @return array
-	 */
-	public function getInputFilterSpecification(){
-		return array(
-			'label' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'StringLength',
-						'options' => array(
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 255,
-						),
-					),
-				),
-			),
-			'body' => array(
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => array(
-					//array('name' => 'StripTags'),
-					//array('name' => 'StringTrim'),
-				),
-			),
-		);
-	}
-
+    /**
+     * Should return an array specification compatible with
+     * {@link Zend\InputFilter\Factory::createInputFilter()}.
+     *
+     * @return array
+     */
+    public function getInputFilterSpecification()
+    {
+        return array(
+            'label' => array(
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 255,
+                        ),
+                    ),
+                ),
+            ),
+            'body' => array(
+                'required' => false,
+                'allow_empty' => true,
+                'filters'  => array(
+                    //array('name' => 'StripTags'),
+                    //array('name' => 'StringTrim'),
+                ),
+            ),
+        );
+    }
 }
-

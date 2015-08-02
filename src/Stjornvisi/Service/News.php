@@ -122,16 +122,7 @@ class News extends AbstractService implements DataSourceAwareInterface
             }
 
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-            /*
-             *             $groupStatement = $this->pdo->prepare("
-                SELECT G.id, G.name, G.name_short, G.url
-                FROM `Group` G WHERE id = :id
-            ");
-            $groupStatement->execute(array(
-                'id' => $news->group_id
-            ));
-            $news->group = $groupStatement->fetchObject();
-             */
+
             $groupStatement = $this->pdo->prepare("
                 SELECT G.id, G.name, G.name_short, G.url
                 FROM `Group` G WHERE id = :id

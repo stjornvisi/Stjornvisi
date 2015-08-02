@@ -10,25 +10,25 @@ namespace Stjornvisi\Search\Index;
 
 use ZendSearch\Lucene\SearchIndexInterface;
 
-interface IndexInterface {
+interface IndexInterface
+{
+    /**
+     * Index one entry.
+     *
+     * @param $data
+     * @param SearchIndexInterface $index
+     *
+     * @return IndexInterface
+     */
+    public function index($data, SearchIndexInterface $index);
 
-	/**
-	 * Index one entry.
-	 *
-	 * @param $data
-	 * @param SearchIndexInterface $index
-	 *
-	 * @return IndexInterface
-	 */
-	public function index( $data, SearchIndexInterface $index );
-
-	/**
-	 * Un-index one entry.
-	 *
-	 * @param $data
-	 * @param SearchIndexInterface $index
-	 *
-	 * @return IndexInterface
-	 */
-	public function unindex( $data, SearchIndexInterface $index );
-} 
+    /**
+     * Un-index one entry.
+     *
+     * @param $data
+     * @param SearchIndexInterface $index
+     *
+     * @return IndexInterface
+     */
+    public function unindex($data, SearchIndexInterface $index);
+}

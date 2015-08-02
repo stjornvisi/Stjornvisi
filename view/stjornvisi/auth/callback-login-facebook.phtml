@@ -8,64 +8,64 @@
 ?>
 
 <div class="layout layout--three-columns">
-	<section class="layout__section">
-		<div class="layout__data">
-			<?php if( $this->error == 'access_denied' ):?>
-				<p>Þú hefur valið að hafna Facebook tengingu við stjornvísi.is. Þú getur ekki haldið áfram.</p>
-				<p>Má ég ekki reyna að fá þig til að endurskoða afstöðuna þína. Stjónvísi hefur aðeins aðgang að
-					nafninu þínu, slóð á facebook síðuna þína, kyn, staðsetningu og aldur. Stjónvísi um ekki
-					láta öðrum í té þessar upplýsingar, stjónvísi um ekki senda þér einka eða opinver skilaboð.</p>
-				<p>Stjónvísi notar facebook aðganginn þinn einungis til að staðfesta að þú sert raunverulega
-					sú manneskja sem þú segist vera.</p>
-				<a href="<?=$this->facebook(\Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK)?>" class="btn btn-facebook">f|Innskrá</a>
-				<a href="https://developers.facebook.com/docs/facebook-login/permissions/v2.2#reference-public_profile">
-					https://developers.facebook.com/docs/facebook-login/permissions/v2.2#reference-public_profile
-				</a>
-			<?php elseif( $this->error == 'user_undefined' ):?>
-				<h1 class="page-error__headline">{400} Bad Request </h1>
-				<h2 class="page-error__message">Upp kom villa</h2>
-				<p>Hér hefur orðið einhver villa.</p>
-				<p>Facebook er að senda fá sér óvirkann notendalykil.</p>
-				<a href="<?=$this->url('auth')?>">Reyndu aftur</a>
+    <section class="layout__section">
+        <div class="layout__data">
+            <?php if($this->error == 'access_denied'):?>
+                <p>Þú hefur valið að hafna Facebook tengingu við stjornvísi.is. Þú getur ekki haldið áfram.</p>
+                <p>Má ég ekki reyna að fá þig til að endurskoða afstöðuna þína. Stjónvísi hefur aðeins aðgang að
+                    nafninu þínu, slóð á facebook síðuna þína, kyn, staðsetningu og aldur. Stjónvísi um ekki
+                    láta öðrum í té þessar upplýsingar, stjónvísi um ekki senda þér einka eða opinver skilaboð.</p>
+                <p>Stjónvísi notar facebook aðganginn þinn einungis til að staðfesta að þú sert raunverulega
+                    sú manneskja sem þú segist vera.</p>
+                <a href="<?=$this->facebook(\Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK)?>" class="btn btn-facebook">f|Innskrá</a>
+                <a href="https://developers.facebook.com/docs/facebook-login/permissions/v2.2#reference-public_profile">
+                    https://developers.facebook.com/docs/facebook-login/permissions/v2.2#reference-public_profile
+                </a>
+            <?php elseif($this->error == 'user_undefined'):?>
+                <h1 class="page-error__headline">{400} Bad Request </h1>
+                <h2 class="page-error__message">Upp kom villa</h2>
+                <p>Hér hefur orðið einhver villa.</p>
+                <p>Facebook er að senda fá sér óvirkann notendalykil.</p>
+                <a href="<?=$this->url('auth')?>">Reyndu aftur</a>
 
-			<?php elseif( $this->error == 'user_disconnected' ):?>
-				<h1 class="layout__headline">Facebook innskráning</h1>
-				<p>Svo virðist sem þú hafir reynt að skrá þig inn í Stjónvísi með Facebook aðgangnum þínum.</p>
-				<p>Facebook aðgangurinn þinn er ekki vera tengdur notanda í Stjónvísiskefinu. Engar áhyggur,
-					þú eftirfarandi möguleika.</p>
-				<h2 class="layout__headline layout__headline--top">1. Ég á gamlan aðgang</h2>
-				<p>Ég hef verið notandi í nokkurn tíma Stjónvísi og á því gamlann aðgang.</p>
-				<p>Sláði inn netfangið sem þú notaðir til að skrá þig inn og þú færð sendar leiðbeiningar um hæl.</p>
-				<form action="<?=$this->url('auth/facebook-connect')?>" method="post">
-					<div class="form-group">
-						<label>Netfang</label>
-						<input type="email" name="email" class="form-control" placeholder="notandi@vinnustaður.is" />
-					</div>
-					<div class="form-group form-group--right">
-						<input type="submit" value="Tengja" class="btn btn-default" />
-					</div>
-				</form>
+            <?php elseif($this->error == 'user_disconnected'):?>
+                <h1 class="layout__headline">Facebook innskráning</h1>
+                <p>Svo virðist sem þú hafir reynt að skrá þig inn í Stjónvísi með Facebook aðgangnum þínum.</p>
+                <p>Facebook aðgangurinn þinn er ekki vera tengdur notanda í Stjónvísiskefinu. Engar áhyggur,
+                    þú eftirfarandi möguleika.</p>
+                <h2 class="layout__headline layout__headline--top">1. Ég á gamlan aðgang</h2>
+                <p>Ég hef verið notandi í nokkurn tíma Stjónvísi og á því gamlann aðgang.</p>
+                <p>Sláði inn netfangið sem þú notaðir til að skrá þig inn og þú færð sendar leiðbeiningar um hæl.</p>
+                <form action="<?=$this->url('auth/facebook-connect')?>" method="post">
+                    <div class="form-group">
+                        <label>Netfang</label>
+                        <input type="email" name="email" class="form-control" placeholder="notandi@vinnustaður.is" />
+                    </div>
+                    <div class="form-group form-group--right">
+                        <input type="submit" value="Tengja" class="btn btn-default" />
+                    </div>
+                </form>
 
-				<h1 class="layout__sepline">Eða</h1>
+                <h1 class="layout__sepline">Eða</h1>
 
-				<h2 class="layout__headline layout__headline--top">2. Ég á ekki aðgang</h2>
-				<p>Ef þú átt ekki aðgang, endilega <a href="<?=$this->url('access/create')?>" class="btn btn-default">nýskráðu</a> þig.</p>
-			<?php elseif( isset($this->error) ):?>
-				<h1 class="page-error__headline">{410} Gone </h1>
-				<h2 class="page-error__message">Upp kom villa</h2>
-				<p><?=$this->error;?></p>
-				<a href="<?=$this->url('auth')?>">Reyndu aftur</a>
-			<?php else:?>
-				!
-			<?php endif;?>
-		</div>
-		<div class="layout__meta">
+                <h2 class="layout__headline layout__headline--top">2. Ég á ekki aðgang</h2>
+                <p>Ef þú átt ekki aðgang, endilega <a href="<?=$this->url('access/create')?>" class="btn btn-default">nýskráðu</a> þig.</p>
+            <?php elseif(isset($this->error)):?>
+                <h1 class="page-error__headline">{410} Gone </h1>
+                <h2 class="page-error__message">Upp kom villa</h2>
+                <p><?=$this->error;?></p>
+                <a href="<?=$this->url('auth')?>">Reyndu aftur</a>
+            <?php else:?>
+                !
+            <?php endif;?>
+        </div>
+        <div class="layout__meta">
 
-		</div>
-	</section>
-	<aside class="layout__aside">
+        </div>
+    </section>
+    <aside class="layout__aside">
 
-	</aside>
+    </aside>
 </div>
 
 

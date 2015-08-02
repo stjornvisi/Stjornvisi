@@ -7,10 +7,11 @@ use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class Password extends Form{
+class Password extends Form
+{
     public function __construct($name = null)
     {
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 

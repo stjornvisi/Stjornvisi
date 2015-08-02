@@ -4,11 +4,11 @@ namespace Stjornvisi\Form;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class News extends Form{
-
+class News extends Form
+{
     public function __construct($name = null)
     {
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 
@@ -18,7 +18,7 @@ class News extends Form{
             'attributes' => array(
                 'placeholder' => 'Titill...',
                 'required' => 'required',
-				'tabindex' => 1
+                'tabindex' => 1
             ),
             'options' => array(
                 'label' => 'Titill',
@@ -27,11 +27,11 @@ class News extends Form{
 
         $this->add(array(
             'name' => 'body',
-			'type' => 'Stjornvisi\Form\Element\Rich',
+            'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => '...',
                 'required' => 'required',
-				'tabindex' => 2
+                'tabindex' => 2
             ),
             'options' => array(
                 'label' => 'Meginmál'
@@ -40,9 +40,9 @@ class News extends Form{
 
         $this->add(array(
             'name' => 'avatar',
-			'type' => 'Stjornvisi\Form\Element\Img',
+            'type' => 'Stjornvisi\Form\Element\Img',
             'attributes' => array(
-				'tabindex' => 3
+                'tabindex' => 3
             ),
             'options' => array(
                 'label' => 'Mynd',
@@ -59,6 +59,5 @@ class News extends Form{
                 'label' => 'Submit',
             ),
         ));
-
     }
 }

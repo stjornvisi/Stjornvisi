@@ -33,25 +33,25 @@ use PhpAmqpLib\Message\AMQPMessage;
 class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
 {
     private $params;
-	/**
-	 * @var  \Psr\Log\LoggerInterface;
-	 */
-	private $logger;
+    /**
+     * @var  \Psr\Log\LoggerInterface;
+     */
+    private $logger;
 
-	/**
-	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
-	 */
-	private $queueFactory;
+    /**
+     * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
+     */
+    private $queueFactory;
 
     /**
      * @var array
      */
-	private $dataStore;
+    private $dataStore;
 
-	/**
-	 * @var \Zend\EventManager\EventManager
-	 */
-	protected $events;
+    /**
+     * @var \Zend\EventManager\EventManager
+     */
+    protected $events;
 
     /**
      * @var \PDO
@@ -63,9 +63,9 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
      * @return $this
      * @throws NotifyException
      */
-	public function setData($data)
+    public function setData($data)
     {
-		$this->params = $data->data;
+        $this->params = $data->data;
 
         if (!property_exists($this->params, 'event_id')) {
             throw new NotifyException('Missing data:event_id');
@@ -76,63 +76,63 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
         if (!property_exists($this->params, 'type')) {
             throw new NotifyException('Missing data:type');
         }
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set logger instance
-	 *
-	 * @param LoggerInterface $logger
-	 * @return $this|NotifyInterface
-	 */
-	public function setLogger(LoggerInterface $logger)
+    /**
+     * Set logger instance
+     *
+     * @param LoggerInterface $logger
+     * @return $this|NotifyInterface
+     */
+    public function setLogger(LoggerInterface $logger)
     {
-		$this->logger = $logger;
-		return $this;
-	}
+        $this->logger = $logger;
+        return $this;
+    }
 
     /**
      * @return $this
      * @throws NotifyException
      */
-	public function send()
+    public function send()
     {
         //DATA-OBJECTS
         //  get data-objects from persistence layer.
         $eventObject = $this->getEvent($this->params->event_id);
         $userObject = $this->getUser($this->params->recipients);
 
-		//VIEW
-		//	create and configure view
-		$child = new ViewModel(array(
-			'user' => $userObject,
-			'event' => $eventObject
-		));
-		$child->setTemplate(($this->params->type)?'attend':'unattend');
+        //VIEW
+        //	create and configure view
+        $child = new ViewModel(array(
+            'user' => $userObject,
+            'event' => $eventObject
+        ));
+        $child->setTemplate(($this->params->type)?'attend':'unattend');
 
-		$layout = new ViewModel();
-		$layout->setTemplate('layout');
-		$layout->addChild($child, 'content');
+        $layout = new ViewModel();
+        $layout->setTemplate('layout');
+        $layout->addChild($child, 'content');
 
-		$phpRenderer = new PhpRenderer();
-		$phpRenderer->setCanRenderTrees(true);
+        $phpRenderer = new PhpRenderer();
+        $phpRenderer->setCanRenderTrees(true);
 
-		$resolver = new Resolver\TemplateMapResolver();
-		$resolver->setMap(array(
-			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
-			'attend' => __DIR__ . '/../../../view/email/attending.phtml',
-			'unattend' => __DIR__ . '/../../../view/email/un-attending.phtml',
-		));
-		$phpRenderer->setResolver($resolver);
-		foreach ($layout as $child) {
-			$child->setOption('has_parent', true);
-			$result  = $phpRenderer->render($child);
-			$child->setOption('has_parent', null);
-			$capture = $child->captureTo();
-			if (!empty($capture)) {
-				$layout->setVariable($capture, $result);
-			}
-		}
+        $resolver = new Resolver\TemplateMapResolver();
+        $resolver->setMap(array(
+            'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+            'attend' => __DIR__ . '/../../../view/email/attending.phtml',
+            'unattend' => __DIR__ . '/../../../view/email/un-attending.phtml',
+        ));
+        $phpRenderer->setResolver($resolver);
+        foreach ($layout as $child) {
+            $child->setOption('has_parent', true);
+            $result  = $phpRenderer->render($child);
+            $child->setOption('has_parent', null);
+            $capture = $child->captureTo();
+            if (!empty($capture)) {
+                $layout->setVariable($capture, $result);
+            }
+        }
 
         //MESSAGE
         //  create and configure message.
@@ -144,15 +144,15 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
             ? "Þú hefur skráð þig á viðburðinn: {$eventObject->subject}"
             : "Þú hefur afskráð þig af viðburðinum: {$eventObject->subject}";
 
-		//MAIL
-		//	now we want to send this to the user/quest via e-mail
-		//	so we try to connect to Queue and send a message
-		//	to mail_queue
-		try {
-			$connection = $this->queueFactory->createConnection();
-			$channel = $connection->channel();
-			$channel->queue_declare('mail_queue', false, true, false, false);
-			$msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
+        //MAIL
+        //	now we want to send this to the user/quest via e-mail
+        //	so we try to connect to Queue and send a message
+        //	to mail_queue
+        try {
+            $connection = $this->queueFactory->createConnection();
+            $channel = $connection->channel();
+            $channel->queue_declare('mail_queue', false, true, false, false);
+            $msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
 
             $this->logger->info(
                 "{$userObject->email} is ".
@@ -160,74 +160,74 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
                 "attending {$eventObject->subject}"
             );
 
-			$channel->basic_publish($msg, '', 'mail_queue');
+            $channel->basic_publish($msg, '', 'mail_queue');
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);
         } finally {
-			if (isset($channel) && $channel) {
-				$channel->close();
-			}
-			if (isset($connection) && $connection) {
-				$connection->close();
-			}
+            if (isset($channel) && $channel) {
+                $channel->close();
+            }
+            if (isset($connection) && $connection) {
+                $connection->close();
+            }
 
             $eventObject = null;
             $userObject = null;
             $this->closeDataSourceDriver();
-		}
-		return $this;
-	}
+        }
+        return $this;
+    }
 
-	/**
-	 * Set Queue factory
-	 * @param QueueConnectionFactoryInterface $factory
-	 * @return Attend
-	 */
-	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    /**
+     * Set Queue factory
+     * @param QueueConnectionFactoryInterface $factory
+     * @return Attend
+     */
+    public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
     {
-		$this->queueFactory = $factory;
-		return $this;
-	}
+        $this->queueFactory = $factory;
+        return $this;
+    }
 
     /**
      * @param $config
      * @return $this
      */
-	public function setDateStore($config)
+    public function setDateStore($config)
     {
-		$this->dataStore = $config;
-		return $this;
-	}
+        $this->dataStore = $config;
+        return $this;
+    }
 
-	/**
-	 * Set EventManager
-	 *
-	 * @param EventManagerInterface $events
-	 * @return $this|void
-	 */
-	public function setEventManager(EventManagerInterface $events)
+    /**
+     * Set EventManager
+     *
+     * @param EventManagerInterface $events
+     * @return $this|void
+     */
+    public function setEventManager(EventManagerInterface $events)
     {
-		$events->setIdentifiers(array(
-			__CLASS__,
-			get_called_class(),
-		));
-		$this->events = $events;
-		return $this;
-	}
+        $events->setIdentifiers(array(
+            __CLASS__,
+            get_called_class(),
+        ));
+        $this->events = $events;
+        return $this;
+    }
 
-	/**
-	 * Get event manager
-	 *
-	 * @return EventManagerInterface
-	 */
-	public function getEventManager()
+    /**
+     * Get event manager
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
     {
-		if (null === $this->events) {
-			$this->setEventManager(new EventManager());
-		}
-		return $this->events;
-	}
+        if (null === $this->events) {
+            $this->setEventManager(new EventManager());
+        }
+        return $this->events;
+    }
 
     /**
      * Get the recipient.

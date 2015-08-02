@@ -32,30 +32,30 @@ use PhpAmqpLib\Message\AMQPMessage;
  */
 class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
 {
-	/**
-	 * @var \stdClass
-	 */
-	private $params;
+    /**
+     * @var \stdClass
+     */
+    private $params;
 
-	/**
-	 * @var  \Psr\Log\LoggerInterface;
-	 */
-	private $logger;
+    /**
+     * @var  \Psr\Log\LoggerInterface;
+     */
+    private $logger;
 
-	/**
-	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
-	 */
-	private $queueFactory;
+    /**
+     * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
+     */
+    private $queueFactory;
 
     /**
      * @var array
      */
-	private $dataStore;
+    private $dataStore;
 
-	/**
-	 * @var \Zend\EventManager\EventManager
-	 */
-	protected $events;
+    /**
+     * @var \Zend\EventManager\EventManager
+     */
+    protected $events;
 
     /**
      * @var \PDO
@@ -67,9 +67,9 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      * @return $this
      * @throws NotifyException
      */
-	public function setData($data)
+    public function setData($data)
     {
-		$this->params = $data->data;
+        $this->params = $data->data;
         if (!property_exists($this->params, 'user_id')) {
             throw new NotifyException('Missing data:user_id');
         }
@@ -88,26 +88,26 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
         if (!property_exists($this->params, 'event_id')) {
             throw new NotifyException('Missing data:event_id');
         }
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Set logger instance
-	 *
-	 * @param LoggerInterface $logger
-	 * @return $this|NotifyInterface
-	 */
-	public function setLogger(LoggerInterface $logger)
+    /**
+     * Set logger instance
+     *
+     * @param LoggerInterface $logger
+     * @return $this|NotifyInterface
+     */
+    public function setLogger(LoggerInterface $logger)
     {
-		$this->logger = $logger;
-		return $this;
-	}
+        $this->logger = $logger;
+        return $this;
+    }
 
     /**
      * @return $this
      * @throws NotifyException
      */
-	public function send()
+    public function send()
     {
         $emailId = $this->getEmailId();
         $event = $this->getEvent($this->params->event_id);
@@ -119,56 +119,56 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
             $this->params->test
         );
 
-		$this->logger->info(
+        $this->logger->info(
             (count($users)) . " user will get an email" .
-			"in connection with event {$event->subject}:{$event->id}"
+            "in connection with event {$event->subject}:{$event->id}"
         );
 
-		//VIEW
-		//	create and configure view
-		$child = new ViewModel(array(
-			'user' => null,
-			'event' => $event,
-			'body' => call_user_func(new Paragrapher(), $this->params->body)
-		));
-		$child->setTemplate('event');
+        //VIEW
+        //	create and configure view
+        $child = new ViewModel(array(
+            'user' => null,
+            'event' => $event,
+            'body' => call_user_func(new Paragrapher(), $this->params->body)
+        ));
+        $child->setTemplate('event');
 
-		$layout = new ViewModel();
-		$layout->setTemplate('layout');
-		$layout->addChild($child, 'content');
+        $layout = new ViewModel();
+        $layout->setTemplate('layout');
+        $layout->addChild($child, 'content');
 
-		$phpRenderer = new PhpRenderer();
-		$phpRenderer->setCanRenderTrees(true);
+        $phpRenderer = new PhpRenderer();
+        $phpRenderer->setCanRenderTrees(true);
 
-		$resolver = new Resolver\TemplateMapResolver();
-		$resolver->setMap(array(
-			'layout' => __DIR__ . '/../../../view/layout/email.phtml',
-			'event' => __DIR__ . '/../../../view/email/event.phtml',
-		));
-		$phpRenderer->setResolver($resolver);
+        $resolver = new Resolver\TemplateMapResolver();
+        $resolver->setMap(array(
+            'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+            'event' => __DIR__ . '/../../../view/email/event.phtml',
+        ));
+        $phpRenderer->setResolver($resolver);
 
 
-		//CONNECT TO QUEUE
-		//	try to connect to RabbitMQ
-		try {
-			$connection = $this->queueFactory->createConnection();
-			$channel = $connection->channel();
-			$channel->queue_declare('mail_queue', false, true, false, false);
+        //CONNECT TO QUEUE
+        //	try to connect to RabbitMQ
+        try {
+            $connection = $this->queueFactory->createConnection();
+            $channel = $connection->channel();
+            $channel->queue_declare('mail_queue', false, true, false, false);
 
-			//FOR EVER USER
-			//	for every user: render email template, create message object and
-			//	send to mail-queue
-			foreach ($users as $user) {
-				$child->setVariable('user', $user);
-				foreach ($layout as $child) {
-					$child->setOption('has_parent', true);
-					$result  = $phpRenderer->render($child);
-					$child->setOption('has_parent', null);
-					$capture = $child->captureTo();
-					if (!empty($capture)) {
-						$layout->setVariable($capture, $result);
-					}
-				}
+            //FOR EVER USER
+            //	for every user: render email template, create message object and
+            //	send to mail-queue
+            foreach ($users as $user) {
+                $child->setVariable('user', $user);
+                foreach ($layout as $child) {
+                    $child->setOption('has_parent', true);
+                    $result  = $phpRenderer->render($child);
+                    $child->setOption('has_parent', null);
+                    $capture = $child->captureTo();
+                    if (!empty($capture)) {
+                        $layout->setVariable($capture, $result);
+                    }
+                }
 
                 $message = new Mail();
                 $message->name = $user->name;
@@ -182,15 +182,15 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
                 $message->parameters = $this->params->recipients;
                 $message->test = $this->params->test;
 
-				$msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
+                $msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
 
-				$this->logger->info(
+                $this->logger->info(
                     " {$user->email} will get an email" .
-					"in connection with event {$event->subject}:{$event->id}"
+                    "in connection with event {$event->subject}:{$event->id}"
                 );
 
-				$channel->basic_publish($msg, '', 'mail_queue');
-			}
+                $channel->basic_publish($msg, '', 'mail_queue');
+            }
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);
@@ -198,67 +198,67 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
             if (isset($channel) && $channel) {
                 $channel->close();
             }
-            if(isset($connection) && $connection){
+            if (isset($connection) && $connection) {
                 $connection->close();
             }
 
             $users = null;
             $event = null;
             $this->closeDataSourceDriver();
-		}
-		return $this;
-	}
+        }
+        return $this;
+    }
 
-	/**
-	 * Set Queue factory.
-	 *
-	 * @param QueueConnectionFactoryInterface $factory
-	 * @return $this|NotifyInterface
-	 */
-	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    /**
+     * Set Queue factory.
+     *
+     * @param QueueConnectionFactoryInterface $factory
+     * @return $this|NotifyInterface
+     */
+    public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
     {
-		$this->queueFactory = $factory;
-		return $this;
-	}
+        $this->queueFactory = $factory;
+        return $this;
+    }
 
     /**
      * @param array $config
      * @return $this
      */
-	public function setDateStore($config)
+    public function setDateStore($config)
     {
-		$this->dataStore = $config;
-		return $this;
-	}
+        $this->dataStore = $config;
+        return $this;
+    }
 
-	/**
-	 * Set EventManager
-	 *
-	 * @param EventManagerInterface $events
-	 * @return $this|void
-	 */
-	public function setEventManager(EventManagerInterface $events)
+    /**
+     * Set EventManager
+     *
+     * @param EventManagerInterface $events
+     * @return $this|void
+     */
+    public function setEventManager(EventManagerInterface $events)
     {
-		$events->setIdentifiers(array(
-			__CLASS__,
-			get_called_class(),
-		));
-		$this->events = $events;
-		return $this;
-	}
+        $events->setIdentifiers(array(
+            __CLASS__,
+            get_called_class(),
+        ));
+        $this->events = $events;
+        return $this;
+    }
 
-	/**
-	 * Get event manager
-	 *
-	 * @return EventManagerInterface
-	 */
-	public function getEventManager()
+    /**
+     * Get event manager
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
     {
-		if (null === $this->events) {
-			$this->setEventManager(new EventManager());
-		}
-		return $this->events;
-	}
+        if (null === $this->events) {
+            $this->setEventManager(new EventManager());
+        }
+        return $this->events;
+    }
 
     /**
      * @param array $groups

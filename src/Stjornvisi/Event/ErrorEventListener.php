@@ -8,7 +8,6 @@
 
 namespace Stjornvisi\Event;
 
-
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -16,18 +15,18 @@ use Zend\EventManager\EventInterface;
 
 class ErrorEventListener extends AbstractListenerAggregate
 {
-	/** @var \Psr\Log\LoggerInterface;  */
-	private $logger;
+    /** @var \Psr\Log\LoggerInterface;  */
+    private $logger;
 
-	/**
-	 * Create this Aggregate Event Listener.
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function __construct(LoggerInterface $logger)
+    /**
+     * Create this Aggregate Event Listener.
+     *
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
     {
-		$this->logger = $logger;
-	}
+        $this->logger = $logger;
+    }
 
     /**
      * Attach one or more listeners
@@ -42,25 +41,25 @@ class ErrorEventListener extends AbstractListenerAggregate
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach(
-			array('error'),
-			array($this, 'log')
-		);
+            array('error'),
+            array($this, 'log')
+        );
     }
 
-	/**
-	 * Actually do the logging.
-	 *
-	 * @param EventInterface $event
-	 */
-	public function log(EventInterface $event)
+    /**
+     * Actually do the logging.
+     *
+     * @param EventInterface $event
+     */
+    public function log(EventInterface $event)
     {
-		$params = $event->getParams();
-		$method = '?';
-		$exception = isset($params['exception'])?$params['exception']:'';
-		$sql = isset($params['sql'])?$params['sql']:array();
-		$this->logger->critical(
-			get_class($event->getTarget())."::{$method} - {$exception}",
-			$sql
-		);
-	}
+        $params = $event->getParams();
+        $method = '?';
+        $exception = isset($params['exception'])?$params['exception']:'';
+        $sql = isset($params['sql'])?$params['sql']:array();
+        $this->logger->critical(
+            get_class($event->getTarget())."::{$method} - {$exception}",
+            $sql
+        );
+    }
 }

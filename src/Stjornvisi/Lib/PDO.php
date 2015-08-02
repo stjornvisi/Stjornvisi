@@ -15,34 +15,40 @@ use \PDO as OriginalPDO;
  * @package Stjornvisi\Lib
  * @deprecated
  */
-class PDO extends OriginalPDO {
+class PDO extends OriginalPDO
+{
 
-	protected $dsn;
-	protected $username;
-	protected $password;
-	protected $options;
+    protected $dsn;
+    protected $username;
+    protected $password;
+    protected $options;
 
-	public function __construct( $dsn,  $username = "",  $password = "", array $options = array() ){
-		$this->dsn = $dsn;
-		$this->username = $username;
-		$this->password = $password;
-		$this->options = $options;
-		parent::__construct( $dsn,  $username,  $password,  $options );
-	}
+    public function __construct($dsn, $username = "", $password = "", array $options = array())
+    {
+        $this->dsn = $dsn;
+        $this->username = $username;
+        $this->password = $password;
+        $this->options = $options;
+        parent::__construct($dsn, $username, $password, $options);
+    }
 
-	public function getDsn(){
-		return $this->dsn;
-	}
+    public function getDsn()
+    {
+        return $this->dsn;
+    }
 
-	public function getUsername(){
-		return $this->username;
-	}
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
-	public function getPassword(){
-		return $this->password;
-	}
+    public function getPassword()
+    {
+        return $this->password;
+    }
 
-	public function getOptions(){
-		return $this->options;
-	}
-} 
+    public function getOptions()
+    {
+        return $this->options;
+    }
+}

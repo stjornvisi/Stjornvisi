@@ -180,7 +180,7 @@ class UserController extends AbstractActionController
                 case 'stjornendur':
                     $users = $userService->fetchGroupMembers([1,2]);
                     break;
-                default;
+                default:
                     $users = $userService->fetchAll();
                     break;
             }
@@ -382,40 +382,6 @@ class UserController extends AbstractActionController
         } else {
             return $this->notFoundAction();
         }
-
-
-           /*
-        //LOGGED IN
-        //  user is logged in
-        if( Zend_Auth::getInstance()->hasIdentity() ){
-        //POST
-        //  post request
-        if($this->_request->isPost()){
-
-        //VALID
-        //  valid form
-        $form = new Application_Form_Password();
-        if( $form->isValid($this->_request->getPost()) ){
-        $userDAO = new Application_Model_User();
-        $userDAO->update(
-          array('passwd'=>new Zend_Db_Expr("MD5('{$form->getValue('pass1')}')")),
-          "id=". Zend_Auth::getInstance()->getIdentity()->id);
-
-        //INVALID
-        //  form is invalid
-        }else{
-        $this->view->form = $form;
-        }
-
-        //GET
-        //  query request
-        }else{
-        $this->view->form = new Application_Form_Password();
-        }
-        }else{
-        throw new Zend_Controller_Action_Exception("Access Denied",401);
-        }
-           */
     }
 
     /**

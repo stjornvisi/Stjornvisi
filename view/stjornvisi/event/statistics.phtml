@@ -5,112 +5,112 @@
  * Date: 24/03/14
  * Time: 09:06
  */
-$this->headScript()->appendFile( $this->basePath('vendor/d3/d3.min.js') );
+$this->headScript()->appendFile($this->basePath('vendor/d3/d3.min.js'));
 ?>
 
 <div class="layout layout--two-columns page-statistics">
-	<section class="layout_section">
+    <section class="layout_section">
 
-		<section id="distribution-time" class="statistics__wrapper">
-			<h1 class="layout__headline">Dreifing skráninga á tima dags</h1>
-			<p>Súluritið sýnir hvenær dags notendur skrá sig á viðburði</p>
-			<div class="statistics__container"></div>
-		</section>
+        <section id="distribution-time" class="statistics__wrapper">
+            <h1 class="layout__headline">Dreifing skráninga á tima dags</h1>
+            <p>Súluritið sýnir hvenær dags notendur skrá sig á viðburði</p>
+            <div class="statistics__container"></div>
+        </section>
 
-		<section id="distribution-day" class="statistics__wrapper">
-			<h1 class="layout__headline">Dreifing skráninga á vikudaga</h1>
-			<p>Súluritið sýnir á hvaða vikudegi notendur skrá sig á viðburði. (1 = sunnudagur.)</p>
-			<div class="statistics__container"></div>
-		</section>
+        <section id="distribution-day" class="statistics__wrapper">
+            <h1 class="layout__headline">Dreifing skráninga á vikudaga</h1>
+            <p>Súluritið sýnir á hvaða vikudegi notendur skrá sig á viðburði. (1 = sunnudagur.)</p>
+            <div class="statistics__container"></div>
+        </section>
 
-		<section id="distribution-month" class="statistics__wrapper">
-			<h1 class="layout__headline">Dreifing skráninga á mánaðardaga</h1>
-			<p>Súluritið sýnir hvenær í mánuði notendur skrá sig á viðburði</p>
-			<div class="statistics__container"></div>
-		</section>
+        <section id="distribution-month" class="statistics__wrapper">
+            <h1 class="layout__headline">Dreifing skráninga á mánaðardaga</h1>
+            <p>Súluritið sýnir hvenær í mánuði notendur skrá sig á viðburði</p>
+            <div class="statistics__container"></div>
+        </section>
 
-		<script>
-			var margin = {top: 20, right: 20, bottom: 30, left: 40},
-				width = 960 - margin.left - margin.right,
-				height = 500 - margin.top - margin.bottom;
+        <script>
+            var margin = {top: 20, right: 20, bottom: 30, left: 40},
+                width = 960 - margin.left - margin.right,
+                height = 500 - margin.top - margin.bottom;
 
-			var x = d3.scale.ordinal()
-				.rangeRoundBands([0, width], .1);
+            var x = d3.scale.ordinal()
+                .rangeRoundBands([0, width], .1);
 
-			var y = d3.scale.linear()
-				.range([height, 0]);
+            var y = d3.scale.linear()
+                .range([height, 0]);
 
-			var xAxis = d3.svg.axis()
-				.scale(x)
-				.orient("bottom");
+            var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom");
 
-			var yAxis = d3.svg.axis()
-				.scale(y)
-				.orient("left")
-				.ticks(10, "%");
+            var yAxis = d3.svg.axis()
+                .scale(y)
+                .orient("left")
+                .ticks(10, "%");
 
-			var time = d3.select("#distribution-time div").append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            var time = d3.select("#distribution-time div").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-			var day = d3.select("#distribution-day div").append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            var day = d3.select("#distribution-day div").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-			var month = d3.select("#distribution-month div").append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-			var draw = function(url,svg){
-				d3.json(url, function(error, data) {
-					x.domain(data.map(function(d) { return d.label; }));
-					y.domain([0, d3.max(data, function(d) { return d.value/8; })]);
-
-					svg.append("g")
-						.attr("class", "x axis")
-						.attr("transform", "translate(0," + height + ")")
-						.call(xAxis);
-
-					svg.append("g")
-						.attr("class", "y axis")
-						.call(yAxis)
-						.append("text")
-						.attr("transform", "rotate(-90)")
-						.attr("y", 6)
-						.attr("dy", ".71em")
-						.style("text-anchor", "end")
-						.text("Frequency");
-
-					svg.selectAll(".bar")
-						.data(data)
-						.enter().append("rect")
-						.attr("class", "bar")
-						.attr("x", function(d) { return x(d.label); })
-						.attr("width", x.rangeBand())
-						.attr("y", function(d) { return y(d.value/8); })
-						.attr("height", function(d) { return height - y(d.value/8); });
-
-				});
-			};
+            var month = d3.select("#distribution-month div").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-			draw("/vidburdir/dreifing/klukka",time);
+            var draw = function(url,svg){
+                d3.json(url, function(error, data) {
+                    x.domain(data.map(function(d) { return d.label; }));
+                    y.domain([0, d3.max(data, function(d) { return d.value/8; })]);
 
-			draw("/vidburdir/dreifing/dagur",day);
+                    svg.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(xAxis);
 
-			draw("/vidburdir/dreifing/manudur",month);
+                    svg.append("g")
+                        .attr("class", "y axis")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", ".71em")
+                        .style("text-anchor", "end")
+                        .text("Frequency");
 
-		</script>
+                    svg.selectAll(".bar")
+                        .data(data)
+                        .enter().append("rect")
+                        .attr("class", "bar")
+                        .attr("x", function(d) { return x(d.label); })
+                        .attr("width", x.rangeBand())
+                        .attr("y", function(d) { return y(d.value/8); })
+                        .attr("height", function(d) { return height - y(d.value/8); });
 
-	</section>
-	<aside class="layout__aside">
+                });
+            };
 
-	</aside>
+
+            draw("/vidburdir/dreifing/klukka",time);
+
+            draw("/vidburdir/dreifing/dagur",day);
+
+            draw("/vidburdir/dreifing/manudur",month);
+
+        </script>
+
+    </section>
+    <aside class="layout__aside">
+
+    </aside>
 </div>

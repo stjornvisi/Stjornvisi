@@ -1,25 +1,25 @@
 <div class="layout layout--three-columns">
-	<section class="layout__section">
-		<h1>Greinahöfundalisti</h1>
-		<ul class="block-list">
-			<?php foreach($this->authors as $author):?>
-				<li>
-					<a href="<?=$this->url('greinar/author-update',array('id'=>$author->id))?>"><?=$author->name?></a>
-					<?php if( $this->access->is_admin ):?>
-					<stjonvisi-control class="inline">
-						<a href="<?=$this->url('greinar/author-update',array('id'=>$author->id))?>">Uppfæra höfund</a>
-						<a href="<?=$this->url('greinar/author-delete',array('id'=>$author->id))?>">Eyða höfundi</a>
-					</stjonvisi-control>
-					<?php endif;?>
-				</li>
-			<?php endforeach;?>
-		</ul>
-	</section>
-	<aside class="layout__aside">
-		<?php if( $this->access->is_admin ):?>
-			<stjonvisi-control>
-				<a href="<?=$this->url('greinar/author-create');?>">Stofna höfund</a>
-			</stjonvisi-control>
-		<?php endif;?>
-	</aside>
+    <section class="layout__section">
+        <h1>Greinahöfundalisti</h1>
+        <ul class="block-list">
+            <?php foreach($this->authors as $author):?>
+                <li>
+                    <a href="<?=$this->url('greinar/author-update', array('id'=>$author->id))?>"><?=$author->name?></a>
+                    <?php if( $this->access->is_admin ):?>
+                    <stjonvisi-control class="inline">
+                        <a href="<?=$this->url('greinar/author-update', array('id'=>$author->id))?>">Uppfæra höfund</a>
+                        <a href="<?=$this->url('greinar/author-delete', array('id'=>$author->id))?>">Eyða höfundi</a>
+                    </stjonvisi-control>
+                    <?php endif;?>
+                </li>
+            <?php endforeach;?>
+        </ul>
+    </section>
+    <aside class="layout__aside">
+        <?php if( $this->access->is_admin ):?>
+            <stjonvisi-control>
+                <a href="<?=$this->url('greinar/author-create');?>">Stofna höfund</a>
+            </stjonvisi-control>
+        <?php endif;?>
+    </aside>
 </div>

@@ -29,27 +29,27 @@ use PhpAmqpLib\Message\AMQPMessage;
  */
 class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
 {
-	/**
-	 * @var \stdClass
-	 */
-	private $params;
+    /**
+     * @var \stdClass
+     */
+    private $params;
 
-	/**
-	 * @var  \Psr\Log\LoggerInterface;
-	 */
-	private $logger;
+    /**
+     * @var  \Psr\Log\LoggerInterface;
+     */
+    private $logger;
 
-	/**
-	 * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
-	 */
-	private $queueFactory;
+    /**
+     * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
+     */
+    private $queueFactory;
 
-	private $dataStore;
+    private $dataStore;
 
-	/**
-	 * @var \Zend\EventManager\EventManager
-	 */
-	protected $events;
+    /**
+     * @var \Zend\EventManager\EventManager
+     */
+    protected $events;
 
     /**
      * @var \PDO
@@ -61,9 +61,9 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      * @return $this
      * @throws NotifyException
      */
-	public function setData($data)
+    public function setData($data)
     {
-		$this->params = $data->data;
+        $this->params = $data->data;
         if (!property_exists($this->params, 'recipients')) {
             throw new NotifyException('Missing data:recipients');
         }
@@ -82,18 +82,18 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
         if (!property_exists($this->params, 'subject')) {
             throw new NotifyException('Missing data:subject');
         }
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param LoggerInterface $logger
-	 * @return $this|NotifyInterface
-	 */
-	public function setLogger(LoggerInterface $logger)
+    /**
+     * @param LoggerInterface $logger
+     * @return $this|NotifyInterface
+     */
+    public function setLogger(LoggerInterface $logger)
     {
-		$this->logger = $logger;
-		return $this;
-	}
+        $this->logger = $logger;
+        return $this;
+    }
 
     /**
      * Run the handler.
@@ -101,9 +101,9 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      * @return $this
      * @throws NotifyException
      */
-	public function send()
+    public function send()
     {
-		$emailId = $this->getHash();
+        $emailId = $this->getHash();
 
         $users = $this->getUsers(
             $this->params->recipients,
@@ -113,56 +113,56 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
         );
         $group = $this->getGroup($this->params->group_id);
 
-		$this->logger->info("Group-email in " . ( $this->params->test?'':'none' ) . " test mode");
+        $this->logger->info("Group-email in " . ( $this->params->test?'':'none' ) . " test mode");
 
-		//MAIL
-		//	now we want to send this to the user/quest via e-mail
-		//	so we try to connect to Queue and send a message
-		//	to mail_queue
-		try {
-			//QUEUE
-			//	create and configure queue
-			$connection = $this->queueFactory->createConnection();
-			$channel = $connection->channel();
-			$channel->queue_declare('mail_queue', false, true, false, false);
+        //MAIL
+        //	now we want to send this to the user/quest via e-mail
+        //	so we try to connect to Queue and send a message
+        //	to mail_queue
+        try {
+            //QUEUE
+            //	create and configure queue
+            $connection = $this->queueFactory->createConnection();
+            $channel = $connection->channel();
+            $channel->queue_declare('mail_queue', false, true, false, false);
 
-			//VIEW
-			//	create and configure view
-			$child = new ViewModel(array(
-				'user' => null,
-				'group' => $group,
-				'body' => call_user_func(new Paragrapher(), $this->params->body)
-			));
-			$child->setTemplate('script');
+            //VIEW
+            //	create and configure view
+            $child = new ViewModel(array(
+                'user' => null,
+                'group' => $group,
+                'body' => call_user_func(new Paragrapher(), $this->params->body)
+            ));
+            $child->setTemplate('script');
 
-			$layout = new ViewModel();
-			$layout->setTemplate('layout');
-			$layout->addChild($child, 'content');
+            $layout = new ViewModel();
+            $layout->setTemplate('layout');
+            $layout->addChild($child, 'content');
 
-			$phpRenderer = new PhpRenderer();
-			$phpRenderer->setCanRenderTrees(true);
+            $phpRenderer = new PhpRenderer();
+            $phpRenderer->setCanRenderTrees(true);
 
-			$resolver = new Resolver\TemplateMapResolver();
-			$resolver->setMap(array(
-				'layout' => __DIR__ . '/../../../view/layout/email.phtml',
-				'script' => __DIR__ . '/../../../view/email/group-letter.phtml',
-			));
-			$phpRenderer->setResolver($resolver);
+            $resolver = new Resolver\TemplateMapResolver();
+            $resolver->setMap(array(
+                'layout' => __DIR__ . '/../../../view/layout/email.phtml',
+                'script' => __DIR__ . '/../../../view/email/group-letter.phtml',
+            ));
+            $phpRenderer->setResolver($resolver);
 
-			//FOR EVERY USER
-			//	for every user, render mail-template
-			//	and send to mail-queue
-			foreach ($users as $user) {
-				$child->setVariable('user', $user);
-				foreach ($layout as $child) {
-					$child->setOption('has_parent', true);
-					$result  = $phpRenderer->render($child);
-					$child->setOption('has_parent', null);
-					$capture = $child->captureTo();
-					if (!empty($capture)) {
-						$layout->setVariable($capture, $result);
-					}
-				}
+            //FOR EVERY USER
+            //	for every user, render mail-template
+            //	and send to mail-queue
+            foreach ($users as $user) {
+                $child->setVariable('user', $user);
+                foreach ($layout as $child) {
+                    $child->setOption('has_parent', true);
+                    $result  = $phpRenderer->render($child);
+                    $child->setOption('has_parent', null);
+                    $capture = $child->captureTo();
+                    if (!empty($capture)) {
+                        $layout->setVariable($capture, $result);
+                    }
+                }
 
                 $result = new Mail();
                 $result->name = $user->name;
@@ -177,12 +177,12 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
                 $result->test = $this->params->test;
 
 
-				$msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
+                $msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
 
-				$this->logger->info("Groupmail to user:{$user->email}, group:{$group->name_short}");
+                $this->logger->info("Groupmail to user:{$user->email}, group:{$group->name_short}");
 
-				$channel->basic_publish($msg, '', 'mail_queue');
-			}
+                $channel->basic_publish($msg, '', 'mail_queue');
+            }
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);
@@ -190,67 +190,67 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
             if (isset($channel) && $channel) {
                 $channel->close();
             }
-            if(isset($connection) && $connection){
+            if (isset($connection) && $connection) {
                 $connection->close();
             }
 
-            $users	= null;
-			$group	= null;
+            $users  = null;
+            $group  = null;
             $this->closeDataSourceDriver();
-		}
-		return $this;
-	}
+        }
+        return $this;
+    }
 
-	/**
-	 * Set Queue factory.
-	 *
-	 * @param QueueConnectionFactoryInterface $factory
-	 * @return $this|NotifyInterface
-	 */
-	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    /**
+     * Set Queue factory.
+     *
+     * @param QueueConnectionFactoryInterface $factory
+     * @return $this|NotifyInterface
+     */
+    public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
     {
-		$this->queueFactory = $factory;
-		return $this;
-	}
+        $this->queueFactory = $factory;
+        return $this;
+    }
 
     /**
      * @param array $config
      * @return $this
      */
-	public function setDateStore($config)
+    public function setDateStore($config)
     {
-		$this->dataStore = $config;
-		return $this;
-	}
+        $this->dataStore = $config;
+        return $this;
+    }
 
-	/**
-	 * Set EventManager
-	 *
-	 * @param EventManagerInterface $events
-	 * @return $this|void
-	 */
-	public function setEventManager(EventManagerInterface $events)
+    /**
+     * Set EventManager
+     *
+     * @param EventManagerInterface $events
+     * @return $this|void
+     */
+    public function setEventManager(EventManagerInterface $events)
     {
-		$events->setIdentifiers(array(
-			__CLASS__,
-			get_called_class(),
-		));
-		$this->events = $events;
-		return $this;
-	}
+        $events->setIdentifiers(array(
+            __CLASS__,
+            get_called_class(),
+        ));
+        $this->events = $events;
+        return $this;
+    }
 
-	/**
-	 * Get event manager
-	 *
-	 * @return EventManagerInterface
-	 */
-	public function getEventManager()
+    /**
+     * Get event manager
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
     {
-		if (null === $this->events) {
-			$this->setEventManager(new EventManager());
-		}
-		return $this->events;
-	}
+        if (null === $this->events) {
+            $this->setEventManager(new EventManager());
+        }
+        return $this->events;
+    }
 
     /**
      * @param string $recipients
@@ -262,14 +262,14 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      */
     private function getUsers($recipients, $test, $sender_id, $group_id)
     {
-        $userService	= new User();
+        $userService    = new User();
         $userService->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
 
         //ALL OR FORMEN
         //	send to all members of group or forman
         $exclude = ($recipients == 'allir')
-            ? [-1] 	//everyone
+            ? [-1]  //everyone
             : [0] ; //forman
 
         //TEST OR REAL
@@ -287,7 +287,7 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      */
     private function getGroup($group_id)
     {
-        $groupService	= new \Stjornvisi\Service\Group();
+        $groupService   = new \Stjornvisi\Service\Group();
         $groupService->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
 

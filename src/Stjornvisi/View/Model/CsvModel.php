@@ -13,18 +13,18 @@ use Zend\View\Model\ViewModel;
 
 class CsvModel extends ViewModel
 {
-	protected $terminate = true;
+    protected $terminate = true;
 
-	private $csv;
+    private $csv;
 
-	public function setData(Csv $csv)
+    public function setData(Csv $csv)
     {
-		$this->csv = $csv;
-		return $this;
-	}
+        $this->csv = $csv;
+        return $this;
+    }
 
-	public function getData()
+    public function getData()
     {
-		return $this->csv;
-	}
+        return $this->csv;
+    }
 }

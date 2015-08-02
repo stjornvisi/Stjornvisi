@@ -3,9 +3,10 @@ namespace Stjornvisi\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilterProviderInterface;
+
 /**
  * Form for <Group>
- * 
+ *
  * @category Stjonvisi
  * @package Form
  * @author einarvalur
@@ -15,7 +16,7 @@ class Group extends Form implements InputFilterProviderInterface
 {
     public function __construct($action = 'create', $values = null, $options = array())
     {
-		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
         $this->setAttribute('method', 'post');
 
         $this->add(array(
@@ -86,49 +87,49 @@ class Group extends Form implements InputFilterProviderInterface
             ),
         ));
 
-	}
+    }
 
-	/**
-	 * Should return an array specification compatible with
-	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
-	 *
-	 * @return array
-	 */
-	public function getInputFilterSpecification()
+    /**
+     * Should return an array specification compatible with
+     * {@link Zend\InputFilter\Factory::createInputFilter()}.
+     *
+     * @return array
+     */
+    public function getInputFilterSpecification()
     {
-		return array(
-			'name' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'StringLength',
-						'options' => array(
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 45,
-						),
-					),
-				),
-			),
-			'name_short' => array(
-				'filters'  => array(
-					array('name' => 'StripTags'),
-					array('name' => 'StringTrim'),
-				),
-				'validators' => array(
-					array(
-						'name'    => 'StringLength',
-						'options' => array(
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 45,
-						),
-					),
-				),
-			),
+        return array(
+            'name' => array(
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 45,
+                        ),
+                    ),
+                ),
+            ),
+            'name_short' => array(
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 45,
+                        ),
+                    ),
+                ),
+            ),
             'summary' => array(
                 'required' => true,
                 'allow_empty' => false,
@@ -155,8 +156,6 @@ class Group extends Form implements InputFilterProviderInterface
                     array('name' => 'StringTrim'),
                 ),
             ),
-		);
-	}
+        );
+    }
 }
-
-

@@ -12,21 +12,20 @@ use Psr\Log\LoggerAwareInterface;
 
 interface NotifyInterface extends LoggerAwareInterface
 {
-	/**
-	 * Set the data that is coming from the
-	 * producer.
-	 *
-	 * @param $data
-	 * @return NotifyInterface
-	 */
-	public function setData($data);
+    /**
+     * Set the data that is coming from the
+     * producer.
+     *
+     * @param $data
+     * @return NotifyInterface
+     */
+    public function setData($data);
 
-	/**
-	 * Send notification to what ever media or outlet
-	 * required by the implementer.
-	 *
-	 * @return NotifyInterface
-	 */
-	public function send();
-
+    /**
+     * Send notification to what ever media or outlet
+     * required by the implementer.
+     *
+     * @return NotifyInterface
+     */
+    public function send();
 }

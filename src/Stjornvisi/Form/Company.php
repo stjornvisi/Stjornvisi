@@ -20,16 +20,16 @@ use Stjornvisi\Service\Company as CompanyService;
 
 class Company extends Form implements InputFilterProviderInterface
 {
-	private $company;
-	private $values;
+    private $company;
+    private $values;
 
-	private $id = null;
+    private $id = null;
 
     public function __construct(Values $values, CompanyService $company = null)
     {
-		$this->company = $company;
-		$this->values = $values;
-		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
+        $this->company = $company;
+        $this->values = $values;
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 
@@ -129,90 +129,90 @@ class Company extends Form implements InputFilterProviderInterface
 
     }
 
-	/**
-	 * Set ID og the record being edited.
-	 *
-	 * This is required for the unique-snn validator.
-	 * If the validator would only allow for valid form it the SSN
-	 * in not in storage, we could not UPDATE a record. we have to
-	 * allow for the same SSN if this SSN is connected to THIS record.
-	 *
-	 * To know id this is THIS record, we need the Identifier..
-	 * therefor; this method :)
-	 *
-	 * @param $id
-	 * @return $this
-	 */
-	public function setIdentifier($id)
+    /**
+     * Set ID og the record being edited.
+     *
+     * This is required for the unique-snn validator.
+     * If the validator would only allow for valid form it the SSN
+     * in not in storage, we could not UPDATE a record. we have to
+     * allow for the same SSN if this SSN is connected to THIS record.
+     *
+     * To know id this is THIS record, we need the Identifier..
+     * therefor; this method :)
+     *
+     * @param $id
+     * @return $this
+     */
+    public function setIdentifier($id)
     {
-		$this->id = $id;
-		return $this;
-	}
+        $this->id = $id;
+        return $this;
+    }
 
-	/**
-	 * Should return an array specification compatible with
-	 * {@link Zend\InputFilter\Factory::createInputFilter()}.
-	 *
-	 * @return array
-	 */
-	public function getInputFilterSpecification()
+    /**
+     * Should return an array specification compatible with
+     * {@link Zend\InputFilter\Factory::createInputFilter()}.
+     *
+     * @return array
+     */
+    public function getInputFilterSpecification()
     {
-		return [
-			'name' => [
-				'filters'  => [
-					['name' => 'StripTags'],
-					['name' => 'StringTrim'],
-				],
-				'validators' => [
-					[
-						'name'    => 'StringLength',
-						'options' => [
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 60,
-						],
-					],
-				],
-			],
-			'ssn' => [
-				'filters'  => [
-					['name' => 'Digits'],
-					['name' => 'StringTrim'],
-				],
-				'validators' => [
-					new UniqueSSN($this->company, $this->id),
-					[
-						'name'    => 'StringLength',
-						'options' => [
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 100,
-						],
-					],
-				],
-			],
-			'address' => [
-				'required' => false,
-				'allow_empty' => true,
-				'filters'  => [
-					['name' => 'StripTags'],
-					['name' => 'StringTrim'],
-				],
-				'validators' => [
-					[
-						'name'    => 'StringLength',
-						'options' => [
-							'encoding' => 'UTF-8',
-							'min'      => 1,
-							'max'      => 50,
-						],
-					],
-				],
-			],
-			'website' => [
-				'required' => false,
-				'allow_empty' => true,
-			],
-		];
-	}
+        return [
+            'name' => [
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 60,
+                        ],
+                    ],
+                ],
+            ],
+            'ssn' => [
+                'filters'  => [
+                    ['name' => 'Digits'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    new UniqueSSN($this->company, $this->id),
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 100,
+                        ],
+                    ],
+                ],
+            ],
+            'address' => [
+                'required' => false,
+                'allow_empty' => true,
+                'filters'  => [
+                    ['name' => 'StripTags'],
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
+                        'name'    => 'StringLength',
+                        'options' => [
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 50,
+                        ],
+                    ],
+                ],
+            ],
+            'website' => [
+                'required' => false,
+                'allow_empty' => true,
+            ],
+        ];
+    }
 }

@@ -1188,8 +1188,6 @@ class Event extends AbstractService implements DataSourceAwareInterface
                         INSERT INTO Event_has_Guest (event_id,email,register_time,name)
                         VALUES ({$event_id},'{$user_id}',NOW(),'{$name}')");
                 }
-            } else {
-
             }
             $this->getEventManager()->trigger('update', $this, [__FUNCTION__]);
         } catch (PDOException $e) {
@@ -1202,7 +1200,9 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 ]
             );
             throw new Exception(
-                "Can't register user to event. ". "event:[{$event_id}], user:[{$user_id}], type:[{$type}]", 0, $e
+                "Can't register user to event. ". "event:[{$event_id}], user:[{$user_id}], type:[{$type}]",
+                0,
+                $e
             );
         }
     }
@@ -1635,8 +1635,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     'from' => $from->format('Y-m-d'),
                     'to' => $to->format('Y-m-d')]);
             } else {
-                $statement = $this->pdo->prepare("
-                    SELECT count(*) as value, HOUR( E.register_time) as label
+                $statement = $this->pdo->prepare(
+                    "SELECT count(*) as value, HOUR( E.register_time) as label
                         FROM Event_has_User E
                     GROUP BY label
                     ORDER BY label;"

@@ -57,12 +57,9 @@
 
         <?php echo $this->headLink()
             ->appendStylesheet($this->basePath() . '/stylesheets/screen.css')
-            ->appendStylesheet($this->basePath() . '/stylesheets/ie.css','screen', 'IE 9')
+            ->appendStylesheet($this->basePath() . '/stylesheets/ie.css', 'screen', 'IE 9')
         ; ?>
         <link rel="import" href="<?=$this->basePath('/webcomponents/app.html');?>">
-
-
-
 
     </head>
     <body class="state-login">
@@ -97,10 +94,6 @@
                         <li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
                     </ul>
                 </nav>
-                <!--form method="get" action="<?=$this->url('leita')?>" class="main__search">
-                    <input name="q" type="search" placeholder="Leit..." />
-                    <input type="submit" value="leita">
-                </form-->
             </header>
             <?php echo $this->content; ?>
         </main>
@@ -155,10 +148,7 @@
 
     </script>
         <?php $this->headScript()->deleteContainer();?>
-        <?=$this->headScript()->appendFile(
-            $this->basePath('/javascripts/common.js'),
-            'text/javascript'
-        );?>
+        <?=$this->headScript()->appendFile($this->basePath('/javascripts/common.js'), 'text/javascript');?>
         <script type="text/javascript">
 
             var _gaq = _gaq || [];

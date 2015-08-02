@@ -14,12 +14,13 @@ namespace Stjornvisi\Lib;
  * Interface QueueConnectionAwareInterface
  * @package Stjornvisi\Lib
  */
-interface QueueConnectionAwareInterface {
+interface QueueConnectionAwareInterface
+{
 
-	/**
-	 * Set Queue factory
-	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
-	 */
-	public function setQueueConnectionFactory( QueueConnectionFactoryInterface $factory );
-} 
+    /**
+     * Set Queue factory
+     * @param QueueConnectionFactoryInterface $factory
+     * @return mixed
+     */
+    public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory);
+}

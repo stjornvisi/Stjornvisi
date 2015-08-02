@@ -12,44 +12,45 @@ use ZendSearch\Lucene\SearchIndexInterface;
 use ZendSearch\Lucene\Document\Field;
 use ZendSearch\Lucene\Document;
 
-class News implements IndexInterface {
+class News implements IndexInterface
+{
+    /**
+     * @param $data
+     * @param SearchIndexInterface $index
+     *
+     * @return IndexInterface
+     */
+    public function index($data, SearchIndexInterface $index)
+    {
+        $this->unindex($data, $index);
 
-	/**
-	 * @param $data
-	 * @param SearchIndexInterface $index
-	 *
-	 * @return IndexInterface
-	 */
-	public function index($data, SearchIndexInterface $index){
+        $indexDoc = new Document();
+        $indexDoc->addField(Field::Keyword('news_id', $data->id));
+        $indexDoc->addField(Field::UnIndexed('type', "news"));
+        $indexDoc->addField(Field::UnIndexed('identifier', $data->id));
+        $indexDoc->addField(Field::UnIndexed('date_time', $data->created_date->format('c')));
+        $indexDoc->addField(Field::UnIndexed('date', $data->created_date->format('j. M. Y')));
 
-		$this->unindex($data, $index);
+        $indexDoc->addField(Field::Text('title', $data->title, 'utf-8'));
+        $indexDoc->addField(Field::Text('body', $data->body, 'utf-8'));
 
-		$indexDoc = new Document();
-		$indexDoc->addField(Field::Keyword('news_id',$data->id));
-		$indexDoc->addField(Field::UnIndexed('type',"news"));
-		$indexDoc->addField(Field::UnIndexed('identifier',$data->id));
-		$indexDoc->addField(Field::UnIndexed('date_time',$data->created_date->format('c') ));
-		$indexDoc->addField(Field::UnIndexed('date',$data->created_date->format('j. M. Y') ));
+        $index->addDocument($indexDoc);
 
-		$indexDoc->addField(Field::Text('title',$data->title,'utf-8'));
-		$indexDoc->addField(Field::Text('body',$data->body,'utf-8'));
+        return $this;
+    }
 
-		$index->addDocument($indexDoc);
-
-		return $this;
-	}
-
-	/**
-	 * @param $data
-	 * @param SearchIndexInterface $index
-	 *
-	 * @return IndexInterface
-	 */
-	public function unindex($data, SearchIndexInterface $index){
-		$hits = $index->find('news_id:' . $data->id);
-		foreach ($hits as $hit) {
-			$index->delete($hit->id);
-		}
-		return $this;
-	}
+    /**
+     * @param $data
+     * @param SearchIndexInterface $index
+     *
+     * @return IndexInterface
+     */
+    public function unindex($data, SearchIndexInterface $index)
+    {
+        $hits = $index->find('news_id:' . $data->id);
+        foreach ($hits as $hit) {
+            $index->delete($hit->id);
+        }
+        return $this;
+    }
 }

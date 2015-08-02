@@ -8,7 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
-
-interface DataStoreInterface {
-	public function setDateStore( $config );
-} 
+interface DataStoreInterface
+{
+    public function setDateStore($config);
+}

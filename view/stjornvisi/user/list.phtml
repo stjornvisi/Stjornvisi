@@ -6,12 +6,12 @@
  * Time: 5:47 PM
  */
 
-	$stack = array_chunk( $this->users, ceil(count($this->users)/3) );
+    $stack = array_chunk($this->users, ceil(count($this->users)/3));
 
 ?>
 <div class="layout layout--three-columns page-user-list">
-	<section class="layout__section">
-		<h1 class="layout__headline">Notendur (<?=count($this->users)?>)</h1>
+    <section class="layout__section">
+        <h1 class="layout__headline">Notendur (<?=count($this->users)?>)</h1>
 
         <table class="block-table block-table--air">
             <thead>
@@ -26,12 +26,12 @@
             <tbody>
                 <?php foreach( $this->users as $user ) : ?>
                     <tr>
-                        <td><a href="<?=$this->url('notandi/index',array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></td>
+                        <td><a href="<?=$this->url('notandi/index', array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></td>
                         <td><?=($user->title)?$user->title:'&nbsp;'?></td>
                         <td class="block-table__date"><time datetime="<?=$user->created_date->format('c')?>" class="block-item__time"><?=$this->date($user->created_date)?></time></td>
                         <td>
                             <?php if($user->company_id):?>
-                                <p><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$user->company_id))?>"><?=$user->company_name?></a></p>
+                                <p><a href="<?=$this->url('fyrirtaeki/index', array('id'=>$user->company_id))?>"><?=$user->company_name?></a></p>
                             <?php else:?>
                                 <p>&nbsp;</p>
                             <?php endif;?>
@@ -41,12 +41,12 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-	</section>
-	<aside class="layout__aside">
-		<?php if($this->admin):?>
-		<stjonvisi-control>
-			<a href="<?=$this->url('notandi/export')?>"><i class="icon-list"></i>notendalisti</a>
-		</stjonvisi-control>
-		<?php endif;?>
-	</aside>
+    </section>
+    <aside class="layout__aside">
+        <?php if($this->admin):?>
+        <stjonvisi-control>
+            <a href="<?=$this->url('notandi/export')?>"><i class="icon-list"></i>notendalisti</a>
+        </stjonvisi-control>
+        <?php endif;?>
+    </aside>
 </div>

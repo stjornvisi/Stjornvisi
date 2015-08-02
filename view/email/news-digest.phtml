@@ -1,40 +1,40 @@
 <?php
-	setlocale(LC_ALL,'is_IS.utf-8');
-	$paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
+    setlocale(LC_ALL,'is_IS.utf-8');
+    $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 ?>
 <p>Sæl(l) <?=$this->user->name;?></p>
-<p>Vikan <strong><?=strftime('%e. %B %Y',$this->from->format('U'))?>  - <?=strftime('%e. %B %Y',$this->to->format('U'))?></strong> hjá Stjórnvísi</p>
+<p>Vikan <strong><?=strftime('%e. %B %Y', $this->from->format('U'))?>  - <?=strftime('%e. %B %Y', $this->to->format('U'))?></strong> hjá Stjórnvísi</p>
 
 <?php foreach ($this->events as $event):?>
-	<div style="margin-top: 30px; padding-top:30px;  border-top: 1px solid rgb(230,230,230)">
-		<h2><?=$event->subject?></h2>
-		<p><?=strftime('%e. %B %Y',$event->event_date->format('U'))?> | <?=$event->event_time->format('H:i')?> - <?=($event->event_end)?$event->event_end->format('H:i'):''?></p>
-		<?php if( $event->avatar ):?>
-			<img src="/stjornvisi/images/300/<?=$event->avatar;?>" style="float: left; margin:0 20px 20px 0 ">
-		<?php endif;?>
-		<?=$paragrapher->__invoke($event->body);?>
-		<dl style="font-size: 80%; clear: both">
-			<dt>Faghópar</dt>
-			<dd>
-				<ul style="list-style-type:none;margin:0;padding:0">
-					<?php if( empty($event->groups) ):?>
-						<li>Stjónvísisviðburður</li>
-					<?php else:?>
-					<?php foreach($event->groups as $group):?>
-						<li><a href="http://stjornvisi.is/vidburdir/<?=$group->url?>"><?=$group->name_short?></a></li>
-					<?php endforeach;?>
-					<?php endif;?>
-				</ul>
-			</dd>
-			<dt>Staður</dt>
-			<dd><?=$event->address;?></dd>
-			<dd><?=$event->location;?></dd>
-			<dt>Tími</dt>
-			<dd><?=strftime('%e. %B %Y',$event->event_date->format('U'))?> | <?=$event->event_time->format('H:i')?> - <?=($event->event_end)?$event->event_end->format('H:i'):''?></dd>
-			<dt>Skráning</dt>
-			<dd><a href="http://www.stjornvisi.is/vidburdir/<?=$event->id;?>" target="_blank">http://www.stjornvisi.is/vidburdir/<?=$event->id;?></a></dd>
-		</dl>
-	</div>
+    <div style="margin-top: 30px; padding-top:30px;  border-top: 1px solid rgb(230,230,230)">
+        <h2><?=$event->subject?></h2>
+        <p><?=strftime('%e. %B %Y', $event->event_date->format('U'))?> | <?=$event->event_time->format('H:i')?> - <?=($event->event_end)?$event->event_end->format('H:i'):''?></p>
+        <?php if($event->avatar):?>
+            <img src="/stjornvisi/images/300/<?=$event->avatar;?>" style="float: left; margin:0 20px 20px 0 ">
+        <?php endif;?>
+        <?=$paragrapher->__invoke($event->body);?>
+        <dl style="font-size: 80%; clear: both">
+            <dt>Faghópar</dt>
+            <dd>
+                <ul style="list-style-type:none;margin:0;padding:0">
+                    <?php if(empty($event->groups)):?>
+                        <li>Stjónvísisviðburður</li>
+                    <?php else:?>
+                    <?php foreach($event->groups as $group):?>
+                        <li><a href="http://stjornvisi.is/vidburdir/<?=$group->url?>"><?=$group->name_short?></a></li>
+                    <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
+            </dd>
+            <dt>Staður</dt>
+            <dd><?=$event->address;?></dd>
+            <dd><?=$event->location;?></dd>
+            <dt>Tími</dt>
+            <dd><?=strftime('%e. %B %Y', $event->event_date->format('U'))?> | <?=$event->event_time->format('H:i')?> - <?=($event->event_end)?$event->event_end->format('H:i'):''?></dd>
+            <dt>Skráning</dt>
+            <dd><a href="http://www.stjornvisi.is/vidburdir/<?=$event->id;?>" target="_blank">http://www.stjornvisi.is/vidburdir/<?=$event->id;?></a></dd>
+        </dl>
+    </div>
 
 <?php endforeach;?>
 

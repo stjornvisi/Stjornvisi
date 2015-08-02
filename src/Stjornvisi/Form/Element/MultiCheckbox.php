@@ -10,26 +10,25 @@ namespace Stjornvisi\Form\Element;
 
 class MultiCheckbox extends \Zend\Form\Element\MultiCheckbox
 {
-	/**
-	 * Provide default input rules for this element
-	 *
-	 * Attaches the captcha as a validator.
-	 *
-	 * @return array
-	 */
-	public function getInputSpecification()
-	{
-		$spec = array(
-			'name' => $this->getName(),
-			'required' => false,
-		);
+    /**
+     * Provide default input rules for this element
+     *
+     * Attaches the captcha as a validator.
+     *
+     * @return array
+     */
+    public function getInputSpecification()
+    {
+        $spec = array(
+            'name' => $this->getName(),
+            'required' => false,
+        );
 
-		if ($validator = $this->getValidator()) {
-			$spec['validators'] = array(
-				$validator,
-			);
-		}
-		return $spec;
-	}
+        if ($validator = $this->getValidator()) {
+            $spec['validators'] = array(
+                $validator,
+            );
+        }
+        return $spec;
+    }
 }
-
