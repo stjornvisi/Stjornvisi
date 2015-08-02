@@ -8,120 +8,97 @@
 
 ?>
 
-
-
-
-
-
 <div class="layout layout--three-columns page-user-create">
-	<section class="layout__section">
-		<ul class="page-user-create__main-menu">
-			<li>1# Notendaupplýsingar</li>
-			<li>2# Fyrirtækjaupplýsingar</li>
-			<li class="page-user-create__main-menu--active"	>3# Innskráning</li>
-		</ul>
-		<div class="layout__data">
-			<h1 class="layout__headline">Facebook</h1>
-			<p>Facebook auðkenni er æskileg leið.</p>
-			<a href="<?=$this->url('access/confirm');?>?facebook=1" class="btn btn-facebook js-btn-facebook"><i class="icon-facebook"></i> | Auðkenna með Facebook</a>
+    <section class="layout__section">
+        <ul class="page-user-create__main-menu">
+            <li>1# Notendaupplýsingar</li>
+            <li>2# Fyrirtækjaupplýsingar</li>
+            <li class="page-user-create__main-menu--active"	>3# Innskráning</li>
+        </ul>
+        <div class="layout__data">
+            <h1 class="layout__headline">Facebook</h1>
+            <p>Facebook auðkenni er æskileg leið.</p>
+            <a href="<?=$this->url('access/confirm');?>?facebook=1" class="btn btn-facebook js-btn-facebook"><i class="icon-facebook"></i> | Auðkenna með Facebook</a>
 
-			<h2 class="layout__sepline">eða</h2>
-			<h1 class="layout__headline">Notendanafn / lykilorð</h1>
-			<p>Þú getur líka valið að nota hefðbundið lykilorð.
-				Þá þurfum við að fá frá þér lykilorð.</p>
-			<?=$this->form()->openTag($this->form);?>
-				<div class="form-group">
-					<?=$this->formLabel($this->form->get('name'));?>
-					<?=$this->formElement($this->form->get('name')->setAttribute('class','form-control'));?>
-					<?=$this->formElementErrors($this->form->get('name'));?>
-				</div>
-				<div class="form-group">
-					<?=$this->formLabel($this->form->get('password'));?>
-					<?=$this->formElement($this->form->get('password')->setAttribute('class','form-control'));?>
-					<?=$this->formElementErrors($this->form->get('password'));?>
-				</div>
-				<div class="form-group">
-					<?=$this->formLabel($this->form->get('password-again'));?>
-					<?=$this->formElement($this->form->get('password-again')->setAttribute('class','form-control'));?>
-					<?=$this->formElementErrors($this->form->get('password-again'));?>
-				</div>
-				<div class="form-group">
-					<?=$this->formElement(
-						$this->form->get('submit')->setAttribute('class','btn btn-default')->setValue('Stofna')
-					);?>
-				</div>
+            <h2 class="layout__sepline">eða</h2>
+            <h1 class="layout__headline">Notendanafn / lykilorð</h1>
+            <p>Þú getur líka valið að nota hefðbundið lykilorð.
+                Þá þurfum við að fá frá þér lykilorð.</p>
+            <?=$this->form()->openTag($this->form);?>
+                <div class="form-group">
+                    <?=$this->formLabel($this->form->get('name'));?>
+                    <?=$this->formElement($this->form->get('name')->setAttribute('class', 'form-control'));?>
+                    <?=$this->formElementErrors($this->form->get('name'));?>
+                </div>
+                <div class="form-group">
+                    <?=$this->formLabel($this->form->get('password'));?>
+                    <?=$this->formElement($this->form->get('password')->setAttribute('class', 'form-control'));?>
+                    <?=$this->formElementErrors($this->form->get('password'));?>
+                </div>
+                <div class="form-group">
+                    <?=$this->formLabel($this->form->get('password-again'));?>
+                    <?=$this->formElement($this->form->get('password-again')->setAttribute('class', 'form-control'));?>
+                    <?=$this->formElementErrors($this->form->get('password-again'));?>
+                </div>
+                <div class="form-group">
+                    <?=$this->formElement(
+                        $this->form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna')
+                    );?>
+                </div>
 
-			<?= $this->form()->closeTag() ?>
+            <?= $this->form()->closeTag() ?>
+        </div>
+        <div class="layout__meta">
+            <section class="user-create__help-section user-create__help-section--active js-help-select">
+            <h1 class="layout__headline">Facebook eða lykilorð</h1>
+            <p>Stjónvísi býður nú notendum sínum upp á að nota Facebook
+                sem auðkenni.</p>
+                <p>Hefðbundin notendanafn/lykilorð leið er líka í boði.</p>
+            </section>
 
-			<!--form class="form-horizontal">
-				<div class="form-group">
-					<label>Notendanafn</label>
-					<input type="text" readonly="readonly" value="<?=$this->data->email?>" class="form-control" />
-				</div>
-				<div class="form-group">
-					<label>Lykilorð</label>
-					<input type="text" class="form-control js-input-passwd" />
-				</div>
-				<div class="form-group">
-					<label>Lykilorð aftur</label>
-					<input type="text"  class="form-control" />
-				</div>
-				<div class="form-group form-group--right">
-					<input type="submit" name="submit" class="btn btn-default" value="Innskrá">
-				</div>
-			</form-->
-		</div>
-		<div class="layout__meta">
-			<section class="user-create__help-section user-create__help-section--active js-help-select">
-			<h1 class="layout__headline">Facebook eða lykilorð</h1>
-			<p>Stjónvísi býður nú notendum sínum upp á að nota Facebook
-				sem auðkenni.</p>
-				<p>Hefðbundin notendanafn/lykilorð leið er líka í boði.</p>
-			</section>
+            <section class="user-create__help-section js-facebook-select">
+                <h1 class="layout__headline">Facebook</h1>
+                <p>Facebook auðkenni er um margt betri leið en að nota
+                    hefðbundið lykilorð. Notandi þarf hvortki að muna notendanafnið
+                    sitt né lykilorð.</p>
+                <p>Stjónvísi mælir með þessari aðferð.</p>
+            </section>
 
-			<section class="user-create__help-section js-facebook-select">
-				<h1 class="layout__headline">Facebook</h1>
-				<p>Facebook auðkenni er um margt betri leið en að nota
-					hefðbundið lykilorð. Notandi þarf hvortki að muna notendanafnið
-					sitt né lykilorð.</p>
-				<p>Stjónvísi mælir með þessari aðferð.</p>
-			</section>
-
-			<section class="user-create__help-section js-password-select">
-			<h1 class="layout__headline">Lykilorð</h1>
-			<p>Þeir notendur sem af einhverjum ástæðum vilja ekki nota Facebook
-				auðkenni geta valið sér lykilorð til auðkennis</p>
-			</section>
-		</div>
-	</section>
-	<aside class="layout__aside"></aside>
+            <section class="user-create__help-section js-password-select">
+            <h1 class="layout__headline">Lykilorð</h1>
+            <p>Þeir notendur sem af einhverjum ástæðum vilja ekki nota Facebook
+                auðkenni geta valið sér lykilorð til auðkennis</p>
+            </section>
+        </div>
+    </section>
+    <aside class="layout__aside"></aside>
 </div>
 <script>
-	var helpers = document.querySelectorAll('.user-create__help-section');
-	document.querySelector('.js-facebook-select').addEventListener('click',function(event){
-		event.preventDefault();
-		Array.prototype.forEach.call(helpers,function(text){
-			text.classList.remove('user-create__help-section--active');
-		});
-		this.classList.add('user-create__help-section--active');
-		document.querySelector('.js-btn-facebook').focus();
-	},false);
+    var helpers = document.querySelectorAll('.user-create__help-section');
+    document.querySelector('.js-facebook-select').addEventListener('click',function(event){
+        event.preventDefault();
+        Array.prototype.forEach.call(helpers,function(text){
+            text.classList.remove('user-create__help-section--active');
+        });
+        this.classList.add('user-create__help-section--active');
+        document.querySelector('.js-btn-facebook').focus();
+    },false);
 
-	document.querySelector('.js-password-select').addEventListener('click',function(event){
-		event.preventDefault();
-		Array.prototype.forEach.call(helpers,function(text){
-			text.classList.remove('user-create__help-section--active');
-		});
-		this.classList.add('user-create__help-section--active');
-		document.querySelector('.js-input-passwd').focus();
-	},false);
+    document.querySelector('.js-password-select').addEventListener('click',function(event){
+        event.preventDefault();
+        Array.prototype.forEach.call(helpers,function(text){
+            text.classList.remove('user-create__help-section--active');
+        });
+        this.classList.add('user-create__help-section--active');
+        document.querySelector('.js-input-passwd').focus();
+    },false);
 
-	document.querySelector('.js-help-select').addEventListener('click',function(event){
-		event.preventDefault();
-		Array.prototype.forEach.call(helpers,function(text){
-			text.classList.remove('user-create__help-section--active');
-		});
-		this.classList.add('user-create__help-section--active');
-	},false);
+    document.querySelector('.js-help-select').addEventListener('click',function(event){
+        event.preventDefault();
+        Array.prototype.forEach.call(helpers,function(text){
+            text.classList.remove('user-create__help-section--active');
+        });
+        this.classList.add('user-create__help-section--active');
+    },false);
 </script>
 

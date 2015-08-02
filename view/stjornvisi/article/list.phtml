@@ -7,31 +7,31 @@
  */
 ?>
 <div class="layout layout--three-columns">
-	<section class="layout__section">
-		<h1 class="layout__headline">Greinar (<?=count($this->articles)?>)</h1>
-		<ul class="block-list">
-			<?php foreach($this->articles as $article):?>
-				<li class="block-item">
-					<h2><a href="<?=$this->url('greinar/index',array('id'=>$article->id))?>"><?=$article->title?></a></h2>
-					<time class="block-item__time" datetime="<?=$article->published->format('c');?>"><?=$this->date($article->published)?></time>
-					<?=$this->paragrapher($article->summary);?>
-					<ul class="block-element__tags">
-						<?php foreach($article->authors as $author):?>
-							<li><?=$author->name?></li>
-						<?php endforeach;?>
-					</ul>
-				</li>
-			<?php endforeach;?>
-		</ul>
-	</section>
-	<aside class="layout__aside">
-		<?php if( $this->access->is_admin ):?>
-			<stjonvisi-control>
-				<a href="<?=$this->url('greinar/create');?>">Stofna</a>
-				<a href="<?=$this->url('greinar/author-list');?>">Höfundalisti</a>
-				<a href="<?=$this->url('greinar/author-create');?>">Stofna höfund</a>
-			</stjonvisi-control>
-		<?php endif; ?>
-	</aside>
+    <section class="layout__section">
+        <h1 class="layout__headline">Greinar (<?=count($this->articles)?>)</h1>
+        <ul class="block-list">
+            <?php foreach($this->articles as $article):?>
+                <li class="block-item">
+                    <h2><a href="<?=$this->url('greinar/index', array('id'=>$article->id))?>"><?=$article->title?></a></h2>
+                    <time class="block-item__time" datetime="<?=$article->published->format('c');?>"><?=$this->date($article->published)?></time>
+                    <?=$this->paragrapher($article->summary);?>
+                    <ul class="block-element__tags">
+                        <?php foreach($article->authors as $author):?>
+                            <li><?=$author->name?></li>
+                        <?php endforeach;?>
+                    </ul>
+                </li>
+            <?php endforeach;?>
+        </ul>
+    </section>
+    <aside class="layout__aside">
+        <?php if( $this->access->is_admin ):?>
+            <stjonvisi-control>
+                <a href="<?=$this->url('greinar/create');?>">Stofna</a>
+                <a href="<?=$this->url('greinar/author-list');?>">Höfundalisti</a>
+                <a href="<?=$this->url('greinar/author-create');?>">Stofna höfund</a>
+            </stjonvisi-control>
+        <?php endif; ?>
+    </aside>
 </div>
 

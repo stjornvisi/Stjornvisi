@@ -16,8 +16,7 @@ class Email extends Form
 {
     public function __construct($name = null)
     {
-
-		parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
         $this->setAttribute('method', 'post');
 
@@ -35,14 +34,14 @@ class Email extends Form
 
         $this->add([
             'name' => 'body',
-			'type' => 'Stjornvisi\Form\Element\Rich',
+            'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => [
                 'placeholder' => 'Texti',
                 'required' => 'required',
             ],
             'options' => [
                 'label' => 'Texti',
-				'bucket' => 'path'
+                'bucket' => 'path'
             ],
         ]);
 

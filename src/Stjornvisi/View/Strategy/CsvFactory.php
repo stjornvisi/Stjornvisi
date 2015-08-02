@@ -14,8 +14,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CsvFactory implements FactoryInterface
 {
-	public function createService(ServiceLocatorInterface $serviceLocator)
+    public function createService(ServiceLocatorInterface $serviceLocator)
     {
-		return new CsvStrategy(new CsvRenderer());
-	}
+        return new CsvStrategy(new CsvRenderer());
+    }
 }

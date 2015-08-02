@@ -7,12 +7,11 @@
  */
 
 namespace Stjornvisi\View\Model;
+
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\ModelInterface;
 
-
-class IcalModel extends ViewModel  {
-
-	protected $terminate = true;
-
-} 
+class IcalModel extends ViewModel
+{
+    protected $terminate = true;
+}

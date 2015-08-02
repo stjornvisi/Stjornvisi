@@ -8,32 +8,33 @@
 
 namespace Stjornvisi\Search\Index;
 
-
 use ZendSearch\Lucene\SearchIndexInterface;
 
-class Null implements IndexInterface {
+class Null implements IndexInterface
+{
+    /**
+     * Index one entry.
+     *
+     * @param $data
+     * @param SearchIndexInterface $index
+     *
+     * @return IndexInterface
+     */
+    public function index($data, SearchIndexInterface $index)
+    {
+        return $this;
+    }
 
-	/**
-	 * Index one entry.
-	 *
-	 * @param $data
-	 * @param SearchIndexInterface $index
-	 *
-	 * @return IndexInterface
-	 */
-	public function index($data, SearchIndexInterface $index){
-		return $this;
-	}
-
-	/**
-	 * Un-index one entry.
-	 *
-	 * @param $data
-	 * @param SearchIndexInterface $index
-	 *
-	 * @return IndexInterface
-	 */
-	public function unindex($data, SearchIndexInterface $index){
-		return $this;
-	}
+    /**
+     * Un-index one entry.
+     *
+     * @param $data
+     * @param SearchIndexInterface $index
+     *
+     * @return IndexInterface
+     */
+    public function unindex($data, SearchIndexInterface $index)
+    {
+        return $this;
+    }
 }

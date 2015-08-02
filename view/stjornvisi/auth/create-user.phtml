@@ -6,100 +6,98 @@
  * Time: 08:45
  */
 
-$this->form->setAttribute('class','form-horizontal');
+    $this->form->setAttribute('class',' form-horizontal');
 ?>
 
 <div class="layout layout--three-columns page-user-create">
-	<section class="layout__section">
-		<ul class="page-user-create__main-menu">
-			<li class="page-user-create__main-menu--active">1# Notendaupplýsingar</li>
-			<li>2# Fyrirtækjaupplýsingar</li>
-			<li>3# Innskráning</li>
-		</ul>
-		<div class="layout__data">
-			<?=$this->form()->openTag($this->form);?>
+    <section class="layout__section">
+        <ul class="page-user-create__main-menu">
+            <li class="page-user-create__main-menu--active">1# Notendaupplýsingar</li>
+            <li>2# Fyrirtækjaupplýsingar</li>
+            <li>3# Innskráning</li>
+        </ul>
+        <div class="layout__data">
+            <?=$this->form()->openTag($this->form);?>
 
-			<div class="form-group <?=(!empty($this->form->get('name')->getMessages()))?'has-error':'';?> ">
-				<?=$this->formLabel($form->get('name'));?>
-				<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
-				<?=$this->formElementErrors($form->get('name'));?>
-			</div>
+            <div class="form-group <?=(!empty($this->form->get('name')->getMessages()))?'has-error':'';?> ">
+                <?=$this->formLabel($form->get('name'));?>
+                <?=$this->formElement($form->get('name')->setAttribute('class', 'form-control'));?>
+                <?=$this->formElementErrors($form->get('name'));?>
+            </div>
 
-			<div class="form-group <?=(!empty($this->form->get('email')->getMessages()))?'has-error':'';?> ">
-				<?=$this->formLabel($form->get('email'));?>
-				<?=$this->formElement($form->get('email')->setAttribute('class','form-control'));?>
-				<?=$this->formElementErrors($form->get('email'));?>
-			</div>
+            <div class="form-group <?=(!empty($this->form->get('email')->getMessages()))?'has-error':'';?> ">
+                <?=$this->formLabel($form->get('email'));?>
+                <?=$this->formElement($form->get('email')->setAttribute('class', 'form-control'));?>
+                <?=$this->formElementErrors($form->get('email'));?>
+            </div>
 
-			<div class="form-group <?=(!empty($this->form->get('title')->getMessages()))?'has-error':'';?> ">
-				<?=$this->formLabel($form->get('title'));?>
-				<?=$this->formElement($form->get('title')->setAttribute('class','form-control'));?>
-				<?=$this->formElementErrors($form->get('title'));?>
-			</div>
+            <div class="form-group <?=(!empty($this->form->get('title')->getMessages()))?'has-error':'';?> ">
+                <?=$this->formLabel($form->get('title'));?>
+                <?=$this->formElement($form->get('title')->setAttribute('class', 'form-control'));?>
+                <?=$this->formElementErrors($form->get('title'));?>
+            </div>
 
-			<div class="form-group form-group--right">
-				<?=$this->formElement(
-					$form->get('submit')->setAttribute('class','btn btn-default')->setValue('Stofna')
-				);?>
-			</div>
+            <div class="form-group form-group--right">
+                <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna'));?>
+            </div>
 
-			<?= $this->form()->closeTag() ?>
-		</div>
-		<div class="layout__meta">
-			<h1 class="layout__headline">Notenda upplýsingar</h1>
-			<p>Að stofna notendaaðgang er einfalt. Ferlið skiptist í þrjá hluta</p>
-			<ol>
-				<li>Fyrst þurfum við að fá frá þér fullt nafn, gilt netfang og starfstitil</li>
-				<li>Því næst þarft þú að tengja þig við fyrirtæki, stofnun eða skóla</li>
-				<li>Seinast skráir þú þig inn.</li>
-			</ol>
-			<h2 class="layout__headline">Verðskrá</h2>
-			<p>Aðild að Stjórnvísi er opin öllum bæði fyrirtækjum og einstaklingum. Upphæð félagsgjalda
-				fyrirtækja fer eftir starfsmannafjölda. Allir starfsmenn aðildarfyrirtækja fá
-				aðgang að faghópafundum félagsins sér að kostnaðarlausu. Félagsgjöld eru ákveðin á
-				aðalfundi félagsins í maí ár hvert en fjárhagsárið er frá 1.janúar til 31.desember.</p>
+            <?= $this->form()->closeTag() ?>
+        </div>
+        <div class="layout__meta">
+            <h1 class="layout__headline">Notenda upplýsingar</h1>
+            <p>Að stofna notendaaðgang er einfalt. Ferlið skiptist í þrjá hluta</p>
+            <ol>
+                <li>Fyrst þurfum við að fá frá þér fullt nafn, gilt netfang og starfstitil</li>
+                <li>Því næst þarft þú að tengja þig við fyrirtæki, stofnun eða skóla</li>
+                <li>Seinast skráir þú þig inn.</li>
+            </ol>
+            <h2 class="layout__headline">Verðskrá</h2>
+            <p>Aðild að Stjórnvísi er opin öllum bæði fyrirtækjum og einstaklingum. Upphæð félagsgjalda
+                fyrirtækja fer eftir starfsmannafjölda. Allir starfsmenn aðildarfyrirtækja fá
+                aðgang að faghópafundum félagsins sér að kostnaðarlausu. Félagsgjöld eru ákveðin á
+                aðalfundi félagsins í maí ár hvert en fjárhagsárið er frá 1.janúar til 31.desember.</p>
 
-			<h3 class="layout__headline">Félagsgjöld starfsárið 2014 - 2015</h3>
+            <h3 class="layout__headline">Félagsgjöld starfsárið 2014 - 2015</h3>
 
-			<dl class="block-property-value">
-				<dt>&gt;200 starfsmenn</dt>
-				<dd>110.900</dd>
+            <dl class="block-property-value">
+                <dt>&gt;200 starfsmenn</dt>
+                <dd>110.900</dd>
 
-				<dt>100 - 199 starfsmenn</dt>
-				<dd>88.900</dd>
+                <dt>100 - 199 starfsmenn</dt>
+                <dd>88.900</dd>
 
-				<dt>50 - 99 starfsmenn</dt>
-				<dd>57.900</dd>
+                <dt>50 - 99 starfsmenn</dt>
+                <dd>57.900</dd>
 
-				<dt>50 - 99 starfsmenn</dt>
-				<dd>57.900</dd>
+                <dt>50 - 99 starfsmenn</dt>
+                <dd>57.900</dd>
 
-				<dt>25 - 49 starfsmenn</dt>
-				<dd>43.900</dd>
+                <dt>25 - 49 starfsmenn</dt>
+                <dd>43.900</dd>
 
-				<dt>6 - 25 starfsmenn</dt>
-				<dd>43.900</dd>
+                <dt>6 - 25 starfsmenn</dt>
+                <dd>43.900</dd>
 
-				<dt>6 - 25 starfsmenn</dt>
-				<dd>25.900</dd>
+                <dt>6 - 25 starfsmenn</dt>
+                <dd>25.900</dd>
 
-				<dt>&lt;5 starfsmenn</dt>
-				<dd>25.900</dd>
+                <dt>&lt;5 starfsmenn</dt>
+                <dd>25.900</dd>
 
-				<dt>Einstaklingar</dt>
-				<dd>9.900</dd>
+                <dt>Einstaklingar</dt>
+                <dd>9.900</dd>
 
-			</dl>
+            </dl>
 
-			<p>Nemendur á háskólastigi fá fría aðild að félaginu til eins árs í senn. Nemendur skrá sig sem
-			"háskólanema" í skráningarferlinu og félagið áskilur sér rétt til að leita staðfestingar á
-			skólavist hjá viðkomandi háskóla.</p>
-			<p></p>
-		</div>
-	</section>
-	<aside class="layout__aside">
+            <p>Nemendur á háskólastigi fá fría aðild að félaginu til eins árs í senn. Nemendur skrá sig sem
+            "háskólanema" í skráningarferlinu og félagið áskilur sér rétt til að leita staðfestingar á
+            skólavist hjá viðkomandi háskóla.</p>
+            <p></p>
+        </div>
+    </section>
+    <aside class="layout__aside">
 
-	</aside>
+    </aside>
 </div>
 
 

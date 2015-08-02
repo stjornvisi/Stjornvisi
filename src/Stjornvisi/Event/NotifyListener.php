@@ -32,59 +32,59 @@ use PhpAmqpLib\Message\AMQPMessage;
  */
 class NotifyListener implements QueueConnectionAwareInterface, LoggerAwareInterface
 {
-	/**
-	 * @var LoggerInterface
-	 */
-	protected $logger;
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
-	protected $factory;
+    protected $factory;
 
-	/**
-	 * @var \Zend\Stdlib\CallbackHandler[]
-	 */
-	protected $listeners = array();
+    /**
+     * @var \Zend\Stdlib\CallbackHandler[]
+     */
+    protected $listeners = array();
 
-	/**
-	 * Allow calls as this would be a function.
-	 *
-	 * @param Event $event
-	 */
-	public function __invoke(Event $event)
-	{
-		try {
-			$connection = $this->factory->createConnection();
-			$channel = $connection->channel();
+    /**
+     * Allow calls as this would be a function.
+     *
+     * @param Event $event
+     */
+    public function __invoke(Event $event)
+    {
+        try {
+            $connection = $this->factory->createConnection();
+            $channel = $connection->channel();
 
-			$channel->queue_declare('notify_queue', false, true, false, false);
-			$msg = new AMQPMessage(json_encode($event->getParams()), ['delivery_mode' => 2]);
+            $channel->queue_declare('notify_queue', false, true, false, false);
+            $msg = new AMQPMessage(json_encode($event->getParams()), ['delivery_mode' => 2]);
 
-			$channel->basic_publish($msg, '', 'notify_queue');
+            $channel->basic_publish($msg, '', 'notify_queue');
 
-			$channel->close();
-			$connection->close();
-		} catch (\Exception $e) {
-			$this->logger->critical("Notify Service Event says: {$e->getMessage()}", $e->getTrace());
-		}
-	}
+            $channel->close();
+            $connection->close();
+        } catch (\Exception $e) {
+            $this->logger->critical("Notify Service Event says: {$e->getMessage()}", $e->getTrace());
+        }
+    }
 
-	/**
-	 * Sets a logger instance on the object
-	 *
-	 * @param LoggerInterface $logger
-	 * @return null
-	 */
-	public function setLogger(LoggerInterface $logger)
-	{
-		$this->logger = $logger;
-	}
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
 
-	/**
-	 * Set Queue factory
-	 * @param QueueConnectionFactoryInterface $factory
-	 * @return mixed
-	 */
-	public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
-	{
-		$this->factory = $factory;
-	}
+    /**
+     * Set Queue factory
+     * @param QueueConnectionFactoryInterface $factory
+     * @return mixed
+     */
+    public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
 }

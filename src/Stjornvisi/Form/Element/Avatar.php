@@ -12,12 +12,12 @@ use \Zend\Form\Element\Text;
 
 class Avatar extends Text
 {
-	/**
-	 * @var array
-	 */
-	protected $attributes = array(
-		'type' => 'text',
-		'data-type' => 'avatar',
-		'readonly' => 'readonly'
-	);
+    /**
+     * @var array
+     */
+    protected $attributes = array(
+        'type' => 'text',
+        'data-type' => 'avatar',
+        'readonly' => 'readonly'
+    );
 }

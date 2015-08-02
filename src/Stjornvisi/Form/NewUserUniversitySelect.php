@@ -11,47 +11,42 @@ namespace Stjornvisi\Form;
 use Stjornvisi\Service\Company;
 use Zend\Form\Form;
 
-class NewUserUniversitySelect extends Form {
+class NewUserUniversitySelect extends Form
+{
+    public function __construct(Company $company)
+    {
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
-	public function __construct(Company $company){
+        $companies = $company->fetchType(['Háskóli']);
+        $options = array();
+        foreach ($companies as $item) {
+            $options[$item->id] = $item->name;
+        }
 
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
+        $this->setAttribute('method', 'post');
 
-		$companies = $company->fetchType(['Háskóli']);
-		$options = array();
-		foreach($companies as $item){
-			$options[$item->id] = $item->name;
-		}
+        $this->add(array(
+            'name' => 'university-select',
+            'type' => 'Zend\Form\Element\Select',
+            'attributes' => array(
+                'placeholder' => 'Háskólar',
+            ),
+            'options' => array(
+                'label' => 'Háskólar',
+                'empty_option' => 'Veldu háskóla',
+                'value_options' => $options
+            ),
+        ));
 
-		$this->setAttribute('method', 'post');
-
-		$this->add(array(
-			'name' => 'university-select',
-			'type' => 'Zend\Form\Element\Select',
-			'attributes' => array(
-				'placeholder' => 'Háskólar',
-			),
-			'options' => array(
-				'label' => 'Háskólar',
-				'empty_option' => 'Veldu háskóla',
-				'value_options' => $options
-			),
-		));
-
-
-
-		$this->add(array(
-			'name' => 'submit-university-select',
-			'type' => 'Zend\Form\Element\Submit',
-			'attributes' => array(
-				'value' => 'Submit',
-			),
-			'options' => array(
-				'label' => 'Submit',
-			),
-		));
-
-	}
-
-
-} 
+        $this->add(array(
+            'name' => 'submit-university-select',
+            'type' => 'Zend\Form\Element\Submit',
+            'attributes' => array(
+                'value' => 'Submit',
+            ),
+            'options' => array(
+                'label' => 'Submit',
+            ),
+        ));
+    }
+}

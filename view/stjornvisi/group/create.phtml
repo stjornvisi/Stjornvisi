@@ -1,42 +1,42 @@
-<?php $this->form->setAttribute('class','form-horizontal'); ?>
+<?php
+    $this->form->setAttribute('class','form-horizontal');
+?>
 <div class="layout layout--three-columns">
-	<section class="layout__section">
-		<?=$this->form()->openTag($this->form);?>
+    <section class="layout__section">
+        <?=$this->form()->openTag($this->form);?>
 
         <div class="form-group <?=empty($this->form->get('name')->getMessages())?'':'has-error';?>">
-			<?=$this->formLabel($form->get('name'));?>
-			<?=$this->formElement($form->get('name')->setAttribute('class','form-control'));?>
-			<?=$this->formElementErrors($form->get('name'));?>
-		</div>
+            <?=$this->formLabel($form->get('name'));?>
+            <?=$this->formElement($form->get('name')->setAttribute('class', 'form-control'));?>
+            <?=$this->formElementErrors($form->get('name'));?>
+        </div>
         <div class="form-group <?=empty($this->form->get('name_short')->getMessages())?'':'has-error';?>">
-			<?=$this->formLabel($form->get('name_short'));?>
-			<?=$this->formElement($form->get('name_short')->setAttribute('class','form-control'));?>
-			<?=$this->formElementErrors($form->get('name_short'));?>
-		</div>
+            <?=$this->formLabel($form->get('name_short'));?>
+            <?=$this->formElement($form->get('name_short')->setAttribute('class', 'form-control'));?>
+            <?=$this->formElementErrors($form->get('name_short'));?>
+        </div>
         <div class="form-group <?=empty($this->form->get('avatar')->getMessages())?'':'has-error';?>">
             <?=$this->formLabel($form->get('avatar'));?>
-            <?=$this->formElement($form->get('avatar')->setAttribute('class','form-control'));?>
+            <?=$this->formElement($form->get('avatar')->setAttribute('class', 'form-control'));?>
             <?=$this->formElementErrors($form->get('avatar'));?>
         </div>
         <div class="form-group <?=empty($this->form->get('summary')->getMessages())?'':'has-error';?>">
             <?=$this->formLabel($form->get('summary'));?>
-            <?=$this->formElement($form->get('summary')->setAttribute('class','form-control'));?>
+            <?=$this->formElement($form->get('summary')->setAttribute('class', 'form-control'));?>
             <?=$this->formElementErrors($form->get('summary'));?>
         </div>
         <div class="form-group <?=empty($this->form->get('body')->getMessages())?'':'has-error';?>">
             <?=$this->formLabel($form->get('body'));?>
-            <?=$this->formElement($form->get('body')->setAttribute('class','form-control'));?>
+            <?=$this->formElement($form->get('body')->setAttribute('class', 'form-control'));?>
             <?=$this->formElementErrors($form->get('body'));?>
         </div>
-		<div class="form-group">
-			<?=$this->formElement(
-                $form->get('submit')->setAttribute('class','btn btn-default')->setValue('Stofna')
-            );?>
-		</div>
-		<?= $this->form()->closeTag() ?>
-	</section>
-	<aside class="layout__aside">
+        <div class="form-group">
+            <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna'));?>
+        </div>
+        <?= $this->form()->closeTag() ?>
+    </section>
+    <aside class="layout__aside">
 
-	</aside>
+    </aside>
 </div>
 

@@ -27,6 +27,5 @@ class Image extends AbstractHelper
         $classes = implode(' ', $class);
 
         return sprintf('<img src="%s" srcset="%s" class="%s" />', $src, $srcset, $classes);
-
     }
 }

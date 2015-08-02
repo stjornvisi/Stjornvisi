@@ -20,9 +20,9 @@ use \PDO;
 
 class AttendTest extends PHPUnit_Extensions_Database_TestCase
 {
-	static private $pdo = null;
+    static private $pdo = null;
 
-	private $conn = null;
+    private $conn = null;
 
     public function testEverythingOk()
     {
@@ -237,56 +237,56 @@ class AttendTest extends PHPUnit_Extensions_Database_TestCase
         $notify->send();
     }
 
-	/**
-	 *
-	 */
-	protected function setUp()
+    /**
+     *
+     */
+    protected function setUp()
     {
         Bootstrap::getServiceManager();
-		$conn=$this->getConnection();
-		$conn->getConnection()->query("set foreign_key_checks=0");
-		parent::setUp();
-		$conn->getConnection()->query("set foreign_key_checks=1");
-	}
+        $conn=$this->getConnection();
+        $conn->getConnection()->query("set foreign_key_checks=0");
+        parent::setUp();
+        $conn->getConnection()->query("set foreign_key_checks=1");
+    }
 
-	/**
-	 * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-	 */
-	public function getConnection()
+    /**
+     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
+     */
+    public function getConnection()
     {
-		if ($this->conn === null) {
-			if (self::$pdo == null) {
-				self::$pdo = new PDO(
-					$GLOBALS['DB_DSN'],
-					$GLOBALS['DB_USER'],
-					$GLOBALS['DB_PASSWD'],
-					[
-						PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-						PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-						PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-					]
+        if ($this->conn === null) {
+            if (self::$pdo == null) {
+                self::$pdo = new PDO(
+                    $GLOBALS['DB_DSN'],
+                    $GLOBALS['DB_USER'],
+                    $GLOBALS['DB_PASSWD'],
+                    [
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+                    ]
                 );
-			}
-			$this->conn = $this->createDefaultDBConnection(self::$pdo);
-		}
+            }
+            $this->conn = $this->createDefaultDBConnection(self::$pdo);
+        }
 
-		return $this->conn;
-	}
+        return $this->conn;
+    }
 
-	/**
-	 * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
-	 */
-	public function getDataSet()
+    /**
+     * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
+     */
+    public function getDataSet()
     {
-		return new ArrayDataSet([
-			'User' => [
-				['id'=>1,'name'=>'einar','passwd'=>'1234','created_date'=>date('Y-m-d'),'modified_date'=>date('Y-m-d')],
-			],
-			'Event' => [
-				['id'=>1,'subject'=>'s1']
-			],
-		]);
-	}
+        return new ArrayDataSet([
+            'User' => [
+                ['id'=>1,'name'=>'einar','passwd'=>'1234','created_date'=>date('Y-m-d'),'modified_date'=>date('Y-m-d')],
+            ],
+            'Event' => [
+                ['id'=>1,'subject'=>'s1']
+            ],
+        ]);
+    }
 
     /**
      * Provide some connection values for the

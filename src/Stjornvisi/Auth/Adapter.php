@@ -30,10 +30,10 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
      */
     private $password;
 
-	/**
-	 * @var int
-	 */
-	private $id;
+    /**
+     * @var int
+     */
+    private $id;
 
     /**
      * Performs an authentication attempt
@@ -42,25 +42,25 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
      * @throws \Zend\Authentication\Adapter\Exception\ExceptionInterface If authentication cannot be performed
      */
     public function authenticate()
-	{
-		if ($this->id) {
-			$statement = $this->pdo
-				->prepare("
-				SELECT * FROM `User`
-				WHERE id = :id");
-			$statement->execute(array(
-				'id' => $this->id,
-			));
-		} else {
-			$statement = $this->pdo
-				->prepare("
-				SELECT * FROM `User`
-				WHERE email = :email AND passwd = md5(:passwd)");
-			$statement->execute(array(
-				'email' => $this->username,
-				'passwd' => $this->password
-			));
-		}
+    {
+        if ($this->id) {
+            $statement = $this->pdo
+                ->prepare("
+                SELECT * FROM `User`
+                WHERE id = :id");
+            $statement->execute(array(
+                'id' => $this->id,
+            ));
+        } else {
+            $statement = $this->pdo
+                ->prepare("
+                SELECT * FROM `User`
+                WHERE email = :email AND passwd = md5(:passwd)");
+            $statement->execute(array(
+                'email' => $this->username,
+                'passwd' => $this->password
+            ));
+        }
 
         $result = $statement->fetchAll();
         if (count($result) == 0) {
@@ -69,8 +69,8 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
             $data = $result[0];
             $updateStatement = $this->pdo
                 ->prepare("
-					UPDATE `User` SET frequency = frequency+1, modified_date = NOW()
-					WHERE id = :id");
+                    UPDATE `User` SET frequency = frequency+1, modified_date = NOW()
+                    WHERE id = :id");
             $updateStatement->execute(array(
                 'id' => $data->id
             ));
@@ -91,10 +91,10 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
      *
      * @param $id
      */
-	public function setIdentifier($id)
-	{
-		$this->id = $id;
-	}
+    public function setIdentifier($id)
+    {
+        $this->id = $id;
+    }
 
     /**
      * Set username and password
@@ -111,7 +111,7 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
      * @param $password
      */
     public function setCredentials($username, $password)
-	{
+    {
         $this->username = $username;
         $this->password = $password;
     }
@@ -122,8 +122,8 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
      * @param \PDO $pdo
      * @return mixed
      */
-	public function setDataSource(\PDO $pdo)
-	{
-		$this->pdo = $pdo;
-	}
+    public function setDataSource(\PDO $pdo)
+    {
+        $this->pdo = $pdo;
+    }
 }

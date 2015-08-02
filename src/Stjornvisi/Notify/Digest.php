@@ -220,14 +220,13 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
             if (isset($channel) && $channel) {
                 $channel->close();
             }
-            if(isset($connection) && $connection){
+            if (isset($connection) && $connection) {
                 $connection->close();
             }
 
             $this->closeDataSourceDriver();
         }
         return $this;
-
     }
 
     /**

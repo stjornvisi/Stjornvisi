@@ -10,44 +10,48 @@ $auth = new \Zend\Authentication\AuthenticationService();
 
 ?>
 <div class="layout layout--three-columns page-error page-401">
-	<section class="layout__section">
-		<div class="layout__data">
-			<h1 class="page-error__headline">{401} Unauthorized </h1>
-			<h2 class="page-error__message">Þú hefur ekki aðgang að þessari síðu</h2>
-		</div>
-		<div class="layout__meta">
-			<img src="<?=$this->basepath('stylesheets/images/401.png')?>">
-		</div>
+    <section class="layout__section">
+        <div class="layout__data">
+            <h1 class="page-error__headline">{401} Unauthorized </h1>
+            <h2 class="page-error__message">Þú hefur ekki aðgang að þessari síðu</h2>
+        </div>
+        <div class="layout__meta">
+            <img src="<?=$this->basepath('stylesheets/images/401.png')?>">
+        </div>
 
-	</section>
-	<aside class="layout__aside">
+    </section>
+    <aside class="layout__aside">
 
-	</aside>
+    </aside>
 </div>
 
-<?php if( !$auth->hasIdentity() ):?>
+<?php if(!$auth->hasIdentity()):?>
 <div class="layout layout--no-head layout--three-columns page-login">
-	<section class="layout__section">
-		<div class="layout__data page-login__service">
-			<p>Stjórnvísi býður nú upp á að notendur noti Facebook sem auðkenni. Auðvelt er
-				að tengja eldri notendareikninga við þessa þjónustu, prufaðu bara.</p>
-			<a href="https://www.facebook.com/v2.2/dialog/oauth?client_id=1429359840619871&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Finnskra%2Fcallback-login-facebook&amp;state=dc49477828daf2231a42244f26fc6643&amp;sdk=php-sdk-4.0.17&amp;scope=" class="btn btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a>
-			<a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
-		</div>
-		<div class="layout__meta page-login__manual">
-			<p>Að sjálfsögðu er hægt að skrá sig inn með gamla mátanum</p>
-			<form action="/innskra" method="post" name="stjornvisi-form-login" class="form-horizontal" id="stjornvisi-form-login">
-				<div class="form-group">
-					<label for="email">Netfang</label>				<input name="email" type="text" class="form-control" value="">							</div>
-				<div class="form-group">
-					<label for="passwd">Lykilorð</label>				<input name="passwd" type="password" class="form-control" value="">							</div>
+    <section class="layout__section">
+        <div class="layout__data page-login__service">
+            <p>Stjórnvísi býður nú upp á að notendur noti Facebook sem auðkenni. Auðvelt er
+                að tengja eldri notendareikninga við þessa þjónustu, prufaðu bara.</p>
+            <a href="https://www.facebook.com/v2.2/dialog/oauth?client_id=1429359840619871&amp;redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Finnskra%2Fcallback-login-facebook&amp;state=dc49477828daf2231a42244f26fc6643&amp;sdk=php-sdk-4.0.17&amp;scope=" class="btn btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a>
+            <a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
+        </div>
+        <div class="layout__meta page-login__manual">
+            <p>Að sjálfsögðu er hægt að skrá sig inn með gamla mátanum</p>
+            <form action="/innskra" method="post" name="stjornvisi-form-login" class="form-horizontal" id="stjornvisi-form-login">
+                <div class="form-group">
+                    <label for="email">Netfang</label>
+                    <input name="email" type="text" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <label for="passwd">Lykilorð</label>
+                    <input name="passwd" type="password" class="form-control" value="">
+                </div>
+                <div class="form-group">
+                    <input name="submit" type="submit" id="submitbutton" class="btn btn-default" value="Innskrá">
+                </div>
+            </form>
+        </div>
 
-				<div class="form-group">
-					<input name="submit" type="submit" id="submitbutton" class="btn btn-default" value="Innskrá">			</div>
-
-			</form>		</div>
-
-	</section>
-	<aside class="layout__aside"></aside>
+    </section>
+    <aside class="layout__aside"></aside>
 </div>
 <?php endif;?>

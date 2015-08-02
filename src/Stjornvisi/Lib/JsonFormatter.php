@@ -10,11 +10,11 @@ namespace Stjornvisi\Lib;
 
 class JsonFormatter extends \Monolog\Formatter\JsonFormatter
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function format(array $record)
-	{
-		return json_encode($record) .",". ($this->appendNewline ? "\n" : '');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function format(array $record)
+    {
+        return json_encode($record) .",". ($this->appendNewline ? "\n" : '');
+    }
 }

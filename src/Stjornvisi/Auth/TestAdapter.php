@@ -13,21 +13,21 @@ use Zend\Authentication\Result;
 
 class TestAdapter implements AdapterInterface
 {
-	private $user;
+    private $user;
 
-	public function __construct($user)
+    public function __construct($user)
     {
-		$this->user = $user;
-	}
+        $this->user = $user;
+    }
 
-	/**
-	 * Performs an authentication attempt
-	 *
-	 * @return \Zend\Authentication\Result
-	 * @throws \Zend\Authentication\Adapter\Exception\ExceptionInterface If authentication cannot be performed
-	 */
-	public function authenticate()
+    /**
+     * Performs an authentication attempt
+     *
+     * @return \Zend\Authentication\Result
+     * @throws \Zend\Authentication\Adapter\Exception\ExceptionInterface If authentication cannot be performed
+     */
+    public function authenticate()
     {
-		return new Result(Result::SUCCESS, $this->user);
-	}
+        return new Result(Result::SUCCESS, $this->user);
+    }
 }

@@ -17,18 +17,18 @@ use Zend\EventManager\EventInterface;
 class ServiceEventListener extends AbstractListenerAggregate
 {
 
-	/** @var \Psr\Log\LoggerInterface;  */
-	private $logger;
+    /** @var \Psr\Log\LoggerInterface;  */
+    private $logger;
 
-	/**
-	 * Create this Aggregate Event Listener.
-	 *
-	 * @param LoggerInterface $logger
-	 */
-	public function __construct(LoggerInterface $logger)
+    /**
+     * Create this Aggregate Event Listener.
+     *
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
     {
-		$this->logger = $logger;
-	}
+        $this->logger = $logger;
+    }
 
     /**
      * Attach one or more listeners
@@ -43,23 +43,23 @@ class ServiceEventListener extends AbstractListenerAggregate
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach(
-			array('create','read','update','delete','index'),
-			array($this, 'log')
-		);
+            array('create','read','update','delete','index'),
+            array($this, 'log')
+        );
     }
 
-	/**
-	 * Actually do the logging.
-	 *
-	 * @param EventInterface $event
-	 */
-	public function log(EventInterface $event)
+    /**
+     * Actually do the logging.
+     *
+     * @param EventInterface $event
+     */
+    public function log(EventInterface $event)
     {
-		$params = $event->getParams();
-		$method = isset($params[0])?$params[0]:'';
-		$this->logger->debug(
-			get_class($event->getTarget())."::{$method} - {$event->getName()}"
-		);
+        $params = $event->getParams();
+        $method = isset($params[0])?$params[0]:'';
+        $this->logger->debug(
+            get_class($event->getTarget())."::{$method} - {$event->getName()}"
+        );
 
-	}
+    }
 }

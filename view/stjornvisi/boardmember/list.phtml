@@ -19,7 +19,7 @@ use Stjornvisi\Properties\FileProperties;
                             <?php foreach($board as $item):?>
                                 <li class="boardmember-list__item <?= ($item->is_chairman||$item->is_manager)?'boardmember-list__item--large':'';?>">
                                     <?php if($item->avatar):?>
-										<?=$this->image($item->avatar, FileProperties::DIR_MEDIUM, ['borardmember-list__avatar']);?>
+                                    <?=$this->image($item->avatar, FileProperties::DIR_MEDIUM, ['borardmember-list__avatar']);?>
                                     <?php endif;?>
                                     <h1 class="borardmember-list__name"><?=$item->name?></h1>
                                     <h2 class="borardmember-list__company"><?=$item->company?></h2>
@@ -32,9 +32,9 @@ use Stjornvisi\Properties\FileProperties;
                                     <?php endif;?>
                                     <?php if($this->access->is_admin):?>
                                         <stjonvisi-control class="inline">
-                                            <a href="<?=$this->url('stjornin/update-member',array('id'=>$item->id))?>">Uppfæra einstakling</a>
-                                            <a href="<?=$this->url('stjornin/update-connect-member',array('id'=>$item->connection_id))?>">Uppfæra skráningu</a>
-                                            <a href="<?=$this->url('stjornin/delete-connect-member',array('id'=>$item->connection_id))?>">Fjarlægja skráningu</a>
+                                            <a href="<?=$this->url('stjornin/update-member', array('id'=>$item->id))?>">Uppfæra einstakling</a>
+                                            <a href="<?=$this->url('stjornin/update-connect-member', array('id'=>$item->connection_id))?>">Uppfæra skráningu</a>
+                                            <a href="<?=$this->url('stjornin/delete-connect-member', array('id'=>$item->connection_id))?>">Fjarlægja skráningu</a>
                                         </stjonvisi-control>
                                     <?php endif;?>
                                 </li>

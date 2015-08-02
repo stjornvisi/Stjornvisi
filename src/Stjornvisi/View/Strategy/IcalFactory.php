@@ -14,8 +14,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class IcalFactory implements FactoryInterface
 {
-	public function createService(ServiceLocatorInterface $serviceLocator){
-
-		return new IcalStrategy(new IcalRenderer());
-	}
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        return new IcalStrategy(new IcalRenderer());
+    }
 }

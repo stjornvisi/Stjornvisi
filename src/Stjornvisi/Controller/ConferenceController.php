@@ -39,12 +39,9 @@ class ConferenceController extends AbstractActionController
             ? $authService->getIdentity()->id
             : null
         )) != false ) {
-            $groupIds = array_map(
-            function ($i) {
-                    return $i->id;
-            },
-            $conference->groups
-        );
+            $groupIds = array_map(function ($i) {
+                return $i->id;
+            }, $conference->groups);
             //TODO don't use $_POST
             //TODO send registration mail
             if ($this->request->isPost()) {
@@ -119,23 +116,6 @@ class ConferenceController extends AbstractActionController
         } else {
             var_dump('404');
         }
-        /**
-        $sm = $this->getServiceLocator();
-        $conferenceService = $sm->get('Stjornvisi\Service\Conference'); /** @var $conferenceService \Stjornvisi\Service\Conference
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $auth = new AuthenticationService();
-        if ( ( $conference = $conferenceService->get($this->params()->fromRoute('id',0)) ) != false ) {
-        return new ViewModel(array(
-        'conference' => $conference,
-        'access' => $userService->getType(( $auth->hasIdentity() )
-        ? $auth->getIdentity()->id
-        : null)
-        ));
-        } else {
-        $this->getResponse()->setStatusCode(404);
-        return;
-        }
-*/
     }
     /**
      * Create one conference.

@@ -11,7 +11,8 @@ namespace Stjornvisi\Form;
 use Stjornvisi\Lib\Time;
 use Zend\Stdlib\Hydrator\ArraySerializable;
 
-class Hydrator extends ArraySerializable {
+class Hydrator extends ArraySerializable
+{
     /**
      * Extract values from the provided object
      *
@@ -25,7 +26,8 @@ class Hydrator extends ArraySerializable {
     {
         if (!is_callable(array($object, 'getArrayCopy'))) {
             throw new Exception\BadMethodCallException(sprintf(
-                '%s expects the provided object to implement getArrayCopy()', __METHOD__
+                '%s expects the provided object to implement getArrayCopy()',
+                __METHOD__
             ));
         }
 
@@ -36,15 +38,15 @@ class Hydrator extends ArraySerializable {
                 unset($data[$name]);
                 continue;
             }
-            if( $value instanceof Time ){
+            if ($value instanceof Time) {
                 $data[$name] = $this->extractValue($name, $value->format('H:i'));
-            }else if($value instanceof \DateTime){
+            } elseif ($value instanceof \DateTime) {
                 $data[$name] = $this->extractValue($name, $value->format('Y-m-d'));
-            }else{
+            } else {
                 $data[$name] = $this->extractValue($name, $value);
             }
 
         }
         return $data;
     }
-} 
+}

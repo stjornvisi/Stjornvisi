@@ -6,69 +6,69 @@
  * Time: 10:05 PM
  */
 
-	$stack = array_chunk( $this->companies, ceil(count($this->companies)/3) );
+    $stack = array_chunk($this->companies, ceil(count($this->companies)/3));
 
 ?>
 
 <div class="layout layout--three-columns">
-	<section class="layout__section company-list">
-		<h1 class="layout__headline">Fyrirtæki (<?=count($this->companies);?>)</h1>
+    <section class="layout__section company-list">
+        <h1 class="layout__headline">Fyrirtæki (<?=count($this->companies);?>)</h1>
 
-		<?php if($this->access->is_admin):?>
-			<table class="block-table">
-				<thead>
-					<tr>
-						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'nafn'))?>">Nafn</a></td>
-						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'tegund'))?>">Tegund</a></td>
-						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'staerd'))?>">Stærð</a></td>
-						<td><a href="<?=$this->url('fyrirtaeki/order',array('order'=>'dags'))?>">Síðan</a></td>
-					</tr>
-				</thead>
-				<tfoot></tfoot>
-				<tbody>
-				<?php foreach($this->companies as $company):?>
-					<tr>
-						<td>
-							<a href="<?=$this->url('fyrirtaeki/index',array('id'=>$company->id))?>"><?=$company->name?></a>
-						</td>
-						<td>
-							<?=$company->business_type?>
-						</td>
-						<td>
-							<?=$company->number_of_employees?>
-						</td>
-						<td>
-							<?=$this->date($company->created)?>
-						</td>
-					</tr>
-				<?php endforeach;?>
-				</tbody>
-			</table>
-		<?php else:?>
-			<?php foreach($stack as $chunk):?>
-				<ul class="block-list">
-					<?php foreach($chunk as $company):?>
-						<li class="block-item" data-search="<?=$company->name?>">
-							<?php if($this->access->is_admin):?>
-								<h2><a href="<?=$this->url('fyrirtaeki/index',array('id'=>$company->id))?>"><?=$company->name?></a></h2>
-							<?php else:?>
-								<h2><?=$company->name?></h2>
-							<?php endif;?>
-							<p class=""><?=$company->business_type?></p>
-							<p class="block-item__time">Meðlimur síðan <?=$company->created->format('Y')?></p>
-						</li>
+        <?php if($this->access->is_admin):?>
+            <table class="block-table">
+                <thead>
+                    <tr>
+                        <td><a href="<?=$this->url('fyrirtaeki/order', array('order'=>'nafn'))?>">Nafn</a></td>
+                        <td><a href="<?=$this->url('fyrirtaeki/order', array('order'=>'tegund'))?>">Tegund</a></td>
+                        <td><a href="<?=$this->url('fyrirtaeki/order', array('order'=>'staerd'))?>">Stærð</a></td>
+                        <td><a href="<?=$this->url('fyrirtaeki/order', array('order'=>'dags'))?>">Síðan</a></td>
+                    </tr>
+                </thead>
+                <tfoot></tfoot>
+                <tbody>
+                <?php foreach($this->companies as $company):?>
+                    <tr>
+                        <td>
+                            <a href="<?=$this->url('fyrirtaeki/index', array('id'=>$company->id))?>"><?=$company->name?></a>
+                        </td>
+                        <td>
+                            <?=$company->business_type?>
+                        </td>
+                        <td>
+                            <?=$company->number_of_employees?>
+                        </td>
+                        <td>
+                            <?=$this->date($company->created)?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+        <?php else:?>
+            <?php foreach($stack as $chunk):?>
+                <ul class="block-list">
+                    <?php foreach($chunk as $company):?>
+                        <li class="block-item" data-search="<?=$company->name?>">
+                            <?php if($this->access->is_admin):?>
+                                <h2><a href="<?=$this->url('fyrirtaeki/index', array('id'=>$company->id))?>"><?=$company->name?></a></h2>
+                            <?php else:?>
+                                <h2><?=$company->name?></h2>
+                            <?php endif;?>
+                            <p class=""><?=$company->business_type?></p>
+                            <p class="block-item__time">Meðlimur síðan <?=$company->created->format('Y')?></p>
+                        </li>
 
-					<?php endforeach;?>
-				</ul>
-			<?php endforeach;?>
-		<?php endif;?>
-	</section>
-	<aside class="layout__aside">
-		<?php if($this->access->is_admin):?>
-		<stjonvisi-control>
-			<a href="<?=$this->url('fyrirtaeki/create')?>"><i class="icon-plus"></i>fyrirtæki</a>
-			<a href="<?=$this->url('fyrirtaeki/export')?>"><i class="icon-list"></i>fyrirtækjalisti</a>
-		</stjonvisi-control>
-		<?php endif;?>
-	</aside>
+                    <?php endforeach;?>
+                </ul>
+            <?php endforeach;?>
+        <?php endif;?>
+    </section>
+    <aside class="layout__aside">
+        <?php if($this->access->is_admin):?>
+        <stjonvisi-control>
+            <a href="<?=$this->url('fyrirtaeki/create')?>"><i class="icon-plus"></i>fyrirtæki</a>
+            <a href="<?=$this->url('fyrirtaeki/export')?>"><i class="icon-list"></i>fyrirtækjalisti</a>
+        </stjonvisi-control>
+        <?php endif;?>
+    </aside>
 </div>

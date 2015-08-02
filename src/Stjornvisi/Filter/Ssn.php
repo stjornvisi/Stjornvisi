@@ -12,14 +12,14 @@ use Zend\Filter\FilterInterface;
 
 class Ssn implements FilterInterface
 {
-	/**
-	 * Returns the result of filtering $value
-	 *
-	 * @param  mixed $value
-	 * @return mixed
-	 */
-	public function filter($value)
+    /**
+     * Returns the result of filtering $value
+     *
+     * @param  mixed $value
+     * @return mixed
+     */
+    public function filter($value)
     {
-		return preg_replace("/[^0-9,.]/", "", $value);
-	}
+        return preg_replace("/[^0-9,.]/", "", $value);
+    }
 }

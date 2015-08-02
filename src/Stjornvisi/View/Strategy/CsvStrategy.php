@@ -18,68 +18,64 @@ use Zend\View\Renderer\RendererInterface;
 
 class CsvStrategy extends AbstractListenerAggregate
 {
-	protected $renderer;
-	protected $listeners = array();
+    protected $renderer;
+    protected $listeners = array();
 
-	public function __construct(RendererInterface $renderer)
-	{
-		$this->renderer = $renderer;
-	}
+    public function __construct(RendererInterface $renderer)
+    {
+        $this->renderer = $renderer;
+    }
 
-	public function attach(EventManagerInterface $events, $priority = 1)
-	{
-		$this->listeners[] = $events->attach(ViewEvent::EVENT_RENDERER, array($this, 'selectRenderer'), $priority);
-		$this->listeners[] = $events->attach(ViewEvent::EVENT_RESPONSE, array($this, 'injectResponse'), $priority);
-	}
+    public function attach(EventManagerInterface $events, $priority = 1)
+    {
+        $this->listeners[] = $events->attach(ViewEvent::EVENT_RENDERER, array($this, 'selectRenderer'), $priority);
+        $this->listeners[] = $events->attach(ViewEvent::EVENT_RESPONSE, array($this, 'injectResponse'), $priority);
+    }
 
-	public function selectRenderer(ViewEvent $e)
-	{
-		$model = $e->getModel();
+    public function selectRenderer(ViewEvent $e)
+    {
+        $model = $e->getModel();
 
-		if (!$model instanceof \Stjornvisi\View\Model\CsvModel) {
-			// no JsonModel; do nothing
-			return;
-		}
+        if (!$model instanceof \Stjornvisi\View\Model\CsvModel) {
+            // no JsonModel; do nothing
+            return;
+        }
 
-		// JsonModel found
-		return $this->renderer;
+        // JsonModel found
+        return $this->renderer;
+    }
 
-	}
+    public function injectResponse(ViewEvent $e)
+    {
 
-	public function injectResponse(ViewEvent $e)
-	{
+        $model = $e->getModel();
+        if (!$model instanceof \Stjornvisi\View\Model\CsvModel) {
+            // no JsonModel; do nothing
+            return;
+        }
+        $csv = $model->getData();
 
-		$model = $e->getModel();
-		if (!$model instanceof \Stjornvisi\View\Model\CsvModel) {
-			// no JsonModel; do nothing
-			return;
-		}
-		$csv = $model->getData();
+        $result   = $e->getResult();
 
+        // Populate response
+        $response = $e->getResponse();
+        $response->setContent($result);
+        $headers = $response->getHeaders();
 
-		$result   = $e->getResult();
+        $headers
+            ->addHeaderLine('content-type', 'text/csv; charset=utf-8')
+            ->addHeaderLine(
+                'Content-Disposition',
+                sprintf("attachment; filename=\"%s\"", $csv->getName())
+            );
+    }
 
-		// Populate response
-		$response = $e->getResponse();
-		$response->setContent($result);
-		$headers = $response->getHeaders();
-
-
-		$headers
-			->addHeaderLine('content-type', 'text/csv; charset=utf-8')
-			->addHeaderLine('Content-Disposition',
-				sprintf("attachment; filename=\"%s\"",$csv->getName())
-			);
-
-
-	}
-
-	public function detach(EventManagerInterface $events)
-	{
-		foreach ($this->listeners as $index => $listener) {
-			if ($events->detach($listener)) {
-				unset($this->listeners[$index]);
-			}
-		}
-	}
-} 
+    public function detach(EventManagerInterface $events)
+    {
+        foreach ($this->listeners as $index => $listener) {
+            if ($events->detach($listener)) {
+                unset($this->listeners[$index]);
+            }
+        }
+    }
+}

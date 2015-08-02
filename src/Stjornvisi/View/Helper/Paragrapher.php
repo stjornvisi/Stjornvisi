@@ -12,19 +12,20 @@ use Zend\View\Helper\AbstractHelper;
 //use \Parsedown;
 use Stjornvisi\Lib\Parsedown;
 
-class Paragrapher extends AbstractHelper{
+class Paragrapher extends AbstractHelper
+{
+    private static $parser;
 
-	private static $parser;
-
-    public function __invoke($value){
-		if( $value=='' ){
+    public function __invoke($value)
+    {
+        if ($value=='') {
             return '';
         }
-		//SINGLE INSTANCE
-		//	only create one instance of Parser
-		if( !self::$parser ){
-			self::$parser = new Parsedown();
-		}
-		return self::$parser->text($value);
+        //SINGLE INSTANCE
+        //	only create one instance of Parser
+        if (!self::$parser) {
+            self::$parser = new Parsedown();
+        }
+        return self::$parser->text($value);
     }
-} 
+}

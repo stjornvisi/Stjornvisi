@@ -8,24 +8,20 @@
 
 namespace Stjornvisi\Mail;
 
-
 use Zend\Mail\Message;
 
 class AttacherTest extends \PHPUnit_Framework_TestCase
 {
 
-	public function testTrue()
-	{
-		$message = new Message();
-		$message->setSubject('Hundur')
-			->setBody(file_get_contents(__DIR__ . '/mail.test.01.txt'))
-			->addFrom('ble@bla.is', 'ble')
-			->addTo('hundur@vei.is', 'hundur');
+    public function testTrue()
+    {
+        $message = new Message();
+        $message->setSubject('Hundur')
+            ->setBody(file_get_contents(__DIR__ . '/mail.test.01.txt'))
+            ->addFrom('ble@bla.is', 'ble')
+            ->addTo('hundur@vei.is', 'hundur');
 
-		$attacher = new Attacher($message);
-		$result = $attacher->parse();
-		//echo $result->toString();
-
-
-	}
-} 
+        $attacher = new Attacher($message);
+        $result = $attacher->parse();
+    }
+}

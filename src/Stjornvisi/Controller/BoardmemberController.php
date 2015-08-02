@@ -41,7 +41,6 @@ class BoardmemberController extends AbstractActionController
             ),
             ]
         );
-
     }
 
     /**

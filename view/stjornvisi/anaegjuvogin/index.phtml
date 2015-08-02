@@ -8,26 +8,26 @@
 ?>
 
 <div class="layout layout--three-columns page-anaegjuvogin">
-	<section class="layout__section">
-		<h1 class="layout__headline"><?=$this->entry->name?></h1>
-		<?=$this->paragrapher($this->entry->body);?>
-	</section>
-	<aside class="layout__aside">
-		<?php if ($this->identity): ?>
-		<stjonvisi-control>
-			<a href="<?=$this->url('anaegjuvogin/create');?>">Stofna</a>
-			<a href="<?=$this->url('anaegjuvogin/update', ['id'=>$this->entry->id]);?>">Uppfæra</a>
-			<a href="<?=$this->url('anaegjuvogin/delete', ['id'=>$this->entry->id]);?>">Eyða</a>
-		</stjonvisi-control>
-		<?php endif; ?>
-		<ul class="block-list block-list--small">
-			<?php foreach ($this->years as $year) :?>
-				<li class="block-list__link_item">
-					<a href="<?=$this->url('anaegjuvogin/index', ['year'=>$year->year])?>"><?=$year->year;?></a>
-				</li>
-			<?php endforeach;?>
-		</ul>
-	</aside>
+    <section class="layout__section">
+        <h1 class="layout__headline"><?=$this->entry->name?></h1>
+        <?=$this->paragrapher($this->entry->body);?>
+    </section>
+    <aside class="layout__aside">
+        <?php if ($this->identity): ?>
+        <stjonvisi-control>
+            <a href="<?=$this->url('anaegjuvogin/create');?>">Stofna</a>
+            <a href="<?=$this->url('anaegjuvogin/update', ['id'=>$this->entry->id]);?>">Uppfæra</a>
+            <a href="<?=$this->url('anaegjuvogin/delete', ['id'=>$this->entry->id]);?>">Eyða</a>
+        </stjonvisi-control>
+        <?php endif; ?>
+        <ul class="block-list block-list--small">
+            <?php foreach ($this->years as $year) :?>
+                <li class="block-list__link_item">
+                    <a href="<?=$this->url('anaegjuvogin/index', ['year'=>$year->year])?>"><?=$year->year;?></a>
+                </li>
+            <?php endforeach;?>
+        </ul>
+    </aside>
 </div>
 
 

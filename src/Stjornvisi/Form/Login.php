@@ -2,21 +2,22 @@
 namespace Stjornvisi\Form;
 
 use Zend\Form\Form;
+
 /**
  * Log in user
- * 
+ *
  * @category Stjornvisi
  * @package Form
  * @author einar
  * @deprecated
  */
-class Login extends Form{
+class Login extends Form
+{
+    public function __construct($name = null)
+    {
+        parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
-    public function __construct($name = null){
-
-		parent::__construct( strtolower( str_replace('\\','-',get_class($this) ) ));
-
-		$this->setAttribute('method', 'post')->setAttribute('action','/innskra');
+        $this->setAttribute('method', 'post')->setAttribute('action', '/innskra');
 
         $this->add(array(
             'name' => 'email',
@@ -36,20 +37,7 @@ class Login extends Form{
                 'label' => 'Lykilorð',
             ),
         ));
-		/*
-        $this->add(array(
-            'name' => 'rememberme',
-            'type' => 'checkbox', // 'Zend\Form\Element\Checkbox',
-//            'attributes' => array( // Is not working this way
-//                'type'  => '\Zend\Form\Element\Checkbox',
-//            ),
-            'options' => array(
-                'label' => 'Remember Me?',
-//                                'checked_value' => 'true', without value here will be 1
-//                                'unchecked_value' => 'false', // witll be 1
-            ),
-        ));
-		*/
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
@@ -59,7 +47,4 @@ class Login extends Form{
             ),
         ));
     }
-
-
 }
-

@@ -10,10 +10,10 @@ namespace Stjornvisi\Lib;
 
 interface QueueConnectionFactoryInterface
 {
-	public function setConfig(array $config);
+    public function setConfig(array $config);
 
-	/**
-	 * @return \PhpAmqpLib\Connection\AMQPConnection
-	 */
-	public function createConnection();
+    /**
+     * @return \PhpAmqpLib\Connection\AMQPConnection
+     */
+    public function createConnection();
 }

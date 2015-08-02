@@ -123,6 +123,7 @@ class Conference extends AbstractService implements DataSourceAwareInterface
             throw new Exception("Can't fetch conference. conference:[{$id}]", 0, $e);
         }
     }
+
     public function fetchAll()
     {
         try {
@@ -209,6 +210,7 @@ class Conference extends AbstractService implements DataSourceAwareInterface
             throw new Exception("Can't create conference. " . $e->getMessage(), 0, $e);
         }
     }
+
     /**
      * Update Conference.
      *
@@ -284,6 +286,7 @@ class Conference extends AbstractService implements DataSourceAwareInterface
             throw new Exception("Can't update confernece. conference:[{$id}]", 0, $e);
         }
     }
+
     /**
      * Delete conference.
      *
@@ -319,6 +322,7 @@ class Conference extends AbstractService implements DataSourceAwareInterface
             throw new Exception("Cant delete conference. conference:[{$id}]", 0, $e);
         }
     }
+
     /**
      * Register user to conference.
      *
