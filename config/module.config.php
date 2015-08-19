@@ -1691,7 +1691,7 @@ return array(
                             'route' => '/senda[/:type]',
                             'constraints' => array(
                                 'id' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'type' => 'allir|formenn'
+                                'type' => 'allir|formenn|stjornendur'
                             ),
                             'defaults' => array(
                                 'controller' => 'Stjornvisi\Controller\Email',

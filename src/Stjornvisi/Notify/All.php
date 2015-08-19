@@ -116,7 +116,6 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
     {
         $emailId = $this->getHash();
         $users = $this->getUsers($this->params->sender_id, $this->params->recipients, $this->params->test);
-
         $this->logger->info("Notify All ({$this->params->recipients})");
 
         //MAIL
@@ -267,11 +266,27 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
         $user->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
 
-        return ($test)
-            ? [$user->get($sender)]
-            :  (($recipients == 'allir')
-                ? $user->fetchAll(true)
-                :  $user->fetchAllLeaders(true)) ;
+        $recipientAddresses = [];
+
+        if($test) {
+            return [$user->get($sender)];
+        } else {
+           switch($recipients){
+
+               case "formenn" :
+                   $recipientAddresses = $user->fetchAllManagers(true);
+                   break;
+               case "stjornendur" :
+                   $recipientAddresses = $user->fetchAllLeaders(true);
+                   break;
+               case "allir" :
+                   $user->fetchAll(true);
+                   break;
+               default :
+                   $recipientAddresses = [];
+           }
+        }
+        return $recipientAddresses;
     }
 
     /**

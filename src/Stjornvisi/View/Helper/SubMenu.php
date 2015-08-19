@@ -207,9 +207,16 @@ class SubMenu extends AbstractHelper
                                     array(
                                         'label' => 'Stjórnendur',
                                         'id' => 'mail-all',
-                                        'uri' => $view->url('email/send', array('type'=>'formenn')),
+                                        'uri' => $view->url('email/send', array('type'=>'stjornendur')),
                                         'class' => 'icon-mail',
                                         'title' => 'Senda póst á stjórnendur faghópa'
+                                    ),
+                                    array(
+                                        'label' => 'Formenn',
+                                        'id' => 'mail-all',
+                                        'uri' => $view->url('email/send', array('type'=>'formenn')),
+                                        'class' => 'icon-mail',
+                                        'title' => 'Senda póst á formenn faghópa'
                                     ),
                                 )
                             ),
