@@ -268,10 +268,10 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 
         $recipientAddresses = [];
 
-        if($test) {
+        if ($test) {
             return [$user->get($sender)];
         } else {
-           switch($recipients){
+           switch ($recipients){
 
                case "formenn" :
                    $recipientAddresses = $user->fetchAllManagers(true);
