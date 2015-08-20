@@ -101,7 +101,6 @@ class EmailController extends AbstractActionController
                         //SEND
                         //  send out full e-mail
                     } else {
-                        $param = $this->params()->fromRoute('type');
                         $this->getEventManager()->trigger('notify', $this, [
                             'action' => 'Stjornvisi\Notify\All',
                             'data' => (object)array(
