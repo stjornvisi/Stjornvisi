@@ -219,7 +219,7 @@ class User extends AbstractService implements DataSourceAwareInterface
     }
 
     /**
-     * Get all users.
+     * Get all leaders.
      *
      * @param bool $valid
      * @return array
@@ -261,6 +261,52 @@ class User extends AbstractService implements DataSourceAwareInterface
                 )
             ));
             throw new Exception("Can't get all leaders", 0, $e);
+        }
+    }
+
+    /**
+     * Get all managers.
+     *
+     * @param bool $valid
+     * @return array
+     * @throws Exception
+     */
+    public function fetchAllManagers($valid = false)
+    {
+        try {
+            if ($valid) {
+                $statement = $this->pdo->prepare("
+                    SELECT U.* FROM `User` U
+                    JOIN Group_has_User GhU ON (U.id = GhU.user_id)
+                    WHERE GhU.type = 2 AND U.email IS NOT NULL
+                    GROUP BY U.email
+                    ORDER BY U.name;
+                ");
+            } else {
+                $statement = $this->pdo->prepare("
+                    SELECT U.* FROM `User` U
+                    JOIN Group_has_User GhU ON (U.id = GhU.user_id)
+                    WHERE GhU.type = 2
+                    GROUP BY U.email
+                    ORDER BY U.name;
+                ");
+            }
+            $statement->execute();
+            $users = $statement->fetchAll();
+            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+            return array_map(function ($i) {
+                $i->created_date = new DateTime($i->created_date);
+                $i->modified_date = new DateTime($i->modified_date);
+                return $i;
+            }, $users);
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null
+                )
+            ));
+            throw new Exception("Can't get all managers", 0, $e);
         }
     }
 
