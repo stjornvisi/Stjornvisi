@@ -10,6 +10,7 @@ use Zend\Authentication\AuthenticationService;
 use Stjornvisi\Form\Email;
 use Stjornvisi\Form\Event as EventForm;
 use Stjornvisi\Lib\Csv;
+use Stjornvisi\Service\Event as EventService;
 
 /**
  * Class EventController.
@@ -408,6 +409,31 @@ class EventController extends AbstractActionController
 
         //EVENT NOT FOUND
         //  resource not found
+        } else {
+            return $this->notFoundAction();
+        }
+    }
+
+    public function unregisterAction()
+    {
+        /** @var EventService $eventService */
+        $eventService = $this->getServiceLocator()->get('Stjornvisi\Service\Event');
+        $authService = new AuthenticationService();
+
+        $eventId = (int)$this->params()->fromRoute('id', 0);
+        $userId = (int)$this->params()->fromRoute('user', 0);
+
+        $event = $eventService->get($eventId);
+
+        $currentUser = $authService->getIdentity();
+
+        // Needs admin access
+        if ($event && $currentUser && $currentUser->is_admin) {
+            $eventService->unregisterUser($event->id, $userId);
+            // Do not notify!
+
+            $url = $this->getRequest()->getHeader('Referer')->getUri();
+            return $this->redirect()->toUrl($url);
         } else {
             return $this->notFoundAction();
         }

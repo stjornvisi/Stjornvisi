@@ -24,7 +24,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
      * If the 2nd parameter is provided (user id) his/her
      * attending will be checked as well.
      *
-     * @param  $id event ID
+     * @param  int $id event ID
      * @param  null|int    $user_id
      * @return bool|\stdClass
      * @throws Exception
@@ -1117,6 +1117,36 @@ class Event extends AbstractService implements DataSourceAwareInterface
             );
             throw new Exception("Can't get related events of event. event:[{$id}]", 0, $e);
         }
+    }
+
+    /**
+     * Remove User registration
+     * @param int $eventId
+     * @param int $userId
+     * @throws Exception
+     */
+    public function unregisterUser($eventId, $userId)
+    {
+        $sql = "DELETE from `Event_has_User` WHERE event_id = :eventId AND user_id = :userId";
+        try {
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute([
+                'eventId' => (int)$eventId,
+                'userId' => (int)$userId,
+            ]);
+        }
+        catch(PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, [
+                'exception' => $e->getTraceAsString(),
+                'sql' => $sql,
+            ]);
+            throw new Exception(
+                "Can't unregister user to event. event:[{$eventId}], user:[{$userId}]",
+                0,
+                $e
+            );
+        }
+
     }
 
     /**

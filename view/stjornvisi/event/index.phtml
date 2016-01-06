@@ -218,11 +218,12 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
                     <td>Titill</td>
                     <td>Fyrirtæki</td>
                     <td class="block-table__numeric">Skráning</td>
+                    <td>&nbsp;</td>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                    <td colspan="3">&nbsp;</td>
+                    <td colspan="4">&nbsp;</td>
                 </tr>
                 </tfoot>
                 <tbody>
@@ -255,6 +256,11 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
                             <time datetime="<?=$attendee->register_time->format('c')?>">
                                 <?=$this->date($attendee->register_time,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
                             </time>
+                        </td>
+                        <td>
+                            <?php if($this->access->is_admin):?>
+                            &nbsp;<a href="<?=$this->url('vidburdir/unregister',array('id'=>$this->event->id,'type'=>0,'user'=>$attendee->user_id))?>" class="delete"><i class="icon-close"></i> <abbr title="Eyða skráningu">eyða</abbr></a>
+                            <?php endif?>
                         </td>
                     </tr>
                 <?php endforeach;?>
