@@ -102,7 +102,7 @@ class ImageGenerator implements ActionInterface
 
     private function generateImagePath(SplFileInfo $file, $size, $prefix)
     {
-        $prefix = ($prefix == 1) ? FileProperties::PREFIX_1X : FileProperties::PREFIX_2X ;
-        return implode(DIRECTORY_SEPARATOR, [$this->targetDirectory->getPath(), $size, $prefix.$file->getFilename()]);
+        return FileProperties::createImagePath($this->targetDirectory->getPath(), $file->getFilename(), $size, $prefix);
     }
+
 }

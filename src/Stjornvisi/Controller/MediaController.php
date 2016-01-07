@@ -20,16 +20,14 @@ use DirectoryIterator;
  */
 class MediaController extends AbstractActionController
 {
-    const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
-
     public function uploadAction()
     {
         $renderer = $this->getServiceLocator()
             ->get('Zend\View\Renderer\RendererInterface');
 
-        $fileDirectory = new DirectoryIterator(self::PATH_IMAGES);
+        $fileDirectory = new DirectoryIterator(FileProperties::PATH_IMAGES);
         $adapter = new Http();
-        $adapter->setDestination(implode(DIRECTORY_SEPARATOR, [self::PATH_IMAGES, FileProperties::DIR_RAW]));
+        $adapter->setDestination(implode(DIRECTORY_SEPARATOR, [FileProperties::PATH_IMAGES, FileProperties::DIR_RAW]));
 
         $result = [
             'media' => [],

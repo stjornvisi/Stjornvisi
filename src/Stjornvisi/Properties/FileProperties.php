@@ -23,6 +23,8 @@ class FileProperties implements \JsonSerializable
     const PREFIX_1X = '1x@';
     const PREFIX_2X = '2x@';
 
+    const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
+
     private $name;
 
     private $postfix = '';
@@ -39,6 +41,17 @@ class FileProperties implements \JsonSerializable
     {
         $this->name = $name;
         return $this;
+    }
+
+    public static function createImagePath($path, $filename, $size, $prefix = FileProperties::PREFIX_1X)
+    {
+        return implode(DIRECTORY_SEPARATOR, [$path, $size, self::getPrefixedFilename($filename, $prefix)]);
+    }
+
+    public static function getPrefixedFilename($filename, $prefix = FileProperties::PREFIX_1X)
+    {
+        $prefix = ($prefix == 1) ? FileProperties::PREFIX_1X : FileProperties::PREFIX_2X;
+        return $prefix . $filename;
     }
 
     public function setPostfix($postfix)

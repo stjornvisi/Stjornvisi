@@ -19,8 +19,6 @@ use RuntimeException;
 
 class ImageController extends AbstractActionController
 {
-    const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
-
     /**
      * Will create all images.
      *
@@ -37,39 +35,38 @@ class ImageController extends AbstractActionController
 
         $rawFilePath = implode(
             DIRECTORY_SEPARATOR,
-            [self::PATH_IMAGES, FileProperties::DIR_RAW]
+            [FileProperties::PATH_IMAGES, FileProperties::DIR_RAW]
         );
+
+        $ignore = $this->getRequest()->getParam('ignore', false);
 
         //COUNT
         //  count how many file there are.
         $counter = 0;
         foreach (new DirectoryIterator($rawFilePath) as $fileInfo) {
-            if ($this->isImage($fileInfo)) {
+            if (!$this->isImage($fileInfo)) {
                 continue;
             }
-            $counter++;
+            if ($ignore || $this->imageNeedsRefresh($fileInfo)) {
+                $counter++;
+            }
         }
 
-        $adapter = new Console();
-        $progressBar = new ProgressBar($adapter, 0, $counter);
-        $imageDirectory = new DirectoryIterator(self::PATH_IMAGES);
+        if ($counter < 1) {
+            die("No images found that needed generation\n");
+        }
+
+        $progressBar = new ProgressBar(new Console(), 0, $counter);
+        $imageDirectory = new DirectoryIterator(FileProperties::PATH_IMAGES);
 
         //FOR EVERY
         //  for every file in directory...
         foreach (new DirectoryIterator($rawFilePath) as $fileInfo) {
-            if ($this->isImage($fileInfo)) {
+            if (!$this->isImage($fileInfo)) {
                 continue;
             }
-
-            if ($this->getRequest()->getParam('ignore', false)) {
-                $smallFilePath = implode(
-                    DIRECTORY_SEPARATOR,
-                    [self::PATH_IMAGES, FileProperties::DIR_SMALL, $fileInfo->getFilename()]
-                );
-                if (is_file($smallFilePath)) {
-                    $progressBar->next();
-                    continue;
-                }
+            if (!$ignore && !$this->imageNeedsRefresh($fileInfo)) {
+                continue;
             }
 
             try {
@@ -82,8 +79,27 @@ class ImageController extends AbstractActionController
         $progressBar->finish();
     }
 
+    private function imageNeedsRefresh(DirectoryIterator $fileInfo)
+    {
+        $ret = true;
+
+        // Only check the small file
+        $smallFilePath = FileProperties::createImagePath(
+            FileProperties::PATH_IMAGES,
+            $fileInfo->getFilename(),
+            FileProperties::DIR_SMALL
+        );
+
+        $myMTime = $fileInfo->getMTime();
+        // Does not need refresh if file exists and is not newer than the raw file
+        if (is_file($smallFilePath) && $myMTime <= filemtime($smallFilePath)) {
+            $ret = false;
+        }
+        return $ret;
+    }
+
     private function isImage(DirectoryIterator $fileInfo)
     {
-        return $fileInfo->isDot() || !preg_match('/\.(jpg|jpeg|png|gif)(?:[\?\#].*)?$/i', $fileInfo->getFilename());
+        return !$fileInfo->isDot() && preg_match('/\.(jpg|jpeg|png|gif)(?:[\?\#].*)?$/i', $fileInfo->getFilename());
     }
 }
