@@ -433,8 +433,8 @@ class User extends AbstractService implements DataSourceAwareInterface
                   SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
                   FROM Group_has_User GhU
                   JOIN `User` U ON (U.id = GhU.user_id)
-                  JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
-                  JOIN `Company` C ON (ChU.company_id = C.id)
+                  LEFT JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
+                  LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                   WHERE GhU.group_id = :id
                   AND GhU.type = :type
                   ORDER BY GhU.type DESC, U.name
@@ -452,8 +452,8 @@ class User extends AbstractService implements DataSourceAwareInterface
                     SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
                     FROM Group_has_User GhU
                     JOIN `User` U ON (U.id = GhU.user_id)
-                    JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
-                    JOIN `Company` C ON (ChU.company_id = C.id)
+                    LEFT JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
+                    LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                     WHERE GhU.group_id = :id
                     AND GhU.type IN (".$typeList.")
                     ORDER BY GhU.type DESC, U.name
@@ -466,8 +466,8 @@ class User extends AbstractService implements DataSourceAwareInterface
                     SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
                     FROM Group_has_User GhU
                     JOIN `User` U ON (U.id = GhU.user_id)
-                    JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
-                    JOIN `Company` C ON (ChU.company_id = C.id)
+                    LEFT JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
+                    LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                     WHERE GhU.group_id = :id
                     ORDER BY GhU.type DESC, U.name
                 ");
