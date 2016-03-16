@@ -70,7 +70,10 @@ class ImageController extends AbstractActionController
             }
 
             try {
-                (new ImageGenerator($fileInfo, $imageDirectory))->execute();
+                $ig = new ImageGenerator($fileInfo, $imageDirectory);
+                $ig->execute();
+                $ig = null;
+                gc_collect_cycles();
             } catch (\Exception $e) {
                 echo $e->getMessage().PHP_EOL;
             }
