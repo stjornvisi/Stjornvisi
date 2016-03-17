@@ -115,7 +115,7 @@ class User extends AbstractService implements DataSourceAwareInterface
                     isset($companyStatement)?$companyStatement->queryString:null
                 )
             ));
-            throw new Exception("Can't get user. user:[{$id}]", 0, $e);
+            throw new Exception("Can't get user. user:[{$hash}]", 0, $e);
         }
     }
 
@@ -409,6 +409,9 @@ class User extends AbstractService implements DataSourceAwareInterface
                     isset($statement)?$statement->queryString:null
                 )
             ));
+            if (is_array($group_id)) {
+                $group_id = implode(',', $group_id);
+            }
             throw new Exception("Can't get user access to group. ".
                 "user:[{$user_id}], group:[{$group_id}]", 0, $e);
         }
@@ -578,7 +581,7 @@ class User extends AbstractService implements DataSourceAwareInterface
                     isset($statement)?$statement->queryString:null,
                 )
             ));
-            throw new Exception("Can't read user's access to user, user:[{$id}], requester[{$requester_id}]", 0, $e);
+            throw new Exception("Can't read user's access to user, user:[{$user_id}], requester[{$requester_id}]", 0, $e);
         }
     }
 
