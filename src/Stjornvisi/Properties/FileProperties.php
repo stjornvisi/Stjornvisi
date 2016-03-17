@@ -24,6 +24,10 @@ class FileProperties implements \JsonSerializable
     const PREFIX_2X = '2x@';
 
     const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
+    
+    const MIME_JPEG = 'image/jpeg';
+    const MIME_PNG = 'image/png';
+    const MIME_TIFF = 'image/tiff';
 
     private $name;
 
@@ -100,5 +104,13 @@ class FileProperties implements \JsonSerializable
         return $this->renderer
             ? $this->renderer->basePath(implode('/', [self::DIR_IMAGES, $size, $prefix.$name]) . $this->postfix)
             : implode('/', [self::DIR_IMAGES, $size, $prefix.$name]) . $this->postfix ;
+    }
+
+    public static function getMimeType($filename)
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $ret = finfo_file($finfo, $filename);
+        finfo_close($finfo);
+        return $ret;
     }
 }
