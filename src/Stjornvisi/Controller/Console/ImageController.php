@@ -29,6 +29,7 @@ class ImageController extends AbstractActionController
      */
     public function imageGenerateAction()
     {
+        $start = microtime(true);
         if (!$this->getRequest() instanceof ConsoleRequest) {
             throw new RuntimeException('You can only use this action from a console!');
         }
@@ -56,6 +57,7 @@ class ImageController extends AbstractActionController
             die("No images found that needed generation\n");
         }
 
+        echo "Total images to generate: $counter\n";
         $progressBar = new ProgressBar(new Console(), 0, $counter);
         $imageDirectory = new DirectoryIterator(FileProperties::PATH_IMAGES);
 
@@ -80,6 +82,9 @@ class ImageController extends AbstractActionController
             $progressBar->next();
         }
         $progressBar->finish();
+        $end = microtime(true);
+        $totalTime = number_format(($end - $start), 2);
+        echo "Total time: $totalTime sec\n";
     }
 
     private function imageNeedsRefresh(DirectoryIterator $fileInfo)
