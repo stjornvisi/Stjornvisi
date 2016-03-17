@@ -29,7 +29,6 @@ class FilePropertiesTest extends PHPUnit_Framework_TestCase
         $this->assertObjectHasAttribute('thumb', $result);
         $this->assertObjectHasAttribute('medium', $result);
         $this->assertObjectHasAttribute('large', $result);
-        $this->assertObjectHasAttribute('original', $result);
         $this->assertObjectHasAttribute('raw', $result);
     }
 
@@ -46,9 +45,6 @@ class FilePropertiesTest extends PHPUnit_Framework_TestCase
 
         $this->assertObjectHasAttribute('1x', $result->large);
         $this->assertObjectHasAttribute('2x', $result->large);
-
-        $this->assertObjectHasAttribute('1x', $result->original);
-        $this->assertObjectHasAttribute('2x', $result->original);
     }
 
     public function testFilePathGeneration()
@@ -64,9 +60,6 @@ class FilePropertiesTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('/images/large/1x@this-is-the-name.jpg', $result->large->{'1x'});
         $this->assertEquals('/images/large/2x@this-is-the-name.jpg', $result->large->{'2x'});
-
-        $this->assertEquals('/images/original/1x@this-is-the-name.jpg', $result->original->{'1x'});
-        $this->assertEquals('/images/original/2x@this-is-the-name.jpg', $result->original->{'2x'});
 
         $this->assertEquals('/images/raw/this-is-the-name.jpg', $result->raw);
     }
