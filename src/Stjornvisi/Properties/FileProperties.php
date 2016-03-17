@@ -89,10 +89,7 @@ class FileProperties implements \JsonSerializable
                 '1x' => $this->generateFilePath($this->name, self::DIR_LARGE, 1),
                 '2x' => $this->generateFilePath($this->name, self::DIR_LARGE, 2),
             ],
-            'original' => [
-                '1x' => $this->generateFilePath($this->name, self::DIR_ORIGINAL, 1),
-                '2x' => $this->generateFilePath($this->name, self::DIR_ORIGINAL, 2),
-            ],
+            // original removed since it is not used
             'raw' => implode('/', [self::DIR_IMAGES, self::DIR_RAW, $this->name]),
         ];
     }

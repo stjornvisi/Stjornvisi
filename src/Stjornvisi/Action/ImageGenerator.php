@@ -82,20 +82,7 @@ class ImageGenerator implements ActionInterface
             );
         $imagine = null;
 
-        //ORIGINAL
-        $imagine = new Imagine();
-        $image = $imagine->open($this->file->getPathname());
-        $image->resize($image->getSize()->getWidth() > 3600 ? $image->getSize()->widen(3600) : $image->getSize())
-            ->save(
-                $this->generateImagePath($this->file, FileProperties::DIR_ORIGINAL, 2),
-                $options
-            )
-            ->resize($image->getSize()->getWidth() > 2400 ? $image->getSize()->widen(2400) : $image->getSize())
-            ->save(
-                $this->generateImagePath($this->file, FileProperties::DIR_ORIGINAL, 1),
-                $options
-            );
-        $imagine = null;
+        //ORIGINAL - Not used, we just use the RAW file instead
 
         return new FileProperties($this->file->getFilename());
     }
