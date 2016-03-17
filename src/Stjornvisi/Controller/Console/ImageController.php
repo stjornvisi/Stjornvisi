@@ -44,7 +44,7 @@ class ImageController extends AbstractActionController
         //  count how many file there are.
         $counter = 0;
         foreach (new DirectoryIterator($rawFilePath) as $fileInfo) {
-            if (!$this->isImage($fileInfo)) {
+            if (!$this->isImage($fileInfo) || $this->isResized($fileInfo)) {
                 continue;
             }
             if ($ignore || $this->imageNeedsRefresh($fileInfo)) {
@@ -62,7 +62,7 @@ class ImageController extends AbstractActionController
         //FOR EVERY
         //  for every file in directory...
         foreach (new DirectoryIterator($rawFilePath) as $fileInfo) {
-            if (!$this->isImage($fileInfo)) {
+            if (!$this->isImage($fileInfo) || $this->isResized($fileInfo)) {
                 continue;
             }
             if (!$ignore && !$this->imageNeedsRefresh($fileInfo)) {
@@ -104,5 +104,11 @@ class ImageController extends AbstractActionController
     private function isImage(DirectoryIterator $fileInfo)
     {
         return !$fileInfo->isDot() && preg_match('/\.(jpg|jpeg|png|gif)(?:[\?\#].*)?$/i', $fileInfo->getFilename());
+    }
+
+    private function isResized(DirectoryIterator $fileInfo)
+    {
+        $pre = substr($fileInfo->getFilename(), 0, 3);
+        return ($pre == FileProperties::PREFIX_1X || $pre == FileProperties::PREFIX_2X);
     }
 }
