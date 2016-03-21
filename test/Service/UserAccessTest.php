@@ -11,6 +11,7 @@ namespace Stjornvisi\Service;
 use \PDO;
 use Stjornvisi\ArrayDataSet;
 use PHPUnit_Extensions_Database_TestCase;
+use Stjornvisi\DataHelper;
 use Stjornvisi\PDOMock;
 use Stjornvisi\Bootstrap;
 
@@ -354,12 +355,12 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
                 ['id'=>6, 'name'=>'n6', 'passwd'=>'p6', 'email'=>'six@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
             ],
             'Group' => [
-                ['id'=>1,'name'=>'n1', 'name_short'=>'ns1','url'=>'ns1'],
-                ['id'=>2,'name'=>'n2', 'name_short'=>'ns2','url'=>'ns2'],
-                ['id'=>3,'name'=>'n3', 'name_short'=>'ns3','url'=>'ns3'],
-                ['id'=>4,'name'=>'n4', 'name_short'=>'ns4','url'=>'ns4'],
-                ['id'=>5,'name'=>'n5', 'name_short'=>'ns5','url'=>'ns5'],
-                ['id'=>6,'name'=>'n6', 'name_short'=>'ns6','url'=>'ns6'],
+                DataHelper::newGroup(1),
+                DataHelper::newGroup(2),
+                DataHelper::newGroup(3),
+                DataHelper::newGroup(4),
+                DataHelper::newGroup(5),
+                DataHelper::newGroup(6),
             ],
             'Group_has_User' => [
                 ['group_id'=>1,'user_id'=>1,'type'=>0],

@@ -6,6 +6,8 @@
  * Time: 8:54 PM
  */
 
+use Stjornvisi\DataHelper;
+
 $date0 = new DateTime();
     $date0->add( new DateInterval('P1M') );
 $date1 = new DateTime();
@@ -22,10 +24,10 @@ $date6 = new DateTime();
 
 return [
     'Group' => [
-        [ 'id'=>1, 'name'=>'name1', 'name_short'=>'n1', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n1' ],
-        [ 'id'=>2, 'name'=>'name2', 'name_short'=>'n2', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n2' ],
-        [ 'id'=>3, 'name'=>'name3', 'name_short'=>'n3', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n3' ],
-        [ 'id'=>4, 'name'=>'name4', 'name_short'=>'n4', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n4' ],
+        DataHelper::newGroup(1),
+        DataHelper::newGroup(2),
+        DataHelper::newGroup(3),
+        DataHelper::newGroup(4),
     ],
     'User' => [
         ['id'=>1, 'name'=>'', 'passwd'=>'', 'email'=>'one@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>1],

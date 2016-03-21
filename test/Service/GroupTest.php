@@ -11,6 +11,7 @@ namespace Stjornvisi\Service;
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
+use Stjornvisi\DataHelper;
 use Stjornvisi\PDOMock;
 use Stjornvisi\Bootstrap;
 
@@ -188,10 +189,10 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         return new ArrayDataSet([
             'Group' => [
-                ['id'=>1,'name'=>'nn1','name_short'=>'n1','description'=>'d1','objective'=>'o1','what_is'=>'w1','how_operates'=>'h1','for_whom'=>'f1','url'=>'n1'],
-                ['id'=>2,'name'=>'nn2','name_short'=>'n2','description'=>'d2','objective'=>'o2','what_is'=>'w2','how_operates'=>'h1','for_whom'=>'f1','url'=>'n2'],
-                ['id'=>3,'name'=>'nn3','name_short'=>'n3','description'=>'d3','objective'=>'o3','what_is'=>'w3','how_operates'=>'h1','for_whom'=>'f1','url'=>'n3'],
-                ['id'=>4,'name'=>'nn4','name_short'=>'n4','description'=>'d4','objective'=>'o4','what_is'=>'w4','how_operates'=>'h1','for_whom'=>'f1','url'=>'n4'],
+                DataHelper::newGroup(1),
+                DataHelper::newGroup(2),
+                DataHelper::newGroup(3),
+                DataHelper::newGroup(4),
             ],
             'User' => [
                 ['id'=>1, 'name'=>'', 'passwd'=>'', 'email'=>'one@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>1],

@@ -8,13 +8,11 @@
 
 namespace Stjornvisi\Controller;
 
-require_once __DIR__.'/../ArrayDataSet.php';
-require_once __DIR__.'/../PDOMock.php';
-
 use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
+use Stjornvisi\DataHelper;
+use Stjornvisi\Form\Group;
 
 use Stjornvisi\Bootstrap;
 use Stjornvisi\Auth\TestAdapter;
@@ -109,16 +107,33 @@ class GroupControllerTest extends PHPUnit_Extensions_Database_TestCase
 
         $request = new Request();
         $request->setMethod(Request::METHOD_POST);
-        $request->setPost((new Parameters(array(
-            'name' => 'Þetta er svo langt',
-            'name_short' => 'Thetta Er Langt',
-        ))));
+        $request->setPost((new Parameters($this->getValidPost())));
 
         $this->routeMatch->setParam('action', 'create');
         $result   = $this->controller->dispatch($request);
-        //print_r( $result->form->getMessages() );
+        $msg = null;
+        if ($result && isset($result->form)) {
+            /** @var Group $form */
+            $form = $result->form;
+            $messages = $form->getMessages();
+            $msg = $this->messages($messages);
+        }
         $response = $this->controller->getResponse();
-        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode(), $msg);
+    }
+
+    private function getValidPost()
+    {
+        return DataHelper::newGroup();
+    }
+
+    private function messages($messages)
+    {
+        $ret = [];
+        foreach ($messages as $element => $elementMessages) {
+            $ret[] = "$element: " . implode('; ', $elementMessages);
+        }
+        return implode("\n", $ret);
     }
 
     public function testUpdateButTheEntryIsNotFound()
@@ -174,14 +189,18 @@ class GroupControllerTest extends PHPUnit_Extensions_Database_TestCase
 
         $request = new Request();
         $request->setMethod(Request::METHOD_POST);
-        $request->setPost(new Parameters(array(
-            'name' => 'name',
-            'name_short' => 'name_short',
-        )));
+        $request->setPost(new Parameters($this->getValidPost()));
 
         $result   = $this->controller->dispatch($request);
+        $msg = null;
+        if ($result && isset($result->form)) {
+            /** @var Group $form */
+            $form = $result->form;
+            $messages = $form->getMessages();
+            $msg = $this->messages($messages);
+        }
         $response = $this->controller->getResponse();
-        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals(302, $response->getStatusCode(), $msg);
     }
 
     public function testAdminCanUpdateAndThisIsNoAdmin()
@@ -292,6 +311,7 @@ class GroupControllerTest extends PHPUnit_Extensions_Database_TestCase
         parent::setUp();
         $conn->getConnection()->query("set foreign_key_checks=1");
 
+        $serviceManager->setService('PDO', self::$pdo);
     }
 
     /**

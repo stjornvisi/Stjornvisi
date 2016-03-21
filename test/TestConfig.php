@@ -12,4 +12,9 @@ return array(
 			'vendor',
 		),
 	),
+	'db' => array(
+		'dns' => 'mysql:dbname=stjornvisi_test;host=127.0.0.1',
+		'user' => 'stjornvisi_t',
+		'password' => 'asdf_test'
+	),
 );

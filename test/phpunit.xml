@@ -41,8 +41,8 @@
 
     <php>
         <var name="DB_DSN" value="mysql:dbname=stjornvisi_test;host=127.0.0.1" />
-        <var name="DB_USER" value="root" />
-        <var name="DB_PASSWD" value="" />
+        <var name="DB_USER" value="stjornvisi_t" />
+        <var name="DB_PASSWD" value="asdf_test" />
         <var name="DB_DBNAME" value="stjornvisi_test" />
 
         <env name="APPLICATION_ENV" value="testing"/>

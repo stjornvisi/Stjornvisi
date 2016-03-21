@@ -29,16 +29,21 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
     static private $pdo = null;
     private $conn = null;
 
+    /** @var ArticleController */
     protected $controller;
     protected $request;
+    /** @var  Response */
     protected $response;
+    /** @var  RouteMatch */
     protected $routeMatch;
     protected $event;
+    /** @var  Config */
     private $config;
 
     public function testListAction()
     {
         $this->routeMatch->setParam('action', 'list');
+        $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -47,6 +52,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
     public function testIndexActionNoEntryProvided()
     {
         $this->routeMatch->setParam('action', 'index');
+        $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
         $this->assertEquals(404, $response->getStatusCode());
@@ -56,6 +62,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->routeMatch->setParam('action', 'index');
         $this->routeMatch->setParam('id', '100');
+        $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
         $this->assertEquals(404, $response->getStatusCode());
@@ -65,6 +72,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->routeMatch->setParam('action', 'index');
         $this->routeMatch->setParam('id', '1');
+        $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -73,6 +81,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
     public function testCreateUnauthorized()
     {
         $this->routeMatch->setParam('action', 'create');
+        $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
         $this->assertEquals(401, $response->getStatusCode());
@@ -89,6 +98,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
         $result->isValid();
 
         $this->routeMatch->setParam('action', 'create');
+        $this->controller->dispatch($this->request);
         $response = $this->controller->getResponse();
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -108,6 +118,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
         $request = new Request();
         $request->setMethod(Request::METHOD_POST);
         $request->setPost((new Parameters([])));
+        $this->controller->dispatch($request);
         $response = $this->controller->getResponse();
 
         $this->assertEquals(400, $response->getStatusCode());
@@ -133,6 +144,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
             'authors' => [1,2,3],
         ))));
 
+        $this->controller->dispatch($request);
         $response = $this->controller->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
     }
@@ -163,6 +175,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
         $conn->getConnection()->query("set foreign_key_checks=0");
         parent::setUp();
         $conn->getConnection()->query("set foreign_key_checks=1");
+        $serviceManager->setService('PDO', self::$pdo);
     }
 
     /**
@@ -185,6 +198,7 @@ class ArticleControllerTest extends PHPUnit_Extensions_Database_TestCase
             }
             $this->conn = $this->createDefaultDBConnection(self::$pdo);
         }
+
         return $this->conn;
     }
 

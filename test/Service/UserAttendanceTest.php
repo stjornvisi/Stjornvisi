@@ -12,6 +12,7 @@ use \PDO;
 use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
 use Stjornvisi\Bootstrap;
+use Stjornvisi\DataHelper;
 
 class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase
 {
@@ -72,11 +73,11 @@ class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase
     {
         return new ArrayDataSet([
             'Group' => [
-                [ 'id'=>1, 'name'=>'name1', 'name_short'=>'n1', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n1' ],
-                [ 'id'=>2, 'name'=>'name2', 'name_short'=>'n2', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n2' ],
-                [ 'id'=>3, 'name'=>'name3', 'name_short'=>'n3', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n3' ],
-                [ 'id'=>4, 'name'=>'name4', 'name_short'=>'n4', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n4' ],
-                [ 'id'=>5, 'name'=>'name4', 'name_short'=>'n4', 'description'=>'', 'objective'=>'', 'what_is'=>'', 'how_operates'=>'', 'for_whom'=>'', 'url'=>'n5' ],
+                DataHelper::newGroup(1),
+                DataHelper::newGroup(2),
+                DataHelper::newGroup(3),
+                DataHelper::newGroup(4),
+                DataHelper::newGroup(5),
             ],
             'User' => [
                 ['id'=>1, 'name'=>'', 'passwd'=>'', 'email'=>'one@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>1],

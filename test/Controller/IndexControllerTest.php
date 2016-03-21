@@ -19,6 +19,7 @@ use PHPUnit_Framework_TestCase;
 class IndexControllerTest extends \PHPUnit_Framework_TestCase
 {
 
+    protected static $pdo;
     protected $controller;
     protected $request;
     protected $response;
@@ -41,8 +42,29 @@ class IndexControllerTest extends \PHPUnit_Framework_TestCase
         $this->event->setRouteMatch($this->routeMatch);
         $this->controller->setEvent($this->event);
         $this->controller->setServiceLocator($serviceManager);
+        $this->getConnection();
+        $serviceManager->setService('PDO', self::$pdo);
     }
 
+
+    /**
+     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
+     */
+    public function getConnection()
+    {
+            if (self::$pdo == null) {
+                self::$pdo = new \PDO(
+                    $GLOBALS['DB_DSN'],
+                    $GLOBALS['DB_USER'],
+                    $GLOBALS['DB_PASSWD'],
+                    [
+                        \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                        \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
+                    ]
+                );
+            }
+    }
     public function testIndexActionCanBeAccessed()
     {
         $this->routeMatch->setParam('action', 'index');

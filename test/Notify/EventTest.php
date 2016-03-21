@@ -14,6 +14,7 @@ use \PDO;
 use Monolog\Handler\NullHandler;
 use Monolog\Logger;
 
+use Stjornvisi\DataHelper;
 use Stjornvisi\Notify\Event;
 use Stjornvisi\ArrayDataSet;
 use Stjornvisi\Bootstrap;
@@ -293,7 +294,7 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
                 ['id'=>2,'subject'=>'s1'],
             ],
             'Group' => [
-                ['id'=>1, 'name'=>'n1', 'name_short' => 'ns1','url'=>'u1'],
+                DataHelper::newGroup(1),
             ],
             'Group_has_Event' => [
                 ['event_id'=>1, 'group_id'=>1],

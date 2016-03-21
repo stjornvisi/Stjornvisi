@@ -33,15 +33,17 @@ class NewsTest extends PHPUnit_Extensions_Database_TestCase
         $service = new News();
         $service->setDataSource(self::$pdo);
 
-        $this->assertEquals(2, count($service->getRange(new \DateTime())));
+        // Since the new DateTime is created AFTER the news init, now() can be LATER than newsId=2
+        // So we set this current date to be last hour ago
+        $date = new \DateTime();
+        $date->sub(new \DateInterval('PT1H'));
 
-        $date1 = new \DateTime();
-        $date1->sub(new \DateInterval('P1M'));
-        $this->assertEquals(3, count($service->getRange($date1)));
+        $this->assertEquals(2, count($service->getRange($date)));
 
-        $date2 = new \DateTime();
-        $date2->add(new \DateInterval('P1M'));
-        $this->assertEquals(2, count($service->getRange($date1, new \DateTime())));
+        $date->sub(new \DateInterval('P1M'));
+        $this->assertEquals(3, count($service->getRange($date)));
+
+        $this->assertEquals(2, count($service->getRange($date, new \DateTime())));
     }
 
     /**
