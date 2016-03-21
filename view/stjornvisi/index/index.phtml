@@ -258,11 +258,13 @@ use Stjornvisi\Properties\FileProperties;
                     <h2 class="landing-page__element__headline">
                         <a href="<?=$this->url('frettir/index',array('id'=>$this->news->id))?>"><?=$this->news->title?></a>
                     </h2>
+                    <?php if ($this->event && $this->event->groups):?>
                     <ul class="landing-page__element__tags">
                         <?php foreach($this->event->groups as $group):?>
                             <li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
                         <?php endforeach;?>
                     </ul>
+                    <?php endif; ?>
                 </header>
                 <section class="landing-page__element__section">
                     <?php if($this->news->avatar):?>

@@ -10,7 +10,7 @@ use Zend\Authentication\AuthenticationService;
 use Stjornvisi\Form\Email;
 use Stjornvisi\Form\Event as EventForm;
 use Stjornvisi\Lib\Csv;
-use Zend\View\View;
+use Stjornvisi\Service\Event as EventService;
 
 /**
  * Class EventController.
@@ -330,14 +330,15 @@ class EventController extends AbstractActionController
             //  user has access
             if ($access->is_admin || $access->type >= 1) {
                 $csv = new Csv();
-                $csv->setHeader(['Nafn','Titill','Netfang','Dags.']);
-                $csv->setName('maertingarlisti'.date('Y-m-d-H:i').'.csv');
+                $csv->setHeader(['Nafn','Titill','Netfang','Fyrirtæki','Dags.']);
+                $csv->setName('maetingarlisti'.date('Y-m-d-H:i').'.csv');
 
                 foreach ($event->attenders as $item) {
                     $csv->add([
                         'name' => $item->name,
                         'title' => $item->title,
                         'email' => $item->email,
+                        'company_name' => $item->company_name,
                         'register_time' => $item->register_time->format('Y-m-d H:i'),
                     ]);
                 }
@@ -408,6 +409,31 @@ class EventController extends AbstractActionController
 
         //EVENT NOT FOUND
         //  resource not found
+        } else {
+            return $this->notFoundAction();
+        }
+    }
+
+    public function unregisterAction()
+    {
+        /** @var EventService $eventService */
+        $eventService = $this->getServiceLocator()->get('Stjornvisi\Service\Event');
+        $authService = new AuthenticationService();
+
+        $eventId = (int)$this->params()->fromRoute('id', 0);
+        $userId = (int)$this->params()->fromRoute('user', 0);
+
+        $event = $eventService->get($eventId);
+
+        $currentUser = $authService->getIdentity();
+
+        // Needs admin access
+        if ($event && $currentUser && $currentUser->is_admin) {
+            $eventService->unregisterUser($event->id, $userId);
+            // Do not notify!
+
+            $url = $this->getRequest()->getHeader('Referer')->getUri();
+            return $this->redirect()->toUrl($url);
         } else {
             return $this->notFoundAction();
         }

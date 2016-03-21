@@ -23,6 +23,12 @@ class FileProperties implements \JsonSerializable
     const PREFIX_1X = '1x@';
     const PREFIX_2X = '2x@';
 
+    const PATH_IMAGES = './module/Stjornvisi/public/stjornvisi/images';
+    
+    const MIME_JPEG = 'image/jpeg';
+    const MIME_PNG = 'image/png';
+    const MIME_TIFF = 'image/tiff';
+
     private $name;
 
     private $postfix = '';
@@ -39,6 +45,17 @@ class FileProperties implements \JsonSerializable
     {
         $this->name = $name;
         return $this;
+    }
+
+    public static function createImagePath($path, $filename, $size, $prefix = FileProperties::PREFIX_1X)
+    {
+        return implode(DIRECTORY_SEPARATOR, [$path, $size, self::getPrefixedFilename($filename, $prefix)]);
+    }
+
+    public static function getPrefixedFilename($filename, $prefix = FileProperties::PREFIX_1X)
+    {
+        $prefix = ($prefix == 1) ? FileProperties::PREFIX_1X : FileProperties::PREFIX_2X;
+        return $prefix . $filename;
     }
 
     public function setPostfix($postfix)
@@ -76,10 +93,7 @@ class FileProperties implements \JsonSerializable
                 '1x' => $this->generateFilePath($this->name, self::DIR_LARGE, 1),
                 '2x' => $this->generateFilePath($this->name, self::DIR_LARGE, 2),
             ],
-            'original' => [
-                '1x' => $this->generateFilePath($this->name, self::DIR_ORIGINAL, 1),
-                '2x' => $this->generateFilePath($this->name, self::DIR_ORIGINAL, 2),
-            ],
+            // original removed since it is not used
             'raw' => implode('/', [self::DIR_IMAGES, self::DIR_RAW, $this->name]),
         ];
     }
@@ -90,5 +104,13 @@ class FileProperties implements \JsonSerializable
         return $this->renderer
             ? $this->renderer->basePath(implode('/', [self::DIR_IMAGES, $size, $prefix.$name]) . $this->postfix)
             : implode('/', [self::DIR_IMAGES, $size, $prefix.$name]) . $this->postfix ;
+    }
+
+    public static function getMimeType($filename)
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $ret = finfo_file($finfo, $filename);
+        finfo_close($finfo);
+        return $ret;
     }
 }

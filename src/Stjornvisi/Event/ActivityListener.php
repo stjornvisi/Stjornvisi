@@ -75,7 +75,6 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
         $target = $event->getTarget();
         $recipient = [
             (object)['name'=>'Stjónvísi', 'address'=>'stjornvisi@stjornvisi.is'],
-            (object)['name'=>'Einar Valur', 'address'=>'fizk78@gmail.com'],
         ];
         $params = $event->getParams();
         $method = isset($params[0])?$params[0]:'';

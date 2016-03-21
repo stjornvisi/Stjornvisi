@@ -214,6 +214,7 @@ class Module
                 'Stjornvisi\Service\Board' 		=> 'Stjornvisi\Service\Board',
                 'Stjornvisi\Service\Article' 	=> 'Stjornvisi\Service\Article',
                 'Stjornvisi\Service\Page' 		=> 'Stjornvisi\Service\Page',
+                'Stjornvisi\Service\Email' 		=> 'Stjornvisi\Service\Email',
                 'Stjornvisi\Service\Values' 	=> 'Stjornvisi\Service\Values',
                 'Stjornvisi\Service\Conference' => 'Stjornvisi\Service\Conference',
                 'Stjornvisi\Service\Skeleton' 	=> 'Stjornvisi\Service\Skeleton',
@@ -291,22 +292,6 @@ class Module
                 },
                 'Stjornvisi\Service\Map' => function ($sm) {
                         return new JaMap(new Client());
-                },
-                'Stjornvisi\Service\Email' => function ($sm) {
-                    $config = $sm->get('config');
-                    $obj = new Email();
-                    $obj->setDataSource(new PDO(
-                        $config['tracker']['dns'],
-                        $config['tracker']['user'],
-                        $config['tracker']['password'],
-                        array(
-                            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                        )
-                    ));
-                    return $obj;
-
                 },
                 'PDO\Config' => function ($sm) {
                     $config = $sm->get('config');

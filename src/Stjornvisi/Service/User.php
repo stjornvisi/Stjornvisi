@@ -115,7 +115,7 @@ class User extends AbstractService implements DataSourceAwareInterface
                     isset($companyStatement)?$companyStatement->queryString:null
                 )
             ));
-            throw new Exception("Can't get user. user:[{$id}]", 0, $e);
+            throw new Exception("Can't get user. user:[{$hash}]", 0, $e);
         }
     }
 
@@ -409,6 +409,9 @@ class User extends AbstractService implements DataSourceAwareInterface
                     isset($statement)?$statement->queryString:null
                 )
             ));
+            if (is_array($group_id)) {
+                $group_id = implode(',', $group_id);
+            }
             throw new Exception("Can't get user access to group. ".
                 "user:[{$user_id}], group:[{$group_id}]", 0, $e);
         }
@@ -433,8 +436,8 @@ class User extends AbstractService implements DataSourceAwareInterface
                   SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
                   FROM Group_has_User GhU
                   JOIN `User` U ON (U.id = GhU.user_id)
-                  JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
-                  JOIN `Company` C ON (ChU.company_id = C.id)
+                  LEFT JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
+                  LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                   WHERE GhU.group_id = :id
                   AND GhU.type = :type
                   ORDER BY GhU.type DESC, U.name
@@ -452,8 +455,8 @@ class User extends AbstractService implements DataSourceAwareInterface
                     SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
                     FROM Group_has_User GhU
                     JOIN `User` U ON (U.id = GhU.user_id)
-                    JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
-                    JOIN `Company` C ON (ChU.company_id = C.id)
+                    LEFT JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
+                    LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                     WHERE GhU.group_id = :id
                     AND GhU.type IN (".$typeList.")
                     ORDER BY GhU.type DESC, U.name
@@ -466,8 +469,8 @@ class User extends AbstractService implements DataSourceAwareInterface
                     SELECT U.*, GhU.type, C.name as company_name, C.id as company_id, C.business_type
                     FROM Group_has_User GhU
                     JOIN `User` U ON (U.id = GhU.user_id)
-                    JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
-                    JOIN `Company` C ON (ChU.company_id = C.id)
+                    LEFT JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
+                    LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                     WHERE GhU.group_id = :id
                     ORDER BY GhU.type DESC, U.name
                 ");
@@ -578,7 +581,7 @@ class User extends AbstractService implements DataSourceAwareInterface
                     isset($statement)?$statement->queryString:null,
                 )
             ));
-            throw new Exception("Can't read user's access to user, user:[{$id}], requester[{$requester_id}]", 0, $e);
+            throw new Exception("Can't read user's access to user, user:[{$user_id}], requester[{$requester_id}]", 0, $e);
         }
     }
 

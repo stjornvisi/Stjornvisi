@@ -49,16 +49,20 @@ class CsvRenderer implements Renderer, TreeRendererInterface
      */
     public function render($nameOrModel, $values = null)
     {
+        $delimeter = ';';
+        // Since this is an UTF-8 CSV file, we need to add BOM
+        // http://stackoverflow.com/a/155176
+        $string = chr(239) . chr(187) . chr(191);
 
         /** @var  $nameOrModel \Stjornvisi\View\Model\CsvModel */
         $csv = $nameOrModel->getData();
         /** @var $csv \Stjornvisi\Lib\Csv */
-        $string = implode(",", array_map(function ($data) {
+        $string .= implode($delimeter, array_map(function ($data) {
             return "\"".addslashes($data)."\"";
         }, $csv->getHeader())) . PHP_EOL;
 
         foreach ($csv as $item) {
-            $string .= implode(",", array_map(function ($data) {
+            $string .= implode($delimeter, array_map(function ($data) {
                 return "\"".addslashes($data)."\"";
             }, $item));
             $string .= PHP_EOL;

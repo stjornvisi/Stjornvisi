@@ -8,6 +8,8 @@
 
 namespace Stjornvisi\Action;
 
+use Imagine\Image\Metadata\DefaultMetadataReader;
+use Imagine\Image\Metadata\ExifMetadataReader;
 use SplFileInfo;
 use DirectoryIterator;
 use Imagine\Image\ImageInterface;
@@ -32,12 +34,28 @@ class ImageGenerator implements ActionInterface
 
     public function execute()
     {
-        $options = ['quality' => 85, 'png_compression_level' => 9];
+        $options = [
+            'quality' => 85,
+            'png_compression_level' => 9,
+            // from Imagine\Filter\Basic\WebOptimization
+            'resolution-units' => ImageInterface::RESOLUTION_PIXELSPERINCH,
+            'resolution-y'     => 72,
+            'resolution-x'     => 72,
+        ];
+        $imagine = new Imagine();
+        $srcFile = $this->file->getPathname();
+        $mime = FileProperties::getMimeType($srcFile);
+        if ($mime == FileProperties::MIME_JPEG || $mime == FileProperties::MIME_TIFF) {
+            $metadataReader = new ExifMetadataReader();
+        }
+        else {
+            $metadataReader = new DefaultMetadataReader();
+        }
+        $imagine->setMetadataReader($metadataReader);
 
         //60 SQUARE
         //  create an cropped image with hard height/width of 60
-        $imagine = new Imagine();
-        $imagine->open($this->file->getPathname())
+        $imagine->open($srcFile)
             ->thumbnail(new Box(120, 120), ImageInterface::THUMBNAIL_OUTBOUND)
             ->save(
                 $this->generateImagePath($this->file, FileProperties::DIR_SMALL, 2),
@@ -48,12 +66,10 @@ class ImageGenerator implements ActionInterface
                 $this->generateImagePath($this->file, FileProperties::DIR_SMALL, 1),
                 $options
             );
-        $imagine = null;
 
         //300 SQUARE
         //  create an cropped image with hard height/width of 300
-        $imagine = new Imagine();
-        $imagine->open($this->file->getPathname())
+        $imagine->open($srcFile)
             ->thumbnail(new Box(600, 600), ImageInterface::THUMBNAIL_OUTBOUND)
             ->save(
                 $this->generateImagePath($this->file, FileProperties::DIR_MEDIUM, 2),
@@ -64,12 +80,10 @@ class ImageGenerator implements ActionInterface
                 $this->generateImagePath($this->file, FileProperties::DIR_MEDIUM, 1),
                 $options
             );
-        $imagine = null;
 
         //LARGE
         //
-        $imagine = new Imagine();
-        $image = $imagine->open($this->file->getPathname());
+        $image = $imagine->open($srcFile);
         $image->resize($image->getSize()->widen(1200))
             ->save(
                 $this->generateImagePath($this->file, FileProperties::DIR_LARGE, 2),
@@ -82,27 +96,56 @@ class ImageGenerator implements ActionInterface
             );
         $imagine = null;
 
-        //ORIGINAL
-        $imagine = new Imagine();
-        $image = $imagine->open($this->file->getPathname());
-        $image->resize($image->getSize()->getWidth() > 3600 ? $image->getSize()->widen(3600) : $image->getSize())
-            ->save(
-                $this->generateImagePath($this->file, FileProperties::DIR_ORIGINAL, 2),
-                $options
-            )
-            ->resize($image->getSize()->getWidth() > 2400 ? $image->getSize()->widen(2400) : $image->getSize())
-            ->save(
-                $this->generateImagePath($this->file, FileProperties::DIR_ORIGINAL, 1),
-                $options
-            );
-        $imagine = null;
+        $this->optimize($mime, [
+            $this->generateImagePath($this->file, FileProperties::DIR_SMALL, 1),
+            $this->generateImagePath($this->file, FileProperties::DIR_SMALL, 2),
+            $this->generateImagePath($this->file, FileProperties::DIR_MEDIUM, 1),
+            $this->generateImagePath($this->file, FileProperties::DIR_MEDIUM, 2),
+            $this->generateImagePath($this->file, FileProperties::DIR_LARGE, 1),
+            $this->generateImagePath($this->file, FileProperties::DIR_LARGE, 2),
+        ]);
+
+        //ORIGINAL - Not used, we just use the RAW file instead
 
         return new FileProperties($this->file->getFilename());
     }
 
+    private function optimize($mime, $files)
+    {
+        if ($mime == FileProperties::MIME_JPEG) {
+            $this->optimizeJpeg($files);
+        }
+        else if ($mime == FileProperties::MIME_PNG) {
+            $this->optimizePng($files);
+        }
+    }
+
+    private function optimizeJpeg($files)
+    {
+        foreach ($files as $file) {
+            $this->imagemin($file, '-p -o 7 --plugin jpeg-recompress --method smallfry --quality high --min 60');
+        }
+    }
+
+    private function optimizePng($files)
+    {
+        foreach ($files as $file) {
+            $this->imagemin($file, '-p -o 7 --plugin pngquant');
+        }
+    }
+
+    private function imagemin($file, $options)
+    {
+        $cmd = "/usr/bin/imagemin $options '$file' > '$file.tmp' && mv '$file.tmp' '$file'";
+        $last = exec($cmd, $output, $ret);
+        if ($ret != 0) {
+            error_log("Warning: File: $file: $last");
+        }
+    }
+
     private function generateImagePath(SplFileInfo $file, $size, $prefix)
     {
-        $prefix = ($prefix == 1) ? FileProperties::PREFIX_1X : FileProperties::PREFIX_2X ;
-        return implode(DIRECTORY_SEPARATOR, [$this->targetDirectory->getPath(), $size, $prefix.$file->getFilename()]);
+        return FileProperties::createImagePath($this->targetDirectory->getPath(), $file->getFilename(), $size, $prefix);
     }
+
 }

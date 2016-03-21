@@ -155,6 +155,20 @@ return array(
                             ),
                         )
                     ),
+                    'unregister' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:id/afskraning/:user',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                                'user' => '[0-9]+'
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
+                                'action' => 'unregister'
+                            ),
+                        )
+                    ),
                     'send-mail' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
