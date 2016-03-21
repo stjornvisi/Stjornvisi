@@ -1127,6 +1127,36 @@ CREATE TABLE `queue` (
 -- Dumping data for table `queue`
 --
 
+--
+-- Table structure for table `Email`
+--
+
+DROP TABLE IF EXISTS `Email`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `Email` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `subject` varchar(255) NOT NULL,
+  `body` text,
+  `hash` char(32) NOT NULL,
+  `user_hash` char(32) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `entity_id` int(10) unsigned DEFAULT NULL,
+  `params` varchar(255) DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  `touched` tinyint(1) NOT NULL DEFAULT '0',
+  `agent` varchar(255) DEFAULT NULL,
+  `headers` text,
+  PRIMARY KEY (`id`),
+  KEY `k_email_hash` (`hash`),
+  KEY `k_email_user_hash` (`user_hash`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Email`
+--
 
 
 --
@@ -1142,7 +1172,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `ArticleEntry` AS select `art`.`id` AS `id`,`art`.`title` AS `title`,`art`.`body` AS `body`,`art`.`summary` AS `summary`,`art`.`created` AS `created`,`art`.`published` AS `published`,`art`.`venue` AS `venue`,`auth`.`name` AS `author`,`auth`.`avatar` AS `author_avatar`,`auth`.`info` AS `author_info` from ((`Article` `art` join `Author_has_Article` `aha` on((`art`.`id` = `aha`.`article_id`))) join `Author` `auth` on((`aha`.`author_id` = `auth`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1161,7 +1191,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = latin1 */;
 /*!50001 SET collation_connection      = latin1_swedish_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `BoardMemberEntry` AS select `bm`.`id` AS `id`,`bm`.`name` AS `name`,`bm`.`email` AS `email`,`bm`.`company` AS `company`,`bm`.`avatar` AS `avatar`,`bm`.`info` AS `info`,`bmt`.`boardmember_id` AS `boardmember_id`,`bmt`.`term` AS `term`,`bmt`.`is_chairman` AS `is_chairman`,`bmt`.`is_reserve` AS `is_reserve`,`bmt`.`is_manager` AS `is_manager` from (`BoardMember` `bm` join `BoardMemberTerm` `bmt` on((`bm`.`id` = `bmt`.`boardmember_id`))) order by `bmt`.`term` desc,`bmt`.`is_chairman` desc,`bmt`.`is_manager` desc,`bmt`.`is_reserve`,`bm`.`name` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1180,7 +1210,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `CompanyEntryWithUserCount` AS select `c`.`id` AS `id`,`c`.`name` AS `name`,`c`.`ssn` AS `ssn`,`c`.`address` AS `address`,`c`.`zip` AS `zip`,`c`.`number_of_employees` AS `number_of_employees`,`c`.`business_type` AS `business_type`,`c`.`safe_name` AS `safe_name`,(select count(`Company_has_User`.`company_id`) AS `count(company_id)` from `Company_has_User` where (`Company_has_User`.`company_id` = `c`.`id`)) AS `no_of_users`,`c`.`created` AS `created` from `Company` `c` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1199,7 +1229,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `CompanyUser` AS select `CU`.`user_id` AS `user_id`,`CU`.`company_id` AS `company_id`,`CU`.`key_user` AS `key_user`,`U`.`name` AS `name`,`U`.`email` AS `email`,`U`.`title` AS `title` from (`Company_has_User` `CU` join `User` `U` on((`CU`.`user_id` = `U`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1218,7 +1248,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `EventEntry` AS select `E`.`id` AS `id`,`E`.`subject` AS `subject`,`E`.`body` AS `body`,`E`.`location` AS `location`,`E`.`address` AS `address`,`E`.`event_date` AS `event_date`,`E`.`event_time` AS `event_time`,`E`.`event_end` AS `event_end`,`E`.`avatar` AS `avatar`,`E`.`lat` AS `lat`,`E`.`lng` AS `lng`,`G`.`group_id` AS `group_id` from (`Event` `E` join `Group_has_Event` `G` on((`E`.`id` = `G`.`event_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1237,7 +1267,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `EventMediaUserEntry` AS select `M`.`id` AS `id`,`M`.`name` AS `name`,`M`.`event_id` AS `event_id`,`M`.`description` AS `description`,`M`.`created` AS `created`,`EU`.`user_id` AS `user_id`,`EU`.`attending` AS `attending`,`EU`.`register_time` AS `register_time`,`E`.`subject` AS `subject` from ((`Event_has_User` `EU` join `EventMedia` `M` on((`EU`.`event_id` = `M`.`event_id`))) join `Event` `E` on((`EU`.`event_id` = `E`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1256,7 +1286,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `EventUserEntry` AS select `U`.`name` AS `name`,`U`.`email` AS `email`,`E`.`event_id` AS `event_id`,`E`.`user_id` AS `user_id`,`E`.`attending` AS `attending`,`E`.`register_time` AS `register_time` from (`Event_has_User` `E` join `User` `U` on((`E`.`user_id` = `U`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1275,7 +1305,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `GroupUser` AS select `U`.`id` AS `id`,`U`.`name` AS `name`,`U`.`passwd` AS `passwd`,`U`.`email` AS `email`,`U`.`title` AS `title`,`U`.`created_date` AS `created_date`,`U`.`modified_date` AS `modified_date`,`U`.`frequency` AS `frequency`,`U`.`is_admin` AS `is_admin`,`CU`.`company_id` AS `company_id`,`C`.`name` AS `company_name`,`G`.`group_id` AS `group_id`,`G`.`type` AS `type` from (((`User` `U` join `Group_has_User` `G` on((`U`.`id` = `G`.`user_id`))) join `CompanyUser` `CU` on((`U`.`id` = `CU`.`user_id`))) join `Company` `C` on((`CU`.`company_id` = `C`.`id`))) order by `G`.`type` desc,`U`.`name` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1294,7 +1324,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`%` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `GroupUserWithGroupNames` AS select `U`.`id` AS `id`,`U`.`name` AS `name`,`U`.`passwd` AS `passwd`,`U`.`email` AS `email`,`U`.`title` AS `title`,`U`.`created_date` AS `created_date`,`U`.`modified_date` AS `modified_date`,`U`.`frequency` AS `frequency`,`U`.`is_admin` AS `is_admin`,`CU`.`company_id` AS `company_id`,`C`.`name` AS `company_name`,`G`.`group_id` AS `group_id`,`G`.`type` AS `type`,`Gr`.`name` AS `group_name` from ((((`User` `U` join `Group_has_User` `G` on((`U`.`id` = `G`.`user_id`))) join `Group` `Gr` on((`G`.`group_id` = `Gr`.`id`))) join `CompanyUser` `CU` on((`U`.`id` = `CU`.`user_id`))) join `Company` `C` on((`CU`.`company_id` = `C`.`id`))) order by `G`.`type` desc,`U`.`name` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1313,7 +1343,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `MeetingMinuteEntry` AS select `M`.`id` AS `id`,`M`.`title` AS `title`,`M`.`summary` AS `summary`,`M`.`body` AS `body`,`M`.`created` AS `created`,`M`.`time` AS `time`,`M`.`group_id` AS `group_id`,`M`.`author_id` AS `author_id`,`G`.`name` AS `name`,`G`.`name_short` AS `name_short`,`G`.`url` AS `url` from (`MeetingMinute` `M` left join `Group` `G` on((`G`.`id` = `M`.`group_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1332,7 +1362,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `NewsEntry` AS select `N`.`id` AS `id`,`N`.`title` AS `title`,`N`.`body` AS `body`,`N`.`avatar` AS `avatar`,`N`.`created_date` AS `created_date`,`N`.`modified_date` AS `modified_date`,`N`.`group_id` AS `group_id`,`N`.`user_id` AS `user_id`,`G`.`name` AS `name`,`G`.`name_short` AS `name_short`,`G`.`url` AS `url` from (`News` `N` left join `Group` `G` on((`N`.`group_id` = `G`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1351,7 +1381,7 @@ CREATE TABLE `queue` (
 /*!50001 SET character_set_results     = utf8 */;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50013 DEFINER=`stjornvisi_t`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `UserEntry` AS select `U`.`id` AS `id`,`U`.`name` AS `name`,`U`.`email` AS `email`,`U`.`passwd` AS `passwd`,`U`.`title` AS `title`,`U`.`created_date` AS `created_date`,`U`.`modified_date` AS `modified_date`,`U`.`frequency` AS `frequency`,`CU`.`company_id` AS `company_id`,`U`.`is_admin` AS `is_admin`,`C`.`name` AS `company_name`,`C`.`safe_name` AS `safe_name`,`CU`.`key_user` AS `key_user` from ((`User` `U` left join `Company_has_User` `CU` on((`U`.`id` = `CU`.`user_id`))) left join `Company` `C` on((`CU`.`company_id` = `C`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
