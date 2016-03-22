@@ -8,42 +8,17 @@
 
 namespace Stjornvisi\Notify;
 
-use PHPUnit_Extensions_Database_TestCase;
-use \PDO;
-
-use Monolog\Handler\NullHandler;
-use Monolog\Logger;
-
-use Stjornvisi\DataHelper;
-use Stjornvisi\Notify\Event;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\Bootstrap;
+use Stjornvisi\DataHelper;
 
-class EventTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractTestCase.php';
+
+class EventTest extends AbstractTestCase
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
     public function testOk()
     {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
         $notifier = new Event();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $this->prepareNotifier($notifier);
         $notifier->setData((object)[
             'data' => (object)[
                 'user_id' => 1,
@@ -54,8 +29,6 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
                 'event_id' => 1,
             ]
         ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
 
         $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
     }
@@ -66,23 +39,8 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testEventNotFound()
     {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
         $notifier = new Event();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $this->prepareNotifier($notifier);
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 100,
@@ -93,8 +51,6 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
                 'subject' => ''
             ]
         ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
 
         $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
     }
@@ -105,23 +61,8 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUserNotFoundInTestMode()
     {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
         $notifier = new Event();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $this->prepareNotifier($notifier);
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -132,8 +73,6 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
                 'subject' => ''
             ]
         ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
 
         $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
     }
@@ -143,14 +82,8 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testQueueConnectionException()
     {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')->andThrow('\PhpAmqpLib\Exception\AMQPRuntimeException')
-            ->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
         $notifier = new Event();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $this->prepareNotifier($notifier, true);
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -161,8 +94,6 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
                 'subject' => ''
             ]
         ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
 
         $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
     }
@@ -172,23 +103,8 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUserFoundInTestMode()
     {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
         $notifier = new Event();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $this->prepareNotifier($notifier);
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -199,8 +115,6 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
                 'subject' => ''
             ]
         ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
 
         $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
     }
@@ -211,23 +125,8 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testEveryBodyNotOk()
     {
-        $mock = \Mockery::mock('\Stjornvisi\Lib\QueueConnectionFactoryInterface')
-            ->shouldReceive('createConnection')
-            ->andReturn(
-                \Mockery::mock('\PhpAmqpLib\Connection\AMQPConnection')
-                    ->shouldReceive([
-                        'channel'=>\Mockery::mock()
-                            ->shouldReceive('queue_declare', 'basic_publish', 'close')
-                            ->getMock(),
-                        'close' => ''
-                    ])
-                    ->getMock()
-            )->getMock();
-
-        $logger = new Logger('test');
-        $logger->pushHandler(new NullHandler());
         $notifier = new Event();
-        $notifier->setDateStore($this->getDatabaseConnectionValues());
+        $this->prepareNotifier($notifier);
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -238,46 +137,8 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
                 'subject' => ''
             ]
         ]);
-        $notifier->setLogger($logger);
-        $notifier->setQueueConnectionFactory($mock);
 
         $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        Bootstrap::getServiceManager();
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-
-        return $this->conn;
     }
 
     /**
@@ -287,39 +148,19 @@ class EventTest extends PHPUnit_Extensions_Database_TestCase
     {
         return new ArrayDataSet([
             'User' => [
-                ['id'=>1,'name'=>'einar','passwd'=>'1234','created_date'=>date('Y-m-d'),'modified_date'=>date('Y-m-d')],
+                DataHelper::newUser(1, 0, ['email' => null]),
             ],
             'Event' => [
-                ['id'=>1,'subject'=>'s1'],
-                ['id'=>2,'subject'=>'s1'],
+                DataHelper::newEvent(1, null, ['subject' => 's1']),
+                DataHelper::newEvent(2, null, ['subject' => 's1']),
             ],
             'Group' => [
                 DataHelper::newGroup(1),
             ],
             'Group_has_Event' => [
-                ['event_id'=>1, 'group_id'=>1],
-                ['event_id'=>1, 'group_id'=>null],
+                DataHelper::newGroupHasEvent(1, 1),
+                DataHelper::newGroupHasEvent(1, null),
             ],
         ]);
-    }
-
-    /**
-     * Provide some connection values for the
-     * database.
-     *
-     * @return array
-     */
-    public function getDatabaseConnectionValues()
-    {
-        return [
-            'dns' => $GLOBALS['DB_DSN'],
-            'user' => $GLOBALS['DB_USER'],
-            'password' => $GLOBALS['DB_PASSWD'],
-            'options' => [
-                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-            ]
-        ];
     }
 }
