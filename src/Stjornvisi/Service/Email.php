@@ -14,13 +14,8 @@ use Stjornvisi\Lib\DataSourceAwareInterface;
 /**
  * Class Email
  * @package Stjornvisi\Service
- *
- * @todo For some strange reason, gets this object the wrong data-source
- *  I think it has something to do with how the object is created in Module.php,
- *  'cause it use to implement DataSourceAwareInterface and that interface is registered
- *  to attache a data-source via the 'initializers' decorator
  */
-class Email extends AbstractService /*implements DataSourceAwareInterface*/
+class Email extends AbstractService implements DataSourceAwareInterface
 {
     /**
      * @var \PDO
