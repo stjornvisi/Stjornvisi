@@ -41,7 +41,7 @@ class DataHelper
         return $data;
     }
 
-    public static function newCompanyHasUser($userId, $companyId, $keyUser)
+    public static function newCompanyHasUser($userId, $companyId, $keyUser = 0)
     {
         return [
             'user_id' => $userId,
@@ -50,7 +50,7 @@ class DataHelper
         ];
     }
 
-    public static function newCompany($id, $businessType)
+    public static function newCompany($id, $businessType = 'hf')
     {
         return [
             'id' => $id,

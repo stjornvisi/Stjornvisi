@@ -23,8 +23,10 @@ $date6 = new DateTime();
     $date6->sub( new DateInterval('P5M') );
 
 return [
-    'Company' => [],
-    'Company_has_User' => [],
+    'Company' => [
+        DataHelper::newCompany(1),
+        DataHelper::newCompany(2),
+    ],
     'Group' => [
         DataHelper::newGroup(1),
         DataHelper::newGroup(2),
@@ -57,5 +59,9 @@ return [
         
         DataHelper::newGroupHasUser(5, 6, 0),
         DataHelper::newGroupHasUser(5, 7, 0),
+    ],
+    'Company_has_User' => [
+        DataHelper::newCompanyHasUser(2, 1),
+        DataHelper::newCompanyHasUser(3, 1),
     ],
 ];
