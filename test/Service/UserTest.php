@@ -46,10 +46,10 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
         $service->setDataSource(self::$pdo);
 
         $result = $service->get(1);
-        $this->assertEquals('one@mail.com', $result->email);
+        $this->assertEquals('n1@mail.com', $result->email);
 
-        $result = $service->get('one@mail.com');
-        $this->assertEquals('one@mail.com', $result->email);
+        $result = $service->get('n1@mail.com');
+        $this->assertEquals('n1@mail.com', $result->email);
 
         $result = $service->get(100);
         $this->assertFalse($result);

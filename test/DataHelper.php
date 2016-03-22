@@ -193,4 +193,13 @@ class DataHelper
         ];
     }
 
+    public static function newGroupHasUser($groupId, $userId, $type)
+    {
+        return [
+            'group_id'=>$groupId, 
+            'user_id'=>$userId, 
+            'type'=>$type
+        ];
+    }
+
 }
