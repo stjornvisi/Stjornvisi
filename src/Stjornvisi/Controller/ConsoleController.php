@@ -14,7 +14,6 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPExceptionInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Stjornvisi\Lib\QueueConnectionFactory;
-use Stjornvisi\Mail\Attacher;
 use Stjornvisi\Notify\Message\Mail as NotifyMailMessage;
 use Stjornvisi\Notify\NotifyInterface;
 use Zend\Console\Request as ConsoleRequest;
@@ -226,16 +225,6 @@ class ConsoleController extends AbstractActionController
                     ->setSubject($messageObject->subject)
                     ->setBody($messageObject->body)
                     ->setEncoding("UTF-8");
-
-                //ATTACHER
-                //  you can read all about what this does in \Stjornvisi\Mail\Attacher
-                //  but basically what this does is: convert a simple html string into a
-                //  multy-part mime object with embedded attachments.
-                $trackerId = ($messageObject->user_id)
-                    ? $messageObject->user_id
-                    : ''; //TODO why do I need this?
-                $attacher = new Attacher($message);
-                $message = $attacher->parse("http://tracker.stjornvisi.is/spacer.gif?id={$trackerId}");
 
                 //DEBUG MODE
                 //  process started with --debug flag
