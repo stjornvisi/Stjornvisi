@@ -266,13 +266,10 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
         $user->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
 
-        $recipientAddresses = [];
-
         if ($test) {
             return [$user->get($sender)];
         } else {
            switch ($recipients){
-
                case "formenn" :
                    $recipientAddresses = $user->fetchAllManagers(true);
                    break;
@@ -280,7 +277,7 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
                    $recipientAddresses = $user->fetchAllLeaders(true);
                    break;
                case "allir" :
-                   $user->fetchAll(true);
+                   $recipientAddresses = $user->fetchAll(true);
                    break;
                default :
                    $recipientAddresses = [];
