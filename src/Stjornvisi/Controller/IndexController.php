@@ -9,16 +9,10 @@
 
 namespace Stjornvisi\Controller;
 
-use PhpAmqpLib\Message\AMQPMessage;
+use Stjornvisi\Service\Event;
+use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\View\Model\FeedModel;
-use Zend\Feed\Writer\Feed;
-use Zend\Authentication\AuthenticationService;
-use \DateTime;
-use \DateInterval;
-
-use Stjornvisi\Form\Login;
 
 /**
  * Class IndexController.
@@ -40,6 +34,7 @@ class IndexController extends AbstractActionController
         //  load all services
         $sm = $this->getServiceLocator();
         $newsService = $sm->get('Stjornvisi\Service\News');
+        /** @var Event $eventService */
         $eventService = $sm->get('Stjornvisi\Service\Event');
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $companyService = $sm->get('Stjornvisi\Service\Company');
@@ -48,8 +43,7 @@ class IndexController extends AbstractActionController
         //	authenticate user
         $auth = new AuthenticationService();
         if ($auth->hasIdentity()) {
-            return new ViewModel(
-                [
+            return new ViewModel([
                 'groups' => $groupService->getByUser($auth->getIdentity()->id),
                 'news' => $newsService->getByUser($auth->getIdentity()->id),
                 'events' => $eventService->getByUser($auth->getIdentity()->id),
@@ -57,18 +51,15 @@ class IndexController extends AbstractActionController
                 'media' => $eventService->getMediaByUser($auth->getIdentity()->id),
                 'is_connected' => $companyService->getByUser($auth->getIdentity()->id),
                 'identity' => $auth->getIdentity()
-                ]
-            );
+            ]);
         } else {
-            return new ViewModel(
-                [
+            return new ViewModel([
                 'identity' => null,
                 'groups' => $groupService->fetchAll(),
                 'event' => $eventService->getNext(),
                 'news' => $newsService->getNext(),
                 'gallery' => $eventService->fetchGallery(12, true),
-                ]
-            );
+            ]);
         }
 
     }
