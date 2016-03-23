@@ -19,13 +19,12 @@
 			font-family: Bitter;
 			font-weight: $font-weight-bold;
 			@include margin-leader(1/4,$font-size-header);
-			@include margin-trailer(1/4,$font-size-header);
 		}
 		h2{
 			font-family: Bitter;
 			font-weight: $font-weight-bold;
 		}
-		padding: 0 0 rhythm(1/2,$font-size-base) 0;
+		padding: 0 0.25em 0;
 	}
 
 	.block-element__time{
@@ -129,7 +128,7 @@
 	.block-element__poster{
 		display: block;
 		float: right;
-		width: 100%;
+		width: 50%;
 		max-width: 300px;
 		margin: 0 0 0.5em 1.5em;
 		img{
@@ -277,7 +276,7 @@
 /*ul*/.block-list{
 	&.block-list--separator{
 		> li{
-			border-bottom: 1px solid $color-gray-light;
+			border-bottom: 2px solid $color-gray-light;
 		}
 		> li:last-child{
 			border-bottom: none;
@@ -288,7 +287,7 @@
 	}
 	& > li{
 		position: relative;
-		padding: rhythm(1,$font-size-base) 0;
+		padding: 0.6em 0;
 	}
 	&.block-list--less{
 		> li {
@@ -450,7 +449,7 @@
  */
 .layout{
 	@include pie-clearfix;
-	padding: 0 $gutter*2 $gutter*2 $gutter*2;
+	padding: 0 $gutter*1 $gutter*2 $gutter*2;
 	@include breakpoint( $phone ){
 		padding: 0 $gutter/2;
 	}
@@ -555,16 +554,17 @@
 		.layout__section{
 			@include pie-clearfix;
 			float: left;
-			width: 80%;
+			width: 78%;
+			margin-right:2%;
 
 			.layout__data{
 				float: left;
-				width: 50%;
+				width: 65%;
 				padding-right: rhythm(1/2,$font-size-base);
 			}
 			.layout__meta{
 				float: left;
-				width: 30%;
+				width: 50%;
 				padding-right: rhythm(1/2,$font-size-base);
 				padding-left: rhythm(1/2,$font-size-base);
 				text-align:right;

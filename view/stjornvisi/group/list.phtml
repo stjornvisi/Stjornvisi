@@ -31,11 +31,6 @@ use Stjornvisi\Properties\FileProperties;
                                         <h2><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h2>
                                     </header>
                                     <section class="block-element__body">
-                                        <?php if($event->avatar):?>
-                                        <a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>" class="block-element__image">
-                                            <?=$this->image($event->avatar, FileProperties::DIR_SMALL);?>
-                                        </a>
-                                        <?php endif;?>
                                         <?=$this->paragrapher( mb_substr($event->body,0,100,'utf-8').'&hellip;' );?>
                                     </section>
 
