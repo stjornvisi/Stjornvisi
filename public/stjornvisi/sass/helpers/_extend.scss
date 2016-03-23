@@ -6,8 +6,8 @@
 			text-align: left;
 		}
 		p, blockquote,ul, ol{
-			@include margin-trailer(1,$font-size-base);
-			@include margin-leader(1,$font-size-base);
+			@include margin-trailer(0.4,$font-size-base);
+			@include margin-leader(0,$font-size-base);
 		}
 
 		blockquote,ul, ol, h1, h2, h3, h4{
@@ -100,9 +100,9 @@
 			margin: $gutter/2 0 $gutter/2 $gutter/2;
 		}
 		img{
-			float: left;
+			float: right;
 			margin: 0 rhythm(1/2, $font-size-base) rhythm(1/2, $font-size-base) 0;
-			//max-width: 50%;
+			max-width: 600px;
 		}
 
 		em,i{

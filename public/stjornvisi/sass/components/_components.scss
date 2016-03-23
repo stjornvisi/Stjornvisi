@@ -37,7 +37,7 @@
 	.block-element__body {
 		@include pie-clearfix;
 		@extend %rich-text;
-		padding: rhythm(1/2,$font-size-base) 0;
+		padding: 0.4em 0;
 
 		&.block-element__body--two-column{
 			-webkit-column-width: $gutter;//rhythm(1,$font-size-base);
@@ -117,7 +117,6 @@
 
 	}
 	.block-element__aside{
-		padding: rhythm(1/2,$font-size-base) 0;
 	}
 	.block-element__footer{
 		padding: rhythm(1/2,$font-size-base) 0;
@@ -129,10 +128,10 @@
 	 */
 	.block-element__poster{
 		display: block;
-		float: left;
+		float: right;
 		width: 100%;
-		max-width: 100%;
-		margin: 0 rhythm(1,$font-size-base) rhythm(1/2,$font-size-base) 0;
+		max-width: 300px;
+		margin: 0 0 0.5em 1.5em;
 		img{
 			width: 100%;
 		}
@@ -157,8 +156,8 @@
 	/*ul*/.block-element__tags{
 		@include pie-clearfix;
 		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
-		@include margin-leader(1/2,$font-size-sub);
-		@include margin-trailer(1/2,$font-size-sub);
+		@include margin-leader(0,$font-size-sub);
+		@include margin-trailer(0,$font-size-sub);
 
 		font-family: $font-family-open;
 		font-weight: $font-weight-thin;
@@ -565,9 +564,10 @@
 			}
 			.layout__meta{
 				float: left;
-				width: 50%;
+				width: 30%;
 				padding-right: rhythm(1/2,$font-size-base);
 				padding-left: rhythm(1/2,$font-size-base);
+				text-align:right;
 
 				> div:first-child{
 					margin-top: 0;

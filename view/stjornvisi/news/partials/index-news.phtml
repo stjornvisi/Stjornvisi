@@ -31,9 +31,9 @@ use Stjornvisi\Properties\FileProperties;
                 </li>
             </ul>
         </header>
-        <section class="block-element__body block-element__body--two-column">
+        <section class="block-element__body">
             <?php if($this->news->avatar):?>
-                <?=$this->image($this->news->avatar, FileProperties::DIR_MEDIUM, ['block-element__image']);?>
+                <?=$this->image($this->news->avatar, FileProperties::DIR_LARGE, ['block-element__image']);?>
             <?php endif;?>
             <?=$this->paragrapher($this->news->body);?>
         </section>
