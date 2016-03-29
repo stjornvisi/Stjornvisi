@@ -7,6 +7,8 @@ use PhpAmqpLib\Connection\AbstractConnection;
 
 class MockAMQPChannel extends AMQPChannel
 {
+    private $totalBasicPublish = 0;
+    
     /** @noinspection PhpMissingParentConstructorInspection
      * @param AbstractConnection $connection
      * @param null $channel_id
@@ -33,7 +35,7 @@ class MockAMQPChannel extends AMQPChannel
                                   $mandatory = false, $immediate = false,
                                   $ticket = null)
     {
-
+        $this->totalBasicPublish++;
     }
 
     public function close($reply_code = 0,
@@ -41,6 +43,14 @@ class MockAMQPChannel extends AMQPChannel
                           $method_sig = array(0, 0))
     {
         return '';
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalBasicPublish()
+    {
+        return $this->totalBasicPublish;
     }
 
 

@@ -34,8 +34,8 @@ class AllTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\All', $notifier->send());
-
+        $this->assertInstanceOf(All::class, $notifier->send());
+        $this->checkNumChannelPublishes(1); // 1, because we are only testing (test=true)
     }
 
     /**
@@ -57,8 +57,8 @@ class AllTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\All', $notifier->send());
-
+        $this->assertInstanceOf(All::class, $notifier->send());
+        $this->checkNumChannelPublishes(3);
     }
 
     /**
@@ -82,8 +82,7 @@ class AllTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\All', $notifier->send());
-
+        $this->assertInstanceOf(All::class, $notifier->send());
     }
 
     /**
@@ -105,7 +104,7 @@ class AllTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\All', $notifier->send());
+        $this->assertInstanceOf(All::class, $notifier->send());
 
     }
 
@@ -128,7 +127,7 @@ class AllTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\All', $notifier->send());
+        $this->assertInstanceOf(All::class, $notifier->send());
 
     }
 
@@ -152,7 +151,6 @@ class AllTest extends AbstractTestCase
             'Company_has_User' => [
                 DataHelper::newCompanyHasUser(1, 1, 0),
                 DataHelper::newCompanyHasUser(2, 1, 0),
-                DataHelper::newCompanyHasUser(2, 2, 0),
             ],
         ]);
     }

@@ -27,6 +27,7 @@ class AttendTest extends AbstractTestCase
             ]
         ]);
         $notifier->send();
+        $this->checkNumChannelPublishes(1);
     }
 
     public function testEverythingWithGuestUser()
@@ -41,6 +42,7 @@ class AttendTest extends AbstractTestCase
             ]
         ]);
         $notifier->send();
+        $this->checkNumChannelPublishes(1);
     }
 
     /**
@@ -140,9 +142,11 @@ class AttendTest extends AbstractTestCase
         return new ArrayDataSet([
             'User' => [
                 DataHelper::newUser(1, 0, ['passwd' => '1234']),
+                DataHelper::newUser(2, 0, ['passwd' => '1234']),
             ],
             'Event' => [
                 DataHelper::newEvent(1),
+                DataHelper::newEvent(2),
             ],
         ]);
     }

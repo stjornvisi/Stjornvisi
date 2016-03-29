@@ -26,7 +26,7 @@ class PasswordTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Password', $notifier->send());
+        $this->assertInstanceOf(Password::class, $notifier->send());
     }
 
     /**
@@ -44,7 +44,7 @@ class PasswordTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Password', $notifier->send());
+        $this->assertInstanceOf(Password::class, $notifier->send());
     }
 
     /**

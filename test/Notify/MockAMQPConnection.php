@@ -8,6 +8,9 @@ require_once 'MockAMQPChannel.php';
 
 class MockAMQPConnection extends AMQPConnection
 {
+    /** @var MockAMQPChannel */
+    private $channel;
+
     /** @noinspection PhpMissingParentConstructorInspection */
     public function __construct()
     {
@@ -16,12 +19,19 @@ class MockAMQPConnection extends AMQPConnection
 
     public function channel($channel_id = null)
     {
-        return new MockAMQPChannel($this);
+        $channel = new MockAMQPChannel($this);
+        $this->channel = $channel;
+        return $channel;
     }
 
     public function close($reply_code = 0, $reply_text = "", $method_sig = array(0, 0))
     {
         return '';
+    }
+
+    public function getChannel()
+    {
+        return $this->channel;
     }
 
 

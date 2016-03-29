@@ -27,7 +27,7 @@ class SubmissionTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
+        $this->assertInstanceOf(Submission::class, $notifier->send());
     }
 
     /**
@@ -46,7 +46,7 @@ class SubmissionTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
+        $this->assertInstanceOf(Submission::class, $notifier->send());
     }
 
     /**
@@ -66,7 +66,7 @@ class SubmissionTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
+        $this->assertInstanceOf(Submission::class, $notifier->send());
     }
 
     /**
@@ -86,7 +86,7 @@ class SubmissionTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Submission', $notifier->send());
+        $this->assertInstanceOf(Submission::class, $notifier->send());
     }
 
     /**

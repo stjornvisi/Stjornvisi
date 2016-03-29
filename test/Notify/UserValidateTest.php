@@ -26,7 +26,7 @@ class UserValidateTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\UserValidate', $notifier->send());
+        $this->assertInstanceOf(UserValidate::class, $notifier->send());
     }
 
     /**
@@ -44,7 +44,7 @@ class UserValidateTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\UserValidate', $notifier->send());
+        $this->assertInstanceOf(UserValidate::class, $notifier->send());
     }
 
     /**
@@ -68,7 +68,7 @@ class UserValidateTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\UserValidate', $notifier->send());
+        $this->assertInstanceOf(UserValidate::class, $notifier->send());
     }
 
     /**

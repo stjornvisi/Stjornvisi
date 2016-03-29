@@ -15,7 +15,7 @@ require_once 'AbstractTestCase.php';
 
 class GroupTest extends AbstractTestCase
 {
-    public function testOk()
+    public function testOkTest()
     {
         $notifier = new Group();
         $this->prepareNotifier($notifier);
@@ -30,7 +30,27 @@ class GroupTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf(Group::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+    }
+
+    public function testOk()
+    {
+        $notifier = new Group();
+        $this->prepareNotifier($notifier);
+        $notifier->setData((object)[
+            'data' => (object)[
+                'recipients' => 'allir',
+                'test' => false,
+                'sender_id' => 1,
+                'group_id' => 1,
+                'body' => 'nothing',
+                'subject' => '',
+            ]
+        ]);
+
+        $this->assertInstanceOf(Group::class, $notifier->send());
+        $this->checkNumChannelPublishes(2);
     }
 
     /**
@@ -52,7 +72,7 @@ class GroupTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf(Group::class, $notifier->send());
     }
 
     /**
@@ -74,7 +94,7 @@ class GroupTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Group', $notifier->send());
+        $this->assertInstanceOf(Group::class, $notifier->send());
     }
 
     /**

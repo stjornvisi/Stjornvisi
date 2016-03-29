@@ -31,6 +31,8 @@ class DataHelper
             'modified_date' => date('Y-m-d H:i:s'),
             'frequency' => 1,
             'is_admin' => $isAdmin,
+            'get_message' => 1,
+            'get_notify' => 1,
         ];
         if ($id) {
             $data['id'] = $id;
@@ -169,6 +171,10 @@ class DataHelper
                 DataHelper::newGroup(3),
                 DataHelper::newGroup(4),
             ],
+            'Group_has_User' => [
+                DataHelper::newGroupHasUser(1, 1, 1),
+                DataHelper::newGroupHasUser(1, 2, 1),
+            ],
             'Event' => DataHelper::newEventSeries(),
             'Group_has_Event' => [
                 DataHelper::newGroupHasEvent(2, 1, 0),
@@ -190,15 +196,18 @@ class DataHelper
                 DataHelper::newEventHasUser(2, 2, 1),
             ],
             'EventMedia' => DataHelper::newEventMediaSeries(),
+            'Company' => [],
+            'Company_has_User' => [],
         ];
     }
 
-    public static function newGroupHasUser($groupId, $userId, $type)
+    public static function newGroupHasUser($groupId, $userId, $type, $notify = 1)
     {
         return [
-            'group_id'=>$groupId, 
-            'user_id'=>$userId, 
-            'type'=>$type
+            'group_id' => $groupId,
+            'user_id' => $userId,
+            'type' => $type,
+            'notify' => $notify,
         ];
     }
 

@@ -15,6 +15,8 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
 {
     static private $pdo = null;
     private $conn = null;
+    /** @var MockQueueConnectionFactory */
+    private $lastQueueConnectionFactory;
 
     /**
      * Setup database.
@@ -102,5 +104,18 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
             $mock->setThrowExceptionOnCreateConnection();
         }
         $notifier->setQueueConnectionFactory($mock);
+        $this->lastQueueConnectionFactory = $mock;
     }
+
+    /**
+     * @param int $expectedCount
+     */
+    protected function checkNumChannelPublishes($expectedCount)
+    {
+        if ($this->lastQueueConnectionFactory) {
+            $actualCount = $this->lastQueueConnectionFactory->getConnection()->getChannel()->getTotalBasicPublish();
+            $this->assertEquals($expectedCount, $actualCount);
+        }
+    }
+
 }

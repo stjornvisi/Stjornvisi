@@ -22,7 +22,7 @@ class EventTest extends AbstractTestCase
         $notifier->setData((object)[
             'data' => (object)[
                 'user_id' => 1,
-                'recipients' => 1,
+                'recipients' => 'not allir',
                 'test' => false,
                 'body' => '',
                 'subject' => '',
@@ -30,7 +30,8 @@ class EventTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
+        $this->assertInstanceOf(Event::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
     }
 
     /**
@@ -52,7 +53,7 @@ class EventTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
+        $this->assertInstanceOf(Event::class, $notifier->send());
     }
 
     /**
@@ -74,7 +75,7 @@ class EventTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
+        $this->assertInstanceOf(Event::class, $notifier->send());
     }
 
     /**
@@ -95,7 +96,7 @@ class EventTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
+        $this->assertInstanceOf(Event::class, $notifier->send());
     }
 
     /**
@@ -109,14 +110,15 @@ class EventTest extends AbstractTestCase
             'data' => (object)[
                 'event_id' => 1,
                 'user_id' => 1,
-                'recipients' => 1,
+                'recipients' => 'not allir',
                 'test' => true,
                 'body' => '',
                 'subject' => ''
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
+        $this->assertInstanceOf(Event::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
     }
 
     /**
@@ -138,7 +140,7 @@ class EventTest extends AbstractTestCase
             ]
         ]);
 
-        $this->assertInstanceOf('\Stjornvisi\Notify\Event', $notifier->send());
+        $this->assertInstanceOf(Event::class, $notifier->send());
     }
 
     /**
@@ -149,6 +151,7 @@ class EventTest extends AbstractTestCase
         return new ArrayDataSet([
             'User' => [
                 DataHelper::newUser(1, 0, ['email' => null]),
+                DataHelper::newUser(2, 0, ['email' => null]),
             ],
             'Event' => [
                 DataHelper::newEvent(1, null, ['subject' => 's1']),
@@ -161,6 +164,9 @@ class EventTest extends AbstractTestCase
                 DataHelper::newGroupHasEvent(1, 1),
                 DataHelper::newGroupHasEvent(1, null),
             ],
+            'Event_has_Guest' => [],
+            'Company' => [],
+            'Company_has_User' => [],
         ]);
     }
 }

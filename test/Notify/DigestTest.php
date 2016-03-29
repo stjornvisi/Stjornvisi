@@ -22,6 +22,7 @@ class DigestTest extends AbstractTestCase
         $this->prepareNotifier($notifier);
 
         $this->assertInstanceOf(Digest::class, $notifier->send());
+        $this->checkNumChannelPublishes(2);
     }
 
     /**

@@ -9,6 +9,8 @@ require_once 'MockAMQPConnection.php';
 class MockQueueConnectionFactory implements QueueConnectionFactoryInterface
 {
     private $throwExceptionOnCreateConnection;
+    /** @var MockAMQPConnection */
+    private $connection;
 
     public function setConfig(array $config)
     {
@@ -24,12 +26,19 @@ class MockQueueConnectionFactory implements QueueConnectionFactoryInterface
             $ex = new $className();
             throw $ex;
         }
-        return new MockAMQPConnection();
+        $connection = new MockAMQPConnection();
+        $this->connection = $connection;
+        return $connection;
     }
 
     public function setThrowExceptionOnCreateConnection($exceptionClassName = '\PhpAmqpLib\Exception\AMQPRuntimeException')
     {
         $this->throwExceptionOnCreateConnection = $exceptionClassName;
         return $this;
+    }
+
+    public function getConnection()
+    {
+        return $this->connection;
     }
 }
