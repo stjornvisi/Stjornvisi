@@ -19,7 +19,7 @@ class UserGroups extends Form
             'type' => 'Stjornvisi\Form\Element\MultiCheckbox',
             'attributes' => array(),
             'options' => array(
-                'label' => 'Í samstarfi við',
+                'label' => 'Ég vil fá tölvupóst fyrir valda hópa:',
                 'value_options' => ($groups)? array_reduce($groups, function ($result, $item) {
                         $result[$item->group_id] = $item->name_short;
                         return $result;

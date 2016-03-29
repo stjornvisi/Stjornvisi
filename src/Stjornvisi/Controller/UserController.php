@@ -415,7 +415,8 @@ class UserController extends AbstractActionController
             //  form is valid, update service
             if ($form->isValid()) {
                 $value = $form->getData();
-                $groupService->notifyUser($value['groups'], $auth->getIdentity()->id);
+                $groupValues = (array)$value['groups'];
+                $groupService->notifyUser($groupValues, $auth->getIdentity()->id);
 
                 return new ViewModel(['message' => true, 'form' => $form]);
                 //INVALID
