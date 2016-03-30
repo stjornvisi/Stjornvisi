@@ -819,21 +819,6 @@ return array(
                             ),
                         )
                     ),
-
-
-                    'delete' => array(
-                        'type' => 'Zend\Mvc\Router\Http\Segment',
-                        'options' => array(
-                            'route' => '/:id/eyda',
-                            'constraints' => array(
-                                'id' => '[0-9]*',
-                            ),
-                            'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\User',
-                                'action' => 'delete'
-                            ),
-                        )
-                    ),
                     'change-password' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -847,13 +832,16 @@ return array(
                             ),
                         )
                     ),
-                    'manage-groups' => array(
+                    'manage-subscriptions' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/hopar',
+                            'route' => '/poststillingar[/:id]',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
                             'defaults' => array(
                                 'controller' => 'Stjornvisi\Controller\User',
-                                'action' => 'groups'
+                                'action' => 'subscriptions'
                             ),
                         )
                     ),

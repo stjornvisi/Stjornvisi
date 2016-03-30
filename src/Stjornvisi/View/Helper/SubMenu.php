@@ -92,8 +92,8 @@ class SubMenu extends AbstractHelper
                             'uri' => $view->url('notandi/update', array('id'=>$this->authService->getIdentity()->id))
                         ),
                         array(
-                            'label' => 'Hópastillingar',
-                            'uri' => $view->url('notandi/manage-groups')
+                            'label' => 'Póststillingar',
+                            'uri' => $view->url('notandi/manage-subscriptions')
                         ),
                         array(
                             'label' => 'Lykilorð',

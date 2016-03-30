@@ -1,0 +1,42 @@
+<?php
+/** @var \Stjornvisi\Form\UserSubscriptions $form */
+$form = $this->form;
+$form->setAttribute('class', 'form-horizontal');
+?>
+<div class="layout layout--three-columns">
+    <section class="layout__section">
+        <div class="layout__data">
+            <?= $this->form()->openTag($this->form); ?>
+            <div class="form-group">
+                <label>Ég vil fá póst sem sendur er á:</label>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?php foreach ($form->getNotificationFields() as $field => $label): ?>
+                            <div class="checkbox">
+                                <label>
+                                    <?= $this->formElement($form->get($field)); ?>
+                                    <?= $label ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <?= $this->formLabel($form->get('groups')); ?>
+                <div class="checkbox">
+                    <?= $this->formMultiCheckbox($form->get('groups')); ?>
+                    <?= $this->formElementErrors($form->get('groups')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <?= $this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Uppfæra')); ?>
+            </div>
+            <?= $this->form()->closeTag() ?>
+        </div>
+        <div class="layout__meta">&nbsp;</div>
+    </section>
+    <aside class="layout__aside">&nbsp;</aside>
+</div>

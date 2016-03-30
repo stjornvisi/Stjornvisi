@@ -2,21 +2,29 @@
 namespace Stjornvisi\Controller;
 
 use ArrayObject;
+use Stjornvisi\Form\Password as PasswordForm;
+use Stjornvisi\Form\User as UserForm;
+use Stjornvisi\Form\UserGroups;
+use Stjornvisi\Form\UserSubscriptions as SubscriptionsForm;
 use Stjornvisi\Lib\Csv;
+use Stjornvisi\Service\Group;
+use Stjornvisi\Service\User;
 use Stjornvisi\View\Model\CsvModel;
+use Zend\Authentication\AuthenticationService;
+use Zend\Http\Request as HttpRequest;
+use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
-use Zend\Authentication\AuthenticationService;
-
-use Stjornvisi\Form\User as UserForm;
-use Stjornvisi\Form\UserGroups;
-use Stjornvisi\Form\Password as PasswordForm;
 
 /**
  * Class UserController.
  *
  * @package Stjornvisi\Controller
+ * @property HttpRequest $request
+ * @property HttpResponse $response
+ * @method HttpRequest getRequest()
+ * @method HttpResponse getResponse()
  */
 class UserController extends AbstractActionController
 {
@@ -461,9 +469,62 @@ class UserController extends AbstractActionController
             if ($isSameUser || $auth->getIdentity()->is_admin) {
                 $userService->delete($user->id);
                 if ($isSameUser) {
-                    $this->redirect()->toRoute('auth-out');
+                    return $this->redirect()->toRoute('auth-out');
                 } else {
-                    $this->redirect()->toRoute('notandi');
+                    return $this->redirect()->toRoute('notandi');
+                }
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
+            }
+        } else {
+            return $this->notFoundAction();
+        }
+    }
+
+    public function subscriptionsAction()
+    {
+        $sm = $this->getServiceLocator();
+        /** @var User $userService */
+        $userService = $sm->get('Stjornvisi\Service\User');
+        /** @var Group $groupService */
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+
+        $auth = new AuthenticationService();
+        $requesterId = ($auth->hasIdentity()) ? $auth->getIdentity()->id : null;
+        $userId = $this->params()->fromRoute('id', $requesterId);
+
+        if (($user = $userService->get($userId)) != false) {
+            $access = $userService->getTypeByUser($userId, $requesterId);
+
+            if ($access->is_admin || $access->type == 1) {
+                $groups = $groupService->userConnections($userId);
+                $form = new SubscriptionsForm($groups);
+                $form->setAttribute('action', $this->request->getUri());
+                if ($this->request->isPost()) {
+                    $form->setData($this->request->getPost());
+                    if ($form->isValid()) {
+                        $data = $form->getData();
+                        $groupValues = [];
+                        if (array_key_exists('groups', $data)) {
+                            $groupValues = (array)$data['groups'];
+                            unset($data['groups']);
+                        }
+                        unset($data['submit']);
+                        $groupService->notifyUser($groupValues, $user->id);
+                        $userService->update($user->id, $data);
+                        return $this->redirect()->toRoute('notandi/index', ['id' => $user->id]);
+                    } else {
+                        $this->getResponse()->setStatusCode(400);
+                        return new ViewModel(['form' => $form, 'user' => $user]);
+                    }
+                } else {
+                    $bindObject = new ArrayObject($user);
+                    $bindObject['groups'] = $groupService->fetchNotifyUser($userId);
+                    $form->bind($bindObject);
+                    return new ViewModel(['form' => $form, 'user' => $user]);
                 }
             } else {
                 $this->getResponse()->setStatusCode(401);

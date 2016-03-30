@@ -66,8 +66,6 @@ class User extends Form
             ),
         ));
 
-        $this->addNotificationBoxes();
-
         $this->add(array(
             'name' => 'submit',
             'type' => 'Zend\Form\Element\Submit',
@@ -78,34 +76,5 @@ class User extends Form
                 'label' => 'Submit',
             ),
         ));
-    }
-
-    private function addNotificationBoxes()
-    {
-        $fields = $this->getNotificationFields();
-        foreach ($fields as $field => $label) {
-            $this->add((new Element\Checkbox())
-                ->setName($field)
-                ->setLabel($label)
-            );
-        }
-    }
-
-    /**
-     * @return array
-     */
-    public function getNotificationFields()
-    {
-        $fields = [
-            'email_event_upcoming' => 'Viðburðir á næstunni',
-            'email_global_all' => 'Alla notendur',
-            'email_group_manager' => 'Faghópar þar sem ég er í stjórn (sent á stjórn)',
-            'email_group_all' => 'Faghóparnir mínir',
-            'email_event_all' => 'Viðburðir í mínum faghóp',
-            'email_event_participant' => 'Viðburðir sem ég mæti á',
-            'email_global_manager' => 'Allir í stjórnum faghópa',
-            'email_global_chairman' => 'Allir formenn stjórna faghópa',
-        ];
-        return $fields;
     }
 }
