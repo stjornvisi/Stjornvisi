@@ -8,6 +8,7 @@ use PhpAmqpLib\Connection\AbstractConnection;
 class MockAMQPChannel extends AMQPChannel
 {
     private $totalBasicPublish = 0;
+    private $names = [];
     
     /** @noinspection PhpMissingParentConstructorInspection
      * @param AbstractConnection $connection
@@ -36,6 +37,10 @@ class MockAMQPChannel extends AMQPChannel
                                   $ticket = null)
     {
         $this->totalBasicPublish++;
+        $json = json_decode($msg->body);
+        if ($json && isset($json->name)) {
+            $this->names[] = $json->name;
+        }
     }
 
     public function close($reply_code = 0,
@@ -51,6 +56,14 @@ class MockAMQPChannel extends AMQPChannel
     public function getTotalBasicPublish()
     {
         return $this->totalBasicPublish;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNames()
+    {
+        return $this->names;
     }
 
 

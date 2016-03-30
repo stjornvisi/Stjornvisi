@@ -268,15 +268,15 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
 
         //ALL OR FORMEN
         //	send to all members of group or forman
-        $exclude = ($recipients == 'allir')
-            ? [-1]  //everyone
-            : [0] ; //forman
+        $types = ($recipients == 'allir')
+            ? null  //everyone
+            : [1, 2] ; // all managers
 
         //TEST OR REAL
         //	if test, send ony to sender, else to all
         return ($test)
             ? array( $userService->get($sender_id))
-            : $userService->getUserMessageByGroup([$group_id], $exclude);
+            : $userService->fetchUserEmailsByGroup([$group_id], $types);
     }
 
     /**
@@ -314,7 +314,7 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      */
     protected function getDataSourceDriver()
     {
-        if ($this->pdo === null) {
+        if ($this->pdo === null) { # TODO use the service locator
             $this->pdo = new \PDO(
                 $this->dataStore['dns'],
                 $this->dataStore['user'],

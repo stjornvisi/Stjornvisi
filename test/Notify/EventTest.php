@@ -150,8 +150,8 @@ class EventTest extends AbstractTestCase
     {
         return new ArrayDataSet([
             'User' => [
-                DataHelper::newUser(1, 0, ['email' => null]),
-                DataHelper::newUser(2, 0, ['email' => null]),
+                DataHelper::newUser(1, 0),
+                DataHelper::newUser(2, 0),
             ],
             'Event' => [
                 DataHelper::newEvent(1, null, ['subject' => 's1']),
@@ -167,6 +167,10 @@ class EventTest extends AbstractTestCase
             'Event_has_Guest' => [],
             'Company' => [],
             'Company_has_User' => [],
+            'Group_has_User' => [],
+            'Event_has_User' => [
+                DataHelper::newEventHasUser(1, 1, 1),
+            ],
         ]);
     }
 }

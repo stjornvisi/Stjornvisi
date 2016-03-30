@@ -2,9 +2,15 @@
 
 namespace Stjornvisi\Service;
 
-use \DateTime;
-use \PDOException;
+use DateTime;
+use PDOException;
 use Stjornvisi\Lib\DataSourceAwareInterface;
+use Zend\Db\Adapter\Adapter as DbAdapter;
+use Zend\Db\Adapter\Driver\Pdo\Pdo as PdoDriver;
+use Zend\Db\Adapter\Driver\Pdo\Result;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Sql;
 
 class User extends AbstractService implements DataSourceAwareInterface
 {
@@ -136,24 +142,21 @@ class User extends AbstractService implements DataSourceAwareInterface
             'company_name' => 'C.`name`, U.`name`',
         ];
         try {
+            $where = '';
             if ($valid) {
-                $statement = $this->pdo->prepare("
-                    SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
-                    FROM `User` U
-                    LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
-                    LEFT JOIN Company C ON (C.id = ChU.company_id )
-                    WHERE U.email IS NOT NULL
-                    ORDER BY {$orderMap[$order]};
-                ");
-            } else {
-                $statement = $this->pdo->prepare("
-                    SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
-                    FROM `User` U
-                    LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
-                    LEFT JOIN Company C ON (C.id = ChU.company_id )
-                    ORDER BY {$orderMap[$order]};
-                ");
+                $where = 'WHERE U.email IS NOT NULL';
             }
+            $sql ="
+                SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
+                FROM `User` U
+                LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
+                LEFT JOIN Company C ON (C.id = ChU.company_id )
+                $where
+                ORDER BY {$orderMap[$order]};
+            ";
+
+            $statement = $this->pdo->prepare($sql);
+
             $statement->execute();
             $users = $statement->fetchAll();
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
@@ -1249,5 +1252,174 @@ class User extends AbstractService implements DataSourceAwareInterface
             ));
             throw new Exception("Can't delete user[$id]. " . $e->getMessage(), 0, $e);
         }
+    }
+
+    private function getAdapter()
+    {
+        return new DbAdapter(new PdoDriver($this->pdo));
+    }
+
+    private function setupOrder(Select $select)
+    {
+        $orderMap = [
+            'name' => 'U.`name`',
+            'title' => 'U.`title`',
+            'created_date' => 'U.`created_date` DESC',
+            'company_name' => 'C.`name`, U.`name`',
+        ];
+        $select->order($orderMap);
+    }
+
+    private function sql()
+    {
+        $adapter = $this->getAdapter();
+        return new Sql($adapter);
+    }
+
+    public function selectAll($needsToBeValid = false)
+    {
+        $select = $this->sql()->select()->quantifier(Select::QUANTIFIER_DISTINCT)
+            ->from(['U' => 'User'])
+            ->join(['ChU' => 'Company_has_User'], 'U.id = ChU.user_id', ['company_id', 'key_user'], Select::JOIN_LEFT)
+            ->join(['C' => 'Company'], 'C.id = ChU.company_id', ['company_name' => 'name'], Select::JOIN_LEFT);
+        if ($needsToBeValid) {
+            $select->where('U.email IS NOT NULL');
+        }
+        return $select;
+    }
+
+    private function selectEvents(Select $select, $eventIds, $attending = 1)
+    {
+        $select->join(['EhU' => 'Event_has_User'], 'U.id = EhU.user_id', []);
+        $eventIds = array_filter(array_map(function ($i) {
+            return (int)$i ?: null;
+        }, $eventIds));
+        $select->where(['EhU.event_id' => $eventIds]);
+        if (is_int($attending)) {
+            $select->where(['EhU.attending' => $attending]);
+        }
+    }
+
+    private function selectGroups(Select $select, $types = [], $groupIds = [], $checkNotify = false)
+    {
+        $select->join(['GhU' => 'Group_has_User'], 'U.id = GhU.user_id', []);
+        if ($types) {
+            $select->where(['GhU.type' => $types]);
+        }
+        if ($groupIds) {
+            $groupIds = array_filter(array_map(function ($i) {
+                return (int)$i ?: null;
+            }, $groupIds));
+            if ($groupIds) {
+                $select->where(['GhU.group_id' => $groupIds]);
+            }
+        }
+        if ($checkNotify) {
+            $select->where(['GhU.notify' => 1]);
+        }
+    }
+
+    public function fetchAllForEmail($settingsFilter = 'email_global_all')
+    {
+        $select = $this->selectAll(true);
+        $this->setupOrder($select);
+        $select->where([$settingsFilter => 1]);
+        return $this->runQuery($select);
+    }
+
+    public function fetchAllManagersForEmail()
+    {
+        $select = $this->selectAll(true);
+        $this->selectGroups($select, [1, 2]);
+        $select->where(['email_global_manager' => 1]);
+        return $this->runQuery($select);
+    }
+
+    public function fetchAllChairmenForEmail()
+    {
+        $select = $this->selectAll(true);
+        $this->selectGroups($select, [2]);
+        $select->where(['email_global_chairman' => 1]);
+        return $this->runQuery($select);
+    }
+
+    private function runQuery(Select $select, $addDates = true)
+    {
+        $sql = $this->sql();
+        try {
+            $statement = $sql->prepareStatementForSqlObject($select);
+            /** @var Result $results */
+            $results = $statement->execute();
+            $resultsSet = new ResultSet(ResultSet::TYPE_ARRAYOBJECT);
+            $resultsSet->initialize($results);
+            $users = $resultsSet->toArray();
+            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+            return array_map(
+                function ($i) use ($addDates) {
+                    $i = (object)$i;
+                    if ($addDates) {
+                        $i->created_date = new DateTime($i->created_date);
+                        $i->modified_date = new DateTime($i->modified_date);
+                    }
+                    return $i;
+                },
+                $users
+            );
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => $sql->getSqlStringForSqlObject($select),
+            ));
+            throw new Exception("Can't get all users", 0, $e);
+
+        }
+    }
+
+    /**
+     * @param int[] $groupIds
+     * @param int[]|null $types
+     * @param bool $checkNotify
+     * @param null|string $settingsFilter
+     * @return mixed
+     * @throws Exception
+     */
+    public function fetchUserEmailsByGroup($groupIds, $types = null, $checkNotify = true, $settingsFilter = null)
+    {
+        if (!$types) {
+            $types = [0, 1, 2];
+        }
+        $select = $this->selectAll(true);
+        $this->selectGroups($select, $types, $groupIds, $checkNotify);
+        if (!$settingsFilter) {
+            if (in_array(0, $types)) {
+                $select->where(['email_group_all' => 1]);
+            } else {
+                $select->where(['email_group_manager' => 1]);
+            }
+        } else {
+            $select->where([$settingsFilter => 1]);
+        }
+        return $this->runQuery($select);
+    }
+
+    public function fetchUserEmailsByEvent($eventId, $includingGuests = true)
+    {
+        $select = $this->selectAll(true);
+        $this->selectEvents($select, [$eventId]);
+        $select->where(['email_event_participant' => 1]);
+        // ignoring get_message field
+        $ret = $this->runQuery($select);
+        if ($includingGuests) {
+            $guests = $this->fetchGuests($eventId);
+            $ret = array_merge($ret, $guests);
+        }
+        return $ret;
+    }
+
+    public function fetchGuests($eventId)
+    {
+        $select = $this->sql()->select('Event_has_Guest')
+            ->where(['event_id' => (int)$eventId]);
+        return $this->runQuery($select, false);
     }
 }

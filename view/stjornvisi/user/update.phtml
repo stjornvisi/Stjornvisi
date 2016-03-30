@@ -1,6 +1,7 @@
-
 <?php
-$this->form->setAttribute('class', 'form-horizontal');
+/** @var \Stjornvisi\Form\User $form */
+$form = $this->form;
+$form->setAttribute('class', 'form-horizontal');
 ?>
 <div class="layout layout--three-columns">
     <section class="layout__section">
@@ -25,6 +26,21 @@ $this->form->setAttribute('class', 'form-horizontal');
                 <?=$this->formLabel($form->get('company'));?>
                 <?=$this->formElement($form->get('company')->setAttribute('class', 'form-control'));?>
                 <?=$this->formElementErrors($form->get('company'));?>
+            </div>
+            <div class="form-group">
+                <label>Ég vil fá póst sem sendur er á:</label>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <?foreach ($form->getNotificationFields() as $field => $label):?>
+                        <div class="checkbox">
+                            <label>
+                                <?=$this->formElement($form->get($field));?>
+                                <?=$label?>
+                            </label>
+                        </div>
+                        <?endforeach;?>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Uppfæra'));?>

@@ -15,8 +15,8 @@ use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Notify\Message\Mail;
-use Stjornvisi\Service\Event;
-use Stjornvisi\Service\User;
+use Stjornvisi\Service\Event as EventService;
+use Stjornvisi\Service\User as UserService;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
 use Zend\View\Model\ViewModel;
@@ -288,7 +288,7 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
      */
     private function getEvents(DateTime $from, DateTime $to)
     {
-        $eventService = new Event();
+        $eventService = new EventService();
         $eventService->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
 
@@ -301,9 +301,9 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
      */
     private function getUsers()
     {
-        $userService = new User();
+        $userService = new UserService();
         $userService->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
-        return $userService->getUserMessage();
+        return $userService->fetchAllForEmail('email_event_upcoming');
     }
 }

@@ -291,10 +291,10 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
         //	we just fetch all valid users in the system.
         } else {
             $users = ($recipients == 'allir')
-                ? (empty($groupIds))
-                    ? $user->fetchAll(true)
-                    : $user->getUserMessageByGroup($groups)
-                : $user->getUserMessageByEvent($eventId) ;
+                ? (empty($groups))
+                    ? $user->fetchAllForEmail()
+                    : $user->fetchUserEmailsByGroup($groups, null, false, 'email_event_all')
+                : $user->fetchUserEmailsByEvent($eventId) ;
             if (empty($users)) {
                 throw new NotifyException("No users found for event notification");
             } else {

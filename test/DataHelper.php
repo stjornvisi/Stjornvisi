@@ -33,6 +33,14 @@ class DataHelper
             'is_admin' => $isAdmin,
             'get_message' => 1,
             'get_notify' => 1,
+            'email_event_upcoming' => 1,
+            'email_global_all' => 1,
+            'email_group_manager' => 1,
+            'email_group_all' => 1,
+            'email_event_all' => 1,
+            'email_event_participant' => 1,
+            'email_global_manager' => 1,
+            'email_global_chairman' => 1,
         ];
         if ($id) {
             $data['id'] = $id;
@@ -98,10 +106,10 @@ class DataHelper
         ];
     }
 
-    public static function newEventHasGuest($id, $name, $email)
+    public static function newEventHasGuest($eventId, $name, $email)
     {
         return [
-            'event_id' => $id,
+            'event_id' => $eventId,
             'name' => $name,
             'email' => $email,
             'register_time' => date('Y-m-d H:i:s'),

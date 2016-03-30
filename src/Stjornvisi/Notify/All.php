@@ -271,13 +271,13 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
         } else {
            switch ($recipients){
                case "formenn" :
-                   $recipientAddresses = $user->fetchAllManagers(true);
+                   $recipientAddresses = $user->fetchAllChairmenForEmail();
                    break;
                case "stjornendur" :
-                   $recipientAddresses = $user->fetchAllLeaders(true);
+                   $recipientAddresses = $user->fetchAllManagersForEmail();
                    break;
                case "allir" :
-                   $recipientAddresses = $user->fetchAll(true);
+                   $recipientAddresses = $user->fetchAllForEmail();
                    break;
                default :
                    $recipientAddresses = [];

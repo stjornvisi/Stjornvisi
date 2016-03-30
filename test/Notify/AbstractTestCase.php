@@ -118,4 +118,17 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
         }
     }
 
+    /**
+     * @param string[] $expectedNames
+     */
+    protected function checkPublishedNames($expectedNames)
+    {
+        if ($this->lastQueueConnectionFactory) {
+            $actualNames = $this->lastQueueConnectionFactory->getConnection()->getChannel()->getNames();
+            sort($actualNames);
+            sort($expectedNames);
+            $this->assertEquals($expectedNames, $actualNames);
+        }
+    }
+
 }
