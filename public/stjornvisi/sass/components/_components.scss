@@ -24,7 +24,7 @@
 			font-family: Bitter;
 			font-weight: $font-weight-bold;
 		}
-		padding: 0 0.25em 0;
+		//padding: 0 0.25em 0;
 	}
 
 	.block-element__time{
@@ -36,7 +36,7 @@
 	.block-element__body {
 		@include pie-clearfix;
 		@extend %rich-text;
-		padding: 0.4em 0;
+		padding: .6em 0;
 
 		&.block-element__body--two-column{
 			-webkit-column-width: $gutter;//rhythm(1,$font-size-base);
@@ -129,8 +129,8 @@
 		display: block;
 		float: right;
 		width: 50%;
-		max-width: 300px;
-		margin: 0 0 0.5em 1.5em;
+		max-width: 240px;
+		margin: .4em 0 .5em 2.5em;
 		img{
 			width: 100%;
 		}
@@ -174,6 +174,7 @@
 		}
 		a{
 			color: $color-green-sea;
+			font-weight:bold;
 		}
 	}
 
@@ -471,7 +472,8 @@
 	}
 	h1.layout__sepline,
 	h1.layout__headline{
-		@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+		//@include adjust-font-size-to($font-size-sub,1,$font-size-base);
+		font-size:1.8em;
 
 	}
 	h2.layout__sepline,
@@ -550,7 +552,14 @@
 	 *
 	 */
 	&.layout--three-columns{
-
+	  &.page-event {
+		.layout__section .layout__meta {
+			width: 65%;
+		}
+		.layout__section .layout__data {
+			width: 35%;
+		}
+	  }
 		.layout__section{
 			@include pie-clearfix;
 			float: left;
@@ -559,7 +568,7 @@
 
 			.layout__data{
 				float: left;
-				width: 65%;
+				width: 50%;
 				padding-right: rhythm(1/2,$font-size-base);
 			}
 			.layout__meta{
@@ -567,7 +576,7 @@
 				width: 50%;
 				padding-right: rhythm(1/2,$font-size-base);
 				padding-left: rhythm(1/2,$font-size-base);
-				text-align:right;
+				text-align: left;
 
 				> div:first-child{
 					margin-top: 0;

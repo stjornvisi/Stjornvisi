@@ -23,6 +23,9 @@ use Stjornvisi\Properties\FileProperties;
                             </li>
                         </ul>
                     </header>
+                    <aside class="block-element__aside">
+
+                    </aside>
                     <section class="block-element__body">
                         <?php if($news->avatar):?>
                             <a href="<?=$this->url('frettir/index', array('id'=>$news->id))?>" class="block-element__poster">
@@ -35,9 +38,6 @@ use Stjornvisi\Properties\FileProperties;
                         </p>
 
                     </section>
-                    <aside class="block-element__aside">
-
-                    </aside>
                 </article>
 
             </li>

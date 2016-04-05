@@ -17,14 +17,6 @@ use Stjornvisi\Properties\FileProperties;
                                     </time>
                                     <h1><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h1>
                                 </header>
-                                <section class="block-element__body">
-                                    <?php if($event->avatar):?>
-                                        <a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-                                            <?=$this->image($event->avatar, FileProperties::DIR_MEDIUM);?>
-                                        </a>
-                                    <?php endif;?>
-                                    <?=$this->paragrapher( mb_substr($event->body,0,350,'utf-8').'&#8230;'  );?>
-                                </section>
                                 <aside class="block-element__aside">
                                     <ul class="block-element__tags">
                                         <?php if( count($event->groups) == 0 ):?>
@@ -36,6 +28,14 @@ use Stjornvisi\Properties\FileProperties;
                                         <?php endif; ?>
                                     </ul>
                                 </aside>
+                                <section class="block-element__body">
+                                    <?php if($event->avatar):?>
+                                        <a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+                                            <?=$this->image($event->avatar, FileProperties::DIR_MEDIUM);?>
+                                        </a>
+                                    <?php endif;?>
+                                    <?=$this->paragrapher( mb_substr($event->body,0,450,'utf-8').'&#8230;'  );?>
+                                </section>
                                 <?php if( $event->can_attend ):?>
                                 <footer class="block-element__footer">
 
@@ -71,14 +71,6 @@ use Stjornvisi\Properties\FileProperties;
                                     </time>
                                     <h1><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h1>
                                 </header>
-                                <section class="block-element__body">
-                                    <?php if($news->avatar):?>
-                                        <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
-                                            <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
-                                        </a>
-                                    <?php endif;?>
-                                    <?=$this->paragrapher( mb_substr($news->body,0,350,'utf-8').'&#8230;'  );?>
-                                </section>
                                 <aside class="block-element__aside">
                                     <ul class="block-element__tags">
                                         <li>
@@ -90,6 +82,14 @@ use Stjornvisi\Properties\FileProperties;
                                         </li>
                                     </ul>
                                 </aside>
+                                <section class="block-element__body">
+                                    <?php if($news->avatar):?>
+                                        <a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
+                                            <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
+                                        </a>
+                                    <?php endif;?>
+                                    <?=$this->paragrapher( mb_substr($news->body,0,450,'utf-8').'&#8230;'  );?>
+                                </section>
                                 <footer></footer>
                             </article>
                         </li>
