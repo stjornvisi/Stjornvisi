@@ -18,7 +18,8 @@
 			@include adjust-font-size-to($font-size-header,1.2,$font-size-base);
 			font-family: Bitter;
 			font-weight: $font-weight-bold;
-			@include margin-leader(1/4,$font-size-header);
+			//@include margin-leader(1/4,$font-size-header);
+			margin: .25em 0;
 		}
 		h2{
 			font-family: Bitter;
@@ -179,9 +180,11 @@
 	}
 
 	.block-element__location{
-		font-weight: $font-weight-thin;
+		//font-weight: $font-weight-thin;
+		font-weight: 400;
 		font-family: $font-family-open;
-		color: $color-green-sea;
+		//color: $color-green-sea;
+		color: Gray
 	}
 
 	.block-element__more{
@@ -554,10 +557,10 @@
 	&.layout--three-columns{
 	  &.page-event {
 		.layout__section .layout__meta {
-			width: 65%;
+			width: 35%;
 		}
 		.layout__section .layout__data {
-			width: 35%;
+			width: 65%;
 		}
 	  }
 		.layout__section{
@@ -693,6 +696,10 @@
 			display: none;
 		}
 	}
+}
+
+.page-news .layout_article p {
+	max-width: 85%;
 }
 
 
