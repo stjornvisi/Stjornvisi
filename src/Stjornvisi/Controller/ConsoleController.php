@@ -217,13 +217,18 @@ class ConsoleController extends AbstractActionController
 
                 $logger->debug("Send e-mail to [{$messageObject->email}, {$messageObject->name}]");
 
+                $mimeMessage = new \Zend\Mime\Message();
+                $html = new \Zend\Mime\Part($messageObject->body);
+                $html->type = 'text/html; charset=utf-8';
+                $mimeMessage->addPart($html);
+
                 //CREATE / SEND
                 //  create a mail message and actually send it
                 $message = new Message();
                 $message->addTo($messageObject->email, $messageObject->name)
                     ->addFrom('stjornvisi@stjornvisi.is', "Stjórnvísi")
                     ->setSubject($messageObject->subject)
-                    ->setBody($messageObject->body)
+                    ->setBody($mimeMessage)
                     ->setEncoding("UTF-8");
 
                 //DEBUG MODE
