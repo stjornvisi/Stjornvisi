@@ -32,11 +32,7 @@
                     var imageUrl = URL.createObjectURL(file);
                     var img = new Image;
                     img.addEventListener('load', function(event) {
-                        if (event.target.height < 960 && event.target.width < 960) {
-                            reject(new Error("Image has to be more than 960x960 "))
-                        } else {
-                            resolve(file, url);
-                        }
+                        resolve(file, url);
                     }, false);
 
                     img.src = imageUrl;
