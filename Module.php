@@ -253,25 +253,17 @@ class Module
                     $log->pushHandler(new StreamHandler('php://stdout'));
 
                     $evn = getenv('APPLICATION_ENV') ?: 'production';
-                    if ($evn == 'development') {
+                    if ($evn == 'developmentx') {
                         //...
                     } else {
-                        $handler = new StreamHandler('./data/log/error.json', Logger::ERROR);
+                        $baseDir = dirname($_SERVER['DOCUMENT_ROOT']);
+                        $handler = new StreamHandler($baseDir . '/data/log/error.json', Logger::ERROR);
                         $handler->setFormatter(new \Stjornvisi\Lib\JsonFormatter());
                         $log->pushHandler($handler);
 
-                        $handler = new StreamHandler('./data/log/system.log');
+                        $handler = new StreamHandler($baseDir . '/data/log/system.log');
                         $handler->setFormatter(new JsonFormatter());
                         $log->pushHandler($handler);
-
-                        $log->pushHandler(new SlackHandler(
-                            "xoxp-3745519896-3745519908-3921078470-26445a",
-                            "#stjornvisi",
-                            "Angry Hamster",
-                            true,
-                            null,
-                            Logger::CRITICAL
-                        ));
                     }
                     return $log;
                 },
