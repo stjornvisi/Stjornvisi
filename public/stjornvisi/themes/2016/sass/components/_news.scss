@@ -2,4 +2,28 @@
 	.box__title {
 		color: $color-blue;
 	}
+
+	.entry {
+		@include make-row;
+	}
+
+	.entry__info,
+	.entry__title,
+	.entry__content,
+	.entry__image {
+		@include make-xs-column(12);
+	}
+
+	.entry__content,
+	.entry__image {
+		@include make-sm-column(6);
+	}
+
+	.entry__info {
+		color: $color-text-light;
+	}
+
+	.entry__content {
+		line-height: $line-height-small;
+	}
 }

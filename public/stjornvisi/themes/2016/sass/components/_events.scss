@@ -2,4 +2,80 @@
 	.box__title {
 		color: $color-blue;
 	}
+
+	.entry {
+		@include make-row;
+		border: 1px solid $color-border;
+	}
+
+	.entry__title {
+		@include make-xs-column(12);
+		padding: 20px 30px 0;
+		border-bottom: 1px solid $color-border;
+		margin-bottom: 0;
+
+		h3 {
+			font-size: 24px;
+		}
+	}
+
+	.entry__date {
+		float: left;
+		width: 80px;
+		padding: 20px 30px 20px 0;
+		margin: -20px 30px 0 0;
+		text-align: center;
+		border-right: 1px solid $color-border;
+		line-height: $line-height-small;
+
+		span {
+			display: block;
+		}
+
+		.day {
+			font-size: 40px;
+			font-weight: 600;
+			color: $color-light-blue;
+		}
+		.month {
+			font-size: 18px;
+			font-weight: 600;
+			color: $color-light-blue;
+			text-transform: uppercase;
+		}
+		.year {
+			font-size: 18px;
+			font-weight: 600;
+			color: $color-gray;
+		}
+	}
+
+	.entry__content,
+	.entry__image {
+		@include make-xs-column(12);
+	}
+
+	.entry__info {
+		color: $color-light-blue;
+		font-weight: 600;
+		text-transform: uppercase;
+
+		.fa {
+			color: $color-gray;
+			margin-right: 5px;
+		}
+
+		.separator {
+			margin: 0 10px;
+		}
+	}
+
+	.entry__content {
+		line-height: $line-height-small;
+		padding: 20px;
+
+		.btn {
+			margin: 15px 10px 0 0;
+		}
+	}
 }
