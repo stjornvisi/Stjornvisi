@@ -32,8 +32,13 @@
 	}
 }
 
+.box__jip {
+	float: right;
+}
+
 .box__title {
 	margin-bottom: $line-height-computed * 2;
+	color: $color-blue;
 
 	h2, h3, h4, h5, h6 {
 		margin-top: 0;
@@ -47,6 +52,25 @@
 
 .box__content {
 
+}
+
+.box__footer {
+	margin-top: 30px;
+
+	a {
+		font-size: 22px;
+		color: $color-light-blue;
+
+		&:hover {
+			color: $link-hover-color;
+		}
+	}
+
+	.fa {
+		font-size: 36px;
+		vertical-align: middle;
+		margin-right: 10px;
+	}
 }
 
 .box--news {
@@ -88,4 +112,10 @@
 
 .entry__info {
 	font-size: 18px;
+}
+
+.entry__image {
+	img {
+		@include img-responsive;
+	}
 }

@@ -1,8 +1,4 @@
 .box--events {
-	.box__title {
-		color: $color-blue;
-	}
-
 	.entry {
 		@include make-row;
 		border: 1px solid $color-border;

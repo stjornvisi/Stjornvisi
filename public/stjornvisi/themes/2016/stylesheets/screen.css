@@ -6261,20 +6261,46 @@ a:hover {
 }
 
 /* line 35, ../sass/components/_layout.scss */
+.box__jip {
+  float: right;
+}
+
+/* line 39, ../sass/components/_layout.scss */
 .box__title {
   margin-bottom: 56px;
+  color: #1b3e59;
 }
-/* line 38, ../sass/components/_layout.scss */
+/* line 43, ../sass/components/_layout.scss */
 .box__title h2, .box__title h3, .box__title h4, .box__title h5, .box__title h6 {
   margin-top: 0;
 }
-/* line 42, ../sass/components/_layout.scss */
+/* line 47, ../sass/components/_layout.scss */
 .box__title h2 {
   font-size: 40px;
   font-weight: 600;
 }
 
-/* line 53, ../sass/components/_layout.scss */
+/* line 57, ../sass/components/_layout.scss */
+.box__footer {
+  margin-top: 30px;
+}
+/* line 60, ../sass/components/_layout.scss */
+.box__footer a {
+  font-size: 22px;
+  color: #2b6786;
+}
+/* line 64, ../sass/components/_layout.scss */
+.box__footer a:hover {
+  color: #2b6786;
+}
+/* line 69, ../sass/components/_layout.scss */
+.box__footer .fa {
+  font-size: 36px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+/* line 77, ../sass/components/_layout.scss */
 body.state-landing .box--news {
   position: relative;
   min-height: 1px;
@@ -6283,14 +6309,14 @@ body.state-landing .box--news {
   padding-right: 60px;
 }
 @media (min-width: 768px) {
-  /* line 53, ../sass/components/_layout.scss */
+  /* line 77, ../sass/components/_layout.scss */
   body.state-landing .box--news {
     float: left;
     width: 50%;
   }
 }
 
-/* line 60, ../sass/components/_layout.scss */
+/* line 84, ../sass/components/_layout.scss */
 body.state-landing .box--events {
   position: relative;
   min-height: 1px;
@@ -6299,7 +6325,7 @@ body.state-landing .box--events {
   padding-left: 60px;
 }
 @media (min-width: 768px) {
-  /* line 60, ../sass/components/_layout.scss */
+  /* line 84, ../sass/components/_layout.scss */
   body.state-landing .box--events {
     float: left;
     width: 50%;
@@ -6307,33 +6333,40 @@ body.state-landing .box--events {
 }
 
 /*** ENTRY **/
-/* line 67, ../sass/components/_layout.scss */
+/* line 91, ../sass/components/_layout.scss */
 .entry {
   margin-bottom: 28px;
 }
-/* line 70, ../sass/components/_layout.scss */
+/* line 94, ../sass/components/_layout.scss */
 .entry:last-child {
   margin-bottom: 0;
 }
 
-/* line 75, ../sass/components/_layout.scss */
+/* line 99, ../sass/components/_layout.scss */
 .entry__title {
   margin-bottom: 28px;
   color: #000;
 }
-/* line 79, ../sass/components/_layout.scss */
+/* line 103, ../sass/components/_layout.scss */
 .entry__title h2, .entry__title h3, .entry__title h4, .entry__title h5, .entry__title h6 {
   margin-top: 0;
 }
-/* line 83, ../sass/components/_layout.scss */
+/* line 107, ../sass/components/_layout.scss */
 .entry__title h3 {
   font-size: 30px;
   font-weight: 600;
 }
 
-/* line 89, ../sass/components/_layout.scss */
+/* line 113, ../sass/components/_layout.scss */
 .entry__info {
   font-size: 18px;
+}
+
+/* line 118, ../sass/components/_layout.scss */
+.entry__image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 /* line 1, ../sass/components/_hero.scss */
@@ -6487,8 +6520,8 @@ body.state-landing .box--events {
 }
 /* line 6, ../sass/components/_news.scss */
 .box--news .entry {
-  margin-left: -15px;
-  margin-right: -15px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #dde0e1;
 }
 /* line 14, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
 .box--news .entry:before, .box--news .entry:after {
@@ -6499,19 +6532,7 @@ body.state-landing .box--events {
 .box--news .entry:after {
   clear: both;
 }
-/* line 10, ../sass/components/_news.scss */
-.box--news .entry__info,
-.box--news .entry__title,
-.box--news .entry__content,
-.box--news .entry__image {
-  position: relative;
-  float: left;
-  width: 100%;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-/* line 17, ../sass/components/_news.scss */
+/* line 12, ../sass/components/_news.scss */
 .box--news .entry__content,
 .box--news .entry__image {
   position: relative;
@@ -6520,27 +6541,28 @@ body.state-landing .box--events {
   padding-right: 15px;
 }
 @media (min-width: 768px) {
-  /* line 17, ../sass/components/_news.scss */
+  /* line 12, ../sass/components/_news.scss */
   .box--news .entry__content,
   .box--news .entry__image {
     float: left;
     width: 50%;
   }
 }
-/* line 22, ../sass/components/_news.scss */
+/* line 17, ../sass/components/_news.scss */
 .box--news .entry__info {
   color: #8d979c;
 }
-/* line 26, ../sass/components/_news.scss */
+/* line 21, ../sass/components/_news.scss */
 .box--news .entry__content {
   line-height: 1.2;
+  padding-left: 0;
+}
+/* line 26, ../sass/components/_news.scss */
+.box--news .entry__image {
+  padding-right: 0;
 }
 
 /* line 2, ../sass/components/_events.scss */
-.box--events .box__title {
-  color: #1b3e59;
-}
-/* line 6, ../sass/components/_events.scss */
 .box--events .entry {
   margin-left: -15px;
   margin-right: -15px;
@@ -6555,7 +6577,7 @@ body.state-landing .box--events {
 .box--events .entry:after {
   clear: both;
 }
-/* line 11, ../sass/components/_events.scss */
+/* line 7, ../sass/components/_events.scss */
 .box--events .entry__title {
   position: relative;
   float: left;
@@ -6567,11 +6589,11 @@ body.state-landing .box--events {
   border-bottom: 1px solid #dde0e1;
   margin-bottom: 0;
 }
-/* line 17, ../sass/components/_events.scss */
+/* line 13, ../sass/components/_events.scss */
 .box--events .entry__title h3 {
   font-size: 24px;
 }
-/* line 22, ../sass/components/_events.scss */
+/* line 18, ../sass/components/_events.scss */
 .box--events .entry__date {
   float: left;
   width: 80px;
@@ -6581,30 +6603,30 @@ body.state-landing .box--events {
   border-right: 1px solid #dde0e1;
   line-height: 1.2;
 }
-/* line 31, ../sass/components/_events.scss */
+/* line 27, ../sass/components/_events.scss */
 .box--events .entry__date span {
   display: block;
 }
-/* line 35, ../sass/components/_events.scss */
+/* line 31, ../sass/components/_events.scss */
 .box--events .entry__date .day {
   font-size: 40px;
   font-weight: 600;
   color: #2b6786;
 }
-/* line 40, ../sass/components/_events.scss */
+/* line 36, ../sass/components/_events.scss */
 .box--events .entry__date .month {
   font-size: 18px;
   font-weight: 600;
   color: #2b6786;
   text-transform: uppercase;
 }
-/* line 46, ../sass/components/_events.scss */
+/* line 42, ../sass/components/_events.scss */
 .box--events .entry__date .year {
   font-size: 18px;
   font-weight: 600;
   color: #8d979c;
 }
-/* line 53, ../sass/components/_events.scss */
+/* line 49, ../sass/components/_events.scss */
 .box--events .entry__content,
 .box--events .entry__image {
   position: relative;
@@ -6614,27 +6636,27 @@ body.state-landing .box--events {
   padding-left: 15px;
   padding-right: 15px;
 }
-/* line 58, ../sass/components/_events.scss */
+/* line 54, ../sass/components/_events.scss */
 .box--events .entry__info {
   color: #2b6786;
   font-weight: 600;
   text-transform: uppercase;
 }
-/* line 63, ../sass/components/_events.scss */
+/* line 59, ../sass/components/_events.scss */
 .box--events .entry__info .fa {
   color: #8d979c;
   margin-right: 5px;
 }
-/* line 68, ../sass/components/_events.scss */
+/* line 64, ../sass/components/_events.scss */
 .box--events .entry__info .separator {
   margin: 0 10px;
 }
-/* line 73, ../sass/components/_events.scss */
+/* line 69, ../sass/components/_events.scss */
 .box--events .entry__content {
   line-height: 1.2;
   padding: 20px;
 }
-/* line 77, ../sass/components/_events.scss */
+/* line 73, ../sass/components/_events.scss */
 .box--events .entry__content .btn {
   margin: 15px 10px 0 0;
 }

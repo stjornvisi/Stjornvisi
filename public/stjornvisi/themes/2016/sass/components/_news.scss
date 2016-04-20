@@ -4,14 +4,9 @@
 	}
 
 	.entry {
-		@include make-row;
-	}
-
-	.entry__info,
-	.entry__title,
-	.entry__content,
-	.entry__image {
-		@include make-xs-column(12);
+		@include clearfix;
+		padding-bottom: 30px;
+		border-bottom: 1px solid $color-border;
 	}
 
 	.entry__content,
@@ -25,5 +20,10 @@
 
 	.entry__content {
 		line-height: $line-height-small;
+		padding-left: 0;
+	}
+
+	.entry__image {
+		padding-right: 0;
 	}
 }
