@@ -4,6 +4,8 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "helpers/variables";
+@import "helpers/mixins";
+
 @import "compass/reset";
 @import "compass/css3/box-sizing";
 @import "compass/utilities/general/clearfix";
@@ -19,11 +21,11 @@
 @import "../../../vendor/fluidbox/css/fluidbox.css";
 @import "../../../vendor/fontawesome/scss/font-awesome";
 
-//@import "helpers/extend";
-
 @import "components/core";
 @import "components/layout";
 @import "components/hero";
 @import "components/navigation";
 @import "components/news";
 @import "components/events";
+@import "components/groups";
+@import "components/footer";

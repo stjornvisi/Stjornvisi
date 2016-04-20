@@ -49,7 +49,7 @@ use Stjornvisi\Properties\FileProperties;
 					<?for ($i = 0; $i < 5; $i++):?>
 						<div class="entry">
 							<div class="entry__info">14.mar 2016</div>
-							<div class="entry__title"><h3>Hver vegna að mæla þjónustu?</h3></div>
+							<div class="entry__title"><h3><a href="#">Hver vegna að mæla þjónustu?</a></h3></div>
 							<div class="entry__content">
 								Faghópur þjónustu - og markaðsstjórnunar hélt í samvinnu við Vodafone og Gallup erindi um tilgang og markmið ólíkra þjónustumælinga í morgun Fundarstjóri var...
 							</div>
@@ -58,6 +58,19 @@ use Stjornvisi\Properties\FileProperties;
 							</div>
 						</div>
 					<?endfor;?>
+
+					<div class="entry entry--simple">
+						<div class="entry__info">14.mar 2016</div>
+						<div class="entry__title"><h3><a href="#">Hver vegna að mæla þjónustu?</a></h3></div>
+					</div>
+
+					<div class="entry entry--simple">
+						<div class="entry__info">14.mar 2016</div>
+						<div class="entry__title"><h3><a href="#">Hver vegna að mæla þjónustu?</a></h3></div>
+					</div>
+				</div>
+				<div class="box__footer">
+					<a href="#"><i class="fa fa-plus-circle"></i> Skoða fleiri fréttir og pistla</a>
 				</div>
 			</div>
 			<div class="box box--events">
@@ -71,7 +84,7 @@ use Stjornvisi\Properties\FileProperties;
 									<span class="month">apr</span>
 									<span class="year">2016</span>
 								</div>
-								<h3>Hver vegna að mæla þjónustu?</h3>
+								<h3><a href="#">Hver vegna að mæla þjónustu?</a></h3>
 								<div class="entry__info">
 									<i class="fa fa-clock-o"></i> 08:30 - 09:45
 									<span class="separator">/</span>
@@ -87,29 +100,34 @@ use Stjornvisi\Properties\FileProperties;
 						</div>
 					<?endfor;?>
 				</div>
+				<div class="box__footer">
+					<a href="#"><i class="fa fa-plus-circle"></i> Skoða alla 14 viðburði næsta mánuðinn</a>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="panel panel--carousel panel--inset">
+<div class="panel panel--inset">
 	<div class="panel__container">
 		<div class="panel__content">
-			<div class="box">
+			<div class="box box--carousel">
 				<div class="box__jip">
 					<a href="#"><i class="fa fa-plus-circle"></i> Yfirlit liðinna viðburða</a>
 				</div>
 				<div class="box__title"><h2>Eldri viðburðir</h2></div>
 				<div class="box__content">
-					<?for ($i = 0; $i < 3; $i++):?>
+					<?for ($i = 0; $i < 2; $i++):?>
 						<div class="entry">
 							<div class="entry__info">14.mar 2016</div>
-							<div class="entry__title"><h3>Hver vegna að mæla þjónustu?</h3></div>
+							<div class="entry__title">
+								<h3><a href="#">Hver vegna að mæla þjónustu?</a></h3>
+							</div>
 							<div class="entry__image">
-								<img src="//placehold.it/550x360" alt="Placeholder">
+								<img src="//placehold.it/570x360" alt="Placeholder">
 							</div>
 							<div class="entry__content">
-								Faghópur þjónustu - og markaðsstjórnunar hélt í samvinnu við Vodafone og Gallup erindi um tilgang og markmið ólíkra þjónustumælinga í morgun Fundarstjóri var ...
+								Faghópur þjónustu - og markaðsstjórnunar hélt í samvinnu við Vodafone og Gallup erindi um tilgang og markmið ólíkra þjónustumælinga í morgun Fundarstjóri var
 								Páll Ásgeir Guðmundsson, sviðsstjóri markaðsrannsókna Gallup fór yfir nokkrar leiðir til að mæla gæði þjónustu, og hvernig fyrirtæki skoða stöðugar umbætur með
 							</div>
 						</div>
@@ -120,12 +138,16 @@ use Stjornvisi\Properties\FileProperties;
 	</div>
 </div>
 
-<div class="panel">
+<div class="panel panel--groups">
 	<div class="panel__container">
 		<div class="panel__content panel--row">
 			<div class="box">
 				<div class="box__title"><h2>Yfirlit faghópa</h2></div>
 				<div class="box__content">
+					<ul class="legend">
+						<li><i class="fa fa-calendar-o"></i>Einn eða fleiri viðburðir í vetur</li>
+						<li><i class="fa fa-check"></i>Þínir hópar</li>
+					</ul>
 					<div class="entry">
 						<div class="entry__title"><h3>Kjarnastarf Stjórnvísis fer fram í þeim 26 faghópum sem eru starfandi innan félagsins á jafnmjörgum sviðum stjórnunar.</h3></div>
 						<div class="entry__content">
@@ -138,23 +160,29 @@ use Stjornvisi\Properties\FileProperties;
 			</div>
 			<div class="box">
 				<div class="box__content">
+					<?for ($i = 0; $i < 3; $i++):?>
 					<div class="entry entry--hoverable">
 						<div class="entry__title">
-							<h4>Breytingastjórnun</h4>
-							<span class="fa-stack">
-								<i class="fa fa-calendar-o fa-stack-2x"></i>
-								<i class="fa fa-stack-1x">1</i>
-							</span>
+							<div class="entry__status">
+								<i class="fa fa-check"></i>
+							</div>
+							<h4>
+								Breytingastjórnun
+								<span class="fa-stack">
+									<i class="fa fa-calendar-o fa-stack-2x"></i>
+									<i class="fa-stack-1x"><?=$i+1?></i>
+								</span>
+							</h4>
 						</div>
 						<div class="entry__content">
 							<div class="event">
-								<div class="event__label"><i class="fa fa-calendar-o"></i> <h4>Næsti viðburður</h4></div>
+								<div class="event__label"><h4><i class="fa fa-calendar-o"></i>Næsti viðburður</h4></div>
 								<div class="event__info">
 									<span class="entry__date">þri 19.jan 2016</span>
-									/
+									<span class="separator">/</span>
 									<span class="event__time">08:30 - 09:45</span>
 								</div>
-								<div class="event__title"><h5>Mannauðsstjórnun og þjónandi forysta</h5></div>
+								<div class="event__title"><h5><a href="#">Mannauðsstjórnun og þjónandi forysta</a></h5></div>
 								<div class="event__details"><a href="#">5 viðburðir síðustu 12 mánuði</a></div>
 								<div class="event__content">
 									<h4>Stjórn</h4>
@@ -171,6 +199,7 @@ use Stjornvisi\Properties\FileProperties;
 							</div>
 						</div>
 					</div>
+					<?endfor?>
 				</div>
 			</div>
 		</div>

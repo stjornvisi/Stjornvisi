@@ -1,0 +1,94 @@
+.panel--groups {
+	.box {
+		@include make-xs-column(12);
+		@include make-sm-column(6);
+
+		&:first-child {
+			padding-right: $grid-gutter-width;
+		}
+
+		&:last-child {
+			padding-left: $grid-gutter-width;
+		}
+	}
+
+	.fa-calendar-o {
+		color: $color-green;
+	}
+
+	.fa-check {
+		color: $color-orange;
+	}
+
+	.legend {
+		font-size: 20px;
+		margin-bottom: $line-height-computed * 2;
+
+		li {
+			margin-bottom: 5px;
+		}
+		.fa {
+			font-size: 22px;
+			margin-right: 10px;
+		}
+	}
+
+	.entry {
+		margin-bottom: 0;
+	}
+
+	.entry__title {
+		margin-bottom: 10px;
+
+		.entry__status {
+			padding-left: 15px;
+		}
+
+		// @todo replace with javascript
+		&:hover {
+			+ .entry__content {
+				display: block;
+			}
+		}
+
+		h3 {
+			font-size: 32px;
+			color: $color-blue;
+		}
+
+		h4 {
+			font-size: 24px;
+			color: $color-text;
+			margin: 0;
+			padding: 4px 15px;
+
+			&:hover {
+				background-color: $color-offwhite;
+				cursor: default;
+			}
+
+			.fa-stack {
+				color: $color-green;
+				height: 1em;
+				line-height: 1;
+			}
+			.fa-stack-1x {
+				font-size: 12px;
+				font-weight: 600;
+				margin-top: 8px;
+			}
+			.fa-stack-2x {
+				font-size: 22px;
+			}
+		}
+	}
+
+	.entry__content {
+		background: $color-white;
+	}
+
+	.event {
+		border: 1px solid $color-blue;
+		padding: 20px 30px;
+	}
+}

@@ -32,10 +32,6 @@
 	}
 }
 
-.box__jip {
-	float: right;
-}
-
 .box__title {
 	margin-bottom: $line-height-computed * 2;
 	color: $color-blue;
@@ -58,12 +54,8 @@
 	margin-top: 30px;
 
 	a {
+		@include linkColorDefault;
 		font-size: 22px;
-		color: $color-light-blue;
-
-		&:hover {
-			color: $link-hover-color;
-		}
 	}
 
 	.fa {
@@ -73,17 +65,45 @@
 	}
 }
 
+.box__jip {
+	@extend .box__footer;
+
+	float: right;
+	margin-top: 0;
+}
+
 .box--news {
 	body.state-landing & {
 		@include make-sm-column(6);
-		padding-right: $grid-gutter-width * 2;
+		padding-right: $grid-gutter-width;
 	}
 }
 
 .box--events {
 	body.state-landing & {
 		@include make-sm-column(6);
-		padding-left: $grid-gutter-width * 2;
+		padding-left: $grid-gutter-width;
+	}
+}
+
+.box--carousel {
+	.entry {
+		@include make-sm-column(6);
+	}
+
+	.entry__info {
+		color: $color-text-light;
+	}
+
+	.entry__title {
+		a {
+			@include linkColorDark;
+		}
+	}
+
+	.entry__title,
+	.entry__image {
+		margin-bottom: $line-height-computed;
 	}
 }
 
@@ -94,6 +114,11 @@
 	&:last-child {
 		margin-bottom: 0;
 	}
+}
+
+.entry__status {
+	float: left;
+	width: 50px;
 }
 
 .entry__title {
@@ -117,5 +142,92 @@
 .entry__image {
 	img {
 		@include img-responsive;
+	}
+}
+
+.entry--hoverable {
+	position: relative;
+
+	.entry__content {
+		display: none;
+		position: absolute;
+		z-index: 2;
+		margin-left: -104%;
+		margin-top: -62px;
+
+		&:after {
+			@include rotate(45deg);
+			content: '';
+			position: absolute;
+			z-index: 1;
+			right: -12px;
+			top: 24px;
+			height: 24px;
+			width: 24px;
+			background: $color-white;
+			border-top:1px solid $color-blue;
+			border-right: 1px solid $color-blue;
+		}
+	}
+}
+
+/*** EVENT **/
+
+.event {
+
+}
+
+.event__label {
+	color: $color-green;
+	margin-bottom: $line-height-computed;
+
+	h4 {
+		font-size: 22px;
+		margin: 0;
+	}
+
+	.fa {
+		margin-right: 10px;
+	}
+}
+
+.event__info {
+	font-size: 18px;
+	font-weight: 600;
+	color: $color-light-blue;
+
+	.separator {
+		margin: 0 10px;
+	}
+
+	.event__time {
+		color: $color-red;
+	}
+}
+
+.event__title {
+	margin-bottom: $line-height-computed;
+
+	h5 {
+		font-size: 20px;
+		margin: 0;
+	}
+
+	a {
+		@include linkColorDark;
+	}
+}
+
+.event__details {
+	margin-bottom: $line-height-computed;
+}
+
+.event__content {
+	h4 {
+		color: $color-blue;
+		font-size: 24px;
+		font-weight: 600;
+		padding-bottom: 10px;
+		border-bottom: 1px solid $color-border;
 	}
 }

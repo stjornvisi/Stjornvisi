@@ -3,7 +3,7 @@
 	height: 60px;
 	padding: 0;
 
-	&.panel--footer {
+	&.panel--footer-navigation {
 		background-color: rgba($color-blue, .8);
 	}
 }
@@ -14,6 +14,8 @@
 		width: 100%;
 
 		a {
+			@include linkColorLight;
+
 			display: table-cell;
 			width: 1%;
 			white-space: nowrap;
@@ -25,10 +27,6 @@
 			height: 60px;
 			text-align: center;
 			vertical-align: middle;
-
-			&:hover {
-				color: $color-gray;
-			}
 
 			&:first-child {
 				padding-left: 5%;
@@ -43,7 +41,7 @@
 			}
 
 			// Footer navigation
-			.panel--footer & {
+			.panel--footer-navigation & {
 				font-size: 20px;
 				font-weight: 600;
 				border-bottom: 1px solid $color-light-blue;

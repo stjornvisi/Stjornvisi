@@ -18,6 +18,12 @@
 		color: $color-text-light;
 	}
 
+	.entry__title {
+		a {
+			@include linkColorDark;
+		}
+	}
+
 	.entry__content {
 		line-height: $line-height-small;
 		padding-left: 0;
@@ -25,5 +31,11 @@
 
 	.entry__image {
 		padding-right: 0;
+	}
+
+	.entry--simple {
+		.entry__title {
+			margin-bottom: 0;
+		}
 	}
 }

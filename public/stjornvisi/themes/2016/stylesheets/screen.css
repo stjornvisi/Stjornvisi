@@ -1026,7 +1026,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 /* line 96, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_buttons.scss */
 .btn-link {
-  color: #1b3e59;
+  color: #2b6786;
   font-weight: normal;
   border-radius: 0;
 }
@@ -1042,7 +1042,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 }
 /* line 115, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_buttons.scss */
 .btn-link:hover, .btn-link:focus {
-  color: #2b6786;
+  color: #8d979c;
   text-decoration: none;
   background-color: transparent;
 }
@@ -6185,12 +6185,12 @@ a {
   -webkit-transition: color 0.1s;
   -o-transition: color 0.1s;
   transition: color 0.1s;
-  color: #1b3e59;
+  color: #2b6786;
   text-decoration: none;
 }
 /* line 18, ../sass/components/_core.scss */
 a:hover {
-  color: #2b6786;
+  color: #8d979c;
 }
 
 /*** BUTTONS ***/
@@ -6261,112 +6261,253 @@ a:hover {
 }
 
 /* line 35, ../sass/components/_layout.scss */
-.box__jip {
-  float: right;
-}
-
-/* line 39, ../sass/components/_layout.scss */
 .box__title {
   margin-bottom: 56px;
   color: #1b3e59;
 }
-/* line 43, ../sass/components/_layout.scss */
+/* line 39, ../sass/components/_layout.scss */
 .box__title h2, .box__title h3, .box__title h4, .box__title h5, .box__title h6 {
   margin-top: 0;
 }
-/* line 47, ../sass/components/_layout.scss */
+/* line 43, ../sass/components/_layout.scss */
 .box__title h2 {
   font-size: 40px;
   font-weight: 600;
 }
 
-/* line 57, ../sass/components/_layout.scss */
-.box__footer {
+/* line 53, ../sass/components/_layout.scss */
+.box__footer, .box__jip {
   margin-top: 30px;
 }
-/* line 60, ../sass/components/_layout.scss */
-.box__footer a {
+/* line 56, ../sass/components/_layout.scss */
+.box__footer a, .box__jip a {
+  -webkit-transition: color 0.15s;
+  -o-transition: color 0.15s;
+  transition: color 0.15s;
+  color: #2b6786;
   font-size: 22px;
-  color: #2b6786;
 }
-/* line 64, ../sass/components/_layout.scss */
-.box__footer a:hover {
-  color: #2b6786;
+/* line 4, ../sass/helpers/_mixins.scss */
+.box__footer a:hover, .box__jip a:hover {
+  color: #8d979c;
 }
-/* line 69, ../sass/components/_layout.scss */
-.box__footer .fa {
+/* line 61, ../sass/components/_layout.scss */
+.box__footer .fa, .box__jip .fa {
   font-size: 36px;
   vertical-align: middle;
   margin-right: 10px;
 }
 
-/* line 77, ../sass/components/_layout.scss */
+/* line 68, ../sass/components/_layout.scss */
+.box__jip {
+  float: right;
+  margin-top: 0;
+}
+
+/* line 76, ../sass/components/_layout.scss */
 body.state-landing .box--news {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
-  padding-right: 60px;
+  padding-right: 30px;
 }
 @media (min-width: 768px) {
-  /* line 77, ../sass/components/_layout.scss */
+  /* line 76, ../sass/components/_layout.scss */
   body.state-landing .box--news {
     float: left;
     width: 50%;
   }
 }
 
-/* line 84, ../sass/components/_layout.scss */
+/* line 83, ../sass/components/_layout.scss */
 body.state-landing .box--events {
   position: relative;
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
-  padding-left: 60px;
+  padding-left: 30px;
 }
 @media (min-width: 768px) {
-  /* line 84, ../sass/components/_layout.scss */
+  /* line 83, ../sass/components/_layout.scss */
   body.state-landing .box--events {
     float: left;
     width: 50%;
   }
 }
 
+/* line 90, ../sass/components/_layout.scss */
+.box--carousel .entry {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  /* line 90, ../sass/components/_layout.scss */
+  .box--carousel .entry {
+    float: left;
+    width: 50%;
+  }
+}
+/* line 94, ../sass/components/_layout.scss */
+.box--carousel .entry__info {
+  color: #8d979c;
+}
+/* line 99, ../sass/components/_layout.scss */
+.box--carousel .entry__title a {
+  -webkit-transition: color 0.15s;
+  -o-transition: color 0.15s;
+  transition: color 0.15s;
+  color: #000;
+}
+/* line 12, ../sass/helpers/_mixins.scss */
+.box--carousel .entry__title a:hover {
+  color: #8d979c;
+}
+/* line 104, ../sass/components/_layout.scss */
+.box--carousel .entry__title,
+.box--carousel .entry__image {
+  margin-bottom: 28px;
+}
+
 /*** ENTRY **/
-/* line 91, ../sass/components/_layout.scss */
+/* line 111, ../sass/components/_layout.scss */
 .entry {
   margin-bottom: 28px;
 }
-/* line 94, ../sass/components/_layout.scss */
+/* line 114, ../sass/components/_layout.scss */
 .entry:last-child {
   margin-bottom: 0;
 }
 
-/* line 99, ../sass/components/_layout.scss */
+/* line 119, ../sass/components/_layout.scss */
+.entry__status {
+  float: left;
+  width: 50px;
+}
+
+/* line 124, ../sass/components/_layout.scss */
 .entry__title {
   margin-bottom: 28px;
   color: #000;
 }
-/* line 103, ../sass/components/_layout.scss */
+/* line 128, ../sass/components/_layout.scss */
 .entry__title h2, .entry__title h3, .entry__title h4, .entry__title h5, .entry__title h6 {
   margin-top: 0;
 }
-/* line 107, ../sass/components/_layout.scss */
+/* line 132, ../sass/components/_layout.scss */
 .entry__title h3 {
   font-size: 30px;
   font-weight: 600;
 }
 
-/* line 113, ../sass/components/_layout.scss */
+/* line 138, ../sass/components/_layout.scss */
 .entry__info {
   font-size: 18px;
 }
 
-/* line 118, ../sass/components/_layout.scss */
+/* line 143, ../sass/components/_layout.scss */
 .entry__image img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+/* line 148, ../sass/components/_layout.scss */
+.entry--hoverable {
+  position: relative;
+}
+/* line 151, ../sass/components/_layout.scss */
+.entry--hoverable .entry__content {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  margin-left: -104%;
+  margin-top: -62px;
+}
+/* line 158, ../sass/components/_layout.scss */
+.entry--hoverable .entry__content:after {
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  content: '';
+  position: absolute;
+  z-index: 1;
+  right: -12px;
+  top: 24px;
+  height: 24px;
+  width: 24px;
+  background: #fff;
+  border-top: 1px solid #1b3e59;
+  border-right: 1px solid #1b3e59;
+}
+
+/*** EVENT **/
+/* line 180, ../sass/components/_layout.scss */
+.event__label {
+  color: #669933;
+  margin-bottom: 28px;
+}
+/* line 184, ../sass/components/_layout.scss */
+.event__label h4 {
+  font-size: 22px;
+  margin: 0;
+}
+/* line 189, ../sass/components/_layout.scss */
+.event__label .fa {
+  margin-right: 10px;
+}
+
+/* line 194, ../sass/components/_layout.scss */
+.event__info {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2b6786;
+}
+/* line 199, ../sass/components/_layout.scss */
+.event__info .separator {
+  margin: 0 10px;
+}
+/* line 203, ../sass/components/_layout.scss */
+.event__info .event__time {
+  color: #990000;
+}
+
+/* line 208, ../sass/components/_layout.scss */
+.event__title {
+  margin-bottom: 28px;
+}
+/* line 211, ../sass/components/_layout.scss */
+.event__title h5 {
+  font-size: 20px;
+  margin: 0;
+}
+/* line 216, ../sass/components/_layout.scss */
+.event__title a {
+  -webkit-transition: color 0.15s;
+  -o-transition: color 0.15s;
+  transition: color 0.15s;
+  color: #000;
+}
+/* line 12, ../sass/helpers/_mixins.scss */
+.event__title a:hover {
+  color: #8d979c;
+}
+
+/* line 221, ../sass/components/_layout.scss */
+.event__details {
+  margin-bottom: 28px;
+}
+
+/* line 226, ../sass/components/_layout.scss */
+.event__content h4 {
+  color: #1b3e59;
+  font-size: 24px;
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dde0e1;
 }
 
 /* line 1, ../sass/components/_hero.scss */
@@ -6434,21 +6575,22 @@ body.state-landing .box--events {
 /* line 45, ../sass/components/_hero.scss */
 .panel--hero .box__title h2 {
   font-size: 40px;
+  color: #fff;
 }
-/* line 50, ../sass/components/_hero.scss */
+/* line 51, ../sass/components/_hero.scss */
 .panel--hero .box__content {
   font-size: 22px;
 }
-/* line 53, ../sass/components/_hero.scss */
+/* line 54, ../sass/components/_hero.scss */
 .panel--hero .box__content a {
   color: #fff;
   text-decoration: underline;
 }
-/* line 57, ../sass/components/_hero.scss */
+/* line 58, ../sass/components/_hero.scss */
 .panel--hero .box__content a:hover {
   color: #dde0e1;
 }
-/* line 62, ../sass/components/_hero.scss */
+/* line 63, ../sass/components/_hero.scss */
 .panel--hero .box__content .btn {
   margin-top: 15px;
 }
@@ -6460,7 +6602,7 @@ body.state-landing .box--events {
   padding: 0;
 }
 /* line 6, ../sass/components/_navigation.scss */
-.panel--navigation.panel--footer {
+.panel--navigation.panel--footer-navigation {
   background-color: rgba(27, 62, 89, 0.8);
 }
 
@@ -6471,6 +6613,10 @@ body.state-landing .box--events {
 }
 /* line 16, ../sass/components/_navigation.scss */
 .box--navigation nav a {
+  -webkit-transition: color 0.15s;
+  -o-transition: color 0.15s;
+  transition: color 0.15s;
+  color: #fff;
   display: table-cell;
   width: 1%;
   white-space: nowrap;
@@ -6482,35 +6628,35 @@ body.state-landing .box--events {
   text-align: center;
   vertical-align: middle;
 }
-/* line 29, ../sass/components/_navigation.scss */
+/* line 20, ../sass/helpers/_mixins.scss */
 .box--navigation nav a:hover {
   color: #8d979c;
 }
-/* line 33, ../sass/components/_navigation.scss */
+/* line 31, ../sass/components/_navigation.scss */
 .box--navigation nav a:first-child {
   padding-left: 5%;
 }
-/* line 36, ../sass/components/_navigation.scss */
+/* line 34, ../sass/components/_navigation.scss */
 .box--navigation nav a:last-child {
   padding-right: 5%;
 }
-/* line 40, ../sass/components/_navigation.scss */
+/* line 38, ../sass/components/_navigation.scss */
 .box--navigation nav a span {
   display: block;
   line-height: 1;
 }
-/* line 46, ../sass/components/_navigation.scss */
-.panel--footer .box--navigation nav a {
+/* line 44, ../sass/components/_navigation.scss */
+.panel--footer-navigation .box--navigation nav a {
   font-size: 20px;
   font-weight: 600;
   border-bottom: 1px solid #2b6786;
 }
-/* line 51, ../sass/components/_navigation.scss */
-.panel--footer .box--navigation nav a span {
+/* line 49, ../sass/components/_navigation.scss */
+.panel--footer-navigation .box--navigation nav a span {
   border-right: 2px solid #fff;
 }
-/* line 56, ../sass/components/_navigation.scss */
-.panel--footer .box--navigation nav a:last-child span {
+/* line 54, ../sass/components/_navigation.scss */
+.panel--footer-navigation .box--navigation nav a:last-child span {
   border-right: 0;
 }
 
@@ -6552,14 +6698,29 @@ body.state-landing .box--events {
 .box--news .entry__info {
   color: #8d979c;
 }
-/* line 21, ../sass/components/_news.scss */
+/* line 22, ../sass/components/_news.scss */
+.box--news .entry__title a {
+  -webkit-transition: color 0.15s;
+  -o-transition: color 0.15s;
+  transition: color 0.15s;
+  color: #000;
+}
+/* line 12, ../sass/helpers/_mixins.scss */
+.box--news .entry__title a:hover {
+  color: #8d979c;
+}
+/* line 27, ../sass/components/_news.scss */
 .box--news .entry__content {
   line-height: 1.2;
   padding-left: 0;
 }
-/* line 26, ../sass/components/_news.scss */
+/* line 32, ../sass/components/_news.scss */
 .box--news .entry__image {
   padding-right: 0;
+}
+/* line 37, ../sass/components/_news.scss */
+.box--news .entry--simple .entry__title {
+  margin-bottom: 0;
 }
 
 /* line 2, ../sass/components/_events.scss */
@@ -6659,4 +6820,159 @@ body.state-landing .box--events {
 /* line 73, ../sass/components/_events.scss */
 .box--events .entry__content .btn {
   margin: 15px 10px 0 0;
+}
+
+/* line 2, ../sass/components/_groups.scss */
+.panel--groups .box {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  /* line 2, ../sass/components/_groups.scss */
+  .panel--groups .box {
+    float: left;
+    width: 50%;
+  }
+}
+/* line 6, ../sass/components/_groups.scss */
+.panel--groups .box:first-child {
+  padding-right: 30px;
+}
+/* line 10, ../sass/components/_groups.scss */
+.panel--groups .box:last-child {
+  padding-left: 30px;
+}
+/* line 15, ../sass/components/_groups.scss */
+.panel--groups .fa-calendar-o {
+  color: #669933;
+}
+/* line 19, ../sass/components/_groups.scss */
+.panel--groups .fa-check {
+  color: #ff9900;
+}
+/* line 23, ../sass/components/_groups.scss */
+.panel--groups .legend {
+  font-size: 20px;
+  margin-bottom: 56px;
+}
+/* line 27, ../sass/components/_groups.scss */
+.panel--groups .legend li {
+  margin-bottom: 5px;
+}
+/* line 30, ../sass/components/_groups.scss */
+.panel--groups .legend .fa {
+  font-size: 22px;
+  margin-right: 10px;
+}
+/* line 36, ../sass/components/_groups.scss */
+.panel--groups .entry {
+  margin-bottom: 0;
+}
+/* line 40, ../sass/components/_groups.scss */
+.panel--groups .entry__title {
+  margin-bottom: 10px;
+}
+/* line 43, ../sass/components/_groups.scss */
+.panel--groups .entry__title .entry__status {
+  padding-left: 15px;
+}
+/* line 49, ../sass/components/_groups.scss */
+.panel--groups .entry__title:hover + .entry__content {
+  display: block;
+}
+/* line 54, ../sass/components/_groups.scss */
+.panel--groups .entry__title h3 {
+  font-size: 32px;
+  color: #1b3e59;
+}
+/* line 59, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4 {
+  font-size: 24px;
+  color: #505d62;
+  margin: 0;
+  padding: 4px 15px;
+}
+/* line 65, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4:hover {
+  background-color: #f7f7f7;
+  cursor: default;
+}
+/* line 70, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4 .fa-stack {
+  color: #669933;
+  height: 1em;
+  line-height: 1;
+}
+/* line 75, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4 .fa-stack-1x {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+/* line 80, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4 .fa-stack-2x {
+  font-size: 22px;
+}
+/* line 86, ../sass/components/_groups.scss */
+.panel--groups .entry__content {
+  background: #fff;
+}
+/* line 90, ../sass/components/_groups.scss */
+.panel--groups .event {
+  border: 1px solid #1b3e59;
+  padding: 20px 30px;
+}
+
+/* line 1, ../sass/components/_footer.scss */
+.panel--footer {
+  border-top: 1px solid #8d979c;
+  background-color: rgba(27, 62, 89, 0.8);
+  padding: 50px 0;
+  color: #fff;
+  text-align: center;
+}
+/* line 9, ../sass/components/_footer.scss */
+.panel--footer address span {
+  border-right: 1px solid #fff;
+  padding-right: 10px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+/* line 15, ../sass/components/_footer.scss */
+.panel--footer address span:last-child {
+  border: 0;
+  margin-right: 0;
+}
+/* line 19, ../sass/components/_footer.scss */
+.panel--footer address span:nth-child(4) {
+  border-right: 0;
+  margin-right: 0;
+}
+/* line 25, ../sass/components/_footer.scss */
+.panel--footer address a {
+  -webkit-transition: color 0.15s;
+  -o-transition: color 0.15s;
+  transition: color 0.15s;
+  color: #fff;
+}
+/* line 20, ../sass/helpers/_mixins.scss */
+.panel--footer address a:hover {
+  color: #8d979c;
+}
+/* line 30, ../sass/components/_footer.scss */
+.panel--footer .fa-facebook-f {
+  background: #fff;
+  height: 64px;
+  width: 64px;
+  padding: 16px;
+  font-size: 32px;
+  border-radius: 100%;
 }
