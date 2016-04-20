@@ -1,0 +1,32 @@
+*, *:before, *:after{
+	@include box-sizing(border-box);
+}
+
+body {
+	font-family: $font-family-sans-serif;
+	font-size: $font-size-base;
+	line-height: $base-line-height;
+	-webkit-font-smoothing: antialiased;
+}
+
+a {
+	@include transition(color .1s);
+	color: $link-color;
+	text-decoration: $link-hover-decoration;
+
+	&:hover {
+		color: $link-hover-color;
+	}
+}
+
+
+/*** BUTTONS ***/
+.btn {
+	@include transition(background-color .1s, border-color .1s, color .1s);
+	text-decoration: none !important;
+	padding: 10px 30px;
+
+	.fa {
+		padding: 0 5px;
+	}
+}

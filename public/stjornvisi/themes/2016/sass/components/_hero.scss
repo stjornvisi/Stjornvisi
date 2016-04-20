@@ -1,0 +1,66 @@
+.panel--hero {
+	height: 680px;
+	padding: 0;
+	background-image: url("images/hero-chairs.jpg");
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: auto 100%;
+
+	@media (min-width: 1920px) {
+		background-size: cover;
+	}
+
+	.logo {
+		position: absolute;
+		top: 35px;
+		left: 15px;
+
+		img {
+			width: 206px;
+			height: auto;
+		}
+	}
+
+	.login {
+		@media (min-width: $screen-sm-min) {
+			position: absolute;
+			top: -160px;
+			right: 15px;
+		}
+
+		text-transform: uppercase;
+		font-size: 16px;
+		padding: 8px 15px;
+	}
+
+	.box {
+		@include make-sm-column(6);
+		@include make-sm-column-push(6);
+
+		margin-top: 182px;
+		color: $color-white;
+	}
+
+	.box__title {
+		h2 {
+			font-size: 40px;
+		}
+	}
+
+	.box__content {
+		font-size: 22px;
+
+		a {
+			color: $color-white;
+			text-decoration: underline;
+
+			&:hover {
+				color: $color-light-gray;
+			}
+		}
+
+		.btn {
+			margin-top: 15px;
+		}
+	}
+}

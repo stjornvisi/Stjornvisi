@@ -18,7 +18,7 @@
     "html5shiv": "~3.7.2",
     "breakpoint-sass": "~2.5.0",
     "webcomponentsjs": "~0.5.3",
-    "bootstrap-sass-official": "~3.3.3",
+    "bootstrap-sass-official": "~3.3",
     "Stickyfill": "~1.1.1",
     "photoswipe": "~4.0.5",
     "fluidbox": "~1.4.3",
@@ -29,6 +29,7 @@
     "marked-element": "PolymerElements/marked-element#~1.0.2",
     "iron-pages": "PolymerElements/iron-pages#~1.0.3",
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.3",
-    "google-map": "GoogleWebComponents/google-map#~1.0.3"
+    "google-map": "GoogleWebComponents/google-map#~1.0.3",
+    "fontawesome": "~4"
   }
 }

@@ -1,0 +1,71 @@
+/*** PANEL **/
+.panel {
+	padding: $line-height-computed * 2 0;
+}
+
+.panel__container {
+	@extend .container-fluid;
+	max-width: $screen-lg;
+	position: relative;
+}
+
+.panel__content {
+	@include clearfix;
+
+	&.panel--row {
+		@include make-row;
+	}
+}
+
+.panel--inset {
+	border-top: 1px solid $color-border;
+	border-bottom: 1px solid $color-border;
+	background-color: $color-offwhite;
+}
+
+/*** BOX **/
+.box {
+	margin-bottom: $line-height-computed;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.box__title {
+	h2, h3, h4, h5, h6 {
+		margin-top: 0;
+	}
+
+	h2 {
+		font-size: 40px;
+		font-weight: 600;
+	}
+}
+
+.box__content {
+
+}
+
+.box--news {
+	@include make-sm-column(6);
+}
+
+.box--events {
+	@include make-sm-column(6);
+}
+
+/*** ENTRY **/
+.entry {
+	margin-bottom: $line-height-computed;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.entry__title {
+	h2, h3, h4, h5, h6 {
+		margin-top: 0;
+	}
+}
