@@ -8,6 +8,20 @@ use \DateTime;
 use Stjornvisi\Lib\Time;
 use Stjornvisi\Lib\DataSourceAwareInterface;
 
+/**
+ * @property int id
+ * @property string subject
+ * @property string body
+ * @property string location
+ * @property string address
+ * @property int capacity
+ * @property string event_date
+ * @property string|Time event_time
+ * @property string|Time event_end
+ * @property string avatar
+ * @property string lat
+ * @property string lng
+ */
 class Event extends AbstractService implements DataSourceAwareInterface
 {
     const NAME = "event";
@@ -174,17 +188,12 @@ class Event extends AbstractService implements DataSourceAwareInterface
     public function fetchAll($offset = null, $count = null)
     {
         try {
-            if ($offset != null && $count != null) {
-                $statement = $this->pdo->prepare("
-                    SELECT * FROM Event E
-                    ORDER BY E.event_date DESC
-                    LIMIT {$offset},{$count};");
-            } else {
-                $statement = $this->pdo->prepare("
-                    SELECT * FROM Event E
-                    ORDER BY E.event_date DESC;");
+            if ($offset !== null && $count !== null) {
+                $statement = $this->pdo->prepare("SELECT * FROM Event E ORDER BY E.event_date DESC LIMIT {$offset},{$count};");
             }
-
+            else {
+                $statement = $this->pdo->prepare("SELECT * FROM Event E ORDER BY E.event_date DESC;");
+            }
             $statement->execute();
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
             return array_map(

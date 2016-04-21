@@ -10,6 +10,7 @@
 namespace Stjornvisi\Controller;
 
 use Stjornvisi\Service\Event;
+use Stjornvisi\Service\News;
 use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -56,8 +57,8 @@ class IndexController extends AbstractActionController
             return new ViewModel([
                 'identity' => null,
                 'groups' => $groupService->fetchAll(),
-                'event' => $eventService->getNext(),
-                'news' => $newsService->getNext(),
+                'events' => $eventService->fetchAll(0, 3),
+                'news' => $newsService->fetchAll(null, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
                 'gallery' => $eventService->fetchGallery(12, true),
             ]);
         }

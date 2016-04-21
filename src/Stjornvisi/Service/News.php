@@ -6,9 +6,22 @@ use \DateTime;
 use \PDOException;
 use Stjornvisi\Lib\DataSourceAwareInterface;
 
+/**
+ * @property int id
+ * @property string title
+ * @property string body
+ * @property string avatar
+ * @property string created_date
+ * @property string modified_date
+ * @property int group_id
+ * @property int user_id
+ */
 class News extends AbstractService implements DataSourceAwareInterface
 {
     const NAME = 'news';
+
+    const FRONT_NEWS_COUNT = 3;
+    const FRONT_NEWS_COUNT_SIMPLE = 2;
 
     /**
      * @var \PDO
@@ -114,10 +127,11 @@ class News extends AbstractService implements DataSourceAwareInterface
                 ");
                 $statement->execute();
             } else {
-                $statement = $this->pdo->prepare("
-                    SELECT * FROM `News` N
-                    ORDER BY N.created_date DESC
-                ");
+                $sql = "SELECT * FROM `News` N ORDER BY N.created_date DESC";
+                if (null !== $count) {
+                    $sql .= " LIMIT {$count}";
+                }
+                $statement = $this->pdo->prepare($sql);
                 $statement->execute();
             }
 
