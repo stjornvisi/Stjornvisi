@@ -9,9 +9,11 @@
 
 namespace Stjornvisi\Controller;
 
+use Stjornvisi\Lib\Time;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\News;
 use Zend\Authentication\AuthenticationService;
+use Zend\Form\Element\DateTime;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -57,12 +59,13 @@ class IndexController extends AbstractActionController
             return new ViewModel([
                 'identity' => null,
                 'groups' => $groupService->fetchAll(),
-                'events' => $eventService->fetchAll(0, 3),
+                'events' => $eventService->fetchUpcoming(),
+                'eventCount' => $eventService->fetchUpcomingCount(),
+                'eventsPassed' => $eventService->fetchPassed(),
                 'news' => $newsService->fetchAll(null, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
                 'gallery' => $eventService->fetchGallery(12, true),
             ]);
         }
-
     }
 
     /**

@@ -30,6 +30,7 @@
     "iron-pages": "PolymerElements/iron-pages#~1.0.3",
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.3",
     "google-map": "GoogleWebComponents/google-map#~1.0.3",
-    "fontawesome": "~4"
+    "fontawesome": "~4",
+    "owl-carousel2": "2.0.0-beta.3"
   }
 }

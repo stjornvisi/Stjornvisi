@@ -194,6 +194,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
             else {
                 $statement = $this->pdo->prepare("SELECT * FROM Event E ORDER BY E.event_date DESC;");
             }
+
             $statement->execute();
             $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
             return array_map(
@@ -218,6 +219,92 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 ]
             );
             throw new Exception("Can't get all event entries", 0, $e);
+        }
+    }
+
+    /**
+     * @param $sql
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    protected function fetchMany($sql)
+    {
+        try {
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+            $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
+            return array_map(
+                function ($i) {
+                    $i->id = (int)$i->id;
+                    $i->event_time = new Time(($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00");
+                    $i->event_end = new Time(($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00");
+                    $i->event_date = new DateTime($i->event_date);
+                    return $i;
+                },
+                $statement->fetchAll()
+            );
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger(
+                "error",
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                    ]
+                ]
+            );
+            throw new Exception("Can't get all event entries", 0, $e);
+        }
+    }
+
+    /**
+     * @param int $count
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    public function fetchUpcoming($count = 3)
+    {
+        $sql = "SELECT * FROM Event WHERE event_date >= NOW() ORDER BY event_date ASC, event_time ASC LIMIT {$count};";
+        return $this->fetchMany($sql);
+    }
+
+    /**
+     * @param int $count
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    public function fetchPassed($count = 10)
+    {
+        $sql = "SELECT * FROM Event WHERE event_date < NOW() ORDER BY event_date DESC, event_time DESC LIMIT {$count};";
+        return $this->fetchMany($sql);
+    }
+
+    /**
+     * @param int $days
+     * @return int
+     * @throws Exception
+     */
+    public function fetchUpcomingCount($days = 30)
+    {
+        try {
+            $sql = "SELECT count(*) as total FROM `Event`
+              where event_date >= NOW() and event_date <= ADDDATE(NOW(), INTERVAL {$days} DAY)";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+            return (int)$statement->fetchColumn(0);
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger(
+                "error",
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                    ]
+                ]
+            );
+            throw new Exception("Can't count upcoming event entries", 0, $e);
         }
     }
 

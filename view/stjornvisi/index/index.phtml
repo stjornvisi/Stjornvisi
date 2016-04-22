@@ -103,13 +103,15 @@ use \Stjornvisi\View\Helper\Date;
 							</div>
 							<div class="entry__content">
 								<?=$this->paragrapher(mb_substr($event->body,0,200,'utf-8').'&#8230;'  );?>
+								<? if($this->identity):?>
 								<a href="#" class="btn btn-default">Hef áhuga</a> <a href="#" class="btn btn-primary">Staðfesta mætingu</a></p>
+								<? endif; ?>
 							</div>
 						</div>
 					<? endforeach; ?>
 				</div>
 				<div class="box__footer">
-					<a href="#"><i class="fa fa-plus-circle"></i> Skoða alla 14 viðburði næsta mánuðinn</a>
+					<a href="#"><i class="fa fa-plus-circle"></i> Skoða alla <?=$this->eventCount?> viðburði næsta mánuðinn</a>
 				</div>
 			</div>
 		</div>
@@ -121,25 +123,32 @@ use \Stjornvisi\View\Helper\Date;
 		<div class="panel__content">
 			<div class="box box--carousel">
 				<div class="box__jip">
-					<a href="#"><i class="fa fa-plus-circle"></i> Yfirlit liðinna viðburða</a>
+					<a href="<?=$this->url('vidburdir')?>" class="landing-page__headline"><i class="fa fa-plus-circle"></i> Yfirlit liðinna viðburða</a>
+
+					<a href="#"> </a>
 				</div>
 				<div class="box__title"><h2>Eldri viðburðir</h2></div>
-				<div class="box__content">
-					<?for ($i = 0; $i < 2; $i++):?>
-						<div class="entry">
-							<div class="entry__info">14.mar 2016</div>
+				<div class="box__content owl-carousel">
+					<? foreach ($this->eventsPassed as $event) : ?>
+						<div class="owl-item">
+							<div class="entry__info">
+								<?=$this->date($event->event_date)?>
+							</div>
 							<div class="entry__title">
-								<h3><a href="#">Hver vegna að mæla þjónustu?</a></h3>
+								<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
 							</div>
 							<div class="entry__image">
-								<img src="//placehold.it/570x360" alt="Placeholder">
+								<?php if($event->avatar):?>
+									<a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+										<?=$this->image($event->avatar, FileProperties::DIR_MEDIUM);?>
+									</a>
+								<?php endif;?>
 							</div>
 							<div class="entry__content">
-								Faghópur þjónustu - og markaðsstjórnunar hélt í samvinnu við Vodafone og Gallup erindi um tilgang og markmið ólíkra þjónustumælinga í morgun Fundarstjóri var
-								Páll Ásgeir Guðmundsson, sviðsstjóri markaðsrannsókna Gallup fór yfir nokkrar leiðir til að mæla gæði þjónustu, og hvernig fyrirtæki skoða stöðugar umbætur með
+								<?=$this->paragrapher(mb_substr($event->body,0,200,'utf-8').'&#8230;');?>
 							</div>
 						</div>
-					<?endfor;?>
+					<? endforeach; ?>
 				</div>
 			</div>
 		</div>

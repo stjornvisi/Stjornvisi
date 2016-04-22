@@ -39,7 +39,19 @@
 	<?=$this->headLink()
 		->appendStylesheet('https://fonts.googleapis.com/css?family=Lato:300,400,600,700')
 		->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/screen.css')
-		->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9');?>
+		->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9')
+		->appendStylesheet($this->basePath() . '/vendor/owl-carousel2/dist/assets/owl.carousel.css', 'screen')
+	;?>
+
+	<?= $this->headScript()
+		->appendFile(
+			$this->basePath('/vendor/jquery/dist/jquery.min.js'),
+			'text/javascript'
+		)->appendFile(
+			$this->basePath('/vendor/owl-carousel2/dist/owl.carousel.min.js'),
+			'text/javascript'
+		)
+	;?>
 </head>
 <body class="state-landing">
 
@@ -51,6 +63,26 @@
 
 <?=$this->inlineScript()?>
 <script type="text/javascript">
+	$(function () {
+		$('.owl-carousel').owlCarousel({
+			loop:false,
+			margin:10,
+			nav:true,
+			touchDrag  : false,
+			mouseDrag  : false,
+			responsive:{
+				0:{
+					items:1
+				},
+				600:{
+					items:1
+				},
+				1000:{
+					items:2
+				}
+			}
+		})
+	});
 
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-24585167-1']);
