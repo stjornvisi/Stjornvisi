@@ -12,6 +12,7 @@ namespace Stjornvisi\Controller;
 use Stjornvisi\Lib\Time;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\News;
+use Stjornvisi\Service\Group;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\Element\DateTime;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -34,11 +35,12 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         //SERVICES
-        //  load all services
+        //  load all servicesE
         $sm = $this->getServiceLocator();
         $newsService = $sm->get('Stjornvisi\Service\News');
         /** @var Event $eventService */
         $eventService = $sm->get('Stjornvisi\Service\Event');
+        /** @var Group $groupService */
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $companyService = $sm->get('Stjornvisi\Service\Company');
 
@@ -48,6 +50,20 @@ class IndexController extends AbstractActionController
         if ($auth->hasIdentity()) {
             return new ViewModel([
                 'groups' => $groupService->getByUser($auth->getIdentity()->id),
+                'groupDetails' => $groupService->fetchDetailsByUser($auth->getIdentity()->id),
+                'news' => $newsService->fetchAll(null, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
+                'events' => $eventService->fetchUpcoming(),
+                'eventCount' => $eventService->fetchUpcomingCount(),
+                'eventsPassed' => $eventService->fetchPassed(),
+                'gallery' => $eventService->fetchGallery(16),
+                'media' => $eventService->getMediaByUser($auth->getIdentity()->id),
+                'is_connected' => $companyService->getByUser($auth->getIdentity()->id),
+                'identity' => $auth->getIdentity()
+            ]);
+
+            /*
+            return new ViewModel([
+                'groups' => $groupService->getByUser($auth->getIdentity()->id),
                 'news' => $newsService->getByUser($auth->getIdentity()->id),
                 'events' => $eventService->getByUser($auth->getIdentity()->id),
                 'gallery' => $eventService->fetchGallery(16),
@@ -55,6 +71,7 @@ class IndexController extends AbstractActionController
                 'is_connected' => $companyService->getByUser($auth->getIdentity()->id),
                 'identity' => $auth->getIdentity()
             ]);
+            */
         } else {
             return new ViewModel([
                 'identity' => null,
