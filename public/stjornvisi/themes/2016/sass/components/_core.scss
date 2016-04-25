@@ -25,9 +25,131 @@ a {
 .btn {
 	@include transition(background-color .1s, border-color .1s, color .1s);
 	text-decoration: none !important;
-	padding: 10px 30px;
+	text-transform: uppercase;
+	padding: 8px 15px;
+	font-size: 16px;
 
 	.fa {
 		padding: 0 5px;
+	}
+}
+.btn-facebook {
+	@extend .btn;
+	@extend .btn-primary;
+
+	background-color: $color-facebook;
+	border-color: $color-facebook;
+}
+
+
+/*** STEPPER ***/
+
+.stepper {
+	display: none;
+
+	//display: table;
+	width: 100%;
+	border: 1px solid $color-border;
+	padding: 10px;
+	margin-bottom: $line-height-computed;
+
+	li {
+		display:table-cell;
+		width: 1%;
+		text-align:center;
+	}
+
+	.stepper--current {
+		font-weight: 600;
+	}
+}
+.btn-facebook {
+	@extend .btn;
+	@extend .btn-primary;
+
+	background-color: $color-facebook;
+	border-color: $color-facebook;
+}
+
+
+/*** STEPPER ***/
+
+.stepper {
+	display: none;
+
+	//display: table;
+	width: 100%;
+	border: 1px solid $color-border;
+	padding: 10px;
+	margin-bottom: $line-height-computed;
+
+	li {
+		display:table-cell;
+		width: 1%;
+		text-align:center;
+	}
+
+	.stepper--current {
+		font-weight: 600;
+	}
+}
+.btn-facebook {
+	@extend .btn;
+	@extend .btn-primary;
+
+	background-color: $color-facebook;
+	border-color: $color-facebook;
+}
+
+
+/*** STEPPER ***/
+
+.stepper {
+	display: none;
+
+	//display: table;
+	width: 100%;
+	border: 1px solid $color-border;
+	padding: 10px;
+	margin-bottom: $line-height-computed;
+
+	li {
+		display:table-cell;
+		width: 1%;
+		text-align:center;
+	}
+
+	.stepper--current {
+		font-weight: 600;
+	}
+}
+.btn-facebook {
+	@extend .btn;
+	@extend .btn-primary;
+
+	background-color: $color-facebook;
+	border-color: $color-facebook;
+}
+
+
+/*** STEPPER ***/
+
+.stepper {
+	display: none;
+
+	//display: table;
+	width: 100%;
+	border: 1px solid $color-border;
+	padding: 10px;
+	margin-bottom: $line-height-computed;
+
+	li {
+		display:table-cell;
+		width: 1%;
+		text-align:center;
+	}
+
+	.stepper--current {
+		font-weight: 600;
 	}
 }

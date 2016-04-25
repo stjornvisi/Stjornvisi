@@ -1,0 +1,5 @@
+.panel--login {
+	.box {
+		@include make-sm-column(6);
+	}
+}

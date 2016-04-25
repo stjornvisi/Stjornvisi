@@ -61,7 +61,9 @@
         <?php echo $this->headLink()
 			->appendStylesheet('https://fonts.googleapis.com/css?family=Lato:300,400,600,700')
 			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/screen.css')
-			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9');?>
+			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9')
+			->appendStylesheet($this->basePath() . '/vendor/owl-carousel2/dist/assets/owl.carousel.css', 'screen')
+		;?>
         <link rel="import" href="<?=$this->basePath('/webcomponents/app.html');?>">
 
     </head>
@@ -72,36 +74,20 @@
             </div>
 
             <ul class="categories">
-                <li><a href="/" class="categories__item categories__home" title="Heim">heim</a></li>
-                <li><a href="#" class="categories__item categories__groups" title="Faghópar">groups</a></li>
-                <!--li><a class="news control" href="" title="Fréttir">news</a></li-->
-                <!--li><a class="events control" href="" title="Viðburðir">events</a></li-->
-                <li><a href="#" class="categories__item categories__users" title="Notendur">user</a></li>
-                <li><a href="#" class="categories__item categories__config" title="Stillingar">config</a></li>
+                <li><a href="/" class="categories__item categories--home" title="Heim"></a></li>
+                <li><a href="#" class="categories__item categories--groups" title="Faghópar"></a></li>
+                <li><a href="#" class="categories__item categories--users" title="Notendur"></a></li>
+                <li><a href="#" class="categories__item categories--config" title="Stillingar"></a></li>
             </ul>
         </nav>
 
         <main role="main">
-            <header class="main__header">
-                <h1 class="main__brand">
-                    <a href="#" class="main__home"><i class="icon-home"></i></a>
-                    <a href="/" class="main__logo">Stjórnvísi</a>
-                    <a href="#" class="main__burger"><i class="icon-burger"></i></a>
-                </h1>
-                <nav class="main__menu">
-                    <ul class="main__menu-items">
-                        <li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-                        <li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
-                        <li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
-                        <li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjórnunarverðlaunin</a></li>
-                        <li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-                    </ul>
-                </nav>
-            </header>
+			<?=$this->render('layout/_header-slim.phtml')?>
+			<?=$this->render('layout/_navigation.phtml')?>
             <?php echo $this->content; ?>
         </main>
 
-		<?=$this->partial('layout/_footer.phtml')?>
+		<?=$this->render('layout/_footer.phtml')?>
 		
         <?php echo $this->inlineScript() ?>
     <script>
@@ -113,26 +99,27 @@
         <?php $this->headScript()->deleteContainer();?>
         <?=$this->headScript()->appendFile($this->basePath('/javascripts/common.js'), 'text/javascript');?>
         <script type="text/javascript">
-            $(function () {
-                $('.owl-carousel').owlCarousel({
-                    loop:false,
-                    margin:10,
-                    nav:true,
-                    touchDrag  : false,
-                    mouseDrag  : false,
-                    responsive:{
-                        0:{
-                            items:1
-                        },
-                        600:{
-                            items:1
-                        },
-                        1000:{
-                            items:2
-                        }
-                    }
-                })
-            });
+			$(function () {
+				$('.owl-carousel').owlCarousel({
+					loop:false,
+					margin:10,
+					nav:true,
+					navText:['<i class="fa fa-chevron-circle-left"></i>', '<i class="fa fa-chevron-circle-right"></i>'],
+					touchDrag  : false,
+					mouseDrag  : false,
+					responsive:{
+						0:{
+							items:1
+						},
+						600:{
+							items:1
+						},
+						1000:{
+							items:2
+						}
+					}
+				})
+			});
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-24585167-1']);
             _gaq.push(['_trackPageview']);

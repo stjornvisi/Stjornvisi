@@ -7,174 +7,176 @@
  */
 ?>
 
-<div class="layout layout--three-columns page-user-create">
-    <section class="layout__section">
-        <ul class="page-user-create__main-menu">
-            <li>1# Notendaupplýsingar</li>
-            <li class="page-user-create__main-menu--active">2# Fyrirtækjaupplýsingar</li>
-            <li>3# Innskráning</li>
-        </ul>
-        <div class="layout__data">
+<div class="panel panel--columns-two">
+    <div class="panel__container">
+		<div class="panel__content">
+			<ul class="stepper">
+				<li class="stepper--done">1# Notendaupplýsingar</li>
+				<li class="stepper--current">2# Fyrirtækjaupplýsingar</li>
+				<li>3# Innskráning</li>
+			</ul>
+			<div class="box">
 
-            <div class="widget-slider company-connect">
-                <div class="widget-slider__wrapper" style="margin-left: -<?=$this->panel*100?>%">
-                    <div class="widget-slider__slide">
-                        <h1 class="layout__headline">Hvað passar best við þig?</h1>
-                        <ul class="block-simple-list">
-                            <li class=""><a href="#" data-slide="1"><i class="icon-chevron-right"></i> Ég er starfsmaður fyrirtækis</a></li>
-                            <li class=""><a href="#" data-slide="2"><i class="icon-chevron-right"></i> Ég er háskólanemi</a></li>
-                            <li class=""><a href="#" data-slide="3"><i class="icon-chevron-right"></i> Ég er einstaklingur</a></li>
-                        </ul>
-                    </div>
-                    <div class="widget-slider__slide">
-                        <div>
-                            <a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
-                            <?php $this->companySelectForm->setAttribute('class', 'form-horizontal');?>
-                            <?=$this->form()->openTag($this->companySelectForm);?>
-                            <h1 class="layout__headline">Ég er starfsmaður fyrirtækis</h1>
-                            <p class="layout__sub-paragraph">Veldu fyrirtæki úr fellilistanum</p>
-                            <div class="form-group">
-                                <?=$this->formLabel($this->companySelectForm->get('company-select'));?>
-                                <?=$this->formElement($this->companySelectForm->get('company-select')->setAttribute('class', 'form-control'));?>
-                                <?=$this->formElementErrors($this->companySelectForm->get('company-select'));?>
-                            </div>
-                            <div class="form-group form-group--right">
-                                <?=$this->formElement(
-                                    $this->companySelectForm->get('submit-company-select')->setAttribute('class', 'btn btn-default')->setValue('Velja')
-                                );?>
-                            </div>
-                            <?= $this->form()->closeTag() ?>
-                        </div>
-                        <h1 class="layout__sepline">eða</h1>
-                        <div>
-                            <?php $this->companyForm->setAttribute('class', 'form-horizontal');?>
-                            <?=$this->form()->openTag($this->companyForm);?>
-                            <h1 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h1>
-                            <p class="layout__sub-paragraph">Þú þarft að stofna fyrirtækið</p>
-                            <div class="form-group">
-                                <?=$this->formLabel($this->companyForm->get('company-name'));?>
-                                <?=$this->formElement($this->companyForm->get('company-name')->setAttribute('class', 'form-control'));?>
-                                <?=$this->formElementErrors($this->companyForm->get('company-name'));?>
-                            </div>
-                            <div class="form-group <?=(!empty($this->companyForm->get('company-ssn')->getMessages()))?'has-error':'';?> ">
-                                <?=$this->formLabel($this->companyForm->get('company-ssn'));?>
-                                <?=$this->formElement($this->companyForm->get('company-ssn')->setAttribute('class', 'form-control'));?>
-                                <?=$this->formElementErrors($this->companyForm->get('company-ssn'));?>
-                            </div>
-                            <div class="form-group">
-                                <?=$this->formLabel($this->companyForm->get('company-address'));?>
-                                <?=$this->formElement($this->companyForm->get('company-address')->setAttribute('class', 'form-control'));?>
-                                <?=$this->formElementErrors($this->companyForm->get('company-address'));?>
-                            </div>
-                            <div class="form-group">
-                                <?=$this->formLabel($this->companyForm->get('company-zip'));?>
-                                <?=$this->formElement($this->companyForm->get('company-zip')->setAttribute('class', 'form-control'));?>
-                                <?=$this->formElementErrors($this->companyForm->get('company-zip'));?>
-                            </div>
-                            <div class="form-group">
-                                <?=$this->formLabel($this->companyForm->get('company-web'));?>
-                                <?=$this->formElement($this->companyForm->get('company-web')->setAttribute('class', 'form-control'));?>
-                                <?=$this->formElementErrors($this->companyForm->get('company-web'));?>
-                            </div>
-                            <div class="form-group">
-                                <?=$this->formLabel($this->companyForm->get('company-size'));?>
-                                <?=$this->formElement($this->companyForm->get('company-size')->setAttribute('class', 'form-control'));?>
-                                <?=$this->formElementErrors($this->companyForm->get('company-size'));?>
-                            </div>
-                            <div class="form-group">
-                                <?=$this->formLabel($this->companyForm->get('company-type'));?>
-                                <?=$this->formElement($this->companyForm->get('company-type')->setAttribute('class','form-control'));?>
-                                <?=$this->formElementErrors($this->companyForm->get('company-type'));?>
-                            </div>
-                            <div class="form-group form-group--right">
-                                <?=$this->formElement(
-                                    $this->companyForm->get('submit-company-create')->setAttribute('class', 'btn btn-default')->setValue('Stofna')
-                                );?>
-                            </div>
-                            <?= $this->form()->closeTag() ?>
-                        </div>
-                    </div>
-                    <div class="widget-slider__slide">
-                        <a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
-                        <?php $this->universitySelectForm->setAttribute('class', 'form-horizontal');?>
-                        <?=$this->form()->openTag($this->universitySelectForm);?>
-                        <h1 class="layout__headline">Ég er háskólanemi</h1>
-                        <p>Vinsamlegast veldu skóla hér</p>
-                        <div class="form-group">
-                            <?=$this->formLabel($this->universitySelectForm->get('university-select'));?>
-                            <?=$this->formElement($this->universitySelectForm->get('university-select')->setAttribute('class', 'form-control'));?>
-                            <?=$this->formElementErrors($this->universitySelectForm->get('university-select'));?>
-                        </div>
-                        <div class="form-group form-group--right">
-                            <?=$this->formElement(
-                                $this->universitySelectForm->get('submit-university-select')->setAttribute('class', 'btn btn-default')->setValue('Velja')
-                            );?>
-                        </div>
-                        <?= $this->form()->closeTag() ?>
+				<div class="widget-slider company-connect">
+					<div class="widget-slider__wrapper" style="margin-left: -<?=$this->panel*100?>%">
+						<div class="widget-slider__slide">
+							<h1 class="layout__headline">Hvað passar best við þig?</h1>
+							<ul class="block-simple-list">
+								<li class=""><a href="#" data-slide="1"><i class="icon-chevron-right"></i> Ég er starfsmaður fyrirtækis</a></li>
+								<li class=""><a href="#" data-slide="2"><i class="icon-chevron-right"></i> Ég er háskólanemi</a></li>
+								<li class=""><a href="#" data-slide="3"><i class="icon-chevron-right"></i> Ég er einstaklingur</a></li>
+							</ul>
+						</div>
+						<div class="widget-slider__slide">
+							<div>
+								<a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
+								<?php $this->companySelectForm->setAttribute('class', 'form-horizontal');?>
+								<?=$this->form()->openTag($this->companySelectForm);?>
+								<h1 class="layout__headline">Ég er starfsmaður fyrirtækis</h1>
+								<p class="layout__sub-paragraph">Veldu fyrirtæki úr fellilistanum</p>
+								<div class="form-group">
+									<?=$this->formLabel($this->companySelectForm->get('company-select'));?>
+									<?=$this->formElement($this->companySelectForm->get('company-select')->setAttribute('class', 'form-control'));?>
+									<?=$this->formElementErrors($this->companySelectForm->get('company-select'));?>
+								</div>
+								<div class="form-group form-group--right">
+									<?=$this->formElement(
+										$this->companySelectForm->get('submit-company-select')->setAttribute('class', 'btn btn-default')->setValue('Velja')
+									);?>
+								</div>
+								<?= $this->form()->closeTag() ?>
+							</div>
+							<h1 class="layout__sepline">eða</h1>
+							<div>
+								<?php $this->companyForm->setAttribute('class', 'form-horizontal');?>
+								<?=$this->form()->openTag($this->companyForm);?>
+								<h1 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h1>
+								<p class="layout__sub-paragraph">Þú þarft að stofna fyrirtækið</p>
+								<div class="form-group">
+									<?=$this->formLabel($this->companyForm->get('company-name'));?>
+									<?=$this->formElement($this->companyForm->get('company-name')->setAttribute('class', 'form-control'));?>
+									<?=$this->formElementErrors($this->companyForm->get('company-name'));?>
+								</div>
+								<div class="form-group <?=(!empty($this->companyForm->get('company-ssn')->getMessages()))?'has-error':'';?> ">
+									<?=$this->formLabel($this->companyForm->get('company-ssn'));?>
+									<?=$this->formElement($this->companyForm->get('company-ssn')->setAttribute('class', 'form-control'));?>
+									<?=$this->formElementErrors($this->companyForm->get('company-ssn'));?>
+								</div>
+								<div class="form-group">
+									<?=$this->formLabel($this->companyForm->get('company-address'));?>
+									<?=$this->formElement($this->companyForm->get('company-address')->setAttribute('class', 'form-control'));?>
+									<?=$this->formElementErrors($this->companyForm->get('company-address'));?>
+								</div>
+								<div class="form-group">
+									<?=$this->formLabel($this->companyForm->get('company-zip'));?>
+									<?=$this->formElement($this->companyForm->get('company-zip')->setAttribute('class', 'form-control'));?>
+									<?=$this->formElementErrors($this->companyForm->get('company-zip'));?>
+								</div>
+								<div class="form-group">
+									<?=$this->formLabel($this->companyForm->get('company-web'));?>
+									<?=$this->formElement($this->companyForm->get('company-web')->setAttribute('class', 'form-control'));?>
+									<?=$this->formElementErrors($this->companyForm->get('company-web'));?>
+								</div>
+								<div class="form-group">
+									<?=$this->formLabel($this->companyForm->get('company-size'));?>
+									<?=$this->formElement($this->companyForm->get('company-size')->setAttribute('class', 'form-control'));?>
+									<?=$this->formElementErrors($this->companyForm->get('company-size'));?>
+								</div>
+								<div class="form-group">
+									<?=$this->formLabel($this->companyForm->get('company-type'));?>
+									<?=$this->formElement($this->companyForm->get('company-type')->setAttribute('class','form-control'));?>
+									<?=$this->formElementErrors($this->companyForm->get('company-type'));?>
+								</div>
+								<div class="form-group form-group--right">
+									<?=$this->formElement(
+										$this->companyForm->get('submit-company-create')->setAttribute('class', 'btn btn-default')->setValue('Stofna')
+									);?>
+								</div>
+								<?= $this->form()->closeTag() ?>
+							</div>
+						</div>
+						<div class="widget-slider__slide">
+							<a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
+							<?php $this->universitySelectForm->setAttribute('class', 'form-horizontal');?>
+							<?=$this->form()->openTag($this->universitySelectForm);?>
+							<h1 class="layout__headline">Ég er háskólanemi</h1>
+							<p>Vinsamlegast veldu skóla hér</p>
+							<div class="form-group">
+								<?=$this->formLabel($this->universitySelectForm->get('university-select'));?>
+								<?=$this->formElement($this->universitySelectForm->get('university-select')->setAttribute('class', 'form-control'));?>
+								<?=$this->formElementErrors($this->universitySelectForm->get('university-select'));?>
+							</div>
+							<div class="form-group form-group--right">
+								<?=$this->formElement(
+									$this->universitySelectForm->get('submit-university-select')->setAttribute('class', 'btn btn-default')->setValue('Velja')
+								);?>
+							</div>
+							<?= $this->form()->closeTag() ?>
 
-                    </div>
-                    <div class="widget-slider__slide">
-                        <a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
-                        <?php $this->individualForm->setAttribute('class', 'form-horizontal');?>
-                        <?=$this->form()->openTag($this->individualForm);?>
-                        <h1 class="layout__headline">Ég er einstaklingur</h1>
-                        <p>Þá þarf ég að fá hjá þér kennitölu og heimilsfang</p>
-                        <div class="form-group <?=(!empty($this->individualForm->get('person-ssn')->getMessages()))?'has-error':'';?> ">
-                            <?=$this->formLabel($this->individualForm->get('person-ssn'));?>
-                            <?=$this->formElement($this->individualForm->get('person-ssn')->setAttribute('class', 'form-control'));?>
-                            <?=$this->formElementErrors($this->individualForm->get('person-ssn'));?>
-                        </div>
-                        <div class="form-group">
-                            <?=$this->formLabel($this->individualForm->get('person-address'));?>
-                            <?=$this->formElement($this->individualForm->get('person-address')->setAttribute('class', 'form-control'));?>
-                            <?=$this->formElementErrors($this->individualForm->get('person-address'));?>
-                        </div>
-                        <div class="form-group">
-                            <?=$this->formLabel($this->individualForm->get('person-zip'));?>
-                            <?=$this->formElement($this->individualForm->get('person-zip')->setAttribute('class', 'form-control'));?>
-                            <?=$this->formElementErrors($this->individualForm->get('person-zip'));?>
-                        </div>
-                        <div class="form-group form-group--right">
-                            <?=$this->formElement(
-                                $this->individualForm->get('submit-individual')->setAttribute('class', 'btn btn-default')->setValue('Stofna')
-                            );?>
-                        </div>
-                        <?= $this->form()->closeTag() ?>
-                    </div>
-                </div>
-            </div>
+						</div>
+						<div class="widget-slider__slide">
+							<a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
+							<?php $this->individualForm->setAttribute('class', 'form-horizontal');?>
+							<?=$this->form()->openTag($this->individualForm);?>
+							<h1 class="layout__headline">Ég er einstaklingur</h1>
+							<p>Þá þarf ég að fá hjá þér kennitölu og heimilsfang</p>
+							<div class="form-group <?=(!empty($this->individualForm->get('person-ssn')->getMessages()))?'has-error':'';?> ">
+								<?=$this->formLabel($this->individualForm->get('person-ssn'));?>
+								<?=$this->formElement($this->individualForm->get('person-ssn')->setAttribute('class', 'form-control'));?>
+								<?=$this->formElementErrors($this->individualForm->get('person-ssn'));?>
+							</div>
+							<div class="form-group">
+								<?=$this->formLabel($this->individualForm->get('person-address'));?>
+								<?=$this->formElement($this->individualForm->get('person-address')->setAttribute('class', 'form-control'));?>
+								<?=$this->formElementErrors($this->individualForm->get('person-address'));?>
+							</div>
+							<div class="form-group">
+								<?=$this->formLabel($this->individualForm->get('person-zip'));?>
+								<?=$this->formElement($this->individualForm->get('person-zip')->setAttribute('class', 'form-control'));?>
+								<?=$this->formElementErrors($this->individualForm->get('person-zip'));?>
+							</div>
+							<div class="form-group form-group--right">
+								<?=$this->formElement(
+									$this->individualForm->get('submit-individual')->setAttribute('class', 'btn btn-default')->setValue('Stofna')
+								);?>
+							</div>
+							<?= $this->form()->closeTag() ?>
+						</div>
+					</div>
+				</div>
 
-        </div>
-        <div class="layout__meta">
-            <h1 class="layout__headline">Hvað er þetta?</h1>
-
-            <section class="user-create__help-section <?=($this->panel==0)?'user-create__help-section--active':'';?>" data-slide="0">
-                <h1 class="layout__headline">Fyrirtækjaupplýsingar</h1>
-                <p>Allir notendur verða að vera tengdir fyrirtæki eða stofnun.</p>
-                <p>Þú þarft að velja hér til vinstri hvaða fyrirtæki eða stofnun
-                    þú vilt tengjast.</p>
-                <p><strong>Þú velur aðeins einn af þremur neðangreindum möguleikum</strong></p>
-            </section>
-            <section class="user-create__help-section <?=($this->panel==1)?'user-create__help-section--active':'';?>" data-slide="1">
-                <h2 class="layout__headline">1. Starfsmaður fyrirtækis</h2>
-                <p>Ef þú ert starfsmaður fyrirtækis, þá velur þú það hér. Það getur verið
-                    að fyrirtækið sé ekki á skrá, ef svo er þá stofnar þú það í leiðinni</p>
-            </section>
-            <section class="user-create__help-section <?=($this->panel==2)?'user-create__help-section--active':'';?>" data-slide="2">
-                <h2 class="layout__headline">2. Háskólanemi</h2>
-                <p>Stjónvísi hefur innan sinna vébanda flesta háskóla landsins. Ef þú ert
-                    háskólanemi getur þú valið það hér.</p>
-            </section>
-            <section class="user-create__help-section <?=($this->panel==3)?'user-create__help-section--active':'';?>" data-slide="3">
-                <h2 class="layout__headline">3. Einstaklingur</h2>
-                <p>Sértu einstaklingur sem langar að taka þátt í starfsemi Stjónvísi
-                    þá velur þú það hér.</p>
-            </section>
-
-        </div>
-    </section>
-    <aside class="layout__aside"></aside>
+			</div>
+			<div class="box">
+				<div class="box__title"><h3>Hvað er þetta?</h3></div>
+				<div class="box__content">
+					<section class="user-create__help-section <?=($this->panel==0)?'user-create__help-section--active':'';?>" data-slide="0">
+						<h1 class="layout__headline">Fyrirtækjaupplýsingar</h1>
+						<p>Allir notendur verða að vera tengdir fyrirtæki eða stofnun.</p>
+						<p>Þú þarft að velja hér til vinstri hvaða fyrirtæki eða stofnun
+							þú vilt tengjast.</p>
+						<p><strong>Þú velur aðeins einn af þremur neðangreindum möguleikum</strong></p>
+					</section>
+					<section class="user-create__help-section <?=($this->panel==1)?'user-create__help-section--active':'';?>" data-slide="1">
+						<h2 class="layout__headline">1. Starfsmaður fyrirtækis</h2>
+						<p>Ef þú ert starfsmaður fyrirtækis, þá velur þú það hér. Það getur verið
+							að fyrirtækið sé ekki á skrá, ef svo er þá stofnar þú það í leiðinni</p>
+					</section>
+					<section class="user-create__help-section <?=($this->panel==2)?'user-create__help-section--active':'';?>" data-slide="2">
+						<h2 class="layout__headline">2. Háskólanemi</h2>
+						<p>Stjónvísi hefur innan sinna vébanda flesta háskóla landsins. Ef þú ert
+							háskólanemi getur þú valið það hér.</p>
+					</section>
+					<section class="user-create__help-section <?=($this->panel==3)?'user-create__help-section--active':'';?>" data-slide="3">
+						<h2 class="layout__headline">3. Einstaklingur</h2>
+						<p>Sértu einstaklingur sem langar að taka þátt í starfsemi Stjónvísi
+							þá velur þú það hér.</p>
+					</section>
+				</div>
+			</div>
+		</div>
+    </div>
 </div>
+
 <script>
     var slideDesc = document.querySelector('.company-connect .widget-slider__wrapper');
     var helpers = document.querySelectorAll('.user-create__help-section');

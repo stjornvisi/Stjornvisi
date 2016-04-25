@@ -15,9 +15,14 @@
 		top: 35px;
 		left: 15px;
 
+
 		img {
 			width: 206px;
 			height: auto;
+		}
+
+		h1 {
+			display: none;
 		}
 	}
 
@@ -30,7 +35,6 @@
 
 		text-transform: uppercase;
 		font-size: 16px;
-		padding: 8px 15px;
 	}
 
 	.box {
@@ -61,7 +65,26 @@
 		}
 
 		.btn {
-			margin-top: 15px;
+			margin: 15px 10px 0 0;
+		}
+	}
+
+	&.panel--slim {
+		height: 166px;
+
+		.logo {
+			top: 20px;
+		}
+
+		.box {
+			margin-top: 40px;
+		}
+		.box__content {
+			text-align: right;
+		}
+
+		.login {
+			position:static;
 		}
 	}
 }

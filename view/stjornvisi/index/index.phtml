@@ -3,10 +3,12 @@ use Stjornvisi\Properties\FileProperties;
 use \Stjornvisi\View\Helper\Date;
 ?>
 
-<div class="panel panel--hero">
+<?if(!$this->identity):?>
+<header class="panel panel--hero">
 	<div class="panel__container">
 		<div class="panel__content">
-			<a href="#" class="logo">
+			<a href="/" class="logo">
+				<h1>Stjórnvísi</h1>
 				<img src="<?=$this->basePath("/themes/2016/stylesheets/images/logo-white.png")?>" alt="Stjórnvísi">
 			</a>
 			<div class="box">
@@ -15,33 +17,17 @@ use \Stjornvisi\View\Helper\Date;
 					<p>Boudin filet mignon jowl, short loin hamburger leberkas porchetta rump brisket ball tip. Pork andouille pork loin tenderloin shankle salami. Beef ribs flank salami andouille brisket ground round brisket bresaola hamburger ham.
 						shankle. Tail tri-tip pastrami, landjaeger pork loin boudin turkey ham sirloin drumstick</p>
 					<p><a href="#">Hvaða fyrirtæki eru aðilar að Stjórnvísi?</a></p>
-					<p><a href="#" class="btn btn-primary">Stofna aðgang</a></p>
-					<p><a href="#" class="login btn btn-info">Innskráning <i class="fa fa-unlock-alt"></i></a></p>
+					<p><a href="/adgangur/stofna" class="btn btn-primary">Stofna aðgang</a></p>
+					<p><a href="/innskra" class="login btn btn-info">Innskráning <i class="fa fa-unlock-alt"></i></a></p>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+</header>
+<?=$this->render('layout/_navigation.phtml')?>
+<?endif?>
 
-<div class="panel panel--navigation">
-	<div class="panel__container">
-		<div class="panel__content">
-			<div class="box box--navigation">
-				<div class="box__content">
-					<nav>
-						<a href="<?=$this->url('hopur')?>"><span>Faghópar</span></a>
-						<a href="<?=$this->url('vidburdir')?>"><span>Viðburðir</span></a>
-						<a href="<?=$this->url('stjornunarverdlaunin') ?>"><span>Stjórnunarverðlaunin</span></a>
-						<a href="<?=$this->url('anaegjuvogin') ?>"><span>Ánægjuvogin</span></a>
-						<a href="<?=$this->url('um') ?>"><span>Um Stjórnvísi</span></a>
-					</nav>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="panel">
+<div class="panel panel--columns-two">
 	<div class="panel__container">
 		<div class="panel__content panel--row">
 			<div class="box box--news">
@@ -130,7 +116,7 @@ use \Stjornvisi\View\Helper\Date;
 				<div class="box__title"><h2>Eldri viðburðir</h2></div>
 				<div class="box__content owl-carousel">
 					<? foreach ($this->eventsPassed as $event) : ?>
-						<div class="owl-item">
+						<div class="entry">
 							<div class="entry__info">
 								<?=$this->date($event->event_date)?>
 							</div>
@@ -140,7 +126,7 @@ use \Stjornvisi\View\Helper\Date;
 							<div class="entry__image">
 								<?php if($event->avatar):?>
 									<a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-										<?=$this->image($event->avatar, FileProperties::DIR_MEDIUM);?>
+										<?=$this->image($event->avatar, FileProperties::DIR_LARGE);?>
 									</a>
 								<?php endif;?>
 							</div>

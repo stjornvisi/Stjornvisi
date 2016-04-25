@@ -1,0 +1,144 @@
+nav[role=navigation] {
+	background-color: $color-light-blue;
+	transform: translate3d(-270px, 0, 0);
+	transition: all .4s;
+	position: fixed;
+	z-index: 4;
+	top: 0;
+	width: 350px;
+	height: 100%;
+	overflow: hidden;
+
+	body.state-open & {
+		transform: translate3d(0, 0, 0);
+	}
+
+	.navigation__wrapper {
+		width: 270px;
+		overflow: hidden;
+		float: left;
+		position: relative;
+	}
+
+	.navigation {
+		position: relative;
+		z-index: 5;
+		width: 400%;
+
+		> li {
+			padding: 30px 15px;
+			float: left;
+			width: 25%;
+
+			a {
+				display: block;
+				color: $color-white;
+				font-size: 16px;
+				padding: 0 15px;
+
+				&:hover {
+					background-color: darken($color-light-blue, 5%);
+				}
+			}
+		}
+
+		ul ul a {
+			padding-left: 30px;
+		}
+
+		.headline {
+			display: block;
+			margin-bottom: $line-height-computed;
+			border-bottom: 1px solid $color-offwhite;
+		}
+	}
+
+	.categories {
+		background-color: $color-darkest-gray;
+		position: relative;
+		z-index: 6;
+		float: right;
+		width: 80px;
+		height: 100%;
+
+		a {
+			@include transition(all .2s);
+			display: block;
+			height: 80px;
+			width: 80px;
+			line-height: 80px;
+			font-size: 24px;
+			text-align: center;
+			color: $color-white;
+			border-bottom: 1px solid $color-dark-gray;
+		}
+	}
+
+	.categories__item {
+		&:hover {
+			background-color: $color-light-blue;
+		}
+		&.active {
+			background-color: $color-light-blue;
+		}
+	}
+
+	.categories--home {
+		background-color: $color-green;
+		&:hover {
+			background-color: $color-green;
+		}
+		&:before {
+			content: $fa-var-home;
+			font-family: FontAwesome;
+		}
+	}
+
+	.categories--groups {
+		&:before {
+			content: $fa-var-bullhorn;
+			font-family: FontAwesome;
+		}
+	}
+
+	.categories--users {
+		&:before {
+			content: $fa-var-group;
+			font-family: FontAwesome;
+		}
+	}
+
+	.categories--config {
+		&:before {
+			content: $fa-var-cog;
+			font-family: FontAwesome;
+		}
+	}
+
+	.icon-bar-chart,
+	.icon-plus,
+	.icon-list,
+	.icon-mail {
+		&:before {
+			content: $fa-var-bar-chart;
+			font-family: FontAwesome;
+			margin-right: 5px;
+		}
+	}
+
+	.icon-bar-chart:before {
+		content: $fa-var-bar-chart;
+	}
+
+	.icon-plus:before {
+		content: $fa-var-plus;
+	}
+
+	.icon-list:before {
+		content: $fa-var-list;
+	}
+
+	.icon-mail:before {
+		content: $fa-var-envelope;
+	}
+}
