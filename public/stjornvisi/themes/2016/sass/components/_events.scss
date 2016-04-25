@@ -1,6 +1,6 @@
 .box--events {
 	.entry {
-		@include make-row;
+		@include clearfix;
 		border: 1px solid $color-border;
 	}
 
@@ -53,6 +53,7 @@
 
 	.entry__info {
 		color: $color-light-blue;
+		font-size: 16px;
 		font-weight: 600;
 		text-transform: uppercase;
 

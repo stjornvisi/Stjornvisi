@@ -1,94 +1,73 @@
 <?php
-$this->headTitle('Viðburður');
+$this->headTitle('Viðburðir');
 ?>
-<div class="layout layout--three-columns page-event-list">
-    <section class="layout__section">
-        <table class="block-calendar">
-            <caption class="block-calendar__caption">
+<div class="panel">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box box--events">
+				<div class="box__title"><h2>Viðburðir á næstunni</h2></div>
+				<div class="box__content">
+					<? for ($i = 0; $i < 5; $i++): ?>
+						<div class="entry">
+							<div class="entry__title">
+								<div class="entry__date">
+									<span class="day">01</span>
+									<span class="month">mar</span>
+									<span class="year">2016</span>
+								</div>
+								<h3><a href="#">Harum, tempus habitasse adipisicing ornare</a></h3>
+								<div class="entry__info">
+									<i class="fa fa-clock-o"></i>
+										08:30 - 09:45
+										<span class="separator">/</span>
+										<i class="fa fa-map-marker"></i> Dis ducimus dolor
+								</div>
+							</div>
+							<div class="entry__content">
+								<p>Beatae reprehenderit netus quaerat provident quam. Quam aliquip? Diamlorem recusandae, volutpat tempora accusantium ac consequatur, purus eum minus? Esse, iusto minima praesentium wisi. In taciti! Delectus veritatis interdum eget accusantium, voluptatem condimentum, corporis praesentium doloribus elementum! Sint molestiae, voluptatem! Molestiae.</p>
 
-                <h2 class="block-calendar__headline"><?=$this->date($this->current,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?></h2>
-                <nav class="block-calendar__pagination">
-                    <a href="<?=$this->url('vidburdir/list', array('date'=>$this->prev->format('Y-m')))?>" class="prev" title="<?=$this->date($this->prev, \Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">prev</a>
-                    <a href="<?=$this->url('vidburdir/list', array('date'=>$this->next->format('Y-m')))?>" class="next" title="<?=$this->date($this->next, \Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">next</a>
-                </nav>
-            </caption>
-            <thead class="block-calendar__header">
-                <tr>
-                    <td>Mánudagur</td>
-                    <td>Þriðjudagur</td>
-                    <td>Miðvikudagur</td>
-                    <td>Fimmtudagur</td>
-                    <td>Föstudagur</td>
-                    <td>Laugardagur</td>
-                    <td>Sunnudagur</td>
-                </tr>
-            </thead>
-            <tbody class="block-calendar__body">
-            <?php $counter = 0;?>
-            <?php foreach ($this->calendar as $key => $column): ?>
-            <?php if( $counter % 7 == 0 ):?>
-            <tr>
-            <?php endif;?>
-                <td>
-                    <span class="block-calendar__date-label"><?=substr($key, 8, 2)?></span>
-                    <ul class="block-calendar__subject-list">
-                        <?php if( !empty($column)):?>
-                        <?php foreach($column as $event):?>
-                        <li>
-                            <a href="<?=$this->url('vidburdir/index', array('id'=>$event->id))?>"><?=$event->subject;?></a>
-                            <ul class="block-calendar__group-list">
-                                <?php if(count($event->groups)==0):?>
-                                    <li>Stjórnvísisviðburður</li>
-                                <?php else:?>
-                                    <?php foreach($event->groups as $group):?>
-                                        <li><a href="<?=$this->url('hopur/index', array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
-                                    <?php endforeach;?>
-                                <?php endif;?>
-                            </ul>
-                        </li>
-                        <?php endforeach;?>
-                        <?php else:?>
-                            <li>&nbsp;</li>
-                        <?php endif;?>
-                    </ul>
-                </td>
-                <?php if( $counter % 7 == 6 ):?>
-                </tr>
-                <?php endif;?>
+								<a href="#" class="btn btn-default">Hef áhuga</a> <a href="#" class="btn btn-primary">Staðfesta mætingu</a></p>
+							</div>
+						</div>
+					<?endfor?>
+				</div>
+				<div class="box__footer">
+					<a href="#"><i class="fa fa-plus-circle"></i> Skoða alla <?=$this->eventCount?> viðburði næsta mánuðinn</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-            <?php $counter++?>
-            <?php endforeach; ?>
-            </tbody>
-            <tfoot class="block-calendar__footer">
+<div class="panel panel--inset">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box box--carousel">
+				<div class="box__jip">
+					<a href="<?=$this->url('vidburdir')?>" class="landing-page__headline"><i class="fa fa-plus-circle"></i> Yfirlit liðinna viðburða</a>
 
-            </tfoot>
-        </table>
-    </section>
-    <aside class="layout__aside">
-        <ul class="block-list">
-        <?php foreach ($this->calendar as $key => $column): ?>
-            <?php if( !empty($column) ):?>
-
-                <?php foreach( $column as $event ): ?>
-                    <li class="block-item">
-                        <time class="block-item__time" datetime="<?=$event->event_date->format('c')?>" ><?=$this->date($event->event_date)?></time>
-                        <h2><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h2>
-                        <ul class="block-item__tags">
-                            <?php foreach($event->groups as $group):?>
-                                <li><?=$group->name_short?></li>
-                            <?php endforeach;?>
-                        </ul>
-                    </li>
-                <?php endforeach;?>
-
-
-            <?php endif;?>
-        <?php endforeach;?>
-        </ul>
-        <nav class="block-calendar__pagination">
-            <a href="<?=$this->url('vidburdir/list',array('date'=>$this->prev->format('Y-m')))?>" class="prev" title="<?=$this->date($this->prev,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">prev</a>
-            <a href="<?=$this->url('vidburdir/list',array('date'=>$this->next->format('Y-m')))?>" class="next" title="<?=$this->date($this->next,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">next</a>
-        </nav>
-    </aside>
-
+					<a href="#"> </a>
+				</div>
+				<div class="box__title"><h2>Eldri viðburðir</h2></div>
+				<div class="box__content owl-carousel">
+					<? for($i = 0; $i < 5; $i++) : ?>
+						<div class="entry">
+							<div class="entry__info">
+								01.01.16
+							</div>
+							<div class="entry__title">
+								<h3><a href="#">Nulla donec nobis cras porta</a></h3>
+							</div>
+							<div class="entry__image">
+								<img src="//placehold.it/550x260" alt="">
+							</div>
+							<div class="entry__content">
+								<p>Varius, hac nascetur blanditiis, nostrud officiis ut voluptatum eaque eu molestiae dolorum dolores ea, urna orci, fusce blandit architecto vehicula lorem wisi nec integer? Natus aute, numquam adipisci repellendus potenti, ullam laboris. Feugiat necessitatibus? Vestibulum irure nec leo lacinia, eaque.</p>
+							</div>
+						</div>
+					<? endfor ?>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
