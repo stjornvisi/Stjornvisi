@@ -18,11 +18,14 @@
 @import "../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/buttons";
 @import "../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/grid";
 @import "../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/type";
+@import "../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/labels";
+@import "../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/tables";
 @import "../../../vendor/fluidbox/css/fluidbox.css";
 @import "../../../vendor/fontawesome/scss/font-awesome";
 
 @import "components/core";
 @import "components/layout";
+@import "components/form";
 @import "components/hero";
 @import "components/navigation";
 @import "components/news";

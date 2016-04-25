@@ -9,6 +9,7 @@
 		padding: 20px 30px 0;
 		border-bottom: 1px solid $color-border;
 		margin-bottom: 0;
+		overflow: hidden;
 
 		h3 {
 			font-size: 24px;
@@ -18,8 +19,8 @@
 	.entry__date {
 		float: left;
 		width: 80px;
-		padding: 20px 30px 20px 0;
-		margin: -20px 30px 0 0;
+		padding: 20px 30px 200px 0;
+		margin: -20px 30px -175px 0;
 		text-align: center;
 		border-right: 1px solid $color-border;
 		line-height: $line-height-small;
@@ -56,6 +57,7 @@
 		font-size: 16px;
 		font-weight: 600;
 		text-transform: uppercase;
+		margin-bottom: 10px;
 
 		.fa {
 			color: $color-gray;

@@ -2666,6 +2666,361 @@ address {
   line-height: 1.42857;
 }
 
+/* line 5, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+}
+/* line 20, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label:empty {
+  display: none;
+}
+/* line 25, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.btn .label, .btn-facebook .label {
+  position: relative;
+  top: -1px;
+}
+
+/* line 33, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+a.label:hover, a.label:focus {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* line 44, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label-default {
+  background-color: #777777;
+}
+/* line 7, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_labels.scss */
+.label-default[href]:hover, .label-default[href]:focus {
+  background-color: #5e5e5e;
+}
+
+/* line 48, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label-primary {
+  background-color: #337ab7;
+}
+/* line 7, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_labels.scss */
+.label-primary[href]:hover, .label-primary[href]:focus {
+  background-color: #286090;
+}
+
+/* line 52, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label-success {
+  background-color: #5cb85c;
+}
+/* line 7, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_labels.scss */
+.label-success[href]:hover, .label-success[href]:focus {
+  background-color: #449d44;
+}
+
+/* line 56, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label-info {
+  background-color: #5bc0de;
+}
+/* line 7, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_labels.scss */
+.label-info[href]:hover, .label-info[href]:focus {
+  background-color: #31b0d5;
+}
+
+/* line 60, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label-warning {
+  background-color: #f0ad4e;
+}
+/* line 7, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_labels.scss */
+.label-warning[href]:hover, .label-warning[href]:focus {
+  background-color: #ec971f;
+}
+
+/* line 64, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_labels.scss */
+.label-danger {
+  background-color: #d9534f;
+}
+/* line 7, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_labels.scss */
+.label-danger[href]:hover, .label-danger[href]:focus {
+  background-color: #c9302c;
+}
+
+/* line 6, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+table {
+  background-color: transparent;
+}
+
+/* line 9, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+caption {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: #777777;
+  text-align: left;
+}
+
+/* line 15, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+th {
+  text-align: left;
+}
+
+/* line 22, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 28px;
+}
+/* line 31, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 1.42857;
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+/* line 41, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+/* line 50, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table > caption + thead > tr:first-child > th,
+.table > caption + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th,
+.table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}
+/* line 57, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table > tbody + tbody {
+  border-top: 2px solid #ddd;
+}
+/* line 62, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table .table {
+  background-color: #fff;
+}
+
+/* line 75, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table-condensed > thead > tr > th,
+.table-condensed > thead > tr > td,
+.table-condensed > tbody > tr > th,
+.table-condensed > tbody > tr > td,
+.table-condensed > tfoot > tr > th,
+.table-condensed > tfoot > tr > td {
+  padding: 5px;
+}
+
+/* line 88, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table-bordered {
+  border: 1px solid #ddd;
+}
+/* line 94, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table-bordered > thead > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > tfoot > tr > td {
+  border: 1px solid #ddd;
+}
+/* line 101, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table-bordered > thead > tr > th,
+.table-bordered > thead > tr > td {
+  border-bottom-width: 2px;
+}
+
+/* line 114, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+
+/* line 125, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table-hover > tbody > tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* line 135, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+table col[class*="col-"] {
+  position: static;
+  float: none;
+  display: table-column;
+}
+
+/* line 143, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+table td[class*="col-"],
+table th[class*="col-"] {
+  position: static;
+  float: none;
+  display: table-cell;
+}
+
+/* line 9, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table > thead > tr > td.active,
+.table > thead > tr > th.active, .table > thead > tr.active > td, .table > thead > tr.active > th,
+.table > tbody > tr > td.active,
+.table > tbody > tr > th.active,
+.table > tbody > tr.active > td,
+.table > tbody > tr.active > th,
+.table > tfoot > tr > td.active,
+.table > tfoot > tr > th.active,
+.table > tfoot > tr.active > td,
+.table > tfoot > tr.active > th {
+  background-color: #f5f5f5;
+}
+
+/* line 20, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table-hover > tbody > tr > td.active:hover,
+.table-hover > tbody > tr > th.active:hover, .table-hover > tbody > tr.active:hover > td, .table-hover > tbody > tr:hover > .active, .table-hover > tbody > tr.active:hover > th {
+  background-color: #e8e8e8;
+}
+
+/* line 9, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table > thead > tr > td.success,
+.table > thead > tr > th.success, .table > thead > tr.success > td, .table > thead > tr.success > th,
+.table > tbody > tr > td.success,
+.table > tbody > tr > th.success,
+.table > tbody > tr.success > td,
+.table > tbody > tr.success > th,
+.table > tfoot > tr > td.success,
+.table > tfoot > tr > th.success,
+.table > tfoot > tr.success > td,
+.table > tfoot > tr.success > th {
+  background-color: #dff0d8;
+}
+
+/* line 20, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table-hover > tbody > tr > td.success:hover,
+.table-hover > tbody > tr > th.success:hover, .table-hover > tbody > tr.success:hover > td, .table-hover > tbody > tr:hover > .success, .table-hover > tbody > tr.success:hover > th {
+  background-color: #d0e9c6;
+}
+
+/* line 9, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table > thead > tr > td.info,
+.table > thead > tr > th.info, .table > thead > tr.info > td, .table > thead > tr.info > th,
+.table > tbody > tr > td.info,
+.table > tbody > tr > th.info,
+.table > tbody > tr.info > td,
+.table > tbody > tr.info > th,
+.table > tfoot > tr > td.info,
+.table > tfoot > tr > th.info,
+.table > tfoot > tr.info > td,
+.table > tfoot > tr.info > th {
+  background-color: #d9edf7;
+}
+
+/* line 20, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table-hover > tbody > tr > td.info:hover,
+.table-hover > tbody > tr > th.info:hover, .table-hover > tbody > tr.info:hover > td, .table-hover > tbody > tr:hover > .info, .table-hover > tbody > tr.info:hover > th {
+  background-color: #c4e3f3;
+}
+
+/* line 9, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table > thead > tr > td.warning,
+.table > thead > tr > th.warning, .table > thead > tr.warning > td, .table > thead > tr.warning > th,
+.table > tbody > tr > td.warning,
+.table > tbody > tr > th.warning,
+.table > tbody > tr.warning > td,
+.table > tbody > tr.warning > th,
+.table > tfoot > tr > td.warning,
+.table > tfoot > tr > th.warning,
+.table > tfoot > tr.warning > td,
+.table > tfoot > tr.warning > th {
+  background-color: #fcf8e3;
+}
+
+/* line 20, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table-hover > tbody > tr > td.warning:hover,
+.table-hover > tbody > tr > th.warning:hover, .table-hover > tbody > tr.warning:hover > td, .table-hover > tbody > tr:hover > .warning, .table-hover > tbody > tr.warning:hover > th {
+  background-color: #faf2cc;
+}
+
+/* line 9, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table > thead > tr > td.danger,
+.table > thead > tr > th.danger, .table > thead > tr.danger > td, .table > thead > tr.danger > th,
+.table > tbody > tr > td.danger,
+.table > tbody > tr > th.danger,
+.table > tbody > tr.danger > td,
+.table > tbody > tr.danger > th,
+.table > tfoot > tr > td.danger,
+.table > tfoot > tr > th.danger,
+.table > tfoot > tr.danger > td,
+.table > tfoot > tr.danger > th {
+  background-color: #f2dede;
+}
+
+/* line 20, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_table-row.scss */
+.table-hover > tbody > tr > td.danger:hover,
+.table-hover > tbody > tr > th.danger:hover, .table-hover > tbody > tr.danger:hover > td, .table-hover > tbody > tr:hover > .danger, .table-hover > tbody > tr.danger:hover > th {
+  background-color: #ebcccc;
+}
+
+/* line 171, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+.table-responsive {
+  overflow-x: auto;
+  min-height: 0.01%;
+}
+@media screen and (max-width: 767px) {
+  /* line 171, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+  .table-responsive {
+    width: 100%;
+    margin-bottom: 21px;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border: 1px solid #ddd;
+  }
+  /* line 183, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+  .table-responsive > .table {
+    margin-bottom: 0;
+  }
+  /* line 191, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+  .table-responsive > .table > thead > tr > th,
+  .table-responsive > .table > thead > tr > td,
+  .table-responsive > .table > tbody > tr > th,
+  .table-responsive > .table > tbody > tr > td,
+  .table-responsive > .table > tfoot > tr > th,
+  .table-responsive > .table > tfoot > tr > td {
+    white-space: nowrap;
+  }
+  /* line 200, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+  .table-responsive > .table-bordered {
+    border: 0;
+  }
+  /* line 208, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+  .table-responsive > .table-bordered > thead > tr > th:first-child,
+  .table-responsive > .table-bordered > thead > tr > td:first-child,
+  .table-responsive > .table-bordered > tbody > tr > th:first-child,
+  .table-responsive > .table-bordered > tbody > tr > td:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+    border-left: 0;
+  }
+  /* line 212, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+  .table-responsive > .table-bordered > thead > tr > th:last-child,
+  .table-responsive > .table-bordered > thead > tr > td:last-child,
+  .table-responsive > .table-bordered > tbody > tr > th:last-child,
+  .table-responsive > .table-bordered > tbody > tr > td:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+  .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+    border-right: 0;
+  }
+  /* line 225, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/_tables.scss */
+  .table-responsive > .table-bordered > tbody > tr:last-child > th,
+  .table-responsive > .table-bordered > tbody > tr:last-child > td,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > th,
+  .table-responsive > .table-bordered > tfoot > tr:last-child > td {
+    border-bottom: 0;
+  }
+}
+
 /*!
  *  Font Awesome 4.6.1 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -6385,8 +6740,36 @@ a:hover {
 .panel--columns-two .box:nth-child(even) {
   padding-left: 30px;
 }
-
 /* line 38, ../sass/components/_layout.scss */
+.panel--columns-two.panel--ratio-golden .box:nth-child(odd) {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  /* line 38, ../sass/components/_layout.scss */
+  .panel--columns-two.panel--ratio-golden .box:nth-child(odd) {
+    float: left;
+    width: 75%;
+  }
+}
+/* line 41, ../sass/components/_layout.scss */
+.panel--columns-two.panel--ratio-golden .box:nth-child(even) {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  /* line 41, ../sass/components/_layout.scss */
+  .panel--columns-two.panel--ratio-golden .box:nth-child(even) {
+    float: left;
+    width: 25%;
+  }
+}
+
+/* line 51, ../sass/components/_layout.scss */
 .panel--columns-three .panel__content, .layout--three-columns .panel__content {
   margin-left: -15px;
   margin-right: -15px;
@@ -6400,7 +6783,7 @@ a:hover {
 .panel--columns-three .panel__content:after, .layout--three-columns .panel__content:after {
   clear: both;
 }
-/* line 42, ../sass/components/_layout.scss */
+/* line 55, ../sass/components/_layout.scss */
 .panel--columns-three .box, .layout--three-columns .box {
   position: relative;
   min-height: 1px;
@@ -6408,14 +6791,14 @@ a:hover {
   padding-right: 15px;
 }
 @media (min-width: 768px) {
-  /* line 42, ../sass/components/_layout.scss */
+  /* line 55, ../sass/components/_layout.scss */
   .panel--columns-three .box, .layout--three-columns .box {
     float: left;
     width: 50%;
   }
 }
 
-/* line 47, ../sass/components/_layout.scss */
+/* line 60, ../sass/components/_layout.scss */
 .panel--inset {
   border-top: 1px solid #dde0e1;
   border-bottom: 1px solid #dde0e1;
@@ -6424,46 +6807,46 @@ a:hover {
 
 /** Backwards compat **/
 /*** BOX **/
-/* line 68, ../sass/components/_layout.scss */
+/* line 81, ../sass/components/_layout.scss */
 .box {
   margin-bottom: 28px;
 }
-/* line 71, ../sass/components/_layout.scss */
+/* line 84, ../sass/components/_layout.scss */
 .box:last-child {
   margin-bottom: 0;
 }
 
-/* line 76, ../sass/components/_layout.scss */
+/* line 89, ../sass/components/_layout.scss */
 .box__title {
   color: #1b3e59;
 }
-/* line 79, ../sass/components/_layout.scss */
+/* line 92, ../sass/components/_layout.scss */
 body.state-landing .box__title {
   margin-bottom: 56px;
 }
-/* line 83, ../sass/components/_layout.scss */
+/* line 96, ../sass/components/_layout.scss */
 .box__title h2, .box__title h3, .box__title h4, .box__title h5, .box__title h6 {
   margin-top: 0;
 }
-/* line 87, ../sass/components/_layout.scss */
+/* line 100, ../sass/components/_layout.scss */
 .box__title h2 {
   font-size: 40px;
   font-weight: 600;
   margin-bottom: 60px;
 }
 
-/* line 95, ../sass/components/_layout.scss */
+/* line 108, ../sass/components/_layout.scss */
 .box__content + .box__title {
   margin-top: 28px;
   border-top: 1px solid #dde0e1;
   padding-top: 20px;
 }
 
-/* line 102, ../sass/components/_layout.scss */
+/* line 115, ../sass/components/_layout.scss */
 .box__footer, .box__jip {
   margin-top: 30px;
 }
-/* line 105, ../sass/components/_layout.scss */
+/* line 118, ../sass/components/_layout.scss */
 .box__footer a, .box__jip a {
   -webkit-transition: color 0.15s;
   -o-transition: color 0.15s;
@@ -6475,24 +6858,24 @@ body.state-landing .box__title {
 .box__footer a:hover, .box__jip a:hover {
   color: #8d979c;
 }
-/* line 110, ../sass/components/_layout.scss */
+/* line 123, ../sass/components/_layout.scss */
 .box__footer .fa, .box__jip .fa {
   font-size: 36px;
   vertical-align: middle;
   margin-right: 10px;
 }
 
-/* line 117, ../sass/components/_layout.scss */
+/* line 130, ../sass/components/_layout.scss */
 .box__jip {
   float: right;
   margin-top: 0;
 }
 
-/* line 124, ../sass/components/_layout.scss */
+/* line 137, ../sass/components/_layout.scss */
 .box--carousel {
   max-height: 1000px;
 }
-/* line 127, ../sass/components/_layout.scss */
+/* line 140, ../sass/components/_layout.scss */
 .box--carousel .box__content {
   margin-left: -15px;
   margin-right: -15px;
@@ -6506,15 +6889,15 @@ body.state-landing .box__title {
 .box--carousel .box__content:after {
   clear: both;
 }
-/* line 131, ../sass/components/_layout.scss */
+/* line 144, ../sass/components/_layout.scss */
 .box--carousel .entry {
   padding: 0 15px;
 }
-/* line 135, ../sass/components/_layout.scss */
+/* line 148, ../sass/components/_layout.scss */
 .box--carousel .entry__info {
   color: #8d979c;
 }
-/* line 140, ../sass/components/_layout.scss */
+/* line 153, ../sass/components/_layout.scss */
 .box--carousel .entry__title a {
   -webkit-transition: color 0.15s;
   -o-transition: color 0.15s;
@@ -6525,18 +6908,18 @@ body.state-landing .box__title {
 .box--carousel .entry__title a:hover {
   color: #8d979c;
 }
-/* line 145, ../sass/components/_layout.scss */
+/* line 158, ../sass/components/_layout.scss */
 .box--carousel .entry__title,
 .box--carousel .entry__image {
   margin-bottom: 28px;
 }
-/* line 150, ../sass/components/_layout.scss */
+/* line 163, ../sass/components/_layout.scss */
 .box--carousel .owl-nav {
   position: absolute;
   width: 100%;
   top: 40%;
 }
-/* line 155, ../sass/components/_layout.scss */
+/* line 168, ../sass/components/_layout.scss */
 .box--carousel .owl-nav > div {
   -webkit-transition: opacity 0.22s;
   -o-transition: opacity 0.22s;
@@ -6544,17 +6927,17 @@ body.state-landing .box__title {
   font-size: 36px;
   color: #2b6786;
 }
-/* line 161, ../sass/components/_layout.scss */
+/* line 174, ../sass/components/_layout.scss */
 .box--carousel .owl-nav .disabled {
   opacity: .2;
 }
-/* line 166, ../sass/components/_layout.scss */
+/* line 179, ../sass/components/_layout.scss */
 .box--carousel .owl-prev {
   position: absolute;
   top: 0;
   left: -32px;
 }
-/* line 172, ../sass/components/_layout.scss */
+/* line 185, ../sass/components/_layout.scss */
 .box--carousel .owl-next {
   position: absolute;
   top: 0;
@@ -6562,53 +6945,59 @@ body.state-landing .box__title {
 }
 
 /*** ENTRY **/
-/* line 180, ../sass/components/_layout.scss */
+/* line 193, ../sass/components/_layout.scss */
 .entry {
   margin-bottom: 28px;
 }
-/* line 183, ../sass/components/_layout.scss */
+/* line 196, ../sass/components/_layout.scss */
 .entry:last-child {
   margin-bottom: 0;
 }
 
-/* line 188, ../sass/components/_layout.scss */
+/* line 201, ../sass/components/_layout.scss */
 .entry__status {
   float: left;
   width: 50px;
 }
 
-/* line 193, ../sass/components/_layout.scss */
+/* line 206, ../sass/components/_layout.scss */
 .entry__title {
   margin-bottom: 28px;
   color: #000;
 }
-/* line 197, ../sass/components/_layout.scss */
+/* line 210, ../sass/components/_layout.scss */
 .entry__title h2, .entry__title h3, .entry__title h4, .entry__title h5, .entry__title h6 {
   margin-top: 0;
 }
-/* line 201, ../sass/components/_layout.scss */
+/* line 214, ../sass/components/_layout.scss */
 .entry__title h3 {
   font-size: 30px;
   font-weight: 600;
 }
 
-/* line 207, ../sass/components/_layout.scss */
+/* line 220, ../sass/components/_layout.scss */
 .entry__info {
   font-size: 18px;
+  color: #505d62;
+}
+/* line 224, ../sass/components/_layout.scss */
+.entry__info .fa {
+  margin: 0 5px;
+  color: #2b6786;
 }
 
-/* line 212, ../sass/components/_layout.scss */
+/* line 231, ../sass/components/_layout.scss */
 .entry__image img {
   display: block;
   max-width: 100%;
   height: auto;
 }
 
-/* line 217, ../sass/components/_layout.scss */
+/* line 236, ../sass/components/_layout.scss */
 .entry--hoverable {
   position: relative;
 }
-/* line 220, ../sass/components/_layout.scss */
+/* line 239, ../sass/components/_layout.scss */
 .entry--hoverable .entry__content {
   display: none;
   position: absolute;
@@ -6617,7 +7006,7 @@ body.state-landing .box__title {
   margin-top: -62px;
   width: 100%;
 }
-/* line 228, ../sass/components/_layout.scss */
+/* line 247, ../sass/components/_layout.scss */
 .entry--hoverable .entry__content:after {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -6636,46 +7025,46 @@ body.state-landing .box__title {
 }
 
 /*** EVENT **/
-/* line 250, ../sass/components/_layout.scss */
+/* line 269, ../sass/components/_layout.scss */
 .event__label {
   color: #669933;
   margin-bottom: 28px;
 }
-/* line 254, ../sass/components/_layout.scss */
+/* line 273, ../sass/components/_layout.scss */
 .event__label h4 {
   font-size: 22px;
   margin: 0;
 }
-/* line 259, ../sass/components/_layout.scss */
+/* line 278, ../sass/components/_layout.scss */
 .event__label .fa {
   margin-right: 10px;
 }
 
-/* line 264, ../sass/components/_layout.scss */
+/* line 283, ../sass/components/_layout.scss */
 .event__info {
   font-size: 18px;
   font-weight: 600;
   color: #2b6786;
 }
-/* line 269, ../sass/components/_layout.scss */
+/* line 288, ../sass/components/_layout.scss */
 .event__info .separator {
   margin: 0 10px;
 }
-/* line 273, ../sass/components/_layout.scss */
+/* line 292, ../sass/components/_layout.scss */
 .event__info .event__time {
   color: #990000;
 }
 
-/* line 278, ../sass/components/_layout.scss */
+/* line 297, ../sass/components/_layout.scss */
 .event__title {
   margin-bottom: 28px;
 }
-/* line 281, ../sass/components/_layout.scss */
+/* line 300, ../sass/components/_layout.scss */
 .event__title h5 {
   font-size: 20px;
   margin: 0;
 }
-/* line 286, ../sass/components/_layout.scss */
+/* line 305, ../sass/components/_layout.scss */
 .event__title a {
   -webkit-transition: color 0.15s;
   -o-transition: color 0.15s;
@@ -6687,18 +7076,24 @@ body.state-landing .box__title {
   color: #8d979c;
 }
 
-/* line 291, ../sass/components/_layout.scss */
+/* line 310, ../sass/components/_layout.scss */
 .event__details {
   margin-bottom: 28px;
 }
 
-/* line 296, ../sass/components/_layout.scss */
+/* line 315, ../sass/components/_layout.scss */
 .event__content h4 {
   color: #1b3e59;
   font-size: 24px;
   font-weight: 600;
   padding-bottom: 10px;
   border-bottom: 1px solid #dde0e1;
+}
+
+/* line 3, ../sass/components/_form.scss */
+form.form-inline label,
+form.form-inline .form-group {
+  margin-right: 5px;
 }
 
 /* line 1, ../sass/components/_hero.scss */
@@ -6961,45 +7356,46 @@ body.state-landing .box__title {
   padding: 20px 30px 0;
   border-bottom: 1px solid #dde0e1;
   margin-bottom: 0;
+  overflow: hidden;
 }
-/* line 13, ../sass/components/_events.scss */
+/* line 14, ../sass/components/_events.scss */
 .box--events .entry__title h3 {
   font-size: 24px;
 }
-/* line 18, ../sass/components/_events.scss */
+/* line 19, ../sass/components/_events.scss */
 .box--events .entry__date {
   float: left;
   width: 80px;
-  padding: 20px 30px 20px 0;
-  margin: -20px 30px 0 0;
+  padding: 20px 30px 200px 0;
+  margin: -20px 30px -175px 0;
   text-align: center;
   border-right: 1px solid #dde0e1;
   line-height: 1.2;
 }
-/* line 27, ../sass/components/_events.scss */
+/* line 28, ../sass/components/_events.scss */
 .box--events .entry__date span {
   display: block;
 }
-/* line 31, ../sass/components/_events.scss */
+/* line 32, ../sass/components/_events.scss */
 .box--events .entry__date .day {
   font-size: 40px;
   font-weight: 600;
   color: #2b6786;
 }
-/* line 36, ../sass/components/_events.scss */
+/* line 37, ../sass/components/_events.scss */
 .box--events .entry__date .month {
   font-size: 18px;
   font-weight: 600;
   color: #2b6786;
   text-transform: uppercase;
 }
-/* line 42, ../sass/components/_events.scss */
+/* line 43, ../sass/components/_events.scss */
 .box--events .entry__date .year {
   font-size: 18px;
   font-weight: 600;
   color: #8d979c;
 }
-/* line 49, ../sass/components/_events.scss */
+/* line 50, ../sass/components/_events.scss */
 .box--events .entry__content,
 .box--events .entry__image {
   position: relative;
@@ -7009,28 +7405,29 @@ body.state-landing .box__title {
   padding-left: 15px;
   padding-right: 15px;
 }
-/* line 54, ../sass/components/_events.scss */
+/* line 55, ../sass/components/_events.scss */
 .box--events .entry__info {
   color: #2b6786;
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
+  margin-bottom: 10px;
 }
-/* line 60, ../sass/components/_events.scss */
+/* line 62, ../sass/components/_events.scss */
 .box--events .entry__info .fa {
   color: #8d979c;
   margin-right: 5px;
 }
-/* line 65, ../sass/components/_events.scss */
+/* line 67, ../sass/components/_events.scss */
 .box--events .entry__info .separator {
   margin: 0 10px;
 }
-/* line 70, ../sass/components/_events.scss */
+/* line 72, ../sass/components/_events.scss */
 .box--events .entry__content {
   line-height: 1.2;
   padding: 20px;
 }
-/* line 74, ../sass/components/_events.scss */
+/* line 76, ../sass/components/_events.scss */
 .box--events .entry__content .btn, .box--events .entry__content .btn-facebook {
   margin: 15px 10px 0 0;
 }
@@ -7160,6 +7557,36 @@ body.state-landing .box__title {
 }
 
 /* line 1, ../sass/components/_admin.scss */
+.panel--admin {
+  padding: 0;
+  background: #222;
+}
+/* line 5, ../sass/components/_admin.scss */
+.panel--admin .panel__content {
+  display: table;
+}
+/* line 9, ../sass/components/_admin.scss */
+.panel--admin a {
+  -webkit-transition: color 0.15s;
+  -o-transition: color 0.15s;
+  transition: color 0.15s;
+  color: #fff;
+  display: table-cell;
+  width: 1%;
+  white-space: nowrap;
+  padding: 5px 10px;
+}
+/* line 20, ../sass/helpers/_mixins.scss */
+.panel--admin a:hover {
+  color: #8d979c;
+}
+/* line 17, ../sass/components/_admin.scss */
+.panel--admin .fa {
+  color: #505d62;
+  margin-right: 5px;
+}
+
+/* line 23, ../sass/components/_admin.scss */
 nav[role=navigation] {
   background-color: #2b6786;
   transform: translate3d(-270px, 0, 0);
@@ -7171,51 +7598,51 @@ nav[role=navigation] {
   height: 100%;
   overflow: hidden;
 }
-/* line 12, ../sass/components/_admin.scss */
+/* line 34, ../sass/components/_admin.scss */
 body.state-open nav[role=navigation] {
   transform: translate3d(0, 0, 0);
 }
-/* line 16, ../sass/components/_admin.scss */
+/* line 38, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation__wrapper {
   width: 270px;
   overflow: hidden;
   float: left;
   position: relative;
 }
-/* line 23, ../sass/components/_admin.scss */
+/* line 45, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation {
   position: relative;
   z-index: 5;
   width: 400%;
 }
-/* line 28, ../sass/components/_admin.scss */
+/* line 50, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation > li {
   padding: 30px 15px;
   float: left;
   width: 25%;
 }
-/* line 33, ../sass/components/_admin.scss */
+/* line 55, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation > li a {
   display: block;
   color: #fff;
   font-size: 16px;
   padding: 0 15px;
 }
-/* line 39, ../sass/components/_admin.scss */
+/* line 61, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation > li a:hover {
   background-color: #255873;
 }
-/* line 45, ../sass/components/_admin.scss */
+/* line 67, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation ul ul a {
   padding-left: 30px;
 }
-/* line 49, ../sass/components/_admin.scss */
+/* line 71, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation .headline {
   display: block;
   margin-bottom: 28px;
   border-bottom: 1px solid #f7f7f7;
 }
-/* line 56, ../sass/components/_admin.scss */
+/* line 78, ../sass/components/_admin.scss */
 nav[role=navigation] .categories {
   background-color: #222;
   position: relative;
@@ -7224,7 +7651,7 @@ nav[role=navigation] .categories {
   width: 80px;
   height: 100%;
 }
-/* line 64, ../sass/components/_admin.scss */
+/* line 86, ../sass/components/_admin.scss */
 nav[role=navigation] .categories a {
   -webkit-transition: all 0.2s;
   -o-transition: all 0.2s;
@@ -7238,43 +7665,43 @@ nav[role=navigation] .categories a {
   color: #fff;
   border-bottom: 1px solid #505d62;
 }
-/* line 78, ../sass/components/_admin.scss */
+/* line 100, ../sass/components/_admin.scss */
 nav[role=navigation] .categories__item:hover {
   background-color: #2b6786;
 }
-/* line 81, ../sass/components/_admin.scss */
+/* line 103, ../sass/components/_admin.scss */
 nav[role=navigation] .categories__item.active {
   background-color: #2b6786;
 }
-/* line 86, ../sass/components/_admin.scss */
+/* line 108, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home {
   background-color: #669933;
 }
-/* line 88, ../sass/components/_admin.scss */
+/* line 110, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home:hover {
   background-color: #669933;
 }
-/* line 91, ../sass/components/_admin.scss */
+/* line 113, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 98, ../sass/components/_admin.scss */
+/* line 120, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--groups:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 105, ../sass/components/_admin.scss */
+/* line 127, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--users:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 112, ../sass/components/_admin.scss */
+/* line 134, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--config:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 122, ../sass/components/_admin.scss */
+/* line 144, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-bar-chart:before,
 nav[role=navigation] .icon-plus:before,
 nav[role=navigation] .icon-list:before,
@@ -7283,19 +7710,19 @@ nav[role=navigation] .icon-mail:before {
   font-family: FontAwesome;
   margin-right: 5px;
 }
-/* line 129, ../sass/components/_admin.scss */
+/* line 151, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-bar-chart:before {
   content: "";
 }
-/* line 133, ../sass/components/_admin.scss */
+/* line 155, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-plus:before {
   content: "";
 }
-/* line 137, ../sass/components/_admin.scss */
+/* line 159, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-list:before {
   content: "";
 }
-/* line 141, ../sass/components/_admin.scss */
+/* line 163, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-mail:before {
   content: "";
 }

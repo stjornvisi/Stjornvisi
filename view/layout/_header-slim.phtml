@@ -5,7 +5,7 @@
 				<h1>Stjórnvísi</h1>
 				<img src="<?=$this->basePath("/themes/2016/stylesheets/images/logo-white.png")?>" alt="Stjórnvísi">
 			</a>
-			<?if($this->identity):?>
+			<?if(!$this->identity):?>
 			<div class="box">
 				<div class="box__content">
 					<a href="/adgangur/stofna" class="btn btn-primary">Stofna aðgang</a>

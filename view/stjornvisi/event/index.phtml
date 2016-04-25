@@ -1,5 +1,6 @@
 <?php
 use Stjornvisi\Properties\FileProperties;
+use \Stjornvisi\View\Helper\Date;
 
 $this->headTitle($this->event->subject);
 $this->headTitle('Viðburður');
@@ -24,286 +25,307 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
     : 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/stylesheets/images/simple-logo.jpg"));
 ?>
 
-<div class="layout layout--three-columns page-event">
-    <section class="layout__section">
-        <div class="layout__data">
-            <article class="block-element">
-                <header class="block-element__header">
-                    <time class="block-element__time" datetime="<?=$this->event->event_date->format('c')?>">
-                        <?=$this->date($this->event->event_date);?> &middot;
-                        <?=($this->event->event_time)? $this->event->event_time->format('H:i'):'';?> -
-                        <?=($this->event->event_end)?$this->event->event_end->format('H:i'):'';?>
-                    </time>
-                    <h1><?=$this->event->subject?></h1>
-                    <h3 class="block-element__location"><?=$this->event->location?></h3>
-                    <h3 class="block-element__location"><?=$this->event->address?></h3>
-                    <ul class="block-element__tags">
-                        <?php if (count($this->event->groups) == 0):?>
-                            <li>Stjórvísisviðburður</li>
-                        <?php else:?>
-                            <?php foreach ($this->event->groups as $group) :?>
-                                <li>
-                                    <?php if($group->id == null):?>
-                                        <span>Almennur viðburður</span>
-                                    <?php else:?>
-                                        <a href="<?=$this->url('hopur/index', ['id'=>$group->url])?>"><?=$group->name_short;?></a>
-                                    <?php endif;?>
-                                </li>
-                            <?php endforeach;?>
-                        <?php endif;?>
-                    </ul>
-                </header>
-                <section class="block-element__body">
-                    <?=$this->paragrapher($this->event->body);?>
-                </section>
-                <aside class="block-element__aside">
-                    <h3 class="block-element__location"><?=$this->event->location?></h3>
-                    <h3 class="block-element__location"><?=$this->event->address?></h3>
-                </aside>
-                <footer class="block-element__footer">
-                    <div id="fb-root"></div>
-                    <script>(function(d, s, id) {
-                            var js, fjs = d.getElementsByTagName(s)[0];
-                            if (d.getElementById(id)) return;
-                            js = d.createElement(s); js.id = id;
-                            js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1645847542309046&version=v2.0";
-                            fjs.parentNode.insertBefore(js, fjs);
-                        }(document, 'script', 'facebook-jssdk'));</script>
-                    <div class="fb-like" data-href="http://<?=$this->url('vidburdir/index', ['id'=>$this->event->id], ['force_canonical' => true])?>" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
-                </footer>
-            </article>
-
-
-            <?php if( $this->event->event_date < new DateTime()) : ?> <!-- ended -->
-                <div class="page-event-element__attenders page-event-element__attenders--stop">
-                    <h3>Viðburður liðinn.</h3>
-                </div>
-            <?php elseif( $this->event->capacity !== null && $this->event->capacity <= count($this->event->attenders) ):?>
-                <div class="page-event-element__attenders page-event-element__attenders--warn">
-                    <p>Lokað hefur verið fyrir skráningu.</p>
-                    <h3>Viðburður er fullur.</h3>
-                    <?php if($this->identity()) : ?>
-                        <?php if($this->event->attending == 1):?>
-                            <span class="attending yes" title="Skrá mætingu">mæti</span>
-                            <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-            <?php else:?>
-                <div class="page-event-element__attenders page-event-element__attenders--default">
-                    <?php if($this->identity()): ?>
-                        <?php if($this->event->attending === false):?>
-                            <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-                            <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>"  class="attending no" title="Afskrá mætingu">mæti ekki</a>
-                        <?php elseif($this->event->attending == 0):?>
-                            <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="attending yes" title="Skrá mætingu">mæti</a>
-                            <span  class="attending no" title="Afskrá mætingu">mæti ekki</span>
-                        <?php elseif($this->event->attending == 1):?>
-                            <span class="attending yes" title="Skrá mætingu">mæti</span>
-                            <a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="attending no" title="Afskrá mætingu">mæti ekki</a>
-                        <?php endif;?>
-                    <?php else:?>
-                        <form method="post" action="/vidburdir/<?=$this->event->id?>" class="form-inline page-event__register">
-                            <?php if($this->register_message):?>
-                                <p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
-                            <?php else:?>
-                                <p>Þú virðist ekki vera skráð/ur inn.
-                                    Þú getur samt skráð þig á viðburðinn sem gestur með því að
-                                    fylla út nafn og netfang hér fyrir neðan.</p>
-                            <?php endif;?>
-                            <div class="form-group">
-                                <label for="name">Nafn</label>
-                                <input id="name" type="text" placeholder="Nafn" name="name" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Netfang</label>
-                                <input id="email" type="email" placeholder="Netfang" name="email" class="form-control" />
-                            </div>
-                            <input type="submit" class="btn btn-default" value="Skrá" />
-                        </form>
-                    <?php endif;?>
-                </div>
-            <?php endif;?>
-
-
-        </div>
-
-        <div class="layout__meta">
-
-            <?php if( $this->event->avatar):?>
-                <?=$this->image($this->event->avatar, FileProperties::DIR_LARGE, ['block-element__image']);?>
-            <?php endif;?>
-
-            <?php if( count($this->event->gallery)>0 ):?>
-                <div>
-                    <ul class="block-gallery">
-                        <?php foreach($this->event->gallery as $img):?>
-                            <li class="block-gallery__item">
-                                <a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_ORIGINAL, '2x@'.$img->name]))?>" data-fluidbox="">
-                                    <?=$this->image($img->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
-                                </a>
-                            </li>
-                        <?php endforeach;?>
-                    </ul>
-                </div>
-            <?php endif;?>
-
-            <?php if($this->event->lat && $this->event->lng):?>
-                <google-map zoom="11" class="map_canvas"
-                            fittomarkers
-                            latitude="<?=$this->event->lat?>"
-                            longitude="<?=$this->event->lng?>">
-                    <google-map-marker latitude="<?=$this->event->lat?>" longitude="<?=$this->event->lng?>" title="<?=$this->event->location?>"></google-map-marker>
-                </google-map>
-            <?php endif;?>
-
-            <?php if(count($this->event->reference)>0):?>
-                <div>
-                    <h2 class="layout__headline">Ítarefni</h2>
-                    <ul class="block-supplement">
-                        <?php foreach($this->event->reference as $ref):?>
-                            <li><a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_RAW, $ref->name]))?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
-                        <?php endforeach;?>
-                    </ul>
-                </div>
-            <?php endif;?>
-
-        </div>
-    </section>
-    <aside class="layout__aside">
-        <?php if($this->access->is_admin || $this->access->type >= 1):?>
-            <stjonvisi-control>
-                <a href="<?=$this->url('vidburdir/update',array('id'=>$this->event->id));?>" class="update"><i class="icon-check"></i> uppfæra</a>
-                <a href="<?=$this->url('vidburdir/delete',array('id'=>$this->event->id));?>" class="delete"><i class="icon-close"></i> eyða</a>
-                <a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id,'type'=>'allir'));?>"><i class="icon-envelope"></i> meðlimi</a>
-                <a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id, 'type'=>'gestir'));?>"><i class="icon-envelope"></i> þátttakendur</a>
-                <a href="<?=$this->url('vidburdir/export-attendees',array('id'=>$this->event->id));?>"><i class="icon-list"></i> þátttakendalista</a>
-                <a href="<?=$this->url('vidburdir/gallery-list',array('id'=>$this->event->id));?>"><i class="icon-file-image-o"></i> myndefni</a>
-                <a href="<?=$this->url('vidburdir/resource-list',array('id'=>$this->event->id));?>"><i class="icon-file-o"></i> Ítarefni</a>
-            </stjonvisi-control>
-        <?php endif;?>
-        <h2 class="layout__headline">Tengdir viðburdir</h2>
-        <ul class="block-list">
-            <?php foreach($this->related as $event):?>
-                <li class="block-item">
-                    <time class="block-item__time" datetime="<?=$event->event_date->format('c')?>">
-                        <?=$this->date($event->event_date)?>
-                    </time>
-                    <h2>
-                        <a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a>
-                    </h2>
-                    <ul class="block-item__tags">
-                        <?php foreach($event->groups as $group):?>
-                            <li><a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a></li>
-                        <?php endforeach;?>
-                    </ul>
-                </li>
-            <?php endforeach;?>
-        </ul>
-
-
-
-    </aside>
-</div>
 <?php if($this->access->is_admin || $this->access->type >= 1):?>
-<footer class="layout layout__footer layout--three-columns">
+	<div class="panel panel--admin">
+		<div class="panel__container">
+			<div class="panel__content">
+				<a href="<?=$this->url('vidburdir/update',array('id'=>$this->event->id));?>" class="update"><i class="fa fa-check"></i> uppfæra</a>
+				<a href="<?=$this->url('vidburdir/delete',array('id'=>$this->event->id));?>" class="delete"><i class="fa fa-close"></i> eyða</a>
+				<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id,'type'=>'allir'));?>"><i class="fa fa-envelope"></i> meðlimi</a>
+				<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id, 'type'=>'gestir'));?>"><i class="fa fa-envelope"></i> þátttakendur</a>
+				<a href="<?=$this->url('vidburdir/export-attendees',array('id'=>$this->event->id));?>"><i class="fa fa-list"></i> þátttakendalista</a>
+				<a href="<?=$this->url('vidburdir/gallery-list',array('id'=>$this->event->id));?>"><i class="fa fa-file-image-o"></i> myndefni</a>
+				<a href="<?=$this->url('vidburdir/resource-list',array('id'=>$this->event->id));?>"><i class="fa fa-file-o"></i> Ítarefni</a>
+			</div>
+		</div>
+	</div>
+<?php endif;?>
 
-    <section class="layout__section">
+<div class="panel panel--columns-two panel--ratio-golden">
+    <div class="panel__container">
+		<div class="panel__content">
 
-            <h2 class="layout__headline">Þátttakendur (<?=count($this->event->attenders)?>)</h2>
-            <table class="block-table block-table--compact">
-                <thead>
-                <tr>
-                    <td>Nafn</td>
-                    <td>Titill</td>
-                    <td>Fyrirtæki</td>
-                    <td class="block-table__numeric">Skráning</td>
-                    <td>&nbsp;</td>
-                </tr>
-                </thead>
-                <tfoot>
-                <tr>
-                    <td colspan="4">&nbsp;</td>
-                </tr>
-                </tfoot>
-                <tbody>
-                <?php foreach($this->event->attenders as $attendee):?>
-                    <tr>
-                        <td>
-                            <?php if($attendee->user_id):?>
-                                <a href="<?=$this->url('notandi/index',array('id'=>$attendee->user_id))?>"><?=$attendee->name?></a>
-                            <?php else:?>
-                                <?=$attendee->name;?>
-                            <?php endif;?>
-                        </td>
-                        <td>
-                            <?php if($attendee->title):?>
-                                <?=$attendee->title?>
-                            <?php else:?>
-                                &nbsp;
-                            <?php endif;?>
-                        </td>
-                        <td>
-                            <?php if($attendee->company_name):?>
-                                <a href="<?=$this->url('fyrirtaeki/index',array('id'=>$attendee->company_id))?>">
-                                    <?=$attendee->company_name;?>
-                                </a>
-                            <?php else:?>
-                                &nbsp;
-                            <?php endif;?>
-                        </td>
-                        <td class="block-table__numeric">
-                            <time datetime="<?=$attendee->register_time->format('c')?>">
-                                <?=$this->date($attendee->register_time,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
-                            </time>
-                        </td>
-                        <td>
-                            <?php if($this->access->is_admin):?>
-                            &nbsp;<a href="<?=$this->url('vidburdir/unregister',array('id'=>$this->event->id,'type'=>0,'user'=>$attendee->user_id))?>" class="delete"><i class="icon-close"></i> <abbr title="Eyða skráningu">eyða</abbr></a>
-                            <?php endif?>
-                        </td>
-                    </tr>
-                <?php endforeach;?>
-                </tbody>
-            </table>
+			<div class="box">
+				<div class="box__title"><h2><?=$this->event->subject?></h2></div>
+				<div class="box__content">
+					<div class="entry">
+						<div class="entry__title">
+							<div class="entry__info">
+								<i class="fa fa-calendar-o"></i>
+								<?=$this->date($this->event->event_date);?>
+								<i class="fa fa-clock-o"></i>
+								<?=($this->event->event_time)? $this->event->event_time->format('H:i'):'';?> -
+								<?=($this->event->event_end)?$this->event->event_end->format('H:i'):'';?><br>
+								<i class="fa fa-map-marker"></i> <?=$this->event->location?> <?=$this->event->address?><br>
+								<i class="fa fa-group"></i>
+								<?php if (count($this->event->groups) == 0):?>
+									Stjórvísisviðburður
+								<?php else:?>
+									<?php foreach ($this->event->groups as $group) :?>
+										<?php if($group->id == null):?>
+											<span>Almennur viðburður</span>
+										<?php else:?>
+											<a href="<?=$this->url('hopur/index', ['id'=>$group->url])?>"><?=$group->name_short;?></a>
+										<?php endif;?>
+									<?php endforeach;?>
+								<?php endif;?>
+							</div>
+						</div>
+						<div class="entry__content">
+							<?=$this->paragrapher($this->event->body);?>
 
-            <h2 class="layout__headline">Dreifing skráninga á daga</h2>
+							<?php if( $this->event->event_date < new DateTime()) : ?> <!-- ended -->
+								<div class="label label-default">Viðburður liðinn</div>
+							<?php elseif( $this->event->capacity !== null && $this->event->capacity <= count($this->event->attenders) ):?>
+									<div class="label label-default">Viðburður er fullur</div>
+									<?php if($this->identity()) : ?>
+										<?php if($this->event->attending == 1):?>
+											<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="btn btn-default">Afskrá mætingu</a>
+										<?php endif; ?>
+									<?php endif; ?>
+							<?php else:?>
+								<?php if($this->identity()): ?>
+									<?php if($this->event->attending === false):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>"  class="btn btn-default">Afskrá mætingu</a>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="btn btn-primary">Skrá mætingu</a>
+									<?php elseif($this->event->attending == 0):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>1))?>" class="btn btn-primary">Skrá mætingu</a>
+									<?php elseif($this->event->attending == 1):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$this->event->id,'type'=>0))?>" class="btn btn-default">Afskrá mætingu</a>
+									<?php endif;?>
+								<?php else:?>
+									<form method="post" action="/vidburdir/<?=$this->event->id?>" class="form-inline page-event__register">
+										<?php if($this->register_message):?>
+											<p>Skráning tókst, þú ættir að fá póst á næstu mínútum með staðfestingu</p>
+										<?php else:?>
+											<p>Þú virðist ekki vera skráð/ur inn.
+												Þú getur samt skráð þig á viðburðinn sem gestur með því að
+												fylla út nafn og netfang hér fyrir neðan.</p>
+										<?php endif;?>
+										<div class="form-group">
+											<label for="name">Nafn</label>
+											<input id="name" type="text" placeholder="Nafn" name="name" class="form-control" />
+										</div>
+										<div class="form-group">
+											<label for="email">Netfang</label>
+											<input id="email" type="email" placeholder="Netfang" name="email" class="form-control" />
+										</div>
+										<input type="submit" class="btn btn-default" value="Skrá" />
+									</form>
+								<?php endif;?>
+							<?php endif;?>
+						</div>
+					</div>
+					<div class="box__footer">
+						<div id="fb-root"></div>
+						<script>(function(d, s, id) {
+								var js, fjs = d.getElementsByTagName(s)[0];
+								if (d.getElementById(id)) return;
+								js = d.createElement(s); js.id = id;
+								js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1645847542309046&version=v2.0";
+								fjs.parentNode.insertBefore(js, fjs);
+							}(document, 'script', 'facebook-jssdk'));</script>
+						<div class="fb-like" data-href="http://<?=$this->url('vidburdir/index', ['id'=>$this->event->id], ['force_canonical' => true])?>" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="box">
+				<div class="box__content">
+					<?php if( $this->event->avatar):?>
+						<div class="entry__image">
+							<?=$this->image($this->event->avatar, FileProperties::DIR_LARGE, ['block-element__image']);?>
+						</div>
+					<?php endif;?>
+
+					<?php if( count($this->event->gallery)>0 ):?>
+						<div>
+							<ul class="block-gallery">
+								<?php foreach($this->event->gallery as $img):?>
+									<li class="block-gallery__item">
+										<a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_ORIGINAL, '2x@'.$img->name]))?>" data-fluidbox="">
+											<?=$this->image($img->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
+										</a>
+									</li>
+								<?php endforeach;?>
+							</ul>
+						</div>
+					<?php endif;?>
+
+					<?php if($this->event->lat && $this->event->lng):?>
+						<google-map zoom="11" class="map_canvas"
+									fittomarkers
+									latitude="<?=$this->event->lat?>"
+									longitude="<?=$this->event->lng?>">
+							<google-map-marker latitude="<?=$this->event->lat?>" longitude="<?=$this->event->lng?>" title="<?=$this->event->location?>"></google-map-marker>
+						</google-map>
+					<?php endif;?>
+
+					<?php if(count($this->event->reference)>0):?>
+						<h3>Ítarefni</h3>
+						<ul>
+							<?php foreach($this->event->reference as $ref):?>
+								<li><a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_RAW, $ref->name]))?>" title="<?=$ref->description?>" target="_blank"><?=$ref->name?></a></li>
+							<?php endforeach;?>
+						</ul>
+					<?php endif;?>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
 
 
-        <?php $this->headScript()->appendFile( $this->basePath("vendor/Chart.js/Chart.min.js") );?>
-        <canvas id="myChart" width="700" height="400"></canvas>
-            <script>
 
 
-                var data2 = {
-                    labels:[<?=implode(",",array_map(function($i){
-                        return "\"".$i->date."\"";
-                    },$this->aggregate))?>],
-                    datasets: [
-                        {
-                            label: "Dreyfing skráninga á daga",
-                            fillColor: "rgb(74, 133, 161)",
-                            strokeColor: "rgba(220,220,220,0)",
-                            highlightFill: "rgba(220,220,220,0.75)",
-                            highlightStroke: "rgba(220,220,220,1)",
-                            data: [<?=implode(",",array_map(function($i){
-                                return $i->count;
-                            },$this->aggregate))?>]
-                        }
+<div class="panel">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box box--events">
+				<div class="box__title"><h2>Tengdir viðburdir</h2></div>
+				<div class="box__content">
+					<?php foreach($this->related as $event):?>
+						<div class="entry">
+							<div class="entry__title">
+								<div class="entry__date">
+									<span class="day"><?=$this->date($event->event_date, Date::FORMAT_DAY)?></span>
+									<span class="month"><?=$this->date($event->event_date, Date::FORMAT_MONTH)?></span>
+									<span class="year"><?=$this->date($event->event_date, Date::FORMAT_YEAR)?></span>
+								</div>
+								<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
+								<div class="entry__info">
+									<i class="fa fa-clock-o"></i>
+									<? if($event->event_time) : ?>
+										<?=$event->event_time->format("H:i")?>
+										<? if($event->event_end) : ?>
+											- <?=$event->event_end->format("H:i")?>
+										<? endif; ?>
+									<? endif; ?>
+									<? if($event->location) : ?>
+										<span class="separator">/</span>
+										<i class="fa fa-map-marker"></i> <?=$event->location?>
+									<? endif; ?>
+									<?if (count($event->groups)):?>
+										<br><i class="fa fa-group"></i>
+									<?php foreach($event->groups as $group):?>
+										<a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>"><?=$group->name_short;?></a>
+									<?php endforeach;?>
+									<?endif?>
+								</div>
+							</div>
+						</div>
+					<?php endforeach;?>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
 
-                    ]
-                };
-                var ctx = document.getElementById("myChart").getContext("2d");
-                var myBarChart = new Chart(ctx).Bar(data2);
 
-            </script>
+<?php if($this->access->is_admin || $this->access->type >= 1):?>
+<div class="panel">
+    <div class="panel__container">
+		<div class="panel__content">
+			<div class="box">
+				<div class="box__title">
+					<h2 >Þátttakendur (<?=count($this->event->attenders)?>)</h2>
+				</div>
+				<div class="box__content">
+					<table class="table">
+						<thead>
+						<tr>
+							<td>Nafn</td>
+							<td>Titill</td>
+							<td>Fyrirtæki</td>
+							<td class="block-table__numeric">Skráning</td>
+							<td>&nbsp;</td>
+						</tr>
+						</thead>
+						<tfoot>
+						<tr>
+							<td colspan="4">&nbsp;</td>
+						</tr>
+						</tfoot>
+						<tbody>
+						<?php foreach($this->event->attenders as $attendee):?>
+							<tr>
+								<td>
+									<?php if($attendee->user_id):?>
+										<a href="<?=$this->url('notandi/index',array('id'=>$attendee->user_id))?>"><?=$attendee->name?></a>
+									<?php else:?>
+										<?=$attendee->name;?>
+									<?php endif;?>
+								</td>
+								<td>
+									<?php if($attendee->title):?>
+										<?=$attendee->title?>
+									<?php else:?>
+										&nbsp;
+									<?php endif;?>
+								</td>
+								<td>
+									<?php if($attendee->company_name):?>
+										<a href="<?=$this->url('fyrirtaeki/index',array('id'=>$attendee->company_id))?>">
+											<?=$attendee->company_name;?>
+										</a>
+									<?php else:?>
+										&nbsp;
+									<?php endif;?>
+								</td>
+								<td class="block-table__numeric">
+									<time datetime="<?=$attendee->register_time->format('c')?>">
+										<?=$this->date($attendee->register_time,\Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+									</time>
+								</td>
+								<td>
+									<?php if($this->access->is_admin):?>
+										&nbsp;<a href="<?=$this->url('vidburdir/unregister',array('id'=>$this->event->id,'type'=>0,'user'=>$attendee->user_id))?>" class="delete"><i class="icon-close"></i> <abbr title="Eyða skráningu">eyða</abbr></a>
+									<?php endif?>
+								</td>
+							</tr>
+						<?php endforeach;?>
+						</tbody>
+					</table>
+				</div>
+			</div>
 
-    </section>
-    <aside class="layout__aside">
 
-    </aside>
+			<div class="box">
+				<div class="box__title">
+					<h2>Dreifing skráninga á daga</h2>
+				</div>
+				<div class="box__content">
+					<?php $this->headScript()->appendFile( $this->basePath("vendor/Chart.js/Chart.min.js") );?>
+					<canvas id="myChart" width="700" height="400"></canvas>
+					<script>
 
 
+						var data2 = {
+							labels:[<?=implode(",",array_map(function($i){
+								return "\"".$i->date."\"";
+							},$this->aggregate))?>],
+							datasets: [
+								{
+									label: "Dreyfing skráninga á daga",
+									fillColor: "rgb(74, 133, 161)",
+									strokeColor: "rgba(220,220,220,0)",
+									highlightFill: "rgba(220,220,220,0.75)",
+									highlightStroke: "rgba(220,220,220,1)",
+									data: [<?=implode(",",array_map(function($i){
+										return $i->count;
+									},$this->aggregate))?>]
+								}
 
-</footer>
+							]
+						};
+						var ctx = document.getElementById("myChart").getContext("2d");
+						var myBarChart = new Chart(ctx).Bar(data2);
+
+					</script>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>
 <?php endif;?>

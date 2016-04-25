@@ -32,6 +32,19 @@
 			padding-left: $grid-gutter-width;
 		}
 	}
+
+	&.panel--ratio-golden {
+		.box {
+			&:nth-child(odd) {
+				@include make-sm-column(9);
+			}
+			&:nth-child(even) {
+				@include make-sm-column(3);
+			}
+		}
+	}
+
+
 }
 
 .panel--columns-three {
@@ -206,6 +219,12 @@
 
 .entry__info {
 	font-size: 18px;
+	color: $color-text;
+
+	.fa  {
+		margin: 0 5px;
+		color: $color-light-blue;
+	}
 }
 
 .entry__image {

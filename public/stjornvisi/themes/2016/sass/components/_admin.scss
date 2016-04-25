@@ -1,3 +1,25 @@
+.panel--admin {
+	padding: 0;
+	background: $color-darkest-gray;
+
+	.panel__content {
+		display: table;
+	}
+
+	a {
+		@include linkColorLight;
+		display: table-cell;
+		width: 1%;
+		white-space: nowrap;
+		padding: 5px 10px;
+	}
+
+	.fa {
+		color: $color-dark-gray;
+		margin-right: 5px;
+	}
+}
+
 nav[role=navigation] {
 	background-color: $color-light-blue;
 	transform: translate3d(-270px, 0, 0);
