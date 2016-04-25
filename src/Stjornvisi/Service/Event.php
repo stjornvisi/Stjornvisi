@@ -619,22 +619,26 @@ class Event extends AbstractService implements DataSourceAwareInterface
      * is bigger or equal current date.
      *
      * @param  int $id user ID
+     * @param  int $limit limit
      * @return array
      * @throws Exception
      */
-    public function getByUser($id)
+    public function getByUser($id, $limit = 10)
     {
         try {
             //GET EVENTS
             //  get all events
-            $statement = $this->pdo->prepare("
+            $sql = "
                 SELECT E.*, EhU.attending, EhU.register_time FROM `Event` E
                 LEFT JOIN Group_has_Event GhE ON (E.id = GhE.group_id)
                 LEFT JOIN Event_has_User EhU ON ( EhU.user_id=:id AND E.id = EhU.event_id )
                 WHERE (GhE.group_id IN (SELECT group_id FROM Group_has_User GhU WHERE user_id = :id)
                     OR GhE.group_id IS NULL)
                     AND E.event_date >= DATE(NOW())
-                ORDER BY E.event_date ASC;");
+                ORDER BY E.event_date ASC LIMIT {$limit}";
+
+
+            $statement = $this->pdo->prepare($sql);
             $statement->execute(['id'=>$id]);
             $events = $statement->fetchAll();
 

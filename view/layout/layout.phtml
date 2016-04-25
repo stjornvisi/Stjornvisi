@@ -52,6 +52,9 @@
             )
             ->appendFile(
                 $this->basePath('/vendor/better-dateinput-polyfill/dist/better-dateinput-polyfill.js', 'text/javascript')
+            )->appendFile(
+                $this->basePath('/vendor/owl-carousel2/dist/owl.carousel.min.js'),
+                'text/javascript'
             )
         ;?>
 
@@ -59,7 +62,6 @@
 			->appendStylesheet('https://fonts.googleapis.com/css?family=Lato:300,400,600,700')
 			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/screen.css')
 			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9');?>
-        ; ?>
         <link rel="import" href="<?=$this->basePath('/webcomponents/app.html');?>">
 
     </head>
@@ -111,7 +113,26 @@
         <?php $this->headScript()->deleteContainer();?>
         <?=$this->headScript()->appendFile($this->basePath('/javascripts/common.js'), 'text/javascript');?>
         <script type="text/javascript">
-
+            $(function () {
+                $('.owl-carousel').owlCarousel({
+                    loop:false,
+                    margin:10,
+                    nav:true,
+                    touchDrag  : false,
+                    mouseDrag  : false,
+                    responsive:{
+                        0:{
+                            items:1
+                        },
+                        600:{
+                            items:1
+                        },
+                        1000:{
+                            items:2
+                        }
+                    }
+                })
+            });
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-24585167-1']);
             _gaq.push(['_trackPageview']);

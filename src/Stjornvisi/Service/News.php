@@ -116,6 +116,12 @@ class News extends AbstractService implements DataSourceAwareInterface
         }
     }
 
+    /**
+     * @param null $page
+     * @param int $count
+     * @return array|News[]
+     * @throws Exception
+     */
     public function fetchAll($page = null, $count = 10)
     {
         try {
@@ -230,13 +236,13 @@ class News extends AbstractService implements DataSourceAwareInterface
     /**
      * Get news that are connected to groups
      * that the user is connected to.
-     * Limit 10
      *
-     * @param int $id
-     * @return array
+     * @param $id
+     * @param int $limit
+     * @return array|News[]
      * @throws Exception
      */
-    public function getByUser($id)
+    public function getByUser($id, $limit = 10)
     {
         try {
             $statement = $this->pdo->prepare("
@@ -244,8 +250,8 @@ class News extends AbstractService implements DataSourceAwareInterface
                 SELECT group_id FROM Group_has_User GhU WHERE user_id = :id
               )
               OR group_id IS NULL
-              ORDER BY N.created_date DESC LIMIT 0,10;");
-            $statement->execute(array('id'=>$id));
+              ORDER BY N.created_date DESC LIMIT 0, :limit;");
+            $statement->execute(array('id'=>$id, 'limit' => $limit));
             $news = $statement->fetchAll();
 
             $groupStatement = $this->pdo->prepare("SELECT * FROM `Group` WHERE id = :id;");

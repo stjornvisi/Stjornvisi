@@ -500,7 +500,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
      * @return array|Group[]
      * @throws Exception
      */
-    public function fetchDetailsByUser($user_id, $month_interval = 3)
+    public function fetchDetails($user_id = null, $month_interval = 3)
     {
         try {
             // Fetch all groups, mark groups belonging to specified user, count events using specified interval
@@ -530,7 +530,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
                   name_short
             ");
             $statement->execute(array(
-                'user_id' => $user_id,
+                'user_id' => ($user_id) ? $user_id : -1,
                 'month_interval' => $month_interval,
             ));
             $groups = $statement->fetchAll();

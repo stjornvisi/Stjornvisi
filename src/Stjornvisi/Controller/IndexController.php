@@ -49,14 +49,15 @@ class IndexController extends AbstractActionController
         $auth = new AuthenticationService();
         if ($auth->hasIdentity()) {
             return new ViewModel([
-                'groups' => $groupService->getByUser($auth->getIdentity()->id),
-                'groupDetails' => $groupService->fetchDetailsByUser($auth->getIdentity()->id),
-                'news' => $newsService->fetchAll(null, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
-                'events' => $eventService->fetchUpcoming(),
+                'groups' => $groupService->fetchDetails($auth->getIdentity()->id),
+                'news' => $newsService->fetchAll($auth->getIdentity()->id, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
+                'events' => $eventService->getByUser($auth->getIdentity()->id, 3),
                 'eventCount' => $eventService->fetchUpcomingCount(),
                 'eventsPassed' => $eventService->fetchPassed(),
+                /*
                 'gallery' => $eventService->fetchGallery(16),
                 'media' => $eventService->getMediaByUser($auth->getIdentity()->id),
+                */
                 'is_connected' => $companyService->getByUser($auth->getIdentity()->id),
                 'identity' => $auth->getIdentity()
             ]);
@@ -74,13 +75,13 @@ class IndexController extends AbstractActionController
             */
         } else {
             return new ViewModel([
+                'groups' => $groupService->fetchDetails(),
+                'news' => $newsService->fetchAll(null, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
                 'identity' => null,
-                'groups' => $groupService->fetchAll(),
                 'events' => $eventService->fetchUpcoming(),
                 'eventCount' => $eventService->fetchUpcomingCount(),
                 'eventsPassed' => $eventService->fetchPassed(),
-                'news' => $newsService->fetchAll(null, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
-                'gallery' => $eventService->fetchGallery(12, true),
+                // 'gallery' => $eventService->fetchGallery(12, true),
             ]);
         }
     }
