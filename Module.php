@@ -253,7 +253,7 @@ class Module
                     $log->pushHandler(new StreamHandler('php://stdout'));
 
                     $evn = getenv('APPLICATION_ENV') ?: 'production';
-                    if ($evn == 'developmentx') {
+                    if ($evn == 'development') {
                         //...
                     } else {
                         $baseDir = dirname($_SERVER['DOCUMENT_ROOT']);
