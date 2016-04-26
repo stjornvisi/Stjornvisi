@@ -153,3 +153,17 @@ a {
 		font-weight: 600;
 	}
 }
+
+
+.list {
+	padding-left: 40px;
+}
+
+.list__item {
+	display: list-item;
+	list-style-type: disc;
+
+	.list__item {
+		list-style-type: circle;
+	}
+}

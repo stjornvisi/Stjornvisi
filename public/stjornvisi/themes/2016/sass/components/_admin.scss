@@ -20,6 +20,30 @@
 	}
 }
 
+stjornvisi-rich {
+	marked-element {
+		.marked-element {
+			background-color: $color-white;
+			background-image: none;
+			border: 1px solid $color-border;
+		}
+	}
+	nav {
+		display: inline-block;
+
+		a {
+			color: $color-light-blue;
+		}
+
+		a:before {
+			padding-right: 15px;
+			margin-left: 15px;
+			content: "|";
+			color: $color-text-dark;
+		}
+	}
+}
+
 nav[role=navigation] {
 	background-color: $color-light-blue;
 	transform: translate3d(-270px, 0, 0);
