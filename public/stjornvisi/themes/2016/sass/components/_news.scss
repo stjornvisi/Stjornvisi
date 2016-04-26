@@ -9,9 +9,19 @@
 		border-bottom: 1px solid $color-border;
 	}
 
-	.entry__content,
-	.entry__image {
-		@include make-sm-column(6);
+	.entry--has-image {
+		.entry__content,
+		.entry__image {
+			@include make-sm-column(6);
+		}
+
+		.entry__content {
+			padding-left: 0;
+		}
+
+		.entry__image {
+			padding-right: 0;
+		}
 	}
 
 	.entry__info {
@@ -26,11 +36,6 @@
 
 	.entry__content {
 		line-height: $line-height-small;
-		padding-left: 0;
-	}
-
-	.entry__image {
-		padding-right: 0;
 	}
 
 	.entry--simple {

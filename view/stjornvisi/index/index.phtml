@@ -35,7 +35,7 @@ use \Stjornvisi\View\Helper\Date;
 				<div class="box__content">
 					<? /** @var \Stjornvisi\Service\News $news */ foreach ($this->news as $i => $news): ?>
 						<? if($i < \Stjornvisi\Service\News::FRONT_NEWS_COUNT) : ?>
-						<div class="entry">
+						<div class="entry<?if($news->avatar):?> entry--has-image<?endif?>">
 							<div class="entry__info"><?=$this->date($news->created_date,Date::FORMAT_DATE_TIME)?></div>
 							<div class="entry__title"><h3><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h3></div>
 							<div class="entry__content">
@@ -69,7 +69,7 @@ use \Stjornvisi\View\Helper\Date;
 							<div class="entry__title">
 								<div class="entry__date">
 									<span class="day"><?=$this->date($event->event_date, Date::FORMAT_DAY)?></span>
-									<span class="month"><?=$this->date($event->event_date, Date::FORMAT_MONTH)?></span>
+									<span class="month"><?=$this->date($event->event_date, Date::FORMAT_MONTH_SHORT)?></span>
 									<span class="year"><?=$this->date($event->event_date, Date::FORMAT_YEAR)?></span>
 								</div>
 								<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>

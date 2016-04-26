@@ -20,37 +20,56 @@
 .panel--columns-two {
 	.panel__content {
 		@include make-row;
-	}
 
-	.box {
-		@include make-sm-column(6);
+		> .box {
+			@include make-sm-column(6);
 
-		&:nth-child(odd) {
-			padding-right: $grid-gutter-width;
-		}
-		&:nth-child(even) {
-			padding-left: $grid-gutter-width;
-		}
-	}
-
-	&.panel--ratio-golden {
-		.box {
 			&:nth-child(odd) {
-				@include make-sm-column(9);
+				padding-right: $grid-gutter-width;
 			}
 			&:nth-child(even) {
-				@include make-sm-column(3);
+				padding-left: $grid-gutter-width;
+			}
+		}
+	}
+
+
+
+	&.panel--ratio-golden {
+		.panel__content {
+			> .box {
+				&:nth-child(odd) {
+					@include make-sm-column(9);
+				}
+				&:nth-child(even) {
+					@include make-sm-column(3);
+				}
 			}
 		}
 	}
 
 	&.panel--ratio-sidebar {
-		.box {
-			&:nth-child(odd) {
-				@include make-sm-column(10);
+		.panel__content {
+			> .box {
+				&:nth-child(odd) {
+					@include make-sm-column(10);
+				}
+				&:nth-child(even) {
+					@include make-sm-column(2);
+				}
 			}
-			&:nth-child(even) {
-				@include make-sm-column(2);
+		}
+	}
+
+	&.panel--ratio-sidebar-left {
+		.panel__content {
+			> .box {
+				&:nth-child(odd) {
+					@include make-sm-column(3);
+				}
+				&:nth-child(even) {
+					@include make-sm-column(9);
+				}
 			}
 		}
 	}
@@ -59,10 +78,10 @@
 .panel--columns-three {
 	.panel__content {
 		@include make-row;
-	}
 
-	.box {
-		@include make-sm-column(4);
+		> .box {
+			@include make-sm-column(4);
+		}
 	}
 }
 
@@ -93,16 +112,19 @@
 	&:last-child {
 		margin-bottom: 0;
 	}
+
+	.box {
+		.box__title {
+			margin-bottom: 0;
+		}
+	}
 }
 
 .box__title {
 	color: $color-blue;
+	margin-bottom: $line-height-computed * 2;
 
-	body.state-landing & {
-		margin-bottom: $line-height-computed * 2;
-	}
-
-	h2, h3, h4, h5, h6 {
+	h1, h2, h3, h4, h5, h6 {
 		margin-top: 0;
 	}
 
