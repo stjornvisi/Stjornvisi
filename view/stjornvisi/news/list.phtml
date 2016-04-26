@@ -1,58 +1,38 @@
 <?php
 use Stjornvisi\Properties\FileProperties;
+use \Stjornvisi\View\Helper\Date;
 ?>
-<div class="layout layout--three-columns page-newslist">
-    <section class="layout__section">
+<div class="panel">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box box--news">
 
-        <ul class="block-list block-list--separator">
             <?php foreach($this->news as $news):?>
-            <li>
-                <article class="block-element">
-                    <header class="block-element__header">
-                        <time class="block-element__time"><?= $this->date($news->created_date)?></time>
-                        <h1>
-                            <a href="<?=$this->url('frettir/index', array('id'=>$news->id))?>"><?=$news->title?></a>
-                        </h1>
-                        <ul class="block-element__tags">
-                            <li>
-                                <?php if($news->group):?>
-                                    <a href="<?=$this->url('hopur/index', array('id'=>$news->group->url)) ?>"><?=$news->group->name_short;?></a>
-                                <?php else:?>
-                                    <span>Stjórnvísisfrétt</span>
-                                <?php endif;?>
-                            </li>
-                        </ul>
-                    </header>
-                    <aside class="block-element__aside">
-
-                    </aside>
-                    <section class="block-element__body">
-                        <?php if($news->avatar):?>
-                            <a href="<?=$this->url('frettir/index', array('id'=>$news->id))?>" class="block-element__poster">
-                                <?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
-                            </a>
-                        <?php endif;?>
-                        <?=$this->paragrapher( mb_substr($news->body,0,1200) );?>
-                        <p class="block-element__more">
-                            <a href="<?=$this->url('frettir/index', array('id'=>$news->id))?>">meira</a>
-                        </p>
-
-                    </section>
-                </article>
-
-            </li>
+				<article class="entry<?if($news->avatar):?> entry--has-image<?endif?> entry--has-image-left">
+					<div class="entry__image">
+						<?php if($news->avatar):?>
+							<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
+								<?=$this->image($news->avatar, FileProperties::DIR_MEDIUM);?>
+							</a>
+						<?php endif;?>
+					</div>
+					<time class="entry__info" datetime="<?=$news->created_date->format('c')?>">
+						<?=$this->date($news->created_date,Date::FORMAT_DATE_TIME)?>
+					</time>
+					<div class="entry__title"><h3><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h3></div>
+					<div class="entry__content">
+						<?=$this->paragrapher( mb_substr($news->body,0,200,'utf-8').'&#8230;'  );?>
+					</div>
+				</article>
             <?php endforeach;?>
-        </ul>
 
-        <ul class="block_pagination">
-            <?php foreach(range(0,$this->pages) as $item):?>
-            <li class="block_pagination__item">
-                <a href="<?=$this->url('frettir/list', array('no'=>$item+1))?>" class="block_pagination__link <?=($item == $this->no)?'block_pagination__link--active':''?>"><?=$item+1?></a>
-            </li>
-            <?php endforeach;?>
-        </ul>
-    </section>
-    <aside class="layout__aside">
-
-    </aside>
+			<ul class="block_pagination">
+				<?php foreach(range(0,$this->pages) as $item):?>
+				<li class="block_pagination__item">
+					<a href="<?=$this->url('frettir/list', array('no'=>$item+1))?>" class="block_pagination__link <?=($item == $this->no)?'block_pagination__link--active':''?>"><?=$item+1?></a>
+				</li>
+				<?php endforeach;?>
+			</ul>
+		</div>
+	</div>
 </div>

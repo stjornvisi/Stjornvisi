@@ -172,3 +172,21 @@ a {
 .block-table__date {
 	white-space: nowrap;
 }
+
+
+.block_pagination{
+	@include clearfix;
+
+	.block_pagination__item{
+		float: left;
+	}
+	.block_pagination__link{
+		display: block;
+		padding: 5px 10px;
+	}
+	.block_pagination__link:hover,
+	.block_pagination__link--active{
+		background-color: $color-light-blue;
+		color: $color-white;
+	}
+}
