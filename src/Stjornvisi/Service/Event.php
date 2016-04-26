@@ -21,6 +21,8 @@ use Stjornvisi\Lib\DataSourceAwareInterface;
  * @property string avatar
  * @property string lat
  * @property string lng
+ *
+ * @property string attending
  */
 class Event extends AbstractService implements DataSourceAwareInterface
 {
@@ -623,12 +625,14 @@ class Event extends AbstractService implements DataSourceAwareInterface
      * @return array
      * @throws Exception
      */
-    public function getByUser($id, $limit = 10)
+    public function getByUser($id, $limit = 10, $restrictByGroup = true)
     {
         try {
             //GET EVENTS
             //  get all events
-            $sql = "
+
+	        if ($restrictByGroup) {
+		        $sql = "
                 SELECT E.*, EhU.attending, EhU.register_time FROM `Event` E
                 LEFT JOIN Group_has_Event GhE ON (E.id = GhE.group_id)
                 LEFT JOIN Event_has_User EhU ON ( EhU.user_id=:id AND E.id = EhU.event_id )
@@ -636,7 +640,16 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     OR GhE.group_id IS NULL)
                     AND E.event_date >= DATE(NOW())
                 ORDER BY E.event_date ASC LIMIT {$limit}";
+	        }
+	        else {
+		        $sql = "
+				SELECT E.*, EhU.attending, EhU.register_time FROM `Event` E
+                LEFT JOIN Group_has_Event GhE ON (E.id = GhE.group_id)
+                LEFT JOIN Event_has_User EhU ON ( EhU.user_id=:id AND E.id = EhU.event_id )
+                WHERE E.event_date >= DATE(NOW())
+                ORDER BY E.event_date ASC LIMIT {$limit}";
 
+	        }
 
             $statement = $this->pdo->prepare($sql);
             $statement->execute(['id'=>$id]);

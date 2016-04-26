@@ -2,6 +2,7 @@
 namespace Stjornvisi\Controller\Event;
 
 use \DateTime;
+use Stjornvisi\Service\Event;
 use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -90,11 +91,27 @@ class EventController extends AbstractActionController
     public function listAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var Event $eventService */
         $eventService = $sm->get('Stjornvisi\Service\Event');
 
-        //DATE RANGE
-        //  calculate and create dates that this
-        //  request will span.
+        $auth = new AuthenticationService();
+        if ($auth->hasIdentity()) {
+            return new ViewModel([
+                'events' => $eventService->getByUser($auth->getIdentity()->id, 100, false),
+                'eventsPassed' => $eventService->fetchPassed(),
+            ]);
+        }
+        else {
+            return new ViewModel([
+                'events' => $eventService->fetchUpcoming(100),
+                'eventsPassed' => $eventService->fetchPassed()
+            ]);
+        }
+
+        /*
+        $sm = $this->getServiceLocator();
+        $eventService = $sm->get('Stjornvisi\Service\Event');
+
         $date = $this->params()->fromRoute('date', date('Y-m'));
         $prev = new DateTime($date.'-01');
         $prev->sub(new \DateInterval('P1M'));
@@ -126,6 +143,7 @@ class EventController extends AbstractActionController
             'next' => $next,
             'calendar' => $calendar
         ]);
+        */
     }
 
     /**

@@ -58,7 +58,7 @@ use \Stjornvisi\View\Helper\Date;
 					<? endforeach; ?>
 				</div>
 				<div class="box__footer">
-					<a href="#"><i class="fa fa-plus-circle"></i> Skoða fleiri fréttir og pistla</a>
+					<a href="#"><i class="fa fa-plus-circle"></i> <a href="<?=$this->url('frettir')?>">Skoða fleiri fréttir og pistla</a></a>
 				</div>
 			</div>
 			<div class="box box--events">
@@ -89,15 +89,24 @@ use \Stjornvisi\View\Helper\Date;
 							</div>
 							<div class="entry__content">
 								<?=$this->paragrapher(mb_substr($event->body,0,200,'utf-8').'&#8230;'  );?>
-								<? if($this->identity):?>
-								<a href="#" class="btn btn-default">Hef áhuga</a> <a href="#" class="btn btn-primary">Staðfesta mætingu</a></p>
-								<? endif; ?>
+								<?php if($this->identity()): ?>
+									<?php if($event->attending === false):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>"  class="btn btn-default">Afskrá mætingu</a>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="btn btn-primary">Skrá mætingu</a>
+									<?php elseif($event->attending == 0):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="btn btn-primary">Skrá mætingu</a>
+									<?php elseif($event->attending == 1):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="btn btn-default">Afskrá mætingu</a>
+									<?php endif;?>
+								<?php endif;?>
 							</div>
 						</div>
 					<? endforeach; ?>
 				</div>
 				<div class="box__footer">
-					<a href="#"><i class="fa fa-plus-circle"></i> Skoða alla <?=$this->eventCount?> viðburði næsta mánuðinn</a>
+					<a href="<?=$this->url('vidburdir')?>">
+						<i class="fa fa-plus-circle"></i> Skoða alla <?=$this->eventCount?> viðburði næsta mánuðinn
+					</a>
 				</div>
 			</div>
 		</div>
@@ -109,9 +118,10 @@ use \Stjornvisi\View\Helper\Date;
 		<div class="panel__content">
 			<div class="box box--carousel">
 				<div class="box__jip">
+					<!--
 					<a href="<?=$this->url('vidburdir')?>" class="landing-page__headline"><i class="fa fa-plus-circle"></i> Yfirlit liðinna viðburða</a>
-
 					<a href="#"> </a>
+					-->
 				</div>
 				<div class="box__title"><h2>Eldri viðburðir</h2></div>
 				<div class="box__content owl-carousel">
@@ -152,7 +162,7 @@ use \Stjornvisi\View\Helper\Date;
 						<li><i class="fa fa-check"></i>Þínir hópar</li>
 					</ul>
 					<div class="entry">
-						<div class="entry__title"><h3>Kjarnastarf Stjórnvísis fer fram í þeim <?=count($this->groupDetails)?> faghópum sem eru starfandi innan félagsins á jafnmjörgum sviðum stjórnunar.</h3></div>
+						<div class="entry__title"><h3>Kjarnastarf Stjórnvísis fer fram í þeim <?=count($this->groups)?> faghópum sem eru starfandi innan félagsins á jafnmjörgum sviðum stjórnunar.</h3></div>
 						<div class="entry__content">
 							<p>Tail strip steak salami, ball tip jerky tenderloin meatball. Shankle turkey shank, venison strip steak alcatra pastrami. Shankle alcatra porchetta cow drumstick kielbasa, turkey pork chop beef leberkas andouille rump pig.</p>
 							<p>Flank swine alcatra bacon chicken beef kielbasa pork loin ham doner turducken ham hock pork beef ribs chuck. Andouille capicola strip steak pancetta fatback salami spare ribs kevin brisket drumstick beef ribs pastrami.</p>
@@ -179,6 +189,7 @@ use \Stjornvisi\View\Helper\Date;
 								<? endif; ?>
 								</h4>
 							</div>
+							<? if (count($group->events) || $group->event_count || count($group->board)) :?>
 							<div class="entry__content">
 								<div class="event">
 									<? if (count($group->events)) : ?>
@@ -224,6 +235,7 @@ use \Stjornvisi\View\Helper\Date;
 									<? endif; ?>
 								</div>
 							</div>
+							<? endif; ?>
 						</div>
 					<?endforeach;?>
 				</div>

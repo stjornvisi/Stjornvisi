@@ -1,5 +1,7 @@
 <?php
 $this->headTitle('Viðburðir');
+use Stjornvisi\Properties\FileProperties;
+use \Stjornvisi\View\Helper\Date;
 ?>
 <div class="panel">
 	<div class="panel__container">
@@ -7,32 +9,49 @@ $this->headTitle('Viðburðir');
 			<div class="box box--events">
 				<div class="box__title"><h2>Viðburðir á næstunni</h2></div>
 				<div class="box__content">
-					<? for ($i = 0; $i < 5; $i++): ?>
+					<? /** @var \Stjornvisi\Service\Event $event */ foreach ($this->events as $event) :?>
 						<div class="entry">
 							<div class="entry__title">
 								<div class="entry__date">
-									<span class="day">01</span>
-									<span class="month">mar</span>
-									<span class="year">2016</span>
+									<span class="day"><?=$this->date($event->event_date, Date::FORMAT_DAY)?></span>
+									<span class="month"><?=$this->date($event->event_date, Date::FORMAT_MONTH)?></span>
+									<span class="year"><?=$this->date($event->event_date, Date::FORMAT_YEAR)?></span>
 								</div>
-								<h3><a href="#">Harum, tempus habitasse adipisicing ornare</a></h3>
+								<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
 								<div class="entry__info">
 									<i class="fa fa-clock-o"></i>
-										08:30 - 09:45
+									<? if($event->event_time) : ?>
+										<?=$event->event_time->format("H:i")?>
+										<? if($event->event_end) : ?>
+											- <?=$event->event_end->format("H:i")?>
+										<? endif; ?>
+									<? endif; ?>
+									<? if($event->location) : ?>
 										<span class="separator">/</span>
-										<i class="fa fa-map-marker"></i> Dis ducimus dolor
+										<i class="fa fa-map-marker"></i> <?=$event->location?>
+									<? endif; ?>
 								</div>
 							</div>
 							<div class="entry__content">
-								<p>Beatae reprehenderit netus quaerat provident quam. Quam aliquip? Diamlorem recusandae, volutpat tempora accusantium ac consequatur, purus eum minus? Esse, iusto minima praesentium wisi. In taciti! Delectus veritatis interdum eget accusantium, voluptatem condimentum, corporis praesentium doloribus elementum! Sint molestiae, voluptatem! Molestiae.</p>
-
-								<a href="#" class="btn btn-default">Hef áhuga</a> <a href="#" class="btn btn-primary">Staðfesta mætingu</a></p>
+								<?=$this->paragrapher(mb_substr($event->body,0,200,'utf-8').'&#8230;'  );?>
+								<?php if($this->identity()): ?>
+									<?php if($event->attending === false):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>"  class="btn btn-default">Afskrá mætingu</a>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="btn btn-primary">Skrá mætingu</a>
+									<?php elseif($event->attending == 0):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>1))?>" class="btn btn-primary">Skrá mætingu</a>
+									<?php elseif($event->attending == 1):?>
+										<a href="<?=$this->url('vidburdir/attending',array('id'=>$event->id,'type'=>0))?>" class="btn btn-default">Afskrá mætingu</a>
+									<?php endif;?>
+								<?php endif;?>
 							</div>
 						</div>
-					<?endfor?>
+					<?endforeach?>
 				</div>
 				<div class="box__footer">
+					<!--
 					<a href="#"><i class="fa fa-plus-circle"></i> Skoða alla <?=$this->eventCount?> viðburði næsta mánuðinn</a>
+					-->
 				</div>
 			</div>
 		</div>
@@ -44,28 +63,33 @@ $this->headTitle('Viðburðir');
 		<div class="panel__content">
 			<div class="box box--carousel">
 				<div class="box__jip">
+					<!--
 					<a href="<?=$this->url('vidburdir')?>" class="landing-page__headline"><i class="fa fa-plus-circle"></i> Yfirlit liðinna viðburða</a>
-
 					<a href="#"> </a>
+					-->
 				</div>
 				<div class="box__title"><h2>Eldri viðburðir</h2></div>
 				<div class="box__content owl-carousel">
-					<? for($i = 0; $i < 5; $i++) : ?>
+					<? foreach ($this->eventsPassed as $event) : ?>
 						<div class="entry">
 							<div class="entry__info">
-								01.01.16
+								<?=$this->date($event->event_date)?>
 							</div>
 							<div class="entry__title">
-								<h3><a href="#">Nulla donec nobis cras porta</a></h3>
+								<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
 							</div>
 							<div class="entry__image">
-								<img src="//placehold.it/550x260" alt="">
+								<?php if($event->avatar):?>
+									<a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
+										<?=$this->image($event->avatar, FileProperties::DIR_LARGE);?>
+									</a>
+								<?php endif;?>
 							</div>
 							<div class="entry__content">
-								<p>Varius, hac nascetur blanditiis, nostrud officiis ut voluptatum eaque eu molestiae dolorum dolores ea, urna orci, fusce blandit architecto vehicula lorem wisi nec integer? Natus aute, numquam adipisci repellendus potenti, ullam laboris. Feugiat necessitatibus? Vestibulum irure nec leo lacinia, eaque.</p>
+								<?=$this->paragrapher(mb_substr($event->body,0,200,'utf-8').'&#8230;');?>
 							</div>
 						</div>
-					<? endfor ?>
+					<? endforeach; ?>
 				</div>
 			</div>
 		</div>

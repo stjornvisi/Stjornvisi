@@ -250,8 +250,8 @@ class News extends AbstractService implements DataSourceAwareInterface
                 SELECT group_id FROM Group_has_User GhU WHERE user_id = :id
               )
               OR group_id IS NULL
-              ORDER BY N.created_date DESC LIMIT 0, :limit;");
-            $statement->execute(array('id'=>$id, 'limit' => $limit));
+              ORDER BY N.created_date DESC LIMIT {$limit}");
+            $statement->execute(array('id'=>$id));
             $news = $statement->fetchAll();
 
             $groupStatement = $this->pdo->prepare("SELECT * FROM `Group` WHERE id = :id;");

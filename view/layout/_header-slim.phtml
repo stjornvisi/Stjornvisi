@@ -1,3 +1,4 @@
+<? $auth = new \Zend\Authentication\AuthenticationService()?>
 <header class="panel panel--hero panel--slim">
 	<div class="panel__container">
 		<div class="panel__content">
@@ -5,7 +6,7 @@
 				<h1>Stjórnvísi</h1>
 				<img src="<?=$this->basePath("/themes/2016/stylesheets/images/logo-white.png")?>" alt="Stjórnvísi">
 			</a>
-			<?if(!$this->identity):?>
+			<?if(!$auth->hasIdentity()):?>
 			<div class="box">
 				<div class="box__content">
 					<a href="/adgangur/stofna" class="btn btn-primary">Stofna aðgang</a>
