@@ -6,6 +6,9 @@
 	.entry {
 		@include clearfix;
 		padding-bottom: 30px;
+	}
+
+	.entry--border {
 		border-bottom: 1px solid $color-border;
 	}
 
@@ -45,6 +48,8 @@
 
 	.entry__info {
 		color: $color-text-light;
+		display: block;
+		margin-bottom: 10px;
 	}
 
 	.entry__title {
@@ -74,5 +79,15 @@
 		float: right !important;
 		padding-right:0;
 		margin: 0 0 $line-height-computed $line-height-computed;
+	}
+
+	.box__footer {
+		border-top: 1px solid $color-border;
+		border-bottom: 1px solid $color-border;
+		padding: 8px 15px;
+	}
+
+	.addthis {
+		float:right;
 	}
 }

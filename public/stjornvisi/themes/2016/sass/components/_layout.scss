@@ -33,8 +33,6 @@
 		}
 	}
 
-
-
 	&.panel--ratio-golden {
 		.panel__content {
 			> .box {
@@ -91,6 +89,22 @@
 	background-color: $color-offwhite;
 }
 
+.panel--breadcrumbs {
+	padding: 30px 0 0;
+	text-align: right;
+	text-transform: uppercase;
+	font-size: 13px;
+	font-weight: 600;
+
+	a {
+		@include linkColorDefault;
+	}
+
+	.separator {
+		margin: 0 5px;
+	}
+}
+
 /** Backwards compat **/
 
 .layout {
@@ -130,7 +144,7 @@
 
 	h1 {
 		font-size: 50px;
-		font-weight:400;
+		font-weight: 400;
 	}
 
 	h2 {
@@ -207,6 +221,31 @@
 		table {
 			@extend .table;
 		}
+	}
+}
+
+.box--404 {
+	@include clearfix;
+
+	.box__content {
+		@include clearfix;
+	}
+
+	h2 {
+		font-size: 50px;
+		color: $color-blue;
+		margin-bottom: 30px;
+	}
+
+	.statusCode {
+		font-size:250px;
+		font-weight: 600;
+		line-height: 1;
+		color: $color-blue;
+	}
+
+	.well {
+		@include clearfix;
 	}
 }
 
@@ -297,7 +336,7 @@
 	font-size: 18px;
 	color: $color-text;
 
-	.fa  {
+	.fa {
 		margin: 0 5px;
 		color: $color-light-blue;
 	}
