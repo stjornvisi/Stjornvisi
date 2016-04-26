@@ -7295,6 +7295,10 @@ form.form-inline label,
 form.form-inline .form-group {
   margin-right: 5px;
 }
+/* line 10, ../sass/components/_form.scss */
+form .checkbox label {
+  margin-right: 30px;
+}
 
 /* line 1, ../sass/components/_hero.scss */
 .panel--hero {
