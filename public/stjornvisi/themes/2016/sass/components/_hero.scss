@@ -6,23 +6,42 @@
 	background-position: center center;
 	background-size: auto 100%;
 
+	@media (max-width: $screen-xs-max) {
+		margin-top:60px;
+		height: auto;
+	}
+
 	@media (min-width: 1920px) {
 		background-size: cover;
 	}
 
 	.logo {
-		position: absolute;
-		top: 35px;
-		left: 15px;
-
-
-		img {
-			width: 206px;
-			height: auto;
-		}
-
 		h1 {
 			display: none;
+		}
+
+		@media (min-width: $screen-sm-min) {
+			position: absolute;
+			top: 35px;
+			left: 15px;
+
+			img {
+				width: 206px;
+				height: auto;
+			}
+		}
+
+		// Mobile
+		@media (max-width: $screen-xs-max) {
+			position: fixed;
+			top: 5px;
+			left: 15px;
+			z-index: 3;
+
+			img {
+				width: auto;
+				height: 46px;
+			}
 		}
 	}
 
@@ -38,22 +57,51 @@
 	}
 
 	.box {
-		@include make-sm-column(6);
-		@include make-sm-column-push(6);
+		@include make-md-column(6);
+		@include make-md-column-push(6);
 
-		margin-top: 182px;
+		@media (max-width: $screen-xs-max) {
+			margin-top:20px;
+			text-align: center;
+		}
+
+		@media (min-width: $screen-sm-min) {
+			margin-top: 182px;
+		}
+
 		color: $color-white;
 	}
 
 	.box__title {
-		h2 {
-			font-size: 40px;
-			color: $color-white;
+		@media (max-width: $screen-xs-max) {
+			margin-bottom: $line-height-computed;
+
+			h2 {
+				font-size: 32px;
+				color: $color-white;
+			}
+		}
+
+		@media (min-width: $screen-sm-min) {
+			h2 {
+				font-size: 40px;
+				color: $color-white;
+			}
 		}
 	}
 
 	.box__content {
-		font-size: 22px;
+		@media (max-width: $screen-xs-max) {
+			padding-bottom: $line-height-computed;
+		}
+
+		@media (min-width: $screen-sm-min) {
+			font-size: 22px;
+
+			.btn {
+				margin: 15px 10px 0 0;
+			}
+		}
 
 		a {
 			color: $color-white;
@@ -63,17 +111,23 @@
 				color: $color-light-gray;
 			}
 		}
-
-		.btn {
-			margin: 15px 10px 0 0;
-		}
 	}
 
 	&.panel--slim {
 		height: 166px;
+		background-size: auto;
+
+		@media (max-width: $screen-xs-max) {
+			height:0;
+			.box {
+				display: none;
+			}
+		}
 
 		.logo {
-			top: 20px;
+			@media (min-width: $screen-sm-min) {
+				top: 20px;
+			}
 		}
 
 		.box {

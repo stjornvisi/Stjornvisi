@@ -13,17 +13,29 @@
 	}
 
 	.entry--has-image {
-		.entry__content,
-		.entry__image {
-			@include make-sm-column(6);
-		}
-
 		.entry__content {
+			@include make-sm-column(8);
+			@include make-sm-column-pull(4);
+			@include make-md-column(6);
+			@include make-md-column-pull(6);
 			padding-left: 0;
 		}
 
 		.entry__image {
+			@include make-sm-column(4);
+			@include make-sm-column-push(8);
+			@include make-md-column(6);
+			@include make-md-column-push(6);
 			padding-right: 0;
+
+			@media (max-width: $screen-xs-max) {
+				padding-left: 0;
+				margin:0 0 $line-height-computed;
+
+				img {
+					margin: 0 auto;
+				}
+			}
 		}
 
 		&.entry--has-image-left {

@@ -61,6 +61,7 @@
 
 <?=$this->partial('layout/_footer.phtml')?>
 
+<?=$this->headScript()->appendFile($this->basePath('/javascripts/common.js'), 'text/javascript');?>
 <?=$this->inlineScript()?>
 <script type="text/javascript">
 	$(function () {

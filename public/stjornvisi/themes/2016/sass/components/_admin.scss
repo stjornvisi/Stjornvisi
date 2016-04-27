@@ -44,6 +44,12 @@ stjornvisi-rich {
 	}
 }
 
+body.state-login {
+	main[role=main] {
+		margin-left: 80px;
+	}
+}
+
 nav[role=navigation] {
 	background-color: $color-light-blue;
 	transform: translate3d(-270px, 0, 0);

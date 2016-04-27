@@ -6,28 +6,49 @@
 
 	.entry__title {
 		@include make-xs-column(12);
-		padding: 20px 30px 0;
 		border-bottom: 1px solid $color-border;
 		margin-bottom: 0;
-		overflow: hidden;
 
-		h3 {
-			font-size: 24px;
+		@media (max-width: $screen-xs-max) {
+			padding:0;
+
+			h3 {
+				font-size: 20px;
+				padding: 15px;
+			}
+		}
+
+		@media (min-width: $screen-xs-min) {
+			padding: 20px 30px 0;
+			overflow: hidden;
+
+			h3 {
+				font-size: 24px;
+			}
 		}
 	}
 
 	.entry__date {
-		float: left;
-		width: 80px;
-		padding: 20px 30px 200px 0;
-		margin: -20px 30px -175px 0;
-		text-align: center;
-		border-right: 1px solid $color-border;
-		line-height: $line-height-small;
-
-		span {
-			display: block;
+		@media (max-width: $screen-xs-max) {
+			border-bottom: 1px solid $color-border;
+			padding: 15px 15px 10px;
 		}
+
+		@media (min-width: $screen-xs-min) {
+			float: left;
+			width: 80px;
+			padding: 20px 30px 200px 0;
+			margin: -20px 30px -175px 0;
+			text-align: center;
+			border-right: 1px solid $color-border;
+			line-height: $line-height-small;
+
+			span {
+				display: block;
+			}
+		}
+
+
 
 		.day {
 			font-size: 40px;
@@ -54,10 +75,19 @@
 
 	.entry__info {
 		color: $color-light-blue;
-		font-size: 16px;
 		font-weight: 600;
 		text-transform: uppercase;
 		margin-bottom: 10px;
+
+		@media (max-width: $screen-xs-max) {
+			padding: 0 15px;
+			font-size: 14px;
+			margin-left: 90px;
+		}
+
+		@media (min-width: $screen-sm-min) {
+			font-size: 16px;
+		}
 
 		.fa {
 			color: $color-gray;
@@ -65,7 +95,14 @@
 		}
 
 		.separator {
-			margin: 0 10px;
+			@media (max-width: $screen-xs-max) {
+				@include text-hide;
+				display: block;
+			}
+
+			@media (min-width: $screen-sm-min) {
+				margin: 0 10px;
+			}
 		}
 	}
 

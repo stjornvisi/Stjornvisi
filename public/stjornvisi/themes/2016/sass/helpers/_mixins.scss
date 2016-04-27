@@ -1,3 +1,15 @@
+@mixin truncateText($font-size, $line-height, $lines-to-show) {
+	display: block;
+	display: -webkit-box;
+	height: $font-size * $line-height * $lines-to-show;
+	font-size: $font-size;
+	line-height: $line-height;
+	-webkit-line-clamp: $lines-to-show;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 @mixin linkColorDefault {
 	@include transition(all .15s);
 	color: $link-color;
