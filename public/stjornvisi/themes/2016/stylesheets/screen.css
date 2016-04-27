@@ -7373,7 +7373,7 @@ strong {
   .entry--hoverable .entry__content {
     position: absolute;
     z-index: 2;
-    margin-left: -99.5%;
+    margin-left: -99.8%;
     top: 0;
     width: 100%;
   }
@@ -8220,19 +8220,20 @@ form .checkbox label {
 .panel--groups .entry__title {
   margin-bottom: 10px;
   border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
 }
 @media (min-width: 992px) {
-  /* line 44, ../sass/components/_groups.scss */
+  /* line 45, ../sass/components/_groups.scss */
   .panel--groups .entry__title .entry__status {
     padding-left: 15px;
   }
 }
-/* line 50, ../sass/components/_groups.scss */
+/* line 51, ../sass/components/_groups.scss */
 .panel--groups .entry__title h3 {
   font-size: 32px;
   color: #1b3e59;
 }
-/* line 55, ../sass/components/_groups.scss */
+/* line 56, ../sass/components/_groups.scss */
 .panel--groups .entry__title h4 {
   font-size: 24px;
   color: #505d62;
@@ -8240,52 +8241,52 @@ form .checkbox label {
   padding: 4px 0;
 }
 @media (min-width: 992px) {
-  /* line 55, ../sass/components/_groups.scss */
+  /* line 56, ../sass/components/_groups.scss */
   .panel--groups .entry__title h4 {
     padding: 4px 15px;
   }
 }
-/* line 65, ../sass/components/_groups.scss */
+/* line 66, ../sass/components/_groups.scss */
 .panel--groups .entry__title h4 .fa-stack {
   color: #669933;
   height: 1em;
   line-height: 1;
 }
-/* line 70, ../sass/components/_groups.scss */
+/* line 71, ../sass/components/_groups.scss */
 .panel--groups .entry__title h4 .fa-stack-1x {
   font-size: 12px;
   font-weight: 600;
   margin-top: 8px;
 }
-/* line 75, ../sass/components/_groups.scss */
+/* line 76, ../sass/components/_groups.scss */
 .panel--groups .entry__title h4 .fa-stack-2x {
   font-size: 22px;
 }
-/* line 82, ../sass/components/_groups.scss */
+/* line 83, ../sass/components/_groups.scss */
 .panel--groups .open .entry__title {
   border: 1px solid #1b3e59;
   background-color: #f7f7f7;
 }
 @media (min-width: 992px) {
-  /* line 82, ../sass/components/_groups.scss */
+  /* line 83, ../sass/components/_groups.scss */
   .panel--groups .open .entry__title {
     border-left: 0;
   }
 }
-/* line 92, ../sass/components/_groups.scss */
+/* line 93, ../sass/components/_groups.scss */
 .panel--groups .entry__content {
   background: #fff;
 }
-/* line 96, ../sass/components/_groups.scss */
+/* line 97, ../sass/components/_groups.scss */
 .panel--groups .event {
   border: 1px solid #1b3e59;
 }
-/* line 100, ../sass/components/_groups.scss */
+/* line 101, ../sass/components/_groups.scss */
 .panel--groups .event__summary {
   padding: 10px 30px;
   margin-bottom: 28px;
 }
-/* line 105, ../sass/components/_groups.scss */
+/* line 106, ../sass/components/_groups.scss */
 .panel--groups .event__label,
 .panel--groups .event__info,
 .panel--groups .event__title,
