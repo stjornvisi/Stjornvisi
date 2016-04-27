@@ -48,8 +48,6 @@
 			}
 		}
 
-
-
 		.day {
 			font-size: 40px;
 			font-weight: 600;
@@ -82,6 +80,9 @@
 		@media (max-width: $screen-xs-max) {
 			padding: 0 15px;
 			font-size: 14px;
+		}
+
+		@media (min-width: $screen-xs) and (max-width: $screen-xs-max ) {
 			margin-left: 90px;
 		}
 

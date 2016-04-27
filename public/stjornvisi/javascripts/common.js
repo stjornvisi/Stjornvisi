@@ -74,6 +74,23 @@
         event.preventDefault();
         document.body.classList.toggle('state-open');
     },false);
-
-
 })();
+
+$(function() {
+	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function(e) {
+		e.preventDefault();
+		var $parent = $(this.parentNode);
+
+		if (e.type === 'mouseup' || e.type === 'touchstart') {
+			$('.entry--hoverable').removeClass('open');
+			$parent.addClass('open');
+		}
+		else if (e.type === 'mouseenter') {
+			$('.entry--hoverable').removeClass('open');
+			$parent.addClass('open');
+		}
+		else if (e.type === 'mouseleave') {
+			//$parent.removeClass('open');
+		}
+	});
+});

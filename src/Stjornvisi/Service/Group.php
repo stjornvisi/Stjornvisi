@@ -508,6 +508,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
                 SELECT
                   g.id,
                   g.name_short,
+                  g.summary,
                   g.url,
                   ghu.user_id,
                   IFNULL(ge.total, 0) AS event_count

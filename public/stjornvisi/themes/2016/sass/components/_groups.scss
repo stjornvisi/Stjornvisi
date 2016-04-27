@@ -1,14 +1,14 @@
 .panel--groups {
 	.box {
-		@include make-xs-column(12);
-		@include make-sm-column(6);
+		@include make-md-column(6);
+		@media (min-width: $screen-md-min) {
+			&:first-child {
+				padding-right: $grid-gutter-width;
+			}
 
-		&:first-child {
-			padding-right: $grid-gutter-width;
-		}
-
-		&:last-child {
-			padding-left: $grid-gutter-width;
+			&:last-child {
+				padding-left: $grid-gutter-width;
+			}
 		}
 	}
 
@@ -39,15 +39,11 @@
 
 	.entry__title {
 		margin-bottom: 10px;
+		border-top: 1px solid transparent;
 
 		.entry__status {
-			padding-left: 15px;
-		}
-
-		// @todo replace with javascript
-		&:hover {
-			+ .entry__content {
-				display: block;
+			@media (min-width: $screen-md-min) {
+				padding-left: 15px;
 			}
 		}
 
@@ -60,11 +56,10 @@
 			font-size: 24px;
 			color: $color-text;
 			margin: 0;
-			padding: 4px 15px;
+			padding: 4px 0;
 
-			&:hover {
-				background-color: $color-offwhite;
-				cursor: default;
+			@media (min-width: $screen-md-min) {
+				padding: 4px 15px;
 			}
 
 			.fa-stack {
@@ -83,12 +78,35 @@
 		}
 	}
 
+	.open {
+		.entry__title {
+			border: 1px solid $color-blue;
+			background-color: $color-offwhite;
+
+			@media (min-width: $screen-md-min) {
+				border-left:0;
+			}
+		}
+	}
+
 	.entry__content {
 		background: $color-white;
 	}
 
 	.event {
 		border: 1px solid $color-blue;
-		padding: 20px 30px;
+	}
+
+	.event__summary {
+		padding: 10px 30px;
+		margin-bottom: $line-height-computed;
+	}
+
+	.event__label,
+	.event__info,
+	.event__title,
+	.event__details,
+	.event__content {
+		padding: 0 30px;
 	}
 }

@@ -192,6 +192,7 @@ use \Stjornvisi\View\Helper\Date;
 							<? if (count($group->events) || $group->event_count || count($group->board)) :?>
 							<div class="entry__content">
 								<div class="event">
+									<div class="event__summary"><?=$group->summary?></div>
 									<? if (count($group->events)) : ?>
 									<? /** @var \Stjornvisi\Service\Event $nextEvent */ $nextEvent = array_pop($group->events)?>
 									<div class="event__label"><h4><i class="fa fa-calendar-o"></i>Næsti viðburður</h4></div>
