@@ -43,65 +43,98 @@ use \Stjornvisi\View\Helper\Date;
 </div>
 <?php endif; ?>
 
-
-<div class="panel panel--columns-two panel--ratio-sidebar-left">
+<div class="panel panel--breadcrumbs">
 	<div class="panel__container">
 		<div class="panel__content">
 			<div class="box">
-				<div class="box">
+				<div class="box__content">
+					<a href="/">Forsíða</a>
+					<span class="separator">/</span>
+					<a href="/hopur">Faghópar</a>
+					<span class="separator">/</span>
+					<?=$this->group->name?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="panel">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box box--border">
+				<div class="box__jip">
+					<?php if ($this->logged_in): ?>
+						<?php if ($this->access->type === null): ?>
+							<a href="<?=$this->url('hopur/register', array('id' => $this->group->url, 'type' => 1))?>"
+							   class="btn btn-primary">Skrá mig í hópinn</a>
+						<?php else: ?>
+							<a href="<?=$this->url('hopur/register', array('id' => $this->group->url, 'type' => 0))?>"
+							   class="btn btn-default">Afskrá mig úr hópinum</a>
+						<?php endif; ?>
+					<?php else: ?>
+						<a href="<?=$this->url('auth')?>" class="btn btn-primary">Skrá mig í hópinn</a>
+					<?php endif; ?>
+				</div>
+				<div class="box__title"><h1><?=$this->group->name?></div>
+				<div class="box__content row">
+					<div class="col-sm-7 box">
+						<div class="box__content">
+							<h5>Stjórn</h5>
+							<ul>
+								<?foreach ($this->managers as $user):?>
+									<li>
+										<?=$user->name?><?if ($user->company_id):?>, <?=$user->company_name;?><?endif?>
+									</li>
+								<?endforeach?>
+							</ul>
+						</div>
+					</div>
+
+					<div class="col-sm-5 box box--inset">
+						<div class="box__content">
+							Viðburðir í vetur: xx<br>
+							Fjöldi í hóp: xx<br>
+							Fjöldi mættra: xx<br>
+							Viðburðir framundan: xx<br>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel--no-title">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box box--border row">
+				<div class="col-sm-3 box">
 					<div class="box__content">
+						<strong>
 						<?=$this->paragrapher($this->group->summary);?>
+						</strong>
 					</div>
 				</div>
 
-				<div class="box">
-					<div class="box__title"><h3>Fyrri starfsár</h3></div>
+				<div class="col-sm-8 col-sm-push-1 box">
 					<div class="box__content">
-						<ul>
-							<?php foreach ($this->range->range as $group): ?>
-								<li>
-									<a href="<?=$this->url('hopur/index', array('id' => $this->group->url, 'range' => $group[0] . '-' . $group[1]))?>"><?=$group[0]?>
-										- <?=$group[1]?></a></li>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				</div>
-
-				<div class="box">
-					<div class="box__title"><h3>Straumar</h3></div>
-					<div class="box__content">
-						<ul>
-							<li><a href="<?=$this->url('rss/rss-news', array('name' => $this->group->url))?>"
-								   title="RSS fréttastraumur" target="_blank">Fréttir <i class="fa fa-rss"></i></a></li>
-							<li><a href="<?=$this->url('rss/rss-events', array('name' => $this->group->url))?>"
-								   title="RSS viðburðastraumur" target="_blank">Viðburðir <i class="fa fa-rss"></i></a></li>
-							<li>
-								<a href="ical://<?=$_SERVER['HTTP_HOST']?><?=$this->url('hopur/ical', array('id' => $this->group->url))?>"
-								   title="iCal viðburðastraumur" target="_blank">Viðburðir <i
-										class="fa fa-calendar-o"></i></a></li>
-						</ul>
+						<?=$this->paragrapher($this->group->body);?>
 					</div>
 				</div>
 			</div>
-			<div class="box">
-				<div class="box">
-					<div class="box__title"><h1><?=$this->group->name;?></h1></div>
-					<div class="box__content">
-						<h2>Starfsár <?=$this->range->from->format('Y')?> - <?=$this->range->to->format('Y')?></h2>
-						<?php if ($this->logged_in): ?>
-							<?php if ($this->access->type === null): ?>
-								<a href="<?=$this->url('hopur/register', array('id' => $this->group->url, 'type' => 1))?>"
-								   class="btn btn-warning page-group__register">Skrá í hóp</a>
-							<?php else: ?>
-								<a href="<?=$this->url('hopur/register', array('id' => $this->group->url, 'type' => 0))?>"
-								   class="btn btn-danger page-group__register">Afskrá úr hópi</a>
-							<?php endif; ?>
-						<?php else: ?>
-							<a href="<?=$this->url('auth')?>" class="btn btn-danger page-group__register">Skrá í hóp</a>
-						<?php endif; ?>
-					</div>
-				</div>
+		</div>
+	</div>
+</div>
 
+
+<div class="panel panel--no-title">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box row">
 				<div class="box box--news col-sm-6">
 					<div class="box__title"><h2 id="frettir">Fréttir</h2></div>
 					<div class="box__content">
@@ -157,118 +190,106 @@ use \Stjornvisi\View\Helper\Date;
 						<?endforeach?>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-				<div class="box">
-					<div class="box__title"><h2 id="um">Um <?=$this->group->name;?></h2></div>
-					<div class="box__content">
-						<?=$this->paragrapher($this->group->body);?>
-						<div id="fb-root"></div>
-						<script>(function (d, s, id) {
-								var js, fjs = d.getElementsByTagName(s)[0];
-								if (d.getElementById(id)) return;
-								js = d.createElement(s);
-								js.id = id;
-								js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1645847542309046&version=v2.0";
-								fjs.parentNode.insertBefore(js, fjs);
-							}(document, 'script', 'facebook-jssdk'));</script>
-						<div class="fb-like"
-							 data-href="http://<?=$_SERVER['HTTP_HOST']?><?=$this->url('hopur/index', array('id' => $this->group->url))?>"
-							 data-layout="button" data-action="like" data-show-faces="true"
-							 data-share="true"></div>
-					</div>
-				</div>
 
-				<div class="box">
-					<div class="box__title"><h2 id="medlimir">Meðlimir</h2></div>
-					<div class="box__content">
+<?php if ($this->access->is_admin || $this->access->type >= 1): ?>
 
-						<h3>Stjórn</h3>
-						<?php
-						//SOME LOGIC
-						//	it would be super cool if I didn't have to do this here,
-						//	but I need to split the list up, and this has nothing to
-						//	with domain logic and everything with presentation
-						//	so I have to make the view dirty with some PHP code
-						$user_chunk = (count($this->managers))
-							? array_chunk($this->managers, ceil(count($this->managers) / 3))
-							: array();
-						?>
-						<div class="row">
-							<?php foreach ($user_chunk as $chunk): ?>
-								<ul class="col-sm-4">
-								<?php foreach ($chunk as $user): ?>
-									<li class="page-group__members-item <?=($user->type == 2) ? 'page-group__members-item--em' : ''?>"
-										data-search="<?=$user->name;?>">
-										<h5>
-											<a href="<?=$this->url('notandi/index', array('id' => $user->id))?>"><?=$user->name;?></a>
-										</h5>
-										<div
-											class="page-group__members-item--title"><?=($user->type == 2) ? 'Formaður' : 'Stjórnandi'?></div>
-										<a href="mailto:<?=$user->email;?>"
-										   class="page-group__members-item--email"><?=$user->email;?></a>
-										<?php if ($user->company_id): ?>
-											<div><a
-													href="<?=$this->url('fyrirtaeki/index', ['id' => $user->company_id])?>"><?=$user->company_name;?></a></div>
-										<?php endif; ?>
-										<div><?=$user->title;?></div>
-										<?php if ($this->access->is_admin || $this->access->type >= 1): ?>
-											<stjonvisi-control class="inline">
-												<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 1, 'user_id' => $user->id))?>"><i
-														class="fa fa-minus"></i> stjórnandi</a>
-												<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 0, 'user_id' => $user->id))?>"><i
-														class="fa fa-minus"></i> meðlimur</a>
-											</stjonvisi-control>
-										<?php endif; ?>
-									</li>
-								<?php endforeach; ?>
-							</ul>
-						<?php endforeach; ?>
-						</div>
+<div class="panel panel--inset">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box">
+				<div class="box__title"><h2 id="medlimir">Meðlimir</h2></div>
+				<div class="box__content">
 
-						<?php if ($this->access->is_admin || $this->access->type >= 1): ?>
-							<h3>Meðlimir (<?=count($this->users)?>)</h3>
-							<?php
-							//SOME LOGIC
-							//	it would be super cool if I didn't have to do this here,
-							//	but I need to split the list up, and this has nothing to
-							//	with domain logic and everything with presentation
-							//	so I have to make the view dirty with some PHP code
-							$user_chunk = (count($this->users))
-								? array_chunk($this->users, ceil(count($this->users) / 3))
-								: array();
-							?>
-
-							<div class="row">
-							<?php foreach ($user_chunk as $chunk): ?>
-								<ul class="col-sm-4">
-									<?php foreach ($chunk as $user): ?>
-										<li class="page-group__members-item"
-											data-search="<?=$user->name;?>">
-											<h5>
-												<a href="<?=$this->url('notandi/index', array('id' => $user->id))?>"><?=$user->name;?></a>
-											</h5>
-											<div><?=$user->title;?></div>
-											<?php if ($user->company_id): ?>
-												<div><a
-														href="<?=$this->url('fyrirtaeki/index', ['id' => $user->company_id])?>"><?=$user->company_name;?></a></div>
-											<?php endif; ?>
-											<?php if ($this->access->is_admin || $this->access->type >= 1): ?>
-												<stjonvisi-control class="inline">
-													<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 2, 'user_id' => $user->id))?>"><i
-															class="fa fa-plus"></i> formaður</a>
-													<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 1, 'user_id' => $user->id))?>"><i
-															class="fa fa-plus"></i> stjórnandi</a>
-												</stjonvisi-control>
-											<?php endif; ?>
-										</li>
-									<?php endforeach; ?>
-								</ul>
+					<h3>Stjórn</h3>
+					<?php
+					//SOME LOGIC
+					//	it would be super cool if I didn't have to do this here,
+					//	but I need to split the list up, and this has nothing to
+					//	with domain logic and everything with presentation
+					//	so I have to make the view dirty with some PHP code
+					$user_chunk = (count($this->managers))
+						? array_chunk($this->managers, ceil(count($this->managers) / 3))
+						: array();
+					?>
+					<div class="row">
+						<?php foreach ($user_chunk as $chunk): ?>
+							<ul class="col-sm-4">
+							<?php foreach ($chunk as $user): ?>
+								<li class="page-group__members-item <?=($user->type == 2) ? 'page-group__members-item--em' : ''?>"
+									data-search="<?=$user->name;?>">
+									<h5>
+										<a href="<?=$this->url('notandi/index', array('id' => $user->id))?>"><?=$user->name;?></a>
+									</h5>
+									<div
+										class="page-group__members-item--title"><?=($user->type == 2) ? 'Formaður' : 'Stjórnandi'?></div>
+									<a href="mailto:<?=$user->email;?>"
+									   class="page-group__members-item--email"><?=$user->email;?></a>
+									<?php if ($user->company_id): ?>
+										<div><a
+												href="<?=$this->url('fyrirtaeki/index', ['id' => $user->company_id])?>"><?=$user->company_name;?></a></div>
+									<?php endif; ?>
+									<div><?=$user->title;?></div>
+									<?php if ($this->access->is_admin || $this->access->type >= 1): ?>
+										<stjonvisi-control class="inline">
+											<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 1, 'user_id' => $user->id))?>"><i
+													class="fa fa-minus"></i> stjórnandi</a>
+											<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 0, 'user_id' => $user->id))?>"><i
+													class="fa fa-minus"></i> meðlimur</a>
+										</stjonvisi-control>
+									<?php endif; ?>
+								</li>
 							<?php endforeach; ?>
-							</div>
-						<?php endif; ?>
+						</ul>
+					<?php endforeach; ?>
+					</div>
+
+					<h3>Meðlimir (<?=count($this->users)?>)</h3>
+					<?php
+					//SOME LOGIC
+					//	it would be super cool if I didn't have to do this here,
+					//	but I need to split the list up, and this has nothing to
+					//	with domain logic and everything with presentation
+					//	so I have to make the view dirty with some PHP code
+					$user_chunk = (count($this->users))
+						? array_chunk($this->users, ceil(count($this->users) / 3))
+						: array();
+					?>
+
+					<div class="row">
+					<?php foreach ($user_chunk as $chunk): ?>
+						<ul class="col-sm-4">
+							<?php foreach ($chunk as $user): ?>
+								<li class="page-group__members-item"
+									data-search="<?=$user->name;?>">
+									<h5>
+										<a href="<?=$this->url('notandi/index', array('id' => $user->id))?>"><?=$user->name;?></a>
+									</h5>
+									<div><?=$user->title;?></div>
+									<?php if ($user->company_id): ?>
+										<div><a
+												href="<?=$this->url('fyrirtaeki/index', ['id' => $user->company_id])?>"><?=$user->company_name;?></a></div>
+									<?php endif; ?>
+									<?php if ($this->access->is_admin || $this->access->type >= 1): ?>
+										<stjonvisi-control class="inline">
+											<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 2, 'user_id' => $user->id))?>"><i
+													class="fa fa-plus"></i> formaður</a>
+											<a href="<?=$this->url('hopur/user-status', array('id' => $this->group->url, 'type' => 1, 'user_id' => $user->id))?>"><i
+													class="fa fa-plus"></i> stjórnandi</a>
+										</stjonvisi-control>
+									<?php endif; ?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endforeach; ?>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+<?endif?>

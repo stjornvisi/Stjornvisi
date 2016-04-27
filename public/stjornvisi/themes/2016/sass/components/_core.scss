@@ -20,10 +20,14 @@ a {
 	}
 }
 
+strong {
+	font-weight: 600;
+}
+
 
 /*** BUTTONS ***/
 .btn {
-	@include transition(background-color .1s, border-color .1s, color .1s);
+	@include transition(all .15s);
 	text-decoration: none !important;
 	text-transform: uppercase;
 	padding: 8px 15px;
@@ -63,97 +67,8 @@ a {
 		font-weight: 600;
 	}
 }
-.btn-facebook {
-	@extend .btn;
-	@extend .btn-primary;
 
-	background-color: $color-facebook;
-	border-color: $color-facebook;
-}
-
-
-/*** STEPPER ***/
-
-.stepper {
-	display: none;
-
-	//display: table;
-	width: 100%;
-	border: 1px solid $color-border;
-	padding: 10px;
-	margin-bottom: $line-height-computed;
-
-	li {
-		display:table-cell;
-		width: 1%;
-		text-align:center;
-	}
-
-	.stepper--current {
-		font-weight: 600;
-	}
-}
-.btn-facebook {
-	@extend .btn;
-	@extend .btn-primary;
-
-	background-color: $color-facebook;
-	border-color: $color-facebook;
-}
-
-
-/*** STEPPER ***/
-
-.stepper {
-	display: none;
-
-	//display: table;
-	width: 100%;
-	border: 1px solid $color-border;
-	padding: 10px;
-	margin-bottom: $line-height-computed;
-
-	li {
-		display:table-cell;
-		width: 1%;
-		text-align:center;
-	}
-
-	.stepper--current {
-		font-weight: 600;
-	}
-}
-.btn-facebook {
-	@extend .btn;
-	@extend .btn-primary;
-
-	background-color: $color-facebook;
-	border-color: $color-facebook;
-}
-
-
-/*** STEPPER ***/
-
-.stepper {
-	display: none;
-
-	//display: table;
-	width: 100%;
-	border: 1px solid $color-border;
-	padding: 10px;
-	margin-bottom: $line-height-computed;
-
-	li {
-		display:table-cell;
-		width: 1%;
-		text-align:center;
-	}
-
-	.stepper--current {
-		font-weight: 600;
-	}
-}
-
+/*** LIST ***/
 
 .list {
 	padding-left: 40px;
@@ -169,10 +84,14 @@ a {
 }
 
 
+/*** TABLE ***/
+
 .block-table__date {
 	white-space: nowrap;
 }
 
+
+/*** PAGINATION ***/
 
 .block_pagination{
 	@include clearfix;

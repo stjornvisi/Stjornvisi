@@ -17,6 +17,10 @@
 	}
 }
 
+.panel--border {
+	border-bottom: 1px solid $color-border;
+}
+
 .panel--columns-two {
 	.panel__content {
 		@include make-row;
@@ -83,6 +87,10 @@
 	}
 }
 
+.panel--no-title {
+	padding-top:0;
+}
+
 .panel--inset {
 	border-top: 1px solid $color-border;
 	border-bottom: 1px solid $color-border;
@@ -121,6 +129,7 @@
 
 /*** BOX **/
 .box {
+	@include clearfix;
 	margin-bottom: $line-height-computed;
 
 	&:last-child {
@@ -179,10 +188,12 @@
 
 	> h4 {
 		font-size: 28px;
+		font-weight: 600;
 	}
 
 	> h5 {
 		font-size: 24px;
+		font-weight: 600;
 	}
 
 	> h6 {
@@ -211,9 +222,29 @@
 
 .box__jip {
 	@extend .box__footer;
-
 	float: right;
 	margin-top: 0;
+
+	.btn {
+		color: $color-white;
+		font-size: 16px;
+
+		&:hover {
+			color: $color-offwhite;
+		}
+	}
+}
+
+.box--border {
+	border-bottom: 1px solid $color-border;
+	padding-bottom: $line-height-computed * 2;
+}
+
+.box--inset {
+	> .box__content {
+		background: $color-offwhite;
+		padding: 40px;
+	}
 }
 
 .box--page {

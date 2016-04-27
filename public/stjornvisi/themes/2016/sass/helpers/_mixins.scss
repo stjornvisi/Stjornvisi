@@ -1,5 +1,5 @@
 @mixin linkColorDefault {
-	@include transition(color .15s);
+	@include transition(all .15s);
 	color: $link-color;
 	&:hover {
 		color: $link-hover-color;
@@ -7,7 +7,7 @@
 }
 
 @mixin linkColorDark {
-	@include transition(color .15s);
+	@include transition(all .15s);
 	color: $color-text-dark;
 	&:hover {
 		color: $link-hover-color;
@@ -15,7 +15,7 @@
 }
 
 @mixin linkColorLight {
-	@include transition(color .15s);
+	@include transition(all .15s);
 	color: $color-white;
 	&:hover {
 		color: $color-text-light;
