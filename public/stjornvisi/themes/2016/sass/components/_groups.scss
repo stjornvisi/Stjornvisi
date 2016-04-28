@@ -107,7 +107,12 @@
 	.event__info,
 	.event__title,
 	.event__details,
-	.event__content {
+	.event__content,
+	.event__footer {
 		padding: 0 30px;
+	}
+
+	.event__footer {
+		padding-bottom: 10px;
 	}
 }

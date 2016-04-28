@@ -98,6 +98,7 @@ use Stjornvisi\Properties\FileProperties;
 														<? $i++; endforeach; ?>
 												</p>
 											</div>
+											<div class="event__footer">
 											<? if (null !== $this->identity) : ?>
 												<? if (null === $group->user_id) : ?>
 													<a href="<?=$this->url('hopur/register',array('id'=>$group->url,'type'=>1))?>" class="btn btn-default">Skrá mig í þennan hóp</a>
@@ -105,6 +106,8 @@ use Stjornvisi\Properties\FileProperties;
 													<a href="<?=$this->url('hopur/register',array('id'=>$group->url,'type'=>0))?>" class="btn btn-default">Afskrá mig úr þessum hóp</a>
 												<?php endif;?>
 											<? endif; ?>
+												<a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>" class="btn btn-primary">Skoða nánar</a>
+											</div>
 										<? endif; ?>
 									</div>
 								</div>

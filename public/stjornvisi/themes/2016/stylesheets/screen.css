@@ -8303,8 +8303,13 @@ form .checkbox label {
 .panel--groups .event__info,
 .panel--groups .event__title,
 .panel--groups .event__details,
-.panel--groups .event__content {
+.panel--groups .event__content,
+.panel--groups .event__footer {
   padding: 0 30px;
+}
+/* line 115, ../sass/components/_groups.scss */
+.panel--groups .event__footer {
+  padding-bottom: 10px;
 }
 
 /* line 2, ../sass/components/_auth.scss */
