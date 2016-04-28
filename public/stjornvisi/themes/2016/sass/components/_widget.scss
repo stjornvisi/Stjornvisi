@@ -1,0 +1,26 @@
+.widget-slider{
+	overflow: hidden;
+	.widget-slider__wrapper{
+		@include clearfix;
+		transition: margin-left .2s ease-in;
+	}
+	.widget-slider__slide{
+		float: left;
+	}
+}
+
+.company-connect{
+	.widget-slider__wrapper{
+		width: 400%;
+	}
+	.widget-slider__slide{
+		position: relative;
+		width: (100% / 4);
+	}
+
+	.company-connect__back-button{
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}

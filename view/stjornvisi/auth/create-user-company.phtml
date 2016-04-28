@@ -16,23 +16,21 @@
 				<li>3# Innskráning</li>
 			</ul>
 			<div class="box">
-
 				<div class="widget-slider company-connect">
 					<div class="widget-slider__wrapper" style="margin-left: -<?=$this->panel*100?>%">
 						<div class="widget-slider__slide">
-							<h1 class="layout__headline">Hvað passar best við þig?</h1>
+							<h2 class="layout__headline">Hvað passar best við þig?</h2>
 							<ul class="block-simple-list">
-								<li class=""><a href="#" data-slide="1"><i class="icon-chevron-right"></i> Ég er starfsmaður fyrirtækis</a></li>
-								<li class=""><a href="#" data-slide="2"><i class="icon-chevron-right"></i> Ég er háskólanemi</a></li>
-								<li class=""><a href="#" data-slide="3"><i class="icon-chevron-right"></i> Ég er einstaklingur</a></li>
+								<li class=""><a href="#" data-slide="1"><i class="fa fa-chevron-right"></i> Ég er starfsmaður fyrirtækis</a></li>
+								<li class=""><a href="#" data-slide="2"><i class="fa fa-chevron-right"></i> Ég er háskólanemi</a></li>
+								<li class=""><a href="#" data-slide="3"><i class="fa fa-chevron-right"></i> Ég er einstaklingur</a></li>
 							</ul>
 						</div>
 						<div class="widget-slider__slide">
 							<div>
-								<a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
-								<?php $this->companySelectForm->setAttribute('class', 'form-horizontal');?>
+								<a href="#" data-slide="0" class="company-connect__back-button"><i class="fa fa-chevron-left"></i></a>
 								<?=$this->form()->openTag($this->companySelectForm);?>
-								<h1 class="layout__headline">Ég er starfsmaður fyrirtækis</h1>
+								<h2 class="layout__headline">Ég er starfsmaður fyrirtækis</h2>
 								<p class="layout__sub-paragraph">Veldu fyrirtæki úr fellilistanum</p>
 								<div class="form-group">
 									<?=$this->formLabel($this->companySelectForm->get('company-select'));?>
@@ -46,11 +44,10 @@
 								</div>
 								<?= $this->form()->closeTag() ?>
 							</div>
-							<h1 class="layout__sepline">eða</h1>
+							<h3 class="layout__sepline">eða</h3>
 							<div>
-								<?php $this->companyForm->setAttribute('class', 'form-horizontal');?>
 								<?=$this->form()->openTag($this->companyForm);?>
-								<h1 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h1>
+								<h2 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h2>
 								<p class="layout__sub-paragraph">Þú þarft að stofna fyrirtækið</p>
 								<div class="form-group">
 									<?=$this->formLabel($this->companyForm->get('company-name'));?>
@@ -96,10 +93,9 @@
 							</div>
 						</div>
 						<div class="widget-slider__slide">
-							<a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
-							<?php $this->universitySelectForm->setAttribute('class', 'form-horizontal');?>
+							<a href="#" data-slide="0" class="company-connect__back-button"><i class="fa fa-chevron-left"></i></a>
 							<?=$this->form()->openTag($this->universitySelectForm);?>
-							<h1 class="layout__headline">Ég er háskólanemi</h1>
+							<h2 class="layout__headline">Ég er háskólanemi</h2>
 							<p>Vinsamlegast veldu skóla hér</p>
 							<div class="form-group">
 								<?=$this->formLabel($this->universitySelectForm->get('university-select'));?>
@@ -115,10 +111,9 @@
 
 						</div>
 						<div class="widget-slider__slide">
-							<a href="#" data-slide="0" class="company-connect__back-button"><i class="icon-chevron-left"></i></a>
-							<?php $this->individualForm->setAttribute('class', 'form-horizontal');?>
+							<a href="#" data-slide="0" class="company-connect__back-button"><i class="fa fa-chevron-left"></i></a>
 							<?=$this->form()->openTag($this->individualForm);?>
-							<h1 class="layout__headline">Ég er einstaklingur</h1>
+							<h2 class="layout__headline">Ég er einstaklingur</h2>
 							<p>Þá þarf ég að fá hjá þér kennitölu og heimilsfang</p>
 							<div class="form-group <?=(!empty($this->individualForm->get('person-ssn')->getMessages()))?'has-error':'';?> ">
 								<?=$this->formLabel($this->individualForm->get('person-ssn'));?>
@@ -147,27 +142,27 @@
 
 			</div>
 			<div class="box">
-				<div class="box__title"><h3>Hvað er þetta?</h3></div>
+				<div class="box__title"><h2>Hvað er þetta?</h2></div>
 				<div class="box__content">
 					<section class="user-create__help-section <?=($this->panel==0)?'user-create__help-section--active':'';?>" data-slide="0">
-						<h1 class="layout__headline">Fyrirtækjaupplýsingar</h1>
+						<h3 class="layout__headline">Fyrirtækjaupplýsingar</h3>
 						<p>Allir notendur verða að vera tengdir fyrirtæki eða stofnun.</p>
 						<p>Þú þarft að velja hér til vinstri hvaða fyrirtæki eða stofnun
 							þú vilt tengjast.</p>
 						<p><strong>Þú velur aðeins einn af þremur neðangreindum möguleikum</strong></p>
 					</section>
 					<section class="user-create__help-section <?=($this->panel==1)?'user-create__help-section--active':'';?>" data-slide="1">
-						<h2 class="layout__headline">1. Starfsmaður fyrirtækis</h2>
+						<h4 class="layout__headline">1. Starfsmaður fyrirtækis</h4>
 						<p>Ef þú ert starfsmaður fyrirtækis, þá velur þú það hér. Það getur verið
 							að fyrirtækið sé ekki á skrá, ef svo er þá stofnar þú það í leiðinni</p>
 					</section>
 					<section class="user-create__help-section <?=($this->panel==2)?'user-create__help-section--active':'';?>" data-slide="2">
-						<h2 class="layout__headline">2. Háskólanemi</h2>
+						<h4 class="layout__headline">2. Háskólanemi</h4>
 						<p>Stjónvísi hefur innan sinna vébanda flesta háskóla landsins. Ef þú ert
 							háskólanemi getur þú valið það hér.</p>
 					</section>
 					<section class="user-create__help-section <?=($this->panel==3)?'user-create__help-section--active':'';?>" data-slide="3">
-						<h2 class="layout__headline">3. Einstaklingur</h2>
+						<h4 class="layout__headline">3. Einstaklingur</h4>
 						<p>Sértu einstaklingur sem langar að taka þátt í starfsemi Stjónvísi
 							þá velur þú það hér.</p>
 					</section>

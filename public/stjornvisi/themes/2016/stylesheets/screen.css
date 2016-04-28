@@ -8553,3 +8553,41 @@ nav[role=navigation] .icon-mail:before {
   font-size: 32px;
   border-radius: 100%;
 }
+
+/* line 1, ../sass/components/_widget.scss */
+.widget-slider {
+  overflow: hidden;
+}
+/* line 3, ../sass/components/_widget.scss */
+.widget-slider .widget-slider__wrapper {
+  transition: margin-left .2s ease-in;
+}
+/* line 14, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.widget-slider .widget-slider__wrapper:before, .widget-slider .widget-slider__wrapper:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.widget-slider .widget-slider__wrapper:after {
+  clear: both;
+}
+/* line 7, ../sass/components/_widget.scss */
+.widget-slider .widget-slider__slide {
+  float: left;
+}
+
+/* line 13, ../sass/components/_widget.scss */
+.company-connect .widget-slider__wrapper {
+  width: 400%;
+}
+/* line 16, ../sass/components/_widget.scss */
+.company-connect .widget-slider__slide {
+  position: relative;
+  width: 25%;
+}
+/* line 21, ../sass/components/_widget.scss */
+.company-connect .company-connect__back-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
