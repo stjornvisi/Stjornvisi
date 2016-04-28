@@ -41,11 +41,13 @@
 		&.entry--has-image-left {
 			.entry__content {
 				@include make-sm-column(8);
+				@include make-sm-column-pull(0);
 				padding:0;
 			}
 
 			.entry__image {
 				@include make-sm-column(4);
+				@include make-sm-column-push(0);
 				@include clearfix;
 				padding-right: 30px;
 				padding-left: 0;

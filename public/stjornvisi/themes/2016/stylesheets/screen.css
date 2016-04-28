@@ -6700,7 +6700,7 @@ strong {
 }
 
 /*** TABLE ***/
-/* line 89, ../sass/components/_core.scss */
+/* line 88, ../sass/components/_core.scss */
 .block-table__date {
   white-space: nowrap;
 }
@@ -6715,16 +6715,16 @@ strong {
 .block_pagination:after {
   clear: both;
 }
-/* line 99, ../sass/components/_core.scss */
+/* line 98, ../sass/components/_core.scss */
 .block_pagination .block_pagination__item {
   float: left;
 }
-/* line 102, ../sass/components/_core.scss */
+/* line 101, ../sass/components/_core.scss */
 .block_pagination .block_pagination__link {
   display: block;
   padding: 5px 10px;
 }
-/* line 106, ../sass/components/_core.scss */
+/* line 105, ../sass/components/_core.scss */
 .block_pagination .block_pagination__link:hover,
 .block_pagination .block_pagination__link--active {
   background-color: #2b6786;
@@ -7922,7 +7922,13 @@ form .checkbox label {
     width: 66.66667%;
   }
 }
-/* line 47, ../sass/components/_news.scss */
+@media (min-width: 768px) {
+  /* line 42, ../sass/components/_news.scss */
+  .box--news .entry--has-image.entry--has-image-left .entry__content {
+    right: 0%;
+  }
+}
+/* line 48, ../sass/components/_news.scss */
 .box--news .entry--has-image.entry--has-image-left .entry__image {
   position: relative;
   min-height: 1px;
@@ -7933,10 +7939,16 @@ form .checkbox label {
   min-height: 100px;
 }
 @media (min-width: 768px) {
-  /* line 47, ../sass/components/_news.scss */
+  /* line 48, ../sass/components/_news.scss */
   .box--news .entry--has-image.entry--has-image-left .entry__image {
     float: left;
     width: 33.33333%;
+  }
+}
+@media (min-width: 768px) {
+  /* line 48, ../sass/components/_news.scss */
+  .box--news .entry--has-image.entry--has-image-left .entry__image {
+    left: 0%;
   }
 }
 /* line 14, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
@@ -7948,17 +7960,17 @@ form .checkbox label {
 .box--news .entry--has-image.entry--has-image-left .entry__image:after {
   clear: both;
 }
-/* line 54, ../sass/components/_news.scss */
+/* line 56, ../sass/components/_news.scss */
 .box--news .entry--has-image.entry--has-image-left .entry__image img {
   float: right;
 }
-/* line 61, ../sass/components/_news.scss */
+/* line 63, ../sass/components/_news.scss */
 .box--news .entry__info {
   color: #8d979c;
   display: block;
   margin-bottom: 10px;
 }
-/* line 68, ../sass/components/_news.scss */
+/* line 70, ../sass/components/_news.scss */
 .box--news .entry__title a {
   -webkit-transition: all 0.15s;
   -o-transition: all 0.15s;
@@ -7969,20 +7981,20 @@ form .checkbox label {
 .box--news .entry__title a:hover {
   color: #8d979c;
 }
-/* line 73, ../sass/components/_news.scss */
+/* line 75, ../sass/components/_news.scss */
 .box--news .entry__content {
   line-height: 1.2;
 }
-/* line 78, ../sass/components/_news.scss */
+/* line 80, ../sass/components/_news.scss */
 .box--news .entry--simple .entry__title {
   margin-bottom: 0;
 }
 
-/* line 85, ../sass/components/_news.scss */
+/* line 87, ../sass/components/_news.scss */
 .box--news-single .entry__date {
   color: #8d979c;
 }
-/* line 89, ../sass/components/_news.scss */
+/* line 91, ../sass/components/_news.scss */
 .box--news-single .entry__image {
   position: relative;
   min-height: 1px;
@@ -7993,19 +8005,19 @@ form .checkbox label {
   margin: 0 0 28px 28px;
 }
 @media (min-width: 768px) {
-  /* line 89, ../sass/components/_news.scss */
+  /* line 91, ../sass/components/_news.scss */
   .box--news-single .entry__image {
     float: left;
     width: 50%;
   }
 }
-/* line 96, ../sass/components/_news.scss */
+/* line 98, ../sass/components/_news.scss */
 .box--news-single .box__footer, .box--news-single .box__jip {
   border-top: 1px solid #dde0e1;
   border-bottom: 1px solid #dde0e1;
   padding: 8px 15px;
 }
-/* line 102, ../sass/components/_news.scss */
+/* line 104, ../sass/components/_news.scss */
 .box--news-single .addthis {
   float: right;
 }
