@@ -73,7 +73,10 @@ use Stjornvisi\Properties\FileProperties;
 										<i class="fa-stack-1x"><?=$group->event_count?></i>
 									</span>
 									<? endif; ?>
-									<? if (null !== $group->user_id) : ?>
+									<? if (null === $group->user_id) : ?>
+										<a href="<?=$this->url('hopur/register', array('id' => $group->url, 'type' => 1))?>"
+										   class="btn btn-default">Skrá í hóp</a>
+									<? else: ?>
 										<a href="<?=$this->url('hopur/register', array('id' => $group->url, 'type' => 0))?>"
 										   class="btn btn-default">Yfirgefa hóp</a>
 									<? endif ?>
@@ -132,12 +135,6 @@ use Stjornvisi\Properties\FileProperties;
 												</p>
 											</div>
 											<div class="event__footer">
-												<? if (null !== $this->identity) : ?>
-													<? if (null === $group->user_id) : ?>
-														<a href="<?=$this->url('hopur/register', array('id' => $group->url, 'type' => 1))?>"
-														   class="btn btn-default">Skrá mig í hópinn</a>
-													<?php endif; ?>
-												<? endif; ?>
 												<a href="<?=$this->url('hopur/index', array('id' => $group->url))?>"
 												   class="btn btn-primary">Skoða nánar</a>
 											</div>
