@@ -68,8 +68,10 @@
 
 		.btn {
 			@include transition(opacity .2s);
+			@include transition-delay(0);
 			opacity: 0;
-			float:right;
+			position:absolute;
+			right:0;
 			margin-top:-3px;
 			padding: 4px 14px;
 			color: $color-white;
@@ -90,6 +92,7 @@
 		}
 
 		.btn {
+			@include transition-delay(1s);
 			opacity: 1;
 		}
 	}

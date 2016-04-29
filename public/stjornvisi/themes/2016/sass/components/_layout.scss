@@ -453,6 +453,15 @@
 .entry--hoverable {
 	position: relative;
 
+	// select the last 10 elements
+	&:nth-last-child(-n+10) {
+		@media (min-width: $screen-md-min) {
+			.entry__content {
+				top: -260px;
+			}
+		}
+	}
+
 	.entry__title {
 		position: relative;
 		z-index: 11;

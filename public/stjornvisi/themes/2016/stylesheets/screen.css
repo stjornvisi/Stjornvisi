@@ -7356,26 +7356,32 @@ label.inline {
 .entry--hoverable {
   position: relative;
 }
-/* line 456, ../sass/components/_layout.scss */
+@media (min-width: 992px) {
+  /* line 459, ../sass/components/_layout.scss */
+  .entry--hoverable:nth-last-child(-n+10) .entry__content {
+    top: -260px;
+  }
+}
+/* line 465, ../sass/components/_layout.scss */
 .entry--hoverable .entry__title {
   position: relative;
   z-index: 11;
 }
-/* line 461, ../sass/components/_layout.scss */
+/* line 470, ../sass/components/_layout.scss */
 .entry--hoverable.open {
   z-index: 10;
 }
-/* line 464, ../sass/components/_layout.scss */
+/* line 473, ../sass/components/_layout.scss */
 .entry--hoverable.open .entry__content {
   opacity: 1;
 }
 @media (max-width: 991px) {
-  /* line 464, ../sass/components/_layout.scss */
+  /* line 473, ../sass/components/_layout.scss */
   .entry--hoverable.open .entry__content {
     display: block;
   }
 }
-/* line 473, ../sass/components/_layout.scss */
+/* line 482, ../sass/components/_layout.scss */
 .entry--hoverable .entry__content {
   -webkit-transition: opacity 0.2s;
   -o-transition: opacity 0.2s;
@@ -7384,7 +7390,7 @@ label.inline {
   opacity: 0;
 }
 @media (max-width: 991px) {
-  /* line 473, ../sass/components/_layout.scss */
+  /* line 482, ../sass/components/_layout.scss */
   .entry--hoverable .entry__content {
     display: none;
     margin-top: -10px;
@@ -7392,7 +7398,7 @@ label.inline {
   }
 }
 @media (min-width: 992px) {
-  /* line 473, ../sass/components/_layout.scss */
+  /* line 482, ../sass/components/_layout.scss */
   .entry--hoverable .entry__content {
     position: absolute;
     z-index: 2;
@@ -7403,46 +7409,46 @@ label.inline {
 }
 
 /*** EVENT **/
-/* line 500, ../sass/components/_layout.scss */
+/* line 509, ../sass/components/_layout.scss */
 .event__label {
   color: #669933;
   margin-bottom: 28px;
 }
-/* line 504, ../sass/components/_layout.scss */
+/* line 513, ../sass/components/_layout.scss */
 .event__label h4 {
   font-size: 22px;
   margin: 0;
 }
-/* line 509, ../sass/components/_layout.scss */
+/* line 518, ../sass/components/_layout.scss */
 .event__label .fa {
   margin-right: 10px;
 }
 
-/* line 514, ../sass/components/_layout.scss */
+/* line 523, ../sass/components/_layout.scss */
 .event__info {
   font-size: 18px;
   font-weight: 600;
   color: #2b6786;
 }
-/* line 519, ../sass/components/_layout.scss */
+/* line 528, ../sass/components/_layout.scss */
 .event__info .separator {
   margin: 0 10px;
 }
-/* line 523, ../sass/components/_layout.scss */
+/* line 532, ../sass/components/_layout.scss */
 .event__info .event__time {
   color: #990000;
 }
 
-/* line 528, ../sass/components/_layout.scss */
+/* line 537, ../sass/components/_layout.scss */
 .event__title {
   margin-bottom: 28px;
 }
-/* line 531, ../sass/components/_layout.scss */
+/* line 540, ../sass/components/_layout.scss */
 .event__title h5 {
   font-size: 20px;
   margin: 0;
 }
-/* line 536, ../sass/components/_layout.scss */
+/* line 545, ../sass/components/_layout.scss */
 .event__title a {
   -webkit-transition: all 0.15s;
   -o-transition: all 0.15s;
@@ -7454,11 +7460,11 @@ label.inline {
   color: #8d979c;
 }
 
-/* line 541, ../sass/components/_layout.scss */
+/* line 550, ../sass/components/_layout.scss */
 .event__details {
   margin-bottom: 28px;
 }
-/* line 544, ../sass/components/_layout.scss */
+/* line 553, ../sass/components/_layout.scss */
 .event__details h4 {
   color: #1b3e59;
   font-size: 24px;
@@ -7467,14 +7473,14 @@ label.inline {
   border-bottom: 1px solid #dde0e1;
 }
 
-/* line 553, ../sass/components/_layout.scss */
+/* line 562, ../sass/components/_layout.scss */
 .event__count {
   float: right;
   font-size: 16px;
   color: #acacac;
 }
 
-/* line 560, ../sass/components/_layout.scss */
+/* line 569, ../sass/components/_layout.scss */
 .event__content h4 {
   color: #1b3e59;
   font-size: 24px;
@@ -7483,7 +7489,7 @@ label.inline {
   border-bottom: 1px solid #dde0e1;
 }
 
-/* line 569, ../sass/components/_layout.scss */
+/* line 578, ../sass/components/_layout.scss */
 .event__summary {
   background: #f4f7f9;
   min-height: 34px;
@@ -8325,39 +8331,44 @@ form .checkbox label {
   -webkit-transition: opacity 0.2s;
   -o-transition: opacity 0.2s;
   transition: opacity 0.2s;
+  -webkit-transition-delay: 0;
+  transition-delay: 0;
   opacity: 0;
-  float: right;
+  position: absolute;
+  right: 0;
   margin-top: -3px;
   padding: 4px 14px;
   color: #fff;
 }
-/* line 76, ../sass/components/_groups.scss */
+/* line 78, ../sass/components/_groups.scss */
 .panel--groups .entry__title .btn:hover, .panel--groups .entry__title .btn-facebook:hover {
   color: #f4f7f9;
 }
-/* line 83, ../sass/components/_groups.scss */
+/* line 85, ../sass/components/_groups.scss */
 .panel--groups .open .entry__title {
   background-color: #f4f7f9;
 }
-/* line 86, ../sass/components/_groups.scss */
+/* line 88, ../sass/components/_groups.scss */
 .panel--groups .open .entry__title h4 {
   font-weight: 600;
   color: #1b3e59;
 }
-/* line 92, ../sass/components/_groups.scss */
+/* line 94, ../sass/components/_groups.scss */
 .panel--groups .open .btn, .panel--groups .open .btn-facebook {
+  -webkit-transition-delay: 1s;
+  transition-delay: 1s;
   opacity: 1;
 }
-/* line 97, ../sass/components/_groups.scss */
+/* line 100, ../sass/components/_groups.scss */
 .panel--groups .entry__content {
   background: #fff;
 }
-/* line 101, ../sass/components/_groups.scss */
+/* line 104, ../sass/components/_groups.scss */
 .panel--groups .event {
   border: 2px solid rgba(43, 103, 134, 0.25);
   border-top: 0;
 }
-/* line 106, ../sass/components/_groups.scss */
+/* line 109, ../sass/components/_groups.scss */
 .panel--groups .event__summary {
   padding: 10px 30px;
   margin-bottom: 28px;
@@ -8380,11 +8391,11 @@ form .checkbox label {
 .panel--groups .event__details .fa-stack-2x {
   font-size: 22px;
 }
-/* line 113, ../sass/components/_groups.scss */
+/* line 116, ../sass/components/_groups.scss */
 .panel--groups .event__details .fa-stack {
   margin-right: 5px;
 }
-/* line 118, ../sass/components/_groups.scss */
+/* line 121, ../sass/components/_groups.scss */
 .panel--groups .event__label,
 .panel--groups .event__info,
 .panel--groups .event__title,
@@ -8393,19 +8404,19 @@ form .checkbox label {
 .panel--groups .event__footer {
   padding: 0 30px;
 }
-/* line 127, ../sass/components/_groups.scss */
+/* line 130, ../sass/components/_groups.scss */
 .panel--groups .event__content {
   font-size: 16px;
 }
-/* line 130, ../sass/components/_groups.scss */
+/* line 133, ../sass/components/_groups.scss */
 .panel--groups .event__content a {
   color: #8d979c;
 }
-/* line 132, ../sass/components/_groups.scss */
+/* line 135, ../sass/components/_groups.scss */
 .panel--groups .event__content a:hover {
   color: #2b6786;
 }
-/* line 138, ../sass/components/_groups.scss */
+/* line 141, ../sass/components/_groups.scss */
 .panel--groups .event__footer {
   padding-bottom: 10px;
 }
