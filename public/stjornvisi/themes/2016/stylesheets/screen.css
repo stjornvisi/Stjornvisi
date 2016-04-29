@@ -6641,8 +6641,13 @@ strong {
   font-weight: 600;
 }
 
+/* line 28, ../sass/components/_core.scss */
+label.inline {
+  width: 250px;
+}
+
 /*** BUTTONS ***/
-/* line 29, ../sass/components/_core.scss */
+/* line 35, ../sass/components/_core.scss */
 .btn, .btn-facebook {
   -webkit-transition: all 0.15s;
   -o-transition: all 0.15s;
@@ -6652,19 +6657,19 @@ strong {
   padding: 8px 15px;
   font-size: 16px;
 }
-/* line 36, ../sass/components/_core.scss */
+/* line 42, ../sass/components/_core.scss */
 .btn .fa, .btn-facebook .fa {
   padding: 0 5px;
 }
 
-/* line 40, ../sass/components/_core.scss */
+/* line 46, ../sass/components/_core.scss */
 .btn-facebook {
   background-color: #3b5998;
   border-color: #3b5998;
 }
 
 /*** STEPPER ***/
-/* line 51, ../sass/components/_core.scss */
+/* line 57, ../sass/components/_core.scss */
 .stepper {
   display: none;
   width: 100%;
@@ -6672,35 +6677,35 @@ strong {
   padding: 10px;
   margin-bottom: 28px;
 }
-/* line 60, ../sass/components/_core.scss */
+/* line 66, ../sass/components/_core.scss */
 .stepper li {
   display: table-cell;
   width: 1%;
   text-align: center;
 }
-/* line 66, ../sass/components/_core.scss */
+/* line 72, ../sass/components/_core.scss */
 .stepper .stepper--current {
   font-weight: 600;
 }
 
 /*** LIST ***/
-/* line 73, ../sass/components/_core.scss */
+/* line 79, ../sass/components/_core.scss */
 .list {
   padding-left: 40px;
 }
 
-/* line 77, ../sass/components/_core.scss */
+/* line 83, ../sass/components/_core.scss */
 .list__item {
   display: list-item;
   list-style-type: disc;
 }
-/* line 81, ../sass/components/_core.scss */
+/* line 87, ../sass/components/_core.scss */
 .list__item .list__item {
   list-style-type: circle;
 }
 
 /*** TABLE ***/
-/* line 88, ../sass/components/_core.scss */
+/* line 94, ../sass/components/_core.scss */
 .block-table__date {
   white-space: nowrap;
 }
@@ -6715,16 +6720,16 @@ strong {
 .block_pagination:after {
   clear: both;
 }
-/* line 98, ../sass/components/_core.scss */
+/* line 104, ../sass/components/_core.scss */
 .block_pagination .block_pagination__item {
   float: left;
 }
-/* line 101, ../sass/components/_core.scss */
+/* line 107, ../sass/components/_core.scss */
 .block_pagination .block_pagination__link {
   display: block;
   padding: 5px 10px;
 }
-/* line 105, ../sass/components/_core.scss */
+/* line 111, ../sass/components/_core.scss */
 .block_pagination .block_pagination__link:hover,
 .block_pagination .block_pagination__link--active {
   background-color: #2b6786;
@@ -6933,7 +6938,7 @@ strong {
 .panel--inset {
   border-top: 1px solid #dde0e1;
   border-bottom: 1px solid #dde0e1;
-  background-color: #f7f7f7;
+  background-color: #f4f7f9;
 }
 
 /* line 102, ../sass/components/_layout.scss */
@@ -7136,7 +7141,7 @@ strong {
 }
 /* line 283, ../sass/components/_layout.scss */
 .box__jip .btn:hover, .box__jip .btn-facebook:hover {
-  color: #f7f7f7;
+  color: #f4f7f9;
 }
 
 /* line 289, ../sass/components/_layout.scss */
@@ -7147,7 +7152,7 @@ strong {
 
 /* line 295, ../sass/components/_layout.scss */
 .box--inset > .box__content {
-  background: #f7f7f7;
+  background: #f4f7f9;
   padding: 40px;
 }
 
@@ -7354,72 +7359,92 @@ strong {
 /* line 456, ../sass/components/_layout.scss */
 .entry--hoverable .entry__title {
   position: relative;
+  z-index: 11;
 }
 /* line 461, ../sass/components/_layout.scss */
-.entry--hoverable.open .entry__title {
+.entry--hoverable.open {
   z-index: 10;
 }
 /* line 464, ../sass/components/_layout.scss */
 .entry--hoverable.open .entry__content {
-  display: block;
+  opacity: 1;
 }
-/* line 469, ../sass/components/_layout.scss */
+@media (max-width: 991px) {
+  /* line 464, ../sass/components/_layout.scss */
+  .entry--hoverable.open .entry__content {
+    display: block;
+  }
+}
+/* line 473, ../sass/components/_layout.scss */
 .entry--hoverable .entry__content {
+  -webkit-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  transition: opacity 0.2s;
   overflow: hidden;
-  display: none;
+  opacity: 0;
+}
+@media (max-width: 991px) {
+  /* line 473, ../sass/components/_layout.scss */
+  .entry--hoverable .entry__content {
+    display: none;
+    margin-top: -10px;
+    margin-bottom: 28px;
+  }
 }
 @media (min-width: 992px) {
-  /* line 469, ../sass/components/_layout.scss */
+  /* line 473, ../sass/components/_layout.scss */
   .entry--hoverable .entry__content {
     position: absolute;
     z-index: 2;
-    margin-left: -99.8%;
     top: 0;
+    right: -99.5%;
     width: 100%;
   }
 }
 
 /*** EVENT **/
-/* line 489, ../sass/components/_layout.scss */
+/* line 500, ../sass/components/_layout.scss */
 .event__label {
   color: #669933;
   margin-bottom: 28px;
 }
-/* line 493, ../sass/components/_layout.scss */
+/* line 504, ../sass/components/_layout.scss */
 .event__label h4 {
   font-size: 22px;
   margin: 0;
 }
-/* line 498, ../sass/components/_layout.scss */
+/* line 509, ../sass/components/_layout.scss */
 .event__label .fa {
   margin-right: 10px;
 }
 
-/* line 503, ../sass/components/_layout.scss */
+/* line 514, ../sass/components/_layout.scss */
 .event__info {
   font-size: 18px;
   font-weight: 600;
   color: #2b6786;
 }
-/* line 508, ../sass/components/_layout.scss */
+/* line 519, ../sass/components/_layout.scss */
 .event__info .separator {
   margin: 0 10px;
 }
-/* line 512, ../sass/components/_layout.scss */
+/* line 523, ../sass/components/_layout.scss */
 .event__info .event__time {
   color: #990000;
 }
 
-/* line 517, ../sass/components/_layout.scss */
+/* line 528, ../sass/components/_layout.scss */
 .event__title {
   margin-bottom: 28px;
 }
-/* line 520, ../sass/components/_layout.scss */
+/* line 531, ../sass/components/_layout.scss */
 .event__title h5 {
   font-size: 20px;
   margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dde0e1;
 }
-/* line 525, ../sass/components/_layout.scss */
+/* line 538, ../sass/components/_layout.scss */
 .event__title a {
   -webkit-transition: all 0.15s;
   -o-transition: all 0.15s;
@@ -7431,12 +7456,12 @@ strong {
   color: #8d979c;
 }
 
-/* line 530, ../sass/components/_layout.scss */
+/* line 543, ../sass/components/_layout.scss */
 .event__details {
   margin-bottom: 28px;
 }
 
-/* line 535, ../sass/components/_layout.scss */
+/* line 548, ../sass/components/_layout.scss */
 .event__content h4 {
   color: #1b3e59;
   font-size: 24px;
@@ -7445,11 +7470,13 @@ strong {
   border-bottom: 1px solid #dde0e1;
 }
 
-/* line 544, ../sass/components/_layout.scss */
+/* line 557, ../sass/components/_layout.scss */
 .event__summary {
-  background: #f7f7f7;
+  background: #f4f7f9;
   min-height: 34px;
-  font-size: 16px;
+  font-size: 15px;
+  color: #000;
+  text-align: right;
 }
 
 /* line 3, ../sass/components/_form.scss */
@@ -8046,12 +8073,23 @@ form .checkbox label {
   border-bottom: 1px solid #dde0e1;
   margin-bottom: 0;
 }
+/* line 12, ../sass/components/_events.scss */
+.box--events .entry__title a {
+  -webkit-transition: all 0.15s;
+  -o-transition: all 0.15s;
+  transition: all 0.15s;
+  color: #000;
+}
+/* line 24, ../sass/helpers/_mixins.scss */
+.box--events .entry__title a:hover {
+  color: #8d979c;
+}
 @media (max-width: 767px) {
   /* line 7, ../sass/components/_events.scss */
   .box--events .entry__title {
     padding: 0;
   }
-  /* line 15, ../sass/components/_events.scss */
+  /* line 19, ../sass/components/_events.scss */
   .box--events .entry__title h3 {
     font-size: 20px;
     padding: 15px;
@@ -8063,20 +8101,20 @@ form .checkbox label {
     padding: 20px 30px 0;
     overflow: hidden;
   }
-  /* line 25, ../sass/components/_events.scss */
+  /* line 29, ../sass/components/_events.scss */
   .box--events .entry__title h3 {
     font-size: 24px;
   }
 }
 @media (max-width: 767px) {
-  /* line 31, ../sass/components/_events.scss */
+  /* line 35, ../sass/components/_events.scss */
   .box--events .entry__date {
     border-bottom: 1px solid #dde0e1;
     padding: 15px 15px 10px;
   }
 }
 @media (min-width: 480px) {
-  /* line 31, ../sass/components/_events.scss */
+  /* line 35, ../sass/components/_events.scss */
   .box--events .entry__date {
     float: left;
     width: 80px;
@@ -8086,31 +8124,31 @@ form .checkbox label {
     border-right: 1px solid #dde0e1;
     line-height: 1.2;
   }
-  /* line 46, ../sass/components/_events.scss */
+  /* line 50, ../sass/components/_events.scss */
   .box--events .entry__date span {
     display: block;
   }
 }
-/* line 51, ../sass/components/_events.scss */
+/* line 55, ../sass/components/_events.scss */
 .box--events .entry__date .day {
   font-size: 40px;
   font-weight: 600;
   color: #2b6786;
 }
-/* line 56, ../sass/components/_events.scss */
+/* line 60, ../sass/components/_events.scss */
 .box--events .entry__date .month {
   font-size: 18px;
   font-weight: 600;
   color: #2b6786;
   text-transform: uppercase;
 }
-/* line 62, ../sass/components/_events.scss */
+/* line 66, ../sass/components/_events.scss */
 .box--events .entry__date .year {
   font-size: 18px;
   font-weight: 600;
   color: #8d979c;
 }
-/* line 69, ../sass/components/_events.scss */
+/* line 73, ../sass/components/_events.scss */
 .box--events .entry__content,
 .box--events .entry__image {
   position: relative;
@@ -8120,7 +8158,7 @@ form .checkbox label {
   padding-left: 15px;
   padding-right: 15px;
 }
-/* line 74, ../sass/components/_events.scss */
+/* line 78, ../sass/components/_events.scss */
 .box--events .entry__info {
   color: #2b6786;
   font-weight: 600;
@@ -8128,31 +8166,31 @@ form .checkbox label {
   margin-bottom: 10px;
 }
 @media (max-width: 767px) {
-  /* line 74, ../sass/components/_events.scss */
+  /* line 78, ../sass/components/_events.scss */
   .box--events .entry__info {
     padding: 0 15px;
     font-size: 14px;
   }
 }
 @media (min-width: 480px) and (max-width: 767px) {
-  /* line 74, ../sass/components/_events.scss */
+  /* line 78, ../sass/components/_events.scss */
   .box--events .entry__info {
     margin-left: 90px;
   }
 }
 @media (min-width: 768px) {
-  /* line 74, ../sass/components/_events.scss */
+  /* line 78, ../sass/components/_events.scss */
   .box--events .entry__info {
     font-size: 16px;
   }
 }
-/* line 93, ../sass/components/_events.scss */
+/* line 97, ../sass/components/_events.scss */
 .box--events .entry__info .fa {
   color: #8d979c;
   margin-right: 5px;
 }
 @media (max-width: 767px) {
-  /* line 98, ../sass/components/_events.scss */
+  /* line 102, ../sass/components/_events.scss */
   .box--events .entry__info .separator {
     font: 0/0 a;
     color: transparent;
@@ -8163,17 +8201,17 @@ form .checkbox label {
   }
 }
 @media (min-width: 768px) {
-  /* line 98, ../sass/components/_events.scss */
+  /* line 102, ../sass/components/_events.scss */
   .box--events .entry__info .separator {
     margin: 0 10px;
   }
 }
-/* line 110, ../sass/components/_events.scss */
+/* line 114, ../sass/components/_events.scss */
 .box--events .entry__content {
   line-height: 1.2;
   padding: 20px;
 }
-/* line 114, ../sass/components/_events.scss */
+/* line 118, ../sass/components/_events.scss */
 .box--events .entry__content .btn, .box--events .entry__content .btn-facebook {
   margin: 15px 10px 0 0;
 }
@@ -8230,75 +8268,131 @@ form .checkbox label {
 }
 /* line 40, ../sass/components/_groups.scss */
 .panel--groups .entry__title {
+  -webkit-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  transition: background-color 0.2s;
   margin-bottom: 10px;
-  border-top: 1px solid transparent;
-  border-bottom: 1px solid transparent;
 }
 @media (min-width: 992px) {
-  /* line 45, ../sass/components/_groups.scss */
+  /* line 44, ../sass/components/_groups.scss */
   .panel--groups .entry__title .entry__status {
     padding-left: 15px;
   }
 }
-/* line 51, ../sass/components/_groups.scss */
+/* line 50, ../sass/components/_groups.scss */
 .panel--groups .entry__title h3 {
   font-size: 32px;
   color: #1b3e59;
 }
-/* line 56, ../sass/components/_groups.scss */
+/* line 55, ../sass/components/_groups.scss */
 .panel--groups .entry__title h4 {
   font-size: 24px;
   color: #505d62;
   margin: 0;
   padding: 4px 0;
 }
+/* line 61, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4 > a {
+  color: #505d62;
+}
+/* line 63, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4 > a:hover {
+  color: #2b6786;
+}
 @media (min-width: 992px) {
-  /* line 56, ../sass/components/_groups.scss */
+  /* line 55, ../sass/components/_groups.scss */
   .panel--groups .entry__title h4 {
     padding: 4px 15px;
   }
 }
-/* line 66, ../sass/components/_groups.scss */
+/* line 38, ../sass/helpers/_mixins.scss */
 .panel--groups .entry__title h4 .fa-stack {
   color: #669933;
   height: 1em;
+  width: 1em;
   line-height: 1;
+  vertical-align: baseline;
 }
-/* line 71, ../sass/components/_groups.scss */
+/* line 45, ../sass/helpers/_mixins.scss */
 .panel--groups .entry__title h4 .fa-stack-1x {
   font-size: 12px;
   font-weight: 600;
   margin-top: 8px;
 }
-/* line 76, ../sass/components/_groups.scss */
+/* line 50, ../sass/helpers/_mixins.scss */
 .panel--groups .entry__title h4 .fa-stack-2x {
   font-size: 22px;
 }
-/* line 83, ../sass/components/_groups.scss */
-.panel--groups .open .entry__title {
-  border: 1px solid #1b3e59;
-  background-color: #f7f7f7;
+/* line 73, ../sass/components/_groups.scss */
+.panel--groups .entry__title h4 .fa-stack {
+  margin-left: 5px;
 }
-@media (min-width: 992px) {
-  /* line 83, ../sass/components/_groups.scss */
-  .panel--groups .open .entry__title {
-    border-left: 0;
-  }
+/* line 78, ../sass/components/_groups.scss */
+.panel--groups .entry__title .btn, .panel--groups .entry__title .btn-facebook {
+  float: right;
+  margin-top: -3px;
+  padding: 4px 14px;
+  color: #fff;
+}
+/* line 83, ../sass/components/_groups.scss */
+.panel--groups .entry__title .btn:hover, .panel--groups .entry__title .btn-facebook:hover {
+  color: #f4f7f9;
+}
+/* line 90, ../sass/components/_groups.scss */
+.panel--groups .open .entry__title {
+  background-color: #f4f7f9;
 }
 /* line 93, ../sass/components/_groups.scss */
+.panel--groups .open .entry__title h4 {
+  font-weight: 600;
+  color: #1b3e59;
+}
+/* line 100, ../sass/components/_groups.scss */
 .panel--groups .entry__content {
   background: #fff;
 }
-/* line 97, ../sass/components/_groups.scss */
+/* line 104, ../sass/components/_groups.scss */
 .panel--groups .event {
-  border: 1px solid #1b3e59;
+  border: 2px solid #2b6786;
+  border-top: 0;
 }
-/* line 101, ../sass/components/_groups.scss */
+/* line 109, ../sass/components/_groups.scss */
 .panel--groups .event__summary {
   padding: 10px 30px;
   margin-bottom: 28px;
 }
-/* line 106, ../sass/components/_groups.scss */
+/* line 38, ../sass/helpers/_mixins.scss */
+.panel--groups .event__details .fa-stack {
+  color: #669933;
+  height: 1em;
+  width: 1em;
+  line-height: 1;
+  vertical-align: baseline;
+}
+/* line 45, ../sass/helpers/_mixins.scss */
+.panel--groups .event__details .fa-stack-1x {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+/* line 50, ../sass/helpers/_mixins.scss */
+.panel--groups .event__details .fa-stack-2x {
+  font-size: 22px;
+}
+/* line 116, ../sass/components/_groups.scss */
+.panel--groups .event__details .fa-stack {
+  margin-right: 5px;
+}
+/* line 119, ../sass/components/_groups.scss */
+.panel--groups .event__details a {
+  font-size: 18px;
+  color: #acacac;
+}
+/* line 122, ../sass/components/_groups.scss */
+.panel--groups .event__details a:hover {
+  color: #2b6786;
+}
+/* line 128, ../sass/components/_groups.scss */
 .panel--groups .event__label,
 .panel--groups .event__info,
 .panel--groups .event__title,
@@ -8307,7 +8401,19 @@ form .checkbox label {
 .panel--groups .event__footer {
   padding: 0 30px;
 }
-/* line 115, ../sass/components/_groups.scss */
+/* line 137, ../sass/components/_groups.scss */
+.panel--groups .event__content {
+  font-size: 16px;
+}
+/* line 140, ../sass/components/_groups.scss */
+.panel--groups .event__content a {
+  color: #8d979c;
+}
+/* line 142, ../sass/components/_groups.scss */
+.panel--groups .event__content a:hover {
+  color: #2b6786;
+}
+/* line 148, ../sass/components/_groups.scss */
 .panel--groups .event__footer {
   padding-bottom: 10px;
 }
@@ -8379,12 +8485,22 @@ stjornvisi-rich nav a:before {
   color: #000;
 }
 
-/* line 48, ../sass/components/_admin.scss */
+/* line 47, ../sass/components/_admin.scss */
+.page-group__members-item stjonvisi-control {
+  background-color: #fff;
+  display: none;
+}
+/* line 53, ../sass/components/_admin.scss */
+.page-group__members-item:hover stjonvisi-control {
+  display: block;
+}
+
+/* line 61, ../sass/components/_admin.scss */
 body.state-login main[role=main] {
   margin-left: 80px;
 }
 
-/* line 53, ../sass/components/_admin.scss */
+/* line 66, ../sass/components/_admin.scss */
 nav[role=navigation] {
   background-color: #2b6786;
   transform: translate3d(-270px, 0, 0);
@@ -8396,51 +8512,51 @@ nav[role=navigation] {
   height: 100%;
   overflow: hidden;
 }
-/* line 64, ../sass/components/_admin.scss */
+/* line 77, ../sass/components/_admin.scss */
 body.state-open nav[role=navigation] {
   transform: translate3d(0, 0, 0);
 }
-/* line 68, ../sass/components/_admin.scss */
+/* line 81, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation__wrapper {
   width: 270px;
   overflow: hidden;
   float: left;
   position: relative;
 }
-/* line 75, ../sass/components/_admin.scss */
+/* line 88, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation {
   position: relative;
   z-index: 5;
   width: 400%;
 }
-/* line 80, ../sass/components/_admin.scss */
+/* line 93, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation > li {
   padding: 30px 15px;
   float: left;
   width: 25%;
 }
-/* line 85, ../sass/components/_admin.scss */
+/* line 98, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation > li a {
   display: block;
   color: #fff;
   font-size: 16px;
   padding: 0 15px;
 }
-/* line 91, ../sass/components/_admin.scss */
+/* line 104, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation > li a:hover {
   background-color: #255873;
 }
-/* line 97, ../sass/components/_admin.scss */
+/* line 110, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation ul ul a {
   padding-left: 30px;
 }
-/* line 101, ../sass/components/_admin.scss */
+/* line 114, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation .headline {
   display: block;
   margin-bottom: 28px;
-  border-bottom: 1px solid #f7f7f7;
+  border-bottom: 1px solid #f4f7f9;
 }
-/* line 108, ../sass/components/_admin.scss */
+/* line 121, ../sass/components/_admin.scss */
 nav[role=navigation] .categories {
   background-color: #222;
   position: relative;
@@ -8449,7 +8565,7 @@ nav[role=navigation] .categories {
   width: 80px;
   height: 100%;
 }
-/* line 116, ../sass/components/_admin.scss */
+/* line 129, ../sass/components/_admin.scss */
 nav[role=navigation] .categories a {
   -webkit-transition: all 0.2s;
   -o-transition: all 0.2s;
@@ -8463,43 +8579,43 @@ nav[role=navigation] .categories a {
   color: #fff;
   border-bottom: 1px solid #505d62;
 }
-/* line 130, ../sass/components/_admin.scss */
+/* line 143, ../sass/components/_admin.scss */
 nav[role=navigation] .categories__item:hover {
   background-color: #2b6786;
 }
-/* line 133, ../sass/components/_admin.scss */
+/* line 146, ../sass/components/_admin.scss */
 nav[role=navigation] .categories__item.active {
   background-color: #2b6786;
 }
-/* line 138, ../sass/components/_admin.scss */
+/* line 151, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home {
   background-color: #669933;
 }
-/* line 140, ../sass/components/_admin.scss */
+/* line 153, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home:hover {
   background-color: #669933;
 }
-/* line 143, ../sass/components/_admin.scss */
+/* line 156, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 150, ../sass/components/_admin.scss */
+/* line 163, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--groups:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 157, ../sass/components/_admin.scss */
+/* line 170, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--users:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 164, ../sass/components/_admin.scss */
+/* line 177, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--config:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 174, ../sass/components/_admin.scss */
+/* line 187, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-bar-chart:before,
 nav[role=navigation] .icon-plus:before,
 nav[role=navigation] .icon-list:before,
@@ -8508,19 +8624,19 @@ nav[role=navigation] .icon-mail:before {
   font-family: FontAwesome;
   margin-right: 5px;
 }
-/* line 181, ../sass/components/_admin.scss */
+/* line 194, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-bar-chart:before {
   content: "";
 }
-/* line 185, ../sass/components/_admin.scss */
+/* line 198, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-plus:before {
   content: "";
 }
-/* line 189, ../sass/components/_admin.scss */
+/* line 202, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-list:before {
   content: "";
 }
-/* line 193, ../sass/components/_admin.scss */
+/* line 206, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-mail:before {
   content: "";
 }

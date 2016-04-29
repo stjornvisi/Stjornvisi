@@ -7,8 +7,10 @@
  */
 
 use Stjornvisi\Properties\FileProperties;
+
 ?>
 
+<?if (!isset($this->skipBreadcrumbs)):?>
 <div class="panel panel--breadcrumbs">
 	<div class="panel__container">
 		<div class="panel__content">
@@ -22,6 +24,7 @@ use Stjornvisi\Properties\FileProperties;
 		</div>
 	</div>
 </div>
+<?endif?>
 
 <div class="panel panel--groups">
 	<div class="panel__container">
@@ -33,87 +36,116 @@ use Stjornvisi\Properties\FileProperties;
 						<li><i class="fa fa-calendar-o"></i>Einn eða fleiri viðburðir síðustu 3 mánuði</li>
 						<li><i class="fa fa-check"></i>Þínir hópar</li>
 					</ul>
-					<div class="entry">
-						<div class="entry__title"><h3>Kjarnastarf Stjórnvísis fer fram í þeim <?=count($this->groups_all)?> faghópum sem eru starfandi innan félagsins á jafnmjörgum sviðum stjórnunar.</h3></div>
-						<div class="entry__content">
-							<p>Tail strip steak salami, ball tip jerky tenderloin meatball. Shankle turkey shank, venison strip steak alcatra pastrami. Shankle alcatra porchetta cow drumstick kielbasa, turkey pork chop beef leberkas andouille rump pig.</p>
-							<p>Flank swine alcatra bacon chicken beef kielbasa pork loin ham doner turducken ham hock pork beef ribs chuck. Andouille capicola strip steak pancetta fatback salami spare ribs kevin brisket drumstick beef ribs pastrami.</p>
-							<p>T-bone pig venison, landjaeger alcatra turkey turducken short ribs ham hock kevin andouille pork chop prosciutto sirloin. Andouille tenderloin beef ribs, brisket alcatra chuck pork turkey sausage flank ball tip.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="box">
-				<div class="box__content">
-					<?foreach ($this->groups_all as $group) : ?>
+
+					<? foreach ($this->groups_all as $group) : ?>
 						<div class="entry entry--hoverable">
 							<div class="entry__title">
 								<div class="entry__status">
 									<i class="fa<?=(null !== $group->user_id) ? ' fa-check' : ''?>"></i>
 								</div>
 								<h4>
-									<?=$group->name_short?>
-									<? if ($group->event_count > 0 ): ?>
+									<a href="<?=$this->url('hopur/index', array('id' => $group->url))?>"><?=$group->name_short?></a>
+									<? if ($group->event_count > 0): ?>
 										<span class="fa-stack">
-									<i class="fa fa-calendar-o fa-stack-2x"></i>
-									<i class="fa-stack-1x"><?=$group->event_count?></i>
-								</span>
+										<i class="fa fa-calendar-o fa-stack-2x"></i>
+										<i class="fa-stack-1x"><?=$group->event_count?></i>
+									</span>
 									<? endif; ?>
+									<? if (null !== $group->user_id) : ?>
+										<a href="<?=$this->url('hopur/register', array('id' => $group->url, 'type' => 0))?>"
+										   class="btn btn-default">Yfirgefa hóp</a>
+									<? endif ?>
 								</h4>
 							</div>
-							<? if (count($group->events) || $group->event_count || count($group->board)) :?>
+							<? if (count($group->events) || $group->event_count || count($group->board)) : ?>
 								<div class="entry__content">
 									<div class="event">
 										<div class="event__summary"><?=$group->summary?></div>
 										<? if (count($group->events)) : ?>
-											<? /** @var \Stjornvisi\Service\Event $nextEvent */ $nextEvent = array_pop($group->events)?>
-											<div class="event__label"><h4><i class="fa fa-calendar-o"></i>Næsti viðburður</h4></div>
+											<? /** @var \Stjornvisi\Service\Event $nextEvent */
+											$nextEvent = array_pop($group->events) ?>
+											<div class="event__label"><h4><i class="fa fa-calendar-o"></i>
+													Næsti viðburður</h4></div>
 											<div class="event__info">
-												<span class="entry__date"><?=$this->date($nextEvent->event_date)?></span>
+												<span
+													class="entry__date"><?=$this->date($nextEvent->event_date)?></span>
 												<span class="separator">/</span>
 										<span class="event__time">
-										<? if($nextEvent->event_time) : ?>
+										<? if ($nextEvent->event_time) : ?>
 											<?=$nextEvent->event_time->format("H:i")?>
-											<? if($nextEvent->event_end) : ?>
+											<? if ($nextEvent->event_end) : ?>
 												- <?=$nextEvent->event_end->format("H:i")?>
 											<? endif; ?>
 										<? endif; ?>
 										</span>
 											</div>
 											<div class="event__title">
-												<h5><a href="<?=$this->url('vidburdir/index',array('id'=>$nextEvent->id))?>"><?=$nextEvent->subject?></a></h5>
+												<h5>
+													<a href="<?=$this->url('vidburdir/index', array('id' => $nextEvent->id))?>"><?=$nextEvent->subject?></a>
+												</h5>
 											</div>
 										<? endif; ?>
 										<? if ($group->event_count > 0) : ?>
-											<div class="event__details"><a href="#"><?=$group->event_count?> viðburðir síðustu 3 mánuði</a></div>
+											<div class="event__details">
+												<a href="#">
+													<span class="fa-stack">
+														<i class="fa fa-calendar-o fa-stack-2x"></i>
+														<i class="fa-stack-1x"><?=$group->event_count?></i>
+													</span>
+													viðburðir síðustu 3 mánuði
+												</a>
+											</div>
 										<? endif; ?>
 										<? if (count($group->board)) : ?>
 											<div class="event__content">
 												<h4>Stjórn</h4>
 												<p>
-													<? $i = 0; foreach ($group->board as $member) : ?>
-														<?=($i !=0 ) ? '<br>' : ''?>
-														<a href="<?=$this->url('notandi',array('id'=>$member->id))?>"><?=$member->name?></a>,
-														<a href="<?=$this->url('fyrirtaeki',array('id'=>$member->company_id))?>"><?=$member->company_name?></a>
+													<? $i = 0;
+													foreach ($group->board as $member) : ?>
+														<?=($i != 0) ? '<br>' : ''?>
+														<a href="<?=$this->url('notandi', array('id' => $member->id))?>"><?=$member->name?></a>,
+														<a href="<?=$this->url('fyrirtaeki', array('id' => $member->company_id))?>"><?=$member->company_name?></a>
 														<? $i++; endforeach; ?>
 												</p>
 											</div>
 											<div class="event__footer">
-											<? if (null !== $this->identity) : ?>
-												<? if (null === $group->user_id) : ?>
-													<a href="<?=$this->url('hopur/register',array('id'=>$group->url,'type'=>1))?>" class="btn btn-default">Skrá mig í þennan hóp</a>
-												<?php else:?>
-													<a href="<?=$this->url('hopur/register',array('id'=>$group->url,'type'=>0))?>" class="btn btn-default">Afskrá mig úr þessum hóp</a>
-												<?php endif;?>
-											<? endif; ?>
-												<a href="<?=$this->url('hopur/index',array('id'=>$group->url))?>" class="btn btn-primary">Skoða nánar</a>
+												<? if (null !== $this->identity) : ?>
+													<? if (null === $group->user_id) : ?>
+														<a href="<?=$this->url('hopur/register', array('id' => $group->url, 'type' => 1))?>"
+														   class="btn btn-default">Skrá mig í hópinn</a>
+													<?php endif; ?>
+												<? endif; ?>
+												<a href="<?=$this->url('hopur/index', array('id' => $group->url))?>"
+												   class="btn btn-primary">Skoða nánar</a>
 											</div>
 										<? endif; ?>
 									</div>
 								</div>
 							<? endif; ?>
 						</div>
-					<?endforeach;?>
+					<? endforeach; ?>
+				</div>
+			</div>
+
+
+			<div class="box">
+				<div class="box__content">
+					<div class="entry">
+						<div class="entry__title"><h3>Kjarnastarf Stjórnvísis fer fram í
+								þeim <?=count($this->groups_all)?> faghópum sem eru starfandi innan félagsins á
+								jafnmjörgum sviðum stjórnunar.</h3></div>
+						<div class="entry__content">
+							<p>Tail strip steak salami, ball tip jerky tenderloin meatball. Shankle turkey shank,
+								venison strip steak alcatra pastrami. Shankle alcatra porchetta cow drumstick kielbasa,
+								turkey pork chop beef leberkas andouille rump pig.</p>
+							<p>Flank swine alcatra bacon chicken beef kielbasa pork loin ham doner turducken ham hock
+								pork beef ribs chuck. Andouille capicola strip steak pancetta fatback salami spare ribs
+								kevin brisket drumstick beef ribs pastrami.</p>
+							<p>T-bone pig venison, landjaeger alcatra turkey turducken short ribs ham hock kevin
+								andouille pork chop prosciutto sirloin. Andouille tenderloin beef ribs, brisket alcatra
+								chuck pork turkey sausage flank ball tip.</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -24,6 +24,12 @@ strong {
 	font-weight: 600;
 }
 
+label {
+	&.inline {
+		width: 250px;
+	}
+}
+
 
 /*** BUTTONS ***/
 .btn {

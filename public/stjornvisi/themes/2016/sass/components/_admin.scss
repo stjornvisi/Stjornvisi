@@ -43,6 +43,19 @@ stjornvisi-rich {
 		}
 	}
 }
+.page-group__members-item {
+	stjonvisi-control {
+		background-color: $color-white;
+		display:none;
+	}
+
+	&:hover {
+		stjonvisi-control {
+			display:block;
+		}
+	}
+}
+
 
 body.state-login {
 	main[role=main] {

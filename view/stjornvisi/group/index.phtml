@@ -71,7 +71,7 @@ use \Stjornvisi\View\Helper\Date;
 							   class="btn btn-primary">Skrá mig í hópinn</a>
 						<?php else: ?>
 							<a href="<?=$this->url('hopur/register', array('id' => $this->group->url, 'type' => 0))?>"
-							   class="btn btn-default">Afskrá mig úr hópinum</a>
+							   class="btn btn-default">Afskrá mig úr þessum hóp</a>
 						<?php endif; ?>
 					<?php else: ?>
 						<a href="<?=$this->url('auth')?>" class="btn btn-primary">Skrá mig í hópinn</a>
@@ -94,10 +94,10 @@ use \Stjornvisi\View\Helper\Date;
 
 					<div class="col-sm-5 box box--inset">
 						<div class="box__content">
-							Viðburðir í vetur: xx<br>
-							Fjöldi í hóp: xx<br>
-							Fjöldi mættra: xx<br>
-							Viðburðir framundan: xx<br>
+							<label class="inline">Viðburðir í vetur:</label> xx<br>
+							<label class="inline">Fjöldi í hóp:</label> xx<br>
+							<label class="inline">Fjöldi mættra:</label> xx<br>
+							<label class="inline">Viðburðir framundan:</label> xx<br>
 						</div>
 					</div>
 				</div>
@@ -192,6 +192,12 @@ use \Stjornvisi\View\Helper\Date;
 		</div>
 	</div>
 </div>
+
+<?=$this->partial('stjornvisi/group/list.phtml', array(
+	'groups_all' => $this->groups,
+	'identity' => $this->identity,
+	'skipBreadcrumbs' => true
+))?>
 
 
 <?php if ($this->access->is_admin || $this->access->type >= 1): ?>

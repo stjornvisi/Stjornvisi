@@ -9,6 +9,10 @@
 		border-bottom: 1px solid $color-border;
 		margin-bottom: 0;
 
+		a {
+			@include linkColorDark;
+		}
+
 		@media (max-width: $screen-xs-max) {
 			padding:0;
 
