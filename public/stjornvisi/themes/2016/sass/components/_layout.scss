@@ -485,7 +485,7 @@
 			position: absolute;
 			z-index: 2;
 			top: 0;
-			right: -99.5%;
+			left: -99.5%;
 			width: 100%;
 		}
 	}
@@ -531,8 +531,6 @@
 	h5 {
 		font-size: 20px;
 		margin: 0;
-		padding-bottom: 10px;
-		border-bottom: 1px solid $color-border;
 	}
 
 	a {
@@ -542,6 +540,17 @@
 
 .event__details {
 	margin-bottom: $line-height-computed;
+
+	h4 {
+		padding-bottom: 10px;
+		border-bottom: 1px solid $color-border;
+	}
+}
+
+.event__count {
+	float:right;
+	font-size: 16px;
+	color: #acacac;
 }
 
 .event__content {

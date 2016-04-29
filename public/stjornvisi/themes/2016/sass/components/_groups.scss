@@ -1,17 +1,4 @@
 .panel--groups {
-	.box {
-		@include make-md-column(6);
-		@media (min-width: $screen-md-min) {
-			&:first-child {
-				padding-right: $grid-gutter-width;
-			}
-
-			&:last-child {
-				padding-left: $grid-gutter-width;
-			}
-		}
-	}
-
 	.fa-calendar-o {
 		color: $color-green;
 	}
@@ -31,6 +18,10 @@
 			font-size: 22px;
 			margin-right: 10px;
 		}
+	}
+
+	.entry--hoverable {
+		margin-left: -40px;
 	}
 
 	.entry {
@@ -76,6 +67,8 @@
 		}
 
 		.btn {
+			@include transition(opacity .2s);
+			opacity: 0;
 			float:right;
 			margin-top:-3px;
 			padding: 4px 14px;
@@ -95,6 +88,10 @@
 				color: $color-blue;
 			}
 		}
+
+		.btn {
+			opacity: 1;
+		}
 	}
 
 	.entry__content {
@@ -102,7 +99,7 @@
 	}
 
 	.event {
-		border: 2px solid $color-light-blue;
+		border: 2px solid transparentize($color-light-blue, 0.75);
 		border-top: 0;
 	}
 
@@ -115,13 +112,6 @@
 		@include calendarCountStack;
 		.fa-stack {
 			margin-right: 5px;
-		}
-		a {
-			font-size: 18px;
-			color: #acacac;
-			&:hover {
-				color: $link-color;
-			}
 		}
 	}
 

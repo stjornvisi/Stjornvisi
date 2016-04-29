@@ -26,11 +26,33 @@ use Stjornvisi\Properties\FileProperties;
 </div>
 <?endif?>
 
-<div class="panel panel--groups">
+<div class="panel panel--columns-two panel--groups">
 	<div class="panel__container">
-		<div class="panel__content panel--row">
+		<div class="panel__content">
 			<div class="box">
 				<div class="box__title"><h2>Yfirlit faghópa</h2></div>
+				<div class="box__content">
+					<div class="entry">
+						<div class="entry__title"><h3>Kjarnastarf Stjórnvísis fer fram í
+								þeim <?=count($this->groups_all)?> faghópum sem eru starfandi innan félagsins á
+								jafnmjörgum sviðum stjórnunar.</h3></div>
+						<div class="entry__content">
+							<p>Tail strip steak salami, ball tip jerky tenderloin meatball. Shankle turkey shank,
+								venison strip steak alcatra pastrami. Shankle alcatra porchetta cow drumstick kielbasa,
+								turkey pork chop beef leberkas andouille rump pig.</p>
+							<p>Flank swine alcatra bacon chicken beef kielbasa pork loin ham doner turducken ham hock
+								pork beef ribs chuck. Andouille capicola strip steak pancetta fatback salami spare ribs
+								kevin brisket drumstick beef ribs pastrami.</p>
+							<p>T-bone pig venison, landjaeger alcatra turkey turducken short ribs ham hock kevin
+								andouille pork chop prosciutto sirloin. Andouille tenderloin beef ribs, brisket alcatra
+								chuck pork turkey sausage flank ball tip.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="box">
 				<div class="box__content">
 					<ul class="legend">
 						<li><i class="fa fa-calendar-o"></i>Einn eða fleiri viðburðir síðustu 3 mánuði</li>
@@ -57,10 +79,22 @@ use Stjornvisi\Properties\FileProperties;
 									<? endif ?>
 								</h4>
 							</div>
-							<? if (count($group->events) || $group->event_count || count($group->board)) : ?>
 								<div class="entry__content">
+									<? if (count($group->events) || $group->event_count || count($group->board)) : ?>
 									<div class="event">
 										<div class="event__summary"><?=$group->summary?></div>
+										<? if ($group->event_count > 0) : ?>
+											<div class="event__details">
+												<div class="event__count">
+													Viðburðir síðustu 3 mánuði
+													<span class="fa-stack">
+														<i class="fa fa-calendar-o fa-stack-2x"></i>
+														<i class="fa-stack-1x"><?=$group->event_count?></i>
+													</span>
+												</div>
+												<h4>Viðburðir</h4>
+											</div>
+										<? endif; ?>
 										<? if (count($group->events)) : ?>
 											<? /** @var \Stjornvisi\Service\Event $nextEvent */
 											$nextEvent = array_pop($group->events) ?>
@@ -83,17 +117,6 @@ use Stjornvisi\Properties\FileProperties;
 												<h5>
 													<a href="<?=$this->url('vidburdir/index', array('id' => $nextEvent->id))?>"><?=$nextEvent->subject?></a>
 												</h5>
-											</div>
-										<? endif; ?>
-										<? if ($group->event_count > 0) : ?>
-											<div class="event__details">
-												<a href="#">
-													<span class="fa-stack">
-														<i class="fa fa-calendar-o fa-stack-2x"></i>
-														<i class="fa-stack-1x"><?=$group->event_count?></i>
-													</span>
-													viðburðir síðustu 3 mánuði
-												</a>
 											</div>
 										<? endif; ?>
 										<? if (count($group->board)) : ?>
@@ -120,32 +143,10 @@ use Stjornvisi\Properties\FileProperties;
 											</div>
 										<? endif; ?>
 									</div>
+									<? endif; ?>
 								</div>
-							<? endif; ?>
 						</div>
 					<? endforeach; ?>
-				</div>
-			</div>
-
-
-			<div class="box">
-				<div class="box__content">
-					<div class="entry">
-						<div class="entry__title"><h3>Kjarnastarf Stjórnvísis fer fram í
-								þeim <?=count($this->groups_all)?> faghópum sem eru starfandi innan félagsins á
-								jafnmjörgum sviðum stjórnunar.</h3></div>
-						<div class="entry__content">
-							<p>Tail strip steak salami, ball tip jerky tenderloin meatball. Shankle turkey shank,
-								venison strip steak alcatra pastrami. Shankle alcatra porchetta cow drumstick kielbasa,
-								turkey pork chop beef leberkas andouille rump pig.</p>
-							<p>Flank swine alcatra bacon chicken beef kielbasa pork loin ham doner turducken ham hock
-								pork beef ribs chuck. Andouille capicola strip steak pancetta fatback salami spare ribs
-								kevin brisket drumstick beef ribs pastrami.</p>
-							<p>T-bone pig venison, landjaeger alcatra turkey turducken short ribs ham hock kevin
-								andouille pork chop prosciutto sirloin. Andouille tenderloin beef ribs, brisket alcatra
-								chuck pork turkey sausage flank ball tip.</p>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
