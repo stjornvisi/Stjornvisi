@@ -8,6 +8,12 @@ body {
 	line-height: $base-line-height;
 	color: $color-text;
 	-webkit-font-smoothing: antialiased;
+
+	&.hoverable--open {
+		.hoverable--fade {
+			opacity: .3;
+		}
+	}
 }
 
 a {

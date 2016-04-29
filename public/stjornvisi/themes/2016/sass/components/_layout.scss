@@ -450,6 +450,10 @@
 	}
 }
 
+.hoverable--fade {
+	@include transition(opacity .2s);
+}
+
 .entry--hoverable {
 	position: relative;
 

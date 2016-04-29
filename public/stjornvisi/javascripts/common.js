@@ -77,20 +77,23 @@
 })();
 
 $(function() {
-	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function(e) {
+	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter', function(e) {
 		e.preventDefault();
 		var $parent = $(this.parentNode);
 
 		if (e.type === 'mouseup' || e.type === 'touchstart') {
 			$('.entry--hoverable').removeClass('open');
+			$('body').removeClass('hoverable--open');
+
 			$parent.addClass('open');
+			$('body').addClass('hoverable--open');
 		}
 		else if (e.type === 'mouseenter') {
 			$('.entry--hoverable').removeClass('open');
+			$('body').removeClass('hoverable--open');
+
 			$parent.addClass('open');
-		}
-		else if (e.type === 'mouseleave') {
-			//$parent.removeClass('open');
+			$('body').addClass('hoverable--open');
 		}
 	});
 });
