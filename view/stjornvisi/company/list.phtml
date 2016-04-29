@@ -63,12 +63,12 @@
 								<?php foreach($chunk as $company):?>
 									<li class="block-item" data-search="<?=$company->name?>">
 										<?php if($this->access->is_admin):?>
-											<h2><a href="<?=$this->url('fyrirtaeki/index', array('id'=>$company->id))?>"><?=$company->name?></a></h2>
+											<h4><a href="<?=$this->url('fyrirtaeki/index', array('id'=>$company->id))?>"><?=$company->name?></a></h4>
 										<?php else:?>
-											<h2><?=$company->name?></h2>
+											<h4><?=$company->name?></h4>
 										<?php endif;?>
-										<p class=""><?=$company->business_type?></p>
-										<p class="block-item__time">Meðlimur síðan <?=$company->created->format('Y')?></p>
+										<div class=""><?=$company->business_type?></div>
+										<div class="block-item__time">Meðlimur síðan <?=$company->created->format('Y')?></div>
 									</li>
 
 								<?php endforeach;?>

@@ -102,6 +102,21 @@ label {
 }
 
 
+.block-list {
+	@include make-sm-column(4);
+	.block-item {
+		margin-bottom: $line-height-computed;
+		h4 {
+			margin-bottom:0;
+			font-weight: 600;
+		}
+	}
+
+	.block-item__time {
+		color: $color-text-light;
+	}
+}
+
 /*** PAGINATION ***/
 
 .block_pagination{

@@ -6714,6 +6714,34 @@ label.inline {
   white-space: nowrap;
 }
 
+/* line 105, ../sass/components/_core.scss */
+.block-list {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  /* line 105, ../sass/components/_core.scss */
+  .block-list {
+    float: left;
+    width: 33.33333%;
+  }
+}
+/* line 107, ../sass/components/_core.scss */
+.block-list .block-item {
+  margin-bottom: 28px;
+}
+/* line 109, ../sass/components/_core.scss */
+.block-list .block-item h4 {
+  margin-bottom: 0;
+  font-weight: 600;
+}
+/* line 115, ../sass/components/_core.scss */
+.block-list .block-item__time {
+  color: #8d979c;
+}
+
 /*** PAGINATION ***/
 /* line 14, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
 .block_pagination:before, .block_pagination:after {
@@ -6724,16 +6752,16 @@ label.inline {
 .block_pagination:after {
   clear: both;
 }
-/* line 110, ../sass/components/_core.scss */
+/* line 125, ../sass/components/_core.scss */
 .block_pagination .block_pagination__item {
   float: left;
 }
-/* line 113, ../sass/components/_core.scss */
+/* line 128, ../sass/components/_core.scss */
 .block_pagination .block_pagination__link {
   display: block;
   padding: 5px 10px;
 }
-/* line 117, ../sass/components/_core.scss */
+/* line 132, ../sass/components/_core.scss */
 .block_pagination .block_pagination__link:hover,
 .block_pagination .block_pagination__link--active {
   background-color: #2b6786;
