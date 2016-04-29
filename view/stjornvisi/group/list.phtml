@@ -76,7 +76,7 @@ use Stjornvisi\Properties\FileProperties;
 									<? if (null === $group->user_id) : ?>
 										<a href="<?=$this->url('hopur/register', array('id' => $group->url, 'type' => 1))?>"
 										   class="btn btn-default">Skrá í hóp</a>
-									<? else: ?>
+									<? else:?>
 										<a href="<?=$this->url('hopur/register', array('id' => $group->url, 'type' => 0))?>"
 										   class="btn btn-default">Yfirgefa hóp</a>
 									<? endif ?>
