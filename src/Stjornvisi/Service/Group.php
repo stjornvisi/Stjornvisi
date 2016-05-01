@@ -51,6 +51,87 @@ class Group extends AbstractService implements DataSourceAwareInterface
         }
     }
 
+    public function getGroupStatistics($id)
+    {
+        try {
+            $month = 7;
+            $day = 1;
+
+            $timestamp = mktime(0, 0, 0, $month, $day);
+            if ($timestamp > time()) {
+                $timestamp = mktime(0, 0, 0, $month, $day, date('Y') - 1);
+            }
+
+            $sql = "
+                SELECT
+                  IFNULL(ge.total_events, 0) AS event_count,
+                  IFNULL(gu.total, 0) AS user_count,
+                  IFNULL(ge.total_attendees, 0) AS attendee_count,
+                  IFNULL(ge2.total_events, 0) AS upcoming_count
+                FROM
+                  `Group` g
+                  LEFT JOIN (
+                    SELECT
+                      ghe.group_id,
+                      COUNT(DISTINCT e.id) as total_events,
+                      COUNT(DISTINCT ehu.user_id) as total_attendees,
+                      SUM(IF(UNIX_TIMESTAMP(e.event_date) BETWEEN  {$timestamp} AND UNIX_TIMESTAMP(), 1, 0)) as test_total
+                    from
+                      Event e
+                      JOIN Group_has_Event ghe ON e.id = ghe.event_id
+                      JOIN Event_has_User ehu on ghe.event_id = ehu.event_id
+                    WHERE
+                      UNIX_TIMESTAMP(e.event_date) BETWEEN  {$timestamp} AND UNIX_TIMESTAMP()
+                    GROUP BY
+                      ghe.group_id
+                  ) ge ON g.id = ge.group_id
+                  LEFT JOIN (
+                    SELECT
+                      ghe.group_id,
+                      COUNT(e.id) as total_events
+                    from
+                      Event e
+                      JOIN Group_has_Event ghe ON e.id = ghe.event_id
+                    WHERE
+                      e.event_date > NOW()
+                    GROUP BY
+                      ghe.group_id
+                  ) ge2 ON g.id = ge2.group_id
+                  LEFT JOIN (
+                    SELECT
+                      group_id,
+                      COUNT(*) as total
+                    FROM
+                      Group_has_User
+                    GROUP BY
+                      group_id
+                  ) gu on g.id = gu.group_id
+                WHERE
+                  g.url = :id
+                ORDER BY
+                  name_short
+            ";
+
+            // var_dump($sql);die;
+            $statement = $this->pdo->prepare($sql);
+
+            $statement->execute(array(
+                'id' => $id
+            ));
+
+            return $statement->fetchObject();
+
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    (isset($statement))?$statement->queryString:null
+                )
+            ));
+            throw new Exception("Can't read group entry. group:[{$id}]", 0, $e);
+        }
+    }
+
     /**
      * Get first stjornvisi calendar year
      *

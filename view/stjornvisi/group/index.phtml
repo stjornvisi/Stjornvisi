@@ -8,6 +8,8 @@ $this->headMeta()->setProperty('og:type', 'article');
 $this->headMeta()->setProperty('og:description', mb_substr($this->group->summary, 0, 200));
 $this->headMeta()->setProperty('og:url', 'http://' . $_SERVER['HTTP_HOST'] . $this->url('hopur/index', array('id' => $this->group->url)));
 
+$statistics = $this->statistics;
+
 use Stjornvisi\Properties\FileProperties;
 use \Stjornvisi\View\Helper\Date;
 
@@ -94,10 +96,10 @@ use \Stjornvisi\View\Helper\Date;
 
 					<div class="col-sm-5 box box--inset">
 						<div class="box__content">
-							<label class="inline">Viðburðir í vetur:</label> xx<br>
-							<label class="inline">Fjöldi í hóp:</label> xx<br>
-							<label class="inline">Fjöldi mættra:</label> xx<br>
-							<label class="inline">Viðburðir framundan:</label> xx<br>
+							<label class="inline">Viðburðir í vetur:</label> <?=$statistics->event_count?><br>
+							<label class="inline">Fjöldi í hóp:</label> <?=$statistics->user_count?><br>
+							<label class="inline">Fjöldi mættra:</label> <?=$statistics->attendee_count?><br>
+							<label class="inline">Viðburðir framundan:</label> <?=$statistics->upcoming_count?><br>
 						</div>
 					</div>
 				</div>

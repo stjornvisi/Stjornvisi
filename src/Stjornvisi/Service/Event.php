@@ -884,7 +884,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
                     WHERE E.event_date >= :from
                     AND GhE.group_id = :id
-                    ORDER BY E.event_date DESC;");
+                    ORDER BY E.event_date DESC LIMIT 3;");
                 $statement->execute([
                     'from' => $from->format('Y-m-d'),
                     'id' => $id
@@ -895,7 +895,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
                     WHERE (E.event_date BETWEEN :from AND :to)
                     AND GhE.group_id = :id
-                    ORDER BY E.event_date DESC;");
+                    ORDER BY E.event_date DESC LIMIT 3;");
                 $statement->execute([
                     'from' => $from->format('Y-m-d'),
                     'to' => $to->format('Y-m-d'),
