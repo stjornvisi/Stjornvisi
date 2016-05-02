@@ -7719,7 +7719,7 @@ form .checkbox label {
 @media (min-width: 768px) {
   /* line 127, ../sass/components/_hero.scss */
   .panel--hero.panel--slim .logo {
-    top: 20px;
+    top: 12px;
   }
 }
 /* line 133, ../sass/components/_hero.scss */
