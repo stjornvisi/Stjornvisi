@@ -8285,6 +8285,123 @@ form .checkbox label {
   margin: 15px 10px 0 0;
 }
 
+/**
+ * BLOCK-CALENDAR
+ * Full-blown gregorian calendar displaying events in a
+ * calendar month.
+ *
+ */
+/* line 7, ../sass/components/_calendar.scss */
+.block-calendar {
+  position: relative;
+}
+/* line 9, ../sass/components/_calendar.scss */
+.block-calendar td {
+  position: relative;
+  width: 14.28571%;
+  vertical-align: top;
+  overflow: hidden;
+}
+/* line 16, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__header {
+  color: #2b6786;
+}
+/* line 18, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__header tr {
+  border-bottom: 2px solid #dde0e1;
+}
+/* line 20, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__header tr td {
+  text-align: center;
+  font-size: 18px;
+}
+/* line 30, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__body tr td {
+  border: 1px solid #dde0e1;
+  padding: 10px 15px;
+}
+/* line 37, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__pagination {
+  position: absolute;
+  top: -32px;
+  right: 0;
+}
+/* line 43, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__date-label {
+  position: absolute;
+  top: 15px;
+  right: 0;
+  font-size: 50px;
+  font-weight: 600;
+  color: #eaf0f3;
+  z-index: -1;
+}
+/* line 53, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__subject-list > li {
+  margin-top: 28px;
+  font-size: 16px;
+  line-height: 1.2;
+}
+/* line 57, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__subject-list > li > a {
+  -webkit-transition: all 0.15s;
+  -o-transition: all 0.15s;
+  transition: all 0.15s;
+  color: #2b6786;
+  display: block;
+  font-weight: 600;
+}
+/* line 16, ../sass/helpers/_mixins.scss */
+.block-calendar .block-calendar__subject-list > li > a:hover {
+  color: #8d979c;
+}
+/* line 63, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__subject-list > li:first-child {
+  margin-top: 0;
+}
+/* line 68, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__group-list > li {
+  color: #dde0e1;
+}
+/* line 70, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__group-list > li > a {
+  color: #2b6786;
+}
+
+/* line 77, ../sass/components/_calendar.scss */
+.block-calendar__pagination {
+  border: 1px solid #dde0e1;
+  display: inline-block;
+  margin-bottom: 28px;
+}
+/* line 82, ../sass/components/_calendar.scss */
+.block-calendar__pagination a {
+  font-family: FontAwesome;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  font-size: 0;
+}
+/* line 94, ../sass/components/_calendar.scss */
+.block-calendar__pagination a:before {
+  font-size: 20px;
+  display: inline-block;
+  padding: 8px 16px;
+}
+/* line 99, ../sass/components/_calendar.scss */
+.block-calendar__pagination .prev:before {
+  content: "";
+}
+/* line 102, ../sass/components/_calendar.scss */
+.block-calendar__pagination .next:before {
+  content: "";
+  border-left: 1px solid #dde0e1;
+}
+
 /* line 2, ../sass/components/_groups.scss */
 .panel--groups .fa-calendar-o {
   color: #669933;

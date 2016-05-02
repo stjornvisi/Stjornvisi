@@ -99,51 +99,14 @@ class EventController extends AbstractActionController
             return new ViewModel([
                 'events' => $eventService->getByUser($auth->getIdentity()->id, 100, false),
                 'eventsPassed' => $eventService->fetchPassed(),
-            ]);
+            ] + $this->getCalendarData());
         }
         else {
             return new ViewModel([
                 'events' => $eventService->fetchUpcoming(100),
                 'eventsPassed' => $eventService->fetchPassed()
-            ]);
+            ] + $this->getCalendarData());
         }
-
-        /*
-        $sm = $this->getServiceLocator();
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-
-        $date = $this->params()->fromRoute('date', date('Y-m'));
-        $prev = new DateTime($date.'-01');
-        $prev->sub(new \DateInterval('P1M'));
-        $current = new DateTime($date.'-01');
-        $next = new DateTime($date.'-01');
-        $next->add(new \DateInterval('P1M'));
-
-        $events = $eventService->getRange($current, $next);
-
-        $firstDay = (int)date('N', strtotime("{$current->format('Y-m')}-01"));
-        $offset = ($firstDay-1)*-1;
-        $calendar = [];
-        for ($i=0; $i<42; $i++) {
-            $from = strtotime("{$current->format('Y-m')}-01 00:00:00") +(60*60*24*$offset);
-            $date = date('Y-m-d', $from);
-            $calendar[$date] = array_filter(
-                $events,
-                function ($i) use ($date) {
-                    return ($i->event_date->format('Y-m-d') == $date);
-                }
-            );
-            $offset++;
-        }
-
-        return new ViewModel([
-            'events' => $events,
-            'prev' => $prev,
-            'current' => $current,
-            'next' => $next,
-            'calendar' => $calendar
-        ]);
-        */
     }
 
     /**
@@ -599,5 +562,43 @@ class EventController extends AbstractActionController
             },
             $groups
         );
+    }
+
+    private function getCalendarData()
+    {
+        $sm = $this->getServiceLocator();
+        $eventService = $sm->get('Stjornvisi\Service\Event');
+
+        $date = $this->params()->fromRoute('date', date('Y-m'));
+        $prev = new DateTime($date.'-01');
+        $prev->sub(new \DateInterval('P1M'));
+        $current = new DateTime($date.'-01');
+        $next = new DateTime($date.'-01');
+        $next->add(new \DateInterval('P1M'));
+
+        $events = $eventService->getRange($current, $next);
+
+        $firstDay = (int)date('N', strtotime("{$current->format('Y-m')}-01"));
+        $offset = ($firstDay-1)*-1;
+        $calendar = [];
+        for ($i=0; $i<42; $i++) {
+            $from = strtotime("{$current->format('Y-m')}-01 00:00:00") +(60*60*24*$offset);
+            $date = date('Y-m-d', $from);
+            $calendar[$date] = array_filter(
+                $events,
+                function ($i) use ($date) {
+                    return ($i->event_date->format('Y-m-d') == $date);
+                }
+            );
+            $offset++;
+        }
+
+        return [
+            'events' => $events,
+            'prev' => $prev,
+            'current' => $current,
+            'next' => $next,
+            'calendar' => $calendar
+        ];
     }
 }

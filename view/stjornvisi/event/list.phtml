@@ -110,3 +110,73 @@ use \Stjornvisi\View\Helper\Date;
 		</div>
 	</div>
 </div>
+
+<div class="panel" id="calendar">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box">
+				<div class="box__title"><h2 ><?=ucfirst($this->date($this->current,\Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH))?></h2></div>
+				<div class="box__content">
+					<table class="block-calendar">
+						<caption class="block-calendar__caption">
+							<nav class="block-calendar__pagination">
+								<a href="<?=$this->url('vidburdir/list', array('date'=>$this->prev->format('Y-m')))?>#calendar" class="prev" title="<?=$this->date($this->prev, \Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">prev</a>
+								<a href="<?=$this->url('vidburdir/list', array('date'=>$this->next->format('Y-m')))?>#calendar" class="next" title="<?=$this->date($this->next, \Stjornvisi\View\Helper\Date::FORMAT_YEAR_MONTH)?>">next</a>
+							</nav>
+						</caption>
+						<thead class="block-calendar__header">
+						<tr>
+							<td>Mánudagur</td>
+							<td>Þriðjudagur</td>
+							<td>Miðvikudagur</td>
+							<td>Fimmtudagur</td>
+							<td>Föstudagur</td>
+							<td>Laugardagur</td>
+							<td>Sunnudagur</td>
+						</tr>
+						</thead>
+						<tbody class="block-calendar__body">
+						<?php $counter = 0;?>
+						<?php foreach ($this->calendar as $key => $column): ?>
+							<?php if( $counter % 7 == 0 ):?>
+								<tr>
+							<?php endif;?>
+							<td>
+								<span class="block-calendar__date-label"><?=substr($key, 8, 2)?></span>
+								<ul class="block-calendar__subject-list">
+									<?php if( !empty($column)):?>
+										<?php foreach($column as $event):?>
+											<li>
+												<a href="<?=$this->url('vidburdir/index', array('id'=>$event->id))?>"><?=$event->subject;?></a>
+												<ul class="block-calendar__group-list">
+													<?php if(count($event->groups)==0):?>
+														<li>Stjórnvísisviðburður</li>
+													<?php else:?>
+														<?php foreach($event->groups as $group):?>
+															<li><a href="<?=$this->url('hopur/index', array('id'=>$group->url))?>"><?=$group->name_short?></a></li>
+														<?php endforeach;?>
+													<?php endif;?>
+												</ul>
+											</li>
+										<?php endforeach;?>
+									<?php else:?>
+										<li>&nbsp;</li>
+									<?php endif;?>
+								</ul>
+							</td>
+							<?php if( $counter % 7 == 6 ):?>
+								</tr>
+							<?php endif;?>
+
+							<?php $counter++?>
+						<?php endforeach; ?>
+						</tbody>
+						<tfoot class="block-calendar__footer">
+
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
