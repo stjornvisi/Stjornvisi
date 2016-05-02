@@ -77,7 +77,7 @@
 })();
 
 $(function() {
-	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter', function(e) {
+	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function(e) {
 		e.preventDefault();
 		var $parent = $(this.parentNode);
 
@@ -95,5 +95,9 @@ $(function() {
 			$parent.addClass('open');
 			$('body').addClass('hoverable--open');
 		}
+        else if (e.type === 'mouseleave') {
+            $('.entry--hoverable').removeClass('open');
+            $('body').removeClass('hoverable--open');
+        }
 	});
 });

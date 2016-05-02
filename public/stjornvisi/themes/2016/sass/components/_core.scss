@@ -135,3 +135,12 @@ label {
 		color: $color-white;
 	}
 }
+
+
+.page-group__members-item {
+	margin-bottom: $line-height-computed;
+
+	h5 {
+		font-weight: 600;
+	}
+}

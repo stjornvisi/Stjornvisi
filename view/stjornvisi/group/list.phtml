@@ -37,15 +37,7 @@ use Stjornvisi\Properties\FileProperties;
 								þeim <?=count($this->groups_all)?> faghópum sem eru starfandi innan félagsins á
 								jafnmjörgum sviðum stjórnunar.</h3></div>
 						<div class="entry__content">
-							<p>Tail strip steak salami, ball tip jerky tenderloin meatball. Shankle turkey shank,
-								venison strip steak alcatra pastrami. Shankle alcatra porchetta cow drumstick kielbasa,
-								turkey pork chop beef leberkas andouille rump pig.</p>
-							<p>Flank swine alcatra bacon chicken beef kielbasa pork loin ham doner turducken ham hock
-								pork beef ribs chuck. Andouille capicola strip steak pancetta fatback salami spare ribs
-								kevin brisket drumstick beef ribs pastrami.</p>
-							<p>T-bone pig venison, landjaeger alcatra turkey turducken short ribs ham hock kevin
-								andouille pork chop prosciutto sirloin. Andouille tenderloin beef ribs, brisket alcatra
-								chuck pork turkey sausage flank ball tip.</p>
+							<p>Kjarnastarf Stjórnvísi er í faghópunum. Í Stjórnvísi eru starfandi tæplega 20 faghópar undir forystu sterkra stjórna sem koma frá aðildarfyrirtækjum félagsins". Með því að skrá þig í faghóp færðu sendar tilkynningar um viðburði, gefst kostur á að skoða ítarefni frá viðburðum og fá áhugaverðar fréttir. Engin takmörk eru fyrir því hve marga faghópa er hægt að skrá sig í.</p>
 						</div>
 					</div>
 				</div>
@@ -98,7 +90,7 @@ use Stjornvisi\Properties\FileProperties;
 												<h4>Viðburðir</h4>
 											</div>
 										<? endif; ?>
-										<? if (count($group->events)) : ?>
+										<? if (false /*count($group->events)*/) : ?>
 											<? /** @var \Stjornvisi\Service\Event $nextEvent */
 											$nextEvent = array_pop($group->events) ?>
 											<div class="event__label"><h4><i class="fa fa-calendar-o"></i>
@@ -133,10 +125,6 @@ use Stjornvisi\Properties\FileProperties;
 														<a href="<?=$this->url('fyrirtaeki', array('id' => $member->company_id))?>"><?=$member->company_name?></a>
 														<? $i++; endforeach; ?>
 												</p>
-											</div>
-											<div class="event__footer">
-												<a href="<?=$this->url('hopur/index', array('id' => $group->url))?>"
-												   class="btn btn-primary">Skoða nánar</a>
 											</div>
 										<? endif; ?>
 									</div>
