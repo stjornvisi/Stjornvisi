@@ -278,7 +278,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
      */
     public function fetchPassed($count = 10)
     {
-        $sql = "SELECT * FROM Event WHERE event_date < NOW() ORDER BY event_date DESC, event_time DESC LIMIT {$count};";
+        $sql = "SELECT * FROM Event WHERE event_date < NOW() AND avatar is not null AND avatar != '' ORDER BY event_date DESC, event_time DESC LIMIT {$count};";
         return $this->fetchMany($sql);
     }
 
