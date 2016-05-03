@@ -7728,7 +7728,6 @@ form .checkbox label {
 .panel--hero.panel--slim {
   height: 166px;
   background-size: auto;
-  background-image: url("images/hero-chairs.jpg");
 }
 @media (max-width: 767px) {
   /* line 130, ../sass/components/_hero.scss */

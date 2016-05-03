@@ -130,7 +130,7 @@
 	&.panel--slim {
 		height: 166px;
 		background-size: auto;
-		background-image: url("images/hero-chairs.jpg");
+		//background-image: url("images/hero-chairs.jpg");
 
 		@media (max-width: $screen-xs-max) {
 			height:0;
