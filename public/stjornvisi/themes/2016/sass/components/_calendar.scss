@@ -49,9 +49,11 @@
 		font-size: 50px;
 		font-weight: 600;
 		color: tint($color-light-blue, 90%);
-		z-index: -1;
+		z-index: 1;
 	}
 	.block-calendar__subject-list {
+		position: relative;
+		z-index: 2;
 		> li {
 			margin-top: $line-height-computed;
 			font-size: 16px;

@@ -8359,15 +8359,20 @@ form .checkbox label {
   font-size: 50px;
   font-weight: 600;
   color: #eaf0f3;
-  z-index: -1;
+  z-index: 1;
 }
-/* line 55, ../sass/components/_calendar.scss */
+/* line 54, ../sass/components/_calendar.scss */
+.block-calendar .block-calendar__subject-list {
+  position: relative;
+  z-index: 2;
+}
+/* line 57, ../sass/components/_calendar.scss */
 .block-calendar .block-calendar__subject-list > li {
   margin-top: 28px;
   font-size: 16px;
   line-height: 1.2;
 }
-/* line 59, ../sass/components/_calendar.scss */
+/* line 61, ../sass/components/_calendar.scss */
 .block-calendar .block-calendar__subject-list > li > a {
   -webkit-transition: all 0.15s;
   -o-transition: all 0.15s;
@@ -8380,26 +8385,26 @@ form .checkbox label {
 .block-calendar .block-calendar__subject-list > li > a:hover {
   color: #8d979c;
 }
-/* line 65, ../sass/components/_calendar.scss */
+/* line 67, ../sass/components/_calendar.scss */
 .block-calendar .block-calendar__subject-list > li:first-child {
   margin-top: 0;
 }
-/* line 70, ../sass/components/_calendar.scss */
+/* line 72, ../sass/components/_calendar.scss */
 .block-calendar .block-calendar__group-list > li {
   color: #dde0e1;
 }
-/* line 72, ../sass/components/_calendar.scss */
+/* line 74, ../sass/components/_calendar.scss */
 .block-calendar .block-calendar__group-list > li > a {
   color: #2b6786;
 }
 
-/* line 79, ../sass/components/_calendar.scss */
+/* line 81, ../sass/components/_calendar.scss */
 .block-calendar__pagination {
   border: 1px solid #dde0e1;
   display: inline-block;
   margin-bottom: 28px;
 }
-/* line 84, ../sass/components/_calendar.scss */
+/* line 86, ../sass/components/_calendar.scss */
 .block-calendar__pagination a {
   font-family: FontAwesome;
   speak: none;
@@ -8411,17 +8416,17 @@ form .checkbox label {
   display: inline-block;
   font-size: 0;
 }
-/* line 96, ../sass/components/_calendar.scss */
+/* line 98, ../sass/components/_calendar.scss */
 .block-calendar__pagination a:before {
   font-size: 20px;
   display: inline-block;
   padding: 8px 16px;
 }
-/* line 101, ../sass/components/_calendar.scss */
+/* line 103, ../sass/components/_calendar.scss */
 .block-calendar__pagination .prev:before {
   content: "";
 }
-/* line 104, ../sass/components/_calendar.scss */
+/* line 106, ../sass/components/_calendar.scss */
 .block-calendar__pagination .next:before {
   content: "";
   border-left: 1px solid #dde0e1;
