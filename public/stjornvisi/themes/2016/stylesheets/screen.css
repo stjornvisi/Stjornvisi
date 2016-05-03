@@ -8813,6 +8813,17 @@ nav[role=navigation] .icon-mail:before {
 }
 
 /* line 1, ../sass/components/_footer.scss */
+footer.bg {
+  display: block;
+  padding-top: 500px;
+  margin-top: -500px;
+  background-image: url("images/dropinn-footer-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center 0;
+  background-size: cover;
+}
+
+/* line 11, ../sass/components/_footer.scss */
 .panel--footer {
   border-top: 1px solid #8d979c;
   background-color: rgba(27, 62, 89, 0.8);
@@ -8820,24 +8831,24 @@ nav[role=navigation] .icon-mail:before {
   color: #fff;
   text-align: center;
 }
-/* line 9, ../sass/components/_footer.scss */
+/* line 19, ../sass/components/_footer.scss */
 .panel--footer address span {
   border-right: 1px solid #fff;
   padding-right: 10px;
   margin-right: 10px;
   white-space: nowrap;
 }
-/* line 15, ../sass/components/_footer.scss */
+/* line 25, ../sass/components/_footer.scss */
 .panel--footer address span:last-child {
   border: 0;
   margin-right: 0;
 }
-/* line 19, ../sass/components/_footer.scss */
+/* line 29, ../sass/components/_footer.scss */
 .panel--footer address span:nth-child(4) {
   border-right: 0;
   margin-right: 0;
 }
-/* line 25, ../sass/components/_footer.scss */
+/* line 35, ../sass/components/_footer.scss */
 .panel--footer address a {
   -webkit-transition: all 0.15s;
   -o-transition: all 0.15s;
@@ -8848,7 +8859,7 @@ nav[role=navigation] .icon-mail:before {
 .panel--footer address a:hover {
   color: #8d979c;
 }
-/* line 30, ../sass/components/_footer.scss */
+/* line 40, ../sass/components/_footer.scss */
 .panel--footer .fa-facebook-f {
   background: #fff;
   height: 64px;
