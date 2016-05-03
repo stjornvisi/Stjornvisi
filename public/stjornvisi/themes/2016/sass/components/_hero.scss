@@ -1,7 +1,7 @@
 .panel--hero {
 	height: 680px;
 	padding: 0;
-	background-image: url("images/hero-chairs.jpg");
+	background-image: url("images/hero-ahorfendur.jpg");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: auto 100%;
@@ -9,6 +9,15 @@
 	@media (max-width: $screen-xs-max) {
 		margin-top:60px;
 		height: auto;
+		background-image: url("images/hero-ahorfendur-767.jpg");
+	}
+
+	@media (max-width: $screen-md-max) {
+		background-image: url("images/hero-ahorfendur-992.jpg");
+	}
+
+	@media (max-width: $screen-lg) {
+		background-image: url("images/hero-ahorfendur-1440.jpg");
 	}
 
 	@media (min-width: 1920px) {
@@ -59,6 +68,7 @@
 	.box {
 		@include make-md-column(6);
 		@include make-md-column-push(6);
+		color: $color-white;
 
 		@media (max-width: $screen-xs-max) {
 			margin-top:20px;
@@ -69,10 +79,14 @@
 			margin-top: 182px;
 		}
 
-		color: $color-white;
+		@media (min-width: $screen-md-min) {
+			width: 47%; // Requested
+		}
 	}
 
 	.box__title {
+		margin-bottom: 33px;
+
 		@media (max-width: $screen-xs-max) {
 			margin-bottom: $line-height-computed;
 
@@ -116,6 +130,7 @@
 	&.panel--slim {
 		height: 166px;
 		background-size: auto;
+		background-image: url("images/hero-chairs.jpg");
 
 		@media (max-width: $screen-xs-max) {
 			height:0;

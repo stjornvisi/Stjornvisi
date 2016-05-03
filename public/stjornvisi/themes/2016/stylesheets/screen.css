@@ -7562,7 +7562,7 @@ form .checkbox label {
 .panel--hero {
   height: 680px;
   padding: 0;
-  background-image: url("images/hero-chairs.jpg");
+  background-image: url("images/hero-ahorfendur.jpg");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: auto 100%;
@@ -7572,6 +7572,19 @@ form .checkbox label {
   .panel--hero {
     margin-top: 60px;
     height: auto;
+    background-image: url("images/hero-ahorfendur-767.jpg");
+  }
+}
+@media (max-width: 1199px) {
+  /* line 1, ../sass/components/_hero.scss */
+  .panel--hero {
+    background-image: url("images/hero-ahorfendur-992.jpg");
+  }
+}
+@media (max-width: 1200px) {
+  /* line 1, ../sass/components/_hero.scss */
+  .panel--hero {
+    background-image: url("images/hero-ahorfendur-1440.jpg");
   }
 }
 @media (min-width: 1920px) {
@@ -7580,51 +7593,51 @@ form .checkbox label {
     background-size: cover;
   }
 }
-/* line 19, ../sass/components/_hero.scss */
+/* line 28, ../sass/components/_hero.scss */
 .panel--hero .logo h1 {
   display: none;
 }
 @media (min-width: 768px) {
-  /* line 18, ../sass/components/_hero.scss */
+  /* line 27, ../sass/components/_hero.scss */
   .panel--hero .logo {
     position: absolute;
     top: 35px;
     left: 15px;
   }
-  /* line 28, ../sass/components/_hero.scss */
+  /* line 37, ../sass/components/_hero.scss */
   .panel--hero .logo img {
     width: 206px;
     height: auto;
   }
 }
 @media (max-width: 767px) {
-  /* line 18, ../sass/components/_hero.scss */
+  /* line 27, ../sass/components/_hero.scss */
   .panel--hero .logo {
     position: fixed;
     top: 5px;
     left: 15px;
     z-index: 23;
   }
-  /* line 41, ../sass/components/_hero.scss */
+  /* line 50, ../sass/components/_hero.scss */
   .panel--hero .logo img {
     width: auto;
     height: 46px;
   }
 }
-/* line 48, ../sass/components/_hero.scss */
+/* line 57, ../sass/components/_hero.scss */
 .panel--hero .login {
   text-transform: uppercase;
   font-size: 16px;
 }
 @media (min-width: 768px) {
-  /* line 48, ../sass/components/_hero.scss */
+  /* line 57, ../sass/components/_hero.scss */
   .panel--hero .login {
     position: absolute;
     top: -160px;
     right: 15px;
   }
 }
-/* line 59, ../sass/components/_hero.scss */
+/* line 68, ../sass/components/_hero.scss */
 .panel--hero .box {
   position: relative;
   min-height: 1px;
@@ -7633,104 +7646,115 @@ form .checkbox label {
   color: #fff;
 }
 @media (min-width: 992px) {
-  /* line 59, ../sass/components/_hero.scss */
+  /* line 68, ../sass/components/_hero.scss */
   .panel--hero .box {
     float: left;
     width: 50%;
   }
 }
 @media (min-width: 992px) {
-  /* line 59, ../sass/components/_hero.scss */
+  /* line 68, ../sass/components/_hero.scss */
   .panel--hero .box {
     left: 50%;
   }
 }
 @media (max-width: 767px) {
-  /* line 59, ../sass/components/_hero.scss */
+  /* line 68, ../sass/components/_hero.scss */
   .panel--hero .box {
     margin-top: 20px;
     text-align: center;
   }
 }
 @media (min-width: 768px) {
-  /* line 59, ../sass/components/_hero.scss */
+  /* line 68, ../sass/components/_hero.scss */
   .panel--hero .box {
     margin-top: 182px;
   }
 }
+@media (min-width: 992px) {
+  /* line 68, ../sass/components/_hero.scss */
+  .panel--hero .box {
+    width: 47%;
+  }
+}
+/* line 87, ../sass/components/_hero.scss */
+.panel--hero .box__title {
+  margin-bottom: 33px;
+}
 @media (max-width: 767px) {
-  /* line 75, ../sass/components/_hero.scss */
+  /* line 87, ../sass/components/_hero.scss */
   .panel--hero .box__title {
     margin-bottom: 28px;
   }
-  /* line 79, ../sass/components/_hero.scss */
+  /* line 93, ../sass/components/_hero.scss */
   .panel--hero .box__title h2 {
     font-size: 32px;
     color: #fff;
   }
 }
 @media (min-width: 768px) {
-  /* line 86, ../sass/components/_hero.scss */
+  /* line 100, ../sass/components/_hero.scss */
   .panel--hero .box__title h2 {
     font-size: 40px;
     color: #fff;
   }
 }
 @media (max-width: 767px) {
-  /* line 93, ../sass/components/_hero.scss */
+  /* line 107, ../sass/components/_hero.scss */
   .panel--hero .box__content {
     padding-bottom: 28px;
   }
 }
 @media (min-width: 768px) {
-  /* line 93, ../sass/components/_hero.scss */
+  /* line 107, ../sass/components/_hero.scss */
   .panel--hero .box__content {
     font-size: 22px;
   }
-  /* line 101, ../sass/components/_hero.scss */
+  /* line 115, ../sass/components/_hero.scss */
   .panel--hero .box__content .btn, .panel--hero .box__content .btn-facebook {
     margin: 15px 10px 0 0;
   }
 }
-/* line 106, ../sass/components/_hero.scss */
+/* line 120, ../sass/components/_hero.scss */
 .panel--hero .box__content a {
   color: #fff;
   text-decoration: underline;
 }
-/* line 110, ../sass/components/_hero.scss */
+/* line 124, ../sass/components/_hero.scss */
 .panel--hero .box__content a:hover {
   color: #dde0e1;
 }
-/* line 116, ../sass/components/_hero.scss */
+/* line 130, ../sass/components/_hero.scss */
 .panel--hero.panel--slim {
   height: 166px;
   background-size: auto;
+  background-image: url("images/hero-chairs.jpg");
 }
 @media (max-width: 767px) {
-  /* line 116, ../sass/components/_hero.scss */
+  /* line 130, ../sass/components/_hero.scss */
   .panel--hero.panel--slim {
     height: 0;
   }
-  /* line 122, ../sass/components/_hero.scss */
+  /* line 137, ../sass/components/_hero.scss */
   .panel--hero.panel--slim .box {
     display: none;
   }
 }
 @media (min-width: 768px) {
-  /* line 127, ../sass/components/_hero.scss */
+  /* line 142, ../sass/components/_hero.scss */
   .panel--hero.panel--slim .logo {
     top: 12px;
   }
 }
-/* line 133, ../sass/components/_hero.scss */
+/* line 148, ../sass/components/_hero.scss */
 .panel--hero.panel--slim .box {
   margin-top: 40px;
 }
-/* line 136, ../sass/components/_hero.scss */
+/* line 151, ../sass/components/_hero.scss */
 .panel--hero.panel--slim .box__content {
   text-align: right;
 }
-/* line 140, ../sass/components/_hero.scss */
+/* line 155, ../sass/components/_hero.scss */
 .panel--hero.panel--slim .login {
   position: static;
 }
