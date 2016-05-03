@@ -19,6 +19,7 @@ use Stjornvisi\Lib\DataSourceAwareInterface;
  * @property string|Time event_time
  * @property string|Time event_end
  * @property string avatar
+ * @property string gallery_avatar
  * @property string lat
  * @property string lng
  *
@@ -276,9 +277,19 @@ class Event extends AbstractService implements DataSourceAwareInterface
      * @return array|\Stjornvisi\Event\[]
      * @throws Exception
      */
-    public function fetchPassed($count = 10)
+    public function fetchPassed($count = 15)
     {
-        $sql = "SELECT * FROM Event WHERE event_date < NOW() AND avatar is not null AND avatar != '' ORDER BY event_date DESC, event_time DESC LIMIT {$count};";
+        $sql = "SELECT
+                  e.*,
+                  eg.name as gallery_avatar
+                FROM
+                  Event e
+                  left join (select event_id, name from EventGallery order by created asc limit 1) eg on e.id = eg.event_id
+                WHERE
+                  e.event_date < NOW()
+                  AND e.avatar is not null AND e.avatar != ''
+                ORDER BY
+                  e.event_date DESC, e.event_time DESC LIMIT {$count};";
         return $this->fetchMany($sql);
     }
 

@@ -96,7 +96,7 @@ use \Stjornvisi\View\Helper\Date;
 							<div class="entry__image">
 								<?php if($event->avatar):?>
 									<a class="block-element__poster" href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>">
-										<?=$this->image($event->avatar, FileProperties::DIR_LARGE);?>
+										<?=$this->image(($event->gallery_avatar) ? $event->gallery_avatar : $event->avatar, FileProperties::DIR_LARGE);?>
 									</a>
 								<?php endif;?>
 							</div>
