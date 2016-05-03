@@ -54,7 +54,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
     public function getGroupStatistics($id)
     {
         try {
-            $month = 7;
+            $month = 9;
             $day = 1;
 
             $timestamp = mktime(0, 0, 0, $month, $day);
