@@ -1,0 +1,68 @@
+$color-blue: #1b3e59;
+$color-light-blue: #2b6786;
+$color-gray: #8d979c;
+$color-light-gray: #dde0e1;
+$color-dark-gray: #505d62;
+$color-darkest-gray: #222;
+$color-black: #000;
+$color-white: #fff;
+$color-offwhite: #f4f7f9;
+$color-green: #669933;
+$color-orange: #ff9900;
+$color-red: #990000;
+$color-facebook: rgb(59, 89, 152); //http://www.color-hex.com/color-palette/185
+
+$color-border: $color-light-gray;
+
+$color-text: $color-dark-gray;
+$color-text-dark: $color-black;
+$color-text-light: $color-gray;
+
+$link-color: $color-light-blue;
+$link-hover-color: $color-gray;
+
+$font-family-sans-serif: Lato, Helvetica, Arial, sans-serif !default;
+$font-size-base: 20px !default;
+
+$base-line-height: $font-size-base * 1.4 !default;
+$line-height-small: 1.2;
+
+//.btn-default
+$btn-default-color: $color-white;
+$btn-default-bg: $color-gray;
+$btn-default-border: $color-gray;
+
+//.btn-primary
+$btn-primary-color: $color-white;
+$btn-primary-bg: $color-light-blue;
+$btn-primary-border: $color-light-blue;
+
+//.btn-success
+$btn-success-color: $color-white;
+$btn-success-bg: $color-green;
+$btn-success-border: $color-green;
+
+//.btn-info
+$btn-info-color: $color-white;
+$btn-info-bg: rgba(255, 255, 255, .1);
+$btn-info-border: $color-white;
+
+//.btn-warning
+$btn-warning-color: $color-white;
+$btn-warning-bg: $color-orange;
+$btn-warning-border: $color-orange;
+
+//.btn-danger
+$btn-danger-color: $color-white;
+$btn-danger-bg: $color-red;
+$btn-danger-border: $color-red;
+
+//.btn-facebook
+$btn-facebook-color: $color-white;
+$btn-facebook-bg: $color-facebook;
+$btn-facebook-border: $color-facebook;
+
+//form-group has-error
+$state-danger-text: $color-red;
+
+$link-hover-decoration: none !default;

@@ -1,0 +1,150 @@
+.panel--navigation {
+	background-color: $color-blue;
+	padding: 0;
+
+	.main--burger {
+		display: none;
+	}
+}
+
+.box--navigation {
+	.box__content {
+		height: 60px;
+	}
+
+	nav {
+		display: table;
+		width: 100%;
+
+		a {
+			@include linkColorLight;
+
+			display: table-cell;
+			width: 1%;
+			white-space: nowrap;
+			text-align: center;
+
+			font-size: 22px;
+			font-weight: 300;
+			color: $color-white;
+			text-decoration: none;
+			height: 60px;
+			vertical-align: middle;
+
+			@media (min-width: $screen-md-min) {
+				&:first-child {
+					padding-left: 5%;
+				}
+				&:last-child {
+					padding-right: 5%;
+				}
+			}
+
+			span {
+				display: block;
+				line-height: 1;
+			}
+		}
+	}
+}
+
+.panel--main-navigation {
+	// Mobile
+	@media (max-width: $screen-xs-max) {
+		position: fixed;
+		right: 0;
+		left: 0;
+		top: 0;
+		z-index: 20;
+
+		.panel__container {
+			padding: 0;
+		}
+
+		.main--burger {
+			display: block;
+			position: fixed;
+			z-index: 3;
+			top: 15px;
+			right: 15px;
+			color: $color-white;
+			font-size: 30px;
+		}
+
+		nav {
+			@include transition(opacity .1s);
+			opacity: 0;
+			display: none;
+			position: fixed;
+			top: 60px;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: $color-blue;
+			border-top: 1px solid transparentize($color-light-blue, 0.25);
+
+			body.state-mobile-menu-open & {
+				display: block;
+				opacity: 1;
+			}
+
+			a {
+				@include linkColorLight;
+
+				display: block;
+				height: auto;
+				width: auto;
+				padding: 10px 0;
+				text-align: center;
+				line-height: $line-height-computed;
+				border-bottom: 1px solid transparentize($color-light-blue, 0.25);
+			}
+		}
+	}
+}
+
+.panel--footer-navigation {
+	background-color: rgba($color-blue, .8);
+
+	@media (min-width: $screen-sm-min) {
+		nav {
+			a {
+				font-size: 20px;
+				font-weight: 600;
+				border-bottom: 1px solid $color-light-blue;
+
+				span {
+					border-right: 2px solid $color-white;
+				}
+
+				&:last-child {
+					span {
+						border-right: 0;
+					}
+				}
+			}
+		}
+	}
+
+	@media (max-width: $screen-xs-max) {
+		.box--navigation {
+			.box__content {
+				height: auto;
+			}
+		}
+
+		nav {
+			display: block;
+
+			a {
+				display: block;
+				height: auto;
+				width: auto;
+				padding: 10px 0;
+				text-align: center;
+				line-height: $line-height-computed;
+				border-bottom: 1px solid transparentize($color-light-blue, 0.25);
+			}
+		}
+	}
+}

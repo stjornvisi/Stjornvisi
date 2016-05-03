@@ -14,34 +14,71 @@ $this->headMeta()->setProperty('og:image', ($this->news->avatar)
 
 use Stjornvisi\Properties\FileProperties;
 ?>
-<div class="layout_article">
-    <article class="block-element">
-        <header class="block-element__header">
-            <time class="block-element__time" datetime="<?=$this->news->created_date->format('c')?>">
-                <?=$this->date($this->news->created_date, \Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
-            </time>
-            <h1><?=$this->news->title?></h1>
-            <ul class="block-element__tags">
-                <li>
-                <?php if($this->news->group):?>
-                    <a href="<?=$this->url('hopur/index', array('id'=>$this->news->group->url)) ?>"><?=$this->news->group->name_short;?></a>
-                <?php else:?>
-                    <span>Stjórnvísisfrétt</span>
-                <?php endif;?>
-                </li>
-            </ul>
-        </header>
-        <section class="block-element__body">
-            <?php if($this->news->avatar):?>
-                <?=$this->image($this->news->avatar, FileProperties::DIR_LARGE, ['block-element__image']);?>
-            <?php endif;?>
-            <?=$this->paragrapher($this->news->body);?>
-        </section>
-        <aside class="block-element__aside">
+<?if($this->access->is_admin || $this->access->type >= 1):?>
+<div class="panel panel--admin">
+	<div class="panel__container">
+		<div class="panel__content">
+			<a href="<?=$this->url('frettir/update', array('id'=>$this->news->id));?>" class="update"><i class="fa fa-check"></i> uppfæra</a>
+			<a href="<?=$this->url('frettir/delete', array('id'=>$this->news->id));?>" class="delete"><i class="fa fa-close"></i> eyða</a>
+		</div>
+	</div>
+</div>
+<?endif?>
 
-        </aside>
-        <footer class="block-element__footer"></footer>
-    </article>
+<div class="panel panel--breadcrumbs">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box">
+				<div class="box__content">
+					<a href="/">Forsíða</a>
+					<span class="separator">/</span>
+					<a href="/frettir">Fréttir og pistlar</a>
+					<span class="separator">/</span>
+					<?=$this->news->title?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="panel">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box box--news-single">
+				<div class="box__title"><h1><?=$this->news->title?></h1></div>
+				<div class="box__content">
+					<article class="entry">
+						<time class="entry__date" datetime="<?=$this->news->created_date->format('c')?>">
+							<?=$this->date($this->news->created_date, \Stjornvisi\View\Helper\Date::FORMAT_DATE_TIME)?>
+						</time>
+						<?php if($this->news->avatar):?>
+							<div class="entry__image">
+								<?=$this->image($this->news->avatar, FileProperties::DIR_LARGE, []);?>
+							</div>
+						<?php endif;?>
+
+						<div class="entry__content">
+							<?=$this->paragrapher($this->news->body);?>
+						</div>
+					</article>
+				</div>
+				<div class="box__footer">
+					<a href="#" onclick="history.go(-1);"><i class="fa fa-chevron-circle-left"></i> Til baka</a>
+					<div class="addthis">
+						<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+							<a class="addthis_button_facebook"></a>
+							<a class="addthis_button_google_plusone_share"></a>
+							<a class="addthis_button_linkedin"></a>
+							<a class="addthis_button_twitter"></a>
+							<a class="addthis_button_compact"></a>
+							<a class="addthis_counter addthis_bubble_style"></a>
+						</div>
+						<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-511e04653937dc92"></script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 

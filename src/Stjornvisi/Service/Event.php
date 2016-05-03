@@ -8,6 +8,23 @@ use \DateTime;
 use Stjornvisi\Lib\Time;
 use Stjornvisi\Lib\DataSourceAwareInterface;
 
+/**
+ * @property int id
+ * @property string subject
+ * @property string body
+ * @property string location
+ * @property string address
+ * @property int capacity
+ * @property string event_date
+ * @property string|Time event_time
+ * @property string|Time event_end
+ * @property string avatar
+ * @property string gallery_avatar
+ * @property string lat
+ * @property string lng
+ *
+ * @property string attending
+ */
 class Event extends AbstractService implements DataSourceAwareInterface
 {
     const NAME = "event";
@@ -174,15 +191,11 @@ class Event extends AbstractService implements DataSourceAwareInterface
     public function fetchAll($offset = null, $count = null)
     {
         try {
-            if ($offset != null && $count != null) {
-                $statement = $this->pdo->prepare("
-                    SELECT * FROM Event E
-                    ORDER BY E.event_date DESC
-                    LIMIT {$offset},{$count};");
-            } else {
-                $statement = $this->pdo->prepare("
-                    SELECT * FROM Event E
-                    ORDER BY E.event_date DESC;");
+            if ($offset !== null && $count !== null) {
+                $statement = $this->pdo->prepare("SELECT * FROM Event E ORDER BY E.event_date DESC LIMIT {$offset},{$count};");
+            }
+            else {
+                $statement = $this->pdo->prepare("SELECT * FROM Event E ORDER BY E.event_date DESC;");
             }
 
             $statement->execute();
@@ -209,6 +222,102 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 ]
             );
             throw new Exception("Can't get all event entries", 0, $e);
+        }
+    }
+
+    /**
+     * @param $sql
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    protected function fetchMany($sql)
+    {
+        try {
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+            $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
+            return array_map(
+                function ($i) {
+                    $i->id = (int)$i->id;
+                    $i->event_time = new Time(($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00");
+                    $i->event_end = new Time(($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00");
+                    $i->event_date = new DateTime($i->event_date);
+                    return $i;
+                },
+                $statement->fetchAll()
+            );
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger(
+                "error",
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                    ]
+                ]
+            );
+            throw new Exception("Can't get all event entries", 0, $e);
+        }
+    }
+
+    /**
+     * @param int $count
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    public function fetchUpcoming($count = 3)
+    {
+        $sql = "SELECT * FROM Event WHERE event_date >= NOW() ORDER BY event_date ASC, event_time ASC LIMIT {$count};";
+        return $this->fetchMany($sql);
+    }
+
+    /**
+     * @param int $count
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    public function fetchPassed($count = 15)
+    {
+        $sql = "SELECT
+                  e.*,
+                  eg.name as gallery_avatar
+                FROM
+                  Event e
+                  left join (select event_id, name from EventGallery order by created asc limit 1) eg on e.id = eg.event_id
+                WHERE
+                  e.event_date < NOW()
+                  AND e.avatar is not null AND e.avatar != ''
+                ORDER BY
+                  e.event_date DESC, e.event_time DESC LIMIT {$count};";
+        return $this->fetchMany($sql);
+    }
+
+    /**
+     * @param int $days
+     * @return int
+     * @throws Exception
+     */
+    public function fetchUpcomingCount($days = 30)
+    {
+        try {
+            $sql = "SELECT count(*) as total FROM `Event`
+              where event_date >= NOW() and event_date <= ADDDATE(NOW(), INTERVAL {$days} DAY)";
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute();
+            return (int)$statement->fetchColumn(0);
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger(
+                "error",
+                $this,
+                [
+                    'exception' => $e->getTraceAsString(),
+                    'sql' => [
+                        isset($statement)?$statement->queryString:null,
+                    ]
+                ]
+            );
+            throw new Exception("Can't count upcoming event entries", 0, $e);
         }
     }
 
@@ -523,22 +632,37 @@ class Event extends AbstractService implements DataSourceAwareInterface
      * is bigger or equal current date.
      *
      * @param  int $id user ID
+     * @param  int $limit limit
      * @return array
      * @throws Exception
      */
-    public function getByUser($id)
+    public function getByUser($id, $limit = 10, $restrictByGroup = true)
     {
         try {
             //GET EVENTS
             //  get all events
-            $statement = $this->pdo->prepare("
+
+	        if ($restrictByGroup) {
+		        $sql = "
                 SELECT E.*, EhU.attending, EhU.register_time FROM `Event` E
                 LEFT JOIN Group_has_Event GhE ON (E.id = GhE.group_id)
                 LEFT JOIN Event_has_User EhU ON ( EhU.user_id=:id AND E.id = EhU.event_id )
                 WHERE (GhE.group_id IN (SELECT group_id FROM Group_has_User GhU WHERE user_id = :id)
                     OR GhE.group_id IS NULL)
                     AND E.event_date >= DATE(NOW())
-                ORDER BY E.event_date ASC;");
+                ORDER BY E.event_date ASC LIMIT {$limit}";
+	        }
+	        else {
+		        $sql = "
+				SELECT E.*, EhU.attending, EhU.register_time FROM `Event` E
+                LEFT JOIN Group_has_Event GhE ON (E.id = GhE.group_id)
+                LEFT JOIN Event_has_User EhU ON ( EhU.user_id=:id AND E.id = EhU.event_id )
+                WHERE E.event_date >= DATE(NOW())
+                ORDER BY E.event_date ASC LIMIT {$limit}";
+
+	        }
+
+            $statement = $this->pdo->prepare($sql);
             $statement->execute(['id'=>$id]);
             $events = $statement->fetchAll();
 
@@ -771,7 +895,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
                     WHERE E.event_date >= :from
                     AND GhE.group_id = :id
-                    ORDER BY E.event_date DESC;");
+                    ORDER BY E.event_date DESC LIMIT 3;");
                 $statement->execute([
                     'from' => $from->format('Y-m-d'),
                     'id' => $id
@@ -782,7 +906,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     JOIN Group_has_Event GhE ON (E.id = GhE.event_id)
                     WHERE (E.event_date BETWEEN :from AND :to)
                     AND GhE.group_id = :id
-                    ORDER BY E.event_date DESC;");
+                    ORDER BY E.event_date DESC LIMIT 3;");
                 $statement->execute([
                     'from' => $from->format('Y-m-d'),
                     'to' => $to->format('Y-m-d'),

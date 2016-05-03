@@ -1,63 +1,73 @@
-<?php if( !$this->form ):?>
+<?if( !$this->form ):?>
 
-<?php else:?>
-<?php $this->form->setAttribute('class', 'form-horizontal'); ?>
+<?else:?>
+<?php $this->form->setAttribute('class', ''); ?>
 
-<div class="layout layout--three-columns page-login">
-    <section class="layout__section">
-        <div class="layout__data page-login__service">
-            <p>Stjónvísi býður nú upp á að notendur noti Facebook sem auðkenni. Auðvelt er
-                að tengja eldri notendareikninga við þessa þjónustu, prufaðu bara.</p>
-            <div class="page-login__buttons">
-                <a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-facebook"><i class="icon-facebook"></i>| Facebook innskráning</a>
-                <a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
-            </div>
+<div class="panel panel--columns-two">
+    <div class="panel__container">
+        <div class="panel__content panel--row">
+			<div class="box">
+				<div class="box__title"><h3>Auðkenna við Facebook</h3></div>
+				<div class="box__content">
+					<p>Stjórnvísi býður nú upp á að notendur noti Facebook sem auðkenni. Auðvelt er
+						að tengja eldri notendareikninga við þessa þjónustu, prófaðu bara.</p>
 
+					<a href="<?=$this->facebook( \Stjornvisi\Controller\AuthController::LOGIN_CALLBACK_FACEBOOK );?>" class="btn btn-facebook"><i class="fa fa-facebook-f"></i>| Facebook innskráning</a>
+					<a href="<?=$this->url('access/create')?>" class="btn btn-success">Stofna aðgang</a>
+				</div>
 
+				<div class="box__title"><h3>Gleymt lykilorð</h3></div>
+				<div class="box__content">
+					<p>Ef þú hefur gleymt lykilorðinu þínu, sláðu þá inn netfang og
+						fáðu nýtt sent í pósti</p>
 
-            <h2 class="layout__headline">Gleymt lykilorð</h2>
-            <p>Ef þú hefur gleymt lykilorðinu þínu, sláðu þá inn netfang og
-                fáðu nýtt sent í pósti</p>
-            <?=$this->form()->openTag($this->lost);?>
-            <div class="form-group">
-                <?=$this->formLabel($this->lost->get('email'));?>
-                <?=$this->formElement($this->lost->get('email')->setAttribute('class', 'form-control'));?>
-                <?=$this->formElementErrors($this->lost->get('email'));?>
-            </div>
-            <div class="form-group">
-                <?=$this->formElement(
-                    $this->lost->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Senda')
-                );?>
-            </div>
-            <?= $this->form()->closeTag() ?>
+					<?=$this->form()->openTag($this->lost);?>
+					<div class="form-group">
+						<?=$this->formLabel($this->lost->get('email'));?>
+						<?=$this->formElement($this->lost->get('email')->setAttribute('class', 'form-control'));?>
+						<?=$this->formElementErrors($this->lost->get('email'));?>
+					</div>
 
+					<div class="form-group">
+						<?=$this->formElement(
+							$this->lost->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Senda')
+						);?>
+					</div>
 
+					<?= $this->form()->closeTag() ?>
+				</div>
+			</div>
 
-        </div>
-        <div class="layout__meta page-login__manual">
-            <p>Að sjálfsögðu er hægt að skrá sig inn með gamla mátanum</p>
-            <?=$this->form()->openTag($this->form);?>
+			<div class="box">
+				<div class="box__title"><h3>Innskráning</h3></div>
+				<div class="box__content">
+					<p>Að sjálfsögðu er hægt að skrá sig inn með gamla mátanum</p>
+					<?=$this->form()->openTag($this->form);?>
 
-            <div class="form-group">
-                <?=$this->formLabel($this->form->get('email'));?>
-                <?=$this->formElement($this->form->get('email')->setAttribute('class', 'form-control'));?>
-                <?=$this->formElementErrors($this->form->get('email'));?>
-            </div>
-            <div class="form-group">
-                <?=$this->formLabel($this->form->get('passwd'));?>
-                <?=$this->formElement($this->form->get('passwd')->setAttribute('class', 'form-control'));?>
-                <?=$this->formElementErrors($this->form->get('passwd'));?>
-            </div>
+					<div class="form-group">
+						<?=$this->formLabel($this->form->get('email'));?>
+						<?=$this->formElement($this->form->get('email')->setAttribute('class', 'form-control'));?>
+						<?=$this->formElementErrors($this->form->get('email'));?>
+					</div>
 
-            <div class="form-group">
-                <?=$this->formElement($this->form->get('submit')->setAttribute('class', 'btn btn-default'));?>
-            </div>
+					<div class="form-group">
+						<?=$this->formLabel($this->form->get('passwd'));?>
+						<?=$this->formElement($this->form->get('passwd')->setAttribute('class', 'form-control'));?>
+						<?=$this->formElementErrors($this->form->get('passwd'));?>
+					</div>
 
-            <?= $this->form()->closeTag() ?>
+					<div class="form-group">
+						<?=$this->formElement($this->form->get('submit')->setAttribute('class', 'btn btn-default'));?>
+					</div>
 
-        </div>
+					<?= $this->form()->closeTag() ?>
+				</div>
+			</div>
 
-    </section>
-    <aside class="layout__aside"></aside>
+			<div class="box">
+
+			</div>
+		</div>
+    </div>
 </div>
-<?php endif;?>
+<?endif?>

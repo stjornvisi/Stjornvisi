@@ -8,7 +8,7 @@
 
     var mock = {addEventListener:function(){}};
     var active = undefined;
-    (document.querySelector('.categories__groups')||mock).addEventListener('click',function(event){
+    (document.querySelector('.categories--groups')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = 0;
         if(active == undefined){
@@ -28,7 +28,7 @@
 
 
     },false);
-    (document.querySelector('.categories__users')||mock).addEventListener('click',function(event){
+    (document.querySelector('.categories--users')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = '-100%';
         if(active == undefined){
@@ -46,7 +46,7 @@
             active.classList.add('active');
         }
     },false);
-    (document.querySelector('.categories__config')||mock).addEventListener('click',function(event){
+    (document.querySelector('.categories--config')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = '-200%';
         if(active == undefined){
@@ -65,15 +65,39 @@
         }
     },false);
 
-    (document.querySelector('.main__burger')||mock).addEventListener('click',function(event){
+    (document.querySelector('.main--burger')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.body.classList.toggle('state-mobile-menu-open');
     },false);
 
-    (document.querySelector('.main__home')||mock).addEventListener('click',function(event){
+    (document.querySelector('.main--home')||mock).addEventListener('click',function(event){
         event.preventDefault();
         document.body.classList.toggle('state-open');
     },false);
-
-
 })();
+
+$(function() {
+	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function(e) {
+		e.preventDefault();
+		var $parent = $(this.parentNode);
+
+		if (e.type === 'mouseup' || e.type === 'touchstart') {
+			$('.entry--hoverable').removeClass('open');
+			$('body').removeClass('hoverable--open');
+
+			$parent.addClass('open');
+			$('body').addClass('hoverable--open');
+		}
+		else if (e.type === 'mouseenter') {
+			$('.entry--hoverable').removeClass('open');
+			$('body').removeClass('hoverable--open');
+
+			$parent.addClass('open');
+			$('body').addClass('hoverable--open');
+		}
+        else if (e.type === 'mouseleave') {
+            $('.entry--hoverable').removeClass('open');
+            $('body').removeClass('hoverable--open');
+        }
+	});
+});

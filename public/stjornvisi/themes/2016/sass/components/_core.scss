@@ -1,0 +1,146 @@
+*, *:before, *:after{
+	@include box-sizing(border-box);
+}
+
+body {
+	font-family: $font-family-sans-serif;
+	font-size: $font-size-base;
+	line-height: $base-line-height;
+	color: $color-text;
+	-webkit-font-smoothing: antialiased;
+
+	&.hoverable--open {
+		.hoverable--fade {
+			opacity: .3;
+		}
+	}
+}
+
+a {
+	@include transition(color .1s);
+	color: $link-color;
+	text-decoration: $link-hover-decoration;
+
+	&:hover {
+		color: $link-hover-color;
+	}
+}
+
+strong {
+	font-weight: 600;
+}
+
+label {
+	&.inline {
+		width: 250px;
+	}
+}
+
+
+/*** BUTTONS ***/
+.btn {
+	@include transition(all .15s);
+	text-decoration: none !important;
+	text-transform: uppercase;
+	padding: 8px 15px;
+	font-size: 16px;
+
+	.fa {
+		padding: 0 5px;
+	}
+}
+.btn-facebook {
+	@extend .btn;
+	@extend .btn-primary;
+
+	background-color: $color-facebook;
+	border-color: $color-facebook;
+}
+
+
+/*** STEPPER ***/
+
+.stepper {
+	display: none;
+
+	//display: table;
+	width: 100%;
+	border: 1px solid $color-border;
+	padding: 10px;
+	margin-bottom: $line-height-computed;
+
+	li {
+		display:table-cell;
+		width: 1%;
+		text-align:center;
+	}
+
+	.stepper--current {
+		font-weight: 600;
+	}
+}
+
+/*** LIST ***/
+
+.list {
+	padding-left: 40px;
+}
+
+.list__item {
+	display: list-item;
+	list-style-type: disc;
+
+	.list__item {
+		list-style-type: circle;
+	}
+}
+
+/*** TABLE ***/
+
+.block-table__date {
+	white-space: nowrap;
+}
+
+
+.block-list {
+	@include make-sm-column(4);
+	.block-item {
+		margin-bottom: $line-height-computed;
+		h4 {
+			margin-bottom:0;
+			font-weight: 600;
+		}
+	}
+
+	.block-item__time {
+		color: $color-text-light;
+	}
+}
+
+/*** PAGINATION ***/
+
+.block_pagination{
+	@include clearfix;
+
+	.block_pagination__item{
+		float: left;
+	}
+	.block_pagination__link{
+		display: block;
+		padding: 5px 10px;
+	}
+	.block_pagination__link:hover,
+	.block_pagination__link--active{
+		background-color: $color-light-blue;
+		color: $color-white;
+	}
+}
+
+
+.page-group__members-item {
+	margin-bottom: $line-height-computed;
+
+	h5 {
+		font-weight: 600;
+	}
+}

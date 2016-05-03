@@ -8,98 +8,97 @@
 ?>
 <?php echo $this->doctype(); ?>
 <html lang="is">
-    <head>
-        <meta charset="utf-8">
-        <?= $this->headMeta()
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-        ?>
-        <meta name="msapplication-TileColor" content="#292468">
-        <meta name="msapplication-TileImage" content="<?=$this->basePath("favicons/mstile-144x144.png");?>">
-        <meta name="theme-color" content="#292468">
+<head>
+	<meta charset="utf-8">
+	<?=$this->headMeta()
+		->appendName('viewport', 'width=device-width, initial-scale=1.0')
+		->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+	?>
+	<meta name="msapplication-TileColor" content="#292468">
+	<meta name="msapplication-TileImage" content="<?=$this->basePath("favicons/mstile-144x144.png");?>">
+	<meta name="theme-color" content="#292468">
 
-        <?= $this->headTitle('Stjórnvísi ')->setSeparator(' / ')->setAutoEscape(false) ?>
+	<?=$this->headTitle('Stjórnvísi ')->setSeparator(' / ')->setAutoEscape(false)?>
 
-        <link rel="apple-touch-icon" sizes="57x57" href="<?=$this->basePath("favicons/apple-touch-icon-57x57.png");?>">
-        <link rel="apple-touch-icon" sizes="60x60" href="<?=$this->basePath("favicons/apple-touch-icon-60x60.png");?>">
-        <link rel="apple-touch-icon" sizes="72x72" href="<?=$this->basePath("favicons/apple-touch-icon-72x72.png");?>">
-        <link rel="apple-touch-icon" sizes="76x76" href="<?=$this->basePath("favicons/apple-touch-icon-76x76.png");?>">
-        <link rel="apple-touch-icon" sizes="114x114" href="<?=$this->basePath("favicons/apple-touch-icon-114x114.png");?>">
-        <link rel="apple-touch-icon" sizes="120x120" href="<?=$this->basePath("favicons/apple-touch-icon-120x120.png");?>">
-        <link rel="apple-touch-icon" sizes="144x144" href="<?=$this->basePath("favicons/apple-touch-icon-144x144.png");?>">
-        <link rel="apple-touch-icon" sizes="152x152" href="<?=$this->basePath("favicons/apple-touch-icon-152x152.png");?>">
-        <link rel="apple-touch-icon" sizes="180x180" href="<?=$this->basePath("favicons/apple-touch-icon-180x180.png");?>">
-        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-32x32.png");?>" sizes="32x32">
-        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/android-chrome-192x192.png");?>" sizes="192x192">
-        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-96x96.png");?>" sizes="96x96">
-        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>" sizes="16x16">
-        <link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>">
+	<link rel="apple-touch-icon" sizes="57x57" href="<?=$this->basePath("favicons/apple-touch-icon-57x57.png");?>">
+	<link rel="apple-touch-icon" sizes="60x60" href="<?=$this->basePath("favicons/apple-touch-icon-60x60.png");?>">
+	<link rel="apple-touch-icon" sizes="72x72" href="<?=$this->basePath("favicons/apple-touch-icon-72x72.png");?>">
+	<link rel="apple-touch-icon" sizes="76x76" href="<?=$this->basePath("favicons/apple-touch-icon-76x76.png");?>">
+	<link rel="apple-touch-icon" sizes="114x114" href="<?=$this->basePath("favicons/apple-touch-icon-114x114.png");?>">
+	<link rel="apple-touch-icon" sizes="120x120" href="<?=$this->basePath("favicons/apple-touch-icon-120x120.png");?>">
+	<link rel="apple-touch-icon" sizes="144x144" href="<?=$this->basePath("favicons/apple-touch-icon-144x144.png");?>">
+	<link rel="apple-touch-icon" sizes="152x152" href="<?=$this->basePath("favicons/apple-touch-icon-152x152.png");?>">
+	<link rel="apple-touch-icon" sizes="180x180" href="<?=$this->basePath("favicons/apple-touch-icon-180x180.png");?>">
+	<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-32x32.png");?>" sizes="32x32">
+	<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/android-chrome-192x192.png");?>"
+		  sizes="192x192">
+	<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-96x96.png");?>" sizes="96x96">
+	<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>" sizes="16x16">
+	<link rel="icon" type="image/png" href="<?=$this->basePath("favicons/favicon-16x16.png");?>">
 
-        <?= $this->headLink()
-            ->appendStylesheet($this->basePath() . '/stylesheets//screen.css')
-            ->appendStylesheet($this->basePath() . '/stylesheets//ie.css', 'screen', 'IE 9')
-        ; ?>
-    </head>
-    <body>
+	<?=$this->headLink()
+		->appendStylesheet('https://fonts.googleapis.com/css?family=Lato:300,400,600,700')
+		->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/screen.css')
+		->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9')
+		->appendStylesheet($this->basePath() . '/vendor/owl-carousel2/dist/assets/owl.carousel.css', 'screen')
+	;?>
 
-        <main role="main">
-            <?php echo $this->content; ?>
-        </main>
-        <footer role="footer">
-            <div class="footer-wrapper">
-                <div class="footer-wrapper__inner">
-                    <div class="footer-wrapper__item footer-wrapper__address">
-                        <h1 class="footer-wrapper__brand">Stjórnvísi ehf</h1>
-                        <p>Innovation House</p>
-                        <p>Eiðistorgi 13-15</p>
-                        <p>170 Seltjarnarnes</p>
-                        <p>Kt: 650686-1609</p>
-                        <p><a href="mailto:stjornvisi@stjornvisi.is">stjornvisi@stjornvisi.is</a></p>
-                        <p><i class="icon-phone"></i> 533-5666</p>
-                        <p><i class="icon-mobile"></i> 840-4990</p>
-                    </div>
-                    <ul class="footer-wrapper__item">
-                        <li><a href="<?php echo $this->url('um') ?>">Um Stjórnvísi</a></li>
-                        <li><a href="<?php echo $this->url('stjornin') ?>">Stjórnin</a></li>
-                        <li><a href="<?php echo $this->url('adild-og-felagsgjold') ?>">Aðild og félagsgjöld</a></li>
-                        <li><a href="<?php echo $this->url('log-arsskyrslur-og-arsreikningar') ?>">Lög, ársskýrslur og ársreikningar</a></li>
-                        <li><a href="<?php echo $this->url('kennsla') ?>">Handbók vefsins</a></li>
+	<?= $this->headScript()
+		->appendFile(
+			$this->basePath('/vendor/jquery/dist/jquery.min.js'),
+			'text/javascript'
+		)->appendFile(
+			$this->basePath('/vendor/owl-carousel2/dist/owl.carousel.min.js'),
+			'text/javascript'
+		)
+	;?>
+</head>
+<body class="state-landing">
 
-                    </ul>
-                    <ul class="footer-wrapper__item">
-                        <li><a href="<?php echo $this->url('hopur') ?>">Hópar</a></li>
-                        <li><a href="<?php echo $this->url('vidburdir') ?>">Viðburðir</a></li>
-                        <li><a href="<?php echo $this->url('frettir') ?>">Fréttir</a></li>
-                        <li><a href="<?php echo $this->url('greinar') ?>">Greinar</a></li>
-                        <li><a href="<?php echo $this->url('fyrirtaeki') ?>">Fyrirtæki</a></li>
-                        <li><a href="<?php echo $this->url('stjornunarverdlaunin') ?>">Stjórnunarverðlaunin</a></li>
-                        <li><a href="<?php echo $this->url('anaegjuvogin') ?>">Ánægjuvogin</a></li>
-                    </ul>
-                </div>
-                <div class="footer-wrapper__social">
-                    <h1 class="footer-wrapper__icon"><i class="icon-stjornvisi"></i></h1>
-                    <ul class="footer-wrapper__social-list">
-                        <li>
-                            <a href="https://www.facebook.com/Stjornvisi" target="_blank" title="Síða Stjórnvísi á Facebook"><i class="icon-facebook2"></i></a>
-                        </li>
-                    </ul>
+<main role="main">
+	<?php echo $this->content; ?>
+</main>
 
-                </div>
-            </div>
-        </footer>
-        <?= $this->inlineScript() ?>
-        <script type="text/javascript">
+<?=$this->partial('layout/_footer.phtml')?>
 
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-24585167-1']);
-            _gaq.push(['_trackPageview']);
+<?=$this->headScript()->appendFile($this->basePath('/javascripts/common.js'), 'text/javascript');?>
+<?=$this->inlineScript()?>
+<script type="text/javascript">
+	$(function () {
+		$('.owl-carousel').owlCarousel({
+			loop:false,
+			margin:10,
+			nav:true,
+			navText:['<i class="fa fa-chevron-circle-left"></i>', '<i class="fa fa-chevron-circle-right"></i>'],
+			touchDrag  : false,
+			mouseDrag  : false,
+			responsive:{
+				0:{
+					items:1
+				},
+				600:{
+					items:1
+				},
+				1000:{
+					items:2
+				}
+			}
+		})
+	});
 
-            (function() {
-                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-24585167-1']);
+	_gaq.push(['_trackPageview']);
 
-        </script>
-    </body>
+	(function () {
+		var ga = document.createElement('script');
+		ga.type = 'text/javascript';
+		ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(ga, s);
+	})();
+
+</script>
+</body>
 </html>

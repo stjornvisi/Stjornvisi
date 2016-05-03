@@ -1,0 +1,144 @@
+.panel--groups {
+	.fa-calendar-o {
+		color: $color-green;
+	}
+
+	.fa-check {
+		color: $color-orange;
+	}
+
+	.legend {
+		font-size: 20px;
+		margin-bottom: $line-height-computed * 2;
+
+		li {
+			margin-bottom: 5px;
+		}
+		.fa {
+			font-size: 22px;
+			margin-right: 10px;
+		}
+	}
+
+	.entry--hoverable {
+		margin-left: -40px;
+	}
+
+	.entry {
+		margin-bottom: 0;
+	}
+
+	.entry__title {
+		@include transition(background-color .2s);
+		margin-bottom: 10px;
+
+		.entry__status {
+			@media (min-width: $screen-md-min) {
+				padding-left: 15px;
+			}
+		}
+
+		h3 {
+			font-size: 32px;
+			color: $color-blue;
+		}
+
+		h4 {
+			font-size: 24px;
+			color: $color-text;
+			margin: 0;
+			padding: 4px 0;
+
+			> a {
+				color: $color-text;
+				&:hover {
+					color: $link-color;
+				}
+			}
+
+			@media (min-width: $screen-md-min) {
+				padding: 4px 15px;
+			}
+
+			@include calendarCountStack;
+			.fa-stack {
+				margin-left: 5px;
+			}
+		}
+
+		.btn {
+			@include transition(opacity .2s);
+			@include transition-delay(0);
+			opacity: 0;
+			position:absolute;
+			right:0;
+			margin-top:-3px;
+			padding: 4px 14px;
+			color: $color-white;
+			&:hover {
+				color: $color-offwhite;
+			}
+		}
+	}
+
+	.open {
+		.entry__title {
+			background-color: $color-offwhite;
+
+			h4 {
+				font-weight: 600;
+				color: $color-blue;
+			}
+		}
+
+		.btn {
+			@include transition-delay(1s);
+			opacity: 1;
+		}
+	}
+
+	.entry__content {
+		background: $color-white;
+	}
+
+	.event {
+		border: 2px solid transparentize($color-light-blue, 0.75);
+		border-top: 0;
+	}
+
+	.event__summary {
+		padding: 10px 30px;
+		margin-bottom: $line-height-computed;
+	}
+
+	.event__details {
+		@include calendarCountStack;
+		.fa-stack {
+			margin-right: 5px;
+		}
+	}
+
+	.event__label,
+	.event__info,
+	.event__title,
+	.event__details,
+	.event__content,
+	.event__footer {
+		padding: 0 30px;
+	}
+
+	.event__content {
+		font-size: 16px;
+
+		a {
+			color: $color-text-light;
+			&:hover {
+				color: $link-color;
+			}
+		}
+	}
+
+	.event__footer {
+		padding-bottom: 10px;
+	}
+}

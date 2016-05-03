@@ -1,0 +1,110 @@
+/**
+ * BLOCK-CALENDAR
+ * Full-blown gregorian calendar displaying events in a
+ * calendar month.
+ *
+ */
+.block-calendar {
+	width: 100%;
+	position: relative;
+
+	td {
+		position: relative;
+		width: (100% / 7);
+		vertical-align: top;
+		overflow: hidden;
+	}
+
+	.block-calendar__header {
+		color: $color-light-blue;
+		tr {
+			border-bottom: 2px solid $color-light-gray;
+			td {
+				text-align: center;
+				font-size: 18px;
+			}
+		}
+
+	}
+
+	.block-calendar__body {
+		tr {
+			td {
+				border: 1px solid $color-light-gray;
+				padding: 10px 15px;
+			}
+		}
+	}
+
+	.block-calendar__pagination {
+		position: absolute;
+		top: -32px;
+		right: 0;
+	}
+
+	.block-calendar__date-label {
+		position: absolute;
+		top: 15px;
+		right: 0;
+		font-size: 50px;
+		font-weight: 600;
+		color: tint($color-light-blue, 90%);
+		z-index: 1;
+	}
+	.block-calendar__subject-list {
+		position: relative;
+		z-index: 2;
+		> li {
+			margin-top: $line-height-computed;
+			font-size: 16px;
+			line-height: $line-height-small;
+			> a {
+				@include linkColorDefault;
+				display: block;
+				font-weight: 600;
+			}
+		}
+		> li:first-child {
+			margin-top: 0;
+		}
+	}
+	.block-calendar__group-list {
+		> li {
+			color: $color-light-gray;
+			> a {
+				color: $color-light-blue;
+			}
+		}
+	}
+}
+
+.block-calendar__pagination {
+	border: 1px solid $color-light-gray;
+	display: inline-block;
+	margin-bottom: $line-height-computed;
+
+	a {
+		font-family: FontAwesome;
+		speak: none;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		line-height: 1;
+		display: inline-block;
+		font-size: 0;
+	}
+
+	a:before {
+		font-size: $font-size-base;
+		display: inline-block;
+		padding: 8px 16px;
+	}
+	.prev:before {
+		content: $fa-var-angle-left;
+	}
+	.next:before {
+		content: $fa-var-angle-right;
+		border-left: 1px solid $color-light-gray;
+	}
+}

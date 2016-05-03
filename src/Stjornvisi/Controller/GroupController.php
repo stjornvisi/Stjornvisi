@@ -2,6 +2,7 @@
 
 namespace Stjornvisi\Controller;
 
+use Stjornvisi\Service\Group;
 use Stjornvisi\View\Model\CsvModel;
 use Stjornvisi\View\Model\IcalModel;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -33,6 +34,7 @@ class GroupController extends AbstractActionController
     public function indexAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var Group $groupService */
         $groupService = $sm->get('Stjornvisi\Service\Group');
         $newsService = $sm->get('Stjornvisi\Service\News');
         $eventService = $sm->get('Stjornvisi\Service\Event');
@@ -81,10 +83,13 @@ class GroupController extends AbstractActionController
                 }
             }
 
+            $groups =  ($auth->hasIdentity()) ? $groupService->fetchDetails($auth->getIdentity()->id) : $groupService->fetchDetails($auth->getIdentity()->id);
             return new ViewModel(
                 [
                 'range' => (object)['from'=>$from, 'to'=>$to, 'range'=>$yearRangeArray],
                 'group' => $group,
+                'groups' => $groups,
+                'statistics' => $groupService->getGroupStatistics($this->params()->fromRoute('id', 0)),
                 'news' => $newsService->getRangeByGroup($group->id, $from, $to),
                 'events' => $eventService->getRangeByGroup($group->id, $from, $to, ($auth->hasIdentity())?$auth->getIdentity()->id:null),
                 'managers' => $userService->getByGroup($group->id, [1,2]),
@@ -285,7 +290,8 @@ class GroupController extends AbstractActionController
     {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
-        return new ViewModel(['groups_all' => $groupService->fetchAllExtended(1)]);
+        //return new ViewModel(['groups_all' => $groupService->fetchAllExtended(1)]);
+        return new ViewModel(['groups_all' => $groupService->fetchDetails()]);
     }
 
     /**

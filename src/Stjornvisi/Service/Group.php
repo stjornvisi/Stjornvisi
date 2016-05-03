@@ -6,6 +6,7 @@ use \PDOException;
 use \DateTime;
 use Stjornvisi\Lib\Time;
 use Stjornvisi\Lib\DataSourceAwareInterface;
+use Zend\Db\Adapter\Driver\Pgsql\Statement;
 
 class Group extends AbstractService implements DataSourceAwareInterface
 {
@@ -39,6 +40,87 @@ class Group extends AbstractService implements DataSourceAwareInterface
             }
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return $statement->fetchObject();
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    (isset($statement))?$statement->queryString:null
+                )
+            ));
+            throw new Exception("Can't read group entry. group:[{$id}]", 0, $e);
+        }
+    }
+
+    public function getGroupStatistics($id)
+    {
+        try {
+            $month = 9;
+            $day = 1;
+
+            $timestamp = mktime(0, 0, 0, $month, $day);
+            if ($timestamp > time()) {
+                $timestamp = mktime(0, 0, 0, $month, $day, date('Y') - 1);
+            }
+
+            $sql = "
+                SELECT
+                  IFNULL(ge.total_events, 0) AS event_count,
+                  IFNULL(gu.total, 0) AS user_count,
+                  IFNULL(ge.total_attendees, 0) AS attendee_count,
+                  IFNULL(ge2.total_events, 0) AS upcoming_count
+                FROM
+                  `Group` g
+                  LEFT JOIN (
+                    SELECT
+                      ghe.group_id,
+                      COUNT(DISTINCT e.id) as total_events,
+                      COUNT(DISTINCT ehu.user_id) as total_attendees,
+                      SUM(IF(UNIX_TIMESTAMP(e.event_date) BETWEEN  {$timestamp} AND UNIX_TIMESTAMP(), 1, 0)) as test_total
+                    from
+                      Event e
+                      JOIN Group_has_Event ghe ON e.id = ghe.event_id
+                      JOIN Event_has_User ehu on ghe.event_id = ehu.event_id
+                    WHERE
+                      UNIX_TIMESTAMP(e.event_date) BETWEEN  {$timestamp} AND UNIX_TIMESTAMP()
+                    GROUP BY
+                      ghe.group_id
+                  ) ge ON g.id = ge.group_id
+                  LEFT JOIN (
+                    SELECT
+                      ghe.group_id,
+                      COUNT(e.id) as total_events
+                    from
+                      Event e
+                      JOIN Group_has_Event ghe ON e.id = ghe.event_id
+                    WHERE
+                      e.event_date > NOW()
+                    GROUP BY
+                      ghe.group_id
+                  ) ge2 ON g.id = ge2.group_id
+                  LEFT JOIN (
+                    SELECT
+                      group_id,
+                      COUNT(*) as total
+                    FROM
+                      Group_has_User
+                    GROUP BY
+                      group_id
+                  ) gu on g.id = gu.group_id
+                WHERE
+                  g.url = :id
+                ORDER BY
+                  name_short
+            ";
+
+            // var_dump($sql);die;
+            $statement = $this->pdo->prepare($sql);
+
+            $statement->execute(array(
+                'id' => $id
+            ));
+
+            return $statement->fetchObject();
+
         } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),
@@ -112,7 +194,6 @@ class Group extends AbstractService implements DataSourceAwareInterface
             throw new Exception("Can't get groups by user. user:[{$id}]", 0, $e);
         }
     }
-
     /**
      * Register or unregister user.
      *
@@ -491,6 +572,133 @@ class Group extends AbstractService implements DataSourceAwareInterface
                 )
             ));
             throw new Exception("Can't count employees per group for company[{$company_id}]", 0, $e);
+        }
+    }
+
+    /**
+     * @param $user_id
+     * @param int $month_interval
+     * @return array|Group[]
+     * @throws Exception
+     */
+    public function fetchDetails($user_id = null, $month_interval = 3)
+    {
+        try {
+            // Fetch all groups, mark groups belonging to specified user, count events using specified interval
+            $statement = $this->pdo->prepare("
+                SELECT
+                  g.id,
+                  g.name_short,
+                  g.summary,
+                  g.url,
+                  ghu.user_id,
+                  IFNULL(ge.total, 0) AS event_count
+                FROM
+                  `Group` g
+                  LEFT JOIN Group_has_User ghu ON g.id = ghu.group_id AND ghu.user_id = :user_id
+                  LEFT JOIN (
+                    SELECT
+                      ghe.group_id,
+                      COUNT(*) as total
+                    from
+                      Event e
+                      JOIN Group_has_Event ghe ON e.id = ghe.event_id
+                    WHERE
+                      e.event_date < NOW() AND DATE_ADD(e.event_date, INTERVAL :month_interval MONTH) >= NOW()
+                    GROUP BY
+                      ghe.group_id
+                  ) ge ON g.id = ge.group_id
+                ORDER BY
+                  name_short
+            ");
+            $statement->execute(array(
+                'user_id' => ($user_id) ? $user_id : -1,
+                'month_interval' => $month_interval,
+            ));
+            $groups = $statement->fetchAll();
+
+            // Fetch all upcoming events and add them to the appropriate group
+            $statement = $this->pdo->prepare("
+                SELECT
+                  e.*,
+                  ge.group_id
+                FROM
+                  Event e
+                  JOIN Group_has_Event ge ON e.id = ge.event_id
+                WHERE
+                  e.event_date >= NOW()
+                ORDER BY
+                  e.event_date ASC, e.event_time ASC
+            ");
+
+            $statement->execute();
+
+            $events = array_map(
+                function ($i) {
+                    $i->id = (int)$i->id;
+                    $i->event_time = new Time(($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00");
+                    $i->event_end = new Time(($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00");
+                    $i->event_date = new DateTime($i->event_date);
+                    return $i;
+                },
+                $statement->fetchAll()
+            );
+
+
+            foreach ($groups as $group) {
+                if (!isset($group->events)) {
+                    $group->events = [];
+                }
+                foreach ($events as $event) {
+                    if ($event->group_id == $group->id) {
+                        $group->events[] = $event;
+                    }
+                }
+            }
+
+            // Fetch board members and add them to the appropriate group
+            $statement = $this->pdo->prepare("
+                SELECT
+                  u.id,
+                  u.name,
+                  c.id as company_id,
+                  c.name AS company_name,
+                  ghu.group_id,
+                  ghu.type
+                FROM
+                  User u
+                  JOIN Company_has_User chu ON u.id = chu.user_id
+                  JOIN Company c ON chu.company_id = c.id
+                  JOIN Group_has_User ghu ON u.id = ghu.user_id
+                WHERE
+                  ghu.type IN (1,2)
+                ORDER BY
+                  ghu.type DESC, u.name
+            ");
+
+            $statement->execute();
+            $board = $statement->fetchAll();
+
+            foreach ($groups as $group) {
+                if (!isset($group->board)) {
+                    $group->board = [];
+                }
+                foreach ($board as $member) {
+                    if ($member->group_id == $group->id) {
+                        $group->board[] = $member;
+                    }
+                }
+            }
+
+            return $groups;
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't get group details", 0, $e);
         }
     }
 

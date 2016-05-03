@@ -1,52 +1,53 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: einarvalur
- * Date: 2/18/14
- * Time: 5:47 PM
- */
-
     $stack = array_chunk($this->users, ceil(count($this->users)/3));
-
 ?>
-<div class="layout layout--three-columns page-user-list">
-    <section class="layout__section">
-        <h1 class="layout__headline">Notendur (<?=count($this->users)?>)</h1>
 
-        <table class="block-table block-table--air">
-            <thead>
-                <tr>
-                    <td><a href="<?=$this->url('notandi/order', ['order'=>'nafn'])?>">Nafn</a></td>
-                    <td><a href="<?=$this->url('notandi/order', ['order'=>'titill'])?>">Starfstitill</a></td>
-                    <td class="block-table__date"><a href="<?=$this->url('notandi/order', ['order'=>'dags'])?>">Dags.</a></td>
-                    <td><a href="<?=$this->url('notandi/order', ['order'=>'fyrirtaeki'])?>">Fyrirtæki</a></td>
-                    <!--td>Lykilstarfsmaður</td-->
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach( $this->users as $user ) : ?>
-                    <tr>
-                        <td><a href="<?=$this->url('notandi/index', array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></td>
-                        <td><?=($user->title)?$user->title:'&nbsp;'?></td>
-                        <td class="block-table__date"><time datetime="<?=$user->created_date->format('c')?>" class="block-item__time"><?=$this->date($user->created_date)?></time></td>
-                        <td>
-                            <?php if($user->company_id):?>
-                                <p><a href="<?=$this->url('fyrirtaeki/index', array('id'=>$user->company_id))?>"><?=$user->company_name?></a></p>
-                            <?php else:?>
-                                <p>&nbsp;</p>
-                            <?php endif;?>
-                        </td>
-                        <!--td><p><?=($user->key_user)?'Formaður':'&nbsp;';?></p></td-->
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </section>
-    <aside class="layout__aside">
-        <?php if($this->admin):?>
-        <stjonvisi-control>
-            <a href="<?=$this->url('notandi/export')?>"><i class="icon-list"></i>notendalisti</a>
-        </stjonvisi-control>
-        <?php endif;?>
-    </aside>
+<?php if($this->admin):?>
+<div class="panel panel--admin">
+	<div class="panel__container">
+		<div class="panel__content">
+			<a href="<?=$this->url('notandi/export')?>"><i class="fa fa-list"></i>notendalisti</a>
+		</div>
+	</div>
+</div>
+<?php endif;?>
+
+<div class="panel">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box">
+				<div class="box__title"><h1>Notendur (<?=count($this->users)?>)</h1></div>
+				<div class="box__content">
+					<table class="table">
+						<thead>
+							<tr>
+								<td><a href="<?=$this->url('notandi/order', ['order'=>'nafn'])?>">Nafn</a></td>
+								<td><a href="<?=$this->url('notandi/order', ['order'=>'titill'])?>">Starfstitill</a></td>
+								<td class="block-table__date"><a href="<?=$this->url('notandi/order', ['order'=>'dags'])?>">Dags.</a></td>
+								<td><a href="<?=$this->url('notandi/order', ['order'=>'fyrirtaeki'])?>">Fyrirtæki</a></td>
+								<!--td>Lykilstarfsmaður</td-->
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach( $this->users as $user ) : ?>
+								<tr>
+									<td><a href="<?=$this->url('notandi/index', array('id'=>$user->id))?>"><?=($user->name)?$user->name:'&nbsp;'?></a></td>
+									<td><?=($user->title)?$user->title:'&nbsp;'?></td>
+									<td class="block-table__date"><time datetime="<?=$user->created_date->format('c')?>" class="block-item__time"><?=$this->date($user->created_date)?></time></td>
+									<td>
+										<?php if($user->company_id):?>
+											<p><a href="<?=$this->url('fyrirtaeki/index', array('id'=>$user->company_id))?>"><?=$user->company_name?></a></p>
+										<?php else:?>
+											<p>&nbsp;</p>
+										<?php endif;?>
+									</td>
+									<!--td><p><?=($user->key_user)?'Formaður':'&nbsp;';?></p></td-->
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

@@ -1,0 +1,48 @@
+footer.bg {
+	display: block;
+	padding-top: 500px;
+	margin-top: -500px;
+	background-image: url("images/dropinn-footer-bg.jpg");
+	background-repeat: no-repeat;
+	background-position: center 0;
+	background-size: cover;
+}
+
+.panel--footer {
+	border-top: 1px solid $color-gray;
+	background-color: rgba($color-blue, .8);
+	padding: 50px 0;
+	color: #fff;
+	text-align: center;
+
+	address {
+		span {
+			border-right: 1px solid $color-white;
+			padding-right: 10px;
+			margin-right: 10px;
+			white-space: nowrap;
+
+			&:last-child {
+				border: 0;
+				margin-right: 0;
+			}
+			&:nth-child(4) {
+				border-right:0;
+				margin-right:0;
+			}
+		}
+
+		a {
+			@include linkColorLight;
+		}
+	}
+
+	.fa-facebook-f {
+		background: $color-white;
+		height: 64px;
+		width: 64px;
+		padding: 16px;
+		font-size: 32px;
+		border-radius: 100%;
+	}
+}

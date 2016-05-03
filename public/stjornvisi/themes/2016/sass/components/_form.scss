@@ -1,0 +1,14 @@
+form {
+	&.form-inline {
+		label,
+		.form-group {
+			margin-right: 5px;
+		}
+	}
+
+	.checkbox {
+		label {
+			margin-right: 30px;
+		}
+	}
+}
