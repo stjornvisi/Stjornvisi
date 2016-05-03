@@ -284,7 +284,8 @@ class Event extends AbstractService implements DataSourceAwareInterface
                   eg.name as gallery_avatar
                 FROM
                   Event e
-                  left join (select event_id, name from EventGallery order by created asc limit 1) eg on e.id = eg.event_id
+                  left join (select max(id) as max_id, event_id from EventGallery group by event_id) em on e.id = em.event_id
+                  left join EventGallery eg on em.max_id = eg.id
                 WHERE
                   e.event_date < NOW()
                   AND e.avatar is not null AND e.avatar != ''
