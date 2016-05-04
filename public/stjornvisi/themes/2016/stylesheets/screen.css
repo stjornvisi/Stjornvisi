@@ -8381,7 +8381,7 @@ form .checkbox label {
 
 /* line 12, ../sass/components/_calendar.scss */
 .block-calendar {
-  width: 100%;
+  width: 99.8%;
   position: relative;
   border-bottom: 1px solid #dde0e1;
 }
