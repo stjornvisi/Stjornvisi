@@ -4,9 +4,15 @@
  * calendar month.
  *
  */
+.table-responsive.padded {
+	padding: 50px 0 0;
+	border:0;
+}
+
 .block-calendar {
 	width: 100%;
 	position: relative;
+	border-bottom: 1px solid $color-border;
 
 	td {
 		position: relative;
