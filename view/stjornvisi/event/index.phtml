@@ -155,20 +155,6 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
 						</div>
 					<?php endif;?>
 
-					<?php if( count($this->event->gallery)>0 ):?>
-						<div>
-							<ul class="block-gallery">
-								<?php foreach($this->event->gallery as $img):?>
-									<li class="block-gallery__item">
-										<a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_ORIGINAL, '2x@'.$img->name]))?>" data-fluidbox="">
-											<?=$this->image($img->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
-										</a>
-									</li>
-								<?php endforeach;?>
-							</ul>
-						</div>
-					<?php endif;?>
-
 					<?php if($this->event->lat && $this->event->lng):?>
 						<google-map zoom="11" class="map_canvas"
 									fittomarkers
@@ -193,7 +179,27 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
 	</div>
 </div>
 
-
+<div class="panel">
+	<div class="panel__container">
+		<div class="panel__content">
+			<div class="box">
+				<div class="box__content">
+					<?php if( count($this->event->gallery)>0 ):?>
+					<ul class="block-gallery">
+						<?php foreach($this->event->gallery as $img):?>
+							<li class="block-gallery__item">
+								<a href="<?=$this->basePath(implode('/', [FileProperties::DIR_IMAGES, FileProperties::DIR_ORIGINAL, '2x@'.$img->name]))?>" data-fluidbox="">
+									<?=$this->image($img->name, FileProperties::DIR_MEDIUM, ['block-gallery__image']);?>
+								</a>
+							</li>
+						<?php endforeach;?>
+					</ul>
+					<?php endif;?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 <div class="panel">

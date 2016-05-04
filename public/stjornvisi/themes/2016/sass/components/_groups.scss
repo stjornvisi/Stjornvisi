@@ -140,5 +140,10 @@
 
 	.event__footer {
 		padding-bottom: 10px;
+
+		// Don't show when hover is used
+		@media (min-width: $screen-md-min) {
+			display: none;
+		}
 	}
 }

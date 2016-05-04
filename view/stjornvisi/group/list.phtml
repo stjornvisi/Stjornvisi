@@ -88,11 +88,9 @@ use Stjornvisi\Properties\FileProperties;
 												<h4>Viðburðir</h4>
 											</div>
 										<? endif; ?>
-										<? if (false /*count($group->events)*/) : ?>
+										<? if (count($group->events)) : ?>
 											<? /** @var \Stjornvisi\Service\Event $nextEvent */
 											$nextEvent = array_pop($group->events) ?>
-											<div class="event__label"><h4><i class="fa fa-calendar-o"></i>
-													Næsti viðburður</h4></div>
 											<div class="event__info">
 												<span
 													class="entry__date"><?=$this->date($nextEvent->event_date)?></span>
@@ -129,6 +127,10 @@ use Stjornvisi\Properties\FileProperties;
 											<a href="<?=$this->url('hopur/index', array('id' => $group->url))?>" class="btn btn-primary">Skoða nánar</a>
 										</div>
 									</div>
+									<? else: ?>
+										<div class="event">
+											<div class="event__summary"><p>Hópurinn er ekki virkur.</p></div>
+										</div>
 									<? endif; ?>
 								</div>
 						</div>

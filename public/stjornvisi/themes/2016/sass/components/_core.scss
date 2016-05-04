@@ -121,9 +121,10 @@ label {
 
 .block_pagination{
 	@include clearfix;
+	text-align: center;
 
 	.block_pagination__item{
-		float: left;
+		display: inline-block;
 	}
 	.block_pagination__link{
 		display: block;
@@ -133,6 +134,21 @@ label {
 	.block_pagination__link--active{
 		background-color: $color-light-blue;
 		color: $color-white;
+	}
+}
+
+
+.block-gallery{
+	@include clearfix;
+	@include make-row;
+
+	.block-gallery__item{
+		@include make-xs-column(4);
+		@include make-sm-column(2);
+	}
+	.block-gallery__image{
+		@include img-responsive;
+		border:1px solid $color-light-gray;
 	}
 }
 

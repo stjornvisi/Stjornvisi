@@ -53,7 +53,7 @@
             ->appendFile(
                 $this->basePath('/vendor/better-dateinput-polyfill/dist/better-dateinput-polyfill.js', 'text/javascript')
             )->appendFile(
-                $this->basePath('/vendor/owl-carousel2/dist/owl.carousel.min.js'),
+                $this->basePath('/vendor/OwlCarousel2/dist/owl.carousel.min.js'),
                 'text/javascript'
             )
         ;?>
@@ -62,7 +62,7 @@
 			->appendStylesheet('https://fonts.googleapis.com/css?family=Lato:300,400,600,700')
 			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/screen.css')
 			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9')
-			->appendStylesheet($this->basePath() . '/vendor/owl-carousel2/dist/assets/owl.carousel.css', 'screen')
+			->appendStylesheet($this->basePath() . '/vendor/OwlCarousel2/dist/assets/owl.carousel.css', 'screen')
 		;?>
         <link rel="import" href="<?=$this->basePath('/webcomponents/app.html');?>">
 
@@ -118,7 +118,8 @@
 							items:2
 						}
 					}
-				})
+				});
+				$('.owl-carousel').data('owl.carousel').onResize();
 			});
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-24585167-1']);

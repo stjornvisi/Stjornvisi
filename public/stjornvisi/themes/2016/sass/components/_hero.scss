@@ -6,18 +6,18 @@
 	background-position: center center;
 	background-size: auto 100%;
 
+	@media (max-width: $screen-lg) {
+		background-image: url("images/hero-ahorfendur-1440.jpg");
+	}
+
+	@media (max-width: $screen-sm-max) {
+		background-image: url("images/hero-ahorfendur-992.jpg");
+	}
+
 	@media (max-width: $screen-xs-max) {
 		margin-top:60px;
 		height: auto;
 		background-image: url("images/hero-ahorfendur-767.jpg");
-	}
-
-	@media (max-width: $screen-md-max) {
-		background-image: url("images/hero-ahorfendur-992.jpg");
-	}
-
-	@media (max-width: $screen-lg) {
-		background-image: url("images/hero-ahorfendur-1440.jpg");
 	}
 
 	@media (min-width: 1920px) {

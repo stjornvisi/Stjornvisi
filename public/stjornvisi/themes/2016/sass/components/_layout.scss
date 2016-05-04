@@ -43,10 +43,10 @@
 		.panel__content {
 			> .box {
 				&:nth-child(odd) {
-					@include make-md-column(9);
+					@include make-sm-column(9);
 				}
 				&:nth-child(even) {
-					@include make-md-column(3);
+					@include make-sm-column(3);
 				}
 			}
 		}
@@ -452,6 +452,7 @@
 
 .hoverable--fade {
 	@include transition(opacity .2s);
+	@include transition-delay(.2s);
 }
 
 .entry--hoverable {
@@ -461,7 +462,8 @@
 	&:nth-last-child(-n+10) {
 		@media (min-width: $screen-md-min) {
 			.entry__content {
-				top: -260px;
+				top: auto;
+				bottom: -1px;
 			}
 		}
 	}
@@ -476,7 +478,7 @@
 
 		.entry__content {
 			opacity: 1;
-			display: block;
+			max-height: none;
 
 			@media (max-width: $screen-sm-max) {
 				display: block;
@@ -488,7 +490,10 @@
 		@include transition(opacity .2s);
 		overflow: hidden;
 		opacity: 0;
-		display: none;
+
+		// We use max-height so we can use fade in with opacity. Does not work with display:none;
+		max-height: 0;
+		overflow: hidden;
 
 		@media (max-width: $screen-sm-max) {
 			display: none;

@@ -1,0 +1,35 @@
+<?php
+$pages = range(0, $this->pages);
+$pageCount = count($pages);
+$span = 10;
+
+$start = $this->no > 5 ? $this->no - 4 : 0;
+$end = $start === 0 ? 9 : $this->no + 5;
+$end = $end > $pageCount ? $pageCount : $end;
+$range = range($start, $end);
+?>
+
+<ul class="block_pagination">
+	<?php foreach ($range as $i => $item): ?>
+		<? if ($i === 0 && $this->no > 1): ?>
+			<li class="block_pagination__item">
+				<a href="<?=$this->url('frettir/list', array('no' => $this->no))?>" class="block_pagination__link ">
+					<i class="fa fa-chevron-circle-left"></i>
+				</a>
+			</li>
+		<? endif ?>
+
+		<li class="block_pagination__item">
+			<a href="<?=$this->url('frettir/list', array('no' => $item + 1))?>"
+			   class="block_pagination__link <?=($item == $this->no) ? 'block_pagination__link--active' : ''?>"><?=$item + 1?></a>
+		</li>
+
+		<? if ($i === count($range) - 1 && $this->no < $pageCount - 1): ?>
+		<li class="block_pagination__item">
+			<a href="<?=$this->url('frettir/list', array('no' => $this->no + 2))?>" class="block_pagination__link ">
+				<i class="fa fa-chevron-circle-right"></i>
+			</a>
+		</li>
+		<? endif ?>
+	<?php endforeach ?>
+</ul>

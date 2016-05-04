@@ -40,7 +40,7 @@
 		->appendStylesheet('https://fonts.googleapis.com/css?family=Lato:300,400,600,700')
 		->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/screen.css')
 		->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9')
-		->appendStylesheet($this->basePath() . '/vendor/owl-carousel2/dist/assets/owl.carousel.css', 'screen')
+		->appendStylesheet($this->basePath() . '/vendor/OwlCarousel2/dist/assets/owl.carousel.css', 'screen')
 	;?>
 
 	<?= $this->headScript()
@@ -48,7 +48,7 @@
 			$this->basePath('/vendor/jquery/dist/jquery.min.js'),
 			'text/javascript'
 		)->appendFile(
-			$this->basePath('/vendor/owl-carousel2/dist/owl.carousel.min.js'),
+			$this->basePath('/vendor/OwlCarousel2/dist/owl.carousel.min.js'),
 			'text/javascript'
 		)
 	;?>
