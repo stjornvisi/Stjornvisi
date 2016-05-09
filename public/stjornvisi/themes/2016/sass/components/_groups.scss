@@ -55,6 +55,11 @@
 			color: $color-text;
 			margin: 0;
 			padding: 4px 0;
+			position: relative;
+
+			@media (max-width: $screen-sm-max) {
+				font-size: 20px;
+			}
 
 			> a {
 				color: $color-text;
@@ -69,7 +74,15 @@
 
 			@include calendarCountStack;
 			.fa-stack {
-				margin-left: 5px;
+				@media (min-width: $screen-md-min) {
+					margin-left: 5px;
+				}
+
+				@media (max-width: $screen-sm-max) {
+					position: absolute;
+					left: 18px;
+					top: 5px;
+				}
 			}
 		}
 
@@ -78,7 +91,9 @@
 			@include transition-delay(0);
 			opacity: 0;
 			position: absolute;
+			top:3px;
 			right: 0;
+			z-index: 10;
 			margin-top: -3px;
 			padding: 4px 14px;
 			color: $color-white;

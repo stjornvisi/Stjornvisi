@@ -8561,12 +8561,19 @@ form .checkbox label {
   color: #505d62;
   margin: 0;
   padding: 4px 0;
+  position: relative;
 }
-/* line 59, ../sass/components/_groups.scss */
+@media (max-width: 991px) {
+  /* line 53, ../sass/components/_groups.scss */
+  .panel--groups .entry__title h4 {
+    font-size: 20px;
+  }
+}
+/* line 64, ../sass/components/_groups.scss */
 .panel--groups .entry__title h4 > a {
   color: #505d62;
 }
-/* line 61, ../sass/components/_groups.scss */
+/* line 66, ../sass/components/_groups.scss */
 .panel--groups .entry__title h4 > a:hover {
   color: #2b6786;
 }
@@ -8594,11 +8601,21 @@ form .checkbox label {
 .panel--groups .entry__title h4 .fa-stack-2x {
   font-size: 22px;
 }
-/* line 71, ../sass/components/_groups.scss */
-.panel--groups .entry__title h4 .fa-stack {
-  margin-left: 5px;
+@media (min-width: 992px) {
+  /* line 76, ../sass/components/_groups.scss */
+  .panel--groups .entry__title h4 .fa-stack {
+    margin-left: 5px;
+  }
 }
-/* line 76, ../sass/components/_groups.scss */
+@media (max-width: 991px) {
+  /* line 76, ../sass/components/_groups.scss */
+  .panel--groups .entry__title h4 .fa-stack {
+    position: absolute;
+    left: 18px;
+    top: 5px;
+  }
+}
+/* line 89, ../sass/components/_groups.scss */
 .panel--groups .entry__title .btn, .panel--groups .entry__title .btn-facebook {
   -webkit-transition: opacity 0.2s;
   -o-transition: opacity 0.2s;
@@ -8607,51 +8624,53 @@ form .checkbox label {
   transition-delay: 0;
   opacity: 0;
   position: absolute;
+  top: 3px;
   right: 0;
+  z-index: 10;
   margin-top: -3px;
   padding: 4px 14px;
   color: #fff;
 }
-/* line 85, ../sass/components/_groups.scss */
+/* line 100, ../sass/components/_groups.scss */
 .panel--groups .entry__title .btn:hover, .panel--groups .entry__title .btn-facebook:hover {
   color: #f4f7f9;
 }
-/* line 92, ../sass/components/_groups.scss */
+/* line 107, ../sass/components/_groups.scss */
 .panel--groups .open .entry__title {
   background-color: #f4f7f9;
 }
 @media (max-width: 991px) {
-  /* line 92, ../sass/components/_groups.scss */
+  /* line 107, ../sass/components/_groups.scss */
   .panel--groups .open .entry__title {
     border: 2px solid rgba(43, 103, 134, 0.25);
     border-bottom: 0;
   }
 }
-/* line 100, ../sass/components/_groups.scss */
+/* line 115, ../sass/components/_groups.scss */
 .panel--groups .open .entry__title h4 {
   font-weight: 600;
   color: #1b3e59;
 }
-/* line 106, ../sass/components/_groups.scss */
+/* line 121, ../sass/components/_groups.scss */
 .panel--groups .open .btn, .panel--groups .open .btn-facebook {
   -webkit-transition-delay: 1s;
   transition-delay: 1s;
   opacity: 1;
 }
-/* line 112, ../sass/components/_groups.scss */
+/* line 127, ../sass/components/_groups.scss */
 .panel--groups .entry__content {
   background: #fff;
 }
-/* line 116, ../sass/components/_groups.scss */
+/* line 131, ../sass/components/_groups.scss */
 .panel--groups .event {
   border: 2px solid rgba(43, 103, 134, 0.25);
   border-top: 0;
 }
-/* line 121, ../sass/components/_groups.scss */
+/* line 136, ../sass/components/_groups.scss */
 .panel--groups .event__summary {
   padding: 10px 30px;
 }
-/* line 125, ../sass/components/_groups.scss */
+/* line 140, ../sass/components/_groups.scss */
 .panel--groups .event__details {
   margin-top: 28px;
 }
@@ -8673,11 +8692,11 @@ form .checkbox label {
 .panel--groups .event__details .fa-stack-2x {
   font-size: 22px;
 }
-/* line 129, ../sass/components/_groups.scss */
+/* line 144, ../sass/components/_groups.scss */
 .panel--groups .event__details .fa-stack {
   margin-right: 5px;
 }
-/* line 134, ../sass/components/_groups.scss */
+/* line 149, ../sass/components/_groups.scss */
 .panel--groups .event__label,
 .panel--groups .event__info,
 .panel--groups .event__title,
@@ -8686,24 +8705,24 @@ form .checkbox label {
 .panel--groups .event__footer {
   padding: 0 30px;
 }
-/* line 143, ../sass/components/_groups.scss */
+/* line 158, ../sass/components/_groups.scss */
 .panel--groups .event__content {
   font-size: 16px;
 }
-/* line 146, ../sass/components/_groups.scss */
+/* line 161, ../sass/components/_groups.scss */
 .panel--groups .event__content a {
   color: #8d979c;
 }
-/* line 148, ../sass/components/_groups.scss */
+/* line 163, ../sass/components/_groups.scss */
 .panel--groups .event__content a:hover {
   color: #2b6786;
 }
-/* line 154, ../sass/components/_groups.scss */
+/* line 169, ../sass/components/_groups.scss */
 .panel--groups .event__footer {
   padding-bottom: 10px;
 }
 @media (min-width: 992px) {
-  /* line 154, ../sass/components/_groups.scss */
+  /* line 169, ../sass/components/_groups.scss */
   .panel--groups .event__footer {
     display: none;
   }

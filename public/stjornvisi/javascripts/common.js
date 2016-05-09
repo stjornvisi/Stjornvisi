@@ -78,26 +78,29 @@
 
 $(function() {
 	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function(e) {
-		e.preventDefault();
-		var $parent = $(this.parentNode);
+        console.log(e);
 
-		if (e.type === 'mouseup' || e.type === 'touchstart') {
-			$('.entry--hoverable').removeClass('open');
-			$('body').removeClass('hoverable--open');
+        if (e.target.className !== 'btn btn-default') {
+            var $parent = $(this.parentNode);
+            e.preventDefault();
+            if (e.type === 'mouseup' || e.type === 'touchstart') {
+                $('.entry--hoverable').removeClass('open');
+                $('body').removeClass('hoverable--open');
 
-			$parent.addClass('open');
-			$('body').addClass('hoverable--open');
-		}
-		else if (e.type === 'mouseenter') {
-			$('.entry--hoverable').removeClass('open');
-			$('body').removeClass('hoverable--open');
+                $parent.addClass('open');
+                $('body').addClass('hoverable--open');
+            }
+            else if (e.type === 'mouseenter') {
+                $('.entry--hoverable').removeClass('open');
+                $('body').removeClass('hoverable--open');
 
-			$parent.addClass('open');
-			$('body').addClass('hoverable--open');
-		}
-        else if (e.type === 'mouseleave') {
-            $('.entry--hoverable').removeClass('open');
-            $('body').removeClass('hoverable--open');
+                $parent.addClass('open');
+                $('body').addClass('hoverable--open');
+            }
+            else if (e.type === 'mouseleave') {
+                $('.entry--hoverable').removeClass('open');
+                $('body').removeClass('hoverable--open');
+            }
         }
 	});
 });
