@@ -268,7 +268,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
      */
     public function fetchUpcoming($count = 3)
     {
-        $sql = "SELECT * FROM Event WHERE event_date >= NOW() ORDER BY event_date ASC, event_time ASC LIMIT {$count};";
+        $sql = "SELECT * FROM Event WHERE event_date >= DATE(NOW()) ORDER BY event_date ASC, event_time ASC LIMIT {$count};";
         return $this->fetchMany($sql);
     }
 
@@ -303,7 +303,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $sql = "SELECT count(*) as total FROM `Event`
-              where event_date >= NOW() and event_date <= ADDDATE(NOW(), INTERVAL {$days} DAY)";
+              where event_date >= DATE(NOW()) and event_date <= ADDDATE(NOW(), INTERVAL {$days} DAY)";
             $statement = $this->pdo->prepare($sql);
             $statement->execute();
             return (int)$statement->fetchColumn(0);
