@@ -2,6 +2,7 @@
 
 namespace Stjornvisi\Controller;
 
+use Stjornvisi\Service\Event;
 use Stjornvisi\Service\Group;
 use Stjornvisi\View\Model\CsvModel;
 use Stjornvisi\View\Model\IcalModel;
@@ -104,6 +105,32 @@ class GroupController extends AbstractActionController
 
             //NO GROUP
             //  this group ID not found
+        } else {
+            return $this->notFoundAction();
+        }
+    }
+
+    /**
+     * Fetch all passed events
+     *
+     * @return array|ViewModel
+     * @throws \Stjornvisi\Service\Exception
+     */
+    public function passedEventsAction()
+    {
+        $sm = $this->getServiceLocator();
+        /** @var Group $groupService */
+        $groupService = $sm->get('Stjornvisi\Service\Group');
+        /** @var Event $eventService */
+        $eventService = $sm->get('Stjornvisi\Service\Event');
+
+        if (($group = $groupService->get($this->params()->fromRoute('id', 0))) != false) {
+            return new ViewModel(
+                [
+                    'group' => $group,
+                    'events' => $eventService->fetchAllPassedByGroup($group->id)
+                ]
+            );
         } else {
             return $this->notFoundAction();
         }

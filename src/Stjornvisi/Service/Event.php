@@ -291,6 +291,30 @@ class Event extends AbstractService implements DataSourceAwareInterface
                   AND e.avatar is not null AND e.avatar != ''
                 ORDER BY
                   e.event_date DESC, e.event_time DESC LIMIT {$count};";
+
+        return $this->fetchMany($sql);
+    }
+
+    /**
+     * @param $groupId
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    public function fetchAllPassedByGroup($groupId)
+    {
+        $groupId = (int) $groupId;
+
+        $sql = "SELECT
+                  e.*
+                FROM
+                  Event e
+                  join Group_has_Event ghe on e.id = ghe.event_id
+                WHERE
+                  e.event_date < NOW()
+                  AND ghe.group_id = {$groupId}
+                ORDER BY
+                  e.event_date ASC, e.event_time ASC";
+
         return $this->fetchMany($sql);
     }
 
