@@ -313,7 +313,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                   e.event_date < NOW()
                   AND ghe.group_id = {$groupId}
                 ORDER BY
-                  e.event_date ASC, e.event_time ASC";
+                  e.event_date DESC, e.event_time DESC";
 
         return $this->fetchMany($sql);
     }
