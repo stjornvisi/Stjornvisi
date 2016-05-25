@@ -8952,6 +8952,11 @@ nav[role=navigation] .icon-mail:before {
 }
 
 /* line 1, ../sass/components/_footer.scss */
+main {
+  min-height: 700px;
+}
+
+/* line 5, ../sass/components/_footer.scss */
 footer.bg {
   display: block;
   padding-top: 500px;
@@ -8962,7 +8967,7 @@ footer.bg {
   background-size: cover;
 }
 
-/* line 11, ../sass/components/_footer.scss */
+/* line 15, ../sass/components/_footer.scss */
 .panel--footer {
   border-top: 1px solid #8d979c;
   background-color: rgba(27, 62, 89, 0.8);
@@ -8970,24 +8975,24 @@ footer.bg {
   color: #fff;
   text-align: center;
 }
-/* line 19, ../sass/components/_footer.scss */
+/* line 23, ../sass/components/_footer.scss */
 .panel--footer address span {
   border-right: 1px solid #fff;
   padding-right: 10px;
   margin-right: 10px;
   white-space: nowrap;
 }
-/* line 25, ../sass/components/_footer.scss */
+/* line 29, ../sass/components/_footer.scss */
 .panel--footer address span:last-child {
   border: 0;
   margin-right: 0;
 }
-/* line 29, ../sass/components/_footer.scss */
+/* line 33, ../sass/components/_footer.scss */
 .panel--footer address span:nth-child(4) {
   border-right: 0;
   margin-right: 0;
 }
-/* line 35, ../sass/components/_footer.scss */
+/* line 39, ../sass/components/_footer.scss */
 .panel--footer address a {
   -webkit-transition: all 0.15s;
   -o-transition: all 0.15s;
@@ -8998,7 +9003,7 @@ footer.bg {
 .panel--footer address a:hover {
   color: #8d979c;
 }
-/* line 40, ../sass/components/_footer.scss */
+/* line 44, ../sass/components/_footer.scss */
 .panel--footer .fa-facebook-f {
   background: #fff;
   height: 64px;
