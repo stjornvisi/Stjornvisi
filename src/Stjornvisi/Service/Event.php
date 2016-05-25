@@ -268,7 +268,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
      */
     public function fetchUpcoming($count = 3)
     {
-        $sql = "SELECT * FROM Event WHERE event_date >= NOW() ORDER BY event_date ASC, event_time ASC LIMIT {$count};";
+        $sql = "SELECT * FROM Event WHERE event_date >= DATE(NOW()) ORDER BY event_date ASC, event_time ASC LIMIT {$count};";
         return $this->fetchMany($sql);
     }
 
@@ -291,6 +291,30 @@ class Event extends AbstractService implements DataSourceAwareInterface
                   AND e.avatar is not null AND e.avatar != ''
                 ORDER BY
                   e.event_date DESC, e.event_time DESC LIMIT {$count};";
+
+        return $this->fetchMany($sql);
+    }
+
+    /**
+     * @param $groupId
+     * @return array|\Stjornvisi\Event\[]
+     * @throws Exception
+     */
+    public function fetchAllPassedByGroup($groupId)
+    {
+        $groupId = (int) $groupId;
+
+        $sql = "SELECT
+                  e.*
+                FROM
+                  Event e
+                  join Group_has_Event ghe on e.id = ghe.event_id
+                WHERE
+                  e.event_date < NOW()
+                  AND ghe.group_id = {$groupId}
+                ORDER BY
+                  e.event_date DESC, e.event_time DESC";
+
         return $this->fetchMany($sql);
     }
 
@@ -303,7 +327,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $sql = "SELECT count(*) as total FROM `Event`
-              where event_date >= NOW() and event_date <= ADDDATE(NOW(), INTERVAL {$days} DAY)";
+              where event_date >= DATE(NOW()) and event_date <= ADDDATE(NOW(), INTERVAL {$days} DAY)";
             $statement = $this->pdo->prepare($sql);
             $statement->execute();
             return (int)$statement->fetchColumn(0);

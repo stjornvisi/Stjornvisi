@@ -354,6 +354,19 @@ return array(
                             ),
                         )
                     ),
+                    'passed-events' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:id/lidnir',
+                            'constraints' => array(
+                                'id' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\Group',
+                                'action' => 'passed-events'
+                            ),
+                        )
+                    ),
                     'create' => array(
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => array(
