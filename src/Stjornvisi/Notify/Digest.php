@@ -16,6 +16,7 @@ use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Event as EventService;
+use Stjornvisi\Service\News;
 use Stjornvisi\Service\User as UserService;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
@@ -151,11 +152,11 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
         $users = $this->getUsers();
         $this->logger->info("Digest, ".count($users)." user will get email ");
 
-
         //VIEW
         //	create and configure view
         $child = new ViewModel(array(
             'events' => $events,
+            'news' => $this->getNews(),
             'from' => $from,
             'to' => $to
         ));
@@ -186,6 +187,12 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
             $channel->queue_declare('mail_queue', false, true, false, false);
 
             foreach ($users as $user) {
+                /*
+                if ($user->email !== 'biggi@stefna.is') {
+                    continue;
+                }
+                */
+
                 $child->setVariable('user', $user);
                 foreach ($layout as $child) {
                     $child->setOption('has_parent', true);
@@ -293,6 +300,18 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
             ->setEventManager($this->getEventManager());
 
         return $eventService->getRange($from, $to);
+    }
+
+	/**
+     * @return bool|mixed
+     * @throws \Stjornvisi\Service\Exception
+     */
+    private function getNews()
+    {
+        $newsService = new News();
+        $newsService->setDataSource($this->getDataSourceDriver());
+        $newsService->setEventManager($this->getEventManager());
+        return $newsService->getNext();
     }
 
     /**

@@ -1,40 +1,387 @@
 <?php
-    setlocale(LC_ALL,'is_IS.utf-8');
-    $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
+
+setlocale(LC_ALL, 'is_IS.utf-8');
+$paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
+
+$event1 = isset($this->events[0]) ? $this->events[0] : null;
+$event2 = isset($this->events[1]) ? $this->events[1] : null;
 ?>
-<p>Sæl(l) <?=$this->user->name;?></p>
-<p>Vikan <strong><?=strftime('%e. %B %Y', $this->from->format('U'))?>  - <?=strftime('%e. %B %Y', $this->to->format('U'))?></strong> hjá Stjórnvísi</p>
+<table data-module="image-notice" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<!--  Change Full Width BG Color -->
+		<td data-bgcolor="Image Notice BG" align="center" bgcolor="#ffffff"
+			style="background-color: rgb(255, 255, 255);">
+			<table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td height="20">
+					</td>
+				</tr>
+				<tr>
+					<td style="font-family: 'Open Sans', sans-serif; font-size: 24px; font-weight: 700; color: #8e8c8e;  line-height: 33px;"
+						data-size="Module Main Title" data-color="Module Main Title" align="left">
+						Vikan <strong><?=strftime('%e. %B %Y', $this->from->format('U'))?>
+							- <?=strftime('%e. %B %Y', $this->to->format('U'))?></strong> hjá Stjórnvísi
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
 
-<?php foreach ($this->events as $event):?>
-    <div style="margin-top: 30px; padding-top:30px;  border-top: 1px solid rgb(230,230,230)">
-        <h2><?=$event->subject?></h2>
-        <p><?=strftime('%e. %B %Y', $event->event_date->format('U'))?> | <?=$event->event_time->format('H:i')?> - <?=($event->event_end)?$event->event_end->format('H:i'):''?></p>
-        <?php if($event->avatar):?>
-            <img src="/stjornvisi/images/300/<?=$event->avatar;?>" style="float: left; margin:0 20px 20px 0 ">
-        <?php endif;?>
-        <?=$paragrapher->__invoke($event->body);?>
-        <dl style="font-size: 80%; clear: both">
-            <dt>Faghópar</dt>
-            <dd>
-                <ul style="list-style-type:none;margin:0;padding:0">
-                    <?php if(empty($event->groups)):?>
-                        <li>Stjónvísisviðburður</li>
-                    <?php else:?>
-                    <?php foreach($event->groups as $group):?>
-                        <li><a href="http://stjornvisi.is/vidburdir/<?=$group->url?>"><?=$group->name_short?></a></li>
-                    <?php endforeach;?>
-                    <?php endif;?>
-                </ul>
-            </dd>
-            <dt>Staður</dt>
-            <dd><?=$event->address;?></dd>
-            <dd><?=$event->location;?></dd>
-            <dt>Tími</dt>
-            <dd><?=strftime('%e. %B %Y', $event->event_date->format('U'))?> | <?=$event->event_time->format('H:i')?> - <?=($event->event_end)?$event->event_end->format('H:i'):''?></dd>
-            <dt>Skráning</dt>
-            <dd><a href="http://www.stjornvisi.is/vidburdir/<?=$event->id;?>" target="_blank">http://www.stjornvisi.is/vidburdir/<?=$event->id;?></a></dd>
-        </dl>
-    </div>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
+	   style="position: relative; opacity: 1; z-index: 0;">
+	<tr>
+		<!--  Change Full Width BG Color -->
+		<td data-bgcolor="2 Column Blog BG" align="center" bgcolor="#ffffff">
+			<table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td style="font-size: 1px; line-height: 30px;" height="30">
+						&nbsp;</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="twelve"
+							   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+							   align="left" border="0" cellpadding="0" cellspacing="0" width="287">
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 24px; font-weight: 700; color: #353B48;  line-height: 32px;"
+									data-size="2 Column Blog Title" data-color="2 Column Blog Title" align="left">
+									<a href="/vidburdir/<?=$event1->id;?>"
+									   style="color:Black;text-decoration:underline"><?=$event1->subject?></a></td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 10px;" height="10">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #434A54; line-height: 22px;"
+									data-size="2 Column Blog Text" data-color="2 Column Blog Text" align="left">
+									<span
+										style="font-weight:bold;color:#2b6786"><?=strftime('%e. %B', $event1->event_date->format('U'))?>
+										, kl. <?=$event1->event_time->format('H:i')?>
+										- <?=($event1->event_end) ? $event1->event_end->format('H:i') : ''?></span><br>
+									<?=$event1->location;?><br>
+									<?=$event1->address;?>
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 10px;" height="10">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #434A54; line-height: 18px;"
+									data-size="2 Column Blog Text" data-color="2 Column Blog Text" align="left">
+									<?=$event1->body?><br>
 
-<?php endforeach;?>
+									<?php foreach ($event1->groups as $group): ?>
+										<div style="color:#2b6786;">
+											<?=$group->name?>
+										</div>
+									<?php endforeach; ?>
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 15px;" height="15">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td align="center">
+									<table align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#2b6786"
+										   style="border-radius:2px;">
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #fff; line-height: 24px; padding-left: 15px; padding-right: 15px;"
+												height="40" align="center">
+												<a href="/vidburdir/<?=$event1->id;?>"
+												   style="color: #fff; text-decoration: none;">Nánar um viðburðinn</a>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 30px;" height="30">
+									&nbsp; </td>
+							</tr>
+						</table>
+						<!-- SPACE -->
+						<table class="twelve"
+							   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+							   align="left" border="0" cellpadding="0" cellspacing="0" width="1">
+							<tr>
+								<td style="font-size: 60px; line-height: 60px;" height="60" width="1">
+								</td>
+							</tr>
+						</table>
+						<!-- END SPACE -->
+						<?php if ($event2): ?>
+						<table class="twelve"
+							   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+							   align="right" border="0" cellpadding="0" cellspacing="0" width="287">
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 24px; font-weight: 700; color: #353B48;  line-height: 32px;"
+									data-size="2 Column Blog Title" data-color="2 Column Blog Title" align="left">
+									<a href="/vidburdir/<?=$event2->id;?>"
+									   style="color:Black;text-decoration:underline"><?=$event2->subject?></a></td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 10px;" height="10">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #434A54; line-height: 22px;"
+									data-size="2 Column Blog Text" data-color="2 Column Blog Text" align="left">
+									<span
+										style="font-weight:bold;color:#2b6786"><?=strftime('%e. %B', $event2->event_date->format('U'))?>
+										, kl. <?=$event2->event_time->format('H:i')?>
+										- <?=($event2->event_end) ? $event2->event_end->format('H:i') : ''?></span><br>
+									<?=$event2->location;?><br>
+									<?=$event2->address;?>
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 10px;" height="10">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #434A54; line-height: 18px;"
+									data-size="2 Column Blog Text" data-color="2 Column Blog Text" align="left">
+									<?=$event2->body?><br>
 
+									<?php foreach ($event2->groups as $group): ?>
+										<div style="color:#2b6786;">
+											<?=$group->name?>
+										</div>
+									<?php endforeach; ?>
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 15px;" height="15">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td align="center">
+									<table align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#2b6786"
+										   style="border-radius:2px;">
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #fff; line-height: 24px; padding-left: 15px; padding-right: 15px;"
+												height="40" align="center">
+												<a href="/vidburdir/<?=$event2->id;?>"
+												   style="color: #fff; text-decoration: none;">Nánar um viðburðinn</a>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 30px;" height="30">
+									&nbsp; </td>
+							</tr>
+						</table>
+						<?php endif ?>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 50px;" height="50">
+						&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td data-bgcolor="HR BG" align="center" bgcolor="#ffffff">
+			<table class="container" border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td align="center">
+						<!-- Edit the color of Horizontal Rule -->
+						<hr style="color: #428BCA; height: 1px; border: none; width: 600px; background-color: #E6E9ED;"
+							class="hr" data-bgcolor="HR Line" width="600">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td align="center" bgcolor="#ffffff">
+			<table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td style="font-size: 1px; line-height: 50px;" height="50">
+						&nbsp;</td>
+				</tr>
+				<tr>
+					<td>
+						<table class="twelve"
+							   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+							   align="right" border="0" cellpadding="0" cellspacing="0" width="287">
+							<tr>
+								<td align="center">
+									<img src="/stjornvisi/stylesheets/images/stjornvisi-logo-square.jpg" alt="" class="full"
+										 width="287">
+								</td>
+							</tr>
+						</table>
+						<!-- SPACE -->
+						<table class="twelve"
+							   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+							   align="right" border="0" cellpadding="0" cellspacing="0" width="1">
+							<tr>
+								<td style="font-size: 20px; line-height: 20px;" height="40" width="1">
+								</td>
+							</tr>
+						</table>
+						<!-- END SPACE -->
+						<table class="twelve"
+							   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+							   align="left" border="0" cellpadding="0" cellspacing="0" width="287">
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 20px; font-weight: 700; color: #353B48;  line-height: 24px;"
+									align="left">
+									Faghópar Stjórnvísi
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 10px;" height="10">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 700; color:#2b6786;  line-height: 18px;"
+									align="left">
+									20 virkir faghópar
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 15px;" height="15">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #353B48; line-height: 24px;"
+									align="left">
+									Kynntu þér fjölbreytta flóru faghópa Stjórnvísi. Starfið byggist á viðburðum, en
+									fleiri virkir meðlimir í faghópum eflir starfið. Vilt þú starfa með í faghópi? Láttu
+									þína rödd heyrast!
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 15px;" height="15">
+									&nbsp;</td>
+							</tr>
+							<tr>
+								<td align="left">
+									<table align="left" border="0" cellpadding="0" cellspacing="0" bgcolor="#2b6786"
+										   style="border-radius:2px;">
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #fff; line-height: 24px; padding-left: 15px; padding-right: 15px; text-align: center;"
+												height="40" align="center">
+												<a href="https://www.stjornvisi.is"
+												   style="color: #fff; text-decoration:none;">Skoða faghópa á
+													stjornvisi.is</a>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 50px;" height="50">
+						&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table data-module="notice-center-button" align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
+	   style="position: relative; opacity: 1; z-index: 0;" bgcolor="#ECF3FA">
+	<tr>
+		<td align="center">
+			<table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td style="font-size: 1px; line-height: 40px;" height="40">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="font-family: 'Open Sans', sans-serif; font-size: 25px; font-weight: 700; color:#2b6786;  line-height: 25px;"
+						data-size="Module Main Title" data-color="Notice Center Main Title" align="center">
+						Viltu breyta póststillingum?
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 10px;" height="10">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #656D78; line-height: 24px; text-align: center;"
+						data-size="Notice Center Text" data-color="Notice Center Text" align="center">
+						Á vef Stjórnvísi geta innskráðir notendur breytt póststillingum sínum.
+						<br>Þannig getur þú stýrt því hvaða tilkynningar þér berast.
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 40px;" height="40">
+						&nbsp; </td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<!--  Change Full Width BG Color -->
+		<td align="center" bgcolor="#ffffff">
+			<table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td style="font-size: 1px; line-height: 30px;" height="30">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="font-family: 'Open Sans', sans-serif; font-size: 25px; font-weight: 700; color:#2b6786;  line-height: 25px;"
+						align="center">
+						<?= $this->news->title ?>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 15px;" height="15">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 10px;" height="10">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #353B48; line-height: 24px;"
+						data-size="Notice Center Text" data-color="Notice Center Text" align="center">
+						<?= $paragrapher(mb_substr($this->news->body,0,200,'utf-8').'&#8230;'  ) ?>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 10px;" height="15">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td align="center">
+						<table align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#2b6786"
+							   style="border-radius:2px;">
+							<tr>
+								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #fff; line-height: 24px; padding-left: 15px; padding-right: 15px;"
+									height="40" align="center">
+									<a href="https://www.stjornvisi.is/frettir/<?= $this->news->id ?>" style="color: #fff; text-decoration:none;">Lesa
+										frétt á stjornvisi.is</a>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 30px;" height="30">
+						&nbsp; </td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
