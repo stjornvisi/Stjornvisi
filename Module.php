@@ -12,7 +12,6 @@ namespace Stjornvisi;
 use \PDO;
 use Imagine;
 use Monolog\Formatter\JsonFormatter;
-use Monolog\Handler\SlackHandler;
 use PhpAmqpLib\Connection\AMQPConnection;
 use Psr\Log\LoggerAwareInterface;
 
@@ -25,10 +24,6 @@ use Stjornvisi\Lib\QueueConnectionFactoryStub;
 use Stjornvisi\Notify\DataStoreInterface;
 use Stjornvisi\Notify\NotifyEventManagerAwareInterface;
 
-use Stjornvisi\Service\Email;
-
-use Stjornvisi\Auth\Adapter;
-use Stjornvisi\Auth\Facebook as AuthFacebook;
 use Stjornvisi\Service\JaMap;
 use Stjornvisi\Service\ServiceEventManagerAwareInterface;
 use Stjornvisi\Service\Conference;
@@ -43,11 +38,7 @@ use Stjornvisi\Form\NewUserIndividual;
 use Stjornvisi\Form\NewUserCredentials;
 use Stjornvisi\Form\Company as CompanyForm;
 
-use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\ModuleManager\ModuleManager;
-use Zend\Mvc\Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Monolog\Logger;
@@ -56,14 +47,11 @@ use Zend\Http\Client;
 
 use Zend\Session\Config\SessionConfig;
 use Zend\Session\SessionManager;
-use Zend\Session\Container;
-use Zend\EventManager\EventInterface;
 
 use Stjornvisi\Lib\Facebook;
 
 
 use Zend\Mail\Transport\Smtp as SmtpTransport;
-use Zend\Mail\Transport\SmtpOptions;
 
 use Zend\Mail\Transport\File as FileTransport;
 use Zend\Mail\Transport\FileOptions;
@@ -72,6 +60,15 @@ use Zend\Http\Response as HttpResponse;
 
 class Module
 {
+    const ENV_DEVELOPMENT = 'development';
+    const ENV_PRODUCTION = 'production';
+    const ENV_STAGING = 'staging';
+
+    public static function getApplicationEnv($default = self::ENV_PRODUCTION)
+    {
+        return getenv('APPLICATION_ENV') ?: $default;
+    }
+
     /**
      * Run for every request to the system.
      *
@@ -252,8 +249,8 @@ class Module
                     $log = new Logger('stjornvisi');
                     $log->pushHandler(new StreamHandler('php://stdout'));
 
-                    $evn = getenv('APPLICATION_ENV') ?: 'production';
-                    if ($evn == 'development') {
+                    $evn = Module::getApplicationEnv();
+                    if ($evn == Module::ENV_DEVELOPMENT) {
                         //...
                     } else {
                         $baseDir = dirname($_SERVER['DOCUMENT_ROOT']);
@@ -308,9 +305,9 @@ class Module
                     );
                 },
                 'MailTransport' => function ($sm) {
-                    $evn = getenv('APPLICATION_ENV') ?: 'production';
+                    $evn = Module::getApplicationEnv();
 
-                    if ($evn == 'development') {
+                    if ($evn == Module::ENV_DEVELOPMENT) {
                         $transport = new FileTransport();
                         $transport->setOptions(new FileOptions([
                             'path' => './data/',
@@ -327,7 +324,7 @@ class Module
                     }
                 },
                 'Stjornvisi\Lib\QueueConnectionFactory' => function ($sm) {
-                    $evn = getenv('APPLICATION_ENV') ?: 'production';
+                    $evn = Module::getApplicationEnv();
                     if ($evn == 'testing') {
                         return new QueueConnectionFactoryStub();
                     }

@@ -13,6 +13,7 @@ use \DateInterval;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Event as EventService;
@@ -184,7 +185,8 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             foreach ($users as $user) {
                 /*
@@ -217,7 +219,7 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 
                 $msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
 
-                $channel->basic_publish($msg, '', 'mail_queue');
+                $channel->basic_publish($msg, '', $queue);
                 $this->logger->debug("Queue Service says: Fetching users who want upcoming events, {$user->email} in queue ");
             }
 

@@ -31,8 +31,9 @@ class Facebook extends AbstractHelper implements ServiceLocatorAwareInterface
             $config['facebook']['appId'],
             $config['facebook']['secret']
         ); //TODO should this be in a global space
+        $scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
         $server = isset($_SERVER['HTTP_HOST'])
-            ? "http://".$_SERVER['HTTP_HOST']
+            ? "$scheme://".$_SERVER['HTTP_HOST']
             : 'http://0.0.0.0' ;
         $helper = new FacebookRedirectLoginHelper($server.$value);
         return $helper->getLoginUrl();

@@ -10,6 +10,7 @@ namespace Stjornvisi\Event;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Stjornvisi\Controller\AuthController;
 use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventManagerInterface;
@@ -67,10 +68,11 @@ class PersistenceLoginListener extends AbstractListenerAggregate implements Logg
             /** @var $request \Zend\Http\PhpEnvironment\Request */
             $cookies = $request->getCookie();
             /** @var $cookies \Zend\Http\Header\Cookie */
+            /** @var \Stjornvisi\Service\User $userService */
             $userService = $this->getServiceLocator()->get('Stjornvisi\Service\User');
             /** @var $user \Stjornvisi\Service\User */
-            if ($cookies && $cookies->offsetExists('backpfeifengesicht')) {
-                if (($user = $userService->getByHash($cookies->offsetGet('backpfeifengesicht')))!=false) {
+            if ($cookies && $cookies->offsetExists(AuthController::AUTH_COOKIE)) {
+                if (($user = $userService->getByHash($cookies->offsetGet(AuthController::AUTH_COOKIE)))!=false) {
                     $authAdapter = $this->getServiceLocator()->get('Stjornvisi\Auth\Adapter');
                     $authAdapter->setIdentifier($user->id);
                     $result = $auth->authenticate($authAdapter);

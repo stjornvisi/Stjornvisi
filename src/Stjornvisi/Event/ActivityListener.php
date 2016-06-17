@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\Event;
 
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
@@ -184,7 +185,8 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             foreach ($recipients as $recipient) {
                 $message = new Mail();
@@ -195,7 +197,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 
                 $msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
 
-                $channel->basic_publish($msg, '', 'mail_queue');
+                $channel->basic_publish($msg, '', $queue);
             }
 
 

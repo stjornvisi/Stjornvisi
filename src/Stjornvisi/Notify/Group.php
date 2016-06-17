@@ -9,6 +9,7 @@
 namespace Stjornvisi\Notify;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\User;
@@ -124,7 +125,8 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
             //	create and configure queue
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             //VIEW
             //	create and configure view
@@ -181,7 +183,7 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
 
                 $this->logger->info("Groupmail to user:{$user->email}, group:{$group->name_short}");
 
-                $channel->basic_publish($msg, '', 'mail_queue');
+                $channel->basic_publish($msg, '', $queue);
             }
 
         } catch (\Exception $e) {
