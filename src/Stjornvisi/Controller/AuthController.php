@@ -34,6 +34,7 @@ use OAuth\Common\Consumer\Credentials;
  */
 class AuthController extends AbstractActionController
 {
+    const AUTH_COOKIE = 'backpfeifengesicht';
 
     /**
      * @var string Facebook callback URL
@@ -387,16 +388,10 @@ class AuthController extends AbstractActionController
                     $authAdapter->setCredentials($data['email'], $data['passwd']);
                     $result = $auth->authenticate($authAdapter);
                     if ($result->isValid()) {
-                        $this->getResponse()->getHeaders()->addHeader(
-                            new SetCookie(
-                                'backpfeifengesicht',
-                                $this->getServiceLocator()
-                                    ->get('Stjornvisi\Service\User')
-                                    ->createHash($auth->getIdentity()->id),
-                                time() + 365 * 60 * 60 * 24,
-                                '/'
-                            )
-                        );
+                        $cookieValue = $this->getServiceLocator()->get('Stjornvisi\Service\User')
+                            ->createHash($auth->getIdentity()->id);
+                        $cookieTTL = time() + 365 * 60 * 60 * 24;
+                        $this->getResponse()->getHeaders()->addHeader($this->getSetCookie($cookieValue, $cookieTTL));
                         return $this->redirect()->toRoute('home');
                     } else {
                         $form->get('email')->setMessages(["Rangt lykilorð"]);
@@ -423,6 +418,13 @@ class AuthController extends AbstractActionController
         }
     }
 
+    private function getSetCookie($value, $ttl)
+    {
+        $cookie = new SetCookie(self::AUTH_COOKIE, $value, $ttl, '/');
+        $cookie->setSecure(isset($_SERVER['HTTPS'])) // Use secure cookie if possible
+            ->setHttponly(true); // Always http only
+        return $cookie;
+    }
     /**
      * Logout and destroy session.
      *
@@ -433,7 +435,7 @@ class AuthController extends AbstractActionController
         $auth = new AuthenticationService();
         $this->getResponse()
             ->getHeaders()
-            ->addHeader(new SetCookie('backpfeifengesicht', '', strtotime('-1 Year', time()), '/'));
+            ->addHeader($this->getSetCookie('', strtotime('-1 Year', time())));
         $auth->clearIdentity();
 
         return $this->redirect()->toRoute('home');
