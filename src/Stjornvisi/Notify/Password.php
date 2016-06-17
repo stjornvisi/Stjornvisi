@@ -10,12 +10,11 @@ namespace Stjornvisi\Notify;
 
 use Psr\Log\LoggerInterface;
 
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Notify\Message\Mail;
-use Zend\EventManager\EventManager;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
-use Zend\EventManager\EventManagerInterface;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
@@ -131,12 +130,13 @@ class Password implements NotifyInterface, QueueConnectionAwareInterface
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             $msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
             $this->logger->info($this->params->recipients->name ." is requesting new password");
 
-            $channel->basic_publish($msg, '', 'mail_queue');
+            $channel->basic_publish($msg, '', $queue);
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);

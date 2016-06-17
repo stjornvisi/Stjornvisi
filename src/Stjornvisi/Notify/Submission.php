@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Group as GroupService;
 use Stjornvisi\Service\User;
@@ -153,14 +154,15 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface, Data
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
             $msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
 
             $this->logger->info(get_class($this) .":send".
                 " {$userObject->email} is " . ( ($this->params->register)?'':'not ' ) .
                 "joining group {$groupObject->name_short}");
 
-            $channel->basic_publish($msg, '', 'mail_queue');
+            $channel->basic_publish($msg, '', $queue);
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);

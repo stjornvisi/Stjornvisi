@@ -11,13 +11,8 @@ namespace Stjornvisi\Event;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
-use Zend\Authentication\AuthenticationService;
-use Zend\EventManager\AbstractListenerAggregate;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\EventInterface;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\EventManager\SharedListenerAggregateInterface;
 use Zend\EventManager\Event;
 
 use PhpAmqpLib\Message\AMQPMessage;
@@ -37,6 +32,7 @@ class NotifyListener implements QueueConnectionAwareInterface, LoggerAwareInterf
      */
     protected $logger;
 
+    /** @var QueueConnectionFactory */
     protected $factory;
 
     /**
@@ -55,10 +51,11 @@ class NotifyListener implements QueueConnectionAwareInterface, LoggerAwareInterf
             $connection = $this->factory->createConnection();
             $channel = $connection->channel();
 
-            $channel->queue_declare('notify_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getNotifyQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
             $msg = new AMQPMessage(json_encode($event->getParams()), ['delivery_mode' => 2]);
 
-            $channel->basic_publish($msg, '', 'notify_queue');
+            $channel->basic_publish($msg, '', $queue);
 
             $channel->close();
             $connection->close();

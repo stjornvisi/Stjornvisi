@@ -3,6 +3,7 @@
 namespace Stjornvisi\Controller;
 
 use Stjornvisi\Form\NewUserPassword;
+use Stjornvisi\Module;
 use Zend\Authentication\AuthenticationService;
 use Zend\Http\Header\SetCookie;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -763,9 +764,7 @@ class AuthController extends AbstractActionController
      */
     public function switchUserAction()
     {
-        $env = getenv('APPLICATION_ENV') ?: 'production';
-
-        if ($env != 'development') {
+        if (Module::getApplicationEnv() != Module::ENV_DEVELOPMENT) {
             return $this->notFoundAction();
         }
 
