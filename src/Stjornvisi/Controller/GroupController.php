@@ -2,6 +2,7 @@
 
 namespace Stjornvisi\Controller;
 
+use Stjornvisi\Module;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\Group;
 use Stjornvisi\View\Model\CsvModel;
@@ -722,9 +723,7 @@ class GroupController extends AbstractActionController
             //ACCESS GRANTED
             //  user has access
             if ($access->is_admin || $access->type >= 1) {
-                $server = isset( $_SERVER['HTTP_HOST'] )
-                ? "http://".$_SERVER['HTTP_HOST']
-                : 'http://0.0.0.0' ;
+                $server = Module::getServerUrl();
 
                 $csv = new Csv();
                 $csv->setHeader(
@@ -792,9 +791,7 @@ class GroupController extends AbstractActionController
         //ITEM FOUND
         //  item is in storage
         if (($group = $groupService->get($this->params()->fromRoute('name', 0))) != null) {
-            $server = isset($_SERVER['HTTP_HOST'])
-            ? $_SERVER['HTTP_HOST']
-            : '0.0.0.0';
+            $server = Module::getServerUrl();
             $eventService = $sm->get('Stjornvisi\Service\Event');
             $from = new DateTime();
             $from->sub(new DateInterval('P2M'));
@@ -803,16 +800,16 @@ class GroupController extends AbstractActionController
 
             $feed = new Feed();
             $feed->setTitle("Viðburðir {$group->name}");
-            $feed->setFeedLink("http://{$server}", 'atom');
+            $feed->setFeedLink($server, 'atom');
             $feed->addAuthor(
                 [
                 'name'  => 'Stjórnvísi',
                 'email' => 'stjornvisi@stjornvisi.is',
-                'uri'   => "http://{$server}",
+                'uri'   => $server,
                 ]
             );
             $feed->setDescription('Viðburðir');
-            $feed->setLink("http://{$_SERVER['HTTP_HOST']}");
+            $feed->setLink($server);
             $feed->setDateModified(new DateTime());
 
             $data = [];
@@ -821,7 +818,7 @@ class GroupController extends AbstractActionController
                 //create entry...
                 $entry = $feed->createEntry();
                 $entry->setTitle($row->subject);
-                $entry->setLink("http://{$_SERVER['HTTP_HOST']}/vidburdir/{$row->id}");
+                $entry->setLink("$server/vidburdir/{$row->id}");
                 $entry->setDescription($row->body.'.');
 
                 $entry->setDateModified($row->event_date);
@@ -854,6 +851,7 @@ class GroupController extends AbstractActionController
     {
         $sm = $this->getServiceLocator();
         $groupService = $sm->get('Stjornvisi\Service\Group');
+        $server = Module::getServerUrl();
 
         //ITEM FOUND
         //  item is in storage
@@ -872,7 +870,7 @@ class GroupController extends AbstractActionController
                 [
                 'name'  => 'Stjórnvísi',
                 'email' => 'stjornvisi@stjornvisi.is',
-                'uri'   => 'http://stjornvisi.is',
+                'uri'   => $server,
                 ]
             );
             $feed->setDescription('Fréttir');
@@ -885,7 +883,7 @@ class GroupController extends AbstractActionController
                 //create entry...
                 $entry = $feed->createEntry();
                 $entry->setTitle($row->title);
-                $entry->setLink('http://stjornvisi.is/');
+                $entry->setLink($server);
                 $entry->setDescription($row->body.'.');
 
                 $entry->setDateModified($row->created_date);

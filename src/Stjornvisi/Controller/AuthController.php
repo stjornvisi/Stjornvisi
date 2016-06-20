@@ -327,9 +327,7 @@ class AuthController extends AbstractActionController
             //GET SERVER
             //	 this check has to be done for instances where this
             //	is not run as an web-application
-            $server = isset( $_SERVER['HTTP_HOST'] )
-            ? "http://".$_SERVER['HTTP_HOST']
-            : 'http://0.0.0.0' ;
+            $server = Module::getServerUrl();
 
             $user = $userService->get($id);
 
@@ -508,9 +506,7 @@ class AuthController extends AbstractActionController
         //GET SERVER
         //	 this check has to be done for instances where this
         //	is not run as an web-application
-        $server = isset( $_SERVER['HTTP_HOST'] )
-        ? "http://".$_SERVER['HTTP_HOST']
-        : 'http://0.0.0.0' ;
+        $server = Module::getServerUrl();
 
         //FACEBOOK CONFIG
         //	get config and use it to cnfigure facebook session
@@ -637,9 +633,7 @@ class AuthController extends AbstractActionController
         //GET SERVER
         //	 this check has to be done for instances where this
         //	is not run as an web-application
-        $server = isset( $_SERVER['HTTP_HOST'] )
-        ? "http://".$_SERVER['HTTP_HOST']
-        : 'http://0.0.0.0' ;
+        $server = Module::getServerUrl();
 
         if ($this->request->isPost()) {
             $post = $this->request->getPost()->getArrayCopy();
