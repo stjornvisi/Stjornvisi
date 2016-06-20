@@ -104,7 +104,8 @@ class Module
         //SESSION
         //	config and start session
         $sessionConfig = new SessionConfig();
-        if (isset($_SERVER['HTTPS'])) {
+        if (self::getApplicationEnv() === self::ENV_PRODUCTION) {
+            ini_set('session.cookie_secure', 'on');
             $config['session']['cookie_secure'] = true;
         }
         $sessionConfig->setOptions($config['session']);
