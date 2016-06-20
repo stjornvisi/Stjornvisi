@@ -104,6 +104,9 @@ class Module
         //SESSION
         //	config and start session
         $sessionConfig = new SessionConfig();
+        if (isset($_SERVER['HTTPS'])) {
+            $config['session']['cookie_secure'] = true;
+        }
         $sessionConfig->setOptions($config['session']);
         $sessionManager = new SessionManager($sessionConfig);
         $sessionManager->start();
