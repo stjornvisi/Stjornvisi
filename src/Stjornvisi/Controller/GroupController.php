@@ -85,7 +85,9 @@ class GroupController extends AbstractActionController
                 }
             }
 
-            $groups =  ($auth->hasIdentity()) ? $groupService->fetchDetails($auth->getIdentity()->id) : $groupService->fetchDetails($auth->getIdentity()->id);
+            $groups =  ($auth->hasIdentity())
+                ? $groupService->fetchDetails($auth->getIdentity()->id)
+                : $groupService->fetchDetails(null);
             return new ViewModel(
                 [
                 'range' => (object)['from'=>$from, 'to'=>$to, 'range'=>$yearRangeArray],
