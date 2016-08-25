@@ -89,8 +89,6 @@ class ConsoleController extends AbstractActionController
             throw new \RuntimeException('You can only use this action from a console!');
         }
 
-        $appEnv = getenv('APPLICATION_ENV') ?: 'production';
-
         $sm = $this->getServiceLocator();
         /** @var \Zend\Log\Logger */
         $logger = $sm->get('Logger');
@@ -100,10 +98,10 @@ class ConsoleController extends AbstractActionController
             $connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
             $connection = $connectionFactory->createConnection();
             $channel = $connection->channel();
+            $queue = QueueConnectionFactory::getNotifyQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
-            $channel->queue_declare('notify_queue', false, true, false, false);
-
-            $logger->info("Notice Listener started, Waiting for messages. Environment=$appEnv. To exit press CTRL+C");
+            $logger->info("Notice Listener started, Waiting for messages. Queue=$queue. To exit press CTRL+C");
 
             //THE MAGIC
             //  here is where everything happens. the rest of the code
@@ -145,7 +143,7 @@ class ConsoleController extends AbstractActionController
             };// end of - MAGIC
 
             $channel->basic_qos(null, 1, null);
-            $channel->basic_consume('notify_queue', '', false, false, false, false, $callback);
+            $channel->basic_consume($queue, '', false, false, false, false, $callback);
 
             while (count($channel->callbacks)) {
                 $channel->wait();
@@ -183,8 +181,6 @@ class ConsoleController extends AbstractActionController
             throw new \RuntimeException('You can only use this action from a console!');
         }
 
-        $appEnv = getenv('APPLICATION_ENV') ?: 'production';
-
         $sm = $this->getServiceLocator();
         /** @var $logger \Zend\Log\Logger|object */
         $logger = $sm->get('Logger');
@@ -194,9 +190,10 @@ class ConsoleController extends AbstractActionController
             $connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
             $connection = $connectionFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
-            $logger->info("Mail Queue started, Waiting for messages. Environment=$appEnv. To exit press CTRL+C");
+            $logger->info("Mail Queue started, Waiting for messages. Queue=$queue. To exit press CTRL+C");
 
             //THE MAGIC
             //  here is where everything happens. the rest of the code
@@ -297,7 +294,7 @@ class ConsoleController extends AbstractActionController
             };// end of - MAGIC
 
             $channel->basic_qos(null, 1, null);
-            $channel->basic_consume('mail_queue', '', false, false, false, false, $callback);
+            $channel->basic_consume($queue, '', false, false, false, false, $callback);
 
             while (count($channel->callbacks)) {
                 $channel->wait();

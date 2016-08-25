@@ -11,6 +11,7 @@ namespace Stjornvisi\Notify;
 use Psr\Log\LoggerInterface;
 
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\User;
@@ -22,7 +23,6 @@ use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver;
 use Zend\EventManager\EventManagerInterface;
 
-use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 /**
@@ -153,7 +153,8 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             //FOR EVER USER
             //	for every user: render email template, create message object and
@@ -189,7 +190,7 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
                     "in connection with event {$event->subject}:{$event->id}"
                 );
 
-                $channel->basic_publish($msg, '', 'mail_queue');
+                $channel->basic_publish($msg, '', $queue);
             }
 
         } catch (\Exception $e) {

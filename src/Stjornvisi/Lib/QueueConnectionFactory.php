@@ -9,10 +9,15 @@
 namespace Stjornvisi\Lib;
 
 use PhpAmqpLib\Connection\AMQPConnection;
+use Stjornvisi\Module;
 
 class QueueConnectionFactory implements QueueConnectionFactoryInterface
 {
     private $config = array();
+
+    const MAIL_QUEUE = 'mail_queue';
+
+    const NOTIFY_QUEUE = 'notify_queue';
 
     public function __construct($host = 'localhost', $port = 5672, $user = 'guest', $password = 'guest')
     {
@@ -22,6 +27,23 @@ class QueueConnectionFactory implements QueueConnectionFactoryInterface
             'user' => $user,
             'password' => $password,
         );
+    }
+
+    public static function getMailQueueName()
+    {
+        return static::getQueueName(self::MAIL_QUEUE);
+    }
+
+    public static function getNotifyQueueName()
+    {
+        return static::getQueueName(self::NOTIFY_QUEUE);
+    }
+
+    public static function getQueueName($name)
+    {
+        $appEnv = Module::getApplicationEnv();
+        $postfix = ($appEnv == Module::ENV_PRODUCTION) ? '' : "_$appEnv";
+        return $name . $postfix;
     }
 
     /**

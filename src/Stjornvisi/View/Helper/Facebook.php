@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\View\Helper;
 
+use Stjornvisi\Module;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -31,9 +32,7 @@ class Facebook extends AbstractHelper implements ServiceLocatorAwareInterface
             $config['facebook']['appId'],
             $config['facebook']['secret']
         ); //TODO should this be in a global space
-        $server = isset($_SERVER['HTTP_HOST'])
-            ? "http://".$_SERVER['HTTP_HOST']
-            : 'http://0.0.0.0' ;
+        $server = Module::getServerUrl();
         $helper = new FacebookRedirectLoginHelper($server.$value);
         return $helper->getLoginUrl();
     }

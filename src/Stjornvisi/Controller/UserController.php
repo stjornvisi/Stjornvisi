@@ -7,6 +7,7 @@ use Stjornvisi\Form\User as UserForm;
 use Stjornvisi\Form\UserGroups;
 use Stjornvisi\Form\UserSubscriptions as SubscriptionsForm;
 use Stjornvisi\Lib\Csv;
+use Stjornvisi\Module;
 use Stjornvisi\Service\Group;
 use Stjornvisi\Service\User;
 use Stjornvisi\View\Model\CsvModel;
@@ -171,9 +172,7 @@ class UserController extends AbstractActionController
         if ($auth->hasIdentity()) {
             $type = $this->params('type', 'allir');
 
-            $server = isset( $_SERVER['HTTP_HOST'] )
-            ? "http://".$_SERVER['HTTP_HOST']
-            : 'http://0.0.0.0' ;
+            $server = Module::getServerUrl();
 
             $sm = $this->getServiceLocator();
             $userService = $sm->get('Stjornvisi\Service\User');

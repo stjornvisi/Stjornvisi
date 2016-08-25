@@ -8,6 +8,8 @@
 
 namespace Stjornvisi\Event;
 
+use Stjornvisi\Lib\QueueConnectionFactory;
+use Stjornvisi\Module;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Event;
@@ -78,6 +80,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
         ];
         $params = $event->getParams();
         $method = isset($params[0])?$params[0]:'';
+        $server = Module::getServerUrl();
 
         if ($target instanceof Event && isset($params['data'])) {
             $data = $params['data'];
@@ -86,14 +89,14 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
                     $this->send(
                         $recipient,
                         '[Activity]:Viðburður stofnaður',
-                        "<p>Viðburður <strong>{$data['subject']}</strong> stofnaður <a href=\"http://stjornvisi.is/vidburdir/{$data['id']}\">http://stjornvisi.is/vidburdir/{$data['id']}</a></p>"
+                        "<p>Viðburður <strong>{$data['subject']}</strong> stofnaður <a href=\"$server/vidburdir/{$data['id']}\">$server/vidburdir/{$data['id']}</a></p>"
                     );
                     break;
                 case 'update':
                     $this->send(
                         $recipient,
                         '[Activity]:Viðburður uppfærður',
-                        "<p>Viðburður <strong>{$data['subject']}</strong> uppfærður <a href=\"http://stjornvisi.is/vidburdir/{$data['id']}\">http://stjornvisi.is/vidburdir/{$data['id']}</p>"
+                        "<p>Viðburður <strong>{$data['subject']}</strong> uppfærður <a href=\"$server/vidburdir/{$data['id']}\">$server/vidburdir/{$data['id']}</p>"
                     );
                     break;
                 case 'delete':
@@ -113,14 +116,14 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
                     $this->send(
                         $recipient,
                         '[Activity]:Frétt stofnuð',
-                        "<p>Frétt <strong>{$data['title']}</strong> stofnuð <a href=\"http://stjornvisi.is/frettir/{$data['id']}\">http://stjornvisi.is/frettir/{$data['id']}</a></p>"
+                        "<p>Frétt <strong>{$data['title']}</strong> stofnuð <a href=\"$server/frettir/{$data['id']}\">$server/frettir/{$data['id']}</a></p>"
                     );
                     break;
                 case 'update':
                     $this->send(
                         $recipient,
                         '[Activity]:Frétt uppfærð',
-                        "<p>Frétt <strong>{$data['title']}</strong> uppfærður <a href=\"http://stjornvisi.is/frettir/{$data['id']}\">http://stjornvisi.is/frettir/{$data['id']}</p>"
+                        "<p>Frétt <strong>{$data['title']}</strong> uppfærður <a href=\"$server/frettir/{$data['id']}\">$server/frettir/{$data['id']}</p>"
                     );
                     break;
                 case 'delete':
@@ -140,14 +143,14 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
                     $this->send(
                         $recipient,
                         '[Activity]:Fyrirtæki stofnuð',
-                        "<p>Fyrirtæki <strong>{$data['name']}</strong> stofnuð <a href=\"http://stjornvisi.is/fyrirtaeki/{$data['id']}\">http://stjornvisi.is/fyrirtaeki/{$data['id']}</a></p>"
+                        "<p>Fyrirtæki <strong>{$data['name']}</strong> stofnuð <a href=\"$server/fyrirtaeki/{$data['id']}\">$server/fyrirtaeki/{$data['id']}</a></p>"
                     );
                     break;
                 case 'update':
                     $this->send(
                         $recipient,
                         '[Activity]:Fyrirtæki uppfært',
-                        "<p>Fyrirtæki <strong>{$data['name']}</strong> uppfært <a href=\"http://stjornvisi.is/fyrirtaeki/{$data['id']}\">http://stjornvisi.is/fyrirtaeki/{$data['id']}</p>"
+                        "<p>Fyrirtæki <strong>{$data['name']}</strong> uppfært <a href=\"$server/fyrirtaeki/{$data['id']}\">$server/fyrirtaeki/{$data['id']}</p>"
                     );
                     break;
                 case 'delete':
@@ -167,7 +170,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
                     $this->send(
                         $recipient,
                         '[Activity]:Notandi stofnaður',
-                        "<p>Notandi <strong>{$data['name']}</strong> stofnaður <a href=\"http://stjornvisi.is/notandi/{$data['id']}\">http://stjornvisi.is/notandi/{$data['id']}</a></p>"
+                        "<p>Notandi <strong>{$data['name']}</strong> stofnaður <a href=\"$server/notandi/{$data['id']}\">$server/notandi/{$data['id']}</a></p>"
                     );
                     break;
                 default:
@@ -184,7 +187,8 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             foreach ($recipients as $recipient) {
                 $message = new Mail();
@@ -195,7 +199,7 @@ class ActivityListener extends AbstractListenerAggregate implements QueueConnect
 
                 $msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
 
-                $channel->basic_publish($msg, '', 'mail_queue');
+                $channel->basic_publish($msg, '', $queue);
             }
 
 

@@ -10,6 +10,7 @@ namespace Stjornvisi\Notify;
 
 use Psr\Log\LoggerInterface;
 
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Event;
 use Stjornvisi\Service\User;
@@ -151,7 +152,8 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
             $msg = new AMQPMessage($message->serialize(), ['delivery_mode' => 2]);
 
             $this->logger->info(
@@ -160,7 +162,7 @@ class Attend implements NotifyInterface, QueueConnectionAwareInterface, DataStor
                 "attending {$eventObject->subject}"
             );
 
-            $channel->basic_publish($msg, '', 'mail_queue');
+            $channel->basic_publish($msg, '', $queue);
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);

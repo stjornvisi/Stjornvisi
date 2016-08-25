@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\User;
 use Psr\Log\LoggerInterface;
@@ -125,7 +126,8 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
         try {
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             foreach ($layout as $child) {
                 $child->setOption('has_parent', true);
@@ -147,7 +149,7 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
             $msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
             $this->logger->info("User validate email to [{$user->email}]");
 
-            $channel->basic_publish($msg, '', 'mail_queue');
+            $channel->basic_publish($msg, '', $queue);
 
         } catch (\Exception $e) {
             throw new NotifyException($e->getMessage(), 0, $e);

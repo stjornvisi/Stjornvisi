@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\Notify;
 
+use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Service\User;
@@ -127,7 +128,8 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
             //	create and configure queue
             $connection = $this->queueFactory->createConnection();
             $channel = $connection->channel();
-            $channel->queue_declare('mail_queue', false, true, false, false);
+            $queue = QueueConnectionFactory::getMailQueueName();
+            $channel->queue_declare($queue, false, true, false, false);
 
             //VIEW
             //	create and configure view
@@ -182,7 +184,7 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
 
                 $this->logger->debug("Notify All via e-mail to user:{$user->email}");
 
-                $channel->basic_publish($msg, '', 'mail_queue');
+                $channel->basic_publish($msg, '', $queue);
             }
 
         } catch (\Exception $e) {

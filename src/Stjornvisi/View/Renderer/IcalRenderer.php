@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\View\Renderer;
 
+use Stjornvisi\Module;
 use Zend\View\Model\ModelInterface;
 use Zend\View\Renderer\RendererInterface as Renderer;
 use Zend\View\Renderer\TreeRendererInterface;
@@ -50,6 +51,7 @@ class IcalRenderer implements Renderer, TreeRendererInterface
     public function render($nameOrModel, $values = null)
     {
         $string = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//hacksw/handcal//NONSGML v1.0//EN\n";
+        $server = Module::getServerUrl();
 
         foreach ($nameOrModel->getVariable('events') as $event) {
             $string .= "BEGIN:VEVENT\n";
@@ -65,7 +67,7 @@ class IcalRenderer implements Renderer, TreeRendererInterface
             }, $event->groups))):'Stjónvísisviðburður') ."\":no-reply@stjornvisi.is\n";
 
             $string .= "LOCATION:{$event->location}\n";
-            $string .= "URL:http://{$_SERVER['SERVER_NAME']}/vidburdir/{$event->id}\n";
+            $string .= "URL:$server/vidburdir/{$event->id}\n";
 
             $string .= "SUMMARY:{$event->subject}\n";
             $string .= "END:VEVENT\n";
