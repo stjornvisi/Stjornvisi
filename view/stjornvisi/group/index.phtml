@@ -88,7 +88,11 @@ use \Stjornvisi\View\Helper\Date;
 							<ul>
 								<?foreach ($this->managers as $user):?>
 									<li>
-										<?=$user->name?><?if ($user->company_id):?>, <?=$user->company_name;?><?endif?>
+										<?if($this->logged_in):?>
+										<a href="mailto:<?=$user->email?>" title="<?=$user->email?>"><?=$user->name?></a><?if ($user->company_id):?>, <?=$user->company_name;?><?endif?>
+										<?else:?>
+											<?=$user->name?>, <?if ($user->company_id):?>, <?=$user->company_name;?><?endif?>
+										<?endif?>
 									</li>
 								<?endforeach?>
 							</ul>
