@@ -1,12 +1,13 @@
 <?php
 $this->headTitle($this->group->name);
 $this->headTitle('Hópur');
+$server = \Stjornvisi\Module::getServerUrl();
 
 $this->headMeta()->setProperty('og:title', $this->group->name);
 $this->headMeta()->setProperty('og:site_name', 'Stjórnvísi');
 $this->headMeta()->setProperty('og:type', 'article');
 $this->headMeta()->setProperty('og:description', mb_substr($this->group->summary, 0, 200));
-$this->headMeta()->setProperty('og:url', 'http://' . $_SERVER['HTTP_HOST'] . $this->url('hopur/index', array('id' => $this->group->url)));
+$this->headMeta()->setProperty('og:url', $server . $this->url('hopur/index', array('id' => $this->group->url)));
 
 $statistics = $this->statistics;
 
@@ -87,7 +88,11 @@ use \Stjornvisi\View\Helper\Date;
 							<ul>
 								<?foreach ($this->managers as $user):?>
 									<li>
-										<?=$user->name?><?if ($user->company_id):?>, <?=$user->company_name;?><?endif?>
+										<?if($this->logged_in):?>
+										<a href="mailto:<?=$user->email?>" title="<?=$user->email?>"><?=$user->name?></a><?if ($user->company_id):?>, <?=$user->company_name;?><?endif?>
+										<?else:?>
+											<?=$user->name?>, <?if ($user->company_id):?>, <?=$user->company_name;?><?endif?>
+										<?endif?>
 									</li>
 								<?endforeach?>
 							</ul>

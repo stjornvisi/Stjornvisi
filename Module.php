@@ -64,6 +64,18 @@ class Module
     const ENV_PRODUCTION = 'production';
     const ENV_STAGING = 'staging';
 
+    public static function getServerUrl($force = true)
+    {
+        if ($force && self::getApplicationEnv() === self::ENV_PRODUCTION) {
+            // Default force for production to help with console routes
+            return 'https://www.stjornvisi.is';
+        }
+        $scheme = isset($_SERVER['HTTPS']) ? 'https' : 'http';
+        return isset($_SERVER['HTTP_HOST'])
+            ? "$scheme://" . $_SERVER['HTTP_HOST']
+            : 'http://0.0.0.0';
+    }
+
     public static function getApplicationEnv($default = self::ENV_PRODUCTION)
     {
         return getenv('APPLICATION_ENV') ?: $default;
@@ -92,6 +104,10 @@ class Module
         //SESSION
         //	config and start session
         $sessionConfig = new SessionConfig();
+        if (self::getApplicationEnv() === self::ENV_PRODUCTION) {
+            ini_set('session.cookie_secure', 'on');
+            $config['session']['cookie_secure'] = true;
+        }
         $sessionConfig->setOptions($config['session']);
         $sessionManager = new SessionManager($sessionConfig);
         $sessionManager->start();

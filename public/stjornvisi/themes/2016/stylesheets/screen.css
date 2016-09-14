@@ -9050,3 +9050,10 @@ footer.bg {
   top: 0;
   right: 0;
 }
+ul.block-list.boardmember {width:60%}
+ul.boardmember-list li {float:left;margin:0 10px 40px 0;text-align:center}
+img.borardmember-list__avatar {border-radius:50%;width:90%}
+h1.borardmember-list__name {font-size:1.2em;margin:10px 0}
+h2.borardmember-list__company {font-size:1em;margin:0}
+h3.borardmember-list__type {font-size:0.8em;margin-top:8px}
+stjonvisi-control.inline a {font-size:0.8em;display:block}

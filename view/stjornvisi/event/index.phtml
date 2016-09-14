@@ -1,4 +1,5 @@
 <?php
+use Stjornvisi\Module;
 use Stjornvisi\Properties\FileProperties;
 use \Stjornvisi\View\Helper\Date;
 
@@ -14,15 +15,15 @@ if (!$this->identity()) {
         'href' => $this->basePath('/vendor/google-map/google-map.html')
     ]);
 }
-
+$server = Module::getServerUrl();
 $this->headMeta()->setProperty('og:title', $this->event->subject);
 $this->headMeta()->setProperty('og:site_name', 'Stjórnvísi');
 $this->headMeta()->setProperty('og:type', 'article');
 $this->headMeta()->setProperty('og:description', mb_substr($this->event->body, 0, 200));
 $this->headMeta()->setProperty('og:url', $this->url('vidburdir/index', ['id'=>$this->event->id], ['force_canonical' => true]));
 $this->headMeta()->setProperty('og:image', ($this->event->avatar)
-    ? 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/images/original/{$this->event->avatar}")
-    : 'http://'.$_SERVER['HTTP_HOST'].$this->basePath("/stylesheets/images/simple-logo.jpg"));
+    ? $server . $this->basePath("/images/original/{$this->event->avatar}")
+    : $server . $this->basePath("/stylesheets/images/simple-logo.jpg"));
 ?>
 
 <?php if($this->access->is_admin || $this->access->type >= 1):?>
@@ -142,7 +143,7 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
 								js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=1645847542309046&version=v2.0";
 								fjs.parentNode.insertBefore(js, fjs);
 							}(document, 'script', 'facebook-jssdk'));</script>
-						<div class="fb-like" data-href="http://<?=$this->url('vidburdir/index', ['id'=>$this->event->id], ['force_canonical' => true])?>" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
+						<div class="fb-like" data-href="<?=$this->url('vidburdir/index', ['id'=>$this->event->id], ['force_canonical' => true])?>" data-layout="button" data-action="like" data-show-faces="true" data-share="true"></div>
 					</div>
 				</div>
 			</div>
