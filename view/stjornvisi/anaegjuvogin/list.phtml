@@ -10,25 +10,12 @@
 	</div>
 <?php endif; ?>
 
-<div class="panel panel--columns-two panel--ratio-sidebar">
+<div class="panel">
 	<div class="panel__container">
 		<div class="panel__content">
 			<div class="box">
 				<div class="box__title"><h1><?=$this->entry->name?></h1></div>
 				<div class="box__content"><?=$this->paragrapher($this->entry->body);?></div>
-			</div>
-
-			<div class="box">
-				<div class="box__title"></div>
-				<div class="box__content">
-					<ul class="list">
-						<?php foreach ($this->years as $year) :?>
-							<li class="list__item">
-								<a href="<?=$this->url('anaegjuvogin/index', ['year'=>$year->year])?>"><?=$year->year;?></a>
-							</li>
-						<?php endforeach;?>
-					</ul>
-				</div>
 			</div>
 		</div>
 	</div>

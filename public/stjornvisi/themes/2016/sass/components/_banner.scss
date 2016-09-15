@@ -1,0 +1,41 @@
+.banner {
+  @include clearfix();
+  background-color: $color-offwhite;
+  margin-bottom: $line-height-computed;
+}
+
+.banner__image {
+  @include make-md-column(8);
+
+  @media (max-width: $screen-sm-max) {
+    padding-left:0;
+    padding-right:0;
+  }
+
+  @media (min-width: $screen-md-min) {
+    padding-left:0;
+  }
+
+  img {
+    @include img-responsive();
+  }
+}
+
+.banner__text {
+  @include make-md-column(4);
+
+  padding-right: 30px;
+  padding-bottom: 15px;
+
+  h3 {
+    font-size: 32px;
+    color: $color-blue;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $color-blue;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: $line-height-computed * 1.5;
+  }
+}
