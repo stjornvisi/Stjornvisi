@@ -1,0 +1,126 @@
+.boardmembers {
+  @include make-row;
+  @include transition(max-height .33s);
+  border-bottom: 1px solid $color-light-gray;
+  overflow: hidden;
+
+  &.boardmembers--closed {
+    height: 0;
+    max-height: 0;
+  }
+
+  &.boardmembers--open {
+    height: auto;
+    max-height: 500px;
+  }
+
+  &.boardmembers--expired {
+    border: 0;
+
+    .boardmembers__item {
+      @include make-xs-column(6);
+      @include make-sm-column(3);
+      @include make-md-column(2);
+      clear: none;
+      padding-top: 10px;
+
+      @media (min-width: $screen-md-min) {
+        &:nth-child(6n+1) {
+          clear: left;
+        }
+      }
+
+      @media (max-width: $screen-sm-max) and (min-width: $screen-sm-min) {
+        &:nth-child(4n+1) {
+          clear: left;
+        }
+      }
+
+      @media (max-width: $screen-xs-max) {
+        &:nth-child(2n+1) {
+          clear: left;
+        }
+      }
+    }
+
+    .boardmembers__name {
+      font-size: 20px;
+    }
+
+    .boardmembers__company {
+      font-size: 18px;
+    }
+
+    .boardmembers__type {
+      font-size: 16px;
+    }
+  }
+}
+
+.boardmembers__toggle {
+  cursor: pointer;
+  margin: $line-height-computed 0 0;
+}
+
+.boardmembers__item {
+  position: relative;
+
+  stjonvisi-control {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, .9);
+    text-align: center;
+    display: none;
+  }
+
+  &:hover stjonvisi-control {
+    display: block;
+  }
+}
+
+.boardmembers__item {
+  @include make-xs-column(6);
+  @include make-sm-column(4);
+  @include make-md-column(3);
+  margin-bottom: $line-height-computed;
+
+  @media (min-width: $screen-md-min) {
+    &:nth-child(4n+1) {
+      clear: left;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) and (min-width: $screen-sm-min) {
+    &:nth-child(3n+1) {
+      clear: left;
+    }
+  }
+
+  @media (max-width: $screen-xs-max) {
+    &:nth-child(2n+1) {
+      clear: left;
+    }
+  }
+}
+
+.boardmembers__name {
+  font-size: 24px;
+  margin: 0 0 5px;
+}
+
+.boardmembers__company {
+  font-size: 22px;
+  margin: 0;
+}
+
+.boardmembers__type {
+  font-size: 20px;
+  margin: 0 0 0;
+  color: $color-text-light;
+}
+
+.boardmembers__avatar {
+  @include img-responsive;
+  margin-bottom: $line-height-computed;
+}

@@ -8951,6 +8951,48 @@ nav[role=navigation] .icon-mail:before {
   content: "";
 }
 
+/* line 1, ../sass/components/_board.scss */
+ul.block-list.boardmember {
+  width: 60%;
+}
+
+/* line 2, ../sass/components/_board.scss */
+ul.boardmember-list li {
+  float: left;
+  margin: 0 10px 40px 0;
+  text-align: center;
+}
+
+/* line 3, ../sass/components/_board.scss */
+img.borardmember-list__avatar {
+  border-radius: 50%;
+  width: 90%;
+}
+
+/* line 4, ../sass/components/_board.scss */
+h1.borardmember-list__name {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+/* line 5, ../sass/components/_board.scss */
+h2.borardmember-list__company {
+  font-size: 1em;
+  margin: 0;
+}
+
+/* line 6, ../sass/components/_board.scss */
+h3.borardmember-list__type {
+  font-size: 0.8em;
+  margin-top: 8px;
+}
+
+/* line 7, ../sass/components/_board.scss */
+stjonvisi-control.inline a {
+  font-size: 0.8em;
+  display: block;
+}
+
 /* line 1, ../sass/components/_footer.scss */
 main {
   min-height: 700px;
@@ -9050,10 +9092,202 @@ footer.bg {
   top: 0;
   right: 0;
 }
-ul.block-list.boardmember {width:60%}
-ul.boardmember-list li {float:left;margin:0 10px 40px 0;text-align:center}
-img.borardmember-list__avatar {border-radius:50%;width:90%}
-h1.borardmember-list__name {font-size:1.2em;margin:10px 0}
-h2.borardmember-list__company {font-size:1em;margin:0}
-h3.borardmember-list__type {font-size:0.8em;margin-top:8px}
-stjonvisi-control.inline a {font-size:0.8em;display:block}
+
+/* line 1, ../sass/components/_boardmembers.scss */
+.boardmembers {
+  margin-left: -15px;
+  margin-right: -15px;
+  -webkit-transition: max-height 0.33s;
+  -o-transition: max-height 0.33s;
+  transition: max-height 0.33s;
+  border-bottom: 1px solid #dde0e1;
+  overflow: hidden;
+}
+/* line 14, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.boardmembers:before, .boardmembers:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../../../vendor/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
+.boardmembers:after {
+  clear: both;
+}
+/* line 7, ../sass/components/_boardmembers.scss */
+.boardmembers.boardmembers--closed {
+  height: 0;
+  max-height: 0;
+}
+/* line 12, ../sass/components/_boardmembers.scss */
+.boardmembers.boardmembers--open {
+  height: auto;
+  max-height: 500px;
+}
+/* line 17, ../sass/components/_boardmembers.scss */
+.boardmembers.boardmembers--expired {
+  border: 0;
+}
+/* line 20, ../sass/components/_boardmembers.scss */
+.boardmembers.boardmembers--expired .boardmembers__item {
+  position: relative;
+  float: left;
+  width: 50%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  clear: none;
+  padding-top: 10px;
+}
+@media (min-width: 768px) {
+  /* line 20, ../sass/components/_boardmembers.scss */
+  .boardmembers.boardmembers--expired .boardmembers__item {
+    float: left;
+    width: 25%;
+  }
+}
+@media (min-width: 992px) {
+  /* line 20, ../sass/components/_boardmembers.scss */
+  .boardmembers.boardmembers--expired .boardmembers__item {
+    float: left;
+    width: 16.66667%;
+  }
+}
+@media (min-width: 992px) {
+  /* line 28, ../sass/components/_boardmembers.scss */
+  .boardmembers.boardmembers--expired .boardmembers__item:nth-child(6n+1) {
+    clear: left;
+  }
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  /* line 34, ../sass/components/_boardmembers.scss */
+  .boardmembers.boardmembers--expired .boardmembers__item:nth-child(4n+1) {
+    clear: left;
+  }
+}
+@media (max-width: 767px) {
+  /* line 40, ../sass/components/_boardmembers.scss */
+  .boardmembers.boardmembers--expired .boardmembers__item:nth-child(2n+1) {
+    clear: left;
+  }
+}
+/* line 46, ../sass/components/_boardmembers.scss */
+.boardmembers.boardmembers--expired .boardmembers__name {
+  font-size: 20px;
+}
+/* line 50, ../sass/components/_boardmembers.scss */
+.boardmembers.boardmembers--expired .boardmembers__company {
+  font-size: 18px;
+}
+/* line 54, ../sass/components/_boardmembers.scss */
+.boardmembers.boardmembers--expired .boardmembers__type {
+  font-size: 16px;
+}
+
+/* line 60, ../sass/components/_boardmembers.scss */
+.boardmembers__toggle {
+  cursor: pointer;
+  margin: 28px 0 0;
+}
+
+/* line 65, ../sass/components/_boardmembers.scss */
+.boardmembers__item {
+  position: relative;
+}
+/* line 68, ../sass/components/_boardmembers.scss */
+.boardmembers__item stjonvisi-control {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  display: none;
+}
+/* line 77, ../sass/components/_boardmembers.scss */
+.boardmembers__item:hover stjonvisi-control {
+  display: block;
+}
+
+/* line 82, ../sass/components/_boardmembers.scss */
+.boardmembers__item {
+  position: relative;
+  float: left;
+  width: 50%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 28px;
+}
+@media (min-width: 768px) {
+  /* line 82, ../sass/components/_boardmembers.scss */
+  .boardmembers__item {
+    float: left;
+    width: 33.33333%;
+  }
+}
+@media (min-width: 992px) {
+  /* line 82, ../sass/components/_boardmembers.scss */
+  .boardmembers__item {
+    float: left;
+    width: 25%;
+  }
+}
+@media (min-width: 992px) {
+  /* line 89, ../sass/components/_boardmembers.scss */
+  .boardmembers__item:nth-child(4n+1) {
+    clear: left;
+  }
+}
+@media (max-width: 991px) and (min-width: 768px) {
+  /* line 95, ../sass/components/_boardmembers.scss */
+  .boardmembers__item:nth-child(3n+1) {
+    clear: left;
+  }
+}
+@media (max-width: 767px) {
+  /* line 101, ../sass/components/_boardmembers.scss */
+  .boardmembers__item:nth-child(2n+1) {
+    clear: left;
+  }
+}
+
+/* line 107, ../sass/components/_boardmembers.scss */
+.boardmembers__name {
+  font-size: 24px;
+  margin: 0 0 5px;
+}
+
+/* line 112, ../sass/components/_boardmembers.scss */
+.boardmembers__company {
+  font-size: 22px;
+  margin: 0;
+}
+
+/* line 117, ../sass/components/_boardmembers.scss */
+.boardmembers__type {
+  font-size: 20px;
+  margin: 0 0 0;
+  color: #8d979c;
+}
+
+/* line 123, ../sass/components/_boardmembers.scss */
+.boardmembers__avatar {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 28px;
+}
