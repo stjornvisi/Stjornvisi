@@ -248,7 +248,7 @@ class ConsoleController extends AbstractActionController
                                 $transport->send($message);
                             } else {
                                 $protocol->connect();
-                                $protocol->helo('localhost.localdomain');
+                                $protocol->helo('stjornvisi.is');
                                 $protocol->rset();
                                 $transport->send($message);
                             }
