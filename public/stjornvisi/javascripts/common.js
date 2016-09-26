@@ -2,82 +2,85 @@
  * Created by einar on 18/01/15.
  */
 
-;(function(){
+;(function () {
     "use strict";
 
 
-    var mock = {addEventListener:function(){}};
+    var mock = {
+        addEventListener: function () {
+        }
+    };
     var active = undefined;
-    (document.querySelector('.categories--groups')||mock).addEventListener('click',function(event){
+    (document.querySelector('.categories--groups') || mock).addEventListener('click', function (event) {
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = 0;
-        if(active == undefined){
+        if (active == undefined) {
             event.target.classList.add('active');
             document.body.classList.add('state-open');
             active = event.target;
         }
-        else if( active == event.target ){
+        else if (active == event.target) {
             event.target.classList.remove('active');
             document.body.classList.remove('state-open');
             active = undefined;
-        }else{
+        } else {
             active.classList.remove('active');
             active = event.target;
             active.classList.add('active');
         }
 
 
-    },false);
-    (document.querySelector('.categories--users')||mock).addEventListener('click',function(event){
+    }, false);
+    (document.querySelector('.categories--users') || mock).addEventListener('click', function (event) {
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = '-100%';
-        if(active == undefined){
+        if (active == undefined) {
             event.target.classList.add('active');
             document.body.classList.add('state-open');
             active = event.target;
         }
-        else if( active == event.target ){
+        else if (active == event.target) {
             event.target.classList.remove('active');
             document.body.classList.remove('state-open');
             active = undefined;
-        }else{
+        } else {
             active.classList.remove('active');
             active = event.target;
             active.classList.add('active');
         }
-    },false);
-    (document.querySelector('.categories--config')||mock).addEventListener('click',function(event){
+    }, false);
+    (document.querySelector('.categories--config') || mock).addEventListener('click', function (event) {
         event.preventDefault();
         document.querySelector('ul.navigation').style.marginLeft = '-200%';
-        if(active == undefined){
+        if (active == undefined) {
             event.target.classList.add('active');
             document.body.classList.add('state-open');
             active = event.target;
         }
-        else if( active == event.target ){
+        else if (active == event.target) {
             event.target.classList.remove('active');
             document.body.classList.remove('state-open');
             active = undefined;
-        }else{
+        } else {
             active.classList.remove('active');
             active = event.target;
             active.classList.add('active');
         }
-    },false);
+    }, false);
 
-    (document.querySelector('.main--burger')||mock).addEventListener('click',function(event){
+    (document.querySelector('.main--burger') || mock).addEventListener('click', function (event) {
         event.preventDefault();
         document.body.classList.toggle('state-mobile-menu-open');
-    },false);
+    }, false);
 
-    (document.querySelector('.main--home')||mock).addEventListener('click',function(event){
+    (document.querySelector('.main--home') || mock).addEventListener('click', function (event) {
         event.preventDefault();
         document.body.classList.toggle('state-open');
-    },false);
+    }, false);
 })();
 
-$(function() {
-	$('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function(e) {
+$(function () {
+    $('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function (e) {
         console.log(e);
 
         if (e.target.className !== 'btn btn-default') {
@@ -102,5 +105,17 @@ $(function() {
                 $('body').removeClass('hoverable--open');
             }
         }
-	});
+    });
+
+    $('.boardmembers__toggle').on('click', function () {
+        var $toggle = $(this),
+            $members = $toggle.next('.boardmembers');
+
+        if ($members.hasClass('boardmembers--closed')) {
+            $members.addClass('boardmembers--open').removeClass('boardmembers--closed');
+        }
+        else {
+            $members.addClass('boardmembers--closed').removeClass('boardmembers--open');
+        }
+    });
 });
