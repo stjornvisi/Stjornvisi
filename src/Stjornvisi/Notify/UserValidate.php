@@ -219,7 +219,7 @@ class UserValidate implements NotifyInterface, QueueConnectionAwareInterface, Da
 
     /**
      * @param int $id
-     * @return \Stjornvisi\Service\User
+     * @return bool|\stdClass
      * @throws NotifyException
      * @throws \Stjornvisi\Service\Exception
      */

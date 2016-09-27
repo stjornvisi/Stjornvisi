@@ -283,7 +283,7 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
 
     /**
      * @param $group_id
-     * @return \Stjornvisi\Service\Group
+     * @return bool|\stdClass
      * @throws NotifyException
      * @throws \Stjornvisi\Service\Exception
      */

@@ -6,7 +6,6 @@ use \PDOException;
 use \DateTime;
 use Stjornvisi\Lib\Time;
 use Stjornvisi\Lib\DataSourceAwareInterface;
-use Zend\Db\Adapter\Driver\Pgsql\Statement;
 
 class Group extends AbstractService implements DataSourceAwareInterface
 {
@@ -62,6 +61,9 @@ class Group extends AbstractService implements DataSourceAwareInterface
                 $timestamp = mktime(0, 0, 0, $month, $day, date('Y') - 1);
             }
 
+            /** @noinspection SqlResolve */
+            /** @noinspection SqlDerivedTableAlias */
+            /** @noinspection SqlSignature */
             $sql = "
                 SELECT
                   IFNULL(ge.total_events, 0) AS event_count,
@@ -853,6 +855,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
             return $statement->fetchAll();
 
         } catch (PDOException $e) {
+            return [];
         }
     }
 
@@ -871,6 +874,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
             $statement->execute();
             return $statement->fetchAll();
         } catch (PDOException $e) {
+            return [];
         }
     }
 

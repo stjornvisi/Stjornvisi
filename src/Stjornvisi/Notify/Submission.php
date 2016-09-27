@@ -232,7 +232,7 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface, Data
 
     /**
      * @param $id
-     * @return \Stjornvisi\Service\User
+     * @return bool|\stdClass
      * @throws \Stjornvisi\Service\Exception
      * @throws \Stjornvisi\Notify\NotifyException
      */
@@ -252,7 +252,7 @@ class Submission implements NotifyInterface, QueueConnectionAwareInterface, Data
 
     /**
      * @param $id
-     * @return \Stjornvisi\Service\Group
+     * @return bool|\stdClass
      * @throws NotifyException
      * @throws \Stjornvisi\Service\Exception
      */

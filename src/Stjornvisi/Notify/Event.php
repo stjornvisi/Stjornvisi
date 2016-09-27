@@ -267,7 +267,7 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      * @param $userId
      * @param $recipients
      * @param $test
-     * @return \Stjornvisi\Service\User[]
+     * @return \stdClass[]
      * @throws NotifyException
      * @throws \Stjornvisi\Service\Exception
      */

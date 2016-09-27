@@ -993,7 +993,7 @@ class User extends AbstractService implements DataSourceAwareInterface
      * Get attendance for user
      *
      * @param $id user ID
-     * @return array
+     * @return object[]|bool
      * @throws Exception
      */
     public function attendance($id)
