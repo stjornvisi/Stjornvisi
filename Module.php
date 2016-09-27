@@ -81,6 +81,16 @@ class Module
         return getenv('APPLICATION_ENV') ?: $default;
     }
 
+    public static function isStaging()
+    {
+        return self::getApplicationEnv() == self::ENV_STAGING;
+    }
+
+    public static function isDevelopment()
+    {
+        return self::getApplicationEnv() == self::ENV_DEVELOPMENT;
+    }
+
     /**
      * Run for every request to the system.
      *
