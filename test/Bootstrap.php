@@ -3,6 +3,8 @@
 namespace Stjornvisi;
 
 
+use Stjornvisi\Auth\TestAdapter;
+use Zend\Authentication\AuthenticationService;
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
 use Zend\ServiceManager\ServiceManager;
@@ -113,6 +115,16 @@ class Bootstrap
 		}
 		return $dir . '/' . $path;
 	}
+
+    public static function authenticateUser($userId = 1, $isAdmin = 1)
+    {
+        $auth = new AuthenticationService();
+        $result = $auth->authenticate(new TestAdapter((object)[
+            'id' => $userId,
+            'is_admin' => $isAdmin,
+        ]));
+        $result->isValid();
+    }
 }
 
 Bootstrap::init();
