@@ -11,6 +11,7 @@ namespace Stjornvisi\Notify;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Stjornvisi\Module;
 use Stjornvisi\Service\User;
 use Stjornvisi\View\Helper\Paragrapher;
 use Stjornvisi\Notify\Message\Mail as MailMessage;
@@ -268,7 +269,7 @@ class All implements NotifyInterface, QueueConnectionAwareInterface, DataStoreIn
         $user->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
 
-        if ($test) {
+        if ($test || Module::isStaging()) {
             return [$user->get($sender)];
         } else {
            switch ($recipients){

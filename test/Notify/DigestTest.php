@@ -9,6 +9,7 @@
 namespace Stjornvisi\Notify;
 
 use Stjornvisi\ArrayDataSet;
+use Stjornvisi\Bootstrap;
 use Stjornvisi\DataHelper;
 
 require_once 'AbstractTestCase.php';
@@ -35,6 +36,23 @@ class DigestTest extends AbstractTestCase
         $this->prepareNotifier($notifier, true);
 
         $this->assertInstanceOf(Digest::class, $notifier->send());
+    }
+
+    /**
+     * Send only to sender when running Staging environment
+     */
+    public function testStagingSendOnlyToSender()
+    {
+        $notifier = new Digest();
+        $this->prepareNotifier($notifier);
+
+        putenv('APPLICATION_ENV=staging');
+        Bootstrap::authenticateUser(1);
+
+        $this->assertInstanceOf(Digest::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
+        putenv('APPLICATION_ENV=testing');
     }
 
     /**

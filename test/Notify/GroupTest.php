@@ -98,6 +98,31 @@ class GroupTest extends AbstractTestCase
     }
 
     /**
+     * Send only to sender when running Staging environment
+     */
+    public function testStagingSendOnlyToSender()
+    {
+        $notifier = new Group();
+        $this->prepareNotifier($notifier);
+        $notifier->setData((object)[
+            'data' => (object)[
+                'recipients' => 'allir',
+                'test' => false,
+                'sender_id' => 1,
+                'group_id' => 1,
+                'body' => 'nothing',
+                'subject' => '',
+            ]
+        ]);
+
+        putenv('APPLICATION_ENV=staging');
+        $this->assertInstanceOf(Group::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
+        putenv('APPLICATION_ENV=testing');
+    }
+
+    /**
      * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
      */
     public function getDataSet()

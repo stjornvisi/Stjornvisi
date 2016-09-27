@@ -15,10 +15,13 @@ use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
+use Stjornvisi\Module;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Event as EventService;
+use Stjornvisi\Service\Exception as ServiceException;
 use Stjornvisi\Service\News;
 use Stjornvisi\Service\User as UserService;
+use Zend\Authentication\AuthenticationService;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
 use Zend\View\Model\ViewModel;
@@ -293,7 +296,7 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
      * @param DateTime $from
      * @param DateTime $to
      * @return array
-     * @throws \Stjornvisi\Service\Exception
+     * @throws ServiceException
      */
     private function getEvents(DateTime $from, DateTime $to)
     {
@@ -306,7 +309,7 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 
 	/**
      * @return bool|mixed
-     * @throws \Stjornvisi\Service\Exception
+     * @throws ServiceException
      */
     private function getNews()
     {
@@ -318,13 +321,20 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
 
     /**
      * @return array
-     * @throws \Stjornvisi\Service\Exception
+     * @throws ServiceException
      */
     private function getUsers()
     {
         $userService = new UserService();
         $userService->setDataSource($this->getDataSourceDriver())
             ->setEventManager($this->getEventManager());
+        if (Module::isStaging()) {
+            $authService = new AuthenticationService();
+            if (!$authService->hasIdentity()) {
+                throw new ServiceException("Can not send digest mail for Staging without an user");
+            }
+            return [$userService->get($authService->getIdentity()->id)];
+        }
         return $userService->fetchAllForEmail('email_event_upcoming');
     }
 }

@@ -144,6 +144,31 @@ class EventTest extends AbstractTestCase
     }
 
     /**
+     * Send only to sender when running Staging environment
+     */
+    public function testStagingSendOnlyToSender()
+    {
+        $notifier = new Event();
+        $this->prepareNotifier($notifier);
+        $notifier->setData((object)[
+            'data' => (object)[
+                'user_id' => 1,
+                'recipients' => 'not allir',
+                'test' => false,
+                'body' => '',
+                'subject' => '',
+                'event_id' => 1,
+            ]
+        ]);
+
+        putenv('APPLICATION_ENV=staging');
+        $this->assertInstanceOf(Event::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
+        putenv('APPLICATION_ENV=testing');
+    }
+
+    /**
      * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
      */
     public function getDataSet()

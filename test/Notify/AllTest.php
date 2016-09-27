@@ -132,6 +132,30 @@ class AllTest extends AbstractTestCase
     }
 
     /**
+     * Send only to sender when running Staging environment
+     */
+    public function testStagingSendOnlyToSender()
+    {
+        $notifier = new All();
+        $this->prepareNotifier($notifier);
+        $notifier->setData((object)[
+            'data' => (object)[
+                'sender_id' => 1,
+                'test' => false,
+                'recipients' => 'allir',
+                'body' => 'nothing',
+                'subject' => ''
+            ]
+        ]);
+
+        putenv('APPLICATION_ENV=staging');
+        $this->assertInstanceOf(All::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
+        putenv('APPLICATION_ENV=testing');
+    }
+
+    /**
      * @return \PHPUnit_Extensions_Database_DataSet_IDataSet
      */
     public function getDataSet()

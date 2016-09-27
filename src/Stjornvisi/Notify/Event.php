@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
+use Stjornvisi\Module;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\User;
 
@@ -279,7 +280,7 @@ class Event implements NotifyInterface, QueueConnectionAwareInterface, DataStore
 
         //TEST
         //	this is just a test message so we send it just to the user in question
-        if ($test) {
+        if ($test || Module::isStaging()) {
             if (($result = $user->get($userId)) != false) {
                 return [$result];
             } else {

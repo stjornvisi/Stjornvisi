@@ -11,6 +11,7 @@ namespace Stjornvisi\Notify;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryInterface;
+use Stjornvisi\Module;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\User;
 
@@ -259,7 +260,7 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
      * @param bool $test
      * @param int $sender_id
      * @param int $group_id
-     * @return \Stjornvisi\Service\User[] array
+     * @return \stdClass[]
      * @throws \Stjornvisi\Service\Exception
      */
     private function getUsers($recipients, $test, $sender_id, $group_id)
@@ -276,8 +277,8 @@ class Group implements NotifyInterface, QueueConnectionAwareInterface, DataStore
 
         //TEST OR REAL
         //	if test, send ony to sender, else to all
-        return ($test)
-            ? array( $userService->get($sender_id))
+        return ($test || Module::isStaging())
+            ? [$userService->get($sender_id)]
             : $userService->fetchUserEmailsByGroup([$group_id], $types);
     }
 
