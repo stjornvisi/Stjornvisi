@@ -9,8 +9,14 @@
 
 namespace Stjornvisi\Controller;
 
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
 use Stjornvisi\Form\Email as GroupEmail;
+use Stjornvisi\Module;
+use Stjornvisi\Notify\Digest;
+use Stjornvisi\Service\Exception as ServiceException;
 use Zend\Authentication\AuthenticationService;
+use Zend\Http\Request as HttpRequest;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Http\Response as HttpResponse;
@@ -19,6 +25,7 @@ use Zend\Http\Response as HttpResponse;
  * Class ArticleController.
  *
  * @package Stjornvisi\Controller
+ * @property HttpRequest $request
  */
 class EmailController extends AbstractActionController
 {
@@ -151,5 +158,45 @@ class EmailController extends AbstractActionController
         }
 
 
+    }
+
+    public function digestAction()
+    {
+        $sm = $this->getServiceLocator();
+        $userService = $sm->get('Stjornvisi\Service\User');
+        $auth = new AuthenticationService();
+        $access = $userService->getTypeByGroup(
+            ( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null,
+            null
+        );
+
+        $model = new ViewModel();
+
+        if (!$access->is_admin) {
+            $this->getResponse()->setStatusCode(401);
+            $model->setTemplate('error/401');
+            return $model;
+        }
+
+        if (!Module::isStaging()) {
+            throw new ServiceException('Digest from browser can only be run in Staging');
+        }
+
+        if ($this->request->isPost()) {
+            $sm = $this->getServiceLocator();
+            $logger = new Logger('digest');
+            $handler = new TestHandler();
+            $logger->pushHandler($handler);
+
+            $logger->addInfo("UpComingEvents: Started");
+            /** @var Digest $process */
+            $process = $sm->get('Stjornvisi\Notify\Digest');
+            $process->setLogger($logger);
+            $process->send();
+            $logger->addInfo("UpComingEvents: Done");
+            $model->setVariable('handler', $handler);
+
+        }
+        return $model;
     }
 }

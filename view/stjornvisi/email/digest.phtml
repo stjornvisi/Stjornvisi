@@ -1,0 +1,23 @@
+<?php
+
+/** @var \Monolog\Handler\TestHandler $handler */
+$handler = $this->handler;
+?>
+<div class="panel">
+    <div class="panel__container">
+        <div class="panel__content">
+            <?if($handler):?>
+            <ul>
+                <?foreach($handler->getRecords() as $record):?>
+                    <li><strong><?=$record['level_name']?></strong>: <?=$record['message']?></li>
+                <?endforeach;?>
+            </ul>
+
+            <?else:?>
+            <form method="post" action="?">
+                <input type="submit" value="Senda 'Á næstunni tölvupóst'"/>
+            </form>
+            <?endif;?>
+        </div>
+    </div>
+</div>

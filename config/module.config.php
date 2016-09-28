@@ -1714,8 +1714,17 @@ return array(
                             ),
                         )
                     ),
-
-                )
+                    'digest' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => array(
+                            'route' => '/digest',
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\Email',
+                                'action' => 'digest',
+                            ),
+                        ),
+                    ),
+                ),
             ),
 
             'page' => array(

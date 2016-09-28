@@ -8,6 +8,7 @@
 
 namespace Stjornvisi\View\Helper;
 
+use Stjornvisi\Module;
 use Stjornvisi\Service\User;
 use Zend\Authentication\AuthenticationService;
 use Zend\Navigation\Navigation;
@@ -137,6 +138,13 @@ class SubMenu extends AbstractHelper
                                         'uri' => $view->url('vidburdir/statistics'),
                                         'class' => 'icon-bar-chart'
                                     ),
+                                    array(
+                                        'label' => 'Á næstunni',
+                                        'title' => 'Senda "á næstunni" póst',
+                                        'id' => 'event-digest',
+                                        'uri' => $view->url('email/digest'),
+                                        'class' => 'icon-mail',
+                                    ),
                                 ),
                             ),
                             array(
@@ -222,6 +230,9 @@ class SubMenu extends AbstractHelper
                             ),
                         ),
                     );
+                    if (!Module::isStaging())  {
+                        unset($array[count($array) - 1]['pages'][1]['pages'][1]);
+                    }
                 }
 
             }
