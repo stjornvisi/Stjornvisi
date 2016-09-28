@@ -685,6 +685,7 @@ CREATE TABLE `Group` (
   `how_operates` text,
   `for_whom` text,
   `url` varchar(45) NOT NULL,
+  `hidden` TINYINT UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_url` (`url`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;

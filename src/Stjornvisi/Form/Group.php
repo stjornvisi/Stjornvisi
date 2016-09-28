@@ -54,6 +54,18 @@ class Group extends Form implements InputFilterProviderInterface
             ),
         ));
 
+        $this->add([
+            'name' => 'hidden',
+            'type' => 'Zend\Form\Element\Select',
+            'options' => [
+                'label' => 'Falin hópur',
+                'value_options' => [
+                    '0' => 'Nei',
+                    '1' => 'Já',
+                ],
+            ],
+        ]);
+
         $this->add(array(
             'name' => 'summary',
             'type' => 'Stjornvisi\Form\Element\Rich',

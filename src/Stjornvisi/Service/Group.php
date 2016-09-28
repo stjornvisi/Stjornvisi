@@ -6,8 +6,11 @@ use \PDOException;
 use \DateTime;
 use Stjornvisi\Lib\Time;
 use Stjornvisi\Lib\DataSourceAwareInterface;
+use Zend\Authentication\AuthenticationService;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
-class Group extends AbstractService implements DataSourceAwareInterface
+class Group extends AbstractService implements DataSourceAwareInterface, ServiceLocatorAwareInterface
 {
     const NAME = 'group';
 
@@ -15,6 +18,15 @@ class Group extends AbstractService implements DataSourceAwareInterface
      * @var \PDO
      */
     private $pdo;
+
+    private $serviceLocator;
+
+    /**
+     * Cache for userConnections
+     *
+     * @var array
+     */
+    private $userConnections = [];
 
     /**
      * Get one group by ID.
@@ -38,7 +50,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
                 $statement->execute(array('url'=>$id));
             }
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-            return $statement->fetchObject();
+            return $this->filterHiddenGroup($statement->fetchObject());
         } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),
@@ -155,7 +167,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return ( $date->format('n') < 9 )
                 ? ((int)$date->format('Y'))-1
-                : $date->format('Y');
+                : (int)$date->format('Y');
 
         } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
@@ -432,14 +444,19 @@ class Group extends AbstractService implements DataSourceAwareInterface
     public function userConnections($user_id)
     {
         try {
-            $statement = $this->pdo->prepare('
-            SELECT G.name, G.name_short, G.url, GhU.* FROM `Group` G
-                JOIN Group_has_User GhU ON (G.id = GhU.group_id)
-            WHERE GhU.user_id = :user_id;
-            ');
-            $statement->execute(array('user_id' => $user_id));
-            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-            return $statement->fetchAll();
+            if (!array_key_exists($user_id, $this->userConnections)) {
+                $statement = $this->pdo->prepare('
+                    SELECT G.name, G.name_short, G.url, GhU.* FROM `Group` G
+                       JOIN Group_has_User GhU ON (G.id = GhU.group_id)
+                     WHERE GhU.user_id = :user_id;
+                ');
+                $statement->execute(array('user_id' => $user_id));
+                $this->getEventManager()->trigger(
+                    'read', $this, array(__FUNCTION__)
+                );
+                $this->userConnections[$user_id] = $statement->fetchAll();
+            }
+            return $this->userConnections[$user_id];
         } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),
@@ -464,7 +481,10 @@ class Group extends AbstractService implements DataSourceAwareInterface
             $statement = $this->pdo->prepare("SELECT * FROM `Group` G ORDER BY G.name_short");
             $statement->execute();
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
-            return $statement->fetchAll();
+
+            $groups = $statement->fetchAll();
+            $this->filterHiddenGroups($groups);
+            return $groups;
         } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),
@@ -485,6 +505,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
      * @param int $limit
      * @return array
      * @throws Exception
+     * @deprecated Seems that this is not being used
      */
     public function fetchAllExtended($limit = 2)
     {
@@ -585,6 +606,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
      */
     public function fetchDetails($user_id = null, $month_interval = 3)
     {
+        $statement = null;
         try {
             // Fetch all groups, mark groups belonging to specified user, count events using specified interval
             $statement = $this->pdo->prepare("
@@ -593,6 +615,7 @@ class Group extends AbstractService implements DataSourceAwareInterface
                   g.name_short,
                   g.summary,
                   g.url,
+                  g.hidden,
                   ghu.user_id,
                   IFNULL(ge.total, 0) AS event_count
                 FROM
@@ -619,8 +642,27 @@ class Group extends AbstractService implements DataSourceAwareInterface
             ));
             $groups = $statement->fetchAll();
 
-            // Fetch all upcoming events and add them to the appropriate group
-            $statement = $this->pdo->prepare("
+            $this->addEvents($groups);
+
+            $this->addBoardMembers($groups);
+
+            $this->filterHiddenGroups($groups);
+            return $groups;
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't get group details", 0, $e);
+        }
+    }
+
+    private function addEvents(&$groups)
+    {
+        // Fetch all upcoming events and add them to the appropriate group
+        $statement = $this->pdo->prepare("
                 SELECT
                   e.*,
                   ge.group_id
@@ -633,33 +675,35 @@ class Group extends AbstractService implements DataSourceAwareInterface
                   e.event_date ASC, e.event_time ASC
             ");
 
-            $statement->execute();
+        $statement->execute();
 
-            $events = array_map(
-                function ($i) {
-                    $i->id = (int)$i->id;
-                    $i->event_time = new Time(($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00");
-                    $i->event_end = new Time(($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00");
-                    $i->event_date = new DateTime($i->event_date);
-                    return $i;
-                },
-                $statement->fetchAll()
-            );
+        $events = array_map(
+            function ($i) {
+                $i->id = (int)$i->id;
+                $i->event_time = new Time(($i->event_time)?"{$i->event_date} {$i->event_time}":"{$i->event_date} 00:00");
+                $i->event_end = new Time(($i->event_time)?"{$i->event_date} {$i->event_end}":"{$i->event_date} 00:00");
+                $i->event_date = new DateTime($i->event_date);
+                return $i;
+            },
+            $statement->fetchAll()
+        );
 
 
-            foreach ($groups as $group) {
-                if (!isset($group->events)) {
-                    $group->events = [];
-                }
-                foreach ($events as $event) {
-                    if ($event->group_id == $group->id) {
-                        $group->events[] = $event;
-                    }
+        foreach ($groups as $group) {
+            if (!isset($group->events)) {
+                $group->events = [];
+            }
+            foreach ($events as $event) {
+                if ($event->group_id == $group->id) {
+                    $group->events[] = $event;
                 }
             }
-
-            // Fetch board members and add them to the appropriate group
-            $statement = $this->pdo->prepare("
+        }
+    }
+    private function addBoardMembers(&$groups)
+    {
+        // Fetch board members and add them to the appropriate group
+        $statement = $this->pdo->prepare("
                 SELECT
                   u.id,
                   u.name,
@@ -678,29 +722,18 @@ class Group extends AbstractService implements DataSourceAwareInterface
                   ghu.type DESC, u.name
             ");
 
-            $statement->execute();
-            $board = $statement->fetchAll();
+        $statement->execute();
+        $board = $statement->fetchAll();
 
-            foreach ($groups as $group) {
-                if (!isset($group->board)) {
-                    $group->board = [];
-                }
-                foreach ($board as $member) {
-                    if ($member->group_id == $group->id) {
-                        $group->board[] = $member;
-                    }
+        foreach ($groups as $group) {
+            if (!isset($group->board)) {
+                $group->board = [];
+            }
+            foreach ($board as $member) {
+                if ($member->group_id == $group->id) {
+                    $group->board[] = $member;
                 }
             }
-
-            return $groups;
-        } catch (PDOException $e) {
-            $this->getEventManager()->trigger('error', $this, array(
-                'exception' => $e->getTraceAsString(),
-                'sql' => array(
-                    isset($statement)?$statement->queryString:null,
-                )
-            ));
-            throw new Exception("Can't get group details", 0, $e);
         }
     }
 
@@ -882,5 +915,83 @@ class Group extends AbstractService implements DataSourceAwareInterface
     {
         $this->pdo = $pdo;
         return $this;
+    }
+
+    public function filterHiddenGroups(&$groups)
+    {
+        $identity = $this->getServiceLocator()
+            ->get(AuthenticationService::class)
+            ->getIdentity();
+        if ($identity && $identity->is_admin) {
+            return;
+        }
+        foreach ($groups as $key => $group) {
+            if ($group->hidden) {
+                $hasPermission = $this->filterHiddenGroup($group, $identity);
+                if (!$hasPermission) {
+                    unset($groups[$key]);
+                }
+            }
+        }
+    }
+
+    private function filterHiddenGroup($group, $identity = null)
+    {
+        if (!$group) {
+            return false;
+        }
+        if (!$group->hidden) {
+            return $group;
+        }
+
+        if (!$identity) {
+            $identity = $this->getServiceLocator()
+                ->get(AuthenticationService::class)
+                ->getIdentity();
+        }
+        if (!$identity) {
+            return false;
+        }
+        if ($identity->is_admin) {
+            return $group;
+        }
+        $userId = ($identity) ? $identity->id : null;
+        if (isset($group->board)) {
+            foreach ($group->board as $boardMember) {
+                if ($boardMember->id == $userId) {
+                    return $group;
+                }
+            }
+            return false;
+        }
+        elseif ($userId > 0) {
+            foreach ($this->userConnections($userId) as $item) {
+                if ($item->group_id == $group->id && $item->type > 0) {
+                    return $group;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
     }
 }

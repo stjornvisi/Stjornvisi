@@ -4,7 +4,7 @@ namespace Stjornvisi;
 
 class DataHelper
 {
-    public static function newGroup($id = null)
+    public static function newGroup($id = null, $hidden = 0)
     {
         $data = [
             'name' => 'Þetta er svo langt',
@@ -18,6 +18,7 @@ class DataHelper
             $data['name'] = 'n' . $id;
             $data['name_short'] = 'ns' . $id;
             $data['url'] = 'n' . $id;
+            $data['hidden'] = (int)$hidden;
         }
         return $data;
     }

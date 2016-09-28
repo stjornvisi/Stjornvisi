@@ -118,12 +118,22 @@ class Bootstrap
 
     public static function authenticateUser($userId = 1, $isAdmin = 1)
     {
-        $auth = new AuthenticationService();
-        $result = $auth->authenticate(new TestAdapter((object)[
-            'id' => $userId,
-            'is_admin' => $isAdmin,
-        ]));
-        $result->isValid();
+        /** @var AuthenticationService $auth */
+        $auth = self::getServiceManager()->get(AuthenticationService::class);
+        if ($userId < 1) {
+            $auth->clearIdentity();
+        }
+        else {
+            $result = $auth->authenticate(
+                new TestAdapter(
+                    (object)[
+                        'id'       => $userId,
+                        'is_admin' => $isAdmin,
+                    ]
+                )
+            );
+            $result->isValid();
+        }
     }
 }
 

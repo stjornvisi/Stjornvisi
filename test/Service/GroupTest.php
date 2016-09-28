@@ -37,8 +37,7 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGet()
     {
-        $service = new Group();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $group1 = $service->get(1);
         $this->assertInstanceOf('\stdClass', $group1);
@@ -55,8 +54,7 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetException()
     {
-        $service = new Group();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(new PDOMock());
         $service->get(1);
     }
 
@@ -65,8 +63,7 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetFirstYear()
     {
-        $service = new Group();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $group1 = $service->getFirstYear(1);
         $this->assertInternalType('int', $group1);
@@ -81,8 +78,7 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetFirstYearException()
     {
-        $service = new Group();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(new PDOMock());
         $service->getFirstYear(1);
     }
 
@@ -91,8 +87,7 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testRegisterUser()
     {
-        $service = new Group();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->registerUser(1, 1, true);
         $this->assertInternalType('int', $result);
@@ -106,9 +101,8 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testRegisterUserExceptionTrue()
     {
-        $service = new Group();
-        $service->setDataSource(new PDOMock());
-        $result = $service->registerUser(1, 1, true);
+        $service = $this->createService(new PDOMock());
+        $service->registerUser(1, 1, true);
     }
 
     /**
@@ -116,9 +110,8 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testRegisterUserExceptionFalse()
     {
-        $service = new Group();
-        $service->setDataSource(new PDOMock());
-        $result = $service->registerUser(1, 1, false);
+        $service = $this->createService(new PDOMock());
+        $service->registerUser(1, 1, false);
     }
 
 
@@ -127,8 +120,7 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetByUser()
     {
-        $service = new Group();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $group1 = $service->getByUser(1);
         $this->assertInternalType('array', $group1);
@@ -139,9 +131,165 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetByUserException()
     {
-        $service = new Group();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(new PDOMock());
         $service->getByUser(1);
+    }
+
+    public function testGetVisibleForAnySucceeds()
+    {
+        Bootstrap::authenticateUser(0);
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->get(1);
+        $this->assertInstanceOf(\stdClass::class, $data);
+        $this->assertEquals(1, $data->id);
+    }
+
+    public function testGetHiddenForAnonymousFails()
+    {
+        Bootstrap::authenticateUser(0);
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->get(4);
+        $this->assertEmpty($data);
+    }
+
+    public function testGetHiddenForMemberFails()
+    {
+        Bootstrap::authenticateUser(4, 0); // 4 is a normal member in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->get(3);
+        $this->assertEmpty($data);
+    }
+
+    public function testGetHiddenForLeaderSucceeds()
+    {
+        Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->get(3);
+        $this->assertInstanceOf(\stdClass::class, $data);
+        $this->assertEquals(3, $data->id);
+    }
+
+    public function testGetHiddenForOtherLeaderFails()
+    {
+        Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->get(4);
+        $this->assertEmpty($data);
+    }
+
+    public function testGetHiddenForChairmanSucceeds()
+    {
+        Bootstrap::authenticateUser(3, 0); // 3 is Chairman in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->get(3);
+        $this->assertInstanceOf(\stdClass::class, $data);
+        $this->assertEquals(3, $data->id);
+    }
+
+    public function testGetHiddenForAdminSucceeds()
+    {
+        Bootstrap::authenticateUser(1, 1);
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->get(4);
+        $this->assertInstanceOf(\stdClass::class, $data);
+        $this->assertEquals(4, $data->id);
+    }
+
+    public function testFetchDetailsFetchesAllForAdmin()
+    {
+        Bootstrap::authenticateUser(1, 1);
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchDetails();
+        $this->assertCount(4, $data);
+    }
+
+    public function testFetchDetailsFetchesAllNonHiddenForAnonymous()
+    {
+        Bootstrap::authenticateUser(0);
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchDetails();
+        $this->assertCount(2, $data);
+    }
+
+    public function testFetchDetailsFetchesAllNonHiddenForMembers()
+    {
+        Bootstrap::authenticateUser(4, 0); // 4 is a normal member in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchDetails();
+        $this->assertCount(2, $data);
+    }
+
+    public function testFetchDetailsFetchesAllNonHiddenForLeaders()
+    {
+        Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchDetails();
+        $this->assertCount(3, $data);
+    }
+
+    public function testFetchDetailsFetchesAllNonHiddenForChairmen()
+    {
+        Bootstrap::authenticateUser(3, 0); // 3 is Chairman in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchDetails();
+        $this->assertCount(3, $data);
+    }
+
+    public function testFetchAllFetchesAllForAdmin()
+    {
+        Bootstrap::authenticateUser(1, 1);
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchAll();
+        $this->assertCount(4, $data);
+    }
+
+    public function testFetchAllFetchesAllNonHiddenForAnonymous()
+    {
+        Bootstrap::authenticateUser(0);
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchAll();
+        $this->assertCount(2, $data);
+    }
+
+    public function testFetchAllFetchesAllNonHiddenForMembers()
+    {
+        Bootstrap::authenticateUser(4, 0); // 4 is a normal member in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchAll();
+        $this->assertCount(2, $data);
+    }
+
+    public function testFetchAllFetchesAllNonHiddenForLeaders()
+    {
+        Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchAll();
+        $this->assertCount(3, $data);
+    }
+
+    public function testFetchAllFetchesAllNonHiddenForChairmen()
+    {
+        Bootstrap::authenticateUser(3, 0); // 3 is Chairman in group 3
+        $service = $this->createService();
+        $service->setDataSource(self::$pdo);
+        $data = $service->fetchAll();
+        $this->assertCount(3, $data);
     }
 
     /**
@@ -191,40 +339,55 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
             'Group' => [
                 DataHelper::newGroup(1),
                 DataHelper::newGroup(2),
-                DataHelper::newGroup(3),
-                DataHelper::newGroup(4),
+                DataHelper::newGroup(3, 1),
+                DataHelper::newGroup(4, 1),
+            ],
+            'Company' => [
+                DataHelper::newCompany(1),
             ],
             'User' => [
-                ['id'=>1, 'name'=>'', 'passwd'=>'', 'email'=>'one@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>1],
-                ['id'=>2, 'name'=>'', 'passwd'=>'', 'email'=>'two@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-                ['id'=>3, 'name'=>'', 'passwd'=>'', 'email'=>'three@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-
-                ['id'=>4, 'name'=>'', 'passwd'=>'', 'email'=>'four@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-                ['id'=>5, 'name'=>'', 'passwd'=>'', 'email'=>'five@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-                ['id'=>6, 'name'=>'', 'passwd'=>'', 'email'=>'six@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-                ['id'=>7, 'name'=>'', 'passwd'=>'', 'email'=>'seven@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
-                ['id'=>8, 'name'=>'', 'passwd'=>'', 'email'=>'eight@mail.com', 'title'=>'', 'created_date'=>date('Y-m-d H:i:s'), 'modified_date'=>date('Y-m-d H:i:s'), 'frequency'=>1, 'is_admin'=>0],
+                DataHelper::newUser(1, 1),
+                DataHelper::newUser(2),
+                DataHelper::newUser(3),
+                DataHelper::newUser(4),
             ],
-            'Event' => [
-                ['id'=>1, 'subject'=>'01', 'body'=>'01',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-4 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>2, 'subject'=>'02', 'body'=>'02',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-3 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>3, 'subject'=>'03', 'body'=>'03',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-2 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>4, 'subject'=>'04', 'body'=>'04',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('-1 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>5, 'subject'=>'05', 'body'=>'05',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d'),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>6, 'subject'=>'06', 'body'=>'06',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+1 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>7, 'subject'=>'07', 'body'=>'07',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+2 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>8, 'subject'=>'08', 'body'=>'08',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+3 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
-                ['id'=>9, 'subject'=>'09', 'body'=>'09',  'location'=>'01',   'address'=>'', 'event_date'=>date('Y-m-d', strtotime('+4 days')),'event_time'=>date('H:m'),'avatar'=>null,'lat'=>null,'lng'=>null],
+            'Company_has_User' => [
+                DataHelper::newCompanyHasUser(1, 1),
+                DataHelper::newCompanyHasUser(2, 1),
+                DataHelper::newCompanyHasUser(3, 1),
+                DataHelper::newCompanyHasUser(4, 1),
             ],
-            'Group_has_User' => [],
+            'Event' => DataHelper::newEventSeries(),
+            'Group_has_User' => [
+                DataHelper::newGroupHasUser(3, 2, 1),
+                DataHelper::newGroupHasUser(3, 3, 2),
+                DataHelper::newGroupHasUser(3, 4, 0),
+            ],
             'Group_has_Event' => [
-                ['event_id'=>2, 'group_id'=>1,'primary'=>0],
-                ['event_id'=>2, 'group_id'=>2,'primary'=>0],
-                ['event_id'=>2, 'group_id'=>3,'primary'=>0],
-
-                ['event_id'=>3, 'group_id'=>2,'primary'=>0],
-                ['event_id'=>4, 'group_id'=>null,'primary'=>0],
+                DataHelper::newGroupHasEvent(2, 1, 0),
+                DataHelper::newGroupHasEvent(2, 2, 0),
+                DataHelper::newGroupHasEvent(2, 3, 0),
+                DataHelper::newGroupHasEvent(3, 2, 0),
+                DataHelper::newGroupHasEvent(4, null, 0),
             ],
         ]);
+    }
+
+    /**
+     * @param null|bool|\PDO $dataSource
+     *
+     * @return Group
+     */
+    protected function createService($dataSource = null)
+    {
+        $service = new Group();
+        if (null === $dataSource) {
+            $dataSource = self::$pdo;
+        }
+        if (false !== $dataSource) {
+            $service->setDataSource($dataSource);
+        }
+        $service->setServiceLocator(Bootstrap::getServiceManager());
+        return $service;
     }
 }
