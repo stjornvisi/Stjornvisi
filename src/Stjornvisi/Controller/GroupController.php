@@ -18,6 +18,7 @@ use Stjornvisi\Form\Email as GroupEmail;
 use Stjornvisi\Lib\Csv;
 use \DateTime;
 use \DateInterval;
+use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
 
 /**
@@ -25,13 +26,17 @@ use Zend\Http\Response as HttpResponse;
  *
  * @package Stjornvisi\Controller
  * @author  einarvalur
+ * @property HttpRequest $request
+ * @property HttpResponse $response
+ * @method HttpRequest getRequest()
+ * @method HttpResponse getResponse()
  */
 class GroupController extends AbstractActionController
 {
     /**
      * Display one group by url-name.
      *
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function indexAction()
     {
@@ -204,7 +209,7 @@ class GroupController extends AbstractActionController
     /**
      * Update Group.
      *
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function updateAction()
     {
@@ -298,6 +303,7 @@ class GroupController extends AbstractActionController
                 $groupService->delete($group->id);
                 //ACCESS DENIED
                 //  user doesn't have access
+                return [];
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();
@@ -319,7 +325,8 @@ class GroupController extends AbstractActionController
     public function listAction()
     {
         $sm = $this->getServiceLocator();
-        $groupService = $sm->get('Stjornvisi\Service\Group');
+        /** @var Group $groupService */
+        $groupService = $sm->get(Group::class);
         //return new ViewModel(['groups_all' => $groupService->fetchAllExtended(1)]);
         return new ViewModel(['groups_all' => $groupService->fetchDetails()]);
     }
@@ -397,6 +404,7 @@ class GroupController extends AbstractActionController
                     $auth->getIdentity()->id,
                     (bool)( (int)$this->params()->fromRoute('type', 0) )
                 );
+                return [];
             } else {
                 return $this->notFoundAction();
             }
@@ -414,7 +422,7 @@ class GroupController extends AbstractActionController
      *  manager
      *  member
      *
-     * @return \Zend\Http\Response
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function userStatusAction()
     {
@@ -492,7 +500,6 @@ class GroupController extends AbstractActionController
                 $csv->setName('medlimalisti'.date('Y-m-d-H:i').'.csv');
                 $resultset = $userService->getByGroup($group->id);
                 foreach ($resultset as $result) {
-                    $type = '';
                     switch($result->type){
                         case 0:
                             $type = 'Meðlimur';
@@ -573,7 +580,6 @@ class GroupController extends AbstractActionController
                 $csv->setName('stjornendalisti-'.date('Y-m-d-H:i').'.csv');
                 $resultset = $userService->getByGroup($group->id, [1,2]);
                 foreach ($resultset as $result) {
-                    $type = '';
                     switch($result->type){
                         case 0:
                             $type = 'Meðlimur';
@@ -655,7 +661,6 @@ class GroupController extends AbstractActionController
                 $csv->setName('formannalisti-'.date('Y-m-d-H:i').'.csv');
                 $resultset = $userService->getByGroup($group->id, 2);
                 foreach ($resultset as $result) {
-                    $type = '';
                     switch($result->type){
                         case 0:
                             $type = 'Meðlimur';
@@ -814,8 +819,6 @@ class GroupController extends AbstractActionController
             $feed->setLink($server);
             $feed->setDateModified(new DateTime());
 
-            $data = [];
-
             foreach ($eventService->getRangeByGroup($group->id, $from, $to) as $row) {
                 //create entry...
                 $entry = $feed->createEntry();
@@ -878,8 +881,6 @@ class GroupController extends AbstractActionController
             $feed->setDescription('Fréttir');
             $feed->setLink('http://ourdomain.com');
             $feed->setDateModified(new DateTime());
-
-            $data = [];
 
             foreach ($newsService->getRangeByGroup($group->id, $from, $to) as $row) {
                 //create entry...
@@ -1080,14 +1081,14 @@ class GroupController extends AbstractActionController
      */
     public function statisticsAction()
     {
-
+        return null;
     }
 
     /**
      * Generate iCal document one year back in tme from
      * currenr date.
      *
-     * @return IcalModel
+     * @return IcalModel|array
      */
     public function calendarAction()
     {
