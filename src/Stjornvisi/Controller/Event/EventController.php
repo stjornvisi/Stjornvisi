@@ -2,7 +2,8 @@
 namespace Stjornvisi\Controller\Event;
 
 use \DateTime;
-use Stjornvisi\Service\Event;
+use Stjornvisi\Service\Group;
+use Stjornvisi\Service\User;
 use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
@@ -12,11 +13,17 @@ use Stjornvisi\Form\Email;
 use Stjornvisi\Form\Event as EventForm;
 use Stjornvisi\Lib\Csv;
 use Stjornvisi\Service\Event as EventService;
+use Zend\Http\Request as HttpRequest;
+use Zend\Http\Response as HttpResponse;
 
 /**
  * Class EventController.
  *
  * @package Stjornvisi\Controller
+ * @property HttpRequest $request
+ * @property HttpResponse $response
+ * @method HttpRequest getRequest()
+ * @method HttpResponse getResponse()
  */
 class EventController extends AbstractActionController
 {
@@ -31,9 +38,9 @@ class EventController extends AbstractActionController
     public function indexAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-        $authService = $sm->get('AuthenticationService');
+        $userService = $sm->get(User::class);
+        $eventService = $sm->get(EventService::class);
+        $authService = $sm->get(AuthenticationService::class);
 
         $identity = ($authService->hasIdentity())
             ? $authService->getIdentity()->id
@@ -91,10 +98,9 @@ class EventController extends AbstractActionController
     public function listAction()
     {
         $sm = $this->getServiceLocator();
-        /** @var Event $eventService */
-        $eventService = $sm->get('Stjornvisi\Service\Event');
+        $eventService = $sm->get(EventService::class);
 
-        $auth = new AuthenticationService();
+        $auth = $sm->get(AuthenticationService::class);
         if ($auth->hasIdentity()) {
             return new ViewModel([
                 'events' => $eventService->getByUser($auth->getIdentity()->id, 100, false),
@@ -117,10 +123,10 @@ class EventController extends AbstractActionController
     public function createAction()
     {
         $sm = $this->getServiceLocator();
-        $groupService = $sm->get('Stjornvisi\Service\Group');
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-        $authService = $sm->get('AuthenticationService');
+        $groupService = $sm->get(Group::class);
+        $userService = $sm->get(User::class);
+        $eventService = $sm->get(EventService::class);
+        $authService = $sm->get(AuthenticationService::class);
         $group_id = $this->params()->fromRoute('id', false);
         $form = new EventForm($groupService->fetchAll());
 
@@ -182,15 +188,15 @@ class EventController extends AbstractActionController
     /**
      * Update one event.
      *
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function updateAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-        $groupService = $sm->get('Stjornvisi\Service\Group');
-        $authService = $sm->get('AuthenticationService');
+        $userService = $sm->get(User::class);
+        $eventService = $sm->get(EventService::class);
+        $groupService = $sm->get(Group::class);
+        $authService = $sm->get(AuthenticationService::class);
 
         $event = $eventService->get($this->params()->fromRoute('id', 0));
 
@@ -249,14 +255,14 @@ class EventController extends AbstractActionController
     /**
      * Delete one event.
      *
-     * @return \Zend\Http\Response
+     * @return \Zend\Http\Response|array|ViewModel
      */
     public function deleteAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-        $authService = $sm->get('AuthenticationService');
+        $userService = $sm->get(User::class);
+        $eventService = $sm->get(EventService::class);
+        $authService = $sm->get(AuthenticationService::class);
 
         //EVENT FOUND
         //  an event with this ID was found
@@ -295,9 +301,9 @@ class EventController extends AbstractActionController
     public function exportAttendeesAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-        $authService = $sm->get('AuthenticationService');
+        $userService = $sm->get(User::class);
+        $eventService = $sm->get(EventService::class);
+        $authService = $sm->get(AuthenticationService::class);
 
         //EVENT FOUND
         //  an event with this ID was found
@@ -344,14 +350,14 @@ class EventController extends AbstractActionController
      * This action is listening for the parameter <em>type</em>
      * that maps 1 to yes and 0 to no.
      *
-     * @return \Zend\Http\Response
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function attendAction()
     {
         $sm = $this->getServiceLocator();
-        $eventService = $sm->get('Stjornvisi\Service\Event');
+        $eventService = $sm->get(EventService::class);
 
-        $authService = new AuthenticationService();
+        $authService = $sm->get(AuthenticationService::class);
 
         //EVENT FOUND
         //  event found in storage
@@ -397,9 +403,9 @@ class EventController extends AbstractActionController
 
     public function unregisterAction()
     {
-        /** @var EventService $eventService */
-        $eventService = $this->getServiceLocator()->get('Stjornvisi\Service\Event');
-        $authService = new AuthenticationService();
+        $sm = $this->getServiceLocator();
+        $eventService = $sm->get(EventService::class);
+        $authService = $sm->get(AuthenticationService::class);
 
         $eventId = (int)$this->params()->fromRoute('id', 0);
         $userId = (int)$this->params()->fromRoute('user', 0);
@@ -423,14 +429,14 @@ class EventController extends AbstractActionController
     /**
      * Send mail to members of group(s) of events.
      *
-     * @return ViewModel
+     * @return ViewModel|array
      */
     public function sendMailAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $eventService = $sm->get('Stjornvisi\Service\Event');
-        $authService = $sm->get('AuthenticationService');
+        $userService = $sm->get(User::class);
+        $eventService = $sm->get(EventService::class);
+        $authService = $sm->get(AuthenticationService::class);
 
         //EVENT FOUND
         //  an event with this ID was found
@@ -507,6 +513,9 @@ class EventController extends AbstractActionController
                 return $model;
             }
         }
+        else {
+            return $this->notFoundAction();
+        }
     }
 
     /**
@@ -517,7 +526,7 @@ class EventController extends AbstractActionController
     public function registryDistributionAction()
     {
         $sm = $this->getServiceLocator();
-        $eventService = $sm->get('Stjornvisi\Service\Event');
+        $eventService = $sm->get(EventService::class);
 
         $type = $this->params()->fromRoute('type');
         $from = ($this->params()->fromRoute('from'))
@@ -526,7 +535,6 @@ class EventController extends AbstractActionController
         $to = ($this->params()->fromRoute('to'))
         ? new DateTime($this->params()->fromRoute('to'))
         : null ;
-        $result = [];
         switch($type){
             case 'klukka':
                 $result = $eventService->getRegistrationByHour($from, $to);
@@ -551,7 +559,7 @@ class EventController extends AbstractActionController
      */
     public function statisticsAction()
     {
-
+        return null;
     }
 
     private function extractGroupIds($groups)
@@ -567,7 +575,7 @@ class EventController extends AbstractActionController
     private function getCalendarData()
     {
         $sm = $this->getServiceLocator();
-        $eventService = $sm->get('Stjornvisi\Service\Event');
+        $eventService = $sm->get(EventService::class);
 
         $date = $this->params()->fromRoute('date', date('Y-m'));
         $prev = new DateTime($date.'-01');

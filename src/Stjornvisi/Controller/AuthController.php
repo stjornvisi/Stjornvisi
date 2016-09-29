@@ -2,24 +2,33 @@
 
 namespace Stjornvisi\Controller;
 
+use Facebook\FacebookRedirectLoginHelper;
+use Facebook\FacebookRequest;
+use Facebook\FacebookRequestException;
+use Facebook\FacebookSession;
+use Facebook\GraphUser;
+use Stjornvisi\Auth\Adapter as AuthAdapter;
+use Stjornvisi\Auth\Facebook as AuthFacebook;
+use Stjornvisi\Form\Login;
+use Stjornvisi\Form\LostPassword as LostPasswordForm;
+use Stjornvisi\Form\NewUserCompany as FormNewUserCompany;
+use Stjornvisi\Form\NewUserCompanySelect as FormNewUserCompanySelect;
+use Stjornvisi\Form\NewUserCredentials as FormNewUserCredentials;
+use Stjornvisi\Form\NewUserIndividual as FormNewUserIndividual;
 use Stjornvisi\Form\NewUserPassword;
+use Stjornvisi\Form\NewUserUniversitySelect as FormNewUserUniversitySelect;
 use Stjornvisi\Module;
+use Stjornvisi\Notify\Password as PasswordNotify;
+use Stjornvisi\Service\Company as CompanyService;
+use Stjornvisi\Service\User as UserService;
 use Zend\Authentication\AuthenticationService;
 use Zend\Http\Header\SetCookie;
+use Zend\Http\Request as HttpRequest;
+use Zend\Http\Response as HttpResponse;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
 use Zend\Session\SessionManager;
 use Zend\View\Model\ViewModel;
-
-use Zend\Session\Container;
-
-use Stjornvisi\Form\LostPassword as LostPasswordForm;
-use Stjornvisi\Form\Login;
-
-use Facebook\FacebookSession;
-use Facebook\FacebookRedirectLoginHelper;
-use Facebook\FacebookRequestException;
-use Facebook\FacebookRequest;
-use Facebook\GraphUser;
 
 
 /**
@@ -28,6 +37,10 @@ use Facebook\GraphUser;
  * Class AuthController
  *
  * @package Stjornvisi\Controller
+ * @property HttpRequest $request
+ * @property HttpResponse $response
+ * @method HttpRequest getRequest()
+ * @method HttpResponse getResponse()
  */
 class AuthController extends AbstractActionController
 {
@@ -48,11 +61,11 @@ class AuthController extends AbstractActionController
      */
     public function createUserAction()
     {
-        $session = new Container('create_user');
+        $session = $this->createSessionContainer();
+
         $sm = $this->getServiceLocator();
 
-        $form = $sm->get('Stjornvisi\Form\NewUserCredentials');
-        /** @var $form \Stjornvisi\Form\NewUserCredentials */
+        $form = $sm->get(FormNewUserCredentials::class);
         $form->setAttribute('action', $this->url()->fromRoute('access/create'));
 
         //POST
@@ -84,31 +97,29 @@ class AuthController extends AbstractActionController
      * Next installment of creating new user in the system.
      * This time it's the company.
      *
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function createUserCompanyAction()
     {
         $sm = $this->getServiceLocator();
 
-        $companyService = $sm->get('Stjornvisi\Service\Company');
-        /** @var  $companyService \Stjornvisi\Service\Company */
+        $companyService = $sm->get(CompanyService::class);
 
         //FORMS
         //	create and configure all needed forms.
-        $companyForm = $sm->get('Stjornvisi\Form\NewUserCompany');
+        $companyForm = $sm->get(FormNewUserCompany::class);
         $companyForm->setAttribute('action', $this->url()->fromRoute('access/company'));
 
-        $companySelectForm =  $sm->get('Stjornvisi\Form\NewUserCompanySelect');
+        $companySelectForm =  $sm->get(FormNewUserCompanySelect::class);
         $companySelectForm->setAttribute('action', $this->url()->fromRoute('access/company'));
-        /** @var $companySelectForm \Stjornvisi\Form\NewUserCompanySelect */
 
-        $individualForm = $sm->get('Stjornvisi\Form\NewUserIndividual');
+        $individualForm = $sm->get(FormNewUserIndividual::class);
         $individualForm->setAttribute('action', $this->url()->fromRoute('access/company'));
 
-        $universitySelectForm =  $sm->get('Stjornvisi\Form\NewUserUniversitySelect');
+        $universitySelectForm =  $sm->get(FormNewUserUniversitySelect::class);
         $universitySelectForm->setAttribute('action', $this->url()->fromRoute('access/company'));
 
-        $session = new Container('create_user');
+        $session = $this->createSessionContainer();
 
         //POST
         //	post request
@@ -155,7 +166,7 @@ class AuthController extends AbstractActionController
 
                 if ($companySelectForm->isValid()) {
                     $data = (array)$companySelectForm->getData();
-                    $session = new Container('create_user');
+                    $session = $this->createSessionContainer();
                     $session->company = $data['company-select'];
                     $session->company_key = 0;
                     return $this->redirect()->toRoute('access/login');
@@ -173,7 +184,7 @@ class AuthController extends AbstractActionController
             //CREATE INDIVIDUAL
             //	create a company that is only for this user.
             } elseif (isset($post['submit-individual'])) {
-                $session = new Container('create_user');
+                $session = $this->createSessionContainer();
                 $individualForm->setData($this->request->getPost());
                 if ($individualForm->isValid()) {
                     $data = (array)$individualForm->getData();
@@ -225,7 +236,7 @@ class AuthController extends AbstractActionController
                     );
                 }
             } else {
-                //error
+                return $this->notFoundAction();
             }
 
         //QUERY
@@ -250,7 +261,7 @@ class AuthController extends AbstractActionController
      */
     public function createUserLoginAction()
     {
-        $session = new Container('create_user');
+        $session = $this->createSessionContainer();
 
         $form = new NewUserPassword();
         $form->get('name')->setValue($session->email);
@@ -286,11 +297,10 @@ class AuthController extends AbstractActionController
      */
     public function createUserConfirmAction()
     {
-        $session = new Container('create_user');
+        $session = $this->createSessionContainer();
 
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        /** @var $userService \Stjornvisi\Service\User */
+        $userService = $sm->get(UserService::class);
 
         $id = $userService->create(
             [
@@ -306,14 +316,13 @@ class AuthController extends AbstractActionController
         );
 
         if (isset($session->password)) {
-            $auth = new AuthenticationService();
             $sm = $this->getServiceLocator();
-            $authAdapter =  $sm->get('Stjornvisi\Auth\Adapter');
+            $auth = $sm->get(AuthenticationService::class);
+            $authAdapter =  $sm->get(AuthAdapter::class);
             $authAdapter->setCredentials($session->email, $session->password);
             $result = $auth->authenticate($authAdapter);
             if ($result->isValid()) {
-                $sessionManager = new SessionManager();
-                $sessionManager->rememberMe(21600000); //250 days
+                $this->setRememberMeTime();
                 $session->getManager()->getStorage()->clear('create_user');
                 return $this->redirect()->toRoute('home');
             } else {
@@ -353,7 +362,8 @@ class AuthController extends AbstractActionController
      */
     public function loginAction()
     {
-        $auth = new AuthenticationService();
+        $sm = $this->getServiceLocator();
+        $auth = $sm->get(AuthenticationService::class);
 
         //IS LOGGED IN
         //  user is logged in
@@ -378,12 +388,11 @@ class AuthController extends AbstractActionController
                     //  authenticate, through the adapter and
                     //  take appropriate steps.
                     $data = $form->getData();
-                    $sm = $this->getServiceLocator();
-                    $authAdapter =  $sm->get('Stjornvisi\Auth\Adapter');
+                    $authAdapter =  $sm->get(AuthAdapter::class);
                     $authAdapter->setCredentials($data['email'], $data['passwd']);
                     $result = $auth->authenticate($authAdapter);
                     if ($result->isValid()) {
-                        $cookieValue = $this->getServiceLocator()->get('Stjornvisi\Service\User')
+                        $cookieValue = $sm->get(UserService::class)
                             ->createHash($auth->getIdentity()->id);
                         $cookieTTL = time() + 365 * 60 * 60 * 24;
                         $this->getResponse()->getHeaders()->addHeader($this->getSetCookie($cookieValue, $cookieTTL));
@@ -427,7 +436,7 @@ class AuthController extends AbstractActionController
      */
     public function logoutAction()
     {
-        $auth = new AuthenticationService();
+        $auth = $this->getServiceLocator()->get(AuthenticationService::class);
         $this->getResponse()
             ->getHeaders()
             ->addHeader($this->getSetCookie('', strtotime('-1 Year', time())));
@@ -515,8 +524,7 @@ class AuthController extends AbstractActionController
             //	the user to a facebook account just before we authenticate him.
             if ($key) {
                 $sm = $this->getServiceLocator();
-                $userService = $sm->get('Stjornvisi\Service\User');
-                /** @var $userService \Stjornvisi\Service\User */
+                $userService = $sm->get(UserService::class);
                 if (($user = $userService->getByHash($key)) != null) {
                     $userService->setOauth($user->id, $me['id'], 'facebook', $me['gender']);
                     //USER NOT FOUND
@@ -528,17 +536,16 @@ class AuthController extends AbstractActionController
 
             //AUTHENTICATE
             //	try to authenticate user against user database
-            $auth = new AuthenticationService();
             $sm = $this->getServiceLocator();
-            $authAdapter =  $sm->get('Stjornvisi\Auth\Facebook');
+            $auth = $sm->get(AuthenticationService::class);
+            $authAdapter =  $sm->get(AuthFacebook::class);
             $authAdapter->setKey($me['id']);
             $result = $auth->authenticate($authAdapter);
 
             //VALID
             //	user has logged in before via Facebook
             if ($result->isValid()) {
-                $sessionManager = new SessionManager();
-                $sessionManager->rememberMe(21600000); //250 days
+                $this->setRememberMeTime();
                 return $this->redirect()->toRoute('home');
                 //INVALID
                 //	user hasn't logged in with facebook before. We have
@@ -573,7 +580,7 @@ class AuthController extends AbstractActionController
      * There can only be POST request to this actions, since the user is always
      * providing an old e-mail address via HTMLForm.
      *
-     * @return ViewModel
+     * @return ViewModel|array
      */
     public function requestConnectionFacebookAction()
     {
@@ -585,15 +592,14 @@ class AuthController extends AbstractActionController
         if ($this->request->isPost()) {
             $post = $this->request->getPost()->getArrayCopy();
             $sm = $this->getServiceLocator();
-            $userService = $sm->get('Stjornvisi\Service\User');
-            /** @var  $userService \Stjornvisi\Service\User */
+            $userService = $sm->get(UserService::class);
 
             $user = $userService->get($post['email']);
             if ($user) {
                 //FACEBOOK CONFIG
                 //	get config and use it to configure facebook session
                 //	and login functionality
-                $config = $this->getServiceLocator()->get('Config');
+                $config = $sm->get('Config');
                 FacebookSession::setDefaultApplication(
                     $config['facebook']['appId'],
                     $config['facebook']['secret']
@@ -633,7 +639,7 @@ class AuthController extends AbstractActionController
                 return new ViewModel(['user' => null]);
             }
         } else {
-            //TODO what
+            return $this->notFoundAction();
         }
     }
 
@@ -645,7 +651,7 @@ class AuthController extends AbstractActionController
     public function lostPasswordAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
+        $userService = $sm->get(UserService::class);
         $form = new LostPasswordForm();
         $form->setAttribute('action', $this->url()->fromRoute('access/lost-password'));
         if ($this->request->isPost()) {
@@ -658,13 +664,13 @@ class AuthController extends AbstractActionController
                     $this->getEventManager()->trigger(
                         'notify',
                         $this,
-                        array(
-                        'action' => 'Stjornvisi\Notify\Password',
-                        'data' => (object)array(
-                        'recipients' => $user,
-                        'password' => $password,
-                        ),
-                        )
+                        [
+                            'action' => PasswordNotify::class,
+                            'data' => (object)[
+                            'recipients' => $user,
+                            'password' => $password,
+                            ],
+                        ]
                     );
                     return new ViewModel(['message' => 'Nýtt lykilorð hefur verið sent', 'form' => $form]);
                 } else {
@@ -709,10 +715,10 @@ class AuthController extends AbstractActionController
             return $this->notFoundAction();
         }
 
-        $auth = new AuthenticationService();
         $sm = $this->getServiceLocator();
-        /** @var  $authAdapter \Stjornvisi\Auth\Adapter */
-        $authAdapter =  $sm->get('Stjornvisi\Auth\Adapter');
+        $auth = $sm->get(AuthenticationService::class);
+        /** @var  $authAdapter AuthAdapter */
+        $authAdapter =  $sm->get(AuthAdapter::class);
         $authAdapter->setIdentifier($this->params('id', 0));
         $result = $auth->authenticate($authAdapter);
         if ($result->isValid()) {
@@ -720,5 +726,21 @@ class AuthController extends AbstractActionController
         } else {
             return $this->notFoundAction();
         }
+    }
+
+    /**
+     * @return object
+     */
+    private function createSessionContainer()
+    {
+        /** @var Container|object $session */
+        $session = new Container('create_user');
+        return $session;
+    }
+
+    private function setRememberMeTime()
+    {
+        $sessionManager = new SessionManager();
+        $sessionManager->rememberMe(21600000); //250 days
     }
 }
