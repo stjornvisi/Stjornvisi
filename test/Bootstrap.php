@@ -3,6 +3,7 @@
 namespace Stjornvisi;
 
 
+use PDO;
 use Stjornvisi\Auth\TestAdapter;
 use Zend\Authentication\AuthenticationService;
 use Zend\Loader\AutoloaderFactory;
@@ -51,18 +52,23 @@ class Bootstrap
 		static::initAutoloader();
 
 		// use ModuleManager to load this module and it's dependencies
-		$baseConfig = array(
-			'module_listener_options' => array(
+		$baseConfig = [
+            'module_listener_options' => [
 				'module_paths' => explode(PATH_SEPARATOR, $zf2ModulePaths),
-			),
-		);
+            ],
+        ];
 
 		$config = ArrayUtils::merge($baseConfig, $testConfig);
 
-		$serviceManager = new ServiceManager(new ServiceManagerConfig());
+		$module = new Module();
+		$serviceManager = new ServiceManager(new ServiceManagerConfig($module->getServiceConfig()));
 		$serviceManager->setAllowOverride(true);
 		$serviceManager->setService('ApplicationConfig', $config);
 		$serviceManager->get('ModuleManager')->loadModules();
+		// Force our db config to the SM config
+		$tmpConfig = $serviceManager->get('config');
+		$tmpConfig['db'] = $config['db'];
+		$serviceManager->setService('config', $tmpConfig);
 
 		static::$serviceManager = $serviceManager;
 		static::$config = $config;
@@ -80,6 +86,8 @@ class Bootstrap
 
 	protected static function initAutoloader()
 	{
+	    require_once __DIR__ . '/../Module.php';
+
 		$vendorPath = static::findParentPath('vendor');
 
 		if (is_readable($vendorPath . '/autoload.php')) {
@@ -135,6 +143,14 @@ class Bootstrap
             );
             $result->isValid();
         }
+    }
+
+    /**
+     * @return PDO
+     */
+    public static function getConnection()
+    {
+        return self::getServiceManager()->get(PDO::class);
     }
 }
 
