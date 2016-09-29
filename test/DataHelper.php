@@ -90,7 +90,7 @@ class DataHelper
             'lng' => null,
         ];
         if ($dateDiff != null) {
-            $date = ($dateDiff) ? date('Y-m-d', strtotime($dateDiff)) : date('Y-m-d');
+            $date = self::createDate($dateDiff);
             $data['event_date'] = $date;
             $data['event_time'] = date('H:m');
         }
@@ -210,7 +210,7 @@ class DataHelper
         ];
     }
 
-    public static function newGroupHasUser($groupId, $userId, $type, $notify = 1)
+    public static function newGroupHasUser($groupId, $userId, $type = 0, $notify = 1)
     {
         return [
             'group_id' => $groupId,
@@ -218,6 +218,25 @@ class DataHelper
             'type' => $type,
             'notify' => $notify,
         ];
+    }
+
+    /**
+     * @param string|\DateTime $date
+     *
+     * @return false|string
+     */
+    public static function createDate($date = null)
+    {
+        $ts = null;
+        if ($date) {
+            if ($date instanceof \DateTime) {
+                $ts = $date->getTimestamp();
+            }
+            else {
+                $ts = strtotime($date);
+            }
+        }
+        return date('Y-m-d', $ts);
     }
 
 }
