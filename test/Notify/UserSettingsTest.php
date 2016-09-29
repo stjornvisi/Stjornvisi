@@ -24,49 +24,49 @@ class UserSettingsTest extends AbstractTestCase
 
     public function testGlobalAll()
     {
-        $this->checkSend(new All(), 'allir', $this->nameArray($this->allNames, ['n3']));
+        $this->checkSend(All::class, 'allir', $this->nameArray($this->allNames, ['n3']));
     }
 
     public function testGlobalManagers()
     {
-        $this->checkSend(new All(), 'stjornendur', $this->nameArray(array_keys($this->allManagers), ['n4']));
+        $this->checkSend(All::class, 'stjornendur', $this->nameArray(array_keys($this->allManagers), ['n4']));
     }
 
     public function testGlobalChairmen()
     {
-        $this->checkSend(new All(), 'formenn', $this->nameArray(array_keys($this->allChairmen), ['n5']));
+        $this->checkSend(All::class, 'formenn', $this->nameArray(array_keys($this->allChairmen), ['n5']));
     }
 
     public function testGroupAll()
     {
-        $this->checkSend(new Group(), 'allir', $this->nameArray($this->inGroup[1], []), ['group_id' => 1]);
-        $this->checkSend(new Group(), 'allir', $this->nameArray($this->inGroup[2], ['n10']), ['group_id' => 2]);
+        $this->checkSend(Group::class, 'allir', $this->nameArray($this->inGroup[1], []), ['group_id' => 1]);
+        $this->checkSend(Group::class, 'allir', $this->nameArray($this->inGroup[2], ['n10']), ['group_id' => 2]);
     }
 
     public function testGroupManager()
     {
-        $this->checkSend(new Group(), 'formenn', $this->nameArray($this->inGroupManagers[1], []), ['group_id' => 1]);
-        $this->checkSend(new Group(), 'formenn', $this->nameArray($this->inGroupManagers[2], ['n9']), ['group_id' => 2]);
+        $this->checkSend(Group::class, 'formenn', $this->nameArray($this->inGroupManagers[1], []), ['group_id' => 1]);
+        $this->checkSend(Group::class, 'formenn', $this->nameArray($this->inGroupManagers[2], ['n9']), ['group_id' => 2]);
     }
 
     public function testEventAll()
     {
-        $this->checkSend(new Event(), 'allir', $this->nameArray($this->allNames, ['n3']), ['event_id' => 3]);
-        $this->checkSend(new Event(), 'allir', $this->nameArray($this->inGroup[1], []), ['event_id' => 1, 'group_id' => 1]);
-        $this->checkSend(new Event(), 'allir', $this->nameArray($this->inGroup[2], ['n7']), ['event_id' => 2, 'group_id' => 2]);
+        $this->checkSend(Event::class, 'allir', $this->nameArray($this->allNames, ['n3']), ['event_id' => 3]);
+        $this->checkSend(Event::class, 'allir', $this->nameArray($this->inGroup[1], []), ['event_id' => 1, 'group_id' => 1]);
+        $this->checkSend(Event::class, 'allir', $this->nameArray($this->inGroup[2], ['n7']), ['event_id' => 2, 'group_id' => 2]);
     }
 
     public function testEventParticipant()
     {
-        $this->checkSend(new Event(), 'gestir', $this->nameArray($this->inEventAttending[3]), ['event_id' => 3]);
-        $this->checkSend(new Event(), 'gestir', $this->nameArray($this->inEventAttending[1], []), ['event_id' => 1, 'group_id' => 1]);
-        $this->checkSend(new Event(), 'gestir', $this->nameArray($this->inEventAttending[2], ['n8']), ['event_id' => 2, 'group_id' => 2]);
+        $this->checkSend(Event::class, 'gestir', $this->nameArray($this->inEventAttending[3]), ['event_id' => 3]);
+        $this->checkSend(Event::class, 'gestir', $this->nameArray($this->inEventAttending[1], []), ['event_id' => 1, 'group_id' => 1]);
+        $this->checkSend(Event::class, 'gestir', $this->nameArray($this->inEventAttending[2], ['n8']), ['event_id' => 2, 'group_id' => 2]);
 
     }
 
     public function testEventUpcoming()
     {
-        $this->checkSend(new Digest(), '', $this->nameArray($this->allNames, ['n6']), ['event_id' => 1]);
+        $this->checkSend(Digest::class, '', $this->nameArray($this->allNames, ['n6']), ['event_id' => 1]);
     }
 
     private function nameArray($haystack, $except = [])
@@ -79,14 +79,14 @@ class UserSettingsTest extends AbstractTestCase
     }
 
     /**
-     * @param NotifyInterface $notifier
+     * @param string $notifierClass
      * @param string $recipients
      * @param string[] $names
      * @param array $extraData
      */
-    private function checkSend(NotifyInterface $notifier, $recipients, $names, $extraData = [])
+    private function checkSend($notifierClass, $recipients, $names, $extraData = [])
     {
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier(false, $notifierClass);
         $data = [
             'sender_id' => 1,
             'test' => false,
@@ -219,5 +219,13 @@ class UserSettingsTest extends AbstractTestCase
             3 => ['n3', 'n20',],
         ];
         return $dataset;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return null;
     }
 }

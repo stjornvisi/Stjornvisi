@@ -9,7 +9,9 @@ class MockAMQPChannel extends AMQPChannel
 {
     private $totalBasicPublish = 0;
     private $names = [];
-    
+    private $subjects = [];
+    private $bodies = [];
+
     /** @noinspection PhpMissingParentConstructorInspection
      * @param AbstractConnection $connection
      * @param null $channel_id
@@ -38,8 +40,16 @@ class MockAMQPChannel extends AMQPChannel
     {
         $this->totalBasicPublish++;
         $json = json_decode($msg->body);
-        if ($json && isset($json->name)) {
-            $this->names[] = $json->name;
+        if ($json) {
+            if (isset($json->name)) {
+                $this->names[] = $json->name;
+            }
+            if (isset($json->subject)) {
+                $this->subjects[] = $json->subject;
+            }
+            if (isset($json->body)) {
+                $this->bodies[] = $json->body;
+            }
         }
     }
 
@@ -64,6 +74,22 @@ class MockAMQPChannel extends AMQPChannel
     public function getNames()
     {
         return $this->names;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSubjects()
+    {
+        return $this->subjects;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBodies()
+    {
+        return $this->bodies;
     }
 
 

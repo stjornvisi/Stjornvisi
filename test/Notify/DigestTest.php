@@ -19,11 +19,24 @@ class DigestTest extends AbstractTestCase
 
     public function testOk()
     {
-        $notifier = new Digest();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
 
         $this->assertInstanceOf(Digest::class, $notifier->send());
         $this->checkNumChannelPublishes(2);
+        $this->checkChannelBody('Vikan <strong>');
+        $this->checkChannelBody('href="/vidburdir/9"'); // 9 is the last event
+        $this->checkChannelSubject('Vikan framundan', 1);
+        $this->checkPublishedNames(['n1', 'n2']);
+    }
+
+    public function testNoEvents()
+    {
+        $date = DataHelper::createDate((new \DateTime())->setDate(2016, 1, 1));
+        $sql = "UPDATE Event SET event_date = '$date'";
+        Bootstrap::getConnection()->exec($sql);
+        $notifier = $this->createNotifier();
+        $this->assertInstanceOf(Digest::class, $notifier->send());
+        $this->checkNumChannelPublishes(0);
     }
 
     /**
@@ -32,8 +45,7 @@ class DigestTest extends AbstractTestCase
      */
     public function testConnectionException()
     {
-        $notifier = new Digest();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier(true);
 
         $this->assertInstanceOf(Digest::class, $notifier->send());
     }
@@ -43,8 +55,7 @@ class DigestTest extends AbstractTestCase
      */
     public function testStagingSendOnlyToSender()
     {
-        $notifier = new Digest();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
 
         putenv('APPLICATION_ENV=staging');
         Bootstrap::authenticateUser(1);
@@ -61,5 +72,13 @@ class DigestTest extends AbstractTestCase
     public function getDataSet()
     {
         return new ArrayDataSet(DataHelper::getEventsDataSet());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return Digest::class;
     }
 }

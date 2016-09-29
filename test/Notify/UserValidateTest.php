@@ -17,8 +17,28 @@ class UserValidateTest extends AbstractTestCase
 {
     public function testOk()
     {
-        $notifier = new UserValidate();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
+        $notifier->setData((object)[
+            'data' => (object)[
+                'user_id' => 1,
+                'facebook' => 'akdjfghseiurg'
+            ]
+        ]);
+
+        $this->assertInstanceOf(UserValidate::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
+        $this->checkChannelBody('smella á hlekkinn hér fyrir neðan');
+        $this->checkChannelSubject('Stjórnvísi, staðfesting á aðgangi');
+    }
+
+    /**
+     *
+     * @expectedException \Stjornvisi\Notify\NotifyException
+     */
+    public function testConnectionException()
+    {
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'user_id' => 1,
@@ -30,17 +50,15 @@ class UserValidateTest extends AbstractTestCase
     }
 
     /**
-     *
      * @expectedException \Stjornvisi\Notify\NotifyException
+     * @expectedExceptionMessage Missing data:facebook
      */
-    public function testConnectionException()
+    public function testMissingFacebook()
     {
-        $notifier = new UserValidate();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'user_id' => 1,
-                'facebook' => 'akdjfghseiurg'
             ]
         ]);
 
@@ -53,16 +71,9 @@ class UserValidateTest extends AbstractTestCase
      */
     public function testUserNotFound()
     {
-        $notifier = new UserValidate();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
-                'sender_id' => 1,
-                'test' => true,
-                'recipient' => 1,
-                'body' => 'nothing',
-                'subject' => '',
-                'group_id' => 1,
                 'user_id' => 100,
                 'facebook' => 'akdjfghseiurg'
             ]
@@ -77,5 +88,13 @@ class UserValidateTest extends AbstractTestCase
     public function getDataSet()
     {
         return new ArrayDataSet(DataHelper::getEventsDataSet());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return UserValidate::class;
     }
 }

@@ -15,10 +15,9 @@ require_once 'AbstractTestCase.php';
 
 class SubmissionTest extends AbstractTestCase
 {
-    public function testOk()
+    public function testRegisterOk()
     {
-        $notifier = new Submission();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'recipient' => 1,
@@ -28,6 +27,28 @@ class SubmissionTest extends AbstractTestCase
         ]);
 
         $this->assertInstanceOf(Submission::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
+        $this->checkChannelBody('Þú hefur ákveðið að skrá þig í hópinn <strong>n1');
+        $this->checkChannelSubject('Þú hefur skráð þig í hópinn: n1');
+    }
+
+    public function testUnRegisterOk()
+    {
+        $notifier = $this->createNotifier();
+        $notifier->setData((object)[
+            'data' => (object)[
+                'recipient' => 1,
+                'group_id' => 1,
+                'register' => false
+            ]
+        ]);
+
+        $this->assertInstanceOf(Submission::class, $notifier->send());
+        $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
+        $this->checkChannelBody('Þú hefur ákveðið að afskrá þig úr hópnum <strong>n1');
+        $this->checkChannelSubject('Þú hefur afskráð þig úr hópnum: n1');
     }
 
     /**
@@ -36,8 +57,7 @@ class SubmissionTest extends AbstractTestCase
      */
     public function testConnectionException()
     {
-        $notifier = new Submission();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'recipient' => 1,
@@ -56,8 +76,7 @@ class SubmissionTest extends AbstractTestCase
      */
     public function testUserNotFound()
     {
-        $notifier = new Submission();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'recipient' => 100,
@@ -76,8 +95,7 @@ class SubmissionTest extends AbstractTestCase
      */
     public function testGroupNotFound()
     {
-        $notifier = new Submission();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'recipient' => 1,
@@ -95,5 +113,13 @@ class SubmissionTest extends AbstractTestCase
     public function getDataSet()
     {
         return new ArrayDataSet(DataHelper::getEventsDataSet());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return Submission::class;
     }
 }

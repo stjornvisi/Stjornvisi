@@ -8,6 +8,7 @@ use PDO;
 use PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\Bootstrap;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 require_once 'MockQueueConnectionFactory.php';
 
@@ -54,26 +55,6 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
         return $this->conn;
     }
 
-    /**
-     * Provide some connection values for the
-     * database.
-     *
-     * @return array
-     */
-    public function getDatabaseConnectionValues()
-    {
-        return [
-            'dns' => $GLOBALS['DB_DSN'],
-            'user' => $GLOBALS['DB_USER'],
-            'password' => $GLOBALS['DB_PASSWD'],
-            'options' => [
-                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-            ]
-        ];
-    }
-
     protected function getQueueMock()
     {
         return new MockQueueConnectionFactory();
@@ -90,13 +71,13 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
     }
 
     /**
-     * @param NotifyInterface|QueueConnectionAwareInterface|DataStoreInterface|NotifyEventManagerAwareInterface $notifier
+     * @param NotifyInterface|QueueConnectionAwareInterface|NotifyEventManagerAwareInterface $notifier
      * @param bool $throwOnCreateConnection
      */
     protected function prepareNotifier($notifier, $throwOnCreateConnection = false)
     {
-        if ($notifier instanceof DataStoreInterface) {
-            $notifier->setDateStore($this->getDatabaseConnectionValues());
+        if ($notifier instanceof ServiceLocatorAwareInterface) {
+            $notifier->setServiceLocator(Bootstrap::getServiceManager());
         }
         $notifier->setLogger($this->getNullLogger());
         $mock = $this->getQueueMock();
@@ -112,8 +93,8 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
      */
     protected function checkNumChannelPublishes($expectedCount)
     {
-        if ($this->lastQueueConnectionFactory) {
-            $actualCount = $this->lastQueueConnectionFactory->getConnection()->getChannel()->getTotalBasicPublish();
+        if ($channel = $this->getLastChannel()) {
+            $actualCount = $channel->getTotalBasicPublish();
             $this->assertEquals($expectedCount, $actualCount);
         }
     }
@@ -123,12 +104,69 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
      */
     protected function checkPublishedNames($expectedNames)
     {
-        if ($this->lastQueueConnectionFactory) {
-            $actualNames = $this->lastQueueConnectionFactory->getConnection()->getChannel()->getNames();
+        if ($channel = $this->getLastChannel()) {
+            $actualNames = $channel->getNames();
             sort($actualNames);
             sort($expectedNames);
             $this->assertEquals($expectedNames, $actualNames);
         }
+    }
+
+    protected function checkChannelBody($contains, $num = 0)
+    {
+        $bodies = $this->getLastChannel()->getBodies();
+        $this->assertArrayHasKey($num, $bodies);
+        $this->assertContains($contains, $bodies[$num]);
+    }
+
+    protected function checkChannelSubject($contains, $num = 0)
+    {
+        $subjects = $this->getLastChannel()->getSubjects();
+        $this->assertArrayHasKey($num, $subjects);
+        $this->assertContains($contains, $subjects[$num]);
+    }
+
+    protected function checkGreeting($name, $num = 0)
+    {
+        $this->checkChannelBody("l(l) $name</p>", $num);
+    }
+
+
+    /**
+     * @param bool $throwOnCreateConnection
+     * @param string $class
+     *
+     * @return AbstractNotifier
+     */
+    protected function createNotifier($throwOnCreateConnection = false, $class = null)
+    {
+        if (!$class) {
+            $class = $this->getNotifierClass();
+        }
+        /** @var AbstractNotifier $notifier */
+        $notifier = Bootstrap::getServiceManager()->get($class);
+        $this->prepareNotifier($notifier, $throwOnCreateConnection);
+        return $notifier;
+    }
+
+    /**
+     * @return string
+     */
+    abstract protected function getNotifierClass();
+
+    /**
+     * @return MockAMQPChannel
+     */
+    protected function getLastChannel()
+    {
+        if (!$this->lastQueueConnectionFactory) {
+            return null;
+        }
+        $connection = $this->lastQueueConnectionFactory->getConnection();
+        if (!$connection) {
+            return null;
+        }
+        return $connection->getChannel();
     }
 
 }

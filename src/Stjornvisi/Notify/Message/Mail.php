@@ -27,9 +27,9 @@ class Mail implements \Serializable
 {
     private $data = [];
 
-    public function __construct()
+    public function __construct(array $data = [])
     {
-        $this->data = [
+        $this->data = array_replace([
             'name' => 'No Name',
             'email' => 'address@example.com',
             'subject' => 'Subject line',
@@ -40,7 +40,7 @@ class Mail implements \Serializable
             'type' => 'None',
             'parameters' => '',
             'test' => true
-        ];
+        ], $data);
     }
 
     /**

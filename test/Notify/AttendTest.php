@@ -17,8 +17,7 @@ class AttendTest extends AbstractTestCase
 {
     public function testEverythingOk()
     {
-        $notifier = new Attend();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -28,12 +27,13 @@ class AttendTest extends AbstractTestCase
         ]);
         $notifier->send();
         $this->checkNumChannelPublishes(1);
+        $this->checkChannelBody('<p>Þú hefur skráð þig á viðburðinn <strong>s1</strong></p>');
+        $this->checkChannelSubject('Þú hefur skráð þig á viðburðinn: s1');
     }
 
     public function testEverythingWithGuestUser()
     {
-        $notifier = new Attend();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -51,8 +51,7 @@ class AttendTest extends AbstractTestCase
      */
     public function testNoUserProvided()
     {
-        $notifier = new Attend();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -69,8 +68,7 @@ class AttendTest extends AbstractTestCase
      */
     public function testUserNotFound()
     {
-        $notifier = new Attend();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -87,8 +85,7 @@ class AttendTest extends AbstractTestCase
      */
     public function testEventNotFound()
     {
-        $notifier = new Attend();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 100,
@@ -104,26 +101,7 @@ class AttendTest extends AbstractTestCase
      */
     public function testConnectionException()
     {
-        $notifier = new Attend();
-        $this->prepareNotifier($notifier, true);
-        $notifier->setData((object)[
-            'data' => (object)[
-                'event_id' => 1,
-                'recipients' => 1,
-                'type' => true
-            ]
-        ]);
-        $notifier->send();
-    }
-
-    /**
-     * @expectedException \PDOException
-     */
-    public function testEverythingNotOk()
-    {
-        $notifier = new Attend();
-        $this->prepareNotifier($notifier);
-        $notifier->setDateStore(array_merge($this->getDatabaseConnectionValues(), ['user' => 'hvadagaurertetta']));
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'event_id' => 1,
@@ -149,5 +127,13 @@ class AttendTest extends AbstractTestCase
                 DataHelper::newEvent(2),
             ],
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return Attend::class;
     }
 }

@@ -21,7 +21,6 @@ use Stjornvisi\Event\ErrorEventListener;
 use Stjornvisi\Lib\QueueConnectionAwareInterface;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Lib\QueueConnectionFactoryStub;
-use Stjornvisi\Notify\DataStoreInterface;
 use Stjornvisi\Notify\NotifyEventManagerAwareInterface;
 
 use Stjornvisi\Service\JaMap;
@@ -210,11 +209,6 @@ class Module
                 'LoggerAwareInterface' => function ($instance, $sm) {
                     if ($instance instanceof LoggerAwareInterface) {
                         $instance->setLogger($sm->get('Logger'));
-                    }
-                },
-                'DataStoreInterface' => function ($instance, $sm) {
-                    if ($instance instanceof DataStoreInterface) {
-                        $instance->setDateStore($sm->get('PDO\Config'));
                     }
                 },
                 'NotifyEventManagerAwareInterface' => function ($instance, $sm) {

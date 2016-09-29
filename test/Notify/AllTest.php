@@ -18,35 +18,34 @@ class AllTest extends AbstractTestCase
     /**
      * Everything should run.
      *
-     * @throws NotifyException
      */
     public function testEverythingWorks()
     {
-        $notifier = new All();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'sender_id' => 1,
                 'test' => true,
                 'recipients' => 'allir',
                 'body' => 'nothing',
-                'subject' => ''
+                'subject' => 'AllTest'
             ]
         ]);
 
         $this->assertInstanceOf(All::class, $notifier->send());
         $this->checkNumChannelPublishes(1); // 1, because we are only testing (test=true)
+        $this->checkChannelSubject('AllTest');
+        $this->checkChannelBody('<p>nothing</p>');
+        $this->checkGreeting('n1');
     }
 
     /**
      * Everything should run.
      *
-     * @throws NotifyException
      */
     public function testGetAllUsersNotTest()
     {
-        $notifier = new All();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'sender_id' => 1,
@@ -59,30 +58,9 @@ class AllTest extends AbstractTestCase
 
         $this->assertInstanceOf(All::class, $notifier->send());
         $this->checkNumChannelPublishes(3);
-    }
-
-    /**
-     * @throws NotifyException
-     * @expectedException \PDOException
-     */
-    public function testNotProvidingRightCredentialsForDatabase()
-    {
-        $notifier = new All();
-        $this->prepareNotifier($notifier);
-        $notifier->setDateStore(
-            array_merge($this->getDatabaseConnectionValues(), ['user' => 'tettaerskoekkinotandi'])
-        );
-        $notifier->setData((object)[
-            'data' => (object)[
-                'sender_id' => 1,
-                'test' => true,
-                'recipients' => 'allir',
-                'subject' => '',
-                'body' => ''
-            ]
-        ]);
-
-        $this->assertInstanceOf(All::class, $notifier->send());
+        $this->checkPublishedNames(['n1', 'n2', 'n3']);
+        $this->checkChannelBody('nothing', 2);
+        $this->checkGreeting('n3', 2);
     }
 
     /**
@@ -94,8 +72,7 @@ class AllTest extends AbstractTestCase
      */
     public function testNotPassingIntRequiredDataPropertiesException()
     {
-        $notifier = new All();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'sender_id' => 1,
@@ -115,8 +92,7 @@ class AllTest extends AbstractTestCase
      */
     public function testQueueThrowingConnectionException()
     {
-        $notifier = new All();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'subject' => '',
@@ -136,8 +112,7 @@ class AllTest extends AbstractTestCase
      */
     public function testStagingSendOnlyToSender()
     {
-        $notifier = new All();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'sender_id' => 1,
@@ -177,5 +152,13 @@ class AllTest extends AbstractTestCase
                 DataHelper::newCompanyHasUser(2, 1, 0),
             ],
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return All::class;
     }
 }

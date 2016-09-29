@@ -42,4 +42,13 @@ class MailTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('myemail@somemail.com', $messageSetter->email);
         $this->assertFalse($messageSetter->test);
     }
+
+    public function testContructor()
+    {
+        $message = new Mail([
+            'email' => 'test',
+        ]);
+        $this->assertEquals('test', $message->email);
+        $this->assertEquals('content', $message->body);
+    }
 }

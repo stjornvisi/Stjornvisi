@@ -17,8 +17,7 @@ class PasswordTest extends AbstractTestCase
 {
     public function testOk()
     {
-        $notifier = new Password();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'recipients' => (object)['name' => 'hundur', 'email' => 'hundur@hundur.com'],
@@ -35,8 +34,7 @@ class PasswordTest extends AbstractTestCase
      */
     public function testConnectionException()
     {
-        $notifier = new Password();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'recipients' => (object)['name' => 'hundur', 'email' => 'hundur@hundur.com'],
@@ -85,5 +83,13 @@ class PasswordTest extends AbstractTestCase
             ],
             'EventMedia' => DataHelper::newEventMediaSeries(),
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return Password::class;
     }
 }

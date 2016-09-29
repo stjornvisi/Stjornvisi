@@ -17,8 +17,7 @@ class GroupTest extends AbstractTestCase
 {
     public function testOkTest()
     {
-        $notifier = new Group();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'recipients' => 'allir',
@@ -32,12 +31,12 @@ class GroupTest extends AbstractTestCase
 
         $this->assertInstanceOf(Group::class, $notifier->send());
         $this->checkNumChannelPublishes(1);
+        $this->checkPublishedNames(['n1']);
     }
 
     public function testOk()
     {
-        $notifier = new Group();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'recipients' => 'allir',
@@ -51,6 +50,9 @@ class GroupTest extends AbstractTestCase
 
         $this->assertInstanceOf(Group::class, $notifier->send());
         $this->checkNumChannelPublishes(2);
+        $this->checkPublishedNames(['n1', 'n2']);
+        $this->checkGreeting('n2', 1);
+        $this->checkChannelBody('<p>nothing</p>', 1);
     }
 
     /**
@@ -59,8 +61,7 @@ class GroupTest extends AbstractTestCase
      */
     public function testConnectionException()
     {
-        $notifier = new Group();
-        $this->prepareNotifier($notifier, true);
+        $notifier = $this->createNotifier(true);
         $notifier->setData((object)[
             'data' => (object)[
                 'recipients' => 'allir',
@@ -81,8 +82,7 @@ class GroupTest extends AbstractTestCase
      */
     public function testGroupNotFound()
     {
-        $notifier = new Group();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'recipients' => 'allir',
@@ -102,8 +102,7 @@ class GroupTest extends AbstractTestCase
      */
     public function testStagingSendOnlyToSender()
     {
-        $notifier = new Group();
-        $this->prepareNotifier($notifier);
+        $notifier = $this->createNotifier();
         $notifier->setData((object)[
             'data' => (object)[
                 'recipients' => 'allir',
@@ -128,5 +127,13 @@ class GroupTest extends AbstractTestCase
     public function getDataSet()
     {
         return new ArrayDataSet(DataHelper::getEventsDataSet());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getNotifierClass()
+    {
+        return Group::class;
     }
 }

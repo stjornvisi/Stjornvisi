@@ -10,11 +10,6 @@ namespace Stjornvisi\Notify;
 
 use \DateTime;
 use \DateInterval;
-use PhpAmqpLib\Message\AMQPMessage;
-use Psr\Log\LoggerInterface;
-use Stjornvisi\Lib\QueueConnectionAwareInterface;
-use Stjornvisi\Lib\QueueConnectionFactory;
-use Stjornvisi\Lib\QueueConnectionFactoryInterface;
 use Stjornvisi\Module;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Event as EventService;
@@ -22,99 +17,9 @@ use Stjornvisi\Service\Exception as ServiceException;
 use Stjornvisi\Service\News;
 use Stjornvisi\Service\User as UserService;
 use Zend\Authentication\AuthenticationService;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerInterface;
-use Zend\View\Model\ViewModel;
-use Zend\View\Renderer\PhpRenderer;
-use Zend\View\Resolver\TemplateMapResolver;
 
-class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStoreInterface, NotifyEventManagerAwareInterface
+class Digest extends AbstractNotifier
 {
-    /**
-     * @var  \Psr\Log\LoggerInterface;
-     */
-    private $logger;
-
-    /**
-     * @var \Stjornvisi\Lib\QueueConnectionFactoryInterface
-     */
-    private $queueFactory;
-
-    /**
-     * @var array
-     */
-    private $dataStore;
-
-    /**
-     * @var \Zend\EventManager\EventManager
-     */
-    protected $events;
-
-    /**
-     * @var \PDO
-     */
-    protected $pdo;
-
-    /**
-     * @param $config
-     */
-    public function setDateStore($config)
-    {
-        $this->dataStore = $config;
-    }
-
-
-    /**
-     * Set EventManager
-     *
-     * @param EventManagerInterface $events
-     * @return $this|void
-     */
-    public function setEventManager(EventManagerInterface $events)
-    {
-        $events->setIdentifiers(array(
-            __CLASS__,
-            get_called_class(),
-        ));
-        $this->events = $events;
-        return $this;
-    }
-
-    /**
-     * Get event manager
-     *
-     * @return EventManagerInterface
-     */
-    public function getEventManager()
-    {
-        if (null === $this->events) {
-            $this->setEventManager(new EventManager());
-        }
-        return $this->events;
-    }
-
-    /**
-     * Set a logger object to monitor the handler.
-     *
-     * @param LoggerInterface $logger
-     * @return $this|NotifyInterface
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-        return $this;
-    }
-
-    /**
-     * The data to be passed to the mail process.
-     *
-     * @param $data
-     * @return $this
-     */
-    public function setData($data)
-    {
-        return $this;
-    }
 
     /**
      * @return $this
@@ -156,139 +61,29 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
         $users = $this->getUsers();
         $this->logger->info("Digest, ".count($users)." user will get email ");
 
-        //VIEW
-        //	create and configure view
-        $child = new ViewModel(array(
+
+        $renderer = $this->createEmailRenderer('news-digest', [
             'events' => $events,
             'news' => $this->getNews(),
             'from' => $from,
-            'to' => $to
-        ));
-        $child->setTemplate('news-digest');
+            'to' => $to,
+        ]);
 
-
-        $layout = new ViewModel();
-        $layout->setTemplate('layout');
-        $layout->addChild($child, 'content');
-
-        $phpRenderer = new PhpRenderer();
-        $phpRenderer->setCanRenderTrees(true);
-
-        $resolver = new TemplateMapResolver();
-        $resolver->setMap(array(
-            'layout' => __DIR__ . '/../../../view/layout/email.phtml',
-            'news-digest' => __DIR__ . '/../../../view/email/news-digest.phtml',
-        ));
-        $phpRenderer->setResolver($resolver);
-
-        //QUEUE
-        //	try to connect to Queue and send messages to it.
-        //	this will try to send messages to mail_queue, that will
-        //	send them on it's way via a MailTransport
-        try {
-            $connection = $this->queueFactory->createConnection();
-            $channel = $connection->channel();
-            $queue = QueueConnectionFactory::getMailQueueName();
-            $channel->queue_declare($queue, false, true, false, false);
-
-            foreach ($users as $user) {
-                /*
-                if ($user->email !== 'biggi@stefna.is') {
-                    continue;
-                }
-                */
-
-                $child->setVariable('user', $user);
-                foreach ($layout as $child) {
-                    $child->setOption('has_parent', true);
-                    $result  = $phpRenderer->render($child);
-                    $child->setOption('has_parent', null);
-                    $capture = $child->captureTo();
-                    if (!empty($capture)) {
-                        $layout->setVariable($capture, $result);
-                    }
-                }
-
-                $result = new Mail();
-                $result->name = $user->name;
-                $result->email = $user->email;
-                $result->subject = "Vikan framundan | {$from->format('j. n.')} - {$to->format('j. n. Y')}";
-                $result->body = $phpRenderer->render($layout);
-                $result->id = $emailId;
-                $result->user_id = md5((string)$emailId . $user->email);
-                $result->type = 'Digest';
-                $result->parameters = 'allir';
-                $result->test = false;
-
-                $msg = new AMQPMessage($result->serialize(), ['delivery_mode' => 2]);
-
-                $channel->basic_publish($msg, '', $queue);
-                $this->logger->debug("Queue Service says: Fetching users who want upcoming events, {$user->email} in queue ");
-            }
-
-        } catch (\Exception $e) {
-            throw new NotifyException($e->getMessage(), 0, $e);
-        } finally {
-            if (isset($channel) && $channel) {
-                $channel->close();
-            }
-            if (isset($connection) && $connection) {
-                $connection->close();
-            }
-
-            $this->closeDataSourceDriver();
-        }
-        return $this;
-    }
-
-    /**
-     * Set Queue factory.
-     *
-     * @param QueueConnectionFactoryInterface $factory
-     * @return $this|NotifyInterface
-     */
-    public function setQueueConnectionFactory(QueueConnectionFactoryInterface $factory)
-    {
-        $this->queueFactory = $factory;
-        return $this;
-    }
-
-    /**
-     * Generate an unique hash for this
-     * action.
-     *
-     * @return string
-     */
-    private function getHash()
-    {
-        return md5(time() + rand(0, 1000));
-    }
-
-    /**
-     * @return \PDO
-     */
-    protected function getDataSourceDriver()
-    {
-        if ($this->pdo === null) {
-            $this->pdo = new \PDO(
-                $this->dataStore['dns'],
-                $this->dataStore['user'],
-                $this->dataStore['password'],
-                $this->dataStore['options']
-            );
-        }
-        return $this->pdo;
-    }
-
-    /**
-     * Close connection, or simply set the
-     * instance to NULL.
-     *
-     * @return $this
-     */
-    protected function closeDataSourceDriver()
-    {
-        $this->pdo = null;
+        $this->sendEmails($users, function($user) use ($emailId, $renderer, $from, $to) {
+            $renderer->get('child')->setVariable('user', $user);
+            $this->renderChildren($renderer);
+            $result = new Mail();
+            $result->name = $user->name;
+            $result->email = $user->email;
+            $result->subject = "Vikan framundan | {$from->format('j. n.')} - {$to->format('j. n. Y')}";
+            $result->body = $this->renderBody($renderer);
+            $result->id = $emailId;
+            $result->user_id = md5((string)$emailId . $user->email);
+            $result->type = 'Digest';
+            $result->parameters = 'allir';
+            $result->test = false;
+            return $result;
+        });
         return $this;
     }
 
@@ -300,9 +95,7 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
      */
     private function getEvents(DateTime $from, DateTime $to)
     {
-        $eventService = new EventService();
-        $eventService->setDataSource($this->getDataSourceDriver())
-            ->setEventManager($this->getEventManager());
+        $eventService = $this->getServiceLocator()->get(EventService::class);
 
         return $eventService->getRange($from, $to);
     }
@@ -313,9 +106,7 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
      */
     private function getNews()
     {
-        $newsService = new News();
-        $newsService->setDataSource($this->getDataSourceDriver());
-        $newsService->setEventManager($this->getEventManager());
+        $newsService = $this->getServiceLocator()->get(News::class);
         return $newsService->getNext();
     }
 
@@ -325,16 +116,22 @@ class Digest implements NotifyInterface, QueueConnectionAwareInterface, DataStor
      */
     private function getUsers()
     {
-        $userService = new UserService();
-        $userService->setDataSource($this->getDataSourceDriver())
-            ->setEventManager($this->getEventManager());
+        $userService = $this->getServiceLocator()->get(UserService::class);
         if (Module::isStaging()) {
-            $authService = new AuthenticationService();
+            $authService = $this->getServiceLocator()->get(AuthenticationService::class);
             if (!$authService->hasIdentity()) {
                 throw new ServiceException("Can not send digest mail for Staging without an user");
             }
             return [$userService->get($authService->getIdentity()->id)];
         }
         return $userService->fetchAllForEmail('email_event_upcoming');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRequiredData()
+    {
+        return [];
     }
 }
