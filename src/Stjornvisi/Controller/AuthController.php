@@ -22,10 +22,6 @@ use Facebook\FacebookRequest;
 use Facebook\GraphUser;
 
 
-use OAuth\OAuth2\Service\Linkedin;
-use OAuth\Common\Storage\Session;
-use OAuth\Common\Consumer\Credentials;
-
 /**
  * Login / Logout. Create Users and connect the via oAuth etc...
  *
@@ -438,55 +434,6 @@ class AuthController extends AbstractActionController
         $auth->clearIdentity();
 
         return $this->redirect()->toRoute('home');
-    }
-
-    /**
-     * Callback for Linkedin.
-     *
-     * @deprecated
-     */
-    public function callbackLoginLinkedinAction()
-    {
-        $uriFactory = new \OAuth\Common\Http\Uri\UriFactory();
-        $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
-        $currentUri->setQuery('');
-
-        $config = $this->getServiceLocator()->get('Config');
-        // Session storage
-        $storage = new Session();
-
-        // Setup the credentials for the requests
-        $credentials = new Credentials(
-            $config['linkedin']['appId'],
-            $config['linkedin']['secret'],
-            $currentUri->getAbsoluteUri()
-        );
-
-        $serviceFactory = new \OAuth\ServiceFactory();
-
-        // Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
-        /** @var $linkedinService Linkedin */
-        $linkedinService = $serviceFactory->createService('linkedin', $credentials, $storage, array('r_basicprofile'));
-        if (!empty($_GET['code'])) {
-            // retrieve the CSRF state parameter
-            $state = isset($_GET['state'])
-                ? $_GET['state']
-                : null;
-            // This was a callback request from linkedin, get the token
-            $token = $linkedinService->requestAccessToken($_GET['code'], $state);
-            // Send a request with it. Please note that XML is the default format.
-            $result = json_decode($linkedinService->request('/people/~?format=json'), true);
-            // Show some of the resultant data
-            echo 'Your linkedin first name is '
-            . $result['firstName'] . ' and your last name is ' . $result['lastName'];
-        } elseif (!empty($_GET['go']) && $_GET['go'] === 'go') {
-            $url = $linkedinService->getAuthorizationUri();
-            header('Location: ' . $url);
-            exit();
-        } else {
-            $url = $currentUri->getRelativeUri() . '?go=go';
-            echo "<a href='$url'>Login with Linkedin!</a>";
-        }
     }
 
     /**
