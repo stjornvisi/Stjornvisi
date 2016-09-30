@@ -28,12 +28,4 @@ class ValuesTest extends PHPUnit_Framework_TestCase
         $service->setEventManager($eventManager);
         $this->assertEquals($eventManager, $service->getEventManager());
     }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
 }

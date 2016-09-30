@@ -8,20 +8,11 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
-class UserTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+class UserTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     /**
      * Try to get user when there is
      * no connection to storage.
@@ -29,8 +20,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->get(1);
     }
@@ -42,8 +32,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGet()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->get(1);
         $this->assertEquals('n1@mail.com', $result->email);
@@ -63,8 +52,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAll()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->fetchAll();
         $this->assertCount(8, $result);
@@ -77,16 +65,14 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAllException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->fetchAll();
     }
 
     public function testGetByGroup()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $this->assertEquals(7, count($service->getByGroup(5, null)));
         $this->assertEquals(2, count($service->getByGroup(5, 2)));
@@ -99,16 +85,14 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetByGroupException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $this->assertEquals(7, count($service->getByGroup(5, null)));
     }
 
     public function testGetTypeByGroupArray()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $d1 = $service->getTypeByGroup(3, [5,2]);
         $this->assertEquals(1, $d1->type);
@@ -136,8 +120,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testGetTypeByGroupNullUser()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(null, 1);
         $this->assertInstanceOf('stdClass', $result);
@@ -149,8 +132,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testGetTypeByGroupNullGroup()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(1, null);
         $this->assertInstanceOf('stdClass', $result);
@@ -160,8 +142,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertEquals(null, $result->type);
 
 
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(2, null);
         $this->assertInstanceOf('stdClass', $result);
@@ -173,8 +154,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testGetTypeByGroupUserInGroup()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(1, 1);
         $this->assertInstanceOf('stdClass', $result);
@@ -183,19 +163,12 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertEquals(true, (bool)$result->is_admin);
         $this->assertEquals(2, $result->type);
 
-        $service = new User();
-        $service->setDataSource(self::$pdo);
-
         $result = $service->getTypeByGroup(1, 2);
         $this->assertInstanceOf('stdClass', $result);
         $this->assertObjectHasAttribute('is_admin', $result);
         $this->assertObjectHasAttribute('type', $result);
         $this->assertEquals(true, (bool)$result->is_admin);
         $this->assertEquals(1, $result->type);
-
-
-        $service = new User();
-        $service->setDataSource(self::$pdo);
 
         $result = $service->getTypeByGroup(2, 2);
         $this->assertInstanceOf('stdClass', $result);
@@ -207,8 +180,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testGetTypeByGroupUserNotInGroup()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(3, 4);
         $this->assertInstanceOf('stdClass', $result);
@@ -221,8 +193,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testGetType()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $user1 = $service->getType(1);
         $user2 = $service->getType(2);
@@ -242,8 +213,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testSetPassword()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->setPassword(1, 'hundur');
         $this->assertEquals(1, $result);
@@ -259,47 +229,9 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testSetPasswordException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->setPassword(1, 'hundur');
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-        return $this->conn;
     }
 
     /**
@@ -308,5 +240,10 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
     public function getDataSet()
     {
         return new ArrayDataSet(include __DIR__.'/../data/user.01.php');
+    }
+
+    protected function getServiceClass()
+    {
+        return User::class;
     }
 }

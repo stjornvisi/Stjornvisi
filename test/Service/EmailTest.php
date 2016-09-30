@@ -8,24 +8,15 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
-class EmailTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+
+class EmailTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     public function testCreate()
     {
-        $service = new Email();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $rowCount = $service->create([
             'subject' => 's1',
@@ -44,49 +35,10 @@ class EmailTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetException()
     {
-        $service = new Email();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $rowCount = $service->create([]);
         $this->assertInternalType('int', $rowCount);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-
-        return $this->conn;
     }
 
     /**
@@ -107,5 +59,10 @@ class EmailTest extends PHPUnit_Extensions_Database_TestCase
                 ['id'=>9,'name'=>'','body'=>'','year'=>null],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return Email::class;
     }
 }

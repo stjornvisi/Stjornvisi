@@ -8,33 +8,23 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
+require_once 'AbstractServiceTest.php';
 /**
  * Class ArticleTest
  *
  * @package Stjornvisi\Service
- * @coversDefaultClass \Stjornvisi\Service\Article
+ * @coversDefaultClass \Stjornvisi\Service\Company
  */
-class CompanyTest extends PHPUnit_Extensions_Database_TestCase
+class CompanyTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     /**
      * Get one item, should return FALSE if item not found
      */
     public function testGet()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->get(1);
         $this->assertInstanceOf('\stdClass', $result);
 
@@ -47,8 +37,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetBySsn()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getBySsn('1234567890');
         $this->assertInstanceOf('\stdClass', $result);
@@ -63,8 +52,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetBySsnException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getBySsn('1234567890');
     }
 
@@ -75,8 +63,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->get(1);
     }
 
@@ -86,8 +73,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAll()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->fetchAll();
         $this->assertCount(4, $result);
 
@@ -106,8 +92,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchType()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->fetchType();
         $this->assertEquals(4, count($result));
@@ -126,8 +111,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAllException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->fetchAll();
     }
 
@@ -136,8 +120,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testSetEmployeeRole()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->setEmployeeRole(1, 1, 1);
         $this->assertEquals(1, $result);
@@ -154,8 +137,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testSetEmployeeRoleException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->setEmployeeRole(1, 1, 1);
     }
 
@@ -166,8 +148,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testSetEmployeeRoleExceptionInvalidRoleType()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->setEmployeeRole(1, 1, 10);
     }
 
@@ -177,8 +158,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetByUser()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getByUser(1);
         $this->assertCount(1, $result);
@@ -197,8 +177,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetByUserException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->getByUser(1);
     }
@@ -209,8 +188,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdate()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->update(1, [
             'submit' => 'submit',
@@ -246,8 +224,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateInvalid()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->update(1, [
             'submit' => 'submit',
             'gaman' => 'n33',
@@ -268,8 +245,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->update(1, [
             'submit' => 'submit',
@@ -289,8 +265,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreate()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->create([
             'submit' => 'submit',
@@ -313,9 +288,8 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateInvalid()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
-        $result = $service->create([
+        $service = $this->createService();
+        $service->create([
             'submit' => 'submit',
             'gaman' => 'n33',
             'ssn' => '1029384756',
@@ -334,8 +308,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->create([
             'submit' => 'submit',
@@ -355,8 +328,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testAddUser()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $count = $service->addUser(2, 1, 1);
         $this->assertEquals(1, $count);
@@ -369,8 +341,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testAddUserAlreadyConnected()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $count = $service->addUser(1, 1, 1);
         $this->assertEquals(1, $count);
@@ -383,8 +354,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testAddUserCompanyDoesNotExist()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $service->addUser(10, 10, 1);
     }
@@ -394,8 +364,7 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDelete()
     {
-        $service = new Company();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $count = $service->delete(1);
         $this->assertEquals(1, $count);
@@ -410,47 +379,9 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDeleteException()
     {
-        $service = new Company();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->delete(1);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-        return $this->conn;
     }
 
     /**
@@ -476,5 +407,10 @@ class CompanyTest extends PHPUnit_Extensions_Database_TestCase
                 ['user_id'=>2,'company_id'=>2,'key_user'=>0],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return Company::class;
     }
 }

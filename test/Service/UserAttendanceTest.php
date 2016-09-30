@@ -8,62 +8,16 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\Bootstrap;
 use Stjornvisi\DataHelper;
 
-class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+class UserAttendanceTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     public function testTrue()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $service->attendance(1);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-        return $this->conn;
     }
 
     /**
@@ -105,5 +59,10 @@ class UserAttendanceTest extends PHPUnit_Extensions_Database_TestCase
                 [ 'group_id'=>5, 'user_id'=>7, 'type'=>0 ],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return User::class;
     }
 }

@@ -8,24 +8,17 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
+require_once 'AbstractServiceTest.php';
 /**
  * Class ArticleTest
  *
  * @package Stjornvisi\Service
  * @coversDefaultClass \Stjornvisi\Service\Article
  */
-class ArticleTest extends PHPUnit_Extensions_Database_TestCase
+class ArticleTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-    private $conn = null;
-
-    private $config;
 
     /**
      * Test get.
@@ -35,8 +28,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGet()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $article1 = $service->get(1);
         $this->assertInstanceOf('\stdClass', $article1);
 
@@ -49,8 +41,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->get(1);
     }
 
@@ -59,8 +50,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAll()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->fetchAll();
         $this->assertInternalType('array', $result);
         $this->assertEquals(3, count($result));
@@ -71,8 +61,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAllException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->fetchAll();
     }
 
@@ -81,8 +70,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreate()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $id = $service->create([
             'submit' => 'submit',
             'title' => 't1',
@@ -98,8 +86,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateWithAuthors()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $id = $service->create([
             'submit' => 'submit',
             'title' => 't1',
@@ -119,8 +106,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateWithInvalidAuthors()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $id = $service->create([
             'submit' => 'submit',
             'title' => 't1',
@@ -137,8 +123,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateInvalidData()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $service->create([
             'hani' => 'submit',
             'krummi' => 't1',
@@ -155,8 +140,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdate()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->update(1, [
             'submit' => 'submit',
             'title' => 't1',
@@ -182,8 +166,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateInvalidData()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $service->update(1, [
             'hani' => 'submit',
             'title' => 't1',
@@ -200,8 +183,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateWithAuthors()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->update(1, [
             'submit' => 'submit',
             'title' => 't1',
@@ -221,8 +203,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateWithAuthorsArticleNotFound()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->update(100, [
             'submit' => 'submit',
             'title' => 't1',
@@ -240,8 +221,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateWithEmptyAuthors()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->update(1, [
             'submit' => 'submit',
             'title' => 't1',
@@ -259,8 +239,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDelete()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->delete(1);
         $this->assertEquals(1, $count);
 
@@ -275,8 +254,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDeleteException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->delete(1);
     }
 
@@ -285,8 +263,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAllAuthors()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->fetchAllAuthors();
         $this->assertInternalType('array', $result);
         $this->assertEquals(3, count($result));
@@ -299,8 +276,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAllAuthorsException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->fetchAllAuthors();
     }
 
@@ -311,8 +287,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetAuthor()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->getAuthor(1);
         $this->assertInstanceOf('\stdClass', $result);
 
@@ -327,8 +302,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetAuthorException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getAuthor(1);
     }
 
@@ -337,8 +311,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateAuthor()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $id = $service->createAuthor([
             'name' => 'n1',
             'avatar' => 'a1',
@@ -355,8 +328,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateAuthorInvalidData()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $service->createAuthor([
             'hani' => 'n1',
             'avatar' => 'a1',
@@ -372,8 +344,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateAuthorException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $id = $service->createAuthor([
             'name' => 'n1',
             'avatar' => 'a1',
@@ -387,8 +358,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateAuthor()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->updateAuthor(1, [
             'name' => 'n10',
             'avatar' => 'a10',
@@ -405,8 +375,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateAuthorInvalidData()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $service->updateAuthor(1, [
             'hani' => 'n1',
             'avatar' => 'a1',
@@ -422,8 +391,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateAuthorException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $id = $service->updateAuthor(1, [
             'name' => 'n1',
             'avatar' => 'a1',
@@ -441,8 +409,7 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDeleteAuthor()
     {
-        $service = new Article();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->deleteAuthor(1);
         $this->assertEquals(1, $count);
 
@@ -457,47 +424,8 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDeleteAuthorException()
     {
-        $service = new Article();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->deleteAuthor(1);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-
-        return $this->conn;
     }
 
     /**
@@ -520,5 +448,10 @@ class ArticleTest extends PHPUnit_Extensions_Database_TestCase
                 ['author_id' => 1, 'article_id' => 1],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return Article::class;
     }
 }

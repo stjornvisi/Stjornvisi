@@ -8,27 +8,17 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
-class BoardeTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+class BoardeTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     /**
      * Test get single period.
      */
     public function testGetPeriod()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result1 = $service->getBoard('2013-2014');
         $result2 = $service->getBoard('2012-2013');
         $result3 = $service->getBoard('2011-2012');
@@ -49,8 +39,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetPeriodException()
     {
-        $service = new Board();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getBoard('2012-2013');
     }
 
@@ -59,8 +48,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetBoardPeriods()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->getPeriods();
         $this->assertEquals(2, count($result));
     }
@@ -70,8 +58,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetBoards()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->getBoards();
         $this->assertCount(2, $result);
     }
@@ -83,8 +70,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetBoardsException()
     {
-        $service = new Board();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $result = $service->getBoards();
         $this->assertCount(2, $result);
     }
@@ -96,8 +82,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetBoardPeriodsException()
     {
-        $service = new Board();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getPeriods();
     }
 
@@ -106,8 +91,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetMembers()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->getMembers();
         $this->assertEquals(3, count($result));
     }
@@ -119,8 +103,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetMembersException()
     {
-        $service = new Board();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getMembers();
     }
 
@@ -130,8 +113,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetMember()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->getMember(1);
         $this->assertInstanceOf('\stdClass', $result);
 
@@ -145,8 +127,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetMemberException()
     {
-        $service = new Board();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getMember(1);
     }
 
@@ -155,8 +136,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateMember()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $id = $service->createMember([
             'name' => 'n1',
             'email' => 'e1',
@@ -174,8 +154,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateMemberInvalidDate()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $id = $service->createMember([
             'hundur' => 'n1',
             'email' => 'e1',
@@ -192,8 +171,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateMember()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->updateMember(1, [
             'name' => 'n1'.rand(0, 3),
             'email' => 'e1',
@@ -221,8 +199,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateMemberInvalidData()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->updateMember(1, [
             'hundur' => 'n1'.rand(0, 3),
             'email' => 'e1',
@@ -244,8 +221,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTerms()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->getTerms();
         $this->assertGreaterThan(14, $result);
     }
@@ -255,8 +231,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testConnectMember()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->connectMember([
             'boardmember_id' => 1,
             'term' => '2001-2002',
@@ -274,8 +249,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testConnectMemberMemberNotFound()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->connectMember([
             'boardmember_id' => 100,
             'term' => '2001-2002',
@@ -293,8 +267,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDisconnectMember()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->disconnectMember(1);
         $this->assertEquals(1, $count);
 
@@ -309,8 +282,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testDisconnectMemberException()
     {
-        $service = new Board();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $count = $service->disconnectMember(1);
         $this->assertEquals(1, $count);
     }
@@ -321,8 +293,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetMemberConnection()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $result = $service->getMemberConnection(1);
         $this->assertInstanceOf('\stdClass', $result);
 
@@ -338,8 +309,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetMemberConnectionException()
     {
-        $service = new Board();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getMemberConnection(1);
     }
 
@@ -350,8 +320,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateMemberConnection()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->updateMemberConnection(1, [
             'boardmember_id' => 1,
             'term' => '2013-2014',
@@ -380,8 +349,7 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateMemberConnectionMemberNotFound()
     {
-        $service = new Board();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->updateMemberConnection(1, [
             'boardmember_id' => 100,
             'term' => '2013-2014',
@@ -390,43 +358,6 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
             'is_manager' => 1
         ]);
         $this->assertEquals(1, $count);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-
-        return $this->conn;
     }
 
     /**
@@ -448,5 +379,10 @@ class BoardeTest extends PHPUnit_Extensions_Database_TestCase
                 ['id'=>5,'boardmember_id'=>2,'term'=>'2012-2013','is_chairman'=>0,'is_reserve'=>0,'is_manager'=>1],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return Board::class;
     }
 }

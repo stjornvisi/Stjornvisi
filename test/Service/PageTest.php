@@ -8,28 +8,18 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
-class PageTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+class PageTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     /**
      * Get page.
      * 'Page Not Found' will return FALSE
      */
     public function testGet()
     {
-        $service = new Page();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->get('/category/page1');
         $this->assertInstanceOf('\stdClass', $result);
@@ -52,8 +42,7 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetException()
     {
-        $service = new Page();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->get('/category/page1');
     }
@@ -65,8 +54,7 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetObjectException()
     {
-        $service = new Page();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->getObject(1);
     }
@@ -76,8 +64,7 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdate()
     {
-        $service = new Page();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->update(1, [
             'submit' => 'submit',
             'label' => 'l1',
@@ -92,8 +79,7 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateInvalidDate()
     {
-        $service = new Page();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $service->update(1, [
             'submit' => 'submit',
             'label' => 'l1',
@@ -106,8 +92,7 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateEntryNotFound()
     {
-        $service = new Page();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
         $count = $service->update(100, [
             'submit' => 'submit',
             'label' => 'l1',
@@ -123,8 +108,7 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateNoConnection()
     {
-        $service = new Page();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $count = $service->update(100, [
             'submit' => 'submit',
@@ -132,43 +116,6 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
             'body' => 'b1',
         ]);
         $this->assertEquals(0, $count);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-        return $this->conn;
     }
 
     /**
@@ -186,5 +133,10 @@ class PageTest extends PHPUnit_Extensions_Database_TestCase
                 ['id'=>3,'label'=>'/category/page3','body'=>'b1','created'=>date('Y-m-d H:i:s'),'affected'=>date('Y-m-d H:i:s'),'editor_id'=>1],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return Page::class;
     }
 }

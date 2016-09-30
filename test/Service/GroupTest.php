@@ -8,9 +8,9 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
+use PDO;
 use Stjornvisi\ArrayDataSet;
+use Stjornvisi\DatabaseTestCase;
 use Stjornvisi\DataHelper;
 use Stjornvisi\PDOMock;
 use Stjornvisi\Bootstrap;
@@ -21,14 +21,8 @@ use Stjornvisi\Bootstrap;
  * @package Stjornvisi\Service
  * @coversDefaultClass \Stjornvisi\Service\Article
  */
-class GroupTest extends PHPUnit_Extensions_Database_TestCase
+class GroupTest extends DatabaseTestCase
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     /**
      * Test get.
      *
@@ -139,7 +133,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(0);
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->get(1);
         $this->assertInstanceOf(\stdClass::class, $data);
         $this->assertEquals(1, $data->id);
@@ -149,7 +142,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(0);
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->get(4);
         $this->assertEmpty($data);
     }
@@ -158,7 +150,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(4, 0); // 4 is a normal member in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->get(3);
         $this->assertEmpty($data);
     }
@@ -167,7 +158,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->get(3);
         $this->assertInstanceOf(\stdClass::class, $data);
         $this->assertEquals(3, $data->id);
@@ -177,7 +167,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->get(4);
         $this->assertEmpty($data);
     }
@@ -186,7 +175,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(3, 0); // 3 is Chairman in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->get(3);
         $this->assertInstanceOf(\stdClass::class, $data);
         $this->assertEquals(3, $data->id);
@@ -196,7 +184,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(1, 1);
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->get(4);
         $this->assertInstanceOf(\stdClass::class, $data);
         $this->assertEquals(4, $data->id);
@@ -206,7 +193,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(1, 1);
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchDetails();
         $this->assertCount(4, $data);
     }
@@ -215,7 +201,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(0);
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchDetails();
         $this->assertCount(2, $data);
     }
@@ -224,7 +209,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(4, 0); // 4 is a normal member in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchDetails();
         $this->assertCount(2, $data);
     }
@@ -233,7 +217,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchDetails();
         $this->assertCount(3, $data);
     }
@@ -242,7 +225,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(3, 0); // 3 is Chairman in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchDetails();
         $this->assertCount(3, $data);
     }
@@ -251,7 +233,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(1, 1);
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchAll();
         $this->assertCount(4, $data);
     }
@@ -260,7 +241,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(0);
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchAll();
         $this->assertCount(2, $data);
     }
@@ -269,7 +249,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(4, 0); // 4 is a normal member in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchAll();
         $this->assertCount(2, $data);
     }
@@ -278,7 +257,6 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(2, 0); // 2 is leader in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchAll();
         $this->assertCount(3, $data);
     }
@@ -287,47 +265,8 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     {
         Bootstrap::authenticateUser(3, 0); // 3 is Chairman in group 3
         $service = $this->createService();
-        $service->setDataSource(self::$pdo);
         $data = $service->fetchAll();
         $this->assertCount(3, $data);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-        return $this->conn;
     }
 
     /**
@@ -374,20 +313,21 @@ class GroupTest extends PHPUnit_Extensions_Database_TestCase
     }
 
     /**
-     * @param null|bool|\PDO $dataSource
+     * @param null|bool|PDO $dataSource
      *
      * @return Group
      */
     protected function createService($dataSource = null)
     {
-        $service = new Group();
-        if (null === $dataSource) {
-            $dataSource = self::$pdo;
-        }
-        if (false !== $dataSource) {
+        $sm = Bootstrap::getServiceManager();
+        $service = $sm->get(Group::class);
+        if ($dataSource) {
             $service->setDataSource($dataSource);
         }
-        $service->setServiceLocator(Bootstrap::getServiceManager());
+        else {
+            // Must reset the data source to the original one
+            $service->setDataSource($sm->get(PDO::class));
+        }
         return $service;
     }
 }

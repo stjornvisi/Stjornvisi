@@ -8,29 +8,19 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
 use Stjornvisi\ArrayDataSet;
-use PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\DataHelper;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
-class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+class UserAccessTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     /**
      * Get type of user, i.e. if he
      * is admin or not.
      */
     public function testGetType()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getType(1);
         $this->assertInstanceOf('\stdClass', $result, 'User exists|Result type is stdClass');
@@ -60,8 +50,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->getType(1);
     }
@@ -72,8 +61,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByGroupAnonymousUser()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(null, []);
         $this->assertFalse($result->is_admin);
@@ -93,8 +81,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByGroupAnonymousUserException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $result = $service->getTypeByGroup(null, []);
         $this->assertInstanceOf('\stdClass', $result);
@@ -109,8 +96,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByGroupWithEmptyGroupArray()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(1, []);
         $this->assertEquals(1, $result->is_admin, 'User is admin');
@@ -130,8 +116,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByGroup()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByGroup(1, [1]);
         $this->assertEquals(1, $result->is_admin);
@@ -183,8 +168,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByGroupException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->getTypeByGroup(1, [1,2]);
     }
@@ -194,8 +178,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByCompanyAnonymousUser()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(null, 1);
         $this->assertEquals(0, $result->is_admin);
@@ -211,8 +194,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByCompany()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(1, 1);
         $this->assertEquals(0, $result->type, 'User in company, not key_user');
@@ -240,8 +222,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByCompanyException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getTypeByCompany(1, 1);
     }
 
@@ -250,8 +231,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByUser()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByUser(null, null);
         $this->assertEquals(0, $result->is_admin);
@@ -273,8 +253,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetTypeByUserException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
         $service->getTypeByUser(2, 1);
     }
 
@@ -283,8 +262,7 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testSetType()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->setType(2, 1);
         $this->assertEquals(1, $result);
@@ -298,46 +276,9 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testSetTypeException()
     {
-        $service = new User();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->setType(2, 1);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-        return $this->conn;
     }
 
     /**
@@ -377,5 +318,10 @@ class UserAccessTest extends PHPUnit_Extensions_Database_TestCase
                 ['user_id'=>2,'company_id'=>1,'key_user'=>1],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return User::class;
     }
 }

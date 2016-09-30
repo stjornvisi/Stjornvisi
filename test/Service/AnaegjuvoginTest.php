@@ -8,24 +8,14 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
-use \PHPUnit_Extensions_Database_TestCase;
 use Stjornvisi\ArrayDataSet;
-use Stjornvisi\PDOMock;
-use Stjornvisi\Bootstrap;
 
-class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+class AnaegjuvoginTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     public function testGet()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $this->assertInstanceOf('\stdClass', $service->get(1));
         $this->assertFalse($service->get(1000));
@@ -39,16 +29,14 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetException()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $this->assertInstanceOf('\stdClass', $service->get(1));
     }
 
     public function testGetYear()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $this->assertInstanceOf('\stdClass', $service->getYear(2001));
         $this->assertFalse($service->getYear(4000));
@@ -62,16 +50,14 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetYearException()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $this->assertInstanceOf('\stdClass', $service->getYear(2001));
     }
 
     public function testGetIndex()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $this->assertInstanceOf('\stdClass', $service->getIndex());
     }
@@ -84,16 +70,14 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testGetIndexException()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $this->assertInstanceOf('\stdClass', $service->getIndex());
     }
 
     public function testFetchAll()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $this->assertInternalType('array', $service->fetchAll());
     }
@@ -106,16 +90,14 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchAllException()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $this->assertInstanceOf('\stdClass', $service->fetchAll());
     }
 
     public function testFetchYear()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $this->assertInternalType('array', $service->fetchYears());
     }
@@ -128,16 +110,14 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testFetchYearException()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $this->assertInstanceOf('\stdClass', $service->fetchYears());
     }
 
     public function testUpdate()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $rowCount = $service->update(1, [
             'name' => 'n1',
@@ -163,8 +143,7 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testUpdateException()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->update(1, []);
     }
@@ -172,8 +151,7 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testCreate()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $entryId = $service->create([
             'name' => 'n1',
@@ -191,48 +169,9 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
      */
     public function testCreateException()
     {
-        $service = new Anaegjuvogin();
-        $service->setDataSource(new PDOMock());
+        $service = $this->createService(true);
 
         $service->create([]);
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-
-        return $this->conn;
     }
 
     /**
@@ -253,5 +192,10 @@ class AnaegjuvoginTest extends PHPUnit_Extensions_Database_TestCase
                 ['id'=>9,'name'=>'','body'=>'','year'=>null],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return Anaegjuvogin::class;
     }
 }

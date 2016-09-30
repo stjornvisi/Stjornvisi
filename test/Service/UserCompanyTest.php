@@ -8,23 +8,14 @@
 
 namespace Stjornvisi\Service;
 
-use \PDO;
 use Stjornvisi\ArrayDataSet;
-use PHPUnit_Extensions_Database_TestCase;
-use Stjornvisi\Bootstrap;
 
-class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
+require_once 'AbstractServiceTest.php';
+class UserCompanyTest extends AbstractServiceTest
 {
-    static private $pdo = null;
-
-    private $conn = null;
-
-    private $config;
-
     public function testUserDoesNotExist()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(100, 1);
         $this->assertInstanceOf('stdClass', $result);
@@ -34,8 +25,7 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testUserCompanyDoesNotExist()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(1, 100);
         $this->assertInstanceOf('stdClass', $result);
@@ -45,8 +35,7 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testNullUserNullCompany()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(null, null);
         $this->assertInstanceOf('stdClass', $result);
@@ -56,8 +45,7 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testNullUserActiveCompany()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(null, 1);
         $this->assertInstanceOf('stdClass', $result);
@@ -67,8 +55,7 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testActiveUserNullCompany()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(1, null);
         $this->assertInstanceOf('stdClass', $result);
@@ -78,8 +65,7 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testActiveUserActiveCompanyUserNotConnected()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(2, 2);
         $this->assertInstanceOf('stdClass', $result);
@@ -89,8 +75,7 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testActiveUserActiveCompanyUserConnected1()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(2, 1);
         $this->assertInstanceOf('stdClass', $result);
@@ -100,49 +85,12 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
 
     public function testActiveUserActiveCompanyUserConnected2()
     {
-        $service = new User();
-        $service->setDataSource(self::$pdo);
+        $service = $this->createService();
 
         $result = $service->getTypeByCompany(3, 1);
         $this->assertInstanceOf('stdClass', $result);
         $this->assertEquals(0, $result->is_admin, 'is not admin');
         $this->assertEquals(0, $result->type, 'access is of type 1');
-    }
-
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        $serviceManager = Bootstrap::getServiceManager();
-        $this->config = $serviceManager->get('Config');
-        $conn=$this->getConnection();
-        $conn->getConnection()->query("set foreign_key_checks=0");
-        parent::setUp();
-        $conn->getConnection()->query("set foreign_key_checks=1");
-    }
-
-    /**
-     * @return \PHPUnit_Extensions_Database_DB_IDatabaseConnection
-     */
-    public function getConnection()
-    {
-        if ($this->conn === null) {
-            if (self::$pdo == null) {
-                self::$pdo = new PDO(
-                    $GLOBALS['DB_DSN'],
-                    $GLOBALS['DB_USER'],
-                    $GLOBALS['DB_PASSWD'],
-                    [
-                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'",
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
-                    ]
-                );
-            }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo);
-        }
-        return $this->conn;
     }
 
     /**
@@ -166,5 +114,10 @@ class UserCompanyTest extends PHPUnit_Extensions_Database_TestCase
                 ['user_id' => 3, 'company_id'=> 1,'key_user'=> 0],
             ],
         ]);
+    }
+
+    protected function getServiceClass()
+    {
+        return User::class;
     }
 }
