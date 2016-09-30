@@ -121,6 +121,7 @@ class AuthController extends AbstractActionController
         $universitySelectForm->setAttribute('action', $this->url()->fromRoute('access/company'));
 
         $session = $this->createSessionContainer();
+        $companySelectForm->detectFromEmail($session->email);
 
         //POST
         //	post request

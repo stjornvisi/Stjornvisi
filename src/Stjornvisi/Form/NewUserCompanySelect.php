@@ -15,6 +15,8 @@ use Zend\Form\Form;
 
 class NewUserCompanySelect extends Form
 {
+    private $domainList = [];
+
     public function __construct(Company $company)
     {
         $companies = $company->fetchAll([
@@ -24,6 +26,10 @@ class NewUserCompanySelect extends Form
         $options = array();
         foreach ($companies as $item) {
             $options[$item->id] = $item->name;
+            $domain = $this->parseDomain($item->website);
+            if ($domain) {
+                $this->domainList[$domain] = $item->id;
+            }
         }
 
         parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
@@ -55,5 +61,44 @@ class NewUserCompanySelect extends Form
             ),
         ));
 
+    }
+
+    public function detectFromEmail($email)
+    {
+        $id = $this->findCompanyFromEmail($email);
+        if ($id) {
+            $this->get('company-select')->setValue($id);
+        }
+    }
+
+    private function findCompanyFromEmail($email)
+    {
+        if ($email) {
+            $domain = preg_replace('/.*@/', '', $email);
+            if ($domain && isset($this->domainList[$domain])) {
+                return $this->domainList[$domain];
+            }
+        }
+        return null;
+    }
+
+    private function parseDomain($website)
+    {
+        if ($website) {
+            $parsed = parse_url($website);
+            if ($parsed) {
+                $host = null;
+                if (isset($parsed['scheme']) && isset($parsed['host'])) {
+                    $host = $parsed['host'];
+                }
+                else if (isset($parsed['path']) && !isset($parsed['scheme'])) {
+                    $host = preg_replace('@/.*@', '', $parsed['path']);
+                }
+                if ($host) {
+                    return preg_replace('@^(www\.)?@', '', $host);
+                }
+            }
+        }
+        return null;
     }
 }
