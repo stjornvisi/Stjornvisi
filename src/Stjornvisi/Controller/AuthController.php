@@ -21,6 +21,7 @@ use Stjornvisi\Module;
 use Stjornvisi\Notify\Password as PasswordNotify;
 use Stjornvisi\Service\Company as CompanyService;
 use Stjornvisi\Service\User as UserService;
+use Stjornvisi\Service\Values;
 use Zend\Authentication\AuthenticationService;
 use Zend\Http\Header\SetCookie;
 use Zend\Http\Request as HttpRequest;
@@ -148,7 +149,8 @@ class AuthController extends AbstractActionController
                     $session->company_key = 1;
 
                     return $this->redirect()->toRoute('access/login');
-                } else {
+                }
+                else {
                     return new ViewModel(
                         [
                         'companyForm' => $companyForm,
@@ -161,7 +163,8 @@ class AuthController extends AbstractActionController
                 }
             //SELECT COMPANY
             //	company exists, user selects
-            } elseif (isset($post['submit-company-select'])) {
+            }
+            elseif (isset($post['submit-company-select'])) {
                 $companySelectForm->setData($this->request->getPost());
 
                 if ($companySelectForm->isValid()) {
@@ -170,7 +173,8 @@ class AuthController extends AbstractActionController
                     $session->company = $data['company-select'];
                     $session->company_key = 0;
                     return $this->redirect()->toRoute('access/login');
-                } else {
+                }
+                else {
                     return new ViewModel(
                         [
                         'companyForm' => $companyForm,
@@ -183,28 +187,28 @@ class AuthController extends AbstractActionController
                 }
             //CREATE INDIVIDUAL
             //	create a company that is only for this user.
-            } elseif (isset($post['submit-individual'])) {
+            }
+            elseif (isset($post['submit-individual'])) {
                 $session = $this->createSessionContainer();
                 $individualForm->setData($this->request->getPost());
                 if ($individualForm->isValid()) {
                     $data = (array)$individualForm->getData();
-                    $id = $companyService->create(
-                        [
+                    $id = $companyService->create([
                         'name' => $session->name,
                         'ssn' => $data['person-ssn'],
                         'address' => $data['person-address'],
                         'zip' => $data['person-zip'],
                         'website' => null,
-                        'number_of_employees' => 'Einstaklingur',
-                        'business_type' => 'Einstaklingur'
-                        ]
-                    );
+                        'number_of_employees' => Values::COMPANY_SIZE_PERSON,
+                        'business_type' => Values::COMPANY_TYPE_PERSON,
+                    ]);
 
                     $session->company = $id;
                     $session->company_key = 1;
 
                     return $this->redirect()->toRoute('access/login');
-                } else {
+                }
+                else {
                     return new ViewModel(
                         [
                         'companyForm' => $companyForm,
@@ -217,14 +221,16 @@ class AuthController extends AbstractActionController
                 }
             //SELECT UNIVERSITY
             //	user is selecting university
-            } elseif (isset($post['submit-university-select'])) {
+            }
+            elseif (isset($post['submit-university-select'])) {
                 $universitySelectForm->setData($this->getRequest()->getPost());
                 if ($universitySelectForm->isValid()) {
                     $session->company = $universitySelectForm->get('university-select')->getValue();
                     $session->company_key = 0;
 
                     return $this->redirect()->toRoute('access/login');
-                } else {
+                }
+                else {
                     return new ViewModel(
                         [
                         'companyForm' => $companyForm,
@@ -235,13 +241,15 @@ class AuthController extends AbstractActionController
                         ]
                     );
                 }
-            } else {
+            }
+            else {
                 return $this->notFoundAction();
             }
 
         //QUERY
         //	get request
-        } else {
+        }
+        else {
             return new ViewModel(
                 [
                 'companyForm' => $companyForm,
@@ -314,6 +322,16 @@ class AuthController extends AbstractActionController
             'key_user' => $session->company_key
             ]
         );
+
+        $this->getEventManager()->trigger('notify', $this, [
+            'action' => 'Stjornvisi\Notify\Welcome',
+            'data' => (object)[
+                'user_id' => $id,
+                'created_company_id' => $session->company_key
+                    ? $session->company
+                    : null,
+            ],
+        ]);
 
         if (isset($session->password)) {
             $sm = $this->getServiceLocator();

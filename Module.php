@@ -90,6 +90,13 @@ class Module
         return self::getApplicationEnv() == self::ENV_DEVELOPMENT;
     }
 
+    public function __construct()
+    {
+        if (!isset($_SERVER['DOCUMENT_ROOT']) || !$_SERVER['DOCUMENT_ROOT']) {
+            $_SERVER['DOCUMENT_ROOT'] = dirname($_SERVER['PHP_SELF']);
+        }
+    }
+
     /**
      * Run for every request to the system.
      *
@@ -245,6 +252,7 @@ class Module
                 'Stjornvisi\Notify\Attend' 		=> 'Stjornvisi\Notify\Attend',
                 'Stjornvisi\Notify\UserValidate' => 'Stjornvisi\Notify\UserValidate',
                 'Stjornvisi\Notify\Digest'      => 'Stjornvisi\Notify\Digest',
+                'Stjornvisi\Notify\Welcome'      => 'Stjornvisi\Notify\Welcome',
 
                 'Stjornvisi\Event\SystemExceptionListener' => 'Stjornvisi\Event\SystemExceptionListener',
                 'Stjornvisi\Event\PersistenceLoginListener' => 'Stjornvisi\Event\PersistenceLoginListener',

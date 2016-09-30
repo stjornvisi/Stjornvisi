@@ -112,11 +112,16 @@ abstract class AbstractTestCase extends PHPUnit_Extensions_Database_TestCase
         }
     }
 
-    protected function checkChannelBody($contains, $num = 0)
+    protected function checkChannelBody($contains, $num = 0, $shouldContain = true)
     {
         $bodies = $this->getLastChannel()->getBodies();
         $this->assertArrayHasKey($num, $bodies);
-        $this->assertContains($contains, $bodies[$num]);
+        if ($shouldContain) {
+            $this->assertContains($contains, $bodies[$num]);
+        }
+        else {
+            $this->assertNotContains($contains, $bodies[$num]);
+        }
     }
 
     protected function checkChannelSubject($contains, $num = 0)
