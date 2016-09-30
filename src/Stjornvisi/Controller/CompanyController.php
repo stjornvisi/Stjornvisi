@@ -7,12 +7,13 @@ use Stjornvisi\Lib\Csv;
 use Stjornvisi\Service\Company as CompanyService;
 use Stjornvisi\Service\Group as GroupService;
 use Stjornvisi\Service\User as UserService;
+use Stjornvisi\Service\Values;
 use Stjornvisi\View\Model\CsvModel;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
 use Zend\Http\Request as HttpRequest;
 use Zend\Http\Response as HttpResponse;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 /**
  * Class CompanyController.
@@ -113,14 +114,15 @@ class CompanyController extends AbstractActionController
             null
         );
 
-        return new ViewModel(
-            [
+        return new ViewModel([
             'companies' => ($access->is_admin)
-            ? $companyService->fetchAll([], $this->params('order', 'nafn'))
-            : $companyService->fetchAll(['einstaklingur'], $this->params('order', 'nafn')),
-            'access' => $access
-            ]
-        );
+                ? $companyService->fetchAll([], $this->params('order', 'nafn'))
+                : $companyService->fetchAll(
+                    [Values::COMPANY_TYPE_PERSON],
+                    $this->params('order', 'nafn')
+                ),
+            'access'    => $access
+        ]);
 
     }
 

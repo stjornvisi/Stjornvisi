@@ -2,12 +2,16 @@
 
 namespace Stjornvisi\Service;
 
-use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
 
 class Values implements EventManagerAwareInterface
 {
+    CONST COMPANY_SIZE_PERSON = 'Einstaklingur';
+    CONST COMPANY_TYPE_PERSON = 'Einstaklingur';
+    CONST COMPANY_TYPE_UNIVERSITY = 'Háskóli';
+
     protected $events;
 
     public function setEventManager(EventManagerInterface $events)
@@ -36,16 +40,16 @@ class Values implements EventManagerAwareInterface
     public function getBusinessTypes()
     {
         return array(
-            'Einkahlutafélag (ehf)'     => 'Einkahlutafélag (ehf)',
-            'Hlutafélag (hf)'           => 'Hlutafélag (hf)',
-            'Opinbert hlutafélag (ohf)' => 'Opinbert hlutafélag (ohf)',
-            'Opinber stofnun'           => 'Opinber stofnun',
-            'Sameignafélag (sf)'        => 'Sameignafélag (sf)',
-            'Samvinnufélag (svf)'       => 'Samvinnufélag (svf)',
-            'Samlagsfélag (slf)'        => 'Samlagsfélag (slf)',
-            'Háskóli'                   => 'Háskóli',
-            'Félagasamtök'              => 'Félagasamtök',
-            'Einstaklingur'             => 'Einstaklingur'
+            'Einkahlutafélag (ehf)'       => 'Einkahlutafélag (ehf)',
+            'Hlutafélag (hf)'             => 'Hlutafélag (hf)',
+            'Opinbert hlutafélag (ohf)'   => 'Opinbert hlutafélag (ohf)',
+            'Opinber stofnun'             => 'Opinber stofnun',
+            'Sameignafélag (sf)'          => 'Sameignafélag (sf)',
+            'Samvinnufélag (svf)'         => 'Samvinnufélag (svf)',
+            'Samlagsfélag (slf)'          => 'Samlagsfélag (slf)',
+            self::COMPANY_TYPE_UNIVERSITY => self::COMPANY_TYPE_UNIVERSITY,
+            'Félagasamtök'                => 'Félagasamtök',
+            self::COMPANY_TYPE_PERSON     => self::COMPANY_TYPE_PERSON,
         );
     }
 
@@ -204,13 +208,13 @@ class Values implements EventManagerAwareInterface
     public function getCompanySizes()
     {
         return array(
-            'Einstaklingur'    => 'Einstaklingur',
-            'Færri en 5'       => 'Færri en 5',
-            '6-25'             => '6-25',
-            '25-49'            => '25-49',
-            '50-99'            => '50-99',
-            '100-199'          => '100-199',
-            '200 eða fleiri'   => '200 eða fleiri'
+            self::COMPANY_SIZE_PERSON => self::COMPANY_SIZE_PERSON,
+            'Færri en 5'              => 'Færri en 5',
+            '6-25'                    => '6-25',
+            '25-49'                   => '25-49',
+            '50-99'                   => '50-99',
+            '100-199'                 => '100-199',
+            '200 eða fleiri'          => '200 eða fleiri',
         );
     }
 

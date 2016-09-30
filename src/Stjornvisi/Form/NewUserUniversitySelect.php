@@ -9,6 +9,7 @@
 namespace Stjornvisi\Form;
 
 use Stjornvisi\Service\Company;
+use Stjornvisi\Service\Values;
 use Zend\Form\Form;
 
 class NewUserUniversitySelect extends Form
@@ -17,7 +18,7 @@ class NewUserUniversitySelect extends Form
     {
         parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
 
-        $companies = $company->fetchType(['Háskóli']);
+        $companies = $company->fetchType([Values::COMPANY_TYPE_UNIVERSITY]);
         $options = array();
         foreach ($companies as $item) {
             $options[$item->id] = $item->name;

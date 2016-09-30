@@ -10,13 +10,17 @@ namespace Stjornvisi\Form;
 
 use Stjornvisi\Service\Company;
 
+use Stjornvisi\Service\Values;
 use Zend\Form\Form;
 
 class NewUserCompanySelect extends Form
 {
     public function __construct(Company $company)
     {
-        $companies = $company->fetchAll(['Einstaklingur','Háskóli']);
+        $companies = $company->fetchAll([
+            Values::COMPANY_TYPE_PERSON,
+            Values::COMPANY_TYPE_UNIVERSITY,
+        ]);
         $options = array();
         foreach ($companies as $item) {
             $options[$item->id] = $item->name;
