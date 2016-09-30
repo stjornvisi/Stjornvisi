@@ -2,16 +2,26 @@
 namespace Stjornvisi\Controller;
 
 use ArrayObject;
+use Stjornvisi\Form\Company as CompanyForm;
 use Stjornvisi\Lib\Csv;
+use Stjornvisi\Service\Company as CompanyService;
+use Stjornvisi\Service\Group as GroupService;
+use Stjornvisi\Service\User as UserService;
 use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\AuthenticationService;
+use Zend\Http\Request as HttpRequest;
+use Zend\Http\Response as HttpResponse;
 
 /**
  * Class CompanyController.
  *
  * @package Stjornvisi\Controller
+ * @property HttpRequest $request
+ * @property HttpResponse $response
+ * @method HttpRequest getRequest()
+ * @method HttpResponse getResponse()
  */
 class CompanyController extends AbstractActionController
 {
@@ -23,16 +33,14 @@ class CompanyController extends AbstractActionController
     public function indexAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $companyService = $sm->get('Stjornvisi\Service\Company');
-        /** @var $companyService \Stjornvisi\Service\Company */
-        $groupService = $sm->get('Stjornvisi\Service\Group');
-        /** @var $groupService \Stjornvisi\Service\Group */
+        $userService = $sm->get(UserService::class);
+        $companyService = $sm->get(CompanyService::class);
+        $groupService = $sm->get(GroupService::class);
 
         //COMPANY FOUND
         //
         if (($company = $companyService->get($this->params()->fromRoute('id', 0))) != false) {
-            $authService = new AuthenticationService();
+            $authService = $sm->get(AuthenticationService::class);
             $access = $userService->getTypeByCompany(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
                 $company->id
@@ -96,10 +104,10 @@ class CompanyController extends AbstractActionController
     public function listAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $companyService = $sm->get('Stjornvisi\Service\Company');
+        $userService = $sm->get(UserService::class);
+        $companyService = $sm->get(CompanyService::class);
 
-        $authService = new AuthenticationService();
+        $authService = $sm->get(AuthenticationService::class);
         $access = $userService->getTypeByGroup(
             ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
             null
@@ -119,18 +127,18 @@ class CompanyController extends AbstractActionController
     /**
      *Set the role of employee at a company
      *
-     * @return \Zend\Http\Response
+     * @return \Zend\Http\Response|array|ViewModel
      */
     public function setRoleAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $companyService = $sm->get('Stjornvisi\Service\Company');
+        $userService = $sm->get(UserService::class);
+        $companyService = $sm->get(CompanyService::class);
 
         //COMPANY FOUND
         //
         if (($company = $companyService->get($this->params()->fromRoute('id', 0))) != false) {
-            $authService = new AuthenticationService();
+            $authService = $sm->get(AuthenticationService::class);
             $access = $userService->getTypeByCompany(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
                 $company->id
@@ -170,10 +178,10 @@ class CompanyController extends AbstractActionController
     public function createAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $companyService = $sm->get('Stjornvisi\Service\Company');
+        $userService = $sm->get(UserService::class);
+        $companyService = $sm->get(CompanyService::class);
 
-        $authService = new AuthenticationService();
+        $authService = $sm->get(AuthenticationService::class);
         $access = $userService->getTypeByCompany(
             ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
             null
@@ -182,7 +190,7 @@ class CompanyController extends AbstractActionController
         //ACCESS GRANTED
         //	only admin can create company
         if ($access->is_admin) {
-            $form = $sm->get('Stjornvisi\Form\Company');
+            $form = $sm->get(CompanyForm::class);
 
             $form->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/create'));
             //POST
@@ -217,18 +225,18 @@ class CompanyController extends AbstractActionController
     /**
      * Update company.
      *
-     * @return \Zend\Http\Response|ViewModel
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function updateAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $companyService = $sm->get('Stjornvisi\Service\Company');
+        $userService = $sm->get(UserService::class);
+        $companyService = $sm->get(CompanyService::class);
 
         //COMPANY FOUND
         //
         if (($company = $companyService->get($this->params()->fromRoute('id', 0))) != false) {
-            $authService = new AuthenticationService();
+            $authService = $sm->get(AuthenticationService::class);
             $access = $userService->getTypeByCompany(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
                 $company->id
@@ -237,7 +245,7 @@ class CompanyController extends AbstractActionController
             //ACCESS GRANTED
             //
             if ($access->is_admin || $access->type != null) {
-                $form = $sm->get('Stjornvisi\Form\Company');
+                $form = $sm->get(CompanyForm::class);
                 $form->setIdentifier($company->id)
                     ->setAttribute('action', $this->url()->fromRoute('fyrirtaeki/update', ['id'=>$company->id]));
                 //POST
@@ -289,18 +297,18 @@ class CompanyController extends AbstractActionController
     /**
      * Delete company.
      *
-     * @return \Zend\Http\Response
+     * @return \Zend\Http\Response|ViewModel|array
      */
     public function deleteAction()
     {
         $sm = $this->getServiceLocator();
-        $userService = $sm->get('Stjornvisi\Service\User');
-        $companyService = $sm->get('Stjornvisi\Service\Company');
+        $userService = $sm->get(UserService::class);
+        $companyService = $sm->get(CompanyService::class);
 
         //COMPANY FOUND
         //
         if (($company = $companyService->get($this->params()->fromRoute('id', 0))) != false) {
-            $authService = new AuthenticationService();
+            $authService = $sm->get(AuthenticationService::class);
             $access = $userService->getTypeByCompany(
                 ($authService->hasIdentity()) ? $authService->getIdentity()->id : null,
                 $company->id
@@ -335,7 +343,7 @@ class CompanyController extends AbstractActionController
     public function exportAction()
     {
         $sm = $this->getServiceLocator();
-        $companyService = $sm->get('Stjornvisi\Service\Company');
+        $companyService = $sm->get(CompanyService::class);
 
         $csv = new Csv();
         $csv->setHeader(
