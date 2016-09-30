@@ -61,9 +61,9 @@ class DataHelper
         ];
     }
 
-    public static function newCompany($id, $businessType = 'hf')
+    public static function newCompany($id, $businessType = 'hf', $extra = [])
     {
-        return [
+        return array_replace([
             'id' => $id,
             'name' => 'n' . $id,
             'ssn' => $id . '234567890',
@@ -74,7 +74,7 @@ class DataHelper
             'business_type' => $businessType,
             'safe_name' => 's' . $id,
             'created' => date('Y-m-d H:i:s'),
-        ];
+        ], $extra);
     }
 
     public static function newEvent($id, $dateDiff = null, $extra = [])
