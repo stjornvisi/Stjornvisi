@@ -111,6 +111,8 @@ class Bootstrap
 				),
 			),
 		));
+
+		require_once 'DatabaseTestCase.php';
 	}
 
 	protected static function findParentPath($path)
