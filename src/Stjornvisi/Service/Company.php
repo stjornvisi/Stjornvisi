@@ -53,9 +53,7 @@ class Company extends AbstractService implements DataSourceAwareInterface
                     ? $company->members
                     : array() ;
             }
-            $this->getEventManager()->trigger('read', $this, array(
-                get_class($this).'::'.__FUNCTION__
-            ));
+            $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
             return $company;
         } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
@@ -107,9 +105,7 @@ class Company extends AbstractService implements DataSourceAwareInterface
                     ? $company->members
                     : array() ;
             }
-            $this->getEventManager()->trigger('read', $this, array(
-                get_class($this).'::'.__FUNCTION__
-            ));
+            $this->getEventManager()->trigger('read', $this, [__FUNCTION__]);
             return $company;
         } catch (PDOException $e) {
             $this->getEventManager()->trigger('error', $this, array(
@@ -357,7 +353,7 @@ class Company extends AbstractService implements DataSourceAwareInterface
                 'data' => $data
             ));
             $this->getEventManager()->trigger('index', $this, array(
-                0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                0 => __FUNCTION__,
                 'id' => $id,
                 'name' => Company::NAME,
             ));
@@ -396,7 +392,7 @@ class Company extends AbstractService implements DataSourceAwareInterface
                 'data' => $data
             ));
             $this->getEventManager()->trigger('index', $this, array(
-                0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                0 => __FUNCTION__,
                 'id' => $id,
                 'name' => Company::NAME,
             ));
@@ -470,7 +466,7 @@ class Company extends AbstractService implements DataSourceAwareInterface
                     'data' => (array)$company
                 ));
                 $this->getEventManager()->trigger('index', $this, array(
-                    0 => __NAMESPACE__ .':'.get_class($this).':'. __FUNCTION__,
+                    0 => __FUNCTION__,
                     'id' => $id,
                     'name' => Company::NAME,
                 ));
