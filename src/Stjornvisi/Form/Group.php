@@ -71,9 +71,11 @@ class Group extends Form implements InputFilterProviderInterface
             'type' => 'Stjornvisi\Form\Element\Rich',
             'attributes' => array(
                 'placeholder' => 'Inngangur.  100 - 500 slög',
+                'maxlength' => 350,
             ),
             'options' => array(
                 'label' => 'Inngangur',
+                'description' => 'Lýsing á faghópi og starfi hans ætti að halda við 3 línur/50 orð. Hámarksfjöldi stafa er 350.',
             ),
         ));
 
