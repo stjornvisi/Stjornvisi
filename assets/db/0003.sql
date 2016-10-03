@@ -1,0 +1,2 @@
+ALTER TABLE Event ADD presenter VARCHAR(255) NULL;
+ALTER TABLE Event ADD presenter_avatar VARCHAR(255) NULL;

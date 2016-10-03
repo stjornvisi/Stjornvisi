@@ -495,7 +495,9 @@ CREATE TABLE `Event` (
   `avatar` varchar(255) DEFAULT NULL,
   `lat` double(11,8) DEFAULT NULL,
   `lng` double(11,8) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `presenter` VARCHAR(255) NULL,
+  `presenter_avatar` VARCHAR(255) NULL,
+PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

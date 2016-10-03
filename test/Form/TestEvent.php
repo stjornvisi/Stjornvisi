@@ -121,4 +121,20 @@ class TestEvent extends \PHPUnit_Framework_TestCase
         $form->bind(new \ArrayObject(['groups' => [(object)['id'=>1, 'name_short'=>'01']]]));
         $this->assertTrue($form->isValid(), print_r($form->getMessages(), true));
     }
+
+    public function testPresenterWorks()
+    {
+        $form = new Event();
+        $form->setData([
+            'subject' => 'subject1',
+            'event_date' => '2014-01-01',
+            'event_time' => '13:00',
+            'event_end' => '13:01',
+            'presenter' => 'Test 123',
+            'presenter_avatar' => 'image.jpg',
+        ]);
+        $this->assertTrue($form->isValid(), print_r($form->getMessages(), true));
+        $this->assertEquals('Test 123', $form->get('presenter')->getValue());
+        $this->assertEquals('image.jpg', $form->get('presenter_avatar')->getValue());
+    }
 }

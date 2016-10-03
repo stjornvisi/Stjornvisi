@@ -2,7 +2,8 @@
 
 namespace Stjornvisi\Form;
 
-use Zend\Form\Element;
+use Stjornvisi\Form\Element\Img as ImgElement;
+use Zend\Form\Element\Text as TextElement;
 use Zend\Form\Form;
 use Zend\Validator\Callback;
 use Zend\InputFilter\InputFilterProviderInterface;
@@ -119,6 +120,22 @@ class Event extends Form implements InputFilterProviderInterface
                 'label' => 'Mynd',
             ),
         ));
+
+        $this->add([
+            'name' => 'presenter',
+            'type' => TextElement::class,
+            'options' => [
+                'label' => 'Fyrirlesari',
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'presenter_avatar',
+            'type' => ImgElement::class,
+            'options' => [
+                'label' => 'Mynd af fyrirlesara',
+            ],
+        ]);
 
         $this->add(array(
             'name' => 'groups',
