@@ -8525,6 +8525,12 @@ nav.navigation > .navigation__item > a {
   margin: 15px 10px 0 0;
 }
 
+/* line 124, ../sass/components/_events.scss */
+.map_canvas {
+  height: 300px;
+  margin: 0 15px;
+}
+
 /**
  * BLOCK-CALENDAR
  * Full-blown gregorian calendar displaying events in a
