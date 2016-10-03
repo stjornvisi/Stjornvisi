@@ -72,6 +72,7 @@ class Group extends Form implements InputFilterProviderInterface
             'attributes' => array(
                 'placeholder' => 'Inngangur.  100 - 500 slög',
                 'maxlength' => 350,
+                'rows' => 4,
             ),
             'options' => array(
                 'label' => 'Inngangur',
