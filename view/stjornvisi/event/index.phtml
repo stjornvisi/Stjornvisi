@@ -87,15 +87,20 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
 										<?php endif;?>
 									<?php endforeach;?>
 								<?php endif;?>
-                                <?php if ($this->event->presenter):?>
+                                <?for ($i = 1; $i <= \Stjornvisi\Form\Event::MAX_PRESENTERS; ++$i):
+                                    $field = 'presenter' . $i;
+								    $fieldAvatar = 'presenter' . $i . '_avatar';
+                                    ?>
+                                <?php if ($this->event->$field):?>
                                     <i class="fa fa-slideshare" title="Fyrirlesari"></i>
-                                    <span><?=$this->event->presenter?></span>
-                                    <?php if ($this->event->presenter_avatar):?>
+                                    <span><?=$this->event->$field?></span>
+                                    <?php if ($this->event->$fieldAvatar):?>
                                         <div class="entry__image presenter_avatar">
-                                            <?=$this->image($this->event->presenter_avatar, FileProperties::DIR_SMALL, ['block-element__image']);?>
+                                            <?=$this->image($this->event->$fieldAvatar, FileProperties::DIR_SMALL, ['block-element__image']);?>
                                         </div>
                                     <?endif?>
                                 <?endif?>
+                                <?endfor;?>
 							</div>
 						</div>
 						<div class="entry__content">

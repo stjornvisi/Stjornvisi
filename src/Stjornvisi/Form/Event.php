@@ -10,6 +10,8 @@ use Zend\InputFilter\InputFilterProviderInterface;
 
 class Event extends Form implements InputFilterProviderInterface
 {
+    const MAX_PRESENTERS = 3;
+
     public function __construct($groups = null)
     {
         parent::__construct(strtolower(str_replace('\\', '-', get_class($this))));
@@ -121,21 +123,7 @@ class Event extends Form implements InputFilterProviderInterface
             ),
         ));
 
-        $this->add([
-            'name' => 'presenter',
-            'type' => TextElement::class,
-            'options' => [
-                'label' => 'Fyrirlesari',
-            ],
-        ]);
-
-        $this->add([
-            'name' => 'presenter_avatar',
-            'type' => ImgElement::class,
-            'options' => [
-                'label' => 'Mynd af fyrirlesara',
-            ],
-        ]);
+        $this->addPresenters(self::MAX_PRESENTERS);
 
         $this->add(array(
             'name' => 'groups',
@@ -360,5 +348,31 @@ class Event extends Form implements InputFilterProviderInterface
                 'allow_empty' => true,
             ),
         );
+    }
+
+    private function addPresenters($num)
+    {
+        for ($i = 1; $i <= $num; ++$i) {
+            $this->addPresenter($i);
+        }
+    }
+
+    private function addPresenter($index)
+    {
+        $this->add([
+            'name' => 'presenter' . $index,
+            'type' => TextElement::class,
+            'options' => [
+                'label' => 'Fyrirlesari ' . $index,
+            ],
+        ]);
+
+        $this->add([
+            'name' => 'presenter' . $index . '_avatar',
+            'type' => ImgElement::class,
+            'options' => [
+                'label' => 'Mynd af fyrirlesara ' . $index,
+            ],
+        ]);
     }
 }
