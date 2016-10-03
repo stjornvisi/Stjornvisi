@@ -8528,7 +8528,7 @@ nav.navigation > .navigation__item > a {
 /* line 124, ../sass/components/_events.scss */
 .map_canvas {
   height: 300px;
-  margin: 15px 15px;
+  margin: 15px 0;
 }
 
 /**
