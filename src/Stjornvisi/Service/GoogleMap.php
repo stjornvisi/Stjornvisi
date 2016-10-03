@@ -27,6 +27,7 @@ class GoogleMap implements MapInterface
             'address' => $address,
             'sensor' => 'false', // this is not a bool value, it's a string
             'language' => 'is',
+            'key' => 'AIzaSyCjExDKaR5WIUBVLhMU3rL88rIy6k1i_8s'
         ));
 
         $response = $this->client->send();
