@@ -29,7 +29,7 @@ use \Stjornvisi\View\Helper\Date;
 							<div class="entry__title">
 								<div class="entry__date">
 									<span class="day"><?=$this->date($event->event_date, Date::FORMAT_DAY)?>.</span>
-									<span class="month"><?=$this->date($event->event_date, Date::FORMAT_MONTH)?></span>
+									<span class="month"><?=$this->date($event->event_date, Date::FORMAT_MONTH_SHORT)?></span>
 									<span class="year"><?=$this->date($event->event_date, Date::FORMAT_YEAR)?></span>
 								</div>
 								<h3><a href="<?=$this->url('vidburdir/index',array('id'=>$event->id))?>"><?=$event->subject?></a></h3>
