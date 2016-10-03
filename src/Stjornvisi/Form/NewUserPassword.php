@@ -29,7 +29,7 @@ class NewUserPassword extends Form
 
         $this->add(array(
             'name' => 'password',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Password',
             'attributes' => array(
                 'placeholder' => 'Lykilorð...',
                 'required' => 'required',
@@ -41,7 +41,7 @@ class NewUserPassword extends Form
 
         $this->add(array(
             'name' => 'password-again',
-            'type' => 'Zend\Form\Element\Text',
+            'type' => 'Zend\Form\Element\Password',
             'attributes' => array(
                 'placeholder' => 'Lykilorð aftur...',
                 'required' => 'required',
