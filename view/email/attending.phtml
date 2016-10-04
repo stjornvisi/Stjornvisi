@@ -70,7 +70,7 @@ setlocale(LC_ALL,'is_IS.utf-8');
 				</tr>
 				<tr>
 					<td style="font-family: 'Open Sans', sans-serif; font-size: 12px; font-weight: 400; color: #434A54; line-height: 18px;" data-size="2 Column Blog Text" data-color="2 Column Blog Text" align="left">
-						<?for ($i = 1; $i <= \Stjornvisi\Form\Event::MAX_PRESENTERS; ++$i):
+						<?php for ($i = 1; $i <= \Stjornvisi\Form\Event::MAX_PRESENTERS; ++$i):
 							$field = 'presenter' . $i;
 							$fieldAvatar = 'presenter' . $i . '_avatar';
 							?>
@@ -81,9 +81,9 @@ setlocale(LC_ALL,'is_IS.utf-8');
 								<div class="entry__image presenter_avatar">
 									<?=$this->image($this->event->$fieldAvatar, FileProperties::DIR_MEDIUM, ['block-element__image']);?>
 								</div>
-							<?endif?>
-						<?endif?>
-						<?endfor;?>
+							<?php endif?>
+						<?php endif?>
+						<?php endfor;?>
 
 						<?php foreach($this->event->groups as $group):?>
 							<div style="color:#2b6786;">
