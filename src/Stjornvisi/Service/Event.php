@@ -846,14 +846,14 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 $statement = $this->pdo->prepare("
                     SELECT * FROM Event E
                     WHERE E.event_date BETWEEN :from AND :to
-                    ORDER BY E.event_date DESC;");
+                    ORDER BY E.event_date ASC;");
                 $statement->execute(['from'=>$from->format('Y-m-d'),'to'=>$to->format('Y-m-d')]);
                 $events = $statement->fetchAll();
             } else {
                 $statement = $this->pdo->prepare("
                     SELECT * FROM Event E
                     WHERE E.event_date >= :from
-                    ORDER BY E.event_date DESC;");
+                    ORDER BY E.event_date ASC;");
                 $statement->execute(['from'=>$from->format('Y-m-d')]);
                 $events = $statement->fetchAll();
             }
