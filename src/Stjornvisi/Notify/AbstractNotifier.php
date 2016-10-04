@@ -183,7 +183,7 @@ abstract class AbstractNotifier implements NotifyInterface,
         $layout->setTemplate('layout');
         $layout->addChild($child, 'content');
 
-		$phpRenderer = $this->serviceLocator->get('ViewRenderer');
+		$phpRenderer = clone $this->serviceLocator->get('ViewRenderer');
         $phpRenderer->setCanRenderTrees(true);
 
         $viewFolder = __DIR__ . '/../../../view/';
