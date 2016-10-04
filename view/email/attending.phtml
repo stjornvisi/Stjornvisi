@@ -88,7 +88,7 @@ setlocale(LC_ALL,'is_IS.utf-8');
 										<?php if (isset($event->$field) && $event->$field):?>
 										<?php if (isset($event->$fieldAvatar) && $event->$fieldAvatar):?>
 											<div style="text-align:center;font-size: 12px;">
-												<img style="max-width: 50%;margin:0 auto 10px" src="http://staging.stjornvisi.is/stjornvisi/images/medium/1x@<?=$event->$fieldAvatar?>">
+												<?=$this->image($event->$fieldAvatar, FileProperties::DIR_MEDIUM, ['block-element__image']);?>
 												<span><?=$event->$field?></span>
 											</div>
 										<?php endif;?>
