@@ -45,8 +45,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 600; color: Black; line-height: 22px;text-transform: capitalize">
 									<span
 										style="color:#ff9900"><?=strftime('%A', $event1->event_date->format('U'))?></span>
-									<?=$event1->event_time->format('H:i')?>
-								</td>
+									kl. <?=$event1->event_time->format('H:i')?>:
 								</td>
 							</tr>
 							<tr>
@@ -62,9 +61,8 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 							<tr>
 								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #434A54; line-height: 22px;"
 									data-size="2 Column Blog Text" data-color="2 Column Blog Text" align="left">
-									<span
-										style="font-weight:bold;color:#2b6786"><?=strftime('%e. %B', $event1->event_date->format('U'))?>
-										, kl. <?=$event1->event_time->format('H:i')?>
+									<span style="font-weight:bold;color:#2b6786">
+										<?=strftime('%e. %B', $event1->event_date->format('U'))?>, kl. <?=$event1->event_time->format('H:i')?>
 										- <?=($event1->event_end) ? $event1->event_end->format('H:i') : ''?></span><br>
 									<?=$event1->location;?><br>
 									<?=$event1->address;?>
@@ -91,8 +89,8 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 									&nbsp;</td>
 							</tr>
 							<tr>
-								<td align="center">
-									<table align="center" border="0" cellpadding="0" cellspacing="0" bgcolor="#2b6786"
+								<td>
+									<table border="0" cellpadding="0" cellspacing="0" bgcolor="#2b6786"
 										   style="border-radius:2px;">
 										<tr>
 											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #fff; line-height: 24px; padding-left: 15px; padding-right: 15px;"
@@ -128,7 +126,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 									<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 600; color: Black; line-height: 22px;text-transform: capitalize">
 										<span
 											style="color:#ff9900"><?=strftime('%A', $event2->event_date->format('U'))?></span>
-										<?=$event2->event_time->format('H:i')?>
+										kl. <?=$event2->event_time->format('H:i')?>:
 									</td>
 								</tr>
 								<tr>
@@ -144,9 +142,8 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 								<tr>
 									<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #434A54; line-height: 22px;"
 										data-size="2 Column Blog Text" data-color="2 Column Blog Text" align="left">
-									<span
-										style="font-weight:bold;color:#2b6786"><?=strftime('%e. %B', $event2->event_date->format('U'))?>
-										, kl. <?=$event2->event_time->format('H:i')?>
+									<span style="font-weight:bold;color:#2b6786">
+										<?=strftime('%e. %B', $event2->event_date->format('U'))?>, kl. <?=$event2->event_time->format('H:i')?>
 										- <?=($event2->event_end) ? $event2->event_end->format('H:i') : ''?></span><br>
 										<?=$event2->location;?><br>
 										<?=$event2->address;?>
@@ -163,7 +160,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 
 										<?php foreach ($event2->groups as $group): ?>
 											<div style="color:#2b6786;">
-												<?=$group->name?>
+												<a href="/hopur/<?=$group->url?>"><?=$group->name?></a>
 											</div>
 										<?php endforeach; ?>
 									</td>
@@ -173,8 +170,8 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 										&nbsp;</td>
 								</tr>
 								<tr>
-									<td align="center">
-										<table align="center" border="0" cellpadding="0" cellspacing="0"
+									<td>
+										<table border="0" cellpadding="0" cellspacing="0"
 											   bgcolor="#2b6786"
 											   style="border-radius:2px;">
 											<tr>

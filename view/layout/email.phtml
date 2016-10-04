@@ -4,336 +4,341 @@
 <html lang="is">
 
 <head>
-    <meta content="text/html;charset=UTF-8" http-equiv="Content-Type">
-    <title>Email Title</title>
-    <meta content="exported via StampReady" name="sr_export">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <base href="<?= $serverName ?>">
+	<meta content="text/html;charset=UTF-8" http-equiv="Content-Type">
+	<title>Email Title</title>
+	<meta content="exported via StampReady" name="sr_export">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<base href="<?=$serverName?>">
 
-    <style type="text/css">
-        .ReadMsgBody {
-            width: 100%;
-            background-color: #ffffff;
-        }
+	<style type="text/css">
+		.ReadMsgBody {
+			width: 100%;
+			background-color: #ffffff;
+		}
 
-        .ExternalClass {
-            width: 100%;
-            background-color: #ffffff;
-        }
+		.ExternalClass {
+			width: 100%;
+			background-color: #ffffff;
+		}
 
-        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
-            line-height: 100%;
-        }
+		.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+			line-height: 100%;
+		}
 
-        html {
-            width: 100%;
-        }
+		html {
+			width: 100%;
+		}
 
-        body {
-            -webkit-text-size-adjust: none;
-            -ms-text-size-adjust: none;
-            margin: 0;
-            padding: 0;
-        }
+		body {
+			-webkit-text-size-adjust: none;
+			-ms-text-size-adjust: none;
+			margin: 0;
+			padding: 0;
+		}
 
-        table {
-            border-spacing: 0;
-            border-collapse: collapse;
-        }
+		table {
+			border-spacing: 0;
+			border-collapse: collapse;
+		}
 
-        img {
-            display: block !important;
-        }
+		img {
+			display: block !important;
+		}
 
-        table td {
-            border-collapse: collapse;
-        }
+		table td {
+			border-collapse: collapse;
+		}
 
-        .yshortcuts a {
-            border-bottom: none !important;
-        }
+		.yshortcuts a {
+			border-bottom: none !important;
+		}
 
-        a {
-            text-decoration: none;
-        }
+		a {
+			text-decoration: none;
+			color: #2b6786;
+		}
 
-        a img {
-            border: none;
-        }
+		a:hover {
+			color: #1b3e59;
+		}
 
-        span.preheader {
-            display: none;
-            font-size: 1px;
-            visibility: hidden;
-            opacity: 0;
-            color: transparent;
-            height: 0;
-            width: 0;
-        }
+		a img {
+			border: none;
+		}
 
-        @media only screen and (max-width: 640px) {
-            body {
-                width: auto !important;
-            }
+		span.preheader {
+			display: none;
+			font-size: 1px;
+			visibility: hidden;
+			opacity: 0;
+			color: transparent;
+			height: 0;
+			width: 0;
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			body {
+				width: auto !important;
+			}
 
-        @media only screen and (max-width: 640px) {
-            table[class=container] {
-                width: 450px !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			table[class=container] {
+				width: 450px !important;
+			}
 
-        @media only screen and (max-width: 640px) {
-            table[class=row] {
-                width: 90% !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			table[class=row] {
+				width: 90% !important;
+			}
 
-        @media only screen and (max-width: 640px) {
-            table[class=six] {
-                width: 47% !important;
-                text-align: left !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			table[class=six] {
+				width: 47% !important;
+				text-align: left !important;
+			}
 
-        @media only screen and (max-width: 640px) {
-            table[class=twelve] {
-                width: 100% !important;
-                text-align: center !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			table[class=twelve] {
+				width: 100% !important;
+				text-align: center !important;
+			}
 
-        @media only screen and (max-width: 640px) {
-            *[class=hr] {
-                width: 300px !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			*[class=hr] {
+				width: 300px !important;
+			}
 
-        @media only screen and (max-width: 640px) {
-            img[class=full] {
-                width: 100% !important;
-                height: auto !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			img[class=full] {
+				width: 100% !important;
+				height: auto !important;
+			}
 
-        @media only screen and (max-width: 640px) {
-            td[class=hide] {
-                height: 0px !important;
-                max-height: 0px !important;
-                line-height: 0px !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 640px) {
+			td[class=hide] {
+				height: 0px !important;
+				max-height: 0px !important;
+				line-height: 0px !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            body {
-                width: auto !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 479px) {
+			body {
+				width: auto !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            table[class=container] {
-                width: 290px !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 479px) {
+			table[class=container] {
+				width: 290px !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            table[class=row] {
-                width: 82% !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 479px) {
+			table[class=row] {
+				width: 82% !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            table[class=six] {
-                width: 100% !important;
-                text-align: left !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 479px) {
+			table[class=six] {
+				width: 100% !important;
+				text-align: left !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            table[class=twelve] {
-                width: 100% !important;
-                text-align: center !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 479px) {
+			table[class=twelve] {
+				width: 100% !important;
+				text-align: center !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            *[class=hr] {
-                width: 200px !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 479px) {
+			*[class=hr] {
+				width: 200px !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            img[class=full] {
-                width: 100% !important;
-                height: auto !important;
-            }
+		}
 
-        }
+		@media only screen and (max-width: 479px) {
+			img[class=full] {
+				width: 100% !important;
+				height: auto !important;
+			}
 
-        @media only screen and (max-width: 479px) {
-            td[class=hide] {
-                height: 0px !important;
-                max-height: 0px !important;
-                line-height: 0px !important;
-            }
+		}
 
-        }</style>
+		@media only screen and (max-width: 479px) {
+			td[class=hide] {
+				height: 0px !important;
+				max-height: 0px !important;
+				line-height: 0px !important;
+			}
+
+		}</style>
 </head>
 
 <body>
 
-<?= $this->content ?>
+<?=$this->content?>
 
 <!--  ## PÓSTSTILLINGAR ## -->
 <table data-module="notice-center-button" align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
-       style="position: relative; opacity: 1; z-index: 0;" bgcolor="#ECF3FA">
-    <tr>
-        <td align="center">
-            <table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-                <tr>
-                    <td style="font-size: 1px; line-height: 40px;" height="40">
-                        &nbsp; </td>
-                </tr>
-                <tr>
-                    <td style="font-family: 'Open Sans', sans-serif; font-size: 25px; font-weight: 700; color:#2b6786;  line-height: 25px;"
-                        data-size="Module Main Title" data-color="Notice Center Main Title" align="center">
-                        Viltu breyta póststillingum?
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size: 1px; line-height: 10px;" height="10">
-                        &nbsp; </td>
-                </tr>
-                <tr>
-                    <td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #656D78; line-height: 24px; text-align: center;"
-                        data-size="Notice Center Text" data-color="Notice Center Text" align="center">
-                        Á vef Stjórnvísi geta innskráðir notendur breytt póststillingum sínum.
-                        <br>Þannig getur þú stýrt því hvaða tilkynningar þér berast.
-                        <br><a href="https://www.stjornvisi.is/notandi/poststillingar">Smelltu hér til að breyta
-                            stillingum</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size: 1px; line-height: 40px;" height="40">
-                        &nbsp; </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+	   style="position: relative; opacity: 1; z-index: 0;" bgcolor="#ECF3FA">
+	<tr>
+		<td align="center">
+			<table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+				<tr>
+					<td style="font-size: 1px; line-height: 40px;" height="40">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="font-family: 'Open Sans', sans-serif; font-size: 25px; font-weight: 700; color:#2b6786;  line-height: 25px;"
+						data-size="Module Main Title" data-color="Notice Center Main Title" align="center">
+						Viltu breyta póststillingum?
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 10px;" height="10">
+						&nbsp; </td>
+				</tr>
+				<tr>
+					<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #656D78; line-height: 24px; text-align: center;"
+						data-size="Notice Center Text" data-color="Notice Center Text" align="center">
+						Á vef Stjórnvísi geta innskráðir notendur breytt póststillingum sínum.
+						<br>Þannig getur þú stýrt því hvaða tilkynningar þér berast.
+						<br><a href="https://www.stjornvisi.is/notandi/poststillingar">Smelltu hér til að breyta
+							stillingum</a>
+					</td>
+				</tr>
+				<tr>
+					<td style="font-size: 1px; line-height: 40px;" height="40">
+						&nbsp; </td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 </table>
 
 
 <!--  ## FOOTER ## -->
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr>
-        <!--  Change Full Width BG Color -->
-        <td align="center" bgcolor="#2b6786" style="background-color:#2b6786;">
-            <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                    <td align="center">
-                        <table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-                            <tr>
-                                <td style="font-size: 1px; line-height: 50px;" height="50">
-                                    &nbsp; </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table class="twelve"
-                                           style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
-                                           align="left" border="0" cellpadding="0" cellspacing="0" width="287">
-                                        <tr>
-                                            <td style="font-family: 'Open Sans', sans-serif; font-size: 20px; font-weight: 400; color: #ffffff; line-height: 24px;"
-                                                align="left">
-                                                Stjórnvísi ehf.
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-size: 1px; line-height: 15px;" height="15">
-                                                &nbsp; </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: rgb(255, 255, 255); line-height: 24px;"
-                                                align="left">
-                                                Innovation house,<br>
-                                                Eiðistorgi 13-15 170 Seltjarnarnes<br>
-                                                Kt: 650686-1609<br>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-size: 1px; line-height: 24;" height="24">
-                                                &nbsp; </td>
-                                        </tr>
-                                    </table>
-                                    <!-- SPACE -->
-                                    <table class="twelve"
-                                           style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
-                                           align="left" border="0" cellpadding="0" cellspacing="0" width="1">
-                                        <tr>
-                                            <td style="font-size: 40px; line-height: 40px;" height="40" width="1">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!-- END SPACE -->
-                                    <table class="twelve"
-                                           style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
-                                           align="right" border="0" cellpadding="0" cellspacing="0" width="287">
-                                        <tr>
-                                            <td style="font-family: 'Open Sans', sans-serif; font-size: 20px; font-weight: 400; color: #ffffff; line-height: 24px;"
-                                                align="left">
-                                                KÍKTU Á VEFINN
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-size: 1px; line-height: 15px;" height="15">
-                                                &nbsp; </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #ffffff; line-height: 24px;"
-                                                align="left">
-                                                <a href="<?= $serverName ?>"
-                                                   target="_blank" style="color:#fff;">https://www.stjornvisi.is</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #ffffff; line-height: 24px;"
-                                                align="left">
-                                                <a href="mailto:stjornvisi@stjornvisi.is" style="color:#fff;">stjornvisi@stjornvisi.is</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #ffffff; line-height: 24px;"
-                                                align="left">
-                                                Sími: 533-5666 GSM: 840-4990
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="font-size: 1px; line-height: 50px;" height="50">&nbsp; </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
+	<tr>
+		<!--  Change Full Width BG Color -->
+		<td align="center" bgcolor="#2b6786" style="background-color:#2b6786;">
+			<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tr>
+					<td align="center">
+						<table class="container" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+							<tr>
+								<td style="font-size: 1px; line-height: 50px;" height="50">
+									&nbsp; </td>
+							</tr>
+							<tr>
+								<td>
+									<table class="twelve"
+										   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+										   align="left" border="0" cellpadding="0" cellspacing="0" width="287">
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 20px; font-weight: 400; color: #ffffff; line-height: 24px;"
+												align="left">
+												Stjórnvísi ehf.
+											</td>
+										</tr>
+										<tr>
+											<td style="font-size: 1px; line-height: 15px;" height="15">
+												&nbsp; </td>
+										</tr>
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: rgb(255, 255, 255); line-height: 24px;"
+												align="left">
+												Innovation house,<br>
+												Eiðistorgi 13-15 170 Seltjarnarnes<br>
+												Kt: 650686-1609<br>
+											</td>
+										</tr>
+										<tr>
+											<td style="font-size: 1px; line-height: 24;" height="24">
+												&nbsp; </td>
+										</tr>
+									</table>
+									<!-- SPACE -->
+									<table class="twelve"
+										   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+										   align="left" border="0" cellpadding="0" cellspacing="0" width="1">
+										<tr>
+											<td style="font-size: 40px; line-height: 40px;" height="40" width="1">
+											</td>
+										</tr>
+									</table>
+									<!-- END SPACE -->
+									<table class="twelve"
+										   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
+										   align="right" border="0" cellpadding="0" cellspacing="0" width="287">
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 20px; font-weight: 400; color: #ffffff; line-height: 24px;"
+												align="left">
+												KÍKTU Á VEFINN
+											</td>
+										</tr>
+										<tr>
+											<td style="font-size: 1px; line-height: 15px;" height="15">
+												&nbsp; </td>
+										</tr>
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #ffffff; line-height: 24px;"
+												align="left">
+												<a href="<?=$serverName?>"
+												   target="_blank" style="color:#fff;">https://www.stjornvisi.is</a>
+											</td>
+										</tr>
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #ffffff; line-height: 24px;"
+												align="left">
+												<a href="mailto:stjornvisi@stjornvisi.is" style="color:#fff;">stjornvisi@stjornvisi.is</a>
+											</td>
+										</tr>
+										<tr>
+											<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #ffffff; line-height: 24px;"
+												align="left">
+												Sími: 533-5666 GSM: 840-4990
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+							<tr>
+								<td style="font-size: 1px; line-height: 50px;" height="50">&nbsp; </td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
 </table>
 </body>
 

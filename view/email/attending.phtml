@@ -1,7 +1,10 @@
 <?php
 use Stjornvisi\Properties\FileProperties;
+use Stjornvisi\View\Helper\Image;
 
 setlocale(LC_ALL,'is_IS.utf-8');
+
+$image = new \Stjornvisi\View\Helper\Image();
 ?>
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -74,15 +77,15 @@ setlocale(LC_ALL,'is_IS.utf-8');
 							$field = 'presenter' . $i;
 							$fieldAvatar = 'presenter' . $i . '_avatar';
 							?>
-							<?php if ($this->event->$field):?>
+							<?php if (isset($this->event->$field)):?>
 							<i class="fa fa-slideshare" title="Fyrirlesari"></i>
 							<span><?=$this->event->$field?></span>
-							<?php if ($this->event->$fieldAvatar):?>
+							<?php if (isset($this->event->$fieldAvatar)):?>
 								<div class="entry__image presenter_avatar">
-									<?=$this->image($this->event->$fieldAvatar, FileProperties::DIR_MEDIUM, ['block-element__image']);?>
+									<?=$image($this->event->$fieldAvatar, FileProperties::DIR_MEDIUM, ['block-element__image']);?>
 								</div>
-							<?php endif?>
-						<?php endif?>
+							<?php endif;?>
+						<?php endif;?>
 						<?php endfor;?>
 
 						<?php foreach($this->event->groups as $group):?>
