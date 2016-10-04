@@ -88,6 +88,12 @@ class DataHelper
             'avatar' => null,
             'lat' => null,
             'lng' => null,
+			'presenter1' => null,
+			'presenter1_avatar' => null,
+			'presenter2' => null,
+			'presenter2_avatar' => null,
+			'presenter3' => null,
+			'presenter3_avatar' => null,
         ];
         if ($dateDiff != null) {
             $date = self::createDate($dateDiff);
