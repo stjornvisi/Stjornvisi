@@ -75,6 +75,26 @@ setlocale(LC_ALL,'is_IS.utf-8');
                                 <?=$group->name?>
                             </div>
                         <?php endforeach;?>
+
+						<table width="100%">
+							<tr>
+								<?php for ($i = 1; $i <= \Stjornvisi\Form\Event::MAX_PRESENTERS; ++$i):
+									$field = 'presenter' . $i;
+									$fieldAvatar = 'presenter' . $i . '_avatar';
+									?>
+									<td width="33.33%">
+									<?php if (isset($event->$field) && $event->$field):?>
+									<?php if (isset($event->$fieldAvatar) && $event->$fieldAvatar):?>
+										<div style="text-align:center;font-size: 12px;">
+											<img style="max-width: 50%;margin:0 auto 10px" src="http://staging.stjornvisi.is/stjornvisi/images/medium/1x@<?=$event->$fieldAvatar?>">
+											<span><?=$event->$field?></span>
+										</div>
+									<?php endif;?>
+									</td>
+								<?php endif;?>
+								<?php endfor;?>
+							</tr>
+						</table>
                     </td>
                 </tr>
                 <tr>

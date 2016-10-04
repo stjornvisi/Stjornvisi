@@ -1,4 +1,8 @@
 <?php
+/** @var \DateTime $from */
+/** @var \DateTime $to */
+/** @var \stdClass[] $events */
+/** @var \stdClass $news */
 
 setlocale(LC_ALL, 'is_IS.utf-8');
 $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
@@ -16,8 +20,8 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 				<tr>
 					<td style="font-family: 'Open Sans', sans-serif; font-size: 20px; font-weight: 700; color: #8e8c8e;  line-height: 33px;"
 						data-size="Module Main Title" data-color="Module Main Title" align="left">
-						Vikan <strong><?=strftime('%e. %b %Y', $this->from->format('U'))?>
-							- <?=strftime('%e. %b %Y', $this->to->format('U'))?></strong> hjá Stjórnvísi
+						Vikan <strong><?=strftime('%e. %b %Y', $from->format('U'))?>
+							- <?=strftime('%e. %b %Y', $to->format('U'))?></strong> hjá Stjórnvísi
 					</td>
 				</tr>
 			</table>
@@ -27,8 +31,8 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
 	   style="position: relative; opacity: 1; z-index: 0;">
-	<?for ($i=0, $iMax = count($this->events); $i < $iMax; $i += 2):?>
-	<?$event1 = $this->events[$i];?>
+	<?for ($i=0, $iMax = count($events); $i < $iMax; $i += 2):?>
+	<?$event1 = $events[$i];?>
 	<tr>
 		<!--  Change Full Width BG Color -->
 		<td data-bgcolor="2 Column Blog BG" align="center" bgcolor="#ffffff">
@@ -117,8 +121,8 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 							</tr>
 						</table>
 						<!-- END SPACE -->
-						<?php if (isset($this->events[$i+1])): ?>
-							<?$event2 = $this->events[$i+1];?>
+						<?php if (isset($events[$i+1])): ?>
+							<?$event2 = $events[$i+1];?>
 							<table class="twelve"
 								   style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"
 								   align="right" border="0" cellpadding="0" cellspacing="0" width="287">
@@ -324,7 +328,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 				<tr>
 					<td style="font-family: 'Open Sans', sans-serif; font-size: 25px; font-weight: 700; color:#2b6786;  line-height: 25px;"
 						align="center">
-						<?=$this->news->title?>
+						<?=$news->title?>
 					</td>
 				</tr>
 				<tr>
@@ -338,7 +342,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 				<tr>
 					<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #353B48; line-height: 24px;"
 						data-size="Notice Center Text" data-color="Notice Center Text" align="center">
-						<?=$paragrapher(mb_substr($this->news->body, 0, 200, 'utf-8') . '&#8230;')?>
+						<?=$paragrapher(mb_substr($news->body, 0, 200, 'utf-8') . '&#8230;')?>
 					</td>
 				</tr>
 				<tr>
@@ -352,7 +356,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 							<tr>
 								<td style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #fff; line-height: 24px; padding-left: 15px; padding-right: 15px;"
 									height="40" align="center">
-									<a href="https://www.stjornvisi.is/frettir/<?=$this->news->id?>"
+									<a href="https://www.stjornvisi.is/frettir/<?=$news->id?>"
 									   style="color: #fff; text-decoration:none;">Lesa
 										frétt á stjornvisi.is</a>
 								</td>
