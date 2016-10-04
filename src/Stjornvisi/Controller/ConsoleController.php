@@ -19,11 +19,12 @@ use Stjornvisi\Notify\NotifyInterface;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Console\Request as Request;
 use Zend\Mail\Message;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Part;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
-use Zend\View\Resolver;
 use Zend\View\Resolver\TemplateMapResolver;
 
 /**
@@ -190,15 +191,18 @@ class ConsoleController extends AbstractActionController
             $connectionFactory = $sm->get('Stjornvisi\Lib\QueueConnectionFactory');
             $connection = $connectionFactory->createConnection();
             $channel = $connection->channel();
-            $queue = QueueConnectionFactory::getMailQueueName();
-            $channel->queue_declare($queue, false, true, false, false);
+			$queue = $this->getMailQueue();
+			$channel->queue_declare($queue, false, true, false, false);
 
-            $logger->info("Mail Queue started, Waiting for messages. Queue=$queue. To exit press CTRL+C");
+			/** @var $transport \Zend\Mail\Transport\Smtp */
+			$transport = $sm->get('MailTransport');
+
+			$logger->info("Mail Queue started, Waiting for messages. Queue=$queue. To exit press CTRL+C");
 
             //THE MAGIC
             //  here is where everything happens. the rest of the code
             //  is just connect and deconnect to RabbitMQ
-            $callback = function ($msg) use ($logger, $sm) {
+            $callback = function ($msg) use ($logger, $sm, $transport) {
                 /** @var AMQPMessage $msg */
                 /** @var AMQPChannel $msgChannel */
                 $msgChannel = $msg->delivery_info['channel'];
@@ -212,10 +216,10 @@ class ConsoleController extends AbstractActionController
                     return;
                 }
 
-                $logger->debug("Send e-mail to [{$messageObject->email}, {$messageObject->name}]");
+                $logger->debug("Send e-mail to [{$messageObject->email}, {$messageObject->name}] via " . get_class($transport));
 
-                $mimeMessage = new \Zend\Mime\Message();
-                $html = new \Zend\Mime\Part($messageObject->body);
+                $mimeMessage = new MimeMessage();
+                $html = new Part($messageObject->body);
                 $html->type = 'text/html; charset=utf-8';
                 $mimeMessage->addPart($html);
 
@@ -240,9 +244,6 @@ class ConsoleController extends AbstractActionController
                     //  process started in normal mode. e-mail will be sent
                 } else {
                     try {
-                        $transport = $sm->get('MailTransport');
-                        /** @var $transport \Zend\Mail\Transport\Smtp */
-
                         if (method_exists($transport, 'getConnection') && ($protocol = $transport->getConnection())) {
                             if ($protocol->hasSession()) {
                                 $transport->send($message);
@@ -378,4 +379,16 @@ class ConsoleController extends AbstractActionController
             ->save("out.pdf", new Local('/Users/einar/Desktop/'), true);
 
     }
+
+	/**
+	 * @return string
+	 */
+	protected function getMailQueue()
+	{
+		$queue = getenv('MAIL_QUEUE');
+		if (!$queue) {
+			$queue = QueueConnectionFactory::getMailQueueName();
+		}
+		return $queue;
+	}
 }
