@@ -37,6 +37,30 @@ class EventTest extends AbstractTestCase
         $this->checkChannelBody('href="/vidburdir/1"');
         $this->checkChannelSubject('mySubject');
     }
+	public function testOkWithPresenter()
+	{
+		$notifier = new Event();
+		$this->prepareNotifier($notifier);
+		$notifier->setData((object)[
+			'data' => (object)[
+				'user_id' => 1,
+				'recipients' => 'not allir',
+				'test' => false,
+				'body' => 'myBody',
+				'subject' => 'mySubject',
+				'event_id' => 5,
+			]
+		]);
+
+		$this->assertInstanceOf(Event::class, $notifier->send());
+		$this->checkNumChannelPublishes(1);
+		$this->checkPublishedNames(['n1']);
+		$this->checkChannelBody('myBody');
+		$this->checkChannelBody('href="/vidburdir/5"');
+		$this->checkChannelSubject('mySubject');
+		$this->checkChannelBody('<span>Presenter001</span>');
+		$this->checkChannelBody('<img src="/stjornvisi/images/medium/1x@presenter001.jpg"');
+	}
 
     public function testToAllWithGroupsOk()
     {
@@ -234,6 +258,11 @@ class EventTest extends AbstractTestCase
                 DataHelper::newEvent(2, null, ['subject' => 's1']),
                 DataHelper::newEvent(3, null, ['subject' => 's3']),
                 DataHelper::newEvent(4, null, ['subject' => 's4']),
+                DataHelper::newEvent(5, null, [
+                	'subject' => 's4',
+					'presenter1' => 'Presenter001',
+					'presenter1_avatar' => 'presenter001.jpg',
+				]),
             ],
             'Group' => [
                 DataHelper::newGroup(1),
@@ -243,6 +272,7 @@ class EventTest extends AbstractTestCase
                 DataHelper::newGroupHasEvent(1, 1),
                 DataHelper::newGroupHasEvent(1, null),
                 DataHelper::newGroupHasEvent(3, 2),
+                DataHelper::newGroupHasEvent(5, 1),
             ],
             'Event_has_Guest' => [],
             'Company' => [],
@@ -253,6 +283,7 @@ class EventTest extends AbstractTestCase
             'Event_has_User' => [
                 DataHelper::newEventHasUser(1, 1, 1),
                 DataHelper::newEventHasUser(3, 3, 1),
+                DataHelper::newEventHasUser(5, 1, 1),
             ],
         ]);
     }

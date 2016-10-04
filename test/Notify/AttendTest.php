@@ -27,8 +27,25 @@ class AttendTest extends AbstractTestCase
         ]);
         $notifier->send();
         $this->checkNumChannelPublishes(1);
-        $this->checkChannelBody('<p>Þú hefur skráð þig á viðburðinn <strong>s1</strong></p>');
+        $this->checkChannelBody('<p>Skráning á viðburð staðfest:</p>');
         $this->checkChannelSubject('Þú hefur skráð þig á viðburðinn: s1');
+    }
+    public function testEverythingOkWithPresenter()
+    {
+        $notifier = $this->createNotifier();
+        $notifier->setData((object)[
+            'data' => (object)[
+                'event_id' => 3,
+                'recipients' => 1,
+                'type' => true
+            ]
+        ]);
+        $notifier->send();
+        $this->checkNumChannelPublishes(1);
+        $this->checkChannelBody('<p>Skráning á viðburð staðfest:</p>');
+        $this->checkChannelBody('<span>Presenter001</span>');
+        $this->checkChannelBody('<img src="/stjornvisi/images/medium/1x@presenter001.jpg"');
+        $this->checkChannelSubject('Þú hefur skráð þig á viðburðinn: s3');
     }
 
     public function testEverythingWithGuestUser()
@@ -125,6 +142,10 @@ class AttendTest extends AbstractTestCase
             'Event' => [
                 DataHelper::newEvent(1),
                 DataHelper::newEvent(2),
+                DataHelper::newEvent(3, null, [
+                	'presenter1' => 'Presenter001',
+					'presenter1_avatar' => 'presenter001.jpg',
+				]),
             ],
         ]);
     }
