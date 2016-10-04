@@ -8,9 +8,13 @@ use Stjornvisi\Auth\TestAdapter;
 use Zend\Authentication\AuthenticationService;
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;
+use Zend\ServiceManager\Config as BaseConfig;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\ArrayUtils;
 use RuntimeException;
+use Zend\View\HelperPluginManager;
+use Zend\View\Renderer\PhpRenderer;
+use Zend\View\Resolver\TemplateMapResolver;
 
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__.'/../../../');
@@ -61,6 +65,8 @@ class Bootstrap
 		$config = ArrayUtils::merge($baseConfig, $testConfig);
 
 		$module = new Module();
+		$moduleConfig = $module->getConfig();
+		$config = ArrayUtils::merge($config, $moduleConfig);
 		$serviceManager = new ServiceManager(new ServiceManagerConfig($module->getServiceConfig()));
 		$serviceManager->setAllowOverride(true);
 		$serviceManager->setService('ApplicationConfig', $config);
@@ -72,6 +78,19 @@ class Bootstrap
 
 		static::$serviceManager = $serviceManager;
 		static::$config = $config;
+		self::fixViews($config);
+	}
+
+	private static function fixViews($config)
+	{
+		$renderer = new PhpRenderer();
+		$renderer->setHelperPluginManager(new HelperPluginManager(new BaseConfig($config['view_helpers'])));
+		$renderer->setResolver(new TemplateMapResolver($config['view_manager']['template_map']));
+		/** @var \Zend\View\Helper\BasePath $basePath */
+		$basePath = $renderer->getHelperPluginManager()->get('basepath');
+		$basePath->setBasePath($config['view_manager']['base_path']);
+
+		static::$serviceManager->setService('ViewRenderer', $renderer);
 	}
 
 	public static function getServiceManager()
