@@ -25,7 +25,6 @@ use Stjornvisi\Notify\NotifyEventManagerAwareInterface;
 
 use Stjornvisi\Service\JaMap;
 use Stjornvisi\Service\ServiceEventManagerAwareInterface;
-use Stjornvisi\Service\Conference;
 use Stjornvisi\View\Helper\SubMenu;
 use Stjornvisi\View\Helper\User as UserMenu;
 use Stjornvisi\Event\ServiceEventListener;
@@ -38,6 +37,7 @@ use Stjornvisi\Form\NewUserCredentials;
 use Stjornvisi\Form\Company as CompanyForm;
 
 use Zend\EventManager\EventManager;
+use Zend\Mail\Protocol\Smtp as SmtpProtocol;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Monolog\Logger;
@@ -89,6 +89,11 @@ class Module
     {
         return self::getApplicationEnv() == self::ENV_DEVELOPMENT;
     }
+
+    public static function getBaseDir()
+	{
+		return dirname($_SERVER['DOCUMENT_ROOT']);
+	}
 
     public function __construct()
     {
@@ -281,7 +286,7 @@ class Module
                     if ($evn == Module::ENV_DEVELOPMENT) {
                         //...
                     } else {
-                        $baseDir = dirname($_SERVER['DOCUMENT_ROOT']);
+                        $baseDir = Module::getBaseDir();
                         $handler = new StreamHandler($baseDir . '/data/log/error.json', Logger::ERROR);
                         $handler->setFormatter(new \Stjornvisi\Lib\JsonFormatter());
                         $log->pushHandler($handler);
@@ -338,7 +343,7 @@ class Module
                     if ($evn == Module::ENV_DEVELOPMENT) {
                         $transport = new FileTransport();
                         $transport->setOptions(new FileOptions([
-                            'path' => './data/',
+                            'path' => Module::getBaseDir() . '/data/',
                             'callback'  => function (FileTransport $transport) {
                                 return 'Message_' . microtime(true) . '.eml';
                             },
@@ -346,7 +351,7 @@ class Module
                         return $transport;
                     } else {
                         $transport = new SmtpTransport();
-                        $protocol = new \Zend\Mail\Protocol\Smtp();
+                        $protocol = new SmtpProtocol();
                         $transport->setConnection($protocol);
                         return $transport;
                     }
