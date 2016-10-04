@@ -505,8 +505,34 @@
 }
 
 .entry__image {
+  margin-bottom: $line-height-computed;
+
   img {
     @include img-responsive;
+  }
+}
+
+.entry__presenter {
+  margin-bottom: $line-height-computed;
+}
+
+.presenter__image {
+  margin-bottom: $line-height-computed / 2;
+
+  img {
+    @include img-responsive;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+}
+.presenter__title {
+  text-align: center;
+  font-size: 15px;
+
+  .fa {
+    color: $color-blue;
+    font-size: 20px;
+    margin-right: 10px;
   }
 }
 
