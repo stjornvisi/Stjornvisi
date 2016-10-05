@@ -47,47 +47,54 @@
 							<h3 class="layout__sepline">eða</h3>
 							<div>
 								<?=$this->form()->openTag($this->companyForm);?>
-								<h2 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h2>
-								<p class="layout__sub-paragraph">Þú þarft að stofna fyrirtækið</p>
-								<div class="form-group">
-									<?=$this->formLabel($this->companyForm->get('company-name'));?>
-									<?=$this->formElement($this->companyForm->get('company-name')->setAttribute('class', 'form-control'));?>
-									<?=$this->formElementErrors($this->companyForm->get('company-name'));?>
+								<!--<h2 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h2>-->
+
+								<div class="poof__toggle">
+									<a href="#" class="btn btn-info poof__button">Stofna nýtt fyrirtæki</i></a>
 								</div>
-								<div class="form-group <?=(!empty($this->companyForm->get('company-ssn')->getMessages()))?'has-error':'';?> ">
-									<?=$this->formLabel($this->companyForm->get('company-ssn'));?>
-									<?=$this->formElement($this->companyForm->get('company-ssn')->setAttribute('class', 'form-control'));?>
-									<?=$this->formElementErrors($this->companyForm->get('company-ssn'));?>
-								</div>
-								<div class="form-group">
-									<?=$this->formLabel($this->companyForm->get('company-address'));?>
-									<?=$this->formElement($this->companyForm->get('company-address')->setAttribute('class', 'form-control'));?>
-									<?=$this->formElementErrors($this->companyForm->get('company-address'));?>
-								</div>
-								<div class="form-group">
-									<?=$this->formLabel($this->companyForm->get('company-zip'));?>
-									<?=$this->formElement($this->companyForm->get('company-zip')->setAttribute('class', 'form-control'));?>
-									<?=$this->formElementErrors($this->companyForm->get('company-zip'));?>
-								</div>
-								<div class="form-group">
-									<?=$this->formLabel($this->companyForm->get('company-web'));?>
-									<?=$this->formElement($this->companyForm->get('company-web')->setAttribute('class', 'form-control'));?>
-									<?=$this->formElementErrors($this->companyForm->get('company-web'));?>
-								</div>
-								<div class="form-group">
-									<?=$this->formLabel($this->companyForm->get('company-size'));?>
-									<?=$this->formElement($this->companyForm->get('company-size')->setAttribute('class', 'form-control'));?>
-									<?=$this->formElementErrors($this->companyForm->get('company-size'));?>
-								</div>
-								<div class="form-group">
-									<?=$this->formLabel($this->companyForm->get('company-type'));?>
-									<?=$this->formElement($this->companyForm->get('company-type')->setAttribute('class','form-control'));?>
-									<?=$this->formElementErrors($this->companyForm->get('company-type'));?>
-								</div>
-								<div class="form-group form-group--right">
-									<?=$this->formElement(
-										$this->companyForm->get('submit-company-create')->setAttribute('class', 'btn btn-default')->setValue('Stofna fyrirtæki')
-									);?>
+								<div class="poof__content">
+									<p>Stofna nýtt fyrirtæki:</p>
+
+									<div class="form-group">
+										<?=$this->formLabel($this->companyForm->get('company-name'));?>
+										<?=$this->formElement($this->companyForm->get('company-name')->setAttribute('class', 'form-control'));?>
+										<?=$this->formElementErrors($this->companyForm->get('company-name'));?>
+									</div>
+									<div class="form-group <?=(!empty($this->companyForm->get('company-ssn')->getMessages()))?'has-error':'';?> ">
+										<?=$this->formLabel($this->companyForm->get('company-ssn'));?>
+										<?=$this->formElement($this->companyForm->get('company-ssn')->setAttribute('class', 'form-control'));?>
+										<?=$this->formElementErrors($this->companyForm->get('company-ssn'));?>
+									</div>
+									<div class="form-group">
+										<?=$this->formLabel($this->companyForm->get('company-address'));?>
+										<?=$this->formElement($this->companyForm->get('company-address')->setAttribute('class', 'form-control'));?>
+										<?=$this->formElementErrors($this->companyForm->get('company-address'));?>
+									</div>
+									<div class="form-group">
+										<?=$this->formLabel($this->companyForm->get('company-zip'));?>
+										<?=$this->formElement($this->companyForm->get('company-zip')->setAttribute('class', 'form-control'));?>
+										<?=$this->formElementErrors($this->companyForm->get('company-zip'));?>
+									</div>
+									<div class="form-group">
+										<?=$this->formLabel($this->companyForm->get('company-web'));?>
+										<?=$this->formElement($this->companyForm->get('company-web')->setAttribute('class', 'form-control'));?>
+										<?=$this->formElementErrors($this->companyForm->get('company-web'));?>
+									</div>
+									<div class="form-group">
+										<?=$this->formLabel($this->companyForm->get('company-size'));?>
+										<?=$this->formElement($this->companyForm->get('company-size')->setAttribute('class', 'form-control'));?>
+										<?=$this->formElementErrors($this->companyForm->get('company-size'));?>
+									</div>
+									<div class="form-group">
+										<?=$this->formLabel($this->companyForm->get('company-type'));?>
+										<?=$this->formElement($this->companyForm->get('company-type')->setAttribute('class','form-control'));?>
+										<?=$this->formElementErrors($this->companyForm->get('company-type'));?>
+									</div>
+									<div class="form-group form-group--right">
+										<?=$this->formElement(
+											$this->companyForm->get('submit-company-create')->setAttribute('class', 'btn btn-default')->setValue('Stofna fyrirtæki')
+										);?>
+									</div>
 								</div>
 								<?= $this->form()->closeTag() ?>
 							</div>

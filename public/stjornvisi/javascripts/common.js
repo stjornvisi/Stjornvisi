@@ -118,4 +118,14 @@ $(function () {
             $members.addClass('boardmembers--closed').removeClass('boardmembers--open');
         }
     });
+
+    $('.poof__button').on('click', function(e) {
+        e.preventDefault();
+        var $button = $(this),
+            $toggle = $button.parents('.poof__toggle'),
+            $content = $toggle.next('.poof__content');
+
+        $toggle.addClass('poof--toggled');
+        $content.addClass('poof--toggled');
+    });
 });
