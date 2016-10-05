@@ -47,12 +47,14 @@
 							<h3 class="layout__sepline">eða</h3>
 							<div>
 								<?=$this->form()->openTag($this->companyForm);?>
-								<h2 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h2>
+								<!--<h2 class="layout__headline">Ég er starfsmaður fyrirtækis, en fyrirtækið er ekki á skrá</h2>-->
 
 								<div class="poof__toggle">
-									<a href="#" class="btn btn-info poof__button">Skrá upplýsingar um fyrirtækið</i></a>
+									<a href="#" class="btn btn-info poof__button">Stofna nýtt fyrirtæki</i></a>
 								</div>
 								<div class="poof__content">
+									<p>Stofna nýtt fyrirtæki:</p>
+
 									<div class="form-group">
 										<?=$this->formLabel($this->companyForm->get('company-name'));?>
 										<?=$this->formElement($this->companyForm->get('company-name')->setAttribute('class', 'form-control'));?>
