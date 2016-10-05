@@ -9,8 +9,8 @@
 namespace Stjornvisi\Notify;
 
 use Stjornvisi\Notify\Message\Mail;
-use Stjornvisi\Service\Event;
-use Stjornvisi\Service\User;
+use Stjornvisi\Service\Event as EventService;
+use Stjornvisi\Service\User as UserService;
 
 /**
  * Handler to send attendance message to users after they
@@ -74,7 +74,7 @@ class Attend extends AbstractNotifier
             throw new NotifyException('No recipient provided');
         }
 
-        $user = $this->getServiceLocator()->get(User::class);
+        $user = $this->getServiceLocator()->get(UserService::class);
 
         $userObject = null;
 
@@ -98,13 +98,13 @@ class Attend extends AbstractNotifier
 
     /**
      * @param $event_id
-     * @return bool|\stdClass|Event
+     * @return bool|\stdClass
      * @throws NotifyException
      * @throws \Stjornvisi\Service\Exception
      */
     private function getEvent($event_id)
     {
-        $event = $this->getServiceLocator()->get(Event::class);
+        $event = $this->getServiceLocator()->get(EventService::class);
         if (($event = $event->get($event_id)) != false) {
             return $event;
         } else {

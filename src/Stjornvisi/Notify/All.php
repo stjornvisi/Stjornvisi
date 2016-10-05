@@ -9,7 +9,7 @@
 namespace Stjornvisi\Notify;
 
 use Stjornvisi\Module;
-use Stjornvisi\Service\User;
+use Stjornvisi\Service\User as UserService;
 use Stjornvisi\View\Helper\Paragrapher;
 use Stjornvisi\Notify\Message\Mail as MailMessage;
 
@@ -87,7 +87,7 @@ class All extends AbstractNotifier
      */
     private function getUsers($sender, $recipients, $test)
     {
-        $user = $this->getServiceLocator()->get(User::class);
+        $user = $this->getServiceLocator()->get(UserService::class);
 
         if ($test || Module::isStaging()) {
             return [$user->get($sender)];

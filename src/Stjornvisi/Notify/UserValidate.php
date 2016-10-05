@@ -9,7 +9,7 @@
 namespace Stjornvisi\Notify;
 
 use Stjornvisi\Notify\Message\Mail;
-use Stjornvisi\Service\User;
+use Stjornvisi\Service\User as UserService;
 
 /**
  * Facebbok OAuth URL sent to user in an e-mail.
@@ -60,7 +60,7 @@ class UserValidate extends AbstractNotifier
      */
     public function getUser($id)
     {
-        $userService = $this->getServiceLocator()->get(User::class);
+        $userService = $this->getServiceLocator()->get(UserService::class);
 
         if (($user = $userService->get($id)) != false) {
             return $user;

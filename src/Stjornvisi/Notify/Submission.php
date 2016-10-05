@@ -10,7 +10,7 @@ namespace Stjornvisi\Notify;
 
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Group as GroupService;
-use Stjornvisi\Service\User;
+use Stjornvisi\Service\User as UserService;
 
 /**
  * Handler for when a user registers / un-registers to a group.
@@ -67,7 +67,7 @@ class Submission extends AbstractNotifier
      */
     private function getUser($id)
     {
-        $userService = $this->getServiceLocator()->get(User::class);
+        $userService = $this->getServiceLocator()->get(UserService::class);
 
         if (($user = $userService->get($id)) != false) {
             return $user;

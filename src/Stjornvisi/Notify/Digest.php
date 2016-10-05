@@ -14,7 +14,7 @@ use Stjornvisi\Module;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Event as EventService;
 use Stjornvisi\Service\Exception as ServiceException;
-use Stjornvisi\Service\News;
+use Stjornvisi\Service\News as NewsService;
 use Stjornvisi\Service\User as UserService;
 use Zend\Authentication\AuthenticationService;
 
@@ -106,7 +106,7 @@ class Digest extends AbstractNotifier
      */
     private function getNews()
     {
-        $newsService = $this->getServiceLocator()->get(News::class);
+        $newsService = $this->getServiceLocator()->get(NewsService::class);
         return $newsService->getNext();
     }
 

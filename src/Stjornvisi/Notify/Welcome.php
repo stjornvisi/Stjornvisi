@@ -5,7 +5,7 @@ namespace Stjornvisi\Notify;
 use Stjornvisi\Notify\Message\Mail;
 use Stjornvisi\Service\Company as CompanyService;
 use Stjornvisi\Service\User as UserService;
-use Stjornvisi\Service\Values;
+use Stjornvisi\Service\Values as ValuesService;
 
 /**
  * Handler to send a welcome message to new users
@@ -50,8 +50,8 @@ class Welcome extends AbstractNotifier
 
         if ($company) {
             $type = $company->business_type;
-            if ($type == Values::COMPANY_TYPE_PERSON
-                || $type == Values::COMPANY_TYPE_UNIVERSITY
+            if ($type == ValuesService::COMPANY_TYPE_PERSON
+                || $type == ValuesService::COMPANY_TYPE_UNIVERSITY
             ) {
                 // The company is only used when a new Company is created
                 // and that Company can never by a person or university

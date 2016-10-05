@@ -11,7 +11,7 @@ namespace Stjornvisi\Notify;
 use Stjornvisi\Module;
 use Stjornvisi\Notify\Message\Mail as MailMessage;
 use Stjornvisi\Service\Event as EventService;
-use Stjornvisi\Service\User;
+use Stjornvisi\Service\User as UserService;
 use Stjornvisi\View\Helper\Paragrapher;
 
 /**
@@ -91,7 +91,7 @@ class Event extends AbstractNotifier
      */
     private function getUser(array $groups, $eventId, $userId, $recipients, $test)
     {
-        $user = $this->getServiceLocator()->get(User::class);
+        $user = $this->getServiceLocator()->get(UserService::class);
 
         //TEST
         //	this is just a test message so we send it just to the user in question
