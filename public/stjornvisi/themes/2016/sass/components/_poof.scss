@@ -1,0 +1,22 @@
+.poof__toggle {
+	display: block;
+
+	&.poof--toggled {
+		display: none;
+	}
+
+	.btn-info {
+		color: $color-blue;
+		border-color: $color-blue;
+	}
+}
+
+.poof__content {
+	max-height:0;
+	overflow:hidden;
+	@include transition(max-height .5s ease);
+
+	&.poof--toggled {
+		max-height: 1000px;
+	}
+}
