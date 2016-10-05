@@ -15,6 +15,7 @@ use PhpAmqpLib\Exception\AMQPExceptionInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 use Stjornvisi\Lib\QueueConnectionFactory;
 use Stjornvisi\Notify\Message\Mail as NotifyMailMessage;
+use Stjornvisi\Notify\NotifyException;
 use Stjornvisi\Notify\NotifyInterface;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Console\Request as Request;
@@ -130,14 +131,21 @@ class ConsoleController extends AbstractActionController
                     $logger->info("Notify message [{$message->action}] processed");
                     $msgChannel->basic_ack($msg->delivery_info['delivery_tag']);
 
-                } catch (ServiceNotFoundException $e) {
+                }
+                catch (NotifyException $e) {
+                    $logger->info($e->getMessage());
+                    $msgChannel->basic_ack($msg->delivery_info['delivery_tag']);
+                }
+                catch (ServiceNotFoundException $e) {
                     $logger->critical("Notify message [{$message->action}] not found", $e->getTrace());
-                } catch (\Exception $e) {
+                }
+                catch (\Exception $e) {
                     while ($e) {
                         $logger->critical($e->getMessage(), $e->getTrace());
                         $e = $e->getPrevious();
                     }
-                } finally {
+                }
+                finally {
                     $handler = null;
                 }
 
