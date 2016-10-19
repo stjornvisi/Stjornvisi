@@ -77,7 +77,7 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
 								<i class="fa fa-map-marker"></i> <?=$this->event->location?> <?=$this->event->address?><br>
 								<i class="fa fa-group"></i>
 								<?php if (count($this->event->groups) == 0):?>
-									Stjórvísisviðburður
+									Stjórnvísiviðburður
 								<?php else:?>
 									<?php foreach ($this->event->groups as $group) :?>
 										<?php if($group->id == null):?>
