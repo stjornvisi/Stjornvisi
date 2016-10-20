@@ -181,7 +181,10 @@ class EventController extends AbstractActionController
             }
         //QUERY
         } else {
-            return new ViewModel(['form' => $form]);
+            return new ViewModel([
+                'form' => $form,
+                'datepickerdates' => $eventService->getDatepickerdatesFormatted()
+            ]);
         }
     }
 

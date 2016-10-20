@@ -49,11 +49,13 @@
                 $this->basePath('/vendor/better-dom/dist/better-dom.js', 'text/javascript')
             )->appendFile(
                 $this->basePath('/vendor/better-i18n-plugin/dist/better-i18n-plugin.js', 'text/javascript')
-            )
-            ->appendFile(
+            )->appendFile(
                 $this->basePath('/vendor/better-dateinput-polyfill/dist/better-dateinput-polyfill.js', 'text/javascript')
             )->appendFile(
                 $this->basePath('/vendor/OwlCarousel2/dist/owl.carousel.min.js'),
+                'text/javascript'
+            )->appendFile(
+                $this->basePath('/vendor/jquery-ui/jquery-ui.js'),
                 'text/javascript'
             )
         ;?>
@@ -63,6 +65,7 @@
 			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/screen.css')
 			->appendStylesheet($this->basePath() . '/themes/2016/stylesheets/ie.css', 'screen', 'IE 9')
 			->appendStylesheet($this->basePath() . '/vendor/OwlCarousel2/dist/assets/owl.carousel.css', 'screen')
+			->appendStylesheet($this->basePath() . '/vendor/jquery-ui/themes/base/jquery-ui.css', 'screen')
 		;?>
         <link rel="import" href="<?=$this->basePath('/webcomponents/app.html');?>">
 

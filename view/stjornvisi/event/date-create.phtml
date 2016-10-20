@@ -1,0 +1,60 @@
+<?php
+$this->headTitle('Dagsetningar - Stofna');
+$this->form->setAttribute('class', 'form-horizontal');
+?>
+
+<div class="panel panel--breadcrumbs">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__content">
+                    <a href="/">Forsíða</a>
+                    <span class="separator">/</span>
+                    <a href="/vidburdir">Viðburðir</a>
+                    <span class="separator">/</span>
+                    Dagsetningar
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__title"><h2>Ný dagsetning</h2></div>
+                <div class="box__content">
+                    <?=$this->form()->openTag($this->form);?>
+                    <div class="form-group">
+                        <?=$this->formLabel($form->get('annualdate'));?>
+                        <?=$this->formElement($form->get('annualdate'));?>
+                        <?=$this->formElementErrors($form->get('annualdate'));?>
+                    </div>
+                    <p>eða</p>
+                    <div class="form-group">
+                        <?=$this->formLabel($form->get('specificdate'));?>
+                        <?=$this->formElement($form->get('specificdate'));?>
+                        <?=$this->formElementErrors($form->get('specificdate'));?>
+                    </div>
+                    <div class="form-group">
+                        <?=$this->formElement($form->get('submit')->setValue('Stofna'));?>
+                    </div>
+                    <?= $this->form()->closeTag() ?>
+                </div>
+                <div class="box__footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $( function() {
+        $( "input.datepicker" ).datepicker({
+            minDate: 0,
+            dateFormat: "dd/mm/yy"
+        });
+    } );
+</script>

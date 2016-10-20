@@ -78,11 +78,11 @@ class Event extends Form implements InputFilterProviderInterface
 
         $this->add(array(
             'name' => 'event_date',
-            'type' => 'Zend\Form\Element\Date',
+            'type' => 'Stjornvisi\Form\Element\Datepicker',
             'attributes' => array(
-                'placeholder' => 'YYYY-MM-DD',
+                'placeholder' => 'dd/mm/yyyy',
                 'required' => 'required',
-                'step' => '1',
+                'class' => 'form-control datepicker'
             ),
             'options' => array(
                 'label' => 'Dagsetning',

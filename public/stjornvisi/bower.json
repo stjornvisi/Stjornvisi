@@ -31,7 +31,8 @@
     "iron-ajax": "PolymerElements/iron-ajax#~1.0.3",
     "google-map": "GoogleWebComponents/google-map#~1.0.3",
     "fontawesome": "~4",
-    "OwlCarousel2": "2.1.1"
+    "OwlCarousel2": "2.1.1",
+    "jquery-ui": "^1.12.1"
   },
   "resolutions": {
     "webcomponentsjs": "^0.7.20",

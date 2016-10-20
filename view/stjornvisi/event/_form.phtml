@@ -16,7 +16,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group <?=empty($this->form->get('event_date')->getMessages())?'':'has-error';?>">
                                         <?=$this->formLabel($form->get('event_date'));?>
-                                        <?=$this->formElement($form->get('event_date')->setAttribute('class', 'form-control'));?>
+                                        <?=$this->formElement($form->get('event_date'));?>
                                         <?=$this->formElementErrors($form->get('event_date'));?>
                                     </div>
                                 </div>
@@ -105,3 +105,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    $( function() {
+        var disallow = <?=json_encode($datepickerdates)?>;
+
+        console.log(disallow);
+
+        $( "input.datepicker" ).datepicker({
+            beforeShowDay: function(date){
+                var string = jQuery.datepicker.formatDate('yy.mm.dd', date);
+                var r = disallow.indexOf(string);
+                console.log(string + ': ' + r);
+                return [ disallow.indexOf(string) == -1 ];
+            },
+            minDate: 0,
+            dateFormat: "yy-mm-dd"
+        });
+    } );
+</script>

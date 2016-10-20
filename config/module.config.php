@@ -310,7 +310,7 @@ return array(
                                 'to' => '[0-9]{4}-[0-9]{2}-[0-9]{2}',
                             ),
                             'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\Event',
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
                                 'action' => 'registry-distribution'
                             ),
                         )
@@ -320,13 +320,47 @@ return array(
                         'options' => array(
                             'route' => '/tolfraedi',
                             'defaults' => array(
-                                'controller' => 'Stjornvisi\Controller\Event',
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
                                 'action' => 'statistics'
                             ),
                         )
                     ),
-
-
+                    'dates' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/dagsetningar',
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\Event\Date',
+                                'action' => 'list'
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'create' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/stofna',
+                                    'defaults' => array(
+                                        'controller' => 'Stjornvisi\Controller\Event\Date',
+                                        'action' => 'create'
+                                    ),
+                                ),
+                            ),
+                            'delete' => array(
+                                'type' => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => array(
+                                    'route' => '/eyda/:timestamp',
+                                    'constraints' => array(
+                                        'id' => '[0-9]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller' => 'Stjornvisi\Controller\Event\Date',
+                                        'action' => 'delete'
+                                    ),
+                                ),
+                            )
+                        )
+                    ),
                 ),
             ),
             'hopur' => array(
@@ -1826,7 +1860,7 @@ return array(
             'Stjornvisi\Controller\Event\Event' => 'Stjornvisi\Controller\Event\EventController',
             'Stjornvisi\Controller\Event\Resource' => 'Stjornvisi\Controller\Event\ResourceController',
             'Stjornvisi\Controller\Event\Gallery' => 'Stjornvisi\Controller\Event\GalleryController',
-
+            'Stjornvisi\Controller\Event\Date' => 'Stjornvisi\Controller\Event\DateController',
             'Stjornvisi\Controller\News' => 'Stjornvisi\Controller\NewsController',
             'Stjornvisi\Controller\Company' => 'Stjornvisi\Controller\CompanyController',
             'Stjornvisi\Controller\User' => 'Stjornvisi\Controller\UserController',
@@ -1840,7 +1874,6 @@ return array(
             'Stjornvisi\Controller\Email' => 'Stjornvisi\Controller\EmailController',
             'Stjornvisi\Controller\Anaegjuvogin' => 'Stjornvisi\Controller\AnaegjuvoginController',
             'Stjornvisi\Controller\Location' => 'Stjornvisi\Controller\LocationController',
-
             'Stjornvisi\Controller\Console\Image' => 'Stjornvisi\Controller\Console\ImageController'
         ),
     ),

@@ -1,0 +1,57 @@
+<?php
+$this->headTitle('Dagsetningar');
+?>
+
+<?php if($this->access->is_admin || $this->access->type >= 1):?>
+    <div class="panel panel--admin">
+        <div class="panel__container">
+            <div class="panel__content">
+                <a href="<?=$this->url('vidburdir/dates/create');?>" class="update"><i class="fa fa-plus"></i> stofna</a>
+            </div>
+        </div>
+    </div>
+<?php endif;?>
+
+<div class="panel panel--breadcrumbs">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__content">
+                    <a href="/">Forsíða</a>
+                    <span class="separator">/</span>
+                    <a href="/vidburdir">Viðburðir</a>
+                    <span class="separator">/</span>
+                    Dagsetningar
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__title"><h2>Dagsetningar</h2></div>
+                <div class="box__content">
+                    <p>Þetta eru dagsetningar sem ekki er hægt að bóka viðburð á.</p>
+                    <ul>
+                    <?php foreach ($dates as $timestamp):?>
+                        <?php if($timestamp > 0):?>
+                        <?php
+                            $dt = new DateTime();
+                            $dt->setTimestamp($timestamp);
+                        ?>
+                            <?php if ($dt->format('y') === '00'):?>
+                                <li><a href="/vidburdir/dagsetningar/eyda/<?=$timestamp?>"><i class="fa fa-trash"></i></a> <?=$dt->format('d. M')?></li>
+                            <?php else:?>
+                                <li><a href="/vidburdir/dagsetningar/eyda/<?=$timestamp?>"><i class="fa fa-trash"></i></a> <?=$dt->format('d. M Y')?></li>
+                            <?php endif?>
+                        <?php endif?>
+                    <?php endforeach?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

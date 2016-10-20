@@ -132,6 +132,14 @@ class SubMenu extends AbstractHelper
                                 'title' => 'Stofna nýjann viðburð',
                                 'pages' => array(
                                     array(
+                                        'label' => 'Dagsetningar',
+                                        'title' => 'Stjórna dagsetningum fyrir viðburði',
+                                        'id' => 'event-dates',
+                                        'uri' => $view->url('vidburdir/dates'),
+                                        'class' => 'icon-calendar'
+                                    ),
+                                    array(), // Item number 2 never renders?!? wtf?
+                                    array(
                                         'label' => 'Tölfræði',
                                         'title' => 'Tölfræði viðburða',
                                         'id' => 'event-statistics',
