@@ -27,7 +27,7 @@ class JaMap implements MapInterface
      */
     public function request($address)
     {
-        $response = $this->client->setUri("http://ja.is/kort/leit")
+        $response = $this->client->setUri("https://ja.is/kort/leit")
             ->setMethod('GET')
             ->setParameterGet([
                 'q' => $address,

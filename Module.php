@@ -312,8 +312,10 @@ class Module
 
                         return $manager;
                 },
-                'Stjornvisi\Service\Map' => function ($sm) {
-                        return new JaMap(new Client());
+                'Stjornvisi\Service\Map' => function () {
+                        return new JaMap(new Client(null, [
+                        	'adapter' => 'Zend\Http\Client\Adapter\Curl',
+						]));
                 },
                 'PDO\Config' => function ($sm) {
                     $config = $sm->get('config');
