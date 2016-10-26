@@ -61,7 +61,9 @@ class IndexController extends AbstractActionController
         } else {
             return new ViewModel([
                 'groups' => $groupService->fetchDetails(),
-                'news' => $newsService->fetchAll(null, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
+                'newsPrimary' => $newsService->getNotGrouped(1),
+                'eventNews' => array(),
+                'news' => $newsService->fetchAll(null),
                 'identity' => null,
                 'events' => $eventService->fetchUpcoming(),
                 'eventCount' => $eventService->fetchUpcomingCount(),
