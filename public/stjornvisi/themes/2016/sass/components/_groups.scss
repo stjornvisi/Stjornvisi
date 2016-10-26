@@ -1,177 +1,176 @@
 .panel--groups {
-	.fa-calendar-o {
-		color: $color-green;
-	}
+  border-top: 1px solid $color-border;
 
-	.fa-check {
-		color: $color-orange;
-	}
+  .fa-calendar-o {
+    color: $color-green;
+  }
 
-	.legend {
-		font-size: 20px;
-		margin-bottom: $line-height-computed * 2;
+  .fa-check {
+    color: $color-orange;
+  }
 
-		li {
-			margin-bottom: 5px;
-		}
-		.fa {
-			font-size: 22px;
-			margin-right: 10px;
-		}
-	}
+  .legend {
+    font-size: 20px;
+    margin-bottom: $line-height-computed * 2;
 
-	.entry--hoverable {
-		@media (min-width: $screen-md-min) {
-			margin-left: -40px;
-		}
-	}
+    li {
+      margin-bottom: 5px;
+    }
+    .fa {
+      font-size: 22px;
+      margin-right: 10px;
+    }
+  }
 
-	.entry {
-		margin-bottom: 0;
-	}
+  .entry--hoverable {
+    .entry__content {
+      background: $color-white;
+    }
 
-	.entry__title {
-		@include transition(background-color .2s);
-		margin-bottom: 10px;
+    @media (min-width: $screen-md-min) {
+      margin-left: -40px;
+    }
+  }
 
-		@media (max-width: $screen-sm-max) {
-			border: 2px solid transparent;
-			border-bottom: 0;
-		}
+  .entry {
+    margin-bottom: 0;
+  }
 
-		.entry__status {
-			@media (min-width: $screen-md-min) {
-				padding-left: 15px;
-			}
-		}
+  .entry__title {
+    @include transition(background-color .2s);
+    margin-bottom: 10px;
 
-		h3 {
-			font-size: 32px;
-			color: $color-blue;
-		}
+    @media (max-width: $screen-sm-max) {
+      border: 2px solid transparent;
+      border-bottom: 0;
+    }
 
-		h4 {
-			font-size: 24px;
-			color: $color-text;
-			margin: 0;
-			padding: 4px 0;
-			position: relative;
+    .entry__status {
+      @media (min-width: $screen-md-min) {
+        padding-left: 15px;
+      }
+    }
 
-			@media (max-width: $screen-sm-max) {
-				font-size: 20px;
-			}
+    h3 {
+      font-size: 32px;
+      color: $color-blue;
+    }
 
-			> a {
-				color: $color-text;
-				&:hover {
-					color: $link-color;
-				}
-			}
+    h4 {
+      font-size: 24px;
+      color: $color-text;
+      margin: 0;
+      padding: 4px 0;
+      position: relative;
 
-			@media (min-width: $screen-md-min) {
-				padding: 4px 15px;
-			}
+      @media (max-width: $screen-sm-max) {
+        font-size: 20px;
+      }
 
-			@include calendarCountStack;
-			.fa-stack {
-				@media (min-width: $screen-md-min) {
-					margin-left: 5px;
-				}
+      > a {
+        color: $color-text;
+        &:hover {
+          color: $link-color;
+        }
+      }
 
-				@media (max-width: $screen-sm-max) {
-					position: absolute;
-					left: 18px;
-					top: 5px;
-				}
-			}
-		}
+      @media (min-width: $screen-md-min) {
+        padding: 4px 15px;
+      }
 
-		.btn {
-			@include transition(opacity .2s);
-			@include transition-delay(0);
-			opacity: 0;
-			position: absolute;
-			top:3px;
-			right: 0;
-			z-index: 10;
-			margin-top: -3px;
-			padding: 4px 14px;
-			color: $color-white;
-			&:hover {
-				color: $color-offwhite;
-			}
-		}
-	}
+      @include calendarCountStack;
+      .fa-stack {
+        @media (min-width: $screen-md-min) {
+          margin-left: 5px;
+        }
 
-	.open {
-		.entry__title {
-			background-color: $color-offwhite;
+        @media (max-width: $screen-sm-max) {
+          position: absolute;
+          left: 18px;
+          top: 5px;
+        }
+      }
+    }
 
-			@media (max-width: $screen-sm-max) {
-				border: 2px solid transparentize($color-light-blue, 0.75);
-				border-bottom: 0;
-			}
+    .btn {
+      @include transition(opacity .2s);
+      @include transition-delay(0);
+      opacity: 0;
+      position: absolute;
+      top: 3px;
+      right: 0;
+      z-index: 10;
+      margin-top: -3px;
+      padding: 4px 14px;
+      color: $color-white;
+      &:hover {
+        color: $color-offwhite;
+      }
+    }
+  }
 
-			h4 {
-				font-weight: 600;
-				color: $color-blue;
-			}
-		}
+  .open {
+    .entry__title {
+      @media (max-width: $screen-sm-max) {
+        border: 2px solid transparentize($color-light-blue, 0.75);
+        border-bottom: 0;
+      }
 
-		.btn {
-			@include transition-delay(1s);
-			opacity: 1;
-		}
-	}
+      h4 {
+        font-weight: 600;
+        color: $color-blue;
+      }
+    }
 
-	.entry__content {
-		background: $color-white;
-	}
+    .btn {
+      @include transition-delay(1s);
+      opacity: 1;
+    }
+  }
 
-	.event {
-		border: 2px solid transparentize($color-light-blue, 0.75);
-		border-top: 0;
-	}
+  .event {
+    border: 1px solid transparentize($color-blue, 0.75);
+  }
 
-	.event__summary {
-		padding: 10px 30px;
-	}
+  .event__summary {
+    padding: 10px 30px;
+  }
 
-	.event__details {
-		@include calendarCountStack;
-		margin-top: $line-height-computed;
+  .event__details {
+    @include calendarCountStack;
+    margin-top: $line-height-computed;
 
-		.fa-stack {
-			margin-right: 5px;
-		}
-	}
+    .fa-stack {
+      margin-right: 5px;
+    }
+  }
 
-	.event__label,
-	.event__info,
-	.event__title,
-	.event__details,
-	.event__content,
-	.event__footer {
-		padding: 0 30px;
-	}
+  .event__label,
+  .event__info,
+  .event__title,
+  .event__details,
+  .event__content,
+  .event__footer {
+    padding: 0 30px;
+  }
 
-	.event__content {
-		font-size: 16px;
+  .event__content {
+    font-size: 16px;
 
-		a {
-			color: $color-text-light;
-			&:hover {
-				color: $link-color;
-			}
-		}
-	}
+    a {
+      color: $color-text-light;
+      &:hover {
+        color: $link-color;
+      }
+    }
+  }
 
-	.event__footer {
-		padding-bottom: 10px;
+  .event__footer {
+    padding-bottom: 10px;
 
-		// Don't show when hover is used
-		@media (min-width: $screen-md-min) {
-			display: none;
-		}
-	}
+    // Don't show when hover is used
+    @media (min-width: $screen-md-min) {
+      display: none;
+    }
+  }
 }

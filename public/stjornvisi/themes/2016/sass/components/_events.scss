@@ -115,8 +115,12 @@
 		line-height: $line-height-small;
 		padding: 20px;
 
+		p {
+			margin-bottom: $line-height-computed;
+		}
+
 		.btn {
-			margin: 15px 10px 0 0;
+			margin: 0 10px 0 0;
 		}
 	}
 }

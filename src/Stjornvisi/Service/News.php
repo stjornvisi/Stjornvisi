@@ -20,9 +20,6 @@ class News extends AbstractService implements DataSourceAwareInterface
 {
     const NAME = 'news';
 
-    const FRONT_NEWS_COUNT = 3;
-    const FRONT_NEWS_COUNT_SIMPLE = 2;
-
     /**
      * @var \PDO
      */
@@ -234,6 +231,42 @@ class News extends AbstractService implements DataSourceAwareInterface
     }
 
     /**
+     * Get news that are not connected to groups.
+     *
+     * @param int $limit
+     * @return array|News[]
+     * @throws Exception
+     */
+    public function getNotGrouped($limit = 10)
+    {
+        try {
+            $statement = $this->pdo->prepare("
+              SELECT * FROM News N WHERE group_id IS NULL
+              ORDER BY N.created_date DESC LIMIT {$limit}");
+            $statement->execute();
+            $news = $statement->fetchAll();
+
+            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+            return array_map(function ($item) {
+                $item->created_date = ( !empty($item->created_date) )
+                    ? new DateTime($item->created_date)
+                    : $item->created_date;
+                return $item;
+            }, $news);
+
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                    isset($groupStatement)?$groupStatement->queryString:null
+                )
+            ));
+            throw new Exception("Can't get not grouped news.", 0, $e);
+        }
+    }
+
+    /**
      * Get news that are connected to groups
      * that the user is connected to.
      *
@@ -242,15 +275,24 @@ class News extends AbstractService implements DataSourceAwareInterface
      * @return array|News[]
      * @throws Exception
      */
-    public function getByUser($id, $limit = 10)
+    public function getByUser($id, $limit = 10, $getNotGrouped = true)
     {
         try {
-            $statement = $this->pdo->prepare("
-              SELECT * FROM News N WHERE group_id IN (
-                SELECT group_id FROM Group_has_User GhU WHERE user_id = :id
-              )
-              OR group_id IS NULL
-              ORDER BY N.created_date DESC LIMIT {$limit}");
+            if ($getNotGrouped) {
+                $statement = $this->pdo->prepare("
+                  SELECT * FROM News N WHERE group_id IN (
+                    SELECT group_id FROM Group_has_User GhU WHERE user_id = :id
+                  )
+                  OR group_id IS NULL
+                  ORDER BY N.created_date DESC LIMIT {$limit}");
+            }
+            else {
+                $statement = $this->pdo->prepare("
+                  SELECT * FROM News N WHERE group_id IN (
+                    SELECT group_id FROM Group_has_User GhU WHERE user_id = :id
+                  )
+                  ORDER BY N.created_date DESC LIMIT {$limit}");
+            }
             $statement->execute(array('id'=>$id));
             $news = $statement->fetchAll();
 

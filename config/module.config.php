@@ -183,6 +183,19 @@ return array(
                             ),
                         )
                     ),
+                    'news-create' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:id/frett/stofna',
+                            'constraints' => array(
+                                'id' => '[0-9]*'
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\Event\Event',
+                                'action' => 'news-create'
+                            ),
+                        )
+                    ),
                     'export-attendees' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(

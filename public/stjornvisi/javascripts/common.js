@@ -81,8 +81,6 @@
 
 $(function () {
     $('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function (e) {
-        console.log(e);
-
         if (e.target.className !== 'btn btn-default') {
             var $parent = $(this.parentNode);
             e.preventDefault();

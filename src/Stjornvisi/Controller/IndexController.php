@@ -50,10 +50,11 @@ class IndexController extends AbstractActionController
         if ($auth->hasIdentity()) {
             return new ViewModel([
                 'groups' => $groupService->fetchDetails($auth->getIdentity()->id),
-                'news' => $newsService->getByUser($auth->getIdentity()->id, News::FRONT_NEWS_COUNT + News::FRONT_NEWS_COUNT_SIMPLE),
+                'newsPrimary' => $newsService->getNotGrouped(1),
+                'eventNews' => $newsService->getByUser($auth->getIdentity()->id, 3, false),
                 'events' => $eventService->getByUser($auth->getIdentity()->id, 3),
                 'eventCount' => $eventService->fetchUpcomingCount(),
-                'eventsPassed' => $eventService->fetchPassed(),
+                'eventsAttending' => $eventService->getAttendingByUser($auth->getIdentity()->id),
                 'is_connected' => $companyService->getByUser($auth->getIdentity()->id),
                 'identity' => $auth->getIdentity()
             ]);

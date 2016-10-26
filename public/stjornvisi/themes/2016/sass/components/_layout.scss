@@ -1,5 +1,7 @@
 /*** PANEL **/
 .panel {
+  position: relative;
+  z-index: 2;
   padding: $line-height-computed * 2 0;
 }
 
@@ -169,7 +171,7 @@
   }
 
   h2 {
-    font-size: 40px;
+    font-size: 36px;
     font-weight: 600;
   }
 }
@@ -178,7 +180,7 @@
   + .box__title {
     margin-top: $line-height-computed;
     border-top: 1px solid $color-border;
-    padding-top: 20px;
+    padding-top: $line-height-computed * 2;
 
     h2 {
       margin-bottom: $line-height-computed;
@@ -525,6 +527,7 @@
     margin: 0 auto;
   }
 }
+
 .presenter__title {
   text-align: center;
   font-size: 15px;
@@ -673,7 +676,7 @@
 }
 
 .event__summary {
-  background: $color-offwhite;
+  background: $color-white;
   min-height: 34px;
   font-size: 15px;
   color: $color-text-dark;
