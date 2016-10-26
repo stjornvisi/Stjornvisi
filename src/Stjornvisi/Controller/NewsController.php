@@ -117,7 +117,7 @@ class NewsController extends AbstractActionController
         $authService = new AuthenticationService();
 
         $groupId = $this->params()->fromRoute('id', null);
-        $eventId = $this->params()->fromRoute('eventId', null);
+        $eventId = $this->params()->fromRoute('event_id', null);
 
         $event = $group = null;
 
@@ -168,7 +168,7 @@ class NewsController extends AbstractActionController
         if ($access->is_admin || $access->type >= 1) {
             $form = new NewsForm();
             if ($eventId !== null) {
-                $form->setAttribute('action', $this->url()->fromRoute('frettir/create', ['id'=>0, 'eventId'=>$eventId]));
+                $form->setAttribute('action', $this->url()->fromRoute('frettir/create', ['id'=>0, 'event_id'=>$eventId]));
             }
             else {
                 $form->setAttribute('action', $this->url()->fromRoute('frettir/create', ['id'=>$groupId]));

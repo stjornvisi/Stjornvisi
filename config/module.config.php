@@ -186,9 +186,9 @@ return array(
                     'news-create' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/:eventId/frett/stofna',
+                            'route' => '/:event_id/frett/stofna',
                             'constraints' => array(
-                                'eventId' => '[0-9]*'
+                                'event_id' => '[0-9]*'
                             ),
                             'defaults' => array(
                                 'controller' => 'Stjornvisi\Controller\News',
@@ -652,10 +652,10 @@ return array(
                     'create' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
-                            'route' => '/stofna[/:id][/:eventId]',
+                            'route' => '/stofna[/:id][/:event_id]',
                             'constraints' => array(
                                 'id' => '[0-9]*',
-                                'eventId' => '[0-9]*'
+                                'event_id' => '[0-9]*'
                             ),
                             'defaults' => array(
                                 'controller' => 'Stjornvisi\Controller\News',

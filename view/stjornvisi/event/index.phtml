@@ -32,7 +32,7 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
 			<div class="panel__content">
 				<a href="<?=$this->url('vidburdir/update',array('id'=>$this->event->id));?>" class="update"><i class="fa fa-check"></i> uppfæra</a>
 				<a href="<?=$this->url('vidburdir/delete',array('id'=>$this->event->id));?>" class="delete"><i class="fa fa-close"></i> eyða</a>
-				<a href="<?=$this->url('vidburdir/news-create',array('eventId'=>$this->event->id));?>" class="create"><i class="fa fa-plus"></i> frétt</a>
+				<a href="<?=$this->url('vidburdir/news-create',array('event_id'=>$this->event->id));?>" class="create"><i class="fa fa-plus"></i> frétt</a>
 				<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id,'type'=>'allir'));?>"><i class="fa fa-envelope"></i> meðlimi</a>
 				<a href="<?=$this->url('vidburdir/send-mail',array('id'=>$this->event->id, 'type'=>'gestir'));?>"><i class="fa fa-envelope"></i> þátttakendur</a>
 				<a href="<?=$this->url('vidburdir/export-attendees',array('id'=>$this->event->id));?>"><i class="fa fa-list"></i> þátttakendalista</a>
