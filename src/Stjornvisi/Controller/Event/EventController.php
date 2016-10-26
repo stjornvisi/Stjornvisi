@@ -296,6 +296,11 @@ class EventController extends AbstractActionController
         }
     }
 
+    public function newsCreateAction()
+    {
+
+    }
+
     /**
      * Export attendees list as csv.
      *

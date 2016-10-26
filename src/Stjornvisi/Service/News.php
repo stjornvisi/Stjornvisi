@@ -125,6 +125,7 @@ class News extends AbstractService implements DataSourceAwareInterface
             if ($page !== null) {
                 $statement = $this->pdo->prepare("
                     SELECT * FROM `News` N
+                    WHERE event_id IS NULL
                     ORDER BY N.created_date DESC
                     LIMIT {$page},{$count}
                 ");
@@ -262,7 +263,44 @@ class News extends AbstractService implements DataSourceAwareInterface
                     isset($groupStatement)?$groupStatement->queryString:null
                 )
             ));
-            throw new Exception("Can't get not grouped news.", 0, $e);
+            throw new Exception("Can't get ungrouped news.", 0, $e);
+        }
+    }
+
+    /**
+     * Get news that are not connected to groups.
+     *
+     * @param int $limit
+     * @return array|News[]
+     * @throws Exception
+     */
+    public function getByEvent($eventId, $limit = 10)
+    {
+        try {
+            $statement = $this->pdo->prepare("
+              SELECT * FROM News N 
+              WHERE group_id IS NULL AND event_id = :id
+              ORDER BY N.created_date DESC LIMIT {$limit}");
+            $statement->execute();
+            $news = $statement->fetchAll(['id' => $eventId]);
+
+            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+            return array_map(function ($item) {
+                $item->created_date = ( !empty($item->created_date) )
+                    ? new DateTime($item->created_date)
+                    : $item->created_date;
+                return $item;
+            }, $news);
+
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                    isset($groupStatement)?$groupStatement->queryString:null
+                )
+            ));
+            throw new Exception("Can't get event news.", 0, $e);
         }
     }
 

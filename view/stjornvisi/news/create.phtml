@@ -1,35 +1,41 @@
-<?php
-    $this->form->setAttribute('class', 'form-horizontal');
-?>
-<div class="layout layout--three-columns">
-    <section class="layout__section">
-        <?php if( isset($this->group->name_short) ):?>
-            <h1 class="layout__headline layout__headline--center">Stofna <a href="<?=$this->url('hopur/index', array('id'=>$this->group->url))?>"><?=$this->group->name_short?></a> frétt</h1>
-        <?php else:?>
-            <h1 class="layout__headline layout__headline--center">Stofna Stjónvísisfrétt</h1>
-        <?php endif;?>
+<div class="panel">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__title">
+                    <?php if( isset($this->group->name_short) ):?>
+                        <h1 class="layout__headline layout__headline--center">Stofna <a href="<?=$this->url('hopur/index', array('id'=>$this->group->url))?>"><?=$this->group->name_short?></a> frétt</h1>
+                    <?php elseif ($event):?>
+                        <h1 class="layout__headline layout__headline--center">Stofna viðburðarfrétt</h1>
+                        <h4><?=$event->subject?></h4>
+                    <?php else:?>
+                        <h1 class="layout__headline layout__headline--center">Stofna Stjórnvísifrétt</h1>
+                    <?php endif?>
+                </div>
+                <div class="box__content">
+                    <?=$this->form()->openTag($this->form);?>
 
-    <?=$this->form()->openTag($this->form);?>
-
-        <div class="form-group">
-            <?=$this->formLabel($form->get('title'));?>
-            <?=$this->formElement($form->get('title')->setAttribute('class', 'form-control'));?>
-            <?=$this->formElementErrors($form->get('title'));?>
+                    <div class="form-group">
+                        <?=$this->formLabel($form->get('title'));?>
+                        <?=$this->formElement($form->get('title')->setAttribute('class', 'form-control'));?>
+                        <?=$this->formElementErrors($form->get('title'));?>
+                    </div>
+                    <div class="form-group">
+                        <?=$this->formLabel($form->get('body'));?>
+                        <?=$this->formElement($form->get('body')->setAttribute('class', 'form-control'));?>
+                        <?=$this->formElementErrors($form->get('body'));?>
+                    </div>
+                    <div class="form-group">
+                        <?=$this->formLabel($form->get('avatar'));?>
+                        <?=$this->formElement($form->get('avatar')->setAttribute('class', 'form-control avatar'));?>
+                        <?=$this->formElementErrors($form->get('avatar'));?>
+                    </div>
+                    <div class="form-group">
+                        <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna'));?>
+                    </div>
+                    <?= $this->form()->closeTag() ?>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <?=$this->formLabel($form->get('body'));?>
-            <?=$this->formElement($form->get('body')->setAttribute('class', 'form-control'));?>
-            <?=$this->formElementErrors($form->get('body'));?>
-        </div>
-        <div class="form-group">
-            <?=$this->formLabel($form->get('avatar'));?>
-            <?=$this->formElement($form->get('avatar')->setAttribute('class', 'form-control avatar'));?>
-            <?=$this->formElementErrors($form->get('avatar'));?>
-        </div>
-        <div class="form-group">
-            <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna'));?>
-        </div>
-    <?= $this->form()->closeTag() ?>
-        </section>
-    <aside class="layout__aside"></aside>
+    </div>
 </div>
