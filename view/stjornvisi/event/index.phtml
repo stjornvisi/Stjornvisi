@@ -224,6 +224,35 @@ $this->headMeta()->setProperty('og:image', ($this->event->avatar)
 	</div>
 </div>
 
+<div class="panel panel--inset">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box box--news">
+                <div class="box__title"><h2>Fréttir af viðburðinum</h2></div>
+                <div class="box__content">
+                    <?php foreach($news as $entry):?>
+                        <article class="entry<?if($entry->avatar):?> entry--has-image<?endif?> entry--has-image-left">
+                            <div class="entry__image">
+                                <?php if($entry->avatar):?>
+                                    <a href="<?=$this->url('frettir/index',array('id'=>$entry->id))?>" class="block-element__poster">
+                                        <?=$this->image($entry->avatar, FileProperties::DIR_LARGE);?>
+                                    </a>
+                                <?php endif;?>
+                            </div>
+                            <time class="entry__info" datetime="<?=$entry->created_date->format('c')?>">
+                                <?=$this->date($entry->created_date,Date::FORMAT_DATE_TIME)?>
+                            </time>
+                            <div class="entry__title"><h3><a href="<?=$this->url('frettir/index',array('id'=>$entry->id))?>"><?=$entry->title?></a></h3></div>
+                            <div class="entry__content">
+                                <?=$this->paragrapher( mb_substr($entry->body,0,200,'utf-8').'&#8230;'  );?>
+                            </div>
+                        </article>
+                    <?php endforeach;?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="panel">
 	<div class="panel__container">

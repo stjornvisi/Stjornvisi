@@ -31,7 +31,9 @@ class NewsController extends AbstractActionController
     public function indexAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var User $userService */
         $userService = $sm->get('Stjornvisi\Service\User');
+        /** @var News $newsService */
         $newsService = $sm->get('Stjornvisi\Service\News');
 
         $authService = new AuthenticationService();

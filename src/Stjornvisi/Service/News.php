@@ -15,6 +15,7 @@ use Stjornvisi\Lib\DataSourceAwareInterface;
  * @property string modified_date
  * @property int group_id
  * @property int user_id
+ * @property int event_id
  */
 class News extends AbstractService implements DataSourceAwareInterface
 {
@@ -58,6 +59,15 @@ class News extends AbstractService implements DataSourceAwareInterface
                 'id' => $news->group_id
             ));
             $news->group = $groupStatement->fetchObject();
+
+            $eventStatement = $this->pdo->prepare("
+                SELECT * FROM `Event` E 
+                WHERE id = :id
+            ");
+            $eventStatement->execute(array(
+                'id' => $news->event_id
+            ));
+            $news->event = $eventStatement->fetchObject();
 
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return $news;
@@ -279,17 +289,14 @@ class News extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-              SELECT * FROM News N 
-              WHERE group_id IS NULL AND event_id IS NOT NULL
+              SELECT N.*, E.subject as event_subject FROM News N 
+              LEFT JOIN Event E ON N.event_id = E.id
+              WHERE N.group_id IS NULL 
+              AND N.event_id IS NOT NULL
+              AND E.event_date < NOW()
               ORDER BY N.created_date DESC LIMIT {$limit}");
             $statement->execute();
             $news = $statement->fetchAll();
-
-            $groupStatement = $this->pdo->prepare("SELECT * FROM `Event` WHERE id = :id;");
-            foreach ($news as $item) {
-                $groupStatement->execute(array('id'=>$item->event_id));
-                $item->event = $groupStatement->fetchObject();
-            }
 
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return array_map(function ($item) {
@@ -323,10 +330,10 @@ class News extends AbstractService implements DataSourceAwareInterface
         try {
             $statement = $this->pdo->prepare("
               SELECT * FROM News N 
-              WHERE group_id IS NULL AND event_id = :id
+              WHERE N.group_id IS NULL AND N.event_id = :id
               ORDER BY N.created_date DESC LIMIT {$limit}");
-            $statement->execute();
-            $news = $statement->fetchAll(['id' => $eventId]);
+            $statement->execute(array('id' => $eventId));
+            $news = $statement->fetchAll();
 
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return array_map(function ($item) {
@@ -340,8 +347,7 @@ class News extends AbstractService implements DataSourceAwareInterface
             $this->getEventManager()->trigger('error', $this, array(
                 'exception' => $e->getTraceAsString(),
                 'sql' => array(
-                    isset($statement)?$statement->queryString:null,
-                    isset($groupStatement)?$groupStatement->queryString:null
+                    isset($statement)?$statement->queryString:null
                 )
             ));
             throw new Exception("Can't get event news.", 0, $e);

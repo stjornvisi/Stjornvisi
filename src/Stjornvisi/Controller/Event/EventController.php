@@ -2,7 +2,9 @@
 namespace Stjornvisi\Controller\Event;
 
 use \DateTime;
+use Stjornvisi\Service\Event;
 use Stjornvisi\Service\Group;
+use Stjornvisi\Service\News;
 use Stjornvisi\Service\User;
 use Stjornvisi\View\Model\CsvModel;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -38,8 +40,13 @@ class EventController extends AbstractActionController
     public function indexAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var User $userService */
         $userService = $sm->get(User::class);
+        /** @var Event $eventService */
         $eventService = $sm->get(EventService::class);
+        /** @var News $newsService */
+        $newsService = $sm->get(News::class);
+        /** @var AuthenticationService $authService */
         $authService = $sm->get(AuthenticationService::class);
 
         $identity = ($authService->hasIdentity())
@@ -83,6 +90,7 @@ class EventController extends AbstractActionController
         return new ViewModel([
             'event' => $event,
             'access' => $access,
+            'news' => $newsService->getByEvent($event->id),
             'related' => $eventService->getRelated($groupIds, $event->id),
             'aggregate' => $eventService->aggregateAttendance($event->id),
             'register_message' => $registerMessage,

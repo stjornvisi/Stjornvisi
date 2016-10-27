@@ -91,6 +91,11 @@ class MediaController extends AbstractActionController
 
     private function requestContentLength(Request $request)
     {
-        return (int) $request->getHeaders()->get('Content-Length')->getFieldValue();
+        $contentLength = $request->getHeaders()->get('Content-Length');
+        if ($contentLength) {
+            return $contentLength->getFieldValue();
+        }
+
+        return 0;
     }
 }
