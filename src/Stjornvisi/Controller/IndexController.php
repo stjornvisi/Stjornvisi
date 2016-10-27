@@ -37,6 +37,7 @@ class IndexController extends AbstractActionController
         //SERVICES
         //  load all servicesE
         $sm = $this->getServiceLocator();
+        /** @var News $newsService */
         $newsService = $sm->get('Stjornvisi\Service\News');
         /** @var Event $eventService */
         $eventService = $sm->get('Stjornvisi\Service\Event');
@@ -51,7 +52,7 @@ class IndexController extends AbstractActionController
             return new ViewModel([
                 'groups' => $groupService->fetchDetails($auth->getIdentity()->id),
                 'newsPrimary' => $newsService->getNotGrouped(1),
-                'eventNews' => $newsService->getByUser($auth->getIdentity()->id, 3, false),
+                'eventNews' => $newsService->getEventNews(3),
                 'events' => $eventService->getByUser($auth->getIdentity()->id, 3),
                 'eventCount' => $eventService->fetchUpcomingCount(),
                 'eventsAttending' => $eventService->getAttendingByUser($auth->getIdentity()->id),

@@ -242,7 +242,8 @@ class News extends AbstractService implements DataSourceAwareInterface
     {
         try {
             $statement = $this->pdo->prepare("
-              SELECT * FROM News N WHERE group_id IS NULL
+              SELECT * FROM News N 
+              WHERE group_id IS NULL AND event_id IS NULL
               ORDER BY N.created_date DESC LIMIT {$limit}");
             $statement->execute();
             $news = $statement->fetchAll();
@@ -267,6 +268,49 @@ class News extends AbstractService implements DataSourceAwareInterface
         }
     }
 
+    /**
+     * Get news that are connected to events.
+     *
+     * @param int $limit
+     * @return array|News[]
+     * @throws Exception
+     */
+    public function getEventNews($limit = 10)
+    {
+        try {
+            $statement = $this->pdo->prepare("
+              SELECT * FROM News N 
+              WHERE group_id IS NULL AND event_id IS NOT NULL
+              ORDER BY N.created_date DESC LIMIT {$limit}");
+            $statement->execute();
+            $news = $statement->fetchAll();
+
+            $groupStatement = $this->pdo->prepare("SELECT * FROM `Event` WHERE id = :id;");
+            foreach ($news as $item) {
+                $groupStatement->execute(array('id'=>$item->event_id));
+                $item->event = $groupStatement->fetchObject();
+            }
+
+            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+            return array_map(function ($item) {
+                $item->created_date = ( !empty($item->created_date) )
+                    ? new DateTime($item->created_date)
+                    : $item->created_date;
+                return $item;
+            }, $news);
+
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                    isset($groupStatement)?$groupStatement->queryString:null
+                )
+            ));
+            throw new Exception("Can't get event news.", 0, $e);
+        }
+    }
+    
     /**
      * Get news that are not connected to groups.
      *
@@ -318,17 +362,20 @@ class News extends AbstractService implements DataSourceAwareInterface
         try {
             if ($getNotGrouped) {
                 $statement = $this->pdo->prepare("
-                  SELECT * FROM News N WHERE group_id IN (
+                  SELECT * FROM News N 
+                  WHERE (group_id IN (
                     SELECT group_id FROM Group_has_User GhU WHERE user_id = :id
-                  )
-                  OR group_id IS NULL
+                  ) OR group_id IS NULL)
+                  AND N.event_id IS NULL
                   ORDER BY N.created_date DESC LIMIT {$limit}");
             }
             else {
                 $statement = $this->pdo->prepare("
-                  SELECT * FROM News N WHERE group_id IN (
+                  SELECT * FROM News N 
+                  WHERE group_id IN (
                     SELECT group_id FROM Group_has_User GhU WHERE user_id = :id
                   )
+                  AND N.event_id IS NULL
                   ORDER BY N.created_date DESC LIMIT {$limit}");
             }
             $statement->execute(array('id'=>$id));

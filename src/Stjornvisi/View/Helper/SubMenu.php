@@ -138,7 +138,6 @@ class SubMenu extends AbstractHelper
                                         'uri' => $view->url('vidburdir/dates'),
                                         'class' => 'icon-calendar'
                                     ),
-                                    array(), // Item number 2 never renders?!? wtf?
                                     array(
                                         'label' => 'Tölfræði',
                                         'title' => 'Tölfræði viðburða',
