@@ -63,12 +63,12 @@ use \Stjornvisi\View\Helper\Date;
                 <div class="box__title"><h2>Fréttir frá faghópum</h2></div>
                 <div class="box__content">
                     <?php /** @var \Stjornvisi\Service\News $news */
-                    foreach ($eventNews as $i => $news): ?>
+                    foreach ($newsSecondary as $i => $news): ?>
                             <div class="entry<?php if ($news->avatar): ?> entry--has-image<?php endif ?> entry--border">
                                 <div class="entry__info">
                                     <?= $this->date($news->created_date, Date::FORMAT_DATE_TIME) ?>
                                     <?php if ($news->event_id):?>
-                                    | <a href="<?=$this->url('vidburdir/index', array('id'=>$news->event_id));?>"><?=$news->event_subject?></a>
+                                    | <a href="<?=$this->url('vidburdir/index', array('id'=>$news->event_id));?>"><?=$news->event->subject?></a>
                                     <?php endif?>
                                 </div>
                                 <div class="entry__title"><h3><a

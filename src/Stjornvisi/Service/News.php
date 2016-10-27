@@ -347,7 +347,69 @@ class News extends AbstractService implements DataSourceAwareInterface
             throw new Exception("Can't get event news.", 0, $e);
         }
     }
-    
+
+    /**
+     * Get news that are connected to groups or events.
+     *
+     * @param int $limit
+     * @return array|News[]
+     * @throws Exception
+     */
+    public function getConnected($limit = 10)
+    {
+        try {
+            $statement = $this->pdo->prepare("
+              SELECT * FROM News N 
+              WHERE N.group_id IS NOT NULL OR N.event_id IS NOT NULL
+              ORDER BY N.created_date DESC LIMIT {$limit}");
+            $statement->execute();
+            $news = $statement->fetchAll();
+
+            foreach ($news as $item) {
+                $item->created_date = new DateTime($item->created_date);
+                $item->modified_date = new DateTime($item->modified_date);
+
+                if ($item->group_id) {
+                    $groupStatement = $this->pdo->prepare("
+                    SELECT G.id, G.name, G.name_short, G.url
+                    FROM `Group` G WHERE id = :id
+                ");
+                    $groupStatement->execute(array(
+                        'id' => $item->group_id
+                    ));
+                    $item->group = $groupStatement->fetchObject();
+                }
+
+                if ($item->event_id) {
+                    $eventStatement = $this->pdo->prepare("
+                    SELECT * FROM `Event` E 
+                    WHERE id = :id
+                ");
+                    $eventStatement->execute(array(
+                        'id' => $item->event_id
+                    ));
+
+                    $item->event = $eventStatement->fetchObject();
+                    $item->event->event_time = new DateTime($item->event->event_time);
+                    $item->event->event_date = new DateTime($item->event->event_date);
+                    $item->event->event_end = new DateTime($item->event->event_end);
+                }
+            }
+
+            $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
+            return $news;
+
+        } catch (PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null
+                )
+            ));
+            throw new Exception("Can't get event news.", 0, $e);
+        }
+    }
+
     /**
      * Get news that are not connected to groups.
      *

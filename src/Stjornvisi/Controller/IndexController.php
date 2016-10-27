@@ -52,7 +52,8 @@ class IndexController extends AbstractActionController
             return new ViewModel([
                 'groups' => $groupService->fetchDetails($auth->getIdentity()->id),
                 'newsPrimary' => $newsService->getNotGrouped(1),
-                'eventNews' => $newsService->getEventNews(3),
+                'newsSecondary' => $newsService->getConnected(3),
+                //'eventNews' => $newsService->getEventNews(3),
                 'events' => $eventService->getByUser($auth->getIdentity()->id, 3),
                 'eventCount' => $eventService->fetchUpcomingCount(),
                 'eventsAttending' => $eventService->getAttendingByUser($auth->getIdentity()->id),
