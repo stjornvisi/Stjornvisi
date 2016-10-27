@@ -14,6 +14,7 @@ $this->headMeta()->setProperty('og:image', ($this->news->avatar)
 );
 
 use Stjornvisi\Properties\FileProperties;
+use \Stjornvisi\View\Helper\Date;
 ?>
 <?if($this->access->is_admin || $this->access->type >= 1):?>
 <div class="panel panel--admin">
@@ -85,6 +86,45 @@ use Stjornvisi\Properties\FileProperties;
 	</div>
 </div>
 
+<?php if ($news->event):?>
+    <div class="panel">
+        <div class="panel__container">
+            <div class="panel__content">
+                <div class="box box--events">
+                    <div class="box__title"><h2>Um viðburðinn</h2></div>
+                    <div class="box__content">
+                        <div class="entry">
+                            <div class="entry__title">
+                                <div class="entry__date">
+                                    <span class="day"><?=$this->date($news->event->event_date, Date::FORMAT_DAY)?>.</span>
+                                    <span class="month"><?=$this->date($news->event->event_date, Date::FORMAT_MONTH_SHORT)?></span>
+                                    <span class="year"><?=$this->date($news->event->event_date, Date::FORMAT_YEAR)?></span>
+                                </div>
+                                <h3><a href="<?=$this->url('vidburdir/index',array('id'=>$news->event->id))?>"><?=$news->event->subject?></a></h3>
+                                <div class="entry__info">
+                                    <i class="fa fa-clock-o"></i>
+                                    <? if($news->event->event_time) : ?>
+                                        <?=$news->event->event_time->format("H:i")?>
+                                        <? if($news->event->event_end) : ?>
+                                            - <?=$news->event->event_end->format("H:i")?>
+                                        <? endif; ?>
+                                    <? endif; ?>
+                                    <? if($news->event->location) : ?>
+                                        <span class="separator">/</span>
+                                        <i class="fa fa-map-marker"></i> <?=$news->event->location?>
+                                    <? endif; ?>
+                                </div>
+                            </div>
+                            <div class="entry__content">
+                                <?=$this->paragrapher(mb_substr($news->event->body,0,200,'utf-8').'&#8230;'  );?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif?>
 
 
 

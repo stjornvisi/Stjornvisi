@@ -51,23 +51,31 @@ class News extends AbstractService implements DataSourceAwareInterface
             $news->created_date = new DateTime($news->created_date);
             $news->modified_date = new DateTime($news->modified_date);
 
-            $groupStatement = $this->pdo->prepare("
-                SELECT G.id, G.name, G.name_short, G.url
-                FROM `Group` G WHERE id = :id
-            ");
-            $groupStatement->execute(array(
-                'id' => $news->group_id
-            ));
-            $news->group = $groupStatement->fetchObject();
+            if ($news->group_id) {
+                $groupStatement = $this->pdo->prepare("
+                    SELECT G.id, G.name, G.name_short, G.url
+                    FROM `Group` G WHERE id = :id
+                ");
+                $groupStatement->execute(array(
+                    'id' => $news->group_id
+                ));
+                $news->group = $groupStatement->fetchObject();
+            }
 
-            $eventStatement = $this->pdo->prepare("
-                SELECT * FROM `Event` E 
-                WHERE id = :id
-            ");
-            $eventStatement->execute(array(
-                'id' => $news->event_id
-            ));
-            $news->event = $eventStatement->fetchObject();
+            if ($news->event_id) {
+                $eventStatement = $this->pdo->prepare("
+                    SELECT * FROM `Event` E 
+                    WHERE id = :id
+                ");
+                $eventStatement->execute(array(
+                    'id' => $news->event_id
+                ));
+
+                $news->event = $eventStatement->fetchObject();
+                $news->event->event_time = new DateTime($news->event->event_time);
+                $news->event->event_date = new DateTime($news->event->event_date);
+                $news->event->event_end = new DateTime($news->event->event_end);
+            }
 
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return $news;
@@ -77,6 +85,7 @@ class News extends AbstractService implements DataSourceAwareInterface
                 'sql' => array(
                     isset($statement)?$statement->queryString:null,
                     isset($groupStatement)?$groupStatement->queryString:null,
+                    isset($eventStatement)?$eventStatement->queryString:null,
                 )
             ));
             throw new Exception("Can't get news item. news:[{$id}]", 0, $e);
@@ -215,17 +224,38 @@ class News extends AbstractService implements DataSourceAwareInterface
                 'exclude' => $exclude
             ));
             $news = $statement->fetchAll();
+
             $groupStatement = $this->pdo->prepare("
                 SELECT G.id, G.name_short, G.name, G.url
                 FROM `Group` G WHERE id = :id
             ");
+
+            $eventStatement = $this->pdo->prepare("
+                SELECT * FROM `Event` E 
+                WHERE id = :id
+            ");
+
             foreach ($news as $item) {
-                $groupStatement->execute(array(
-                    'id' => $item->group_id
-                ));
                 $item->created_date = new DateTime($item->created_date);
                 $item->modified_date = new DateTime($item->modified_date);
-                $item->group = $groupStatement->fetchObject();
+
+                if ($item->group_id) {
+                    $groupStatement->execute(array(
+                        'id' => $item->group_id
+                    ));
+                    $item->group = $groupStatement->fetchObject();
+                }
+
+                if ($item->event_id) {
+                    $eventStatement->execute(array(
+                        'id' => $item->event_id
+                    ));
+
+                    $item->event = $eventStatement->fetchObject();
+                    $item->event->event_time = new DateTime($item->event->event_time);
+                    $item->event->event_date = new DateTime($item->event->event_date);
+                    $item->event->event_end = new DateTime($item->event->event_end);
+                }
             }
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return $news;

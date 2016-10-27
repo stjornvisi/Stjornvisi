@@ -1,36 +1,43 @@
 <?php
 use Stjornvisi\Properties\FileProperties;
 use \Stjornvisi\View\Helper\Date;
+
 ?>
 
 <div class="panel">
-	<div class="panel__container">
-		<div class="panel__content">
-			<div class="box box--news">
-				<div class="box__title"><h2>Fleiri fréttir og pistlar</h2></div>
-				<div class="box__content">
-				<?php foreach($this->related as $news):?>
-					<article class="entry<?if($news->avatar):?> entry--has-image<?endif?> entry--has-image-left">
-						<div class="entry__image">
-							<?php if($news->avatar):?>
-								<a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>" class="block-element__poster">
-									<?=$this->image($news->avatar, FileProperties::DIR_LARGE);?>
-								</a>
-							<?php endif;?>
-						</div>
-						<time class="entry__info" datetime="<?=$news->created_date->format('c')?>">
-							<?=$this->date($news->created_date,Date::FORMAT_DATE_TIME)?>
-						</time>
-						<div class="entry__title"><h3><a href="<?=$this->url('frettir/index',array('id'=>$news->id))?>"><?=$news->title?></a></h3></div>
-						<div class="entry__content">
-							<?=$this->paragrapher( mb_substr($news->body,0,200,'utf-8').'&#8230;'  );?>
-						</div>
-					</article>
-				<?php endforeach;?>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box box--news">
+                <div class="box__title"><h2>Fleiri fréttir og pistlar</h2></div>
+                <div class="box__content">
+                    <?php foreach ($this->related as $news): ?>
+                        <div class="entry<? if ($news->avatar): ?> entry--has-image<? endif ?> entry--has-image-left">
+                            <div class="entry__image">
+                                <?php if ($news->avatar): ?>
+                                    <a href="<?= $this->url('frettir/index', array('id' => $news->id)) ?>"
+                                       class="block-element__poster">
+                                        <?= $this->image($news->avatar, FileProperties::DIR_LARGE); ?>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="entry__info">
+                                <?= $this->date($news->created_date, Date::FORMAT_DATE_TIME) ?>
+                                <?php if ($news->event_id): ?>
+                                    | <a href="<?= $this->url('vidburdir/index', array('id' => $news->event_id)); ?>"><?= $news->event->subject ?></a>
+                                <?php endif ?>
+                            </div>
+                            <div class="entry__title"><h3><a
+                                            href="<?= $this->url('frettir/index', array('id' => $news->id)) ?>"><?= $news->title ?></a>
+                                </h3></div>
+                            <div class="entry__content">
+                                <?= $this->paragrapher(mb_substr($news->body, 0, 200, 'utf-8') . '&#8230;'); ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
