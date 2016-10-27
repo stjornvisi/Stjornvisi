@@ -67,7 +67,7 @@ use \Stjornvisi\View\Helper\Date;
                             <div class="entry<?php if ($news->avatar): ?> entry--has-image<?php endif ?> entry--border">
                                 <div class="entry__info">
                                     <?= $this->date($news->created_date, Date::FORMAT_DATE_TIME) ?>
-                                    | <?=$news->event_subject?>
+                                    | <a href="<?=$this->url('vidburdir/index', array('id'=>$news->event_id));?>"><?=$news->event_subject?></a>
                                 </div>
                                 <div class="entry__title"><h3><a
                                                 href="<?= $this->url('frettir/index', array('id' => $news->id)) ?>"><?= $news->title ?></a>
