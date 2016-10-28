@@ -437,7 +437,7 @@ class News extends AbstractService implements DataSourceAwareInterface
         try {
             $statement = $this->pdo->prepare("
               SELECT * FROM News N 
-              WHERE N.group_id IS NULL AND N.event_id = :id
+              WHERE N.event_id = :id
               ORDER BY N.created_date DESC LIMIT {$limit}");
             $statement->execute(array('id' => $eventId));
             $news = $statement->fetchAll();
