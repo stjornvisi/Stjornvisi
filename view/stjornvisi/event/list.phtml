@@ -81,6 +81,8 @@ use \Stjornvisi\View\Helper\Date;
     </div>
 </div>
 
+<?php if (count($eventsPassed)):?>
+
 <div class="panel panel--inset">
     <div class="panel__container">
         <div class="panel__content">
@@ -114,34 +116,14 @@ use \Stjornvisi\View\Helper\Date;
                                 <?= $news->body ?>
                             </div>
                         </div>
-                    <? endforeach; ?>
-                    <!--
-					<? foreach ($this->eventsPassed as $event) : ?>
-						<div class="entry">
-							<div class="entry__info">
-								<?= $this->date($event->event_date) ?>
-							</div>
-							<div class="entry__title">
-								<h3><a href="<?= $this->url('vidburdir/index', array('id' => $event->id)) ?>"><?= $event->subject ?></a></h3>
-							</div>
-							<div class="entry__image">
-								<?php if ($event->avatar): ?>
-									<a class="block-element__poster" href="<?= $this->url('vidburdir/index', array('id' => $event->id)) ?>">
-										<?= $this->image(($event->gallery_avatar) ? $event->gallery_avatar : $event->avatar, FileProperties::DIR_LARGE); ?>
-									</a>
-								<?php endif; ?>
-							</div>
-							<div class="entry__content">
-								<?= $this->paragrapher(mb_substr($event->body, 0, 200, 'utf-8') . '&#8230;'); ?>
-							</div>
-						</div>
-					<? endforeach; ?>
-					-->
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php endif?>
 
 <div class="panel" id="calendar">
     <div class="panel__container">
