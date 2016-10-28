@@ -315,11 +315,11 @@ class News extends AbstractService implements DataSourceAwareInterface
      * @return array|News[]
      * @throws Exception
      */
-    public function getEventNews($limit = 10)
+    public function getPassedEventNews($limit = 10)
     {
         try {
             $statement = $this->pdo->prepare("
-              SELECT N.*, E.subject as event_subject FROM News N 
+              SELECT N.* FROM News N 
               LEFT JOIN Event E ON N.event_id = E.id
               WHERE N.group_id IS NULL 
               AND N.event_id IS NOT NULL
@@ -327,6 +327,21 @@ class News extends AbstractService implements DataSourceAwareInterface
               ORDER BY N.created_date DESC LIMIT {$limit}");
             $statement->execute();
             $news = $statement->fetchAll();
+
+            foreach ($news as $item) {
+                $eventStatement = $this->pdo->prepare("
+                    SELECT * FROM `Event` E 
+                    WHERE id = :id
+                ");
+                $eventStatement->execute(array(
+                    'id' => $item->event_id
+                ));
+
+                $item->event = $eventStatement->fetchObject();
+                $item->event->event_time = new DateTime($item->event->event_time);
+                $item->event->event_date = new DateTime($item->event->event_date);
+                $item->event->event_end = new DateTime($item->event->event_end);
+            }
 
             $this->getEventManager()->trigger('read', $this, array(__FUNCTION__));
             return array_map(function ($item) {
