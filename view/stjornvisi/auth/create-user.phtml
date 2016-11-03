@@ -6,103 +6,90 @@
  * Time: 08:45
  */
 
-    $this->form->setAttribute('class','');
+$this->form->setAttribute('class', '');
 ?>
 
 <div class="panel panel--columns-two">
     <div class="panel__container">
-		<div class="panel__content panel--row">
-			<ul class="stepper">
-				<li class="stepper--current">1# Notendaupplýsingar</li>
-				<li>2# Fyrirtækjaupplýsingar</li>
-				<li>3# Innskráning</li>
-			</ul>
+        <div class="panel__content panel--row">
+            <ul class="stepper">
+                <li class="stepper--current">1# Notendaupplýsingar</li>
+                <li>2# Fyrirtækjaupplýsingar</li>
+                <li>3# Innskráning</li>
+            </ul>
 
-			<div class="box">
-				<div class="box__content">
-				<?=$this->form()->openTag($this->form);?>
+            <div class="box">
+                <div class="box__content">
+                    <?= $this->form()->openTag($this->form); ?>
 
-				<div class="form-group <?=(!empty($this->form->get('name')->getMessages()))?'has-error':'';?> ">
-					<?=$this->formLabel($form->get('name'));?>
-					<?=$this->formElement($form->get('name')->setAttribute('class', 'form-control'));?>
-					<?=$this->formElementErrors($form->get('name'));?>
-				</div>
+                    <div class="form-group <?= (!empty($this->form->get('name')->getMessages())) ? 'has-error' : ''; ?> ">
+                        <?= $this->formLabel($form->get('name')); ?>
+                        <?= $this->formElement($form->get('name')->setAttribute('class', 'form-control')); ?>
+                        <?= $this->formElementErrors($form->get('name')); ?>
+                    </div>
 
-				<div class="form-group <?=(!empty($this->form->get('email')->getMessages()))?'has-error':'';?> ">
-					<?=$this->formLabel($form->get('email'));?>
-					<?=$this->formElement($form->get('email')->setAttribute('class', 'form-control'));?>
-					<?=$this->formElementErrors($form->get('email'));?>
-				</div>
+                    <div class="form-group <?= (!empty($this->form->get('email')->getMessages())) ? 'has-error' : ''; ?> ">
+                        <?= $this->formLabel($form->get('email')); ?>
+                        <?= $this->formElement($form->get('email')->setAttribute('class', 'form-control')); ?>
+                        <?= $this->formElementErrors($form->get('email')); ?>
+                    </div>
 
-				<div class="form-group <?=(!empty($this->form->get('title')->getMessages()))?'has-error':'';?> ">
-					<?=$this->formLabel($form->get('title'));?>
-					<?=$this->formElement($form->get('title')->setAttribute('class', 'form-control'));?>
-					<?=$this->formElementErrors($form->get('title'));?>
-				</div>
+                    <div class="form-group <?= (!empty($this->form->get('title')->getMessages())) ? 'has-error' : ''; ?> ">
+                        <?= $this->formLabel($form->get('title')); ?>
+                        <?= $this->formElement($form->get('title')->setAttribute('class', 'form-control')); ?>
+                        <?= $this->formElementErrors($form->get('title')); ?>
+                    </div>
 
-				<div class="form-group form-group--right">
-					<?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna'));?>
-				</div>
+                    <div class="form-group form-group--right">
+                        <?= $this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna')); ?>
+                    </div>
 
-				<?= $this->form()->closeTag() ?>
-				</div>
-			</div>
-			<div class="box">
-				<div class="box__title"><h3>Notenda upplýsingar</h3></div>
-				<div class="box__content">
-					<p>Að stofna notendaaðgang er einfalt. Ferlið skiptist í þrjá hluta</p>
-					<ol>
-						<li>Fyrst þurfum við að fá frá þér fullt nafn, gilt netfang og starfstitil</li>
-						<li>Því næst þarft þú að tengja þig við fyrirtæki, stofnun eða skóla</li>
-						<li>Seinast skráir þú þig inn.</li>
-					</ol>
-				</div>
+                    <?= $this->form()->closeTag() ?>
+                </div>
+            </div>
+            <div class="box">
+                <div class="box__title">
+                    <h3>Notenda upplýsingar</h3>
+                </div>
+                <div class="box__content">
+                    <p>Að stofna notendaaðgang er einfalt. Ferlið skiptist í þrjá hluta</p>
+                    <ol>
+                        <li>Fyrst þurfum við að fá frá þér fullt nafn, gilt netfang og starfstitil</li>
+                        <li>Því næst þarft þú að tengja þig við fyrirtæki, stofnun eða skóla</li>
+                        <li>Seinast skráir þú þig inn.</li>
+                    </ol>
+                </div>
 
-				<div class="box__title"><h3>Verðskrá</h3></div>
-				<div class="box__content">
-					<p>Aðild að Stjórnvísi er opin öllum bæði fyrirtækjum og einstaklingum. Upphæð félagsgjalda
-						fyrirtækja fer eftir starfsmannafjölda. Allir starfsmenn aðildarfyrirtækja fá
-						aðgang að faghópafundum félagsins sér að kostnaðarlausu. Félagsgjöld eru ákveðin á
-						aðalfundi félagsins í maí ár hvert en fjárhagsárið er frá 1.janúar til 31.desember.</p>
-				</div>
+                <div class="box__title">
+                    <h3>Verðskrá</h3>
+                </div>
+                <div class="box__content">
+                    <p>Aðild að Stjórnvísi er opin öllum bæði fyrirtækjum og einstaklingum. Upphæð félagsgjalda
+                        fyrirtækja fer eftir starfsmannafjölda. Allir starfsmenn aðildarfyrirtækja fá aðgang að
+                        faghópafundum félagsins sér að kostnaðarlausu. Félagsgjöld eru ákveðin á aðalfundi félagsins í
+                        maí ár hvert en fjárhagsárið er frá 1.janúar til 31.desember.</p>
+                </div>
 
-				<div class="box__title"><h3>Félagsgjöld starfsárið 2014 - 2015</h3></div>
-				<div class="box__content">
-					<dl class="block-property-value">
-						<dt>&gt;200 starfsmenn</dt>
-						<dd>110.900</dd>
+                <div class="box__title">
+                    <h3>Félagsgjöld starfsárið 2016 - 2017</h3>
+                </div>
+                <div class="box__content">
+                    <ul>
+                        <li>Fyrirtæki með fleiri en 200 starfsmenn: 110.900</li>
+                        <li>Fyrirtæki með 100 - 199 starfsmenn: 88.900</li>
+                        <li>Fyrirtæki með 50 - 99 starfsmenn: 57.900</li>
+                        <li>Fyrirtæki með 25 - 49 starfsmenn: 43.900</li>
+                        <li>Fyrirtæki með 6 - 25 starfsmenn: 25.900</li>
+                        <li>Fyrirtæki með færri en 5 starfsmenn: 19.900</li>
+                        <li>Einstaklingar: 9.900</li>
+                    </ul>
 
-						<dt>100 - 199 starfsmenn</dt>
-						<dd>88.900</dd>
-
-						<dt>50 - 99 starfsmenn</dt>
-						<dd>57.900</dd>
-
-						<dt>50 - 99 starfsmenn</dt>
-						<dd>57.900</dd>
-
-						<dt>25 - 49 starfsmenn</dt>
-						<dd>43.900</dd>
-
-						<dt>6 - 25 starfsmenn</dt>
-						<dd>43.900</dd>
-
-						<dt>6 - 25 starfsmenn</dt>
-						<dd>25.900</dd>
-
-						<dt>&lt;5 starfsmenn</dt>
-						<dd>25.900</dd>
-
-						<dt>Einstaklingar</dt>
-						<dd>9.900</dd>
-					</dl>
-
-					<p>Nemendur á háskólastigi fá fría aðild að félaginu til eins árs í senn. Nemendur skrá sig sem
-						"háskólanema" í skráningarferlinu og félagið áskilur sér rétt til að leita staðfestingar á
-						skólavist hjá viðkomandi háskóla.</p>
-				</div>
-			</div>
-		</div>
+                    <p>Nemendur á háskólastigi fá fría aðild að félaginu til eins árs í senn. Nemendur skrá sig sem
+                        "háskólanema" í skráningarferlinu og félagið áskilur sér rétt til að leita staðfestingar á
+                        skólavist hjá viðkomandi háskóla.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
