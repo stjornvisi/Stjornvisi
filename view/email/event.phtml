@@ -83,7 +83,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 									<?php if (isset($event->$field) && $event->$field):?>
 									<?php if (isset($event->$fieldAvatar) && $event->$fieldAvatar):?>
 										<div style="text-align:center;font-size: 12px;">
-											<?=$this->image($event->$fieldAvatar, FileProperties::DIR_MEDIUM, ['block-element__image']);?>
+											<?=$this->image($event->$fieldAvatar, FileProperties::DIR_MEDIUM, ['responsive']);?>
 											<span><?=$event->$field?></span>
 										</div>
 									<?php endif;?>
@@ -92,6 +92,7 @@ $paragrapher = new \Stjornvisi\View\Helper\Paragrapher();
 								<?php endfor;?>
 							</tr>
 						</table>
+                        <style>img.responsive{max-width: 150px;height:auto;margin:0 auto 15px;}</style>
                     </td>
                 </tr>
                 <tr>
