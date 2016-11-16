@@ -5,32 +5,35 @@ $this->headTitle('Viðburður');
 $this->form->setAttribute('class', 'form-horizontal');
 ?>
 
-<div class="layout layout--three-columns">
-    <section class="layout__section">
-        <div class="block-element">
-            <header class="block-element__header">
-                <h1>
-                    <a href="<?=$this->url('vidburdir/index', ['id'=>$this->event->id])?>">Ítarefni fyrir <?=$this->event->subject;?></a>
-                </h1>
-            </header>
+<div class="panel">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__title">
+                    <h1>
+                        <a href="<?=$this->url('vidburdir/index', ['id'=>$this->event->id])?>">Ítarefni fyrir <?=$this->event->subject;?></a>
+                    </h1>
+                </div>
+                <div class="box__content">
+                    <?=$this->form()->openTag($this->form);?>
+                    <div class="form-group">
+                        <?=$this->formLabel($form->get('name'));?>
+                        <?=$this->formElement($form->get('name')->setAttribute('class', 'form-control media'));?>
+                        <?=$this->formElementErrors($form->get('name'));?>
+                    </div>
+                    <div class="form-group">
+                        <?=$this->formLabel($form->get('description'));?>
+                        <?=$this->formElement($form->get('description')->setAttribute('class', 'form-control'));?>
+                        <?=$this->formElementErrors($form->get('description'));?>
+                    </div>
+                    <div class="form-group">
+                        <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna'));?>
+                    </div>
+                    <?= $this->form()->closeTag() ?>
+                </div>
+            </div>
         </div>
-        <?=$this->form()->openTag($this->form);?>
-            <div class="form-group">
-                <?=$this->formLabel($form->get('name'));?>
-                <?=$this->formElement($form->get('name')->setAttribute('class', 'form-control media'));?>
-                <?=$this->formElementErrors($form->get('name'));?>
-            </div>
-            <div class="form-group">
-                <?=$this->formLabel($form->get('description'));?>
-                <?=$this->formElement($form->get('description')->setAttribute('class', 'form-control'));?>
-                <?=$this->formElementErrors($form->get('description'));?>
-            </div>
-            <div class="form-group">
-                <?=$this->formElement($form->get('submit')->setAttribute('class', 'btn btn-default')->setValue('Stofna'));?>
-            </div>
-        <?= $this->form()->closeTag() ?>
-    </section>
-    <aside class="layout__aside"></aside>
+    </div>
 </div>
 
 
