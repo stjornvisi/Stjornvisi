@@ -142,10 +142,10 @@ setlocale(LC_ALL, 'is_IS.utf-8');
                 <tr>
                     <td align="center"
                         style="font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 400; color: #434A54; line-height: 22px;">
-                        <?php $date_start = urlencode($event->event_date->format('Y-m-d') . ' ' . $this->event->event_time->format('H:i:s')) ?>
-                        <?php $date_end = urlencode($event->event_date->format('Y-m-d') . ' ' . $this->event->event_end->format('H:i:s')) ?>
+                        <?php $date_start = urlencode($event->event_date->format('Y-m-d') . ' ' . $event->event_time->format('H:i:s')) ?>
+                        <?php $date_end = urlencode($event->event_date->format('Y-m-d') . ' ' . $event->event_end->format('H:i:s')) ?>
                         <?php $timezone = urlencode($event->event_date->format('e')) ?>
-                        <?php $location = urlencode($event->location) ?>
+                        <?php $location = urlencode($event->location.' '.$event->address) ?>
                         <?php $subject = urlencode($event->subject) ?>
                         <?php $body = urlencode($event->body) ?>
                         <?php $params = "?f=m&e[0][date_start]=$date_start&e[0][date_end]=$date_end&e[0][timezone]=$timezone&e[0][title]=$subject&e[0][description]=$body&e[0][location]=$location&e[0][organizer]=Stjórnvísi&e[0][organizer_email]=stjornvisi@stjornvisi.is&e[0][privacy]=public" ?>
