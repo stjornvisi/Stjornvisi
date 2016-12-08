@@ -86,6 +86,7 @@ class Group extends AbstractNotifier
      */
     private function getUsers($recipients, $test, $sender_id, $group_id)
     {
+        /** @var UserService $userService */
         $userService = $this->getServiceLocator()->get(UserService::class);
 
         //ALL OR FORMEN

@@ -382,6 +382,7 @@ class AuthController extends AbstractActionController
     public function loginAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var AuthenticationService $auth */
         $auth = $sm->get(AuthenticationService::class);
 
         //IS LOGGED IN
@@ -417,7 +418,7 @@ class AuthController extends AbstractActionController
                         $this->getResponse()->getHeaders()->addHeader($this->getSetCookie($cookieValue, $cookieTTL));
                         return $this->redirect()->toRoute('home');
                     } else {
-                        $form->get('email')->setMessages(["Rangt lykilorð"]);
+                        $form->get('passwd')->setMessages(["Innskráning mistókst"]);
 
                         return new ViewModel(['form' => $form, 'lost' => $lostForm]);
                     }
@@ -678,20 +679,25 @@ class AuthController extends AbstractActionController
             if ($form->isValid()) {
                 $user = $userService->get($form->get('email')->getValue());
                 if ($user) {
-                    $password = $this->createPassword(20);
-                    $userService->setPassword($user->id, $password);
-                    $this->getEventManager()->trigger(
-                        'notify',
-                        $this,
-                        [
-                            'action' => PasswordNotify::class,
-                            'data' => (object)[
-                            'recipients' => $user,
-                            'password' => $password,
-                            ],
-                        ]
-                    );
-                    return new ViewModel(['message' => 'Nýtt lykilorð hefur verið sent', 'form' => $form]);
+                    if ($user->deleted) {
+                        return new ViewModel(['message' => 'Notandinn tengdur við þetta netfang er ekki lengur virkur í kerfinu. Það getur verið vegna þess að fyrirtækið sem hann er tengdur er ekki lengur virkt eða að starfsmaður er ekki lengur tengdur fyrirtæki. Hafðu samband við okkur ef þú telur að þetta sé rangt.', 'form' => $form]);
+                    }
+                    else {
+                        $password = $this->createPassword(20);
+                        $userService->setPassword($user->id, $password);
+                        $this->getEventManager()->trigger(
+                            'notify',
+                            $this,
+                            [
+                                'action' => PasswordNotify::class,
+                                'data' => (object)[
+                                    'recipients' => $user,
+                                    'password' => $password,
+                                ],
+                            ]
+                        );
+                        return new ViewModel(['message' => 'Nýtt lykilorð hefur verið sent', 'form' => $form]);
+                    }
                 } else {
                     $form->get('email')->setMessages(array('Notandi fannst ekki'));
                     return new ViewModel(['form' => $form, 'message' => null]);

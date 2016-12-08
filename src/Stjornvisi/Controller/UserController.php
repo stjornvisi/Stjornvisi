@@ -180,7 +180,7 @@ class UserController extends AbstractActionController
 
             $csv = new Csv();
 
-            switch ($this->params('type', 'allir')) {
+            switch ($type) {
                 case 'formenn':
                     $users = $userService->fetchGroupMembers([2]);
                     break;
@@ -192,7 +192,7 @@ class UserController extends AbstractActionController
                     break;
             }
 
-            if ($this->params('type', 'allir') == 'formenn' || $this->params('type', 'allir') == 'stjornendur') {
+            if ($type === 'formenn' || $type === 'stjornendur') {
                 $csv->setHeader([
                     'Nafn',
                     'Titill',
@@ -472,6 +472,42 @@ class UserController extends AbstractActionController
                 } else {
                     return $this->redirect()->toRoute('notandi');
                 }
+            } else {
+                $this->getResponse()->setStatusCode(401);
+                $model = new ViewModel();
+                $model->setTemplate('error/401');
+                return $model;
+            }
+        } else {
+            return $this->notFoundAction();
+        }
+    }
+
+    /**
+     * Delete user.
+     */
+    public function safeDeleteAction()
+    {
+        $auth = new AuthenticationService();
+
+        if (!$auth->hasIdentity()) {
+            $this->getResponse()->setStatusCode(401);
+            $model = new ViewModel();
+            $model->setTemplate('error/401');
+            return $model;
+        }
+
+        $sm = $this->getServiceLocator();
+        /** @var  $userService \Stjornvisi\Service\User */
+        $userService = $sm->get('Stjornvisi\Service\User');
+
+        if (($user = $userService->get($this->params('id', null))) != false) {
+            if ($userService->getType($user->id) >= 1) {
+                $userService->safeDelete($user->id);
+
+                return $this->redirect()->toUrl($_SERVER['HTTP_REFERER']);
+
+                //return $this->redirect()->toRoute('notandi');
             } else {
                 $this->getResponse()->setStatusCode(401);
                 $model = new ViewModel();

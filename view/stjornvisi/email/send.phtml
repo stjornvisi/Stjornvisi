@@ -8,8 +8,11 @@
 
 ?>
 
-<div class="layout layout--three-columns">
-    <section class="layout__section">
+<div class="panel">
+    <div class="panel__container">
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__content">
 
         <?php if($this->msg):?>
             <div class="panel panel-default">
@@ -47,8 +50,9 @@
 
             <?= $this->form()->closeTag() ?>
         <?php endif;?>
-    </section>
-    <aside class="layout__aside">
-
-    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+

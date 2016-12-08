@@ -116,7 +116,9 @@ class Group extends AbstractService implements DataSourceAwareInterface, Service
                       group_id,
                       COUNT(*) as total
                     FROM
-                      Group_has_User
+                      Group_has_User ghu
+                      LEFT JOIN `User` u ON ghu.user_id = u.id
+                    WHERE u.deleted = 0   
                     GROUP BY
                       group_id
                   ) gu on g.id = gu.group_id
@@ -579,6 +581,7 @@ class Group extends AbstractService implements DataSourceAwareInterface, Service
                 INNER JOIN `Group` G ON (G.id = GU.group_id)
                 INNER JOIN UserEntry UE ON (UE.id = GU.id )
                 WHERE UE.company_id = :company_id
+                AND GU.deleted = 0
                 GROUP BY group_id
                 ORDER BY G.name
             ");

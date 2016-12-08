@@ -42,7 +42,7 @@ class Company extends AbstractService implements DataSourceAwareInterface
                 $membersStatement = $this->pdo->prepare("
                   SELECT U.id, U.name, U.email, U.title, ChU.key_user FROM Company_has_User ChU
                     JOIN User U ON (ChU.user_id = U.id)
-                    WHERE ChU.company_id = :id
+                    WHERE ChU.company_id = :id AND U.deleted = 0
                     ORDER BY ChU.key_user DESC, U.name;
                 ");
                 $membersStatement->execute(array(

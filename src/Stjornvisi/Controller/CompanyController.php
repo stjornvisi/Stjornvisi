@@ -5,7 +5,9 @@ use ArrayObject;
 use Stjornvisi\Form\Company as CompanyForm;
 use Stjornvisi\Lib\Csv;
 use Stjornvisi\Service\Company as CompanyService;
+use Stjornvisi\Service\Company;
 use Stjornvisi\Service\Group as GroupService;
+use Stjornvisi\Service\Group;
 use Stjornvisi\Service\User as UserService;
 use Stjornvisi\Service\Values;
 use Stjornvisi\View\Model\CsvModel;
@@ -34,8 +36,11 @@ class CompanyController extends AbstractActionController
     public function indexAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var UserService $userService */
         $userService = $sm->get(UserService::class);
+        /** @var Company $companyService */
         $companyService = $sm->get(CompanyService::class);
+        /** @var Group $groupService */
         $groupService = $sm->get(GroupService::class);
 
         //COMPANY FOUND
@@ -80,7 +85,8 @@ class CompanyController extends AbstractActionController
                     ],
                     'distribution' => $groupService->fetchCompanyEmployeeCount($company->id),
                     'company' => $company,
-                    'access' => $access
+                    'access' => $access,
+                    'identity' => $authService->getIdentity()
                     ]
                 );
             //ACCESS DENIED

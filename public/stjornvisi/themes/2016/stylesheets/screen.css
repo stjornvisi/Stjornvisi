@@ -9101,10 +9101,14 @@ nav[role=navigation] .navigation ul ul ul a {
 /* line 119, ../sass/components/_admin.scss */
 nav[role=navigation] .navigation .headline {
   display: block;
-  margin-bottom: 28px;
+  margin-bottom: 14px;
   border-bottom: 1px solid #f4f7f9;
 }
-/* line 126, ../sass/components/_admin.scss */
+/* line 124, ../sass/components/_admin.scss */
+nav[role=navigation] .navigation .last {
+  margin-bottom: 30px;
+}
+/* line 129, ../sass/components/_admin.scss */
 nav[role=navigation] .categories {
   background-color: #222;
   position: relative;
@@ -9113,7 +9117,7 @@ nav[role=navigation] .categories {
   width: 80px;
   height: 100%;
 }
-/* line 134, ../sass/components/_admin.scss */
+/* line 137, ../sass/components/_admin.scss */
 nav[role=navigation] .categories a {
   -webkit-transition: all 0.2s;
   -o-transition: all 0.2s;
@@ -9127,43 +9131,43 @@ nav[role=navigation] .categories a {
   color: #fff;
   border-bottom: 1px solid #505d62;
 }
-/* line 148, ../sass/components/_admin.scss */
+/* line 151, ../sass/components/_admin.scss */
 nav[role=navigation] .categories__item:hover {
   background-color: #2b6786;
 }
-/* line 151, ../sass/components/_admin.scss */
+/* line 154, ../sass/components/_admin.scss */
 nav[role=navigation] .categories__item.active {
   background-color: #2b6786;
 }
-/* line 156, ../sass/components/_admin.scss */
+/* line 159, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home {
   background-color: #669933;
 }
-/* line 158, ../sass/components/_admin.scss */
+/* line 161, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home:hover {
   background-color: #669933;
 }
-/* line 161, ../sass/components/_admin.scss */
+/* line 164, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--home:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 168, ../sass/components/_admin.scss */
+/* line 171, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--groups:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 175, ../sass/components/_admin.scss */
+/* line 178, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--users:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 182, ../sass/components/_admin.scss */
+/* line 185, ../sass/components/_admin.scss */
 nav[role=navigation] .categories--config:before {
   content: "";
   font-family: FontAwesome;
 }
-/* line 194, ../sass/components/_admin.scss */
+/* line 197, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-calendar-o:before,
 nav[role=navigation] .icon-calendar:before,
 nav[role=navigation] .icon-bar-chart:before,
@@ -9174,27 +9178,27 @@ nav[role=navigation] .icon-mail:before {
   font-family: FontAwesome;
   margin-right: 10px;
 }
-/* line 201, ../sass/components/_admin.scss */
+/* line 204, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-bar-chart:before {
   content: "";
 }
-/* line 205, ../sass/components/_admin.scss */
+/* line 208, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-plus:before {
   content: "";
 }
-/* line 209, ../sass/components/_admin.scss */
+/* line 212, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-list:before {
   content: "";
 }
-/* line 213, ../sass/components/_admin.scss */
+/* line 216, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-mail:before {
   content: "";
 }
-/* line 217, ../sass/components/_admin.scss */
+/* line 220, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-calendar-o:before {
   content: "";
 }
-/* line 221, ../sass/components/_admin.scss */
+/* line 224, ../sass/components/_admin.scss */
 nav[role=navigation] .icon-calendar:before {
   content: "";
 }

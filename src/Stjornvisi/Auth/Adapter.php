@@ -47,7 +47,8 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
             $statement = $this->pdo
                 ->prepare("
                 SELECT * FROM `User`
-                WHERE id = :id");
+                WHERE id = :id AND deleted = 0
+                ");
             $statement->execute(array(
                 'id' => $this->id,
             ));
@@ -55,7 +56,7 @@ class Adapter implements AdapterInterface, DataSourceAwareInterface
             $statement = $this->pdo
                 ->prepare("
                 SELECT * FROM `User`
-                WHERE email = :email AND passwd = md5(:passwd)");
+                WHERE email = :email AND passwd = md5(:passwd) AND deleted = 0");
             $statement->execute(array(
                 'email' => $this->username,
                 'passwd' => $this->password

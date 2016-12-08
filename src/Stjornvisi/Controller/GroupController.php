@@ -1068,6 +1068,7 @@ class GroupController extends AbstractActionController
     public function memberStatisticsAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var Group $groupService */
         $groupService = $sm->get('Stjornvisi\Service\Group');
 
         return new JsonModel(

@@ -93,6 +93,9 @@ class All extends AbstractNotifier
             return [$user->get($sender)];
         } else {
            switch ($recipients){
+               case "lykilstarfsmenn" :
+                   $recipientAddresses = $user->fetchAllKeyEmployeesForEmail();
+                   break;
                case "formenn" :
                    $recipientAddresses = $user->fetchAllChairmenForEmail();
                    break;

@@ -439,7 +439,8 @@ class Module
                     return new SubMenu(
                         $sm->getServiceLocator()->get('Stjornvisi\Service\Group'),
                         $sm->getServiceLocator()->get('Stjornvisi\Service\User'),
-                        $sm->getServiceLocator()->get('AuthenticationService')
+                        $sm->getServiceLocator()->get('AuthenticationService'),
+                        $sm->getServiceLocator()->get('Stjornvisi\Service\Company')
                     );
                 }
             ],

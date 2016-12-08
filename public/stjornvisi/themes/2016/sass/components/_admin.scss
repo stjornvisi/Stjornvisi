@@ -118,8 +118,11 @@ nav[role=navigation] {
 
     .headline {
       display: block;
-      margin-bottom: $line-height-computed;
+      margin-bottom: $line-height-computed / 2;
       border-bottom: 1px solid $color-offwhite;
+    }
+    .last {
+      margin-bottom: 30px;
     }
   }
 

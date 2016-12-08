@@ -9,6 +9,7 @@
 namespace Stjornvisi\View\Helper;
 
 use Stjornvisi\Module;
+use Stjornvisi\Service\Company;
 use Stjornvisi\Service\User;
 use Zend\Authentication\AuthenticationService;
 use Zend\Navigation\Navigation;
@@ -22,11 +23,12 @@ class SubMenu extends AbstractHelper
     private $userService;
     private $authService;
 
-    public function __construct(Group $groupService, User $userService, AuthenticationService $authService)
+    public function __construct(Group $groupService, User $userService, AuthenticationService $authService, Company $companyService)
     {
         $this->groupService = $groupService;
         $this->userService = $userService;
         $this->authService = $authService;
+        $this->companyService = $companyService;
     }
 
     public function __invoke()
@@ -39,6 +41,14 @@ class SubMenu extends AbstractHelper
 
         $view = $this->getView();
         /** @var $view \Zend\View\Renderer\PhpRenderer */
+
+        $company = array();
+        foreach ($this->companyService->getByUser($this->authService->getIdentity()->id) as $company) {
+            $company = array(
+                'label' => $company->name,
+                'uri' => $view->url('fyrirtaeki/index', array('id' => $company->id))
+            );
+        }
 
         if (!self::$navigation) {
             $array = array();
@@ -81,13 +91,13 @@ class SubMenu extends AbstractHelper
 
                 );
             }
-
             if ($this->authService->hasIdentity()) {
                 $array[] = array(
                     'label' => $this->authService->getIdentity()->name,
                     'uri' => '/notandi/'.$this->authService->getIdentity()->id,
                     'class' => 'headline',
                     'pages' => array(
+                        $company,
                         array(
                             'label' => 'Notendastillingar',
                             'uri' => $view->url('notandi/update', array('id'=>$this->authService->getIdentity()->id))
@@ -103,7 +113,7 @@ class SubMenu extends AbstractHelper
                         array(
                             'label' => 'Útskrá',
                             'uri' => $view->url('auth-out'),
-                            'class' => 'icon-close'
+                            'class' => 'icon-close last'
                         ),
                     ),
                 );
@@ -232,6 +242,13 @@ class SubMenu extends AbstractHelper
                                         'uri' => $view->url('email/send', array('type'=>'formenn')),
                                         'class' => 'icon-mail',
                                         'title' => 'Senda póst á formenn faghópa'
+                                    ),
+                                    array(
+                                        'label' => 'Lykilstarfsmenn',
+                                        'id' => 'mail-all',
+                                        'uri' => $view->url('email/send', array('type'=>'lykilstarfsmenn')),
+                                        'class' => 'icon-mail',
+                                        'title' => 'Senda póst á lykilstarfsmenn fyrirtækja'
                                     ),
                                 )
                             ),

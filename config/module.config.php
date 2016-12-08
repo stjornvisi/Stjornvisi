@@ -840,6 +840,19 @@ return array(
                             ),
                         )
                     ),
+                    'safe-delete' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Segment',
+                        'options' => array(
+                            'route' => '/:id/fjarlaegja',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Stjornvisi\Controller\User',
+                                'action' => 'safe-delete'
+                            ),
+                        )
+                    ),
                     'create' => array(
                         'type' => 'Zend\Mvc\Router\Http\Segment',
                         'options' => array(
@@ -1754,7 +1767,7 @@ return array(
                             'route' => '/senda[/:type]',
                             'constraints' => array(
                                 'id' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'type' => 'allir|formenn|stjornendur'
+                                'type' => 'allir|formenn|stjornendur|lykilstarfsmenn'
                             ),
                             'defaults' => array(
                                 'controller' => 'Stjornvisi\Controller\Email',

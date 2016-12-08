@@ -142,9 +142,9 @@ class User extends AbstractService implements DataSourceAwareInterface
             'company_name' => 'C.`name`, U.`name`',
         ];
         try {
-            $where = '';
+            $where = 'WHERE U.deleted = 0';
             if ($valid) {
-                $where = 'WHERE U.email IS NOT NULL';
+                $where = 'WHERE U.email IS NOT NULL AND U.deleted = 0';
             }
             $sql ="
                 SELECT U.*, ChU.company_id, ChU.key_user, C.name as company_name
@@ -195,7 +195,7 @@ class User extends AbstractService implements DataSourceAwareInterface
     public function fetchGroupMembers(array $type)
     {
         try {
-            $statement = $this->pdo->prepare("
+            $statement = $this->pdo->prepare('
                 SELECT U.*, G.name_short AS group_name, G.id AS group_id, GhU.type,
                  ChU.company_id, ChU.key_user, C.name as company_name
                 FROM `User` U
@@ -203,11 +203,11 @@ class User extends AbstractService implements DataSourceAwareInterface
                 JOIN `Group` G ON (G.id = GhU.group_id)
                 LEFT JOIN Company_has_User ChU ON (U.id = ChU.user_id)
                 LEFT JOIN Company C ON (C.id = ChU.company_id )
-                WHERE GhU.`type` IN (". implode(',', array_map(function ($i) {
+                WHERE GhU.`type` IN (' . implode(',', array_map(function ($i) {
                     return (int)$i;
-                }, $type)) . ")
+                }, $type)) . ') AND U.deleted = 0
                 ORDER BY U.name
-            ");
+            ');
             $statement->execute();
             return $statement->fetchAll();
         } catch (PDOException $e) {
@@ -224,12 +224,15 @@ class User extends AbstractService implements DataSourceAwareInterface
     /**
      * Get all leaders.
      *
+     * @deprecated
      * @param bool $valid
      * @return array
      * @throws Exception
      */
     public function fetchAllLeaders($valid = false)
     {
+        die('Deprecated function called: '.__FUNCTION__);
+
         try {
             if ($valid) {
                 $statement = $this->pdo->prepare("
@@ -270,12 +273,14 @@ class User extends AbstractService implements DataSourceAwareInterface
     /**
      * Get all managers.
      *
+     * @deprecated
      * @param bool $valid
      * @return array
      * @throws Exception
      */
     public function fetchAllManagers($valid = false)
     {
+        die('Deprecated function called: '.__FUNCTION__);
         try {
             if ($valid) {
                 $statement = $this->pdo->prepare("
@@ -443,6 +448,7 @@ class User extends AbstractService implements DataSourceAwareInterface
                   LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                   WHERE GhU.group_id = :id
                   AND GhU.type = :type
+                  AND U.deleted = 0
                   ORDER BY GhU.type DESC, U.name
                 ");
                 $statement->execute(array(
@@ -462,6 +468,7 @@ class User extends AbstractService implements DataSourceAwareInterface
                     LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                     WHERE GhU.group_id = :id
                     AND GhU.type IN (".$typeList.")
+                    AND U.deleted = 0
                     ORDER BY GhU.type DESC, U.name
                 ");
                 $statement->execute(array(
@@ -475,6 +482,7 @@ class User extends AbstractService implements DataSourceAwareInterface
                     LEFT JOIN `Company_has_User` ChU ON (ChU.user_id = U.id)
                     LEFT JOIN `Company` C ON (ChU.company_id = C.id)
                     WHERE GhU.group_id = :id
+                    AND U.deleted = 0
                     ORDER BY GhU.type DESC, U.name
                 ");
                 $statement->execute(array(
@@ -591,18 +599,22 @@ class User extends AbstractService implements DataSourceAwareInterface
     /**
      * Get all managers by group.
      *
+     * @deprecated
      * @param (int)$id group ID
      * @return array
      * @throws Exception
      */
     public function getManagementByGroup($id)
     {
+        die('Deprecated function called: '.__FUNCTION__);
+
         try {
             $statement = $this->pdo->prepare("
                 SELECT U.*, GhU.type FROM Group_has_User GhU
                 JOIN `User` U ON (U.id = Ghu.user_id)
                 WHERE GhU.group_id = :id
                 AND GhU.type >= :type
+                AND U.deleted = 0
                 ORDER BY GhU.type DESC, U.name
             ");
             $statement->execute(array(
@@ -632,6 +644,8 @@ class User extends AbstractService implements DataSourceAwareInterface
      * </code>
      * Will only return chairmen.
      *
+     * @deprecated
+     *
      * @param array $group_id
      * @param array $exclude type
      *
@@ -641,6 +655,8 @@ class User extends AbstractService implements DataSourceAwareInterface
      */
     public function getUserMessageByGroup(array $group_id, array $exclude = array(-1))
     {
+        die('Deprecated function called: '.__FUNCTION__);
+
         try {
             //Make sure that empty arrays have the value NULL in them
             //  else the SQL statement will not run.
@@ -654,8 +670,10 @@ class User extends AbstractService implements DataSourceAwareInterface
             $statement = $this->pdo->prepare("
                 SELECT U.id, U.name, U.email FROM `User` U
                 JOIN Group_has_User GhU ON (U.id = GhU.user_id)
-                WHERE GhU.group_id IN (".implode(',', $group_id).") AND U.get_message = 1
-                    AND GhU.notify = 1
+                WHERE GhU.group_id IN (".implode(',', $group_id).")
+                AND U.deleted = 0
+                AND U.get_message = 1
+                AND GhU.notify = 1
                 AND GhU.type NOT IN ( ".implode(',', $exclude)." )
                 GROUP BY U.name;
             ");
@@ -681,19 +699,22 @@ class User extends AbstractService implements DataSourceAwareInterface
      * Get all users and guest that want message and are attending
      * event.
      *
+     * @deprecated
      * @param $event_id
-     *
      * @return array
      * @throws Exception
      */
     public function getUserMessageByEvent($event_id)
     {
+        die('Deprecated function called: '.__FUNCTION__);
+
         try {
             $statement = $this->pdo->prepare("
                 SELECT U.id, U.name, U.email FROM `User` U
                 JOIN Event_has_User EhU ON (U.id = EhU.user_id)
                 WHERE EhU.attending = 1
                 AND EhU.event_id = :id
+                AND U.deleted = 0
                 AND U.get_message = 1;
             ");
             $statement->execute(array('id'=>$event_id));
@@ -727,13 +748,18 @@ class User extends AbstractService implements DataSourceAwareInterface
     /**
      * Get all users in all groups that want
      * a message
+     *
+     * @deprecated
      */
     public function getUserMessage()
     {
+        die('Deprecated function called: '.__FUNCTION__);
+
         try {
             $statement = $this->pdo->prepare("
                 SELECT U.id, U.name, U.email FROM `User` U
                 WHERE U.get_message = 1
+                AND U.deleted = 0
                 AND U.email IS NOT NULL;
             ");
             $statement->execute();
@@ -1254,6 +1280,39 @@ class User extends AbstractService implements DataSourceAwareInterface
         }
     }
 
+    /**
+     * @param $id int
+     * @return int
+     * @throws Exception
+     */
+    public function safeDelete($id)
+    {
+        try {
+            $statement = $this->pdo->prepare('
+                update `User` set deleted = 1 where id = :id
+            ');
+            $statement->execute([
+                'id' => $id
+            ]);
+
+            $this->getEventManager()->trigger('delete', $this, array(
+                0 => __FUNCTION__,
+                'data' => (object)['id' => $id]
+            ));
+
+            return $statement->columnCount();
+
+        } catch (\PDOException $e) {
+            $this->getEventManager()->trigger('error', $this, array(
+                'exception' => $e->getTraceAsString(),
+                'sql' => array(
+                    isset($statement)?$statement->queryString:null,
+                )
+            ));
+            throw new Exception("Can't safely delete user[$id]. " . $e->getMessage(), 0, $e);
+        }
+    }
+
     private function getAdapter()
     {
         return new DbAdapter(new PdoDriver($this->pdo));
@@ -1281,7 +1340,8 @@ class User extends AbstractService implements DataSourceAwareInterface
         $select = $this->sql()->select()->quantifier(Select::QUANTIFIER_DISTINCT)
             ->from(['U' => 'User'])
             ->join(['ChU' => 'Company_has_User'], 'U.id = ChU.user_id', ['company_id', 'key_user'], Select::JOIN_LEFT)
-            ->join(['C' => 'Company'], 'C.id = ChU.company_id', ['company_name' => 'name'], Select::JOIN_LEFT);
+            ->join(['C' => 'Company'], 'C.id = ChU.company_id', ['company_name' => 'name'], Select::JOIN_LEFT)
+            ->where('U.deleted = ?', 0);
         if ($needsToBeValid) {
             $select->where('U.email IS NOT NULL');
         }
@@ -1340,6 +1400,14 @@ class User extends AbstractService implements DataSourceAwareInterface
         $select = $this->selectAll(true);
         $this->selectGroups($select, [2]);
         $select->where(['email_global_chairman' => 1]);
+        return $this->runQuery($select);
+    }
+
+    public function fetchAllKeyEmployeesForEmail()
+    {
+        $select = $this->selectAll(true);
+        $this->selectGroups($select, [1]);
+        $select->where(['email_global_keyemployee' => 1]);
         return $this->runQuery($select);
     }
 

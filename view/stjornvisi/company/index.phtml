@@ -1,120 +1,132 @@
-<?php if($this->access->is_admin || $this->access->type != null):?>
-<div class="panel panel--admin">
-	<section class="panel__container">
-		<div class="panel__content">
-			<a href="<?=$this->url('fyrirtaeki/update', array('id'=>$this->company->id))?>"><i class="fa fa-check"></i> Uppfæra</a>
-			<?php if($this->access->is_admin || $this->access->type == 1):?>
-				<a href="<?=$this->url('fyrirtaeki/delete', array('id'=>$this->company->id))?>"><i class="fa fa-trash"></i> Eyða</a>
-			<?php endif;?>
-		</div>
-	</div>
-</div>
-<?php endif;?>
+<?php if ($this->access->is_admin || $this->access->type != null): ?>
+    <div class="panel panel--admin">
+        <section class="panel__container">
+            <div class="panel__content">
+                <a href="<?= $this->url('fyrirtaeki/update', array('id' => $this->company->id)) ?>"><i
+                            class="fa fa-check"></i> Uppfæra</a>
+                <?php if ($this->access->is_admin || $this->access->type == 1): ?>
+                    <a href="<?= $this->url('fyrirtaeki/delete', array('id' => $this->company->id)) ?>"><i
+                                class="fa fa-trash"></i> Eyða</a>
+                <?php endif; ?>
+            </div>
+    </div>
+    </div>
+<?php endif; ?>
 
 <div class="panel panel--columns-two">
     <section class="panel__container">
-		<div class="panel__content">
-			<div class="box">
-				<div class="box__title"><h2><?=$this->company->name?></h2></div>
-				<div class="box__content">
-					<dl class="dl-horizontal">
-						<dt>Kennitala</dt>
-						<dd><?=$this->company->ssn;?></dd>
-						<dt>Heimilisfang</dt>
-						<dd><?=$this->company->address;?></dd>
-						<dt>Póstnúmer</dt>
-						<dd><?=$this->company->zip;?></dd>
-						<dt>Heimasíða</dt>
-						<dd><?=$this->company->website;?></dd>
-						<dt>Starfsmannafjöldi</dt>
-						<dd><?=$this->company->number_of_employees;?></dd>
-						<dt>Rekstrarform</dt>
-						<dd><?=$this->company->business_type;?></dd>
-						<dt>Stofnað</dt>
-						<dd><?=$this->date($this->company->created);?></dd>
-						<dt>Skráðir starfsmenn</dt>
-						<dd><?=count($this->company->members)?></dd>
-					</dl>
+        <div class="panel__content">
+            <div class="box">
+                <div class="box__title"><h2><?= $this->company->name ?></h2></div>
+                <div class="box__content">
+                    <dl class="dl-horizontal">
+                        <dt>Kennitala</dt>
+                        <dd><?= $this->company->ssn; ?></dd>
+                        <dt>Heimilisfang</dt>
+                        <dd><?= $this->company->address; ?></dd>
+                        <dt>Póstnúmer</dt>
+                        <dd><?= $this->company->zip; ?></dd>
+                        <dt>Heimasíða</dt>
+                        <dd><?= $this->company->website; ?></dd>
+                        <dt>Starfsmannafjöldi</dt>
+                        <dd><?= $this->company->number_of_employees; ?></dd>
+                        <dt>Rekstrarform</dt>
+                        <dd><?= $this->company->business_type; ?></dd>
+                        <dt>Stofnað</dt>
+                        <dd><?= $this->date($this->company->created); ?></dd>
+                        <dt>Skráðir starfsmenn</dt>
+                        <dd><?= count($this->company->members) ?></dd>
+                    </dl>
 
-					<h4>Dreifing starfsmanna</h4>
-					<table class="table">
-						<thead>
-						<tr>
-							<td>Hópur</td>
-							<td class="block-table__numeric">Starfsmenn</td>
-						</tr>
-						</thead>
-						<tfoot></tfoot>
-						<tbody>
-						<?php foreach($this->distribution as $value):?>
-							<tr>
-								<td><a href="<?=$this->url('hopur/index', array('id'=>$value->url))?>"><?=$value->name_short?></td>
-								<td class="block-table__numeric"><?=$value->group_count?></td>
-							</tr>
-						<?php endforeach;?>
-						</tbody>
-					</table>
+                    <h4>Dreifing starfsmanna</h4>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <td>Hópur</td>
+                            <td class="block-table__numeric">Starfsmenn</td>
+                        </tr>
+                        </thead>
+                        <tfoot></tfoot>
+                        <tbody>
+                        <?php foreach ($this->distribution as $value): ?>
+                            <tr>
+                                <td>
+                                    <a href="<?= $this->url('hopur/index', array('id' => $value->url)) ?>"><?= $value->name_short ?>
+                                </td>
+                                <td class="block-table__numeric"><?= $value->group_count ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
 
 
-					<h4>Mætingar á starfsári</h4>
-					<?php foreach($this->attendance as $value):?>
+                    <h4>Mætingar á starfsári</h4>
+                    <?php foreach ($this->attendance as $value): ?>
 
-						<table class="table">
-							<caption>
-								<h5><?=$value->from->format('Y')?> - <?=$value->to->format('Y')?></h5>
-							</caption>
-							<thead>
-							<tr>
-								<td>Starfsmaður</td>
-								<td class="block-table__numeric">Mætingar</td>
-							</tr>
-							</thead>
-							<tfoot></tfoot>
-							<tbody>
-							<?php foreach($value->list as $item): ?>
-								<tr>
-									<td><a href="<?=$this->url('notandi/index', array('id'=>$item->id))?>"><?=$item->name?></a></td>
-									<td class="block-table__numeric"><?=$item->counter?></td>
-								</tr>
-							<?php endforeach;?>
-							</tbody>
+                        <table class="table">
+                            <caption>
+                                <h5><?= $value->from->format('Y') ?> - <?= $value->to->format('Y') ?></h5>
+                            </caption>
+                            <thead>
+                            <tr>
+                                <td>Starfsmaður</td>
+                                <td class="block-table__numeric">Mætingar</td>
+                            </tr>
+                            </thead>
+                            <tfoot></tfoot>
+                            <tbody>
+                            <?php foreach ($value->list as $item): ?>
+                                <tr>
+                                    <td>
+                                        <a href="<?= $this->url('notandi/index', array('id' => $item->id)) ?>"><?= $item->name ?></a>
+                                    </td>
+                                    <td class="block-table__numeric"><?= $item->counter ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
 
-						</table>
-					<?php endforeach;?>
+                        </table>
+                    <?php endforeach; ?>
+                </div>
+            </div>
 
-					<!--pre>
-                <?php print_r($this->attendance)?>
-            </pre-->
-				</div>
-			</div>
-
-			<div class="box">
-				<div class="box__title"><h3>Starfsmenn</h3></div>
-				<div class="box__content">
-					<ul>
-						<?php foreach($this->company->members as $member):?>
-							<li>
-								<a href="<?=$this->url('notandi/index', array('id'=>$member->id))?>"><?=$member->name;?></a><br>
-								<?=$member->title;?><br>
-								<?=$member->email;?><br>
-								<p>
-								<?php if($member->key_user):?>
-									<span>lykilstarfsmaður</span>
-									<stjonvisi-control class="inline">
-										<a href="<?=$this->url('fyrirtaeki/employee-type', array('id'=>$this->company->id,'user'=>$member->id,'type'=>0))?>">Gera að starfsmanni</a>
-									</stjonvisi-control>
-								<?php else:?>
-									<span>starfsmaður</span>
-									<stjonvisi-control class="inline">
-										<a href="<?=$this->url('fyrirtaeki/employee-type', array('id'=>$this->company->id,'user'=>$member->id,'type'=>1))?>">Gera að lykilstarfsmanni</a>
-									</stjonvisi-control>
-								<?php endif;?>
-								</p>
-							</li>
-						<?php endforeach;?>
-					</ul>
-				</div>
-			</div>
-		</div>
+            <div class="box">
+                <div class="box__title"><h3>Starfsmenn</h3></div>
+                <div class="box__content">
+                    <ul>
+                        <?php foreach ($this->company->members as $member): ?>
+                            <li>
+                                <a href="<?= $this->url('notandi/index', array('id' => $member->id)) ?>"><?= $member->name; ?></a><br>
+                                <?= $member->title; ?><br>
+                                <?= $member->email; ?><br>
+                                <p>
+                                    <?php if ($member->key_user): ?>
+                                        <span><i class="fa fa-key"></i> lykilstarfsmaður</span>
+                                        <?php if ($this->access->is_admin || $this->access->type == 1): ?>
+                                            <stjonvisi-control class="inline">
+                                                <a href="<?= $this->url('fyrirtaeki/employee-type', array('id' => $this->company->id, 'user' => $member->id, 'type' => 0)) ?>"><i class="fa fa-user"></i> Gera að starfsmanni</a>
+                                                <?php if ($identity->id !== $member->id):?>
+                                                <a href="<?= $this->url('notandi/safe-delete', array('id' => $member->id)) ?>"><i class="fa fa-trash"></i> Eyða starfsmanni</a>
+                                                <?php endif?>
+                                            </stjonvisi-control>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <span><i class="fa fa-user"></i> starfsmaður</span>
+                                        <?php if ($this->access->is_admin || $this->access->type == 1): ?>
+                                        <stjonvisi-control class="inline">
+                                            <a href="<?= $this->url('fyrirtaeki/employee-type', array('id' => $this->company->id, 'user' => $member->id, 'type' => 1)) ?>"><i class="fa fa-key"></i> Gera að lykilstarfsmanni</a>
+                                            <?php if ($identity->id !== $member->id):?>
+                                                <a href="<?= $this->url('notandi/safe-delete', array('id' => $member->id)) ?>"><i class="fa fa-trash"></i> Eyða starfsmanni</a>
+                                            <?php endif?>
+                                        </stjonvisi-control>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </p>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
