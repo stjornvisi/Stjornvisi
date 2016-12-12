@@ -51,3 +51,43 @@
 		font-size: 22px;
 	}
 }
+
+// xs and smaller
+@mixin screen-xs {
+	@media (max-width: $screen-xs) { @content; }
+}
+// sm and larger
+@mixin screen-sm-min {
+	@media (min-width: $screen-sm-min) { @content; }
+}
+
+// sm only
+@mixin screen-sm {
+	@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { @content; }
+}
+
+// sm and smaller
+@mixin screen-sm-max {
+	@media (max-width: $screen-sm-max) { @content; }
+}
+
+// md and larger
+@mixin screen-md-min {
+	@media (min-width: $screen-md-min) { @content; }
+}
+
+// md only
+@mixin screen-md {
+	@media (min-width: $screen-md-min) and (max-width: $screen-md-max) { @content; }
+}
+
+// md and smaller
+@mixin screen-md-max {
+	@media (max-width: $screen-md-max) { @content; }
+}
+
+// lg and larger
+@mixin screen-lg-min {
+	@media (min-width: $screen-lg-min) { @content; }
+}
+

@@ -507,7 +507,6 @@ class Group extends AbstractService implements DataSourceAwareInterface, Service
      * @param int $limit
      * @return array
      * @throws Exception
-     * @deprecated Seems that this is not being used
      */
     public function fetchAllExtended($limit = 2)
     {

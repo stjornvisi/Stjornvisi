@@ -10,64 +10,6 @@
         addEventListener: function () {
         }
     };
-    var active = undefined;
-    (document.querySelector('.categories--groups') || mock).addEventListener('click', function (event) {
-        event.preventDefault();
-        document.querySelector('ul.navigation').style.marginLeft = 0;
-        if (active == undefined) {
-            event.target.classList.add('active');
-            document.body.classList.add('state-open');
-            active = event.target;
-        }
-        else if (active == event.target) {
-            event.target.classList.remove('active');
-            document.body.classList.remove('state-open');
-            active = undefined;
-        } else {
-            active.classList.remove('active');
-            active = event.target;
-            active.classList.add('active');
-        }
-
-
-    }, false);
-    (document.querySelector('.categories--users') || mock).addEventListener('click', function (event) {
-        event.preventDefault();
-        document.querySelector('ul.navigation').style.marginLeft = '-100%';
-        if (active == undefined) {
-            event.target.classList.add('active');
-            document.body.classList.add('state-open');
-            active = event.target;
-        }
-        else if (active == event.target) {
-            event.target.classList.remove('active');
-            document.body.classList.remove('state-open');
-            active = undefined;
-        } else {
-            active.classList.remove('active');
-            active = event.target;
-            active.classList.add('active');
-        }
-    }, false);
-    (document.querySelector('.categories--config') || mock).addEventListener('click', function (event) {
-        event.preventDefault();
-        document.querySelector('ul.navigation').style.marginLeft = '-200%';
-        if (active == undefined) {
-            event.target.classList.add('active');
-            document.body.classList.add('state-open');
-            active = event.target;
-        }
-        else if (active == event.target) {
-            event.target.classList.remove('active');
-            document.body.classList.remove('state-open');
-            active = undefined;
-        } else {
-            active.classList.remove('active');
-            active = event.target;
-            active.classList.add('active');
-        }
-    }, false);
-
     (document.querySelector('.main--burger') || mock).addEventListener('click', function (event) {
         event.preventDefault();
         document.body.classList.toggle('state-mobile-menu-open');
@@ -80,6 +22,34 @@
 })();
 
 $(function () {
+    $('.navigation > li > a', '.adminbar').on('mouseup touchstart', function(e) {
+        var $a = $(this),
+            $li = $a.parents('li');
+
+        if (e.type === 'touchstart') {
+            if (!$(e.target).hasClass('navigation--home')) {
+                e.preventDefault();
+            }
+
+            $('.navigation--open').removeClass('navigation--open');
+            $li.addClass('navigation--open');
+        }
+    });
+    $('.navigation > li', '.adminbar').on('mouseleave mouseenter', function(e) {
+        var $li = $(this);
+
+        if(e.type === 'mouseenter') {
+            $('.navigation--open').removeClass('navigation--open');
+            $li.addClass('navigation--open');
+        }
+        else if (e.type === 'mouseleave') {
+            $('.navigation--open').removeClass('navigation--open');
+        }
+    });
+    $('body').on('click', function() {
+        $('.navigation--open').removeClass('navigation--open');
+    });
+
     $('.entry__title', '.entry--hoverable').on('mouseup touchstart mouseenter mouseleave', function (e) {
         if (e.target.className !== 'btn btn-default') {
             var $parent = $(this.parentNode);

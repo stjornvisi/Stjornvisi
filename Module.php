@@ -440,7 +440,8 @@ class Module
                         $sm->getServiceLocator()->get('Stjornvisi\Service\Group'),
                         $sm->getServiceLocator()->get('Stjornvisi\Service\User'),
                         $sm->getServiceLocator()->get('AuthenticationService'),
-                        $sm->getServiceLocator()->get('Stjornvisi\Service\Company')
+                        $sm->getServiceLocator()->get('Stjornvisi\Service\Company'),
+                        $sm->getServiceLocator()->get('Stjornvisi\Service\Event')
                     );
                 }
             ],

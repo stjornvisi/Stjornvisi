@@ -327,8 +327,10 @@ class GroupController extends AbstractActionController
         $sm = $this->getServiceLocator();
         /** @var Group $groupService */
         $groupService = $sm->get(Group::class);
+        $auth = new AuthenticationService();
+
         //return new ViewModel(['groups_all' => $groupService->fetchAllExtended(1)]);
-        return new ViewModel(['groups_all' => $groupService->fetchDetails()]);
+        return new ViewModel(['groups_all' => $groupService->fetchDetails(( $auth->hasIdentity() ) ? $auth->getIdentity()->id : null)]);
     }
 
     /**

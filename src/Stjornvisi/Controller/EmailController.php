@@ -178,8 +178,8 @@ class EmailController extends AbstractActionController
             return $model;
         }
 
-        if (!Module::isStaging()) {
-            throw new ServiceException('Digest from browser can only be run in Staging');
+        if (!Module::isStaging() && !Module::isDevelopment()) {
+            throw new ServiceException('Digest from browser can only be run in Staging/Development');
         }
 
         if ($this->request->isPost()) {

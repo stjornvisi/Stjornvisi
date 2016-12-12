@@ -57,6 +57,7 @@ stjornvisi-rich {
   }
 }
 
+/*
 body.state-login {
   main[role=main] {
     margin-left: 80px;
@@ -187,41 +188,42 @@ nav[role=navigation] {
       font-family: FontAwesome;
     }
   }
+}
+*/
 
-  .icon-calendar-o,
-  .icon-calendar,
-  .icon-bar-chart,
-  .icon-plus,
-  .icon-list,
-  .icon-mail {
-    &:before {
-      content: $fa-var-bar-chart;
-      font-family: FontAwesome;
-      margin-right: 10px;
-    }
-  }
-
-  .icon-bar-chart:before {
+.icon-calendar-o,
+.icon-calendar,
+.icon-bar-chart,
+.icon-plus,
+.icon-list,
+.icon-mail {
+  &:before {
     content: $fa-var-bar-chart;
+    font-family: FontAwesome;
+    margin-right: 10px;
   }
+}
 
-  .icon-plus:before {
-    content: $fa-var-plus;
-  }
+.icon-bar-chart:before {
+  content: $fa-var-bar-chart;
+}
 
-  .icon-list:before {
-    content: $fa-var-list;
-  }
+.icon-plus:before {
+  content: $fa-var-plus;
+}
 
-  .icon-mail:before {
-    content: $fa-var-envelope;
-  }
+.icon-list:before {
+  content: $fa-var-list;
+}
 
-  .icon-calendar-o:before {
-    content: $fa-var-calendar-o;
-  }
+.icon-mail:before {
+  content: $fa-var-envelope;
+}
 
-  .icon-calendar:before {
-    content: $fa-var-calendar;
-  }
+.icon-calendar-o:before {
+  content: $fa-var-calendar-o;
+}
+
+.icon-calendar:before {
+  content: $fa-var-calendar;
 }
