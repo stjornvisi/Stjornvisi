@@ -61,10 +61,18 @@ class Welcome extends AbstractNotifier
 
         $this->logger->debug("User welcome email [{$user->email}]");
 
-        $body = $this->createEmailBody('user-welcome', [
-            'user'    => $user,
-            'company' => $company,
-        ]);
+        if ($company) {
+            $body = $this->createEmailBody('company-welcome', [
+                'user'    => $user,
+                'company' => $company,
+            ]);
+        }
+        else {
+            $body = $this->createEmailBody('user-welcome', [
+                'user'    => $user,
+                'company' => $company,
+            ]);
+        }
 
         $mail = new Mail([
             'name'    => $user->name,

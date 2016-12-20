@@ -53,7 +53,7 @@ class IndexController extends AbstractActionController
                 'groups' => $groupService->fetchDetails($auth->getIdentity()->id),
                 'newsPrimary' => $newsService->getNotGrouped(1),
                 'newsSecondary' => $newsService->getConnected(3),
-                //'eventNews' => $newsService->getEventNews(3),
+                //'eventNews' => $newsService->getPassedEventNews(3),
                 'events' => $eventService->getByUser($auth->getIdentity()->id, 3),
                 'eventCount' => $eventService->fetchUpcomingCount(),
                 'eventsAttending' => $eventService->getAttendingByUser($auth->getIdentity()->id),
@@ -64,7 +64,8 @@ class IndexController extends AbstractActionController
             return new ViewModel([
                 'groups' => $groupService->fetchDetails(),
                 'newsPrimary' => $newsService->getNotGrouped(1),
-                'eventNews' => array(),
+                'newsSecondary' => $newsService->getConnected(3),
+                //'eventNews' => array(),
                 'news' => $newsService->fetchAll(null),
                 'identity' => null,
                 'events' => $eventService->fetchUpcoming(),
