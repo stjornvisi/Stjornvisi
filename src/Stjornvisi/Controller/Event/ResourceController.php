@@ -38,7 +38,7 @@ class ResourceController extends AbstractActionController
 
             //ACCESS GRANTED
             //
-            if ($access->is_admin || $access->type >= 2) {
+            if ($access->is_admin || $access->type >= 1) {
                 return (new ViewModel([
                     'event' => $event,
                     'resources' => $eventService->getResources($event->id)
@@ -83,7 +83,7 @@ class ResourceController extends AbstractActionController
 
             //ACCESS GRANTED
             //
-            if ($access->is_admin || $access->type >= 2) {
+            if ($access->is_admin || $access->type >= 1) {
                 $form = new ResourceForm();
                 $form->setAttribute('action', $this->url()->fromRoute('vidburdir/resource-create', ['id'=>$event->id]));
                 if ($this->request->isPost()) {
@@ -151,7 +151,7 @@ class ResourceController extends AbstractActionController
 
             //ACCESS GRANTED
             //	access granted
-            if ($access->is_admin || $access->type >= 2) {
+            if ($access->is_admin || $access->type >= 1) {
                 $form = new ResourceForm();
                 $form->setAttribute('action', $this->url()->fromRoute('vidburdir/resource-update', ['id'=>$item->id]));
 
@@ -221,7 +221,7 @@ class ResourceController extends AbstractActionController
 
             //ACCESS GRANTED
             //	access granted
-            if ($access->is_admin || $access->type >= 2) {
+            if ($access->is_admin || $access->type >= 1) {
                 $eventService->deleteResource($item->id);
                 return $this->redirect()->toRoute('vidburdir/resource-list', ['id'=>$event->id]);
                 //ACCESS DENIED

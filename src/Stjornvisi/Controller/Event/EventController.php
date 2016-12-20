@@ -106,19 +106,23 @@ class EventController extends AbstractActionController
     public function listAction()
     {
         $sm = $this->getServiceLocator();
+        /** @var Event $eventService */
         $eventService = $sm->get(EventService::class);
+        /** @var News $newsService */
+        $newsService = $sm->get(News::class);
 
         $auth = $sm->get(AuthenticationService::class);
         if ($auth->hasIdentity()) {
             return new ViewModel([
                 'events' => $eventService->getByUser($auth->getIdentity()->id, 100, false),
-                'eventsPassed' => $eventService->fetchPassed(),
+                //'eventsPassed' => $eventService->fetchPassed(),
+                'eventsPassed' => $newsService->getPassedEventNews()
             ] + $this->getCalendarData());
         }
         else {
             return new ViewModel([
                 'events' => $eventService->fetchUpcoming(100),
-                'eventsPassed' => $eventService->fetchPassed()
+                'eventsPassed' => $newsService->getPassedEventNews()
             ] + $this->getCalendarData());
         }
     }

@@ -168,6 +168,7 @@ class NewUserCompany extends Form implements InputFilterProviderInterface
                 'filters'  => array(
                     array('name' => 'StringTrim'),
                 ),
+                /*
                 'validators' => array(
                     array(
                         'name'    => 'Alnum',
@@ -176,6 +177,7 @@ class NewUserCompany extends Form implements InputFilterProviderInterface
                         ),
                     ),
                 ),
+                */
             ),
 
             'company-zip' => array(

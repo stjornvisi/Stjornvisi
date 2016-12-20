@@ -1240,6 +1240,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                 }, $id)) .
                 ") OR GhE.group_id IS NULL)
                 AND E.event_date > NOW() AND GhE.event_id != :id
+                GROUP BY E.id
                 ORDER BY E.event_date ASC LIMIT 0,5");
             $statement->execute(['id' => $exclude]);
             $events = $statement->fetchAll();
@@ -1252,6 +1253,7 @@ class Event extends AbstractService implements DataSourceAwareInterface
                     SELECT E.* FROM Group_has_Event GhE
                     JOIN Event E ON (E.id = GhE.event_id)
                     WHERE E.event_date > NOW() AND GhE.event_id != :id
+                    GROUP BY E.id
                     ORDER BY E.event_date ASC LIMIT 0,5");
                 $statement->execute(['id' => $exclude]);
                 $events = $statement->fetchAll();
