@@ -92,7 +92,7 @@ class SubMenu extends AbstractHelper
                 'pages' => array(
                     array(
                         'label' => 'Þú hefur ekki skráð þig á neina viðburði.',
-                        'uri' => $view->url('hopur'),
+                        'uri' => $view->url('vidburdir'),
                     )
                 )
             );
@@ -101,7 +101,7 @@ class SubMenu extends AbstractHelper
             if (!empty($userEvents)) {
                 $array[2]['pages'] = array_map(function ($i) use ($view) {
                     return array(
-                        'label' => $i->event_date->format('d. M:') . ' ' . $i->subject,
+                        'label' => strtolower($i->event_date->format('d. M:')) . ' ' . $i->subject,
                         'uri' => $view->url('vidburdir/index', array('id' => $i->id)),
                         'params' => array(
                             'id' => $i->id
