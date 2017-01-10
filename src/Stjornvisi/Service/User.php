@@ -1341,7 +1341,7 @@ class User extends AbstractService implements DataSourceAwareInterface
             ->from(['U' => 'User'])
             ->join(['ChU' => 'Company_has_User'], 'U.id = ChU.user_id', ['company_id', 'key_user'], Select::JOIN_LEFT)
             ->join(['C' => 'Company'], 'C.id = ChU.company_id', ['company_name' => 'name'], Select::JOIN_LEFT)
-            ->where('U.deleted = ?', 0);
+            ->where('U.deleted = 0');
         if ($needsToBeValid) {
             $select->where('U.email IS NOT NULL');
         }
