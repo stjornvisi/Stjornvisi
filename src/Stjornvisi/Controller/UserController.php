@@ -568,7 +568,8 @@ class UserController extends AbstractActionController
                 return $model;
             }
         } else {
-            return $this->notFoundAction();
+            return $this->redirect()->toRoute('auth');
+            //return $this->notFoundAction();
         }
     }
 }
