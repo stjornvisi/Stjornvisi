@@ -111,7 +111,7 @@ class SubMenu extends AbstractHelper
             }
 
             if ($this->authService->hasIdentity()) {
-                $company = array();
+                $company = null;
                 foreach ($this->companyService->getByUser($currentUser->id) as $company) {
                     $company = array(
                         'label' => $company->name,
